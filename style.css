@@ -27,35 +27,35 @@ body {
 }
 header {
   display: block;
-  flex: 1 1 1;
+  flex: 1 1 auto;
   background-image: url("heatmap.png");
   background-size: 100% auto;
   background-repeat: repeat-y;
   background-color: #EFEFEF;
-  min-width: 66.84vh;
-  max-width: 100%;
+  width: min(66.84vh, 100vw);
 }
 .sidebar {
   font-family: 'Poppins-header', sans-serif;
   font-weight: 700;
-  margin-top: 20%;
+  margin-block: 20%;
   padding: 1em;
   text-align: center;
   background-color: rgba(150, 150, 150, 0.5);
 }
 main {
   font-family: 'Poppins-medium', sans-serif;
-  flex: 1;
+  flex: 10 1 auto;
   display: flex;
   flex-direction: column;
   gap: 5px;
   background: linear-gradient(0.15turn, #C0EFA6, #71C639, #A7C4BE);
   min-height: 100%;
-  width: 100%;
+  width: min(500px, 100%);
   padding: 0;
   margin: 0;
 }
 .welcome {
+  max-width: 70ch;
   padding-inline: 2em;
   flex: 2;
   padding-top: 20px;
@@ -79,6 +79,9 @@ main {
   flex-flow: row wrap;
   gap: 1em;
 }
+.registration-fields > div {
+  flex: 1 1 300px;
+}
 button,
 label,
 input,
@@ -97,6 +100,7 @@ meter {
 }
 
 input {
+  width: 100%;
   background-color: #8EC07C;
   border-radius: 8px;
   border: 1px solid #144e12;
