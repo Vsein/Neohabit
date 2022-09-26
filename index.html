@@ -22,31 +22,49 @@
         <p>You <span style="color: #555">know</span> what to do, my friend.
         <span style="font-family: 'Poppins-header'"><span style="color: #144e12;">neo</span>habit</span> will just help you realize it.</p>
       </div>
-      <form class="registration" id="registration">
+      <form class="registration" id="registration" action="#">
         <h2>Register:</h2>
         <div class="registration-fields">
           <div>
             <label for="name">First Name</label>
-            <input type="text" id="name" name="username" />
+            <input type="text" id="name" name="username" required minlength="3" pattern="[a-zA-Z0-9]{3,20}" title="Your name should only contain latin characters and numbers!"/>
           </div>
           <div>
             <label for="mail">E-mail</label>
-            <input type="email" id="mail" name="usermail" />
+            <input type="email" id="mail" name="usermail" required/>
           </div>
           <div>
             <label for="pwd">Password</label>
-            <input type="password" id="pwd" name="password" />
+            <input type="password"
+                   id="pwd"
+                   name="password"
+                   required
+                   minlength="8"
+                   maxlength="30"
+                   onChange="onChange()"
+                   autocomplete="new-password"
+                   />
+          <!--pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$"-->
           </div>
           <div>
-            <label for="pwd-confirm">Confirm Password</label>
-            <input type="password" id="pwd-confirm" name="password-confirm" />
+            <label for="confirm">Confirm Password</label>
+            <input type="password"
+                   id="confirm"
+                   name="confirm"
+                   required
+                   minlength="8"
+                   maxlength="30"
+                   onChange="onChange()"
+                   autocomplete="new-password"
+                   />
           </div>
         </div>
       </form>
       <div class="login">
-        <button type="submit" for="registration">Create Account</button>
+        <button type="submit" form="registration">Create Account</button>
         <p>Already have an account? <a href="">Log in</a></p>
       </div>
     </main>
+    <script src="logic.js"></script>
   </body>
 </html>
