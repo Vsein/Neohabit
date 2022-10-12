@@ -158,20 +158,26 @@ function createSidebar() {
 
     projects.appendChild(createProjectHeader());
 
-    projects.appendChild(createProjectTile({
-      name: createNeohabitTextNode(),
-      color: '#144e12',
-    }));
+    projects.appendChild(
+      createProjectTile({
+        name: createNeohabitTextNode(),
+        color: '#144e12',
+      }),
+    );
 
-    projects.appendChild(createProjectTile({
-      name: 'Cooking',
-      color: '#EDAD0E',
-    }));
+    projects.appendChild(
+      createProjectTile({
+        name: 'Cooking',
+        color: '#EDAD0E',
+      }),
+    );
 
-    projects.appendChild(createProjectTile({
-      name: 'Languages',
-      color: '#00ED76',
-    }));
+    projects.appendChild(
+      createProjectTile({
+        name: 'Languages',
+        color: '#00ED76',
+      }),
+    );
 
     return projects;
   }
@@ -242,23 +248,23 @@ function createEditor() {
     const list = document.createElement('div');
     list.classList.add('editor-list');
 
-    list.appendChild(createTask(
-      {
+    list.appendChild(
+      createTask({
         title: 'Get ahead',
-      },
-    ));
+      }),
+    );
 
-    list.appendChild(createTask(
-      {
+    list.appendChild(
+      createTask({
         title: 'Get further ahead',
-      },
-    ));
+      }),
+    );
 
-    list.appendChild(createTask(
-      {
+    list.appendChild(
+      createTask({
         title: 'Get even further beyond',
-      },
-    ));
+      }),
+    );
 
     list.appendChild(createNewTaskButton());
 
