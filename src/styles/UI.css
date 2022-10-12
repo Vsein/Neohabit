@@ -1,15 +1,15 @@
 @font-face {
-    font-family: 'Poppins-header';
-    src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Poppins-header';
+  src: url('../fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Poppins-medium';
-    src: url('../fonts/Poppins-Medium.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'Poppins-medium';
+  src: url('../fonts/Poppins-Medium.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 html {
@@ -117,4 +117,50 @@ body, html {
   display: grid;
   justify-items: center;
   align-content: center;
+}
+
+.editor-header {
+  display: flex;
+  flex-direction: row;
+  padding: 55px 36px 0;
+  margin-inline: auto;
+  width: min(800px, 100%);
+}
+
+.editor-list {
+  padding: 0 36px;
+  margin-inline: auto;
+  width: min(800px, 100%);
+  display: grid;
+  grid-auto-flow: row;
+  gap: 10px;
+}
+
+.task {
+  min-height: 50px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-inline: 15px;
+  gap: 15px;
+  border: 1px solid #BBBBBB;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid green;
+  background-color: #eee;
+}
+
+.new-task-btn {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.new-task-btn:hover {
+  cursor: pointer;
 }

@@ -9,6 +9,7 @@ import today from '../icons/calendar-today-outline.svg'
 import week from '../icons/calendar-week-outline.svg'
 import star from '../icons/star.svg'
 import all from '../icons/square-small.svg'
+import plus from '../icons/plus.svg'
 import '../styles/UI.css'
 
 export default function loadUI() {
@@ -17,6 +18,7 @@ export default function loadUI() {
 
   content.appendChild(createMainMenu());
   content.appendChild(createSidebar());
+  content.appendChild(createEditor());
 
   document.body.appendChild(content);
 }
@@ -215,4 +217,92 @@ function createProjectTile(project) {
   projectTile.appendChild(text);
 
   return projectTile;
+}
+
+function createEditor() {
+  const editor = document.createElement('div');
+  editor.id = 'editor';
+
+  editor.appendChild(createEditorHeader());
+  editor.appendChild(createEditorList());
+
+  return editor;
+}
+
+function createEditorHeader() {
+  const header = document.createElement('div');
+  header.classList.add('editor-header');
+
+  const sectionName = document.createElement('h3');
+  sectionName.textContent = 'Today';
+
+  header.appendChild(sectionName);
+
+  return header;
+}
+
+function createEditorList() {
+  const list = document.createElement('div');
+  list.classList.add('editor-list');
+
+  list.appendChild(createTask(
+    {
+      title: "Get ahead"
+    }
+  ));
+
+  list.appendChild(createTask(
+    {
+      title: "Get further ahead"
+    }
+  ));
+
+  list.appendChild(createTask(
+    {
+      title: "Get even further beyond"
+    }
+  ));
+
+  list.appendChild(createNewTaskButton());
+
+  return list;
+}
+
+function createNewTaskButton() {
+  const btn = document.createElement('div');
+  btn.classList.add('new-task-btn');
+
+  const img = document.createElement('img');
+  img.style.height = "30px";
+  img.style.width = "30px";
+  img.src = plus;
+
+  const text = document.createElement('text');
+  text.textContent = "Add task";
+
+  btn.appendChild(img);
+  btn.appendChild(text);
+
+  return btn;
+}
+
+function createTask(task) {
+  const taskDiv = document.createElement('div');
+  taskDiv.classList.add('task');
+
+  taskDiv.appendChild(createCheckbox());
+
+  const text = document.createElement('p');
+  text.textContent = task.title;
+
+  taskDiv.appendChild(text);
+
+  return taskDiv;
+}
+
+function createCheckbox() {
+  const checkbox = document.createElement('div');
+  checkbox.classList.add('checkbox');
+
+  return checkbox;
 }
