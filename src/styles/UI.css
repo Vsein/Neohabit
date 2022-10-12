@@ -34,7 +34,7 @@ body, html {
 #content {
   height: 100%;
   display: grid;
-  grid-template: 75px 100px 1fr / 1fr 4fr;
+  grid-template-columns: 1fr 1fr 3fr;
   background-color: #EFEFEF;
 }
 
@@ -44,7 +44,6 @@ body, html {
 
 .menu {
   padding: 15px 15px 15px 5px;
-  grid-row: span 3;
   background: linear-gradient(0.1turn, #C0EFA6, #71C639 45% 60%, #A7C4BE);
   display: grid;
   grid-auto-rows: 50px;
@@ -67,4 +66,55 @@ body, html {
   font-family: 'Poppins-header', sans-serif;
   font-size: 1.7em;
   justify-self: center;
+}
+
+.sidebar {
+  background-color: #FAFAFA;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+}
+
+.sidebar p {
+  line-height: 20px;
+}
+
+.projects {
+  display: grid;
+  grid-auto-rows: 40px;
+  align-items: center;
+}
+
+.projects-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  gap: 15px;
+}
+
+.task-sections {
+  display: grid;
+  grid-auto-rows: 40px;
+  align-items: center;
+}
+
+.task-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+.centering {
+  display: grid;
+  justify-items: center;
+  align-content: center;
 }

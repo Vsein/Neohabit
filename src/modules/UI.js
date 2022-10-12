@@ -4,6 +4,11 @@ import home from '../icons/home.svg'
 import post from '../icons/post.svg'
 import habits from '../icons/trending-up.svg'
 import toDo from '../icons/checkbox-multiple-marked.svg'
+import arrowDown from '../icons/chevron-down.svg'
+import today from '../icons/calendar-today-outline.svg'
+import week from '../icons/calendar-week-outline.svg'
+import star from '../icons/star.svg'
+import all from '../icons/square-small.svg'
 import '../styles/UI.css'
 
 export default function loadUI() {
@@ -11,6 +16,7 @@ export default function loadUI() {
   content.id = 'content';
 
   content.appendChild(createMainMenu());
+  content.appendChild(createSidebar());
 
   document.body.appendChild(content);
 }
@@ -48,17 +54,26 @@ function createMainMenu() {
   return mainMenu;
 }
 
-function createLogo() {
-  const logo = document.createElement('h2');
-  logo.classList.add('logo');
+function createNeohabitTextNode() {
+  const wrapper = document.createElement('span');
 
   const span = document.createElement('span');
   span.style.color = "#144e12";
   span.textContent = 'neo';
+
   const text = document.createTextNode('habit');
 
-  logo.appendChild(span);
-  logo.appendChild(text);
+  wrapper.appendChild(span);
+  wrapper.appendChild(text);
+
+  return wrapper;
+}
+
+function createLogo() {
+  const logo = document.createElement('h2');
+  logo.classList.add('logo');
+
+  logo.appendChild(createNeohabitTextNode());
 
   return logo;
 }
@@ -80,4 +95,124 @@ function createSectionHeader(name, image, row) {
   section.appendChild(p);
 
   return section;
+}
+
+function createSidebar() {
+  const sidebar = document.createElement('div');
+  sidebar.classList.add('sidebar');
+
+  sidebar.appendChild(createFilterSections());
+
+  sidebar.appendChild(createProjectsNav());
+
+  return sidebar;
+}
+
+function createFilterSections() {
+  const filterSections = document.createElement('div');
+  filterSections.classList.add('task-sections');
+
+  filterSections.appendChild(createFilterSection('All', all));
+  filterSections.appendChild(createFilterSection('Today', today));
+  filterSections.appendChild(createFilterSection('Week', week));
+  filterSections.appendChild(createFilterSection('Important', star));
+
+  return filterSections;
+}
+
+function createFilterSection(name, image) {
+  const filterSection = document.createElement('div');
+  filterSection.classList.add('task-section');
+
+  const icon = document.createElement('img');
+  icon.style.height = "20px";
+  icon.style.width = "20px";
+  icon.src = image;
+
+  const p = document.createElement('p');
+  p.textContent = name;
+
+  filterSection.appendChild(icon);
+  filterSection.appendChild(p);
+
+  return filterSection;
+}
+
+function createProjectsNav() {
+  const projects = document.createElement('div');
+  projects.classList.add('projects');
+
+  projects.appendChild(createProjectHeader());
+
+  projects.appendChild(createProjectTile({
+    name: createNeohabitTextNode(),
+    icon: home,
+    color: "#144e12"
+  }));
+
+  projects.appendChild(createProjectTile({
+    name: "Cooking",
+    icon: home,
+    color: "#EDAD0E"
+  }));
+
+  projects.appendChild(createProjectTile({
+    name: "Languages",
+    icon: home,
+    color: "#00ED76"
+
+  }));
+
+  return projects;
+}
+
+function createProjectHeader() {
+  const header = document.createElement('div');
+  header.classList.add('projects-header');
+
+  const text = document.createElement('p');
+  text.textContent = "Projects";
+
+  const icon = document.createElement('img');
+  icon.classList.add('icon');
+  icon.src = arrowDown;
+
+  header.appendChild(text);
+  header.appendChild(icon);
+
+  return header;
+}
+
+function createCenteringDiv(height, width = '') {
+  if (!width) width = height;
+  const div = document.createElement('div');
+  div.classList.add('centering');
+  div.style.height = height;
+  div.style.width = width;
+
+  return div;
+}
+
+function createProjectTile(project) {
+  const projectTile = document.createElement('div');
+  projectTile.classList.add('project');
+
+  const text = document.createElement('p');
+  text.append(project.name);
+  text.height = "12px";
+
+  const wrapper = createCenteringDiv('20px');
+
+  const icon = document.createElement('div');
+  icon.style.backgroundColor = project.color;
+  icon.style.height = "12px";
+  icon.style.width = "12px";
+  icon.style.borderRadius = "50%";
+
+  wrapper.appendChild(icon);
+
+  projectTile.appendChild(wrapper);
+  projectTile.appendChild(text);
+
+  return projectTile;
 }
