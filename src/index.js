@@ -1,3 +1,3 @@
-import loadUI from './modules/UI';
+import UI from './UI/UI';
 
-loadUI();
+UI.load();

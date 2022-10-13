@@ -159,12 +159,29 @@ html {
   background-color: #eee;
 }
 
+button {
+  display: block;
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 5px;
+  height: 30px;
+}
+
 .new-task-btn {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.new-task-btn:hover {
-  cursor: pointer;
+.neohabit:before {
+  color: #144e12;
+  content: 'neo';
+}
+
+.neohabit:after {
+  color: black;
+  content: 'habit';
 }
