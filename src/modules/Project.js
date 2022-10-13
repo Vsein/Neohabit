@@ -1,11 +1,18 @@
 import { toDate, isToday, isThisWeek } from 'date-fns';
 
 export default class Project {
-  constructor(name, description, dueDate, color) {
+  constructor(
+    name = 'Default',
+    color = '#8A8A8A',
+    tasks = [],
+    dueDate = '',
+    description = '',
+  ) {
     this.name = name;
-    this.description = description;
-    this.dueDate = dueDate;
     this.color = color;
+    this.tasks = tasks;
+    this.dueDate = dueDate;
+    this.description = description;
   }
 
   setName(name) {
@@ -18,6 +25,10 @@ export default class Project {
 
   getTasks() {
     return this.tasks;
+  }
+
+  setTasks(tasks) {
+    this.tasks = tasks;
   }
 
   setColor(color) {
@@ -41,9 +52,16 @@ export default class Project {
     this.tasks = this.tasks.filter((task) => task.name !== taskName);
   }
 
+  hasTasksToday() {
+    return this.tasks.some((task) => {
+      const taskDate = new Date(task.getDate());
+      return isToday(toDate(taskDate));
+    });
+  }
+
   getTasksToday() {
     return this.tasks.filter((task) => {
-      const taskDate = new Date(task.getDateFormatted());
+      const taskDate = new Date(task.getDate());
       return isToday(toDate(taskDate));
     });
   }
