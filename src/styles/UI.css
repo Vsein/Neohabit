@@ -186,11 +186,10 @@ html {
 }
 
 .checkbox {
-  width: 20px;
-  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
   border-radius: 50%;
   border: 2px solid green;
-  background-color: #eee;
 }
 
 button {

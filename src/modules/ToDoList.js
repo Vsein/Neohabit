@@ -8,7 +8,7 @@ export default class ToDoList {
     // dummy projects for the time being
     this.projects = [
       new Project('Neohabit', '#144e12', [
-        new Task('Get ahead', '', '2022-10-14'),
+        new Task('Get ahead', '', '2022-10-14', true),
         new Task('Get further ahead', '', '2022-10-16'),
         new Task('Get even further beyond', ''),
       ]),

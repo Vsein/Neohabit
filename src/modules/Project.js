@@ -31,6 +31,10 @@ export default class Project {
     this.tasks = tasks;
   }
 
+  getTask(taskName) {
+    return this.tasks.find((task) => task.getName() === taskName);
+  }
+
   setColor(color) {
     this.color = color;
   }

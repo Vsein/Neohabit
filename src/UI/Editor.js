@@ -37,7 +37,7 @@ export default class Editor {
       .filterProjects('Today')
       .forEach((project) => {
         project.tasks.forEach((task) => {
-          list.appendChild(Editor.createTask(task, project.color));
+          list.appendChild(Editor.createTask(project, task));
         });
       });
 
@@ -56,7 +56,7 @@ export default class Editor {
       .filterProjects(filterName)
       .forEach((project) => {
         project.tasks.forEach((task) => {
-          list.appendChild(Editor.createTask(task, project.color));
+          list.appendChild(Editor.createTask(project, task));
         });
       });
 
@@ -71,7 +71,7 @@ export default class Editor {
 
     const project = Storage.getToDoList().getProject(projectName);
     project.getTasks().forEach((task) => {
-      list.appendChild(Editor.createTask(task, project.color));
+      list.appendChild(Editor.createTask(project, task));
     });
 
     list.appendChild(Editor.createAddTaskButton());
@@ -82,11 +82,23 @@ export default class Editor {
     list.innerHTML = '';
   }
 
-  static createTask(task, color) {
+  static createTask(project, task) {
     const taskDiv = document.createElement('div');
     taskDiv.classList.add('task');
 
-    taskDiv.appendChild(Editor.createCheckbox(color));
+    const checkbox = Editor.createCheckbox(project.color, task.completed);
+
+    checkbox.addEventListener('click', () => {
+      Storage.completeTask(project.name, task.name);
+      task.toggleComplete(); // I wonder if I should do this without changing the local copy..
+      if (task.completed) {
+        checkbox.style.background = `radial-gradient(${project.color} 30%, ${project.color}33 40%)`;
+      } else {
+        checkbox.style.background = `${project.color}33`;
+      }
+    });
+
+    taskDiv.appendChild(checkbox);
 
     const text = document.createElement('p');
     text.textContent = task.name;
@@ -96,9 +108,14 @@ export default class Editor {
     return taskDiv;
   }
 
-  static createCheckbox(color) {
+  static createCheckbox(color, completed) {
     const checkbox = document.createElement('div');
     checkbox.classList.add('checkbox');
+    if (completed) {
+      checkbox.style.background = `radial-gradient(${color} 30%, ${color}33 40%)`;
+    } else {
+      checkbox.style.background = `${color}33`;
+    }
     checkbox.style.borderColor = color;
 
     return checkbox;

@@ -27,4 +27,10 @@ export default class Storage {
 
     return toDoList;
   }
+
+  static completeTask(projectName, taskName) {
+    const toDoList = Storage.getToDoList();
+    toDoList.getProject(projectName).getTask(taskName).toggleComplete();
+    Storage.saveToDoList(toDoList);
+  }
 }

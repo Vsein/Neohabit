@@ -1,9 +1,9 @@
 export default class Task {
-  constructor(name, description = '', dueDate = '') {
+  constructor(name, description = '', dueDate = '', completed = false) {
     this.name = name;
     this.description = description;
     this.dueDate = dueDate;
-    this.completed = false;
+    this.completed = completed;
     // TODO: recurrent; checklists
   }
 
@@ -15,12 +15,8 @@ export default class Task {
     return this.name;
   }
 
-  complete() {
-    this.completed = true;
-  }
-
-  uncomplete() {
-    this.completed = false;
+  toggleComplete() {
+    this.completed = !this.completed;
   }
 
   getDate() {
