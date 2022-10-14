@@ -1,5 +1,6 @@
 import plus from '../icons/plus.svg';
 import Storage from '../modules/Storage';
+import Overlay from './Overlay';
 
 export default class Editor {
   static create() {
@@ -90,10 +91,11 @@ export default class Editor {
 
     const text = document.createElement('p');
     text.textContent = task.name;
-
     taskDiv.appendChild(text);
 
     taskDiv.appendChild(Editor.createDeleteTaskButton(project, task));
+
+    taskDiv.addEventListener('click', () => Overlay.openTaskModal(task));
 
     return taskDiv;
   }
@@ -113,7 +115,8 @@ export default class Editor {
 
     checkFill();
 
-    checkbox.addEventListener('click', () => {
+    checkbox.addEventListener('click', (e) => {
+      e.stopPropagation();
       Storage.completeTask(project.name, task.name);
       task.toggleComplete();
       checkFill();
@@ -131,7 +134,8 @@ export default class Editor {
 
     btn.appendChild(icon);
 
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       Storage.deleteTask(project.name, task.name);
       btn.parentElement.remove();
     });
@@ -144,8 +148,7 @@ export default class Editor {
     btn.classList.add('new-task-btn');
 
     const img = document.createElement('img');
-    img.style.height = '30px';
-    img.style.width = '30px';
+    img.classList.add('new-task-icon');
     img.src = plus;
 
     const text = document.createElement('text');
