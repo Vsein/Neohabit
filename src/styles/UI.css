@@ -86,7 +86,8 @@ html {
 
 .projects {
   display: grid;
-  grid-auto-rows: 40px;
+  grid-auto-rows: 35px;
+  gap: 3px;
   align-items: center;
 }
 
@@ -98,10 +99,12 @@ html {
 }
 
 .project {
+  padding: 10px;
+  height: 100%;
   display: flex;
   align-items: center;
   align-content: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .task-sections {
@@ -121,9 +124,14 @@ html {
   padding-inline: 10px;
 }
 
-.task-section:hover {
+.task-section:hover,
+.project:hover {
   cursor: pointer;
   background-color: #0000001a;
+}
+
+#important.active {
+  background-color: #FFD70033;
 }
 
 .active {

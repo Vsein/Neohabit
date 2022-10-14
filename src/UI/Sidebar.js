@@ -26,11 +26,7 @@ export default class Sidebar {
 
         section.addEventListener('click', () => {
           Editor.changeListFilterTo(filter.name);
-
-          const currentSection = document.querySelector('.task-section.active');
-          if (currentSection) {
-            currentSection.classList.remove('active');
-          }
+          Sidebar.resetActiveSection();
 
           section.classList.add('active');
         });
@@ -44,6 +40,9 @@ export default class Sidebar {
     filterSection.classList.add('task-section');
     if (filter.name === 'Today') {
       filterSection.classList.add('active');
+    }
+    if (filter.name === 'Important') {
+      filterSection.id = 'important';
     }
 
     const icon = document.createElement('img');
@@ -69,7 +68,17 @@ export default class Sidebar {
     Storage.getToDoList()
       .getProjects()
       .forEach((project) => {
-        projects.appendChild(Sidebar.createProjectTile(project));
+        const projectTile = Sidebar.createProjectTile(project);
+
+        projectTile.addEventListener('click', () => {
+          Editor.changeListProjectTo(project.name);
+          Sidebar.resetActiveSection();
+
+          projectTile.classList.add('active');
+          projectTile.style.backgroundColor = `${project.color}33`; // (33 - alpha)
+        });
+
+        projects.appendChild(projectTile);
       });
 
     return projects;
@@ -121,5 +130,13 @@ export default class Sidebar {
     projectTile.appendChild(text);
 
     return projectTile;
+  }
+
+  static resetActiveSection() {
+    const currentSection = document.querySelector('.sidebar .active');
+    if (currentSection) {
+      currentSection.classList.remove('active');
+      currentSection.style.removeProperty('background-color');
+    }
   }
 }

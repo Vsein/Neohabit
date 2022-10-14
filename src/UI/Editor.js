@@ -33,11 +33,13 @@ export default class Editor {
     const list = document.createElement('div');
     list.classList.add('editor-list');
 
-    Storage.getToDoList().filterProjects('Today').forEach((project) => {
-      project.tasks.forEach((task) => {
-        list.appendChild(Editor.createTask(task, project.color));
+    Storage.getToDoList()
+      .filterProjects('Today')
+      .forEach((project) => {
+        project.tasks.forEach((task) => {
+          list.appendChild(Editor.createTask(task, project.color));
+        });
       });
-    });
 
     list.appendChild(Editor.createAddTaskButton());
 
@@ -50,10 +52,26 @@ export default class Editor {
     Editor.clearList();
     Editor.changeHeader(filterName);
 
-    Storage.getToDoList().filterProjects(filterName).forEach((project) => {
-      project.tasks.forEach((task) => {
-        list.appendChild(Editor.createTask(task, project.color));
+    Storage.getToDoList()
+      .filterProjects(filterName)
+      .forEach((project) => {
+        project.tasks.forEach((task) => {
+          list.appendChild(Editor.createTask(task, project.color));
+        });
       });
+
+    list.appendChild(Editor.createAddTaskButton());
+  }
+
+  static changeListProjectTo(projectName) {
+    const list = document.querySelector('.editor-list');
+
+    Editor.clearList();
+    Editor.changeHeader(projectName);
+
+    const project = Storage.getToDoList().getProject(projectName);
+    project.getTasks().forEach((task) => {
+      list.appendChild(Editor.createTask(task, project.color));
     });
 
     list.appendChild(Editor.createAddTaskButton());
