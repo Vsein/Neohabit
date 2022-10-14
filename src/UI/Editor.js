@@ -93,6 +93,8 @@ export default class Editor {
 
     taskDiv.appendChild(text);
 
+    taskDiv.appendChild(Editor.createDeleteTaskButton(project, task));
+
     return taskDiv;
   }
 
@@ -118,6 +120,23 @@ export default class Editor {
     });
 
     return checkbox;
+  }
+
+  static createDeleteTaskButton(project, task) {
+    const btn = document.createElement('div');
+    btn.classList.add('delete-task-btn');
+
+    const icon = document.createElement('img');
+    icon.src = plus;
+
+    btn.appendChild(icon);
+
+    btn.addEventListener('click', () => {
+      Storage.deleteTask(project.name, task.name);
+      btn.parentElement.remove();
+    });
+
+    return btn;
   }
 
   static createAddTaskButton() {

@@ -218,3 +218,14 @@ button {
   color: black;
   content: 'habit';
 }
+
+.delete-task-btn {
+  min-height: 30px;
+  min-width: 30px;
+  margin-left: auto;
+  transform: rotate(45deg);
+}
+
+.delete-task-btn:hover {
+  cursor: pointer;
+}
