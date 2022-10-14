@@ -20,16 +20,7 @@ export default class Sidebar {
     Storage.getToDoList()
       .getFilters()
       .forEach((filter) => {
-        const section = Sidebar.createFilterSection(filter);
-
-        filterSections.appendChild(section);
-
-        section.addEventListener('click', () => {
-          Editor.changeListFilterTo(filter.name);
-          Sidebar.resetActiveSection();
-
-          section.classList.add('active');
-        });
+        filterSections.appendChild(Sidebar.createFilterSection(filter));
       });
 
     return filterSections;
@@ -56,6 +47,13 @@ export default class Sidebar {
     filterSection.appendChild(icon);
     filterSection.appendChild(p);
 
+    filterSection.addEventListener('click', () => {
+      Editor.changeListFilterTo(filter.name);
+      Sidebar.resetActiveSection();
+
+      filterSection.classList.add('active');
+    });
+
     return filterSection;
   }
 
@@ -68,17 +66,7 @@ export default class Sidebar {
     Storage.getToDoList()
       .getProjects()
       .forEach((project) => {
-        const projectTile = Sidebar.createProjectTile(project);
-
-        projectTile.addEventListener('click', () => {
-          Editor.changeListProjectTo(project.name);
-          Sidebar.resetActiveSection();
-
-          projectTile.classList.add('active');
-          projectTile.style.backgroundColor = `${project.color}33`; // (33 - alpha)
-        });
-
-        projects.appendChild(projectTile);
+        projects.appendChild(Sidebar.createProjectTile(project));
       });
 
     return projects;
@@ -128,6 +116,14 @@ export default class Sidebar {
 
     projectTile.appendChild(wrapper);
     projectTile.appendChild(text);
+
+    projectTile.addEventListener('click', () => {
+      Editor.changeListProjectTo(project.name);
+      Sidebar.resetActiveSection();
+
+      projectTile.classList.add('active');
+      projectTile.style.backgroundColor = `${project.color}33`; // (33 - alpha)
+    });
 
     return projectTile;
   }

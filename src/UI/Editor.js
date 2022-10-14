@@ -86,19 +86,7 @@ export default class Editor {
     const taskDiv = document.createElement('div');
     taskDiv.classList.add('task');
 
-    const checkbox = Editor.createCheckbox(project.color, task.completed);
-
-    checkbox.addEventListener('click', () => {
-      Storage.completeTask(project.name, task.name);
-      task.toggleComplete(); // I wonder if I should do this without changing the local copy..
-      if (task.completed) {
-        checkbox.style.background = `radial-gradient(${project.color} 30%, ${project.color}33 40%)`;
-      } else {
-        checkbox.style.background = `${project.color}33`;
-      }
-    });
-
-    taskDiv.appendChild(checkbox);
+    taskDiv.appendChild(Editor.createCheckbox(project, task));
 
     const text = document.createElement('p');
     text.textContent = task.name;
@@ -108,15 +96,26 @@ export default class Editor {
     return taskDiv;
   }
 
-  static createCheckbox(color, completed) {
+  static createCheckbox(project, task) {
     const checkbox = document.createElement('div');
     checkbox.classList.add('checkbox');
-    if (completed) {
-      checkbox.style.background = `radial-gradient(${color} 30%, ${color}33 40%)`;
-    } else {
-      checkbox.style.background = `${color}33`;
-    }
-    checkbox.style.borderColor = color;
+    checkbox.style.borderColor = project.color;
+
+    const checkFill = () => {
+      if (task.completed) {
+        checkbox.style.background = `radial-gradient(${project.color} 30%, ${project.color}33 40%)`;
+      } else {
+        checkbox.style.background = `${project.color}33`;
+      }
+    };
+
+    checkFill();
+
+    checkbox.addEventListener('click', () => {
+      Storage.completeTask(project.name, task.name);
+      task.toggleComplete();
+      checkFill();
+    });
 
     return checkbox;
   }
