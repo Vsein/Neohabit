@@ -108,13 +108,30 @@ html {
   display: grid;
   grid-auto-rows: 40px;
   align-items: center;
+  gap: 5px;
 }
 
 .task-section {
+  height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 15px;
+  border-radius: 3px;
+  gap: 10px;
+  padding-inline: 10px;
+}
+
+.task-section:hover {
+  cursor: pointer;
+  background-color: #0000001a;
+}
+
+.active {
+  background-color: #144e1233;
+}
+
+.active:hover {
+  background-color: #144e1233;
 }
 
 .centering {

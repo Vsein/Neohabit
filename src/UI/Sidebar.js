@@ -1,5 +1,6 @@
 import arrowDown from '../icons/chevron-down.svg';
 import Storage from '../modules/Storage';
+import Editor from './Editor';
 
 export default class Sidebar {
   static create() {
@@ -10,6 +11,53 @@ export default class Sidebar {
     sidebar.appendChild(Sidebar.createProjectsNav());
 
     return sidebar;
+  }
+
+  static createFilterSections() {
+    const filterSections = document.createElement('div');
+    filterSections.classList.add('task-sections');
+
+    Storage.getToDoList()
+      .getFilters()
+      .forEach((filter) => {
+        const section = Sidebar.createFilterSection(filter);
+
+        filterSections.appendChild(section);
+
+        section.addEventListener('click', () => {
+          Editor.changeListFilterTo(filter.name);
+
+          const currentSection = document.querySelector('.task-section.active');
+          if (currentSection) {
+            currentSection.classList.remove('active');
+          }
+
+          section.classList.add('active');
+        });
+      });
+
+    return filterSections;
+  }
+
+  static createFilterSection(filter) {
+    const filterSection = document.createElement('div');
+    filterSection.classList.add('task-section');
+    if (filter.name === 'Today') {
+      filterSection.classList.add('active');
+    }
+
+    const icon = document.createElement('img');
+    icon.style.height = '20px';
+    icon.style.width = '20px';
+    icon.src = filter.image;
+
+    const p = document.createElement('p');
+    p.textContent = filter.name;
+
+    filterSection.appendChild(icon);
+    filterSection.appendChild(p);
+
+    return filterSection;
   }
 
   static createProjectsNav() {
@@ -73,36 +121,5 @@ export default class Sidebar {
     projectTile.appendChild(text);
 
     return projectTile;
-  }
-
-  static createFilterSections() {
-    const filterSections = document.createElement('div');
-    filterSections.classList.add('task-sections');
-
-    Storage.getToDoList()
-      .getFilters()
-      .forEach((filter) => {
-        filterSections.appendChild(Sidebar.createFilterSection(filter));
-      });
-
-    return filterSections;
-  }
-
-  static createFilterSection(filter) {
-    const filterSection = document.createElement('div');
-    filterSection.classList.add('task-section');
-
-    const icon = document.createElement('img');
-    icon.style.height = '20px';
-    icon.style.width = '20px';
-    icon.src = filter.image;
-
-    const p = document.createElement('p');
-    p.textContent = filter.name;
-
-    filterSection.appendChild(icon);
-    filterSection.appendChild(p);
-
-    return filterSection;
   }
 }

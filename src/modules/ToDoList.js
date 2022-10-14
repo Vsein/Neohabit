@@ -9,11 +9,15 @@ export default class ToDoList {
     this.projects = [
       new Project('Neohabit', '#144e12', [
         new Task('Get ahead', '', '2022-10-14'),
-        new Task('Get further ahead', ''),
+        new Task('Get further ahead', '', '2022-10-16'),
         new Task('Get even further beyond', ''),
       ]),
-      new Project('Cooking', '#edad0e'),
-      new Project('Languages', '#00ed76'),
+      new Project('Cooking', '#edad0e', [
+        new Task('Don\'t die of starvation'),
+      ]),
+      new Project('Languages', '#00ed76', [
+        new Task('Study Japanese for 30 mineutes'),
+      ]),
     ];
     this.filters = [
       new Filter('All'),
@@ -56,6 +60,9 @@ export default class ToDoList {
   }
 
   filterProjects(filter) {
+    if (filter === 'All') {
+      return this.projects;
+    }
     if (filter === 'Today') {
       const todayProjects = this.projects.filter((project) => project.hasTasksToday());
 
@@ -66,9 +73,13 @@ export default class ToDoList {
       return todayProjects;
     }
     if (filter === 'This Week') {
-      return this.projects
-        .filter((project) => !project.getTasksThisWeek())
-        .map((project) => project.getTasksThisWeek());
+      const thisWeekProjects = this.projects.filter((project) => project.hasTasksThisWeek());
+
+      thisWeekProjects.forEach((project) => {
+        project.setTasks(project.getTasksThisWeek());
+      });
+
+      return thisWeekProjects;
     }
     return [];
   }

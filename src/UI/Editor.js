@@ -25,7 +25,7 @@ export default class Editor {
   }
 
   static changeHeader(newName) {
-    const headerText = document.querySelector('editor-header > h3');
+    const headerText = document.querySelector('.editor-header > h3');
     headerText.textContent = newName;
   }
 
@@ -42,6 +42,26 @@ export default class Editor {
     list.appendChild(Editor.createAddTaskButton());
 
     return list;
+  }
+
+  static changeListFilterTo(filterName) {
+    const list = document.querySelector('.editor-list');
+
+    Editor.clearList();
+    Editor.changeHeader(filterName);
+
+    Storage.getToDoList().filterProjects(filterName).forEach((project) => {
+      project.tasks.forEach((task) => {
+        list.appendChild(Editor.createTask(task, project.color));
+      });
+    });
+
+    list.appendChild(Editor.createAddTaskButton());
+  }
+
+  static clearList() {
+    const list = document.querySelector('.editor-list');
+    list.innerHTML = '';
   }
 
   static createTask(task, color) {

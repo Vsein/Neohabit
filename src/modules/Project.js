@@ -66,10 +66,17 @@ export default class Project {
     });
   }
 
+  hasTasksThisWeek() {
+    return this.tasks.some((task) => {
+      const taskDate = new Date(task.getDate());
+      return isThisWeek(toDate(taskDate), { weekStartsOn: 1 });
+    });
+  }
+
   getTasksThisWeek() {
     return this.tasks.filter((task) => {
       const taskDate = new Date(task.getDate());
-      return isThisWeek(toDate(taskDate), 1);
+      return isThisWeek(toDate(taskDate), { weekStartsOn: 1 });
     });
   }
 }
