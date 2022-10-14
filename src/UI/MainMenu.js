@@ -32,6 +32,7 @@ export default class MainMenu {
         name: 'To-do',
         image: toDo,
         row: 6,
+        active: true,
       },
       {
         name: 'Blog',
@@ -59,9 +60,14 @@ export default class MainMenu {
     return logo;
   }
 
-  static createSection({ name, image, row }) {
+  static createSection({
+    name, image, row, active,
+  }) {
     const section = document.createElement('div');
     section.classList.add('menu-section');
+    if (active) {
+      section.classList.add('active');
+    }
     section.style.gridRow = row;
 
     const img = document.createElement('img');

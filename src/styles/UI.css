@@ -47,7 +47,7 @@ html {
 }
 
 .menu {
-  padding: 15px 15px 15px 5px;
+  padding-block: 15px;
   background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
   display: grid;
   grid-auto-rows: 50px;
@@ -55,9 +55,15 @@ html {
 }
 
 .menu-section {
+  padding-inline: 5px 15px;
+  height: 100%;
   display: grid;
   grid-template-columns: 60px 1fr;
   align-items: center;
+}
+
+.menu-section.active {
+  background-color: #00000022;
 }
 
 .icon {
@@ -67,6 +73,7 @@ html {
 }
 
 .logo {
+  padding-inline: 5px 15px;
   font-family: 'Poppins-header', sans-serif;
   font-size: 1.7em;
   justify-self: center;
@@ -105,6 +112,7 @@ html {
   align-items: center;
   align-content: center;
   gap: 10px;
+  border-radius: 3px;
 }
 
 .task-sections {
@@ -125,7 +133,8 @@ html {
 }
 
 .task-section:hover,
-.project:hover {
+.project:hover,
+.menu-section:hover {
   cursor: pointer;
   background-color: #0000001a;
 }
