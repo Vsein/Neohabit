@@ -95,7 +95,7 @@ export default class Editor {
 
     taskDiv.appendChild(Editor.createDeleteTaskButton(project, task));
 
-    taskDiv.addEventListener('click', () => Overlay.openTaskModal(task));
+    taskDiv.addEventListener('click', () => Overlay.openTaskModal(project, task));
 
     return taskDiv;
   }

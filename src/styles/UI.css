@@ -105,14 +105,28 @@ html {
   align-items: center;
 }
 
-.project {
-  padding: 10px;
+.project,
+.tag {
   height: 100%;
   display: flex;
   align-items: center;
   align-content: center;
   gap: 10px;
   border-radius: 3px;
+}
+
+.project {
+  padding: 10px;
+}
+
+.tag {
+  padding-inline: 10px 15px;
+  background-color: silver;
+  border-radius: 10px;
+}
+
+.tag:hover {
+  background-color: lightgrey;
 }
 
 .task-sections {
@@ -140,7 +154,7 @@ html {
 }
 
 #important.active {
-  background-color: #FFD70033;
+  background-color: #ffd70033;
 }
 
 .active {
@@ -259,12 +273,15 @@ button {
 }
 
 .modal {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
   position: fixed;
   top: 50%;
   left: 50%;
   z-index: 1;
-  width: min(600px, 100vw - 3em);
-  min-height: 300px;
+  width: min(800px, 100vw - 3em);
+  min-height: 600px;
   border-radius: 8px;
   background-color: #efefef;
   padding: 1em;
@@ -280,4 +297,17 @@ button {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.modal-details {
+  display: flex;
+  height: min(550px, 100%);
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.modal-description {
+  min-height: 300px;
 }
