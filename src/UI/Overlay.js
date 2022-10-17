@@ -2,6 +2,7 @@ import plus from '../icons/plus.svg';
 import bin from '../icons/trash-can-outline.svg';
 import Project from '../modules/Project';
 import Task from '../modules/Task';
+import Storage from '../modules/Storage';
 
 export default class Overlay {
   static create() {
@@ -30,30 +31,98 @@ export default class Overlay {
     const header = document.createElement('div');
     header.classList.add('modal-header');
     header.appendChild(Overlay.createProjectTile());
+    header.appendChild(Overlay.createCloseModalButton());
+    // header.appendChild(Overlay.createDeleteTaskButton());
 
     const taskDetails = document.createElement('div');
     taskDetails.classList.add('modal-details');
+    taskDetails.appendChild(Overlay.createTaskNameForm(task));
+    taskDetails.appendChild(Overlay.createTaskDescriptionForm(task));
 
-    const title = document.createElement('h3');
-    title.textContent = task.name;
-
-    taskDetails.appendChild(title);
-    // header.appendChild(Overlay.createDeleteTaskButton());
-    header.appendChild(Overlay.createCloseModalButton());
-
-    const description = document.createElement('p');
-    description.classList.add('modal-description');
-    if (task.desciprtion) {
-      description.textContent = task.description;
-    } else {
-      description.textContent = 'Change description';
-    }
-    taskDetails.appendChild(description);
+    const buttons = document.createElement('div');
+    buttons.classList.add('modal-buttons');
+    buttons.appendChild(Overlay.createCancelFormButton(task));
+    buttons.appendChild(Overlay.createSaveFormButton(task));
 
     taskModal.appendChild(header);
     taskModal.appendChild(taskDetails);
+    taskModal.appendChild(buttons);
+    taskModal.addEventListener('click', (e) => e.stopPropagation());
 
     return taskModal;
+  }
+
+  static createTaskNameForm(task) {
+    const container = document.createElement('div');
+
+    const label = document.createElement('label');
+    label.setAttribute('for', 'task-name');
+
+    const area = document.createElement('textarea');
+    area.classList.add('form-task-name');
+    area.rows = 1;
+    area.name = 'task-name';
+    area.textContent = task.name;
+    area.placeholder = 'Change task name';
+
+    container.appendChild(label);
+    container.appendChild(area);
+
+    return container;
+  }
+
+  static createTaskDescriptionForm(task) {
+    const container = document.createElement('div');
+
+    const label = document.createElement('label');
+    label.setAttribute('for', 'task-description');
+
+    const description = document.createElement('textarea');
+    description.classList.add('form-task-description');
+    description.placeholder = 'Change description';
+    description.textContent = task.description;
+
+    container.appendChild(label);
+    container.appendChild(description);
+
+    return container;
+  }
+
+  static createCancelFormButton() {
+    const button = document.createElement('button');
+    button.classList.add('form-button');
+    button.id = 'cancel-form-button';
+    button.textContent = 'Cancel';
+
+    button.addEventListener('click', Overlay.close);
+
+    return button;
+  }
+
+  static getTask() {
+    const title = document.querySelector('.form-task-name').value;
+    const description = document.querySelector('.form-task-description').value;
+    return new Task(title, description);
+  }
+
+  static submitTask(e) {
+    e.preventDefault();
+    const projectName = document.querySelector('.modal .tag p').textContent;
+    const taskName = document.querySelector('.form-task-name').textContent;
+    const task = Overlay.getTask();
+    Storage.changeTask(projectName, taskName, task);
+    Overlay.close();
+  }
+
+  static createSaveFormButton() {
+    const button = document.createElement('button');
+    button.classList.add('form-button');
+    button.id = 'save-form-button';
+    button.textContent = 'Save';
+
+    button.addEventListener('click', Overlay.submitTask);
+
+    return button;
   }
 
   static createProjectTile(project = new Project()) {
@@ -120,7 +189,7 @@ export default class Overlay {
     document.querySelector(
       '.modal .tag .centering div',
     ).style.backgroundColor = project.color;
-    document.querySelector('.modal-description').textContent = task.name;
+    document.querySelector('.form-task-name').textContent = task.name;
 
     document.querySelector('.overlay').classList.add('overlay-active');
     document.querySelector('.modal').classList.add('modal-active');

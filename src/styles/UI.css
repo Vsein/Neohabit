@@ -35,6 +35,18 @@ html {
   font-size: 1.05em;
 }
 
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  width: 150px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 #content {
   height: 100%;
   display: grid;
@@ -197,6 +209,7 @@ html {
   padding-inline: 15px;
   gap: 15px;
   border: 1px solid #bbbbbb;
+  border-radius: 10px;
 }
 
 .task:hover {
@@ -227,6 +240,7 @@ button {
   display: flex;
   gap: 15px;
   align-items: center;
+  border-radius: 10px;
 }
 
 .new-task-icon {
@@ -266,6 +280,7 @@ button {
   height: 100%;
   width: 100%;
   background-color: #00000080;
+  backdrop-filter: blur(10px);
 }
 
 .overlay-active {
@@ -300,8 +315,7 @@ button {
 }
 
 .modal-details {
-  display: flex;
-  height: min(550px, 100%);
+  height: 100%;
   width: 100%;
   background-color: #fff;
   padding: 10px;
@@ -310,4 +324,58 @@ button {
 
 .modal-description {
   min-height: 300px;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  resize: none;
+  padding: 5px 10px;
+  margin: 0;
+  border: none;
+  outline: none;
+}
+
+.form-task-name {
+  height: min-content;
+  outline: none;
+}
+
+.form-task-description {
+  font-size: 0.9em;
+  height: 100%;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  height: 40px;
+}
+
+.form-button {
+  outline: none;
+  appearance: none;
+  font-size: 80%;
+  box-sizing: border-box;
+  padding: 5px;
+  color: #f9faf8;
+  background-color: #144e12;
+  border: 1px solid #144e12;
+  padding: 10px 32px;
+  border: 3px white;
+  border-radius: 7px;
+  font-weight: bold;
+  height: auto;
+  max-width: 200px;
+}
+
+.form-button:hover {
+  cursor: pointer;
+}
+
+#cancel-form-button {
+  margin-left: auto;
+  color: black;
+  background-color: silver;
 }
