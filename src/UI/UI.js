@@ -15,5 +15,7 @@ export default class UI {
     content.appendChild(Overlay.create());
 
     document.body.appendChild(content);
+
+    Sidebar.init();
   }
 }

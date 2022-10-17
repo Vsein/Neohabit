@@ -6,46 +6,50 @@ export default class Sidebar {
   static create() {
     const sidebar = document.createElement('div');
     sidebar.classList.add('sidebar');
-
-    sidebar.appendChild(Sidebar.createFilterSections());
-    sidebar.appendChild(Sidebar.createProjectsNav());
+    sidebar.innerHTML = `
+      <div class="filter-sections">
+      </div>
+      <div class="projects">
+        <div class="projects-header">
+          <p>Projects</p>
+          <img class="icon" src=${arrowDown}>
+        </div>
+      </div>
+    `;
 
     return sidebar;
   }
 
-  static createFilterSections() {
-    const filterSections = document.createElement('div');
-    filterSections.classList.add('task-sections');
-
+  static init() {
     Storage.getToDoList()
       .getFilters()
       .forEach((filter) => {
+        const filterSections = document.querySelector('.filter-sections');
         filterSections.appendChild(Sidebar.createFilterSection(filter));
       });
 
-    return filterSections;
+    Storage.getToDoList()
+      .getProjects()
+      .forEach((project) => {
+        const projects = document.querySelector('.projects');
+        projects.appendChild(Sidebar.createProjectTile(project));
+      });
   }
 
   static createFilterSection(filter) {
     const filterSection = document.createElement('div');
-    filterSection.classList.add('task-section');
+    filterSection.classList.add('filter-section');
     if (filter.name === 'Today') {
       filterSection.classList.add('active');
     }
     if (filter.name === 'Important') {
-      filterSection.id = 'important';
+      filterSection.classList.add('important');
     }
 
-    const icon = document.createElement('img');
-    icon.style.height = '20px';
-    icon.style.width = '20px';
-    icon.src = filter.image;
-
-    const p = document.createElement('p');
-    p.textContent = filter.name;
-
-    filterSection.appendChild(icon);
-    filterSection.appendChild(p);
+    filterSection.innerHTML = `
+      <img src=${filter.image} height="20px" width="20px">
+      <p>${filter.name}<p>
+    `;
 
     filterSection.addEventListener('click', () => {
       Editor.changeListFilterTo(filter.name);
@@ -55,38 +59,6 @@ export default class Sidebar {
     });
 
     return filterSection;
-  }
-
-  static createProjectsNav() {
-    const projects = document.createElement('div');
-    projects.classList.add('projects');
-
-    projects.appendChild(Sidebar.createProjectHeader());
-
-    Storage.getToDoList()
-      .getProjects()
-      .forEach((project) => {
-        projects.appendChild(Sidebar.createProjectTile(project));
-      });
-
-    return projects;
-  }
-
-  static createProjectHeader() {
-    const header = document.createElement('div');
-    header.classList.add('projects-header');
-
-    const text = document.createElement('p');
-    text.textContent = 'Projects';
-
-    const icon = document.createElement('img');
-    icon.classList.add('icon');
-    icon.src = arrowDown;
-
-    header.appendChild(text);
-    header.appendChild(icon);
-
-    return header;
   }
 
   static createProjectTile(project) {
@@ -100,29 +72,21 @@ export default class Sidebar {
       text.textContent = project.name;
     }
     text.height = '12px';
-
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('centering');
-    wrapper.style.height = '20px';
-    wrapper.style.width = '20px';
-
-    const icon = document.createElement('div');
-    icon.style.backgroundColor = project.color;
-    icon.style.height = '12px';
-    icon.style.width = '12px';
-    icon.style.borderRadius = '50%';
-
-    wrapper.appendChild(icon);
-
-    projectTile.appendChild(wrapper);
     projectTile.appendChild(text);
+
+    projectTile.innerHTML += `
+      <div class="centering">
+        <div class="project-circle" style="background-color:${project.color}">
+        </div>
+      </div>
+    `;
 
     projectTile.addEventListener('click', () => {
       Editor.changeListProjectTo(project.name);
       Sidebar.resetActiveSection();
 
       projectTile.classList.add('active');
-      projectTile.style.backgroundColor = `${project.color}33`; // (33 - alpha)
+      projectTile.style.backgroundColor = `${project.color}33`;
     });
 
     return projectTile;
