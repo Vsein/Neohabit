@@ -243,6 +243,10 @@ button {
   border-radius: 10px;
 }
 
+.new-task-btn:hover {
+  cursor: pointer;
+}
+
 .new-task-icon {
   height: 20px;
   width: 20px;

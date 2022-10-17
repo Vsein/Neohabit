@@ -1,6 +1,8 @@
 import plus from '../icons/plus.svg';
 import Storage from '../modules/Storage';
 import Overlay from './Overlay';
+import Project from '../modules/Project';
+import Task from '../modules/Task';
 
 export default class Editor {
   static create() {
@@ -95,7 +97,7 @@ export default class Editor {
 
     taskDiv.appendChild(Editor.createDeleteTaskButton(project, task));
 
-    taskDiv.addEventListener('click', () => Overlay.openTaskModal(project, task));
+    taskDiv.addEventListener('click', () => Overlay.openTaskModal(false, project, task));
 
     return taskDiv;
   }
@@ -156,6 +158,8 @@ export default class Editor {
 
     btn.appendChild(img);
     btn.appendChild(text);
+
+    btn.addEventListener('click', () => Overlay.openTaskModal(false, new Project(), new Task()));
 
     return btn;
   }

@@ -42,7 +42,7 @@ export default class Overlay {
     const buttons = document.createElement('div');
     buttons.classList.add('modal-buttons');
     buttons.appendChild(Overlay.createCancelFormButton(task));
-    buttons.appendChild(Overlay.createSaveFormButton(task));
+    buttons.appendChild(Overlay.createSubmitFormButton(task));
 
     taskModal.appendChild(header);
     taskModal.appendChild(taskDetails);
@@ -110,14 +110,18 @@ export default class Overlay {
     const projectName = document.querySelector('.modal .tag p').textContent;
     const taskName = document.querySelector('.form-task-name').textContent;
     const task = Overlay.getTask();
-    Storage.changeTask(projectName, taskName, task);
+    if (document.querySelector('#submit-form-button').textContent === 'Save') {
+      Storage.changeTask(projectName, taskName, task);
+    } else {
+      Storage.addTask(projectName, task);
+    }
     Overlay.close();
   }
 
-  static createSaveFormButton() {
+  static createSubmitFormButton() {
     const button = document.createElement('button');
     button.classList.add('form-button');
-    button.id = 'save-form-button';
+    button.id = 'submit-form-button';
     button.textContent = 'Save';
 
     button.addEventListener('click', Overlay.submitTask);
@@ -184,12 +188,18 @@ export default class Overlay {
     return btn;
   }
 
-  static openTaskModal(project, task) {
+  static openTaskModal(isNew, project, task) {
+    if (isNew) {
+      document.querySelector('#submit-form-button').textContent = 'Add task';
+    } else {
+      document.querySelector('#submit-form-button').textContent = 'Save';
+    }
     document.querySelector('.modal .tag p').textContent = project.name;
     document.querySelector(
       '.modal .tag .centering div',
     ).style.backgroundColor = project.color;
     document.querySelector('.form-task-name').textContent = task.name;
+    document.querySelector('.form-task-description').textContent = task.description;
 
     document.querySelector('.overlay').classList.add('overlay-active');
     document.querySelector('.modal').classList.add('modal-active');
