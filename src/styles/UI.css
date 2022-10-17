@@ -74,6 +74,13 @@ textarea {
   align-items: center;
 }
 
+.menu-section:last-of-type {
+  height: 50px;
+  grid-row: span 2;
+  align-self: end;
+  line-height: 50px;
+}
+
 .menu-section.active {
   background-color: #00000022;
 }
@@ -89,6 +96,9 @@ textarea {
   font-family: 'Poppins-header', sans-serif;
   font-size: 1.7em;
   justify-self: center;
+  align-self: start;
+  line-height: 50px;
+  grid-row: span 2;
 }
 
 .sidebar {

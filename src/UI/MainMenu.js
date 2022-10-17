@@ -9,78 +9,34 @@ export default class MainMenu {
   static create() {
     const mainMenu = document.createElement('div');
     mainMenu.classList.add('menu');
-
-    mainMenu.appendChild(this.createLogo());
-
-    const sections = [
-      {
-        name: 'Dashboard',
-        image: home,
-        row: 3,
-      },
-      {
-        name: 'Skill trees',
-        image: skillTree,
-        row: 4,
-      },
-      {
-        name: 'Current habits',
-        image: habits,
-        row: 5,
-      },
-      {
-        name: 'To-do',
-        image: toDo,
-        row: 6,
-        active: true,
-      },
-      {
-        name: 'Blog',
-        image: post,
-        row: 7,
-      },
-      {
-        name: 'Settings',
-        image: cog,
-        row: 9,
-      },
-    ];
-
-    sections.forEach((section) => {
-      mainMenu.appendChild(this.createSection(section));
-    });
+    mainMenu.innerHTML = `
+      <h2 class="logo neohabit"></h2>
+      <div class="menu-section">
+        <img src=${home} class="icon">
+        <p class="link">Dashboard</p>
+      </div>
+      <div class="menu-section">
+        <img src=${skillTree} class="icon">
+        <p class="link">Skill trees</p>
+      </div>
+      <div class="menu-section">
+        <img src=${habits} class="icon">
+        <p class="link">Current habits</p>
+      </div>
+      <div class="menu-section active">
+        <img src=${toDo} class="icon">
+        <p class="link">To-do</p>
+      </div>
+      <div class="menu-section">
+        <img src=${post} class="icon">
+        <p class="link">Blog</p>
+      </div>
+      <div class="menu-section">
+        <img src=${cog} class="icon">
+        <p class="link">Settings</p>
+      </div>
+    `;
 
     return mainMenu;
-  }
-
-  static createLogo() {
-    const logo = document.createElement('h2');
-    logo.classList.add('logo', 'neohabit');
-
-    return logo;
-  }
-
-  static createSection({
-    name, image, row, active,
-  }) {
-    const section = document.createElement('div');
-    section.classList.add('menu-section');
-    if (active) {
-      section.classList.add('active');
-    }
-    section.style.gridRow = row;
-
-    const img = document.createElement('img');
-    img.src = image;
-    img.classList.add('icon');
-
-    const p = document.createElement('p');
-    p.textContent = name;
-    p.classList.add('link');
-
-    section.appendChild(img);
-    section.appendChild(p);
-
-    return section;
   }
 }
