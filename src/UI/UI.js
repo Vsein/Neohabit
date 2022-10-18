@@ -13,9 +13,10 @@ export default class UI {
     MainMenu.create();
     Sidebar.create();
     Editor.create();
-    content.appendChild(Overlay.create());
+    Overlay.create();
 
     Sidebar.init();
     Editor.changeListTo('All');
+    Overlay.init();
   }
 }

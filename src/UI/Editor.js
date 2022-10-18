@@ -22,11 +22,6 @@ export default class Editor {
         </div>
       </div>
     `;
-
-    const addTaskBtn = document.querySelector('.add-task-btn');
-    addTaskBtn.addEventListener('click', () => {
-      Overlay.openTaskModal(false, new Project(), new Task());
-    });
   }
 
   static changeListTo(newListName) {
@@ -43,6 +38,11 @@ export default class Editor {
           Editor.createTask(project, task);
         });
       });
+
+    const addTaskBtn = document.querySelector('.add-task-btn');
+    addTaskBtn.addEventListener('click', () => {
+      Overlay.openTaskModal(true, new Project(), new Task());
+    });
   }
 
   static createTask(project, task) {

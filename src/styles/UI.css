@@ -130,6 +130,7 @@ textarea {
 .project,
 .tag {
   height: 100%;
+  line-height: 12px;
   display: flex;
   align-items: center;
   align-content: center;
@@ -277,6 +278,10 @@ button {
   transform: scale(1.3);
 }
 
+.neohabit {
+  content: '';
+}
+
 .neohabit:before {
   color: #144e12;
   content: 'neo';
@@ -288,7 +293,7 @@ button {
 }
 
 .delete-task-btn,
-.close-task-btn {
+#close-modal-button {
   min-height: 30px;
   min-width: 30px;
   margin-left: auto;
@@ -296,7 +301,7 @@ button {
 }
 
 .delete-task-btn:hover,
-.close-task-btn:hover {
+#close-modal-button:hover {
   cursor: pointer;
 }
 
