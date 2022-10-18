@@ -4,13 +4,11 @@ import Filter from './Filter';
 
 export default class ToDoList {
   constructor() {
-    // this.projects = [new Project('Default')];
-    // dummy projects for the time being
     this.projects = [
       new Project(),
       new Project('Neohabit', '#144e12', [
         new Task('Get ahead', '', '2022-10-14', true),
-        new Task('Get further ahead', '', '2022-10-16'),
+        new Task('Get further ahead', '', '2022-10-16', false, true),
         new Task('Get even further beyond', ''),
       ]),
       new Project('Cooking', '#edad0e', [
@@ -83,7 +81,12 @@ export default class ToDoList {
       return thisWeekProjects;
     }
     if (filter === 'Important') {
-      return [];
+      const importantProjects = this.projects.filter((project) => project.hasImportantTasks());
+      importantProjects.forEach((project) => {
+        project.setTasks(project.getImportantTasks());
+      });
+
+      return importantProjects;
     }
     return [this.getProject(filter)];
   }

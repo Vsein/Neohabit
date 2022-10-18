@@ -1,9 +1,16 @@
 export default class Task {
-  constructor(name = '', description = '', dueDate = '', completed = false) {
+  constructor(
+    name = '',
+    description = '',
+    dueDate = '',
+    completed = false,
+    important = false,
+  ) {
     this.name = name;
     this.description = description;
     this.dueDate = dueDate;
     this.completed = completed;
+    this.important = important;
     // TODO: recurrent; checklists
   }
 

@@ -83,4 +83,12 @@ export default class Project {
       return isThisWeek(toDate(taskDate), { weekStartsOn: 1 });
     });
   }
+
+  hasImportantTasks() {
+    return this.tasks.some((task) => task.important);
+  }
+
+  getImportantTasks() {
+    return this.tasks.filter((task) => task.important);
+  }
 }
