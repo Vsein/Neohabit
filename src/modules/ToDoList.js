@@ -58,6 +58,10 @@ export default class ToDoList {
     this.projects.splice(this.projects.indexOf(projectToDelete), 1);
   }
 
+  isFilter(listName) {
+    return this.filters.some((filter) => filter.name === listName);
+  }
+
   filterProjects(filter) {
     if (filter === 'All') {
       return this.projects;

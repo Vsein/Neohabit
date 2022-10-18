@@ -63,22 +63,14 @@ export default class Sidebar {
   static createProjectTile(project) {
     const projectTile = document.createElement('div');
     projectTile.classList.add('project');
-
-    const text = document.createElement('p');
-    if (project.name === 'Neohabit') {
-      text.classList.add('neohabit');
-    } else {
-      text.textContent = project.name;
-    }
-    text.height = '12px';
-
     projectTile.innerHTML += `
       <div class="centering">
         <div class="project-circle" style="background-color:${project.color}">
         </div>
       </div>
+      <p class="${project.name === 'Neohabit' ? project.name : ''}">
+      ${project.name}</p>
     `;
-    projectTile.appendChild(text);
 
     projectTile.addEventListener('click', () => {
       Editor.changeListTo(project.name);

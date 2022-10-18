@@ -32,7 +32,7 @@ export default class Editor {
     list.innerHTML = '';
 
     Storage.getToDoList()
-      .filterProjects(newListName)
+      .filterProjects(listName.textContent)
       .forEach((project) => {
         project.tasks.forEach((task) => {
           Editor.createTask(project, task);
