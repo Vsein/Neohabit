@@ -1,11 +1,11 @@
 import '../styles/UI.css';
+import { endOfToday, endOfWeek } from 'date-fns';
 import Storage from '../modules/Storage';
 import MainMenu from './MainMenu';
 import Sidebar from './Sidebar';
 import Editor from './Editor';
 import Overlay from './Overlay';
 import Task from '../modules/Task';
-import { endOfToday, endOfWeek } from 'date-fns';
 
 export default class UI {
   static load() {
@@ -21,6 +21,7 @@ export default class UI {
     Sidebar.init();
     Editor.changeListTo('All');
     UI.initModal();
+    UI.initMenuButton();
   }
 
   static closeModal() {
@@ -79,5 +80,19 @@ export default class UI {
       Storage.addTask(projectName, task);
     }
     UI.closeModal();
+  }
+
+  static initMenuButton() {
+    const menuButton = document.querySelector('#menu-button');
+    const menu = document.querySelector('.menu');
+    const menuDropdown = document.querySelector('.menu-dropdown');
+    const sidebar = document.querySelector('.sidebar');
+    const content = document.querySelector('#content');
+    menuButton.addEventListener('click', () => {
+      sidebar.classList.toggle('sidebar-hidden');
+      menuDropdown.classList.toggle('hidden');
+      menu.classList.toggle('full-blown');
+      content.classList.toggle('content-toggle');
+    });
   }
 }
