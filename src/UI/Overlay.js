@@ -105,8 +105,8 @@ export default class Overlay {
     }
     document.querySelector('.modal .tag p').textContent = project.name;
     document.querySelector('.modal .tag .centering div').style.backgroundColor = project.color;
-    document.querySelector('.form-task-name').textContent = task.name;
-    document.querySelector('.form-task-description').textContent = task.description;
+    document.querySelector('.form-task-name').value = task.name;
+    document.querySelector('.form-task-description').value = task.description;
 
     document.querySelector('.overlay').classList.add('overlay-active');
     document.querySelector('.modal').classList.add('modal-active');
