@@ -6,161 +6,79 @@ import Task from '../modules/Task';
 
 export default class Editor {
   static create() {
-    const editor = document.createElement('div');
-    editor.id = 'editor';
+    const content = document.getElementById('content');
+    content.innerHTML += `
+      <div id="editor">
+        <div class="editor-header">
+          <h3 id="list-name">Today</h3>
+        </div>
+        <div class="editor-list">
+        </div>
+        <div class="editor-add-button">
+          <button class="add-task-btn">
+            <img class="add-task-icon" src=${plus}>
+            <p>Add task</p>
+          </button>
+        </div>
+      </div>
+    `;
 
-    editor.appendChild(Editor.createHeader());
-    editor.appendChild(Editor.createList());
-
-    return editor;
-  }
-
-  static createHeader() {
-    const header = document.createElement('div');
-    header.classList.add('editor-header');
-
-    const sectionName = document.createElement('h3');
-    sectionName.textContent = 'Today';
-
-    header.appendChild(sectionName);
-
-    return header;
-  }
-
-  static changeHeader(newName) {
-    const headerText = document.querySelector('.editor-header > h3');
-    headerText.textContent = newName;
-  }
-
-  static createList() {
-    const list = document.createElement('div');
-    list.classList.add('editor-list');
-
-    Storage.getToDoList()
-      .filterProjects('Today')
-      .forEach((project) => {
-        project.tasks.forEach((task) => {
-          list.appendChild(Editor.createTask(project, task));
-        });
-      });
-
-    list.appendChild(Editor.createAddTaskButton());
-
-    return list;
-  }
-
-  static changeListFilterTo(filterName) {
-    const list = document.querySelector('.editor-list');
-
-    Editor.clearList();
-    Editor.changeHeader(filterName);
-
-    Storage.getToDoList()
-      .filterProjects(filterName)
-      .forEach((project) => {
-        project.tasks.forEach((task) => {
-          list.appendChild(Editor.createTask(project, task));
-        });
-      });
-
-    list.appendChild(Editor.createAddTaskButton());
-  }
-
-  static changeListProjectTo(projectName) {
-    const list = document.querySelector('.editor-list');
-
-    Editor.clearList();
-    Editor.changeHeader(projectName);
-
-    const project = Storage.getToDoList().getProject(projectName);
-    project.getTasks().forEach((task) => {
-      list.appendChild(Editor.createTask(project, task));
+    const addTaskBtn = document.querySelector('.add-task-btn');
+    addTaskBtn.addEventListener('click', () => {
+      Overlay.openTaskModal(false, new Project(), new Task());
     });
-
-    list.appendChild(Editor.createAddTaskButton());
   }
 
-  static clearList() {
+  static changeListTo(newListName) {
+    const listName = document.getElementById('list-name');
+    listName.textContent = newListName;
+
     const list = document.querySelector('.editor-list');
     list.innerHTML = '';
+
+    Storage.getToDoList()
+      .filterProjects(newListName)
+      .forEach((project) => {
+        project.tasks.forEach((task) => {
+          Editor.createTask(project, task);
+        });
+      });
   }
 
   static createTask(project, task) {
-    const taskDiv = document.createElement('div');
-    taskDiv.classList.add('task');
+    const list = document.querySelector('.editor-list');
 
-    taskDiv.appendChild(Editor.createCheckbox(project, task));
+    const taskTile = document.createElement('div');
+    taskTile.classList.add('task');
+    taskTile.innerHTML = `
+      <div class="checkbox" style="border-color:${project.color};background:${Editor.getBG(task.completed, project.color)}"></div>
+      <p>${task.name}</p>
+      <div class="delete-task-btn">
+        <img src=${plus}>
+      </div>
+    `;
+    list.appendChild(taskTile);
 
-    const text = document.createElement('p');
-    text.textContent = task.name;
-    taskDiv.appendChild(text);
-
-    taskDiv.appendChild(Editor.createDeleteTaskButton(project, task));
-
-    taskDiv.addEventListener('click', () => Overlay.openTaskModal(false, project, task));
-
-    return taskDiv;
-  }
-
-  static createCheckbox(project, task) {
-    const checkbox = document.createElement('div');
-    checkbox.classList.add('checkbox');
-    checkbox.style.borderColor = project.color;
-
-    const checkFill = () => {
-      if (task.completed) {
-        checkbox.style.background = `radial-gradient(${project.color} 30%, ${project.color}33 40%)`;
-      } else {
-        checkbox.style.background = `${project.color}33`;
-      }
-    };
-
-    checkFill();
-
-    checkbox.addEventListener('click', (e) => {
+    taskTile.addEventListener('click', () => Overlay.openTaskModal(false, project, task));
+    taskTile.querySelector('.checkbox').addEventListener('click', (e) => {
       e.stopPropagation();
       Storage.completeTask(project.name, task.name);
       task.toggleComplete();
-      checkFill();
+      e.target.style.background = Editor.getBG(task.completed, project.color);
     });
-
-    return checkbox;
+    taskTile
+      .querySelector('.delete-task-btn')
+      .addEventListener('click', (e) => {
+        e.stopPropagation();
+        Storage.deleteTask(project.name, task.name);
+        e.target.parentElement.remove();
+      });
   }
 
-  static createDeleteTaskButton(project, task) {
-    const btn = document.createElement('div');
-    btn.classList.add('delete-task-btn');
-
-    const icon = document.createElement('img');
-    icon.src = plus;
-
-    btn.appendChild(icon);
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      Storage.deleteTask(project.name, task.name);
-      btn.parentElement.remove();
-    });
-
-    return btn;
-  }
-
-  static createAddTaskButton() {
-    const btn = document.createElement('button');
-    btn.classList.add('new-task-btn');
-
-    const img = document.createElement('img');
-    img.classList.add('new-task-icon');
-    img.src = plus;
-
-    const text = document.createElement('text');
-    text.textContent = 'Add task';
-
-    btn.appendChild(img);
-    btn.appendChild(text);
-
-    btn.addEventListener('click', () => Overlay.openTaskModal(false, new Project(), new Task()));
-
-    return btn;
+  static getBG(completed, color) {
+    if (completed) {
+      return `radial-gradient(${color} 30%, ${color}33 40%)`;
+    }
+    return `${color}33`;
   }
 }

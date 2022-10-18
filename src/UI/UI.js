@@ -8,14 +8,14 @@ export default class UI {
   static load() {
     const content = document.createElement('div');
     content.id = 'content';
-
-    content.appendChild(MainMenu.create());
-    content.appendChild(Sidebar.create());
-    content.appendChild(Editor.create());
-    content.appendChild(Overlay.create());
-
     document.body.appendChild(content);
 
+    MainMenu.create();
+    Sidebar.create();
+    Editor.create();
+    content.appendChild(Overlay.create());
+
     Sidebar.init();
+    Editor.changeListTo('All');
   }
 }

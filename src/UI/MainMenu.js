@@ -7,36 +7,35 @@ import cog from '../icons/cog.svg';
 
 export default class MainMenu {
   static create() {
-    const mainMenu = document.createElement('div');
-    mainMenu.classList.add('menu');
-    mainMenu.innerHTML = `
-      <h2 class="logo neohabit"></h2>
-      <div class="menu-section">
-        <img src=${home} class="icon">
-        <p class="link">Dashboard</p>
-      </div>
-      <div class="menu-section">
-        <img src=${skillTree} class="icon">
-        <p class="link">Skill trees</p>
-      </div>
-      <div class="menu-section">
-        <img src=${habits} class="icon">
-        <p class="link">Current habits</p>
-      </div>
-      <div class="menu-section active">
-        <img src=${toDo} class="icon">
-        <p class="link">To-do</p>
-      </div>
-      <div class="menu-section">
-        <img src=${post} class="icon">
-        <p class="link">Blog</p>
-      </div>
-      <div class="menu-section">
-        <img src=${cog} class="icon">
-        <p class="link">Settings</p>
+    const content = document.getElementById('content');
+    content.innerHTML += `
+      <div class="menu">
+        <h2 class="logo neohabit"></h2>
+        <div class="menu-section">
+          <img src=${home} class="icon">
+          <p class="link">Dashboard</p>
+        </div>
+        <div class="menu-section">
+          <img src=${skillTree} class="icon">
+          <p class="link">Skill trees</p>
+        </div>
+        <div class="menu-section">
+          <img src=${habits} class="icon">
+          <p class="link">Current habits</p>
+        </div>
+        <div class="menu-section active">
+          <img src=${toDo} class="icon">
+          <p class="link">To-do</p>
+        </div>
+        <div class="menu-section">
+          <img src=${post} class="icon">
+          <p class="link">Blog</p>
+        </div>
+        <div class="menu-section">
+          <img src=${cog} class="icon">
+          <p class="link">Settings</p>
+        </div>
       </div>
     `;
-
-    return mainMenu;
   }
 }

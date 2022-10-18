@@ -4,20 +4,19 @@ import Editor from './Editor';
 
 export default class Sidebar {
   static create() {
-    const sidebar = document.createElement('div');
-    sidebar.classList.add('sidebar');
-    sidebar.innerHTML = `
-      <div class="filter-sections">
-      </div>
-      <div class="projects">
-        <div class="projects-header">
-          <p>Projects</p>
-          <img class="icon" src=${arrowDown}>
+    const content = document.getElementById('content');
+    content.innerHTML += `
+      <div class="sidebar">
+        <div class="filter-sections">
+        </div>
+        <div class="projects">
+          <div class="projects-header">
+            <p>Projects</p>
+            <img class="icon" src=${arrowDown}>
+          </div>
         </div>
       </div>
     `;
-
-    return sidebar;
   }
 
   static init() {
@@ -39,7 +38,7 @@ export default class Sidebar {
   static createFilterSection(filter) {
     const filterSection = document.createElement('div');
     filterSection.classList.add('filter-section');
-    if (filter.name === 'Today') {
+    if (filter.name === 'All') {
       filterSection.classList.add('active');
     }
     if (filter.name === 'Important') {
@@ -52,7 +51,7 @@ export default class Sidebar {
     `;
 
     filterSection.addEventListener('click', () => {
-      Editor.changeListFilterTo(filter.name);
+      Editor.changeListTo(filter.name);
       Sidebar.resetActiveSection();
 
       filterSection.classList.add('active');
@@ -72,7 +71,6 @@ export default class Sidebar {
       text.textContent = project.name;
     }
     text.height = '12px';
-    projectTile.appendChild(text);
 
     projectTile.innerHTML += `
       <div class="centering">
@@ -80,9 +78,10 @@ export default class Sidebar {
         </div>
       </div>
     `;
+    projectTile.appendChild(text);
 
     projectTile.addEventListener('click', () => {
-      Editor.changeListProjectTo(project.name);
+      Editor.changeListTo(project.name);
       Sidebar.resetActiveSection();
 
       projectTile.classList.add('active');

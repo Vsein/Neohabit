@@ -82,6 +82,9 @@ export default class ToDoList {
 
       return thisWeekProjects;
     }
-    return [];
+    if (filter === 'Important') {
+      return [];
+    }
+    return [this.getProject(filter)];
   }
 }
