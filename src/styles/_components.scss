@@ -1,0 +1,44 @@
+.neohabit {
+  content: '';
+
+  &:before {
+    color: #144e12;
+    content: 'neo';
+  }
+
+  &:after {
+    color: black;
+    content: 'habit';
+  }
+}
+
+.icon {
+  height: 30px;
+  width: 30px;
+  justify-self: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.centering {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  height: 20px;
+  width: 20px;
+}
+
+.project-circle {
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid green;
+}

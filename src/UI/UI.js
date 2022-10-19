@@ -1,4 +1,4 @@
-import '../styles/UI.scss';
+import '../styles/main.scss';
 import { endOfToday, endOfWeek } from 'date-fns';
 import Storage from '../modules/Storage';
 import MainMenu from './MainMenu';

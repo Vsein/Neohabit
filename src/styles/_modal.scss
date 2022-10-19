@@ -1,0 +1,98 @@
+.delete-task-btn,
+.close-modal-button {
+  margin-left: auto;
+  transform: rotate(45deg);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  height: 100%;
+  width: 100%;
+  background-color: #00000080;
+  backdrop-filter: blur(10px);
+
+  &-active {
+    display: block;
+  }
+}
+
+.modal {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: min(800px, 100vw - 3em);
+  min-height: 600px;
+  border-radius: 8px;
+  background-color: #efefef;
+  padding: 1em;
+  transform: translate(-50%, -50%) scale(0);
+
+  &-active {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  &-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-details {
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  &-description {
+    min-height: 300px;
+  }
+
+  &-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    height: 40px;
+  }
+}
+
+.form-task-name {
+  padding: 5px 10px;
+  height: min-content;
+}
+
+.form-task-description {
+  padding: 5px 10px;
+  font-size: 0.9em;
+  height: 100%;
+}
+
+.form-button {
+  font-size: 80%;
+  color: #f9faf8;
+  background-color: #144e12;
+  padding: 10px 32px;
+  border-radius: 7px;
+  font-weight: bold;
+  height: auto;
+  max-width: 200px;
+}
+
+.form-button:hover {
+  cursor: pointer;
+}
+
+#cancel-form-button {
+  margin-left: auto;
+  color: black;
+  background-color: silver;
+}

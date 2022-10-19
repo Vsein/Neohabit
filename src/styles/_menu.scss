@@ -1,0 +1,59 @@
+.menu {
+  padding-bottom: auto;
+  grid-area: menu;
+  width: 270px;
+  padding-block: 15px;
+  background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
+
+  &-dropdown {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    display: grid;
+    grid-auto-rows: 50px;
+    align-items: center;
+    padding: 50px 0 0;
+    transition: 0.6s;
+
+    &-active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &-section {
+    padding-inline: 5px 15px;
+    height: 50px;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+
+    &:last-of-type {
+      height: 50px;
+      grid-row: span 2;
+      align-self: end;
+      line-height: 50px;
+    }
+
+    &.active {
+    background-color: #00000022;
+    }
+  }
+}
+
+.logo-section {
+  padding-inline: 5px 15px;
+  height: 50px;
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  padding-inline: 5px 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.7em;
+  line-height: 30px;
+}
