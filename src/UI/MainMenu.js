@@ -11,11 +11,12 @@ export default class MainMenu {
     const content = document.getElementById('content');
     content.innerHTML += `
       <div class="menu">
-        <div class="logo-section">
+        <input type="checkbox" class="menu-checkbox" id="menu-checkbox">
+        <label class="logo-section" for="menu-checkbox">
           <img src=${menu} class="icon" id="menu-button">
           <h2 class="logo neohabit"></h2>
-        </div>
-        <div class="menu-dropdown">
+        </label>
+        <div class="menu-container">
           <div class="menu-section">
             <img src=${home} class="icon">
             <p class="link">Dashboard</p>

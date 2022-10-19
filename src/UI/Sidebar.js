@@ -10,10 +10,10 @@ export default class Sidebar {
         <div class="filters">
         </div>
         <div class="projects">
-          <input type="checkbox" id="dropdown-input">
-          <label class="projects-header" for="dropdown-input">
+          <input type="checkbox" class="projects-checkbox" id="projects-checkbox">
+          <label class="projects-header" for="projects-checkbox">
             <p>Projects</p>
-            <img class="icon arrow" src=${arrowDown}>
+            <img class="icon projects-arrow" src=${arrowDown}>
           </label>
           <div class="projects-container"></div>
         </div>

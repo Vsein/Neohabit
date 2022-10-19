@@ -13,6 +13,7 @@
   width: 100%;
   background-color: #00000080;
   backdrop-filter: blur(10px);
+  z-index: 3;
 
   &-active {
     display: block;
@@ -26,7 +27,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  z-index: 1;
+  z-index: 3;
   width: min(800px, 100vw - 3em);
   min-height: 600px;
   border-radius: 8px;
