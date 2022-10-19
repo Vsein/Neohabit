@@ -1,4 +1,4 @@
-import '../styles/UI.css';
+import '../styles/UI.scss';
 import { endOfToday, endOfWeek } from 'date-fns';
 import Storage from '../modules/Storage';
 import MainMenu from './MainMenu';
@@ -47,7 +47,7 @@ export default class UI {
       .getElementById('submit-form-button')
       .addEventListener('click', UI.submitTask);
     document
-      .getElementById('close-modal-button')
+      .querySelector('.close-modal-button')
       .addEventListener('click', UI.closeModal);
   }
 
@@ -90,7 +90,7 @@ export default class UI {
     const content = document.querySelector('#content');
     menuButton.addEventListener('click', () => {
       sidebar.classList.toggle('sidebar-hidden');
-      menuDropdown.classList.toggle('hidden');
+      menuDropdown.classList.toggle('menu-dropdown-active');
       menu.classList.toggle('full-blown');
       content.classList.toggle('content-toggle');
     });

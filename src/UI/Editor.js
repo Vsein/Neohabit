@@ -8,7 +8,7 @@ export default class Editor {
   static create() {
     const content = document.getElementById('content');
     content.innerHTML += `
-      <div id="editor">
+      <div class="editor">
         <div class="editor-header">
           <h3 id="list-name">Today</h3>
         </div>
@@ -53,7 +53,7 @@ export default class Editor {
     taskTile.innerHTML = `
       <div class="checkbox" style="border-color:${project.color};background:${Editor.getBG(task.completed, project.color)}"></div>
       <p>${task.name}</p>
-      <div class="delete-task-btn">
+      <div class="delete-task-btn icon">
         <img src=${plus}>
       </div>
     `;

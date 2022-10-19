@@ -20,7 +20,7 @@ export default class Overlay {
               <p class="${project.name === 'Neohabit' ? project.name : ''}">
               ${project.name}</p>
             </div>
-            <div id="close-modal-button">
+            <div class="close-modal-button icon">
               <img src=${plus}>
             </div>
           </div>

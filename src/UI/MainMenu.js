@@ -15,7 +15,7 @@ export default class MainMenu {
           <img src=${menu} class="icon" id="menu-button">
           <h2 class="logo neohabit"></h2>
         </div>
-        <div class="menu-dropdown hidden">
+        <div class="menu-dropdown">
           <div class="menu-section">
             <img src=${home} class="icon">
             <p class="link">Dashboard</p>

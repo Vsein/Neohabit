@@ -44,29 +44,40 @@ select,
 textarea {
   font-family: inherit;
   font-size: 100%;
-  width: 150px;
-  padding: 0;
-  margin: 0;
+  width: 100%;
   box-sizing: border-box;
+  outline: none;
+  appearance: none;
+  border: none;
+}
+
+button {
+  display: block;
+  height: 30px;
+  border: 1px solid silver;
+}
+
+textarea {
+  display: block;
+  resize: none;
+  padding: 5px 10px;
 }
 
 #content {
   min-height: 100vh;
   display: grid;
-  grid-template-areas: "menu    editor"
-                       "sidebar editor";
+  grid-template-areas:
+    'menu    editor'
+    'sidebar editor';
   grid-template-rows: 80px 1fr;
   grid-template-columns: 270px 1fr;
   background-color: #efefef;
 }
 
 #content.content-toggle {
-  grid-template-areas: "menu editor"
-                       "menu editor";
-}
-
-#content > div {
-  align-self: stretch;
+  grid-template-areas:
+    'menu editor'
+    'menu editor';
 }
 
 .menu {
@@ -75,27 +86,45 @@ textarea {
   width: 270px;
   padding-block: 15px;
   background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
-  transition: height 300ms ease-in-out;
-}
 
-.menu-dropdown {
-  display: grid;
-  grid-auto-rows: 50px;
-  align-items: center;
-  padding: 50px 0 0;
+  &-dropdown {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    display: grid;
+    grid-auto-rows: 50px;
+    align-items: center;
+    padding: 50px 0 0;
+    transition: 0.6s;
+
+    &-active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &-section {
+    padding-inline: 5px 15px;
+    height: 50px;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+
+    &:last-of-type {
+      height: 50px;
+      grid-row: span 2;
+      align-self: end;
+      line-height: 50px;
+    }
+
+    &.active {
+    background-color: #00000022;
+    }
+  }
 }
 
 #menu-button:hover {
   cursor: pointer;
-}
-
-.sidebar-hidden {
-  visibility: hidden;
-  position: absolute;
-}
-
-.hidden {
-  visibility: hidden;
 }
 
 .logo-section {
@@ -107,29 +136,20 @@ textarea {
   justify-content: center;
 }
 
-.menu-section {
-  padding-inline: 5px 15px;
-  height: 50px;
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  align-items: center;
-}
-
-.menu-section:last-of-type {
-  height: 50px;
-  grid-row: span 2;
-  align-self: end;
-  line-height: 50px;
-}
-
-.menu-section.active {
-  background-color: #00000022;
-}
-
 .icon {
   height: 30px;
   width: 30px;
   justify-self: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.delete-task-btn,
+.close-modal-button {
+  margin-left: auto;
+  transform: rotate(45deg);
 }
 
 .logo {
@@ -147,10 +167,15 @@ textarea {
   flex-direction: column;
   gap: 15px;
   padding: 15px;
-}
 
-.sidebar p {
-  line-height: 20px;
+  &-hidden {
+    visibility: hidden;
+    position: absolute;
+  }
+
+  & p {
+    line-height: 20px;
+  }
 }
 
 .projects {
@@ -167,6 +192,21 @@ textarea {
   align-items: center;
 }
 
+.filter-sections {
+  display: grid;
+  grid-auto-rows: 40px;
+  align-items: center;
+  gap: 5px;
+}
+
+
+.filter-section:hover,
+.project:hover,
+.menu-section:hover {
+  cursor: pointer;
+  background-color: #0000001a;
+}
+
 .project,
 .tag {
   height: 100%;
@@ -178,27 +218,6 @@ textarea {
   border-radius: 3px;
 }
 
-.project {
-  padding: 10px;
-}
-
-.tag {
-  padding-inline: 10px 15px;
-  background-color: silver;
-  border-radius: 10px;
-}
-
-.tag:hover {
-  background-color: lightgrey;
-}
-
-.filter-sections {
-  display: grid;
-  grid-auto-rows: 40px;
-  align-items: center;
-  gap: 5px;
-}
-
 .filter-section {
   height: 100%;
   display: flex;
@@ -207,25 +226,28 @@ textarea {
   border-radius: 3px;
   gap: 10px;
   padding-inline: 10px;
+
+  &.active {
+    background-color: #144e1233;
+
+    &.important {
+      background-color: #ffd70033;
+    }
+  }
 }
 
-.filter-section:hover,
-.project:hover,
-.menu-section:hover {
-  cursor: pointer;
-  background-color: #0000001a;
+.project {
+  padding: 10px;
 }
 
-.important.active {
-  background-color: #ffd70033;
-}
+.tag {
+  padding-inline: 10px 15px;
+  background-color: silver;
+  border-radius: 10px;
 
-.active {
-  background-color: #144e1233;
-}
-
-.active:hover {
-  background-color: #144e1233;
+  &:hover {
+    background-color: lightgrey;
+  }
 }
 
 .centering {
@@ -242,42 +264,58 @@ textarea {
   border-radius: 50%;
 }
 
-#editor {
+.editor {
   grid-area: editor;
-  padding: 0 0 55px;
-}
-
-.editor-header {
-  display: flex;
-  flex-direction: row;
-  padding: 55px 36px 0;
-  margin-inline: auto;
+  padding: 55px 36px 55px;
   width: min(800px, 100%);
-}
-
-.editor-list {
-  padding: 0 36px;
   margin-inline: auto;
-  width: min(800px, 100%);
-  display: grid;
-  grid-auto-flow: row;
-  gap: 10px;
+
+  &-header {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &-list {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 10px;
+  }
+
+  &-add-button {
+    padding-top: 10px;
+  }
 }
 
-.task {
-  min-height: 50px;
-  background-color: white;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+@mixin editor-list-item {
   padding-inline: 15px;
+  display: flex;
   gap: 15px;
-  border: 1px solid #bbbbbb;
+  align-items: center;
   border-radius: 10px;
 }
 
-.task:hover {
+.task {
+  @include editor-list-item;
+  min-height: 50px;
+  background-color: white;
+  flex-direction: row;
+  gap: 15px;
+  border: 1px solid #bbbbbb;
   cursor: pointer;
+}
+
+.add-task-btn {
+  @include editor-list-item;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.add-task-icon {
+  width: 20px;
+  height: 20px;
+  transform: scale(1.3);
 }
 
 .checkbox {
@@ -287,67 +325,18 @@ textarea {
   border: 2px solid green;
 }
 
-button {
-  display: block;
-  font-family: inherit;
-  font-size: 100%;
-  margin: 0;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0px;
-  height: 30px;
-  border: 1px solid silver;
-}
-
-.editor-add-button {
-  width: min(800px, 100%);
-  padding: 10px 36px;
-  margin-inline: auto;
-}
-
-.add-task-btn {
-  padding-inline: 15px;
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  border-radius: 10px;
-}
-
-.add-task-btn:hover {
-  cursor: pointer;
-}
-
-.add-task-icon {
-  height: 20px;
-  width: 20px;
-  transform: scale(1.3);
-}
-
 .neohabit {
   content: '';
-}
 
-.neohabit:before {
-  color: #144e12;
-  content: 'neo';
-}
+  &:before {
+    color: #144e12;
+    content: 'neo';
+  }
 
-.neohabit:after {
-  color: black;
-  content: 'habit';
-}
-
-.delete-task-btn,
-#close-modal-button {
-  min-height: 30px;
-  min-width: 30px;
-  margin-left: auto;
-  transform: rotate(45deg);
-}
-
-.delete-task-btn:hover,
-#close-modal-button:hover {
-  cursor: pointer;
+  &:after {
+    color: black;
+    content: 'habit';
+  }
 }
 
 .overlay {
@@ -359,10 +348,10 @@ button {
   width: 100%;
   background-color: #00000080;
   backdrop-filter: blur(10px);
-}
 
-.overlay-active {
-  display: block;
+  &-active {
+    display: block;
+  }
 }
 
 .modal {
@@ -379,39 +368,36 @@ button {
   background-color: #efefef;
   padding: 1em;
   transform: translate(-50%, -50%) scale(0);
-}
 
-.modal-active {
-  transform: translate(-50%, -50%) scale(1);
-}
+  &-active {
+    transform: translate(-50%, -50%) scale(1);
+  }
 
-.modal-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
+  &-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.modal-details {
-  height: 100%;
-  width: 100%;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 10px;
-}
+  &-details {
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+  }
 
-.modal-description {
-  min-height: 300px;
-}
+  &-description {
+    min-height: 300px;
+  }
 
-textarea {
-  display: block;
-  width: 100%;
-  resize: none;
-  padding: 5px 10px;
-  margin: 0;
-  border: none;
-  outline: none;
+  &-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    height: 40px;
+  }
 }
 
 .form-task-name {
@@ -424,24 +410,11 @@ textarea {
   height: 100%;
 }
 
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  height: 40px;
-}
-
 .form-button {
-  outline: none;
-  appearance: none;
   font-size: 80%;
-  box-sizing: border-box;
-  padding: 5px;
   color: #f9faf8;
   background-color: #144e12;
-  border: 1px solid #144e12;
   padding: 10px 32px;
-  border: 3px white;
   border-radius: 7px;
   font-weight: bold;
   height: auto;
