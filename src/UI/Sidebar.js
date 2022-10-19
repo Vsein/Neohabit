@@ -10,10 +10,12 @@ export default class Sidebar {
         <div class="filters">
         </div>
         <div class="projects">
-          <div class="projects-header">
+          <input type="checkbox" id="dropdown-input">
+          <label class="projects-header" for="dropdown-input">
             <p>Projects</p>
-            <img class="icon" src=${arrowDown}>
-          </div>
+            <img class="icon arrow" src=${arrowDown}>
+          </label>
+          <div class="projects-container"></div>
         </div>
       </div>
     `;
@@ -30,7 +32,7 @@ export default class Sidebar {
     Storage.getToDoList()
       .getProjects()
       .forEach((project) => {
-        const projects = document.querySelector('.projects');
+        const projects = document.querySelector('.projects-container');
         projects.appendChild(Sidebar.createProjectTile(project));
       });
   }
