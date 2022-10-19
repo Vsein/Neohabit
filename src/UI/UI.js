@@ -21,7 +21,6 @@ export default class UI {
     Sidebar.init();
     Editor.changeListTo('All');
     UI.initModal();
-    UI.initMenuButton();
   }
 
   static closeModal() {
@@ -80,19 +79,5 @@ export default class UI {
       Storage.addTask(projectName, task);
     }
     UI.closeModal();
-  }
-
-  static initMenuButton() {
-    const menuButton = document.querySelector('#menu-button');
-    const menu = document.querySelector('.menu');
-    const menuDropdown = document.querySelector('.menu-dropdown');
-    const sidebar = document.querySelector('.sidebar');
-    const content = document.querySelector('#content');
-    menuButton.addEventListener('click', () => {
-      sidebar.classList.toggle('sidebar-hidden');
-      menuDropdown.classList.toggle('menu-dropdown-active');
-      menu.classList.toggle('full-blown');
-      content.classList.toggle('content-toggle');
-    });
   }
 }

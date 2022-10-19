@@ -7,7 +7,7 @@ export default class Sidebar {
     const content = document.getElementById('content');
     content.innerHTML += `
       <div class="sidebar">
-        <div class="filter-sections">
+        <div class="filters">
         </div>
         <div class="projects">
           <div class="projects-header">
@@ -23,7 +23,7 @@ export default class Sidebar {
     Storage.getToDoList()
       .getFilters()
       .forEach((filter) => {
-        const filterSections = document.querySelector('.filter-sections');
+        const filterSections = document.querySelector('.filters');
         filterSections.appendChild(Sidebar.createFilterSection(filter));
       });
 
@@ -37,7 +37,7 @@ export default class Sidebar {
 
   static createFilterSection(filter) {
     const filterSection = document.createElement('div');
-    filterSection.classList.add('filter-section');
+    filterSection.classList.add('filter');
     if (filter.name === 'All') {
       filterSection.classList.add('active');
     }

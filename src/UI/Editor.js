@@ -14,12 +14,10 @@ export default class Editor {
         </div>
         <div class="editor-list">
         </div>
-        <div class="editor-add-button">
-          <button class="add-task-btn">
-            <img class="add-task-icon" src=${plus}>
-            <p>Add task</p>
-          </button>
-        </div>
+        <button class="add-task-btn">
+          <img class="add-task-icon" src=${plus}>
+          <p>Add task</p>
+        </button>
       </div>
     `;
   }

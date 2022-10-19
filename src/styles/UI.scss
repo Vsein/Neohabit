@@ -49,18 +49,7 @@ textarea {
   outline: none;
   appearance: none;
   border: none;
-}
-
-button {
   display: block;
-  height: 30px;
-  border: 1px solid silver;
-}
-
-textarea {
-  display: block;
-  resize: none;
-  padding: 5px 10px;
 }
 
 #content {
@@ -72,12 +61,6 @@ textarea {
   grid-template-rows: 80px 1fr;
   grid-template-columns: 270px 1fr;
   background-color: #efefef;
-}
-
-#content.content-toggle {
-  grid-template-areas:
-    'menu editor'
-    'menu editor';
 }
 
 .menu {
@@ -121,10 +104,6 @@ textarea {
     background-color: #00000022;
     }
   }
-}
-
-#menu-button:hover {
-  cursor: pointer;
 }
 
 .logo-section {
@@ -178,7 +157,8 @@ textarea {
   }
 }
 
-.projects {
+.projects,
+.filters {
   display: grid;
   grid-auto-rows: 35px;
   gap: 3px;
@@ -192,55 +172,42 @@ textarea {
   align-items: center;
 }
 
-.filter-sections {
-  display: grid;
-  grid-auto-rows: 40px;
-  align-items: center;
-  gap: 5px;
-}
-
-
-.filter-section:hover,
-.project:hover,
-.menu-section:hover {
-  cursor: pointer;
-  background-color: #0000001a;
-}
-
-.project,
-.tag {
-  height: 100%;
-  line-height: 12px;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  gap: 10px;
-  border-radius: 3px;
-}
-
-.filter-section {
+@mixin sidebar-item {
   height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-radius: 3px;
+  align-content: center;
+  line-height: 12px;
   gap: 10px;
-  padding-inline: 10px;
+  border-radius: 3px;
 
   &.active {
     background-color: #144e1233;
+  }
 
-    &.important {
-      background-color: #ffd70033;
-    }
+  &:hover {
+    cursor: pointer;
+    background-color: #0000001a;
+  }
+}
+
+.filter {
+  @include sidebar-item;
+  padding-inline: 10px;
+
+  &.active.important {
+    background-color: #ffd70033;
   }
 }
 
 .project {
+  @include sidebar-item;
   padding: 10px;
 }
 
 .tag {
+  @include sidebar-item;
   padding-inline: 10px 15px;
   background-color: silver;
   border-radius: 10px;
@@ -278,11 +245,8 @@ textarea {
   &-list {
     display: grid;
     grid-auto-flow: row;
-    gap: 10px;
-  }
-
-  &-add-button {
-    padding-top: 10px;
+    gap: 5px;
+    padding-bottom: 5px;
   }
 }
 
@@ -292,24 +256,18 @@ textarea {
   gap: 15px;
   align-items: center;
   border-radius: 10px;
+  border: 1px solid #bbb;
+  min-height: 30px;
+  cursor: pointer;
 }
 
 .task {
   @include editor-list-item;
-  min-height: 50px;
   background-color: white;
-  flex-direction: row;
-  gap: 15px;
-  border: 1px solid #bbbbbb;
-  cursor: pointer;
 }
 
 .add-task-btn {
   @include editor-list-item;
-
-  &:hover {
-    cursor: pointer;
-  }
 }
 
 .add-task-icon {
@@ -401,11 +359,12 @@ textarea {
 }
 
 .form-task-name {
+  padding: 5px 10px;
   height: min-content;
-  outline: none;
 }
 
 .form-task-description {
+  padding: 5px 10px;
   font-size: 0.9em;
   height: 100%;
 }
