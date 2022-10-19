@@ -4,12 +4,13 @@
   @include dropdown;
   padding-bottom: auto;
   grid-area: menu;
-  width: 270px;
+  width: 100vw;
   padding-block: 15px;
   background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
   z-index: 2;
 
   &-container {
+    width: 270px;
     display: grid;
     gap: 0;
     grid-auto-rows: 50px;

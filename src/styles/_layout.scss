@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: grid;
   grid-template-areas:
-    'menu    editor'
+    'menu    menu'
     'sidebar editor';
   grid-template-rows: 80px 1fr;
   grid-template-columns: 270px 1fr;
