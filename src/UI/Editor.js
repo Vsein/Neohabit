@@ -51,9 +51,7 @@ export default class Editor {
     taskTile.innerHTML = `
       <div class="checkbox" style="border-color:${project.color};background:${Editor.getBG(task.completed, project.color)}"></div>
       <p>${task.name}</p>
-      <div class="delete-task-btn icon">
-        <img src=${plus}>
-      </div>
+      <img src=${plus} class="delete-task-btn icon">
     `;
     list.appendChild(taskTile);
 

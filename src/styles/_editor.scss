@@ -18,9 +18,10 @@
 }
 
 @mixin editor-list-item {
-  padding-inline: 15px;
-  display: flex;
-  gap: 15px;
+  padding-inline: 10px;
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  gap: 10px;
   align-items: center;
   border-radius: 10px;
   border: 1px solid #bbb;
@@ -35,10 +36,9 @@
 
 .add-task-btn {
   @include editor-list-item;
+  text-align: left;
 }
 
 .add-task-icon {
-  width: 20px;
-  height: 20px;
   transform: scale(1.3);
 }
