@@ -8,6 +8,8 @@
   gap: 15px;
   padding: 15px;
   transition: 1.5s;
+  white-space: nowrap;
+  overflow: hidden;
 
   &-hidden {
     visibility: hidden;
@@ -45,6 +47,7 @@
   line-height: 12px;
   gap: 10px;
   border-radius: 3px;
+  transition: background-color 0.3s;
 
   &.active {
     background-color: #144e1233;
