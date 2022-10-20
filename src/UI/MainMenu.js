@@ -5,16 +5,17 @@ import toDo from '../icons/checkbox-multiple-marked.svg';
 import post from '../icons/post.svg';
 import cog from '../icons/cog.svg';
 import menu from '../icons/menu.svg';
+import apps from '../icons/apps.svg';
 
 export default class MainMenu {
   static create() {
     const content = document.getElementById('content');
     content.innerHTML += `
       <div class="menu">
+        <h2 class="logo neohabit"></h2>
         <input type="checkbox" class="menu-checkbox" id="menu-checkbox">
         <label class="logo-section" for="menu-checkbox">
-          <img src=${menu} class="icon" id="menu-button">
-          <h2 class="logo neohabit"></h2>
+          <img src=${apps} class="icon" id="menu-button">
         </label>
         <div class="menu-container">
           <div class="menu-section">
@@ -27,7 +28,7 @@ export default class MainMenu {
           </div>
           <div class="menu-section">
             <img src=${habits} class="icon">
-            <p class="link">Current habits</p>
+            <p class="link">Habits</p>
           </div>
           <div class="menu-section active">
             <img src=${toDo} class="icon">

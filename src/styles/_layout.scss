@@ -19,10 +19,6 @@
     .editor {
       padding: 18px 9px;
     }
-
-    .menu-container {
-      width: 100%;
-    }
   }
 
   @media (min-width: 550px) {
@@ -33,10 +29,6 @@
     .editor {
       padding: 18px;
     }
-
-    .menu-container {
-      width: 180px;
-    }
   }
 
   @media (min-width: 700px) {
@@ -46,10 +38,6 @@
 
     .editor {
       padding: 18px 36px 36px;
-    }
-
-    .menu-container {
-      width: 270px;
     }
   }
 }
