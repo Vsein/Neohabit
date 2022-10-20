@@ -5,6 +5,52 @@
     'menu    menu'
     'sidebar editor';
   grid-template-rows: 80px 1fr;
-  grid-template-columns: 270px 1fr;
+  grid-template-columns: min-content 1fr;
   background-color: #efefef;
+  @media (max-width: 550px) {
+    .sidebar {
+      width: 0px;
+      opacity: 0;
+      position: relative;
+      right: 30px;
+      visibility: hidden;
+      padding: 15px 0;
+    }
+
+    .editor {
+      padding: 18px 9px;
+    }
+
+    .menu-container {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 550px) {
+    .sidebar {
+      width: 180px;
+    }
+
+    .editor {
+      padding: 18px;
+    }
+
+    .menu-container {
+      width: 180px;
+    }
+  }
+
+  @media (min-width: 700px) {
+    .sidebar {
+      width: 270px;
+    }
+
+    .editor {
+      padding: 18px 36px 36px;
+    }
+
+    .menu-container {
+      width: 270px;
+    }
+  }
 }
