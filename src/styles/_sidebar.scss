@@ -87,3 +87,40 @@
 .projects {
   @include dropdown;
 }
+
+.sidebar-mobile {
+  height: 70px;
+  position: fixed;
+  visibility: hidden;
+  bottom: 0;
+  margin: 10px;
+  width: calc(100% - 20px);
+  border-radius: 35px;
+  background-color: silver;
+  box-shadow: 0 0 3px 1px grey;
+  scroll-margin-top: 3rem;
+  z-index: 1;
+}
+
+.filters-mobile {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  padding: 10px 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-mobile {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  padding: 10px;
+  transition: background-color 0.3s ease-out;
+
+  &:hover, &.active {
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+  }
+}

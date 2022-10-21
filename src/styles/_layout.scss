@@ -14,10 +14,15 @@
       position: relative;
       visibility: hidden;
       padding: 15px 0;
+
+      &-mobile {
+        visibility: visible;
+      }
     }
 
     .editor {
       padding: 18px 9px;
+      padding-bottom: 90px;
     }
   }
 
