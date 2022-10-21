@@ -10,7 +10,7 @@ export default class Sidebar {
         <div class="filters">
         </div>
         <div class="projects">
-          <input type="checkbox" class="projects-checkbox" id="projects-checkbox">
+          <input type="checkbox" class="projects-checkbox" id="projects-checkbox" checked>
           <label class="projects-header" for="projects-checkbox">
             <p>Projects</p>
             <img class="icon projects-arrow" src=${arrowDown}>
