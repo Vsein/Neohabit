@@ -42,3 +42,38 @@
   border-radius: 50%;
   border: 2px solid green;
 }
+
+.ribbon {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+
+  & span {
+    position: relative;
+    display: block;
+    width: 110px;
+    background-color: #144e12;
+    box-shadow: 0 5px 10px rgba(0,0,0,.1);
+    color: #fff;
+    font: 700 12px/1 'Lato', sans-serif;
+    text-shadow: 0 1px 1px rgba(0,0,0,.2);
+    text-transform: uppercase;
+    padding-inline: 25px 30px;
+  }
+}
+
+.ribbon-top-right {
+  top: 0;
+  right: 0;
+
+  & span {
+    left: 0px;
+    top: 15px;
+    transform: rotate(45deg);
+  }
+}
+
+.ribbon-raw span {
+  padding-inline: 35px 30px;
+  background-color: #A76214;
+}

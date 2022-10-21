@@ -40,6 +40,8 @@
     text-align: center;
     grid-template-rows: 60px 20px;
     border-radius: 7px;
+    position: relative;
+    overflow: hidden;
 
     &.active {
     background-color: #00000022;

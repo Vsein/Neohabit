@@ -18,17 +18,20 @@ export default class MainMenu {
           <img src=${apps} class="icon" id="menu-button">
         </label>
         <div class="menu-container">
-          <div class="menu-section">
+          <a class="menu-section" href="https://vsein.github.io/profile-page/">
             <img src=${home} class="icon">
             <p class="link">Dashboard</p>
-          </div>
+            <div class="ribbon ribbon-top-right ribbon-raw"><span>raw</span></div>
+          </a>
           <div class="menu-section">
             <img src=${skillTree} class="icon">
             <p class="link">Skill trees</p>
+            <div class="ribbon ribbon-top-right"><span>coming soon</span></div>
           </div>
           <div class="menu-section">
             <img src=${habits} class="icon">
             <p class="link">Habits</p>
+            <div class="ribbon ribbon-top-right"><span>coming soon</span></div>
           </div>
           <div class="menu-section active">
             <img src=${toDo} class="icon">
@@ -37,10 +40,12 @@ export default class MainMenu {
           <div class="menu-section">
             <img src=${post} class="icon">
             <p class="link">Blog</p>
+            <div class="ribbon ribbon-top-right"><span>coming soon</span></div>
           </div>
           <div class="menu-section">
             <img src=${cog} class="icon">
             <p class="link">Settings</p>
+            <div class="ribbon ribbon-top-right"><span>coming soon</span></div>
           </div>
         </div>
       </div>
