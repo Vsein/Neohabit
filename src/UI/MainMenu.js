@@ -51,4 +51,19 @@ export default class MainMenu {
       </div>
     `;
   }
+
+  static init() {
+    window.addEventListener('click', (e) => {
+      const input = document.getElementById('menu-checkbox');
+      const logo = document.querySelector('.logo-section');
+      const container = document.querySelector('.menu-container');
+      if (
+        !input.contains(e.target)
+        && !logo.contains(e.target)
+        && !container.contains(e.target)
+      ) {
+        input.checked = false;
+      }
+    });
+  }
 }

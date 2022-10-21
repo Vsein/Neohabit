@@ -19,6 +19,7 @@ export default class UI {
     Overlay.create();
 
     Sidebar.init();
+    MainMenu.init();
     Editor.changeListTo('All');
     UI.initModal();
   }
