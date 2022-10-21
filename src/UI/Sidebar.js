@@ -115,9 +115,11 @@ export default class Sidebar {
     const currentSectionMobile = document.querySelector('.sidebar-mobile .active');
     if (currentSection) {
       currentSection.classList.remove('active');
+      currentSection.style.removeProperty('background-color'); // needed cuz of custom project colors
     }
     if (currentSectionMobile) {
       currentSectionMobile.classList.remove('active');
+      currentSectionMobile.style.removeProperty('background-color');
     }
   }
 }
