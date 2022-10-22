@@ -1,22 +1,31 @@
+@mixin sidebar-hidden {
+  width: 0px;
+  opacity: 0;
+  position: relative;
+  visibility: hidden;
+  padding: 15px 0;
+}
+
 #content {
   min-height: 100vh;
   display: grid;
   grid-template-areas:
     'menu    menu'
     'sidebar editor';
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: 60px 1fr;
   grid-template-columns: min-content 1fr;
   background-color: #efefef;
   @media (max-width: 550px) {
     .sidebar {
-      width: 0px;
-      opacity: 0;
-      position: relative;
-      visibility: hidden;
-      padding: 15px 0;
+      @include sidebar-hidden;
 
       &-mobile {
         visibility: visible;
+      }
+
+      &-toggle-container {
+        visibility: hidden;
+        width: 0px;
       }
     }
 
@@ -29,6 +38,10 @@
   @media (min-width: 550px) {
     .sidebar {
       width: 180px;
+
+      &-hidden {
+        @include sidebar-hidden;
+      }
     }
 
     .editor {
@@ -39,6 +52,10 @@
   @media (min-width: 700px) {
     .sidebar {
       width: 270px;
+
+      &-hidden {
+        @include sidebar-hidden;
+      }
     }
 
     .editor {

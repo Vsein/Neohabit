@@ -11,11 +11,6 @@
   white-space: nowrap;
   overflow: hidden;
 
-  &-hidden {
-    visibility: hidden;
-    position: absolute;
-  }
-
   & p {
     line-height: 20px;
   }

@@ -12,6 +12,9 @@ export default class MainMenu {
     const content = document.getElementById('content');
     content.innerHTML += `
       <div class="menu">
+        <div class="logo-section sidebar-toggle-container">
+          <img src=${menu} class="icon sidebar-toggle">
+        </div>
         <h2 class="logo neohabit"></h2>
         <input type="checkbox" class="menu-checkbox" id="menu-checkbox">
         <label class="logo-section" for="menu-checkbox">
@@ -64,6 +67,10 @@ export default class MainMenu {
       ) {
         input.checked = false;
       }
+    });
+
+    document.querySelector('.sidebar-toggle-container').addEventListener('click', (e) => {
+      document.querySelector('.sidebar').classList.toggle('sidebar-hidden');
     });
   }
 }
