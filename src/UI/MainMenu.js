@@ -58,18 +58,17 @@ export default class MainMenu {
   static init() {
     window.addEventListener('click', (e) => {
       const input = document.getElementById('menu-checkbox');
-      const logo = document.querySelector('.logo-section');
       const container = document.querySelector('.menu-container');
-      if (
-        !input.contains(e.target)
-        && !logo.contains(e.target)
-        && !container.contains(e.target)
-      ) {
+      const button = document.querySelector('#menu-button');
+      if (input.contains(e.target) || button.contains(e.target)) {
+        return;
+      }
+      if (!container.contains(e.target)) {
         input.checked = false;
       }
     });
 
-    document.querySelector('.sidebar-toggle-container').addEventListener('click', (e) => {
+    document.querySelector('.sidebar-toggle-container').addEventListener('click', () => {
       document.querySelector('.sidebar').classList.toggle('sidebar-hidden');
     });
   }
