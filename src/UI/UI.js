@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import '../styles/main.scss';
 import { endOfToday, endOfWeek } from 'date-fns';
 import Storage from '../modules/Storage';
@@ -6,6 +8,9 @@ import Sidebar from './Sidebar';
 import Editor from './Editor';
 import Overlay from './Overlay';
 import Task from '../modules/Task';
+import LikeButton from './test';
+
+const e = React.createElement;
 
 export default class UI {
   static load() {
@@ -22,6 +27,13 @@ export default class UI {
     MainMenu.init();
     Editor.changeListTo('All');
     UI.initModal();
+    const likeButton = document.createElement('div');
+    likeButton.id = 'like';
+    content.appendChild(likeButton);
+
+    const domContainer = document.querySelector('#like');
+    const root = ReactDOM.createRoot(domContainer);
+    root.render(e(LikeButton));
   }
 
   static closeModal() {
