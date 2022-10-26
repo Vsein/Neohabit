@@ -8,7 +8,6 @@ import Sidebar from './Sidebar';
 import Editor from './Editor';
 import Overlay from './Overlay';
 import Task from '../modules/Task';
-import LikeButton from './test';
 
 const e = React.createElement;
 
@@ -17,23 +16,16 @@ export default class UI {
     const content = document.createElement('div');
     content.id = 'content';
     document.body.appendChild(content);
+    const root = ReactDOM.createRoot(content);
+    root.render(e(MainMenu));
 
-    MainMenu.create();
-    Sidebar.create();
-    Editor.create();
-    Overlay.create();
+    // Sidebar.create();
+    // Editor.create();
+    // Overlay.create();
 
-    Sidebar.init();
-    MainMenu.init();
-    Editor.changeListTo('All');
-    UI.initModal();
-    const likeButton = document.createElement('div');
-    likeButton.id = 'like';
-    content.appendChild(likeButton);
-
-    const domContainer = document.querySelector('#like');
-    const root = ReactDOM.createRoot(domContainer);
-    root.render(e(LikeButton));
+    // Sidebar.init();
+    // Editor.changeListTo('All');
+    // UI.initModal();
   }
 
   static closeModal() {

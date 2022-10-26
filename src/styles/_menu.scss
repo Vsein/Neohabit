@@ -13,10 +13,6 @@
   background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
   z-index: 2;
 
-  &-checkbox:checked ~ label {
-    background-color: rgba(0, 0, 0, 0.2);
-  }
-
   &-container {
     width: 270px;
     height: min-content;
@@ -32,6 +28,13 @@
     overflow: hidden;
     margin: 10px;
     right: 0;
+
+    &.active {
+      top: calc(100%);
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
   &-section {
