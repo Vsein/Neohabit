@@ -3,7 +3,11 @@ import plus from '../icons/plus.svg';
 import Storage from '../modules/Storage';
 
 export default function Editor(props) {
-  const { list } = props;
+  const { list, open } = props;
+
+  const openNew = () => {
+    open({ isNew: true, task: {}, project: {} });
+  };
 
   return (
     <div className="editor">
@@ -15,12 +19,12 @@ export default function Editor(props) {
           .filterProjects(list)
           .map((project) =>
             project.tasks.map((task) => (
-              <Task task={task} project={project} key={task.name} />
-            ))
+              <Task task={task} project={project} key={task.name} open={open}/>
+            )),
           )}
       </div>
-      <button className="add-task-btn">
-        <img className="add-task-icon" src={plus} />
+      <button className="add-task-btn" onClick={openNew}>
+        <img className="add-task-icon" src={plus}/>
         <p>Add task</p>
       </button>
     </div>
@@ -28,7 +32,7 @@ export default function Editor(props) {
 }
 
 function Task(props) {
-  const { task, project } = props;
+  const { task, project, open } = props;
   const [completed, setCompleted] = useState(task.completed);
 
   const deleteTask = (e) => {
@@ -48,7 +52,7 @@ function Task(props) {
     : `${project.color}33`;
 
   return (
-    <div className="task">
+    <div className="task" onClick={() => open({ isNew: false, task, project })}>
       <div
         className="checkbox"
         style={{ borderColor: project.color, background: bg }}

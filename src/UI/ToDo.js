@@ -8,14 +8,48 @@ import Sidebar from './Sidebar';
 import Editor from './Editor';
 import Overlay from './Overlay';
 import Task from '../modules/Task';
+import Project from '../modules/Project';
 
 export default function ToDo(props) {
   const { list } = props;
+  const [overlayContent, setOverlayContent] = useState({
+    task: new Task(),
+    project: new Project(),
+    isNew: true,
+  });
+  const [overlayActive, setOverlayActive] = useState(false);
+
+  const openOverlay = ({ isNew, task, project }) => {
+    if (isNew) {
+      setOverlayContent({
+        task: new Task(),
+        project: new Project(),
+        isNew: true,
+      });
+      setOverlayActive(true);
+    } else {
+      setOverlayContent({ isNew, task, project });
+      setOverlayActive(true);
+    }
+  };
+
+  const closeOverlay = () => {
+    setOverlayActive(false);
+  };
+
   return (
     <div id="content">
       <MainMenu />
-      <Sidebar list={list}/>
-      <Editor list={list}/>
+      <Sidebar list={list} />
+      <Editor list={list} open={openOverlay} />
+      <Overlay
+        project={overlayContent.project}
+        task={overlayContent.task}
+        isNew={overlayContent.isNew}
+        active={overlayActive}
+        close={closeOverlay}
+        modify={setOverlayContent}
+      />
     </div>
   );
 }
