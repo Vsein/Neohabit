@@ -82,6 +82,15 @@
 
 .projects {
   @include dropdown;
+
+  &-arrow {
+    transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8);
+    transform: rotate(90deg);
+
+    &.active {
+      transform: none;
+    }
+  }
 }
 
 .sidebar-mobile {

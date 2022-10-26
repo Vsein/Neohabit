@@ -17,15 +17,12 @@ export default class UI {
     content.id = 'content';
     document.body.appendChild(content);
     const root = ReactDOM.createRoot(content);
-    root.render(e(MainMenu));
-
-    // Sidebar.create();
-    // Editor.create();
-    // Overlay.create();
-
-    // Sidebar.init();
-    // Editor.changeListTo('All');
-    // UI.initModal();
+    root.render(
+      <React.StrictMode>
+        <MainMenu />
+        <Sidebar />
+      </React.StrictMode>
+    );
   }
 
   static closeModal() {

@@ -1,125 +1,94 @@
-import arrowDown from '../icons/chevron-down.svg';
+import React, { useState } from 'react';
+import Icon from '@mdi/react';
+import { mdiChevronDown } from '@mdi/js';
 import Storage from '../modules/Storage';
-import Editor from './Editor';
 
-export default class Sidebar {
-  static create() {
-    const content = document.getElementById('content');
-    content.innerHTML += `
-      <div class="sidebar">
-        <div class="filters">
+export default function Sidebar() {
+  const [currentFilter, setCurrentFilter] = useState('All');
+  const [projectsCollapsed, setProjectsCollapsed] = useState(false);
+
+  const toggleProjectsCollapsed = () => {
+    setProjectsCollapsed(!projectsCollapsed);
+  };
+
+  return (
+    <div className="sidebar">
+      <div className="filters">
+        {Storage.getToDoList()
+          .getFilters()
+          .map((filter, i) => (
+            <Filter
+              filter={filter}
+              key={`filter-${i}`}
+              current={currentFilter}
+              modify={setCurrentFilter}
+            />
+          ))}
+      </div>
+      <div className="projects">
+        <div className="projects-header">
+          <p>Projects</p>
+          <Icon
+            className={`icon projects-arrow ${projectsCollapsed ? '' : 'active'}`}
+            path={mdiChevronDown}
+            onClick={toggleProjectsCollapsed}
+          />
         </div>
-        <div class="projects">
-          <input type="checkbox" class="projects-checkbox" id="projects-checkbox" checked>
-          <label class="projects-header" for="projects-checkbox">
-            <p>Projects</p>
-            <img class="icon projects-arrow" src=${arrowDown}>
-          </label>
-          <div class="projects-container"></div>
+        <div
+          className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
+        >
+          {Storage.getToDoList()
+            .getProjects()
+            .map((project, i) => (
+              <Project
+                project={project}
+                key={`project-${i}`}
+                current={currentFilter}
+                modify={setCurrentFilter}
+              />
+            ))}
         </div>
       </div>
-    `;
-    content.innerHTML += `
-      <div class="sidebar-mobile">
-        <div class="filters-mobile">
-        </div>
-        <div class="projects-mobile">
-        </div>
+    </div>
+  );
+}
+
+function Project(props) {
+  const { project, current, modify } = props;
+
+  return (
+    <div
+      className={`project ${project.name === current ? 'active' : ''}`}
+      onClick={() => modify(project.name)}
+      style={{
+        backgroundColor: project.name === current ? `${project.color}33` : '',
+      }}
+    >
+      <div className="centering">
+        <div
+          className="project-circle"
+          style={{ backgroundColor: project.color }}
+        />
       </div>
-    `;
-  }
+      {project.name === 'Neohabit' ? (
+        <div className="neohabit" />
+      ) : (
+        <p>{project.name}</p>
+      )}
+    </div>
+  );
+}
 
-  static init() {
-    Storage.getToDoList()
-      .getFilters()
-      .forEach((filter) => {
-        Sidebar.createFilterSection(filter);
-      });
+function Filter(props) {
+  const { filter, current, modify } = props;
 
-    Storage.getToDoList()
-      .getProjects()
-      .forEach((project) => {
-        Sidebar.createProjectTile(project);
-      });
-  }
-
-  static createFilterSection(filter) {
-    const filters = document.querySelector('.filters');
-    const filterSection = document.createElement('div');
-    const filtersMobile = document.querySelector('.filters-mobile');
-    const filterSectionMobile = document.createElement('img');
-
-    filterSection.classList.add('filter');
-    filterSectionMobile.classList.add('filter-mobile');
-    if (filter.name === 'All') {
-      filterSection.classList.add('active');
-      filterSectionMobile.classList.add('active');
-    }
-    if (filter.name === 'Important') {
-      filterSection.classList.add('important');
-      filterSectionMobile.classList.add('important');
-    }
-
-    filterSection.innerHTML = `
-      <img src=${filter.image} height="20px" width="20px">
-      <p>${filter.name}<p>
-    `;
-    filterSectionMobile.src = filter.image;
-
-    filterSection.addEventListener('click', () => {
-      Editor.changeListTo(filter.name);
-      Sidebar.resetActiveSection();
-
-      filterSection.classList.add('active');
-      filterSectionMobile.classList.add('active');
-    });
-
-    filterSectionMobile.addEventListener('click', () => {
-      Editor.changeListTo(filter.name);
-      Sidebar.resetActiveSection();
-
-      filterSection.classList.add('active');
-      filterSectionMobile.classList.add('active');
-    });
-
-    filters.appendChild(filterSection);
-    filtersMobile.appendChild(filterSectionMobile);
-  }
-
-  static createProjectTile(project) {
-    const projects = document.querySelector('.projects-container');
-    const projectTile = document.createElement('div');
-    projectTile.classList.add('project');
-    projectTile.innerHTML += `
-      <div class="centering">
-        <div class="project-circle" style="background-color:${project.color}">
-        </div>
-      </div>
-      <p class="${project.name === 'Neohabit' ? project.name : ''}">
-      ${project.name}</p>
-    `;
-
-    projectTile.addEventListener('click', () => {
-      Editor.changeListTo(project.name);
-      Sidebar.resetActiveSection();
-
-      projectTile.classList.add('active');
-      projectTile.style.backgroundColor = `${project.color}33`;
-    });
-
-    projects.appendChild(projectTile);
-  }
-
-  static resetActiveSection() {
-    const currentSection = document.querySelector('.sidebar .active');
-    const currentSectionMobile = document.querySelector('.sidebar-mobile .active');
-    if (currentSection) {
-      currentSection.classList.remove('active');
-      currentSection.style.removeProperty('background-color'); // needed cuz of custom project colors
-    }
-    if (currentSectionMobile) {
-      currentSectionMobile.classList.remove('active');
-      currentSectionMobile.style.removeProperty('background-color');
-    }
-  }
+  return (
+    <div
+      className={`filter ${filter.name === current ? 'active' : ''}`}
+      onClick={() => modify(filter.name)}
+    >
+      <img src={filter.image} height="20px" width="20px" />
+      <p>{filter.name}</p>
+    </div>
+  );
 }
