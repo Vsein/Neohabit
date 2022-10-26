@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import Storage from '../modules/Storage';
 
-export default function Sidebar() {
-  const [currentFilter, setCurrentFilter] = useState('All');
+export default function Sidebar(props) {
+  const { list } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
   const toggleProjectsCollapsed = () => {
@@ -20,8 +21,7 @@ export default function Sidebar() {
             <Filter
               filter={filter}
               key={`filter-${i}`}
-              current={currentFilter}
-              modify={setCurrentFilter}
+              current={list}
             />
           ))}
       </div>
@@ -43,8 +43,7 @@ export default function Sidebar() {
               <Project
                 project={project}
                 key={`project-${i}`}
-                current={currentFilter}
-                modify={setCurrentFilter}
+                current={list}
               />
             ))}
         </div>
@@ -54,12 +53,14 @@ export default function Sidebar() {
 }
 
 function Project(props) {
-  const { project, current, modify } = props;
+  const { project, current } = props;
+
+  const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
-    <div
+    <Link
       className={`project ${project.name === current ? 'active' : ''}`}
-      onClick={() => modify(project.name)}
+      to={`/${linkify(project.name)}`}
       style={{
         backgroundColor: project.name === current ? `${project.color}33` : '',
       }}
@@ -75,20 +76,22 @@ function Project(props) {
       ) : (
         <p>{project.name}</p>
       )}
-    </div>
+    </Link>
   );
 }
 
 function Filter(props) {
-  const { filter, current, modify } = props;
+  const { filter, current } = props;
+
+  const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
-    <div
+    <Link
       className={`filter ${filter.name === current ? 'active' : ''}`}
-      onClick={() => modify(filter.name)}
+      to={`/${linkify(filter.name)}`}
     >
       <img src={filter.image} height="20px" width="20px" />
       <p>{filter.name}</p>
-    </div>
+    </Link>
   );
 }

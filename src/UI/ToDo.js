@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import '../styles/main.scss';
 import { endOfToday, endOfWeek } from 'date-fns';
@@ -9,11 +9,13 @@ import Editor from './Editor';
 import Overlay from './Overlay';
 import Task from '../modules/Task';
 
-export default function ToDo() {
+export default function ToDo(props) {
+  const { list } = props;
   return (
     <div id="content">
       <MainMenu />
-      <Sidebar />
+      <Sidebar list={list}/>
+      <Editor list={list}/>
     </div>
   );
 }
