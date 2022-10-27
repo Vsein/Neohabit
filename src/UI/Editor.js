@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import plus from '../icons/plus.svg';
 import Storage from '../modules/Storage';
 
 export default function Editor(props) {
-  const { list, open } = props;
+  const { open } = props;
+  let { list } = useParams();
+
+  const delinkify = (str) =>
+    str
+      .toLowerCase()
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+      .join(' ');
+
+  list = delinkify(list);
 
   const openNew = () => {
     open({ isNew: true, task: {}, project: {} });
@@ -19,12 +30,12 @@ export default function Editor(props) {
           .filterProjects(list)
           .map((project) =>
             project.tasks.map((task) => (
-              <Task task={task} project={project} key={task.name} open={open}/>
+              <Task task={task} project={project} key={task.name} open={open} />
             )),
           )}
       </div>
       <button className="add-task-btn" onClick={openNew}>
-        <img className="add-task-icon" src={plus}/>
+        <img className="add-task-icon" src={plus} />
         <p>Add task</p>
       </button>
     </div>

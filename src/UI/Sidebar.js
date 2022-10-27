@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import Storage from '../modules/Storage';
 
-export default function Sidebar(props) {
-  const { list } = props;
+export default function Sidebar() {
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
   const toggleProjectsCollapsed = () => {
@@ -21,7 +20,6 @@ export default function Sidebar(props) {
             <Filter
               filter={filter}
               key={`filter-${i}`}
-              current={list}
             />
           ))}
       </div>
@@ -43,7 +41,6 @@ export default function Sidebar(props) {
               <Project
                 project={project}
                 key={`project-${i}`}
-                current={list}
               />
             ))}
         </div>
@@ -53,16 +50,16 @@ export default function Sidebar(props) {
 }
 
 function Project(props) {
-  const { project, current } = props;
+  const { project } = props;
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
-    <Link
-      className={`project ${project.name === current ? 'active' : ''}`}
+    <NavLink
+      className={({ isActive }) => (isActive ? 'project active' : 'project')}
       to={`/${linkify(project.name)}`}
       style={{
-        backgroundColor: project.name === current ? `${project.color}33` : '',
+        backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : '')
       }}
     >
       <div className="centering">
@@ -76,22 +73,22 @@ function Project(props) {
       ) : (
         <p>{project.name}</p>
       )}
-    </Link>
+    </NavLink>
   );
 }
 
 function Filter(props) {
-  const { filter, current } = props;
+  const { filter } = props;
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
-    <Link
-      className={`filter ${filter.name === current ? 'active' : ''}`}
+    <NavLink
+      className={({ isActive }) => (isActive ? 'filter active' : 'filter')}
       to={`/${linkify(filter.name)}`}
     >
       <img src={filter.image} height="20px" width="20px" />
       <p>{filter.name}</p>
-    </Link>
+    </NavLink>
   );
 }

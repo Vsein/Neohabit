@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import { Routes, Route } from 'react-router-dom';
 import '../styles/main.scss';
 import { endOfToday, endOfWeek } from 'date-fns';
 import Storage from '../modules/Storage';
@@ -10,8 +10,7 @@ import Overlay from './Overlay';
 import Task from '../modules/Task';
 import Project from '../modules/Project';
 
-export default function ToDo(props) {
-  const { list } = props;
+export default function ToDo() {
   const [overlayContent, setOverlayContent] = useState({
     task: new Task(),
     project: new Project(),
@@ -40,8 +39,10 @@ export default function ToDo(props) {
   return (
     <div id="content">
       <MainMenu />
-      <Sidebar list={list} />
-      <Editor list={list} open={openOverlay} />
+      <Sidebar />
+      <Routes>
+        <Route path=":list" element={<Editor open={openOverlay} />} />
+      </Routes>
       <Overlay
         project={overlayContent.project}
         task={overlayContent.task}
