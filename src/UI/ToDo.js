@@ -4,6 +4,7 @@ import '../styles/main.scss';
 import Storage from '../modules/Storage';
 import MainMenu from './MainMenu';
 import Sidebar from './Sidebar';
+import SidebarMobile from './SidebarMobile';
 import Editor from './Editor';
 import Overlay from './Overlay';
 import Task from '../modules/Task';
@@ -59,6 +60,7 @@ export default function ToDo() {
     <div id="content">
       <MainMenu toggleSidebar={toggleSidebar} />
       <Sidebar hidden={sidebarHidden}/>
+      <SidebarMobile />
       <Routes>
         <Route path=":list" element={<Editor open={openOverlay} />} />
       </Routes>

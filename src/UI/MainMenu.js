@@ -33,7 +33,10 @@ export default function MainMenu(props) {
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
       </div>
       <h2 className="logo neohabit"></h2>
-      <div className="logo-section menu-toggle" onClick={toggleMenu}>
+      <div
+        className={`logo-section menu-toggle ${menuOpened ? 'active' : ''}`}
+        onClick={toggleMenu}
+      >
         <Icon path={mdiApps} className="icon" />
       </div>
       <div
