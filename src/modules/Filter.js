@@ -1,13 +1,15 @@
-import all from '../icons/square-small.svg';
-import today from '../icons/calendar-today-outline.svg';
-import thisWeek from '../icons/calendar-week-outline.svg';
-import important from '../icons/star.svg';
+import {
+  mdiSquareSmall,
+  mdiCalendarTodayOutline,
+  mdiCalendarWeekOutline,
+  mdiStar,
+} from '@mdi/js';
 
 const defaultCategoryPictures = {
-  All: all,
-  Today: today,
-  'This Week': thisWeek,
-  Important: important,
+  All: mdiSquareSmall,
+  Today: mdiCalendarTodayOutline,
+  'This Week': mdiCalendarWeekOutline,
+  Important: mdiStar,
 };
 
 export default class Filter {

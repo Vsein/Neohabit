@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import plus from '../icons/plus.svg';
+import Icon from '@mdi/react';
+import { mdiPlus } from '@mdi/js';
 import Storage from '../modules/Storage';
 
 export default function Editor(props) {
@@ -35,7 +36,7 @@ export default function Editor(props) {
             )),
           )}
         <button className="add-task-btn" onClick={openNew}>
-          <img className="add-task-icon" src={plus} />
+          <Icon className="add-task-icon" path={mdiPlus} />
           <p>Add task</p>
         </button>
       </div>
@@ -71,7 +72,7 @@ function Task(props) {
         onClick={completeTask}
       ></div>
       <p>{task.name}</p>
-      <img src={plus} className="delete-task-btn icon" onClick={deleteTask} />
+      <Icon path={mdiPlus} className="delete-task-btn icon" onClick={deleteTask} />
     </div>
   );
 }

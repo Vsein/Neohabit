@@ -87,7 +87,7 @@ function Filter(props) {
       className={({ isActive }) => (isActive ? 'filter active' : 'filter')}
       to={`/${linkify(filter.name)}`}
     >
-      <img src={filter.image} height="20px" width="20px" />
+      <Icon path={filter.image} height="20px" width="20px" />
       <p>{filter.name}</p>
     </NavLink>
   );
