@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import '../styles/main.scss';
-import { endOfToday, endOfWeek } from 'date-fns';
 import Storage from '../modules/Storage';
 import MainMenu from './MainMenu';
 import Sidebar from './Sidebar';
@@ -17,16 +16,18 @@ export default function ToDo() {
     isNew: true,
   });
   const [overlayActive, setOverlayActive] = useState(false);
+  const [currentID, setCurrentID] = useState({});
 
   const openOverlay = ({ isNew, task, project }) => {
     if (isNew) {
       setOverlayContent({
         task: new Task(),
-        project: new Project(),
+        project: project || new Project(),
         isNew: true,
       });
       setOverlayActive(true);
     } else {
+      setCurrentID({ taskName: task.name, projectName: project.name });
       setOverlayContent({ isNew, task, project });
       setOverlayActive(true);
     }
@@ -34,6 +35,15 @@ export default function ToDo() {
 
   const closeOverlay = () => {
     setOverlayActive(false);
+  };
+
+  const submitTask = () => {
+    if (overlayContent.isNew) {
+      Storage.addTask(overlayContent.project.name, overlayContent.task);
+    } else {
+      Storage.changeTask(currentID.projectName, currentID.taskName, overlayContent.task);
+    }
+    closeOverlay();
   };
 
   return (
@@ -50,66 +60,8 @@ export default function ToDo() {
         active={overlayActive}
         close={closeOverlay}
         modify={setOverlayContent}
+        submit={submitTask}
       />
     </div>
   );
 }
-
-// static closeModal() {
-//   const overlay = document.querySelector('.overlay');
-//   overlay.classList.remove('overlay-active');
-
-//   const modals = document.querySelectorAll('.modal');
-//   modals.forEach((modal) => modal.classList.remove('modal-active'));
-
-//   const listName = document.getElementById('list-name');
-//   Editor.changeListTo(listName.textContent);
-// }
-
-// static initModal() {
-//   document.querySelector('.overlay').addEventListener('click', UI.closeModal);
-//   document
-//     .querySelector('.modal')
-//     .addEventListener('click', (e) => e.stopPropagation());
-//   document
-//     .getElementById('cancel-form-button')
-//     .addEventListener('click', UI.closeModal);
-//   document
-//     .getElementById('submit-form-button')
-//     .addEventListener('click', UI.submitTask);
-//   document
-//     .querySelector('.close-modal-button')
-//     .addEventListener('click', UI.closeModal);
-// }
-
-// static getTask() {
-//   const title = document.querySelector('.form-task-name').value;
-//   const description = document.querySelector('.form-task-description').value;
-//   const listName = document.querySelector('#list-name').textContent;
-//   if (Storage.getToDoList().isFilter(listName)) {
-//     if (listName === 'Today') {
-//       return new Task(title, description, endOfToday());
-//     }
-//     if (listName === 'This Week') {
-//       return new Task(title, description, endOfWeek(endOfToday(), { weekStartsOn: 1 }));
-//     }
-//     if (listName === 'Important') {
-//       return new Task(title, description, '', false, true);
-//     }
-//   }
-//   return new Task(title, description);
-// }
-
-// static submitTask(e) {
-//   e.preventDefault();
-//   const projectName = document.querySelector('.modal .tag p').textContent;
-//   const taskName = document.querySelector('.form-task-name').textContent;
-//   const task = UI.getTask();
-//   if (document.querySelector('#submit-form-button').textContent === 'Save') {
-//     Storage.changeTask(projectName, taskName, task);
-//   } else {
-//     Storage.addTask(projectName, task);
-//   }
-//   UI.closeModal();
-// }
-// }

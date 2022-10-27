@@ -17,7 +17,8 @@ export default function Editor(props) {
   list = delinkify(list);
 
   const openNew = () => {
-    open({ isNew: true, task: {}, project: {} });
+    const project = Storage.getToDoList().getProject(list);
+    open({ isNew: true, task: {}, project });
   };
 
   return (
@@ -33,11 +34,11 @@ export default function Editor(props) {
               <Task task={task} project={project} key={task.name} open={open} />
             )),
           )}
+        <button className="add-task-btn" onClick={openNew}>
+          <img className="add-task-icon" src={plus} />
+          <p>Add task</p>
+        </button>
       </div>
-      <button className="add-task-btn" onClick={openNew}>
-        <img className="add-task-icon" src={plus} />
-        <p>Add task</p>
-      </button>
     </div>
   );
 }

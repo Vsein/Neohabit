@@ -3,7 +3,7 @@ import plus from '../icons/plus.svg';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay(props) {
-  const { project, task, isNew, active, close, modify } = props;
+  const { project, task, isNew, active, close, modify, submit } = props;
 
   const handleNameChange = (e) => {
     modify((prevState) => {
@@ -22,8 +22,8 @@ export default function Overlay(props) {
   };
 
   return (
-    <div className={`overlay ${active ? 'overlay-active' : ''}`}>
-      <div className={`modal ${active ? 'modal-active' : ''}`}>
+    <div className={`overlay ${active ? 'overlay-active' : ''}`} onClick={close}>
+      <div className={`modal ${active ? 'modal-active' : ''}`} onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="tag">
             <div className="centering">
@@ -70,7 +70,7 @@ export default function Overlay(props) {
           <button className="form-button" id="cancel-form-button" onClick={close}>
             Cancel
           </button>
-          <button className="form-button" id="submit-form-button">
+          <button className="form-button" id="submit-form-button" onClick={submit}>
             {isNew ? 'Add task' : 'Save'}
           </button>
         </div>
