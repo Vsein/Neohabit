@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ToDo from './UI/ToDo';
+import ToDo from './pages/ToDo';
 
 const RouteSwitch = () => (
   <BrowserRouter>
