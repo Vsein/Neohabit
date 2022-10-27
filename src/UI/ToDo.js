@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import '../styles/main.scss';
 import Storage from '../modules/Storage';
@@ -10,6 +10,10 @@ import Task from '../modules/Task';
 import Project from '../modules/Project';
 
 export default function ToDo() {
+  useEffect(() => {
+    document.title = 'To-do list | Neohabit';
+  });
+
   const [overlayContent, setOverlayContent] = useState({
     task: new Task(),
     project: new Project(),

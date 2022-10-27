@@ -9,11 +9,7 @@ module.exports = {
     static: './dist',
     historyApiFallback: true,
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
-  ],
+  plugins: [new HtmlWebpackPlugin({ title: 'Neohabit' })],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
