@@ -4,7 +4,8 @@ import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import Storage from '../modules/Storage';
 
-export default function Sidebar() {
+export default function Sidebar(props) {
+  const { hidden } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
   const toggleProjectsCollapsed = () => {
@@ -12,7 +13,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="sidebar">
+    <div className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
       <div className="filters">
         {Storage.getToDoList()
           .getFilters()

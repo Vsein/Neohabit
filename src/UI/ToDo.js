@@ -14,6 +14,11 @@ export default function ToDo() {
     document.title = 'To-do list | Neohabit';
   });
 
+  const [sidebarHidden, setSidebarHidden] = useState(false);
+  const toggleSidebar = () => {
+    setSidebarHidden(!sidebarHidden);
+  };
+
   const [overlayContent, setOverlayContent] = useState({
     task: new Task(),
     project: new Project(),
@@ -52,8 +57,8 @@ export default function ToDo() {
 
   return (
     <div id="content">
-      <MainMenu />
-      <Sidebar />
+      <MainMenu toggleSidebar={toggleSidebar} />
+      <Sidebar hidden={sidebarHidden}/>
       <Routes>
         <Route path=":list" element={<Editor open={openOverlay} />} />
       </Routes>

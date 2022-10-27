@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
 import {
   mdiHome,
@@ -11,42 +11,35 @@ import {
   mdiApps,
 } from '@mdi/js';
 
-function MenuSection(props) {
-  const { path, href, title, status, raw, active } = props;
-  return (
-    <a className={`menu-section ${active ? 'active' : ''}`} href={href}>
-      <Icon path={path} className="icon" />
-      <p className="link">{title}</p>
-      <div className={`ribbon ribbon-top-right ${raw ? 'ribbon-raw' : ''}`}>
-        <span>{status}</span>
-      </div>
-    </a>
-  );
-}
-
-export default function MainMenu() {
+export default function MainMenu(props) {
+  const { toggleSidebar } = props;
   const [menuOpened, setMenuOpened] = useState(false);
 
-  const toggleMenu = () => {
+  const toggleMenu = (e) => {
+    e.stopPropagation();
     setMenuOpened(!menuOpened);
   };
 
-  // useEffect(() => {
-  //   document.querySelector('.sidebar-toggle-container').addEventListener('click', () => {
-  //     document.querySelector('.sidebar').classNameList.toggle('sidebar-hidden')
-  //   });
-  // });
+  useEffect(() => {
+    document.addEventListener('click', () => setMenuOpened(false));
+  });
 
   return (
     <div className="menu">
-      <div className="logo-section sidebar-toggle-container">
+      <div
+        className="logo-section sidebar-toggle-container"
+        onClick={toggleSidebar}
+      >
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
       </div>
       <h2 className="logo neohabit"></h2>
       <div className="logo-section menu-toggle" onClick={toggleMenu}>
         <Icon path={mdiApps} className="icon" />
       </div>
-      <div className={`menu-container ${menuOpened ? 'active' : ''}`}>
+      <div
+        className={`menu-container ${menuOpened ? 'active' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <MenuSection
           path={mdiHome}
           title="Dashboard"
@@ -69,5 +62,18 @@ export default function MainMenu() {
         <MenuSection path={mdiCog} title="Settings" status="Coming soon" />
       </div>
     </div>
+  );
+}
+
+function MenuSection(props) {
+  const { path, href, title, status, raw, active } = props;
+  return (
+    <a className={`menu-section ${active ? 'active' : ''}`} href={href}>
+      <Icon path={path} className="icon" />
+      <p className="link">{title}</p>
+      <div className={`ribbon ribbon-top-right ${raw ? 'ribbon-raw' : ''}`}>
+        <span>{status}</span>
+      </div>
+    </a>
   );
 }
