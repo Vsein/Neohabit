@@ -1,0 +1,280 @@
+@font-face {
+    font-family: 'Poppins-header';
+    src: url('fonts/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins-medium';
+    src: url('fonts/Poppins-Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Poppins-medium', sans-serif;
+  font-size: 1.05em;
+}
+
+.container {
+  height: 100%;
+  display: grid;
+  grid-template: 75px 100px 1fr / 1fr 4fr;
+  background-color: #EFEFEF;
+}
+
+.container > div {
+  align-self: stretch;
+}
+
+.menu {
+  padding: 15px 15px 15px 5px;
+  grid-row: span 3;
+  background: linear-gradient(0.1turn, #C0EFA6, #71C639 45% 60%, #A7C4BE);
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  grid-auto-rows: 50px;
+  align-items: center;
+}
+
+.menu img {
+  grid-column-start: 1;
+  justify-self: center;
+}
+
+.icon {
+  height: 30px;
+  width: 30px;
+}
+
+.logo {
+  grid-column: 1 / 3;
+  justify-self: center;
+  font-family: 'Poppins-header', sans-serif;
+  font-size: 1.7em;
+}
+
+.link {
+  grid-column-start: 2;
+}
+
+#dashboard, #dashboard-img {
+  grid-row-start: 3;
+}
+
+#skills, #skills-img {
+  grid-row-start: 4;
+}
+
+#habits, #habits-img {
+  grid-row-start: 5;
+}
+
+#to-do, #to-do-img {
+  grid-row-start: 6;
+}
+
+#blog, #blog-img {
+  grid-row-start: 7;
+}
+
+#settings, #settings-img {
+  grid-row-start: 9;
+}
+
+.header, .controls {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 24px;
+}
+
+.searchbar {
+  flex: 1;
+  font-family: "Poppins";
+  max-width: 500px;
+  height: 32px;
+  background-color: #EFEFEF;
+  border: none;
+  border-radius: 7px;
+  outline: none;
+  padding: 5px;
+}
+
+#notifications {
+  margin-left: auto;
+}
+
+.pfp {
+  border-radius: 50%;
+}
+
+#pfp-small {
+  height: 50px;
+  width: 50px;
+}
+
+#pfp-big {
+  height: 75px;
+  width: 75px;
+}
+
+.welcome {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hello {
+  font-size: 80%;
+}
+
+.username {
+  font-family: "Poppins-header";
+}
+
+button {
+  outline: none;
+  appearance: none;
+  font-size: 80%;
+  box-sizing: border-box;
+  padding: 5px;
+  color: #F9FAF8;
+  background-color: #144e12;
+  border: 1px solid #144e12;
+  padding: 10px 32px;
+  border: 3px white;
+  border-radius: 7px;
+  font-weight: bold;
+  height: auto;
+}
+
+button:focus {
+  border: 1px solid #2EB329;
+}
+
+#new {
+  margin-left: auto;
+}
+
+.main {
+  background-color: #EFEFEF;
+  display: grid;
+  grid-template-columns: 2.5fr 1.5fr;
+  padding: 24px;
+  gap: 24px;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-auto-rows: 250px;
+  gap: 24px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 7px;
+  padding: 1em;
+  border-left: 8px solid #53D64E;
+  display: grid;
+}
+
+.news {
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-rows: minmax(min-content, max-content);
+  justify-content: start;
+  gap: 24px;
+}
+
+.posts {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-rows: repeat(auto-fill, 1fr);
+  gap: 5px;
+  background-color: white;
+  border-radius: 7px;
+  padding: 1em;
+}
+
+
+.post h4 {
+  font-size: 0.8rem;
+}
+
+.post p {
+  font-size: 0.8em;
+}
+
+.skill-icon {
+  font-size: 0.9em;
+  height: 95px;
+  width: 95px;
+  border-radius: 50%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  flex: 1;
+}
+
+#cooking {
+  background-color: #EDAD0E;
+}
+
+#finance {
+  background-color: #FFA500;
+}
+
+#languages {
+  background-color: #00ED76;
+}
+
+#maths {
+  background-color: #00C4CD;
+}
+
+#IT {
+  background-color: #009ACD;
+}
+
+.trending-skills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 12px;
+  background-color: white;
+  border-radius: 7px;
+  padding: 1em;
+}
+
+.card-footer {
+  align-self: end;
+  justify-self: end;
+}
+
+.card-text {
+  font-size: 0.9em;
+}
+
+.card-text h4 {
+  padding-bottom: 0.5rem;
+  margin: 0;
+}
