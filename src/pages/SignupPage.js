@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import '../../styles/main.scss';
+import '../styles/main.scss';
 
 export default function Signup() {
   useEffect(() => {

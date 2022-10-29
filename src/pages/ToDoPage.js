@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import '../../styles/main.scss';
-import Storage from '../../modules/Storage';
-import MainMenu from '../../components/MainMenu';
-import Sidebar from '../../components/Sidebar';
-import SidebarMobile from '../../components/SidebarMobile';
-import Editor from '../../components/Editor';
-import Overlay from '../../components/Overlay';
-import Task from '../../modules/Task';
-import Project from '../../modules/Project';
+import '../styles/main.scss';
+import Storage from '../modules/Storage';
+import MainMenu from '../components/MainMenu';
+import Sidebar from '../components/Sidebar';
+import SidebarMobile from '../components/SidebarMobile';
+import Editor from '../components/Editor';
+import Overlay from '../components/Overlay';
+import Task from '../modules/Task';
+import Project from '../modules/Project';
 
 export default function ToDo() {
   useEffect(() => {

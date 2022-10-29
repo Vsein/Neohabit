@@ -1,48 +1,15 @@
-@font-face {
-    font-family: 'Poppins-header';
-    src: url('fonts/Poppins-SemiBold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Poppins-medium';
-    src: url('fonts/Poppins-Medium.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-html {
-  box-sizing: border-box;
-  height: 100%;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-* {
-  padding: 0;
-  margin: 0;
-}
-
-body, html {
-  height: 100%;
-  font-family: 'Poppins-medium', sans-serif;
-  font-size: 1.05em;
-}
-
-.container {
+#content-dashboard {
   height: 100%;
   display: grid;
   grid-template: 75px 100px 1fr / 1fr 4fr;
   background-color: #EFEFEF;
+
+  & > div {
+    align-self: stretch;
+  }
 }
 
-.container > div {
-  align-self: stretch;
-}
-
-.menu {
+.dashboard-menu {
   padding: 15px 15px 15px 5px;
   grid-row: span 3;
   background: linear-gradient(0.1turn, #C0EFA6, #71C639 45% 60%, #A7C4BE);
@@ -64,9 +31,6 @@ body, html {
 
 .logo {
   grid-column: 1 / 3;
-  justify-self: center;
-  font-family: 'Poppins-header', sans-serif;
-  font-size: 1.7em;
 }
 
 .link {
@@ -97,7 +61,7 @@ body, html {
   grid-row-start: 9;
 }
 
-.header, .controls {
+.dashboard-header, .controls {
   background-color: white;
   display: flex;
   align-items: center;
@@ -107,7 +71,6 @@ body, html {
 
 .searchbar {
   flex: 1;
-  font-family: "Poppins";
   max-width: 500px;
   height: 32px;
   background-color: #EFEFEF;
@@ -147,10 +110,12 @@ body, html {
 }
 
 .username {
-  font-family: "Poppins-header";
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
 }
 
-button {
+.dashboard-btn {
+  width: min-content;
   outline: none;
   appearance: none;
   font-size: 80%;
@@ -164,10 +129,10 @@ button {
   border-radius: 7px;
   font-weight: bold;
   height: auto;
-}
 
-button:focus {
-  border: 1px solid #2EB329;
+  &:focus {
+    border: 1px solid #2EB329;
+  }
 }
 
 #new {
@@ -182,7 +147,7 @@ button:focus {
   gap: 24px;
 }
 
-.projects-grid {
+.dashboard-projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-auto-rows: 250px;
