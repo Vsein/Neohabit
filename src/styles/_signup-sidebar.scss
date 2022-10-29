@@ -1,9 +1,9 @@
 #content-signup {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
   min-height: 100vh;
 }
+
 .sidebar-signup {
   display: block;
   flex: 1 1 auto;
@@ -13,101 +13,88 @@
   background-color: #EFEFEF;
   width: min(66.84vh, 100vw);
 }
+
 .sidebar-header {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  margin-block: 20%;
-  padding: 1em;
+  margin-block: 10%;
   text-align: center;
-  background-color: rgba(150, 150, 150, 0.5);
+  padding: 1em;
+  background-color: #b0b0b0aa;
 }
-main {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
+
+.registration-container {
   flex: 10 1 auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 1fr min-content 1fr;
   gap: 5px;
   background: linear-gradient(0.15turn, #C0EFA6, #71C639, #A7C4BE);
-  min-height: 100%;
   width: min(500px, 100%);
-  padding: 0;
-  margin: 0;
 }
+
 .welcome {
   max-width: 70ch;
   padding-inline: 2em;
   flex: 2;
   padding-top: 20px;
 }
+
+.paragraph {
+  margin-block: 1em;
+}
+
 .registration {
   padding-inline: 2em;
   flex: 2;
   background: linear-gradient(#71C639, #A7C4BE);
-  font-size: 1.15em;
   padding-block: 1em;
   box-shadow: 0 3px 17px rgb(33, 33, 33);
 }
-.login {
-  padding-inline: 2em;
-  flex: 1;
-  padding-top: 20px;
+
+.login-ref {
+  padding: 1em 2em;
+
+  & > a {
+    color: #144e12;
+    text-decoration: none;
+  }
 }
+
 .registration-fields {
   display: flex;
   flex-flow: row wrap;
   gap: 1em;
 }
+
 .registration-fields > div {
   flex: 1 1 300px;
 }
-button,
-label,
-input,
-select,
-progress,
-meter {
-  appearance: none;
-  flex: 1;
-  display: block;
-  font-family: inherit;
-  font-size: 100%;
-  margin: 2px;
-  box-sizing: border-box;
-  padding: 5px;
-  height: 30px;
+
+.registration-field {
+  height: 36px;
+  background-color: #8EC07C;
+  border-radius: 10px;
+  border: 1px solid #144e12;
+  padding: 5px 10px;
+
+  &:focus {
+    border: 1px solid #2EB329;
+    background-color: #88CD6F;
+  }
+
+  &:invalid {
+    opacity: 0.6;
+  }
+
+  &:valid {
+    background-color: #88CD6F;
+  }
 }
 
-input {
-  width: 100%;
-  background-color: #8EC07C;
-  border-radius: 8px;
-  border: 1px solid #144e12;
-}
-input:focus {
-  outline: none;
-  appearance: none;
-  border: 1px solid #2EB329;
-  background-color: #88CD6F;
-}
-input:invalid {
-  opacity: 0.6;
-}
-input:valid {
-  background-color: #88CD6F;
-}
-button {
+.create-acc-btn {
   color: #F9FAF8;
   background-color: #144e12;
-  padding: 10px 32px;
+  padding: 5px 32px;
   border: 3px white;
-  border-radius: 7px;
+  border-radius: 10px;
   font-weight: bold;
-  margin-top: 8px;
   height: auto;
-}
-
-a {
-  color: #144e12;
-  text-decoration: none;
 }

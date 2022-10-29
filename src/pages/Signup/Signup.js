@@ -9,19 +9,21 @@ export default function Signup() {
   return (
     <div id="content-signup">
       <div className="sidebar-signup">
-        <h1 className="neohabit sidebar-header" />
+        <h1 className="sidebar-header">
+          <div className="neohabit" />
+        </h1>
       </div>
-      <main>
+      <div className="registration-container">
         <div className="welcome">
-          <p>
+          <p className="paragraph">
             Are you struggling to find a good accountability partner? With this
             app, you&apos;ll learn how to be your own accountability partner. As
             well as develop real skills, and not get entrapped by some
             statistics which only stump your growth.
           </p>
-          <p>
-            You know what to do, my friend. <span className="neohabit"></span>{' '}
-            will just help you realize it.
+          <p className="paragraph">
+            You know what to do, my friend. <span className="neohabit" /> will
+            just help you realize it.
           </p>
         </div>
         <form className="registration" id="registration" action="#">
@@ -30,6 +32,7 @@ export default function Signup() {
             <div>
               <label htmlFor="name">First Name</label>
               <input
+                className="registration-field"
                 type="text"
                 id="name"
                 name="username"
@@ -41,11 +44,18 @@ export default function Signup() {
             </div>
             <div>
               <label htmlFor="mail">E-mail</label>
-              <input type="email" id="mail" name="usermail" required />
+              <input
+                type="email"
+                id="mail"
+                name="usermail"
+                required
+                className="registration-field"
+              />
             </div>
             <div>
               <label htmlFor="pwd">Password</label>
               <input
+                className="registration-field"
                 type="password"
                 id="pwd"
                 name="password"
@@ -59,6 +69,7 @@ export default function Signup() {
             <div>
               <label htmlFor="confirm">Confirm Password</label>
               <input
+                className="registration-field"
                 type="password"
                 id="confirm"
                 name="confirm"
@@ -69,17 +80,17 @@ export default function Signup() {
                 autoComplete="new-password"
               />
             </div>
+            <div>
+              <button type="submit" className="create-acc-btn">
+                Create Account
+              </button>
+            </div>
           </div>
         </form>
-        <div className="login">
-          <button type="submit" form="registration">
-            Create Account
-          </button>
-          <p>
-            Already have an account? <a href="">Log in</a>
-          </p>
-        </div>
-      </main>
+        <p className="login-ref">
+          Already have an account? <a href="">Log in</a>
+        </p>
+      </div>
     </div>
   );
 }
