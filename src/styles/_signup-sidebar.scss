@@ -81,12 +81,24 @@
   }
 
   &:invalid {
-    opacity: 0.6;
   }
 
   &:valid {
     background-color: #88CD6F;
   }
+
+  &-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.icon-password {
+  height: 27px;
+  width: 27px;
+  margin-left: -36px;
+  z-index: 1;
 }
 
 .create-acc-btn {

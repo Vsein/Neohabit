@@ -1,10 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/main.scss';
+import Icon from '@mdi/react';
+import { mdiEye, mdiEyeOff } from '@mdi/js';
 
 export default function Signup() {
   useEffect(() => {
     document.title = 'Signup | Neohabit';
   });
+
+  const [passwordHidden, setPasswordHidden] = useState(true);
+  const togglePasswordVisibility = () => setPasswordHidden(!passwordHidden);
+
+  const [passwordConfirmationHidden, setPasswordConfirmationHidden] =
+    useState(true);
+  const togglePasswordConfirmationVisibility = () =>
+    setPasswordConfirmationHidden(!passwordConfirmationHidden);
 
   return (
     <div id="content-signup">
@@ -54,31 +64,45 @@ export default function Signup() {
             </div>
             <div>
               <label htmlFor="pwd">Password</label>
-              <input
-                className="registration-field"
-                type="password"
-                id="pwd"
-                name="password"
-                required
-                minLength="8"
-                maxLength="30"
-                // onChange="onChange()"
-                autoComplete="new-password"
-              />
+              <div className="registration-field-container">
+                <input
+                  className="registration-field"
+                  type={passwordHidden ? 'password' : 'test'}
+                  id="pwd"
+                  name="password"
+                  required
+                  minLength="8"
+                  maxLength="30"
+                  // onChange="onChange()"
+                  autoComplete="new-password"
+                />
+                <Icon
+                  path={passwordHidden ? mdiEye : mdiEyeOff}
+                  className="icon-password"
+                  onClick={togglePasswordVisibility}
+                />
+              </div>
             </div>
             <div>
               <label htmlFor="confirm">Confirm Password</label>
-              <input
-                className="registration-field"
-                type="password"
-                id="confirm"
-                name="confirm"
-                required
-                minLength="8"
-                maxLength="30"
-                // onChange="onChange()"
-                autoComplete="new-password"
-              />
+              <div className="registration-field-container">
+                <input
+                  className="registration-field"
+                  type={passwordConfirmationHidden ? 'password' : 'test'}
+                  id="confirm"
+                  name="confirm"
+                  required
+                  minLength="8"
+                  maxLength="30"
+                  // onChange="onChange()"
+                  autoComplete="new-password"
+                />
+                <Icon
+                  path={passwordConfirmationHidden ? mdiEye : mdiEyeOff}
+                  className="icon-password"
+                  onClick={togglePasswordConfirmationVisibility}
+                />
+              </div>
             </div>
             <div>
               <button type="submit" className="create-acc-btn">
