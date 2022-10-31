@@ -24,74 +24,27 @@ export default function Signup() {
   return (
     <div id="content-dashboard">
       <div className="dashboard-menu">
-        <h2 className="logo neohabit" />
-        <Icon path={mdiHome} alt="home" id="dashboard-img" className="icon" />
-        <p className="link" id="dashboard">
-          Dashboard
-        </p>
-
-        <Icon
-          path={mdiFamilyTree}
-          alt="tree"
-          id="skills-img"
-          className="icon"
-        />
-        <p className="link" id="skills">
-          Skill trees
-        </p>
-
-        <Icon
-          path={mdiTrendingUp}
-          alt="trending-up"
-          id="habits-img"
-          className="icon"
-        />
-        <p className="link" id="habits">
-          Current habits
-        </p>
-
-        <Icon
-          path={mdiCheckboxMultipleMarked}
-          alt="to-do"
-          id="to-do-img"
-          className="icon"
-        />
-        <p className="link" id="to-do">
-          To-do
-        </p>
-
-        <Icon path={mdiPost} alt="post" id="blog-img" className="icon" />
-        <p className="link" id="blog">
-          Blog
-        </p>
-
-        <Icon path={mdiCog} alt="cog" id="settings-img" className="icon" />
-        <p className="link" id="settings">
-          Settings
-        </p>
+        <h2 className="neohabit logo" />
+        <div />
+        <MenuSection name="Dashboard" path={mdiHome} />
+        <MenuSection name="Skill trees" path={mdiFamilyTree} />
+        <MenuSection name="Current habits" path={mdiTrendingUp} />
+        <MenuSection name="To-do" path={mdiCheckboxMultipleMarked} />
+        <MenuSection name="Blog" path={mdiPost} />
+        <div />
+        <MenuSection name="Settings" path={mdiCog} />
       </div>
 
       <div className="dashboard-header">
         <Icon path={mdiMagnify} alt="search" id="search-img" className="icon" />
         <input type="search" className="searchbar" />
-        <div className="header-bot"> </div>
-        <Icon path={mdiBell} alt="bell" id="notifications" className="icon" />
-        <img
-          src={pfp}
-          alt="profile pic"
-          id="pfp-small"
-          className="pfp"
-        />
+        <Icon path={mdiBell} alt="bell" className="icon notifications"/>
+        <PFP type="small" />
         <p className="name">Serene Coder</p>
       </div>
 
       <div className="controls">
-        <img
-          src={pfp}
-          alt="profile pic"
-          id="pfp-big"
-          className="pfp"
-        />
+        <PFP type="big" />
         <div className="welcome">
           <p className="hello">Hello there,</p>
           <p className="username">Serene Coder (&#64;Vsein)</p>
@@ -118,65 +71,48 @@ export default function Signup() {
           <div className="announcements">
             <h3>Recent articles</h3>
             <div className="posts">
-              <div className="post">
-                <h4>Importance of sacrifice</h4>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-              </div>
+              <Post title="Importance of sacrifice" />
               <hr />
-              <div className="post">
-                <h4>Don&apos;t speak unless words flow out of your mouth</h4>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-              </div>
+              <Post title="Don't speak unless words flow out of your mouth" />
               <hr />
-              <div className="post">
-                <h4>Everything is a language</h4>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-              </div>
+              <Post title="Everything is a language" />
             </div>
           </div>
 
           <div className="trending">
             <h3>Trending skill trees</h3>
             <div className="trending-skills">
-              <div className="trending-skill">
-                <div className="skill-icon" id="cooking">
-                  Cooking
-                </div>
-              </div>
-              <div className="trending-skill">
-                <div id="finance" className="skill-icon">
-                  Finance
-                </div>
-              </div>
-              <div className="trending-skill">
-                <div id="languages" className="skill-icon">
-                  Languages
-                </div>
-              </div>
-              <div className="trending-skill">
-                <div id="maths" className="skill-icon">
-                  Maths
-                </div>
-              </div>
-              <div className="trending-skill">
-                <div id="IT" className="skill-icon">
-                  IT
-                </div>
-              </div>
+              <Skill color="#edad0e" name="Cooking"/>
+              <Skill color="#ffa500" name="Finance"/>
+              <Skill color="#00ed76" name="Languages"/>
+              <Skill color="#00c4cd" name="Maths"/>
+              <Skill color="#009acd" name="IT"/>
             </div>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function MenuSection(props) {
+  const { name, path } = props;
+  return (
+    <div className="dashboard-menu-section">
+      <Icon path={path} className="icon" />
+      <p>{name}</p>
+    </div>
+  );
+}
+
+function PFP(props) {
+  const { type } = props;
+  return (
+    <img
+      src={pfp}
+      alt="profile pic"
+      className={`pfp ${type}`}
+    />
   );
 }
 
@@ -199,6 +135,28 @@ function ProjectCard() {
           className="icon"
         />
       </div>
+    </div>
+  );
+}
+
+function Post(props) {
+  const { title } = props;
+  return (
+    <div className="post">
+      <h4>{title}</h4>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+        do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </div>
+  );
+}
+
+function Skill(props) {
+  const { color, name } = props;
+  return (
+    <div className="skill-icon" style={{ backgroundColor: color }}>
+      {name}
     </div>
   );
 }

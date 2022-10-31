@@ -14,51 +14,14 @@
   grid-row: span 3;
   background: linear-gradient(0.1turn, #C0EFA6, #71C639 45% 60%, #A7C4BE);
   display: grid;
-  grid-template-columns: 60px 1fr;
   grid-auto-rows: 50px;
   align-items: center;
 }
 
-.menu img {
-  grid-column-start: 1;
-  justify-self: center;
-}
-
-.icon {
-  height: 30px;
-  width: 30px;
-}
-
-.logo {
-  grid-column: 1 / 3;
-}
-
-.link {
-  grid-column-start: 2;
-}
-
-#dashboard, #dashboard-img {
-  grid-row-start: 3;
-}
-
-#skills, #skills-img {
-  grid-row-start: 4;
-}
-
-#habits, #habits-img {
-  grid-row-start: 5;
-}
-
-#to-do, #to-do-img {
-  grid-row-start: 6;
-}
-
-#blog, #blog-img {
-  grid-row-start: 7;
-}
-
-#settings, #settings-img {
-  grid-row-start: 9;
+.dashboard-menu-section {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  align-items: center;
 }
 
 .dashboard-header, .controls {
@@ -80,22 +43,22 @@
   padding: 5px;
 }
 
-#notifications {
+.notifications {
   margin-left: auto;
 }
 
 .pfp {
   border-radius: 50%;
-}
 
-#pfp-small {
-  height: 50px;
-  width: 50px;
-}
+  &.small {
+    height: 50px;
+    width: 50px;
+  }
 
-#pfp-big {
-  height: 75px;
-  width: 75px;
+  &.big {
+    height: 75px;
+    width: 75px;
+  }
 }
 
 .welcome {
@@ -116,23 +79,15 @@
 
 .dashboard-btn {
   width: min-content;
-  outline: none;
-  appearance: none;
   font-size: 80%;
-  box-sizing: border-box;
   padding: 5px;
   color: #F9FAF8;
   background-color: #144e12;
-  border: 1px solid #144e12;
   padding: 10px 32px;
-  border: 3px white;
   border-radius: 7px;
   font-weight: bold;
   height: auto;
-
-  &:focus {
-    border: 1px solid #2EB329;
-  }
+  cursor: pointer;
 }
 
 #new {
@@ -178,15 +133,7 @@
   background-color: white;
   border-radius: 7px;
   padding: 1em;
-}
-
-
-.post h4 {
   font-size: 0.8rem;
-}
-
-.post p {
-  font-size: 0.8em;
 }
 
 .skill-icon {
@@ -197,27 +144,7 @@
   display: grid;
   justify-items: center;
   align-items: center;
-  flex: 1;
-}
-
-#cooking {
-  background-color: #EDAD0E;
-}
-
-#finance {
-  background-color: #FFA500;
-}
-
-#languages {
-  background-color: #00ED76;
-}
-
-#maths {
-  background-color: #00C4CD;
-}
-
-#IT {
-  background-color: #009ACD;
+  flex: 0 0 1;
 }
 
 .trending-skills {
