@@ -34,18 +34,17 @@ export default function Overlay(props) {
               ></div>
             </div>
             {project.name === 'Neohabit' ? (
-              <div className="neohabit" />
+              <p className="neohabit" />
             ) : (
               <p>{project.name}</p>
             )}
           </div>
-          <div className="close-modal-button icon" onClick={close}>
+          <button className="close-modal-button icon" onClick={close}>
             <Icon path={mdiPlus} />
-          </div>
+          </button>
         </div>
         <div className="modal-details">
-          <div>
-            <label htmlFor="task-name"></label>
+          <label htmlFor="task-name">
             <textarea
               className="form-task-name"
               name="task-name"
@@ -54,9 +53,8 @@ export default function Overlay(props) {
               value={task.name}
               onChange={handleNameChange}
             />
-          </div>
-          <div>
-            <label htmlFor="task-description"></label>
+          </label>
+          <label htmlFor="task-description">
             <textarea
               className="form-task-description"
               name="task-description"
@@ -65,7 +63,7 @@ export default function Overlay(props) {
               value={task.description}
               onChange={handleDescriptionChange}
             />
-          </div>
+          </label>
         </div>
         <div className="modal-buttons">
           <button className="form-button" id="cancel-form-button" onClick={close}>

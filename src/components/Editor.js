@@ -23,24 +23,26 @@ export default function Editor(props) {
   };
 
   return (
-    <div className="editor">
+    <main className="editor">
       <div className="editor-header">
         <h3 id="list-name">{list}</h3>
       </div>
-      <div className="editor-list">
+      <ul className="editor-list">
         {Storage.getToDoList()
           .filterProjects(list)
           .map((project) =>
             project.tasks.map((task) => (
-              <Task task={task} project={project} key={task.name} open={open} />
+              <li key={task.name}>
+                <Task task={task} project={project} open={open} />
+              </li>
             )),
           )}
         <button className="add-task-btn" onClick={openNew}>
           <Icon className="add-task-icon" path={mdiPlus} />
           <p>Add task</p>
         </button>
-      </div>
-    </div>
+      </ul>
+    </main>
   );
 }
 

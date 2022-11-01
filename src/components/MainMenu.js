@@ -25,21 +25,21 @@ export default function MainMenu(props) {
   });
 
   return (
-    <div className="menu">
-      <div
+    <nav className="menu">
+      <button
         className="logo-section sidebar-toggle-container"
         onClick={toggleSidebar}
       >
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
-      </div>
+      </button>
       <h2 className="logo neohabit"></h2>
-      <div
+      <button
         className={`logo-section menu-toggle ${menuOpened ? 'active' : ''}`}
         onClick={toggleMenu}
       >
         <Icon path={mdiApps} className="icon" />
-      </div>
-      <div
+      </button>
+      <ul
         className={`menu-container ${menuOpened ? 'active' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -63,20 +63,22 @@ export default function MainMenu(props) {
         />
         <MenuSection path={mdiPost} title="Blog" status="Coming soon" />
         <MenuSection path={mdiCog} title="Settings" status="Coming soon" />
-      </div>
-    </div>
+      </ul>
+    </nav>
   );
 }
 
 function MenuSection(props) {
   const { path, href, title, status, raw, active } = props;
   return (
-    <a className={`menu-section ${active ? 'active' : ''}`} href={href}>
-      <Icon path={path} className="icon" />
-      <p className="link">{title}</p>
-      <div className={`ribbon ribbon-top-right ${raw ? 'ribbon-raw' : ''}`}>
-        <span>{status}</span>
-      </div>
-    </a>
+    <li>
+      <a className={`menu-section ${active ? 'active' : ''}`} href={href}>
+        <Icon path={path} className="icon" />
+        <p className="link">{title}</p>
+        <div className={`ribbon ribbon-top-right ${raw ? 'ribbon-raw' : ''}`}>
+          <span>{status}</span>
+        </div>
+      </a>
+    </li>
   );
 }

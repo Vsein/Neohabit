@@ -39,9 +39,22 @@ textarea {
   appearance: none;
   border: none;
   display: block;
+  background-color: inherit;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+  display: block;
+}
+
+ul,
+ul li,
+ul ul li {
+  text-indent: 0;
+  list-style: none outside none;
+}
+
+li {
+  height: 100%;
 }

@@ -13,40 +13,38 @@ export default function Sidebar(props) {
   };
 
   return (
-    <div className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
-      <div className="filters">
+    <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
+      <ul className="filters">
         {Storage.getToDoList()
           .getFilters()
           .map((filter, i) => (
-            <Filter
-              filter={filter}
-              key={`filter-${i}`}
-            />
+            <li key={`filter-${i}`}>
+              <Filter filter={filter} />
+            </li>
           ))}
-      </div>
-      <div className="projects">
-        <div className="projects-header">
+      </ul>
+      <ul className="projects">
+        <li className="projects-header">
           <p>Projects</p>
           <Icon
             className={`icon projects-arrow ${projectsCollapsed ? '' : 'active'}`}
             path={mdiChevronDown}
             onClick={toggleProjectsCollapsed}
           />
-        </div>
-        <div
+        </li>
+        <ul
           className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
         >
           {Storage.getToDoList()
             .getProjects()
             .map((project, i) => (
-              <Project
-                project={project}
-                key={`project-${i}`}
-              />
+              <li key={`project-${i}`}>
+                <Project project={project} />
+              </li>
             ))}
-        </div>
-      </div>
-    </div>
+        </ul>
+      </ul>
+    </aside>
   );
 }
 
@@ -70,7 +68,7 @@ function Project(props) {
         />
       </div>
       {project.name === 'Neohabit' ? (
-        <div className="neohabit" />
+        <p className="neohabit" />
       ) : (
         <p>{project.name}</p>
       )}

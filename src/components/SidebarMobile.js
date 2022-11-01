@@ -5,8 +5,8 @@ import Storage from '../modules/Storage';
 
 export default function SidebarMobile() {
   return (
-    <div className="sidebar-mobile">
-      <div className="filters-mobile">
+    <aside className="sidebar-mobile">
+      <ul className="filters-mobile">
         {Storage.getToDoList()
           .getFilters()
           .map((filter, i) => (
@@ -15,10 +15,10 @@ export default function SidebarMobile() {
               key={`filter-${i}`}
             />
           ))}
-      </div>
-      <div className="projects-mobile">
-      </div>
-    </div>
+      </ul>
+      <ul className="projects-mobile">
+      </ul>
+    </aside>
   );
 }
 
@@ -28,11 +28,13 @@ function FilterMobile(props) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
-    <NavLink
-      className={({ isActive }) => (isActive ? 'filter-mobile active' : 'filter-mobile')}
-      to={`/${linkify(filter.name)}`}
-    >
-      <Icon path={filter.image} />
-    </NavLink>
+    <li>
+      <NavLink
+        className={({ isActive }) => (isActive ? 'filter-mobile active' : 'filter-mobile')}
+        to={`/${linkify(filter.name)}`}
+      >
+        <Icon path={filter.image} />
+      </NavLink>
+    </li>
   );
 }
