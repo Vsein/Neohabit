@@ -72,7 +72,7 @@ function MenuSection(props) {
   const { path, href, title, status, raw, active } = props;
   return (
     <li>
-      <a className={`menu-section ${active ? 'active' : ''}`} href={href}>
+      <a className={`menu-section ${active ? 'active' : ''}`} tabIndex="0" href={href}>
         <Icon path={path} className="icon" />
         <p className="link">{title}</p>
         <div className={`ribbon ribbon-top-right ${raw ? 'ribbon-raw' : ''}`}>

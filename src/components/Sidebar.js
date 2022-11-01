@@ -26,11 +26,12 @@ export default function Sidebar(props) {
       <ul className="projects">
         <li className="projects-header">
           <p>Projects</p>
-          <Icon
-            className={`icon projects-arrow ${projectsCollapsed ? '' : 'active'}`}
-            path={mdiChevronDown}
-            onClick={toggleProjectsCollapsed}
-          />
+          <button className="centering" onClick={toggleProjectsCollapsed}>
+            <Icon
+              className={`icon projects-arrow ${projectsCollapsed ? '' : 'active'}`}
+              path={mdiChevronDown}
+            />
+          </button>
         </li>
         <ul
           className={`projects-container ${projectsCollapsed ? '' : 'active'}`}

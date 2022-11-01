@@ -32,6 +32,7 @@ function FilterMobile(props) {
       <NavLink
         className={({ isActive }) => (isActive ? 'filter-mobile active' : 'filter-mobile')}
         to={`/${linkify(filter.name)}`}
+        tabIndex="0"
       >
         <Icon path={filter.image} />
       </NavLink>

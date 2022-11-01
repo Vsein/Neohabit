@@ -32,6 +32,10 @@
 .task {
   @include editor-list-item;
   background-color: white;
+
+  &-name {
+    text-align: left;
+  }
 }
 
 .add-task-btn {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from '@mdi/react';
-import { mdiPlus } from '@mdi/js';
+import { mdiClose } from '@mdi/js';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay(props) {
@@ -40,7 +40,7 @@ export default function Overlay(props) {
             )}
           </div>
           <button className="close-modal-button icon" onClick={close}>
-            <Icon path={mdiPlus} />
+            <Icon path={mdiClose} />
           </button>
         </div>
         <div className="modal-details">

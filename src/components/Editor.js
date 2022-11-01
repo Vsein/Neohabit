@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Icon from '@mdi/react';
-import { mdiPlus } from '@mdi/js';
+import { mdiPlus, mdiClose } from '@mdi/js';
 import Storage from '../modules/Storage';
 
 export default function Editor(props) {
@@ -66,15 +66,22 @@ function Task(props) {
     ? `radial-gradient(${project.color} 30%, ${project.color}33 40%)`
     : `${project.color}33`;
 
+  const openTask = (e) => {
+    e.stopPropagation();
+    open({ isNew: false, task, project });
+  };
+
   return (
-    <div className="task" onClick={() => open({ isNew: false, task, project })}>
-      <div
+    <div className="task" onClick={openTask}>
+      <button
         className="checkbox"
         style={{ borderColor: project.color, background: bg }}
         onClick={completeTask}
-      ></div>
-      <p>{task.name}</p>
-      <Icon path={mdiPlus} className="delete-task-btn icon" onClick={deleteTask} />
+      ></button>
+      <button tabIndex="0" onClick={openTask} className="task-name">{task.name}</button>
+      <button className="centering">
+        <Icon path={mdiClose} className="delete-task-btn icon" onClick={deleteTask} />
+      </button>
     </div>
   );
 }

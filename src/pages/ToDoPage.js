@@ -60,7 +60,6 @@ export default function ToDo() {
     <div id="content">
       <MainMenu toggleSidebar={toggleSidebar} />
       <Sidebar hidden={sidebarHidden}/>
-      <SidebarMobile />
       <Routes>
         <Route path=":list" element={<Editor open={openOverlay} />} />
       </Routes>
@@ -73,6 +72,7 @@ export default function ToDo() {
         modify={setOverlayContent}
         submit={submitTask}
       />
+      <SidebarMobile />
     </div>
   );
 }

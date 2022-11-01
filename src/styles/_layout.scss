@@ -38,6 +38,10 @@
       padding: 18px 9px;
       padding-bottom: 90px;
     }
+
+    .projects-container {
+      visibility: hidden;
+    }
   }
 
   @media (min-width: 550px) {
