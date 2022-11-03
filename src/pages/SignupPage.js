@@ -76,11 +76,12 @@ export default function Signup() {
                   // onChange="onChange()"
                   autoComplete="new-password"
                 />
-                <Icon
-                  path={passwordHidden ? mdiEye : mdiEyeOff}
-                  className="icon-password"
-                  onClick={togglePasswordVisibility}
-                />
+                <button className="icon-password">
+                  <Icon
+                    path={passwordHidden ? mdiEye : mdiEyeOff}
+                    onClick={togglePasswordVisibility}
+                  />
+                </button>
               </div>
             </div>
             <div>
@@ -97,11 +98,12 @@ export default function Signup() {
                   // onChange="onChange()"
                   autoComplete="new-password"
                 />
-                <Icon
-                  path={passwordConfirmationHidden ? mdiEye : mdiEyeOff}
-                  className="icon-password"
-                  onClick={togglePasswordConfirmationVisibility}
-                />
+                <button className="icon-password">
+                  <Icon
+                    path={passwordConfirmationHidden ? mdiEye : mdiEyeOff}
+                    onClick={togglePasswordConfirmationVisibility}
+                  />
+                </button>
               </div>
             </div>
             <div>

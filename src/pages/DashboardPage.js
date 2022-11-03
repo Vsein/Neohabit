@@ -98,27 +98,29 @@ export default function Signup() {
 function MenuSection(props) {
   const { name, path } = props;
   return (
-    <div className="dashboard-menu-section">
+    <button className="dashboard-menu-section">
       <Icon path={path} className="icon" />
       <p>{name}</p>
-    </div>
+    </button>
   );
 }
 
 function PFP(props) {
   const { type } = props;
   return (
-    <img
-      src={pfp}
-      alt="profile pic"
-      className={`pfp ${type}`}
-    />
+    <a tabIndex="0">
+      <img
+        src={pfp}
+        alt="profile pic"
+        className={`pfp ${type}`}
+      />
+    </a>
   );
 }
 
 function ProjectCard() {
   return (
-    <div className="card">
+    <a className="card" tabIndex="0">
       <div className="card-text">
         <h4>Signup-form</h4>
         <p>
@@ -127,36 +129,42 @@ function ProjectCard() {
         </p>
       </div>
       <div className="card-footer">
-        <Icon path={mdiStarOutline} alt="fav" className="icon" />
-        <Icon path={mdiEyeOutline} alt="github" className="icon" />
-        <Icon
-          path={mdiShareVariantOutline}
-          alt="share-variant-outline"
-          className="icon"
-        />
+        <button>
+          <Icon path={mdiStarOutline} alt="fav" className="icon" />
+        </button>
+        <button>
+          <Icon path={mdiEyeOutline} alt="github" className="icon" />
+        </button>
+        <button>
+          <Icon
+            path={mdiShareVariantOutline}
+            alt="share-variant-outline"
+            className="icon"
+          />
+        </button>
       </div>
-    </div>
+    </a>
   );
 }
 
 function Post(props) {
   const { title } = props;
   return (
-    <div className="post">
+    <a className="post" tabIndex="0">
       <h4>{title}</h4>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
         do eiusmod tempor incididunt ut labore et dolore magna aliqua.
       </p>
-    </div>
+    </a>
   );
 }
 
 function Skill(props) {
   const { color, name } = props;
   return (
-    <div className="skill-icon" style={{ backgroundColor: color }}>
+    <button className="skill-icon" style={{ backgroundColor: color }}>
       {name}
-    </div>
+    </button>
   );
 }

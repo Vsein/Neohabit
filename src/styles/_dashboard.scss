@@ -16,12 +16,14 @@
   display: grid;
   grid-auto-rows: 50px;
   align-items: center;
-}
 
-.dashboard-menu-section {
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  align-items: center;
+  &-section {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+    text-align: left;
+  }
 }
 
 .dashboard-header, .controls {
@@ -39,7 +41,6 @@
   background-color: #EFEFEF;
   border: none;
   border-radius: 7px;
-  outline: none;
   padding: 5px;
 }
 
@@ -160,6 +161,9 @@
 .card-footer {
   align-self: end;
   justify-self: end;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
 }
 
 .card-text {
