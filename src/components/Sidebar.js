@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
@@ -7,10 +7,21 @@ import Storage from '../modules/Storage';
 export default function Sidebar(props) {
   const { hidden } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
+  const [projects, setProjects] = useState([]);
 
   const toggleProjectsCollapsed = () => {
     setProjectsCollapsed(!projectsCollapsed);
   };
+
+  useEffect(() => {
+    async function fetchProjects() {
+      const res = await fetch('http://localhost:9000/api/projects');
+      const textRes = await res.text();
+      const projectsRes = JSON.parse(textRes);
+      setProjects(projectsRes);
+    }
+    fetchProjects();
+  }, []);
 
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
@@ -36,13 +47,14 @@ export default function Sidebar(props) {
         <ul
           className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
         >
-          {Storage.getToDoList()
-            .getProjects()
+          {
+            projects
             .map((project, i) => (
               <li key={`project-${i}`}>
                 <Project project={project} />
               </li>
-            ))}
+            ))
+          }
         </ul>
       </ul>
     </aside>
