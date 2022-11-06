@@ -35,9 +35,18 @@ async function fetchProjectByID(projectID) {
   return project;
 }
 
+async function fetchTaskByID(taskID) {
+  const res = await fetch(`http://localhost:9000/api/task/${taskID}/details`);
+  const textRes = await res.text();
+  const task = JSON.parse(textRes);
+
+  return task;
+}
+
 export {
   fetchProjects,
   fetchFilters,
   fetchTasks,
   fetchProjectByID,
+  fetchTaskByID,
 };

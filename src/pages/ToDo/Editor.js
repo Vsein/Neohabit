@@ -58,6 +58,7 @@ export default function Editor() {
           <p>Add task</p>
         </button>
       </ul>
+      <Outlet />
     </main>
   );
 }
@@ -94,7 +95,6 @@ function Task(props) {
       <button className="centering" onClick={deleteThisTask}>
         <Icon path={mdiClose} className="delete-task-btn icon" />
       </button>
-      <Outlet context={{ project, task }} />
     </div>
   );
 }

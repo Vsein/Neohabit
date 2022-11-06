@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import ProjectTag from './ProjectTag';
+import { fetchTaskByID } from '../../api/get';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay() {
   const { taskID } = useParams();
-  const { project, task } = useOutletContext();
+  const [task, setTask] = useState();
   const navigate = useNavigate();
-  const [taskName, setTaskName] = useState(task.name);
-  const [taskDescription, setTaskDescription] = useState(task.description);
+  const [taskName, setTaskName] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const defaultProject = { color: '#8a8a8a', name: '' };
 
   useEffect(() => {
-    console.log(task);
-    console.log(taskID);
-    setTaskName(task.name);
-    setTaskDescription(task.description);
+    async function init() {
+      const taskRes = await fetchTaskByID(taskID);
+      setTask(taskRes);
+      setTaskName(taskRes.name);
+      setTaskDescription(taskRes.description);
+    }
+    init();
   }, [taskID]);
 
   const close = (e) => {
@@ -29,7 +34,7 @@ export default function Overlay() {
       <div className="modal modal-active" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="tag">
-            <ProjectTag project={project} />
+            <ProjectTag project={task ? task.project : defaultProject} />
           </div>
           <button className="close-modal-button icon" onClick={close}>
             <Icon path={mdiClose} />
