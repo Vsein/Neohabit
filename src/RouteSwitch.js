@@ -7,9 +7,9 @@ import Dashboard from './pages/DashboardPage';
 const RouteSwitch = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="*" element={<ToDo />} />
-      <Route path="signup/" element={<Signup />} />
-      <Route path="dashboard/" element={<Dashboard />} />
+      <Route path="/todo/*" element={<ToDo />} />
+      <Route path="/signup/" element={<Signup />} />
+      <Route path="/dashboard/" element={<Dashboard />} />
     </Routes>
   </BrowserRouter>
 );

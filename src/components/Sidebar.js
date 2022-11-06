@@ -57,7 +57,7 @@ function Project(props) {
   return (
     <NavLink
       className={({ isActive }) => (isActive ? 'project active' : 'project')}
-      to={`/project/${linkify(project._id)}`}
+      to={`project/${linkify(project._id)}`}
       style={{
         backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : '')
       }}
@@ -85,7 +85,7 @@ function Filter(props) {
   return (
     <NavLink
       className={({ isActive }) => (isActive ? 'filter active' : 'filter')}
-      to={`/${linkify(filter.name)}`}
+      to={`${linkify(filter.name)}`}
     >
       <Icon path={filter.image} height="20px" width="20px" />
       <p>{filter.name}</p>
