@@ -1,30 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 // import bin from '../icons/trash-can-outline.svg';
 
-export default function Overlay(props) {
-  const { project, task, isNew, active, close, modify, submit } = props;
+export default function Overlay() {
+  const { project, task } = useOutletContext();
+  const navigate = useNavigate();
+  const [taskName, setTaskName] = useState(task.name);
+  const [taskDescription, setTaskDescription] = useState(task.description);
 
-  const handleNameChange = (e) => {
-    modify((prevState) => {
-      const tmp = { ...prevState };
-      tmp.task.name = e.target.value;
-      return tmp;
-    });
-  };
-
-  const handleDescriptionChange = (e) => {
-    modify((prevState) => {
-      const tmp = { ...prevState };
-      tmp.task.description = e.target.value;
-      return tmp;
-    });
+  const close = (e) => {
+    e.stopPropagation();
+    navigate('..');
   };
 
   return (
-    <div className={`overlay ${active ? 'overlay-active' : ''}`} onClick={close}>
-      <div className={`modal ${active ? 'modal-active' : ''}`} onClick={(e) => e.stopPropagation()}>
+    <div className="overlay overlay-active" onClick={close}>
+      <div className="modal modal-active" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="tag">
             <div className="centering">
@@ -50,8 +43,8 @@ export default function Overlay(props) {
               name="task-name"
               rows="1"
               placeholder="Change task name"
-              value={task.name}
-              onChange={handleNameChange}
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
             />
           </label>
           <label htmlFor="task-description">
@@ -60,8 +53,8 @@ export default function Overlay(props) {
               name="task-description"
               rows="1"
               placeholder="Change description"
-              value={task.description}
-              onChange={handleDescriptionChange}
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
             />
           </label>
         </div>
@@ -69,9 +62,9 @@ export default function Overlay(props) {
           <button className="form-button" id="cancel-form-button" onClick={close}>
             Cancel
           </button>
-          <button className="form-button" id="submit-form-button" onClick={submit}>
-            {isNew ? 'Add task' : 'Save'}
-          </button>
+          {/* <button className="form-button" id="submit-form-button" onClick={submit}> */}
+          {/*   {isNew ? 'Add task' : 'Save'} */}
+          {/* </button> */}
         </div>
       </div>
     </div>

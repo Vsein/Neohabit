@@ -4,7 +4,7 @@ import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 
 export default function Sidebar(props) {
-  const { hidden, filters, projects, setId } = props;
+  const { hidden, filters, projects } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
   const toggleProjectsCollapsed = () => {
@@ -39,7 +39,7 @@ export default function Sidebar(props) {
             projects
             .map((project, i) => (
               <li key={`project-${i}`}>
-                <Project project={project} setId={setId} />
+                <Project project={project} />
               </li>
             ))
           }
@@ -50,7 +50,7 @@ export default function Sidebar(props) {
 }
 
 function Project(props) {
-  const { project, setId } = props;
+  const { project } = props;
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 

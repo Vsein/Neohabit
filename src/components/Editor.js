@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, Outlet } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiClose } from '@mdi/js';
-import Storage from '../modules/Storage';
-import { fetchTasks } from '../api/get';
+import { fetchTasks, fetchProjectByID } from '../api/get';
 
-export default function Editor(props) {
-  const { open } = props;
-  const { list, id } = useParams();
+export default function Editor() {
+  const { list, projectID } = useParams();
   const [tasks, setTasks] = useState([]);
+  const [project, setProject] = useState({});
 
   useEffect(() => {
     async function init() {
-      const tasksRes = await fetchTasks({ [list.replace('-', '_')]: true, id });
-      setTasks(tasksRes);
+      if (projectID) {
+        const [tasksRes, projectRes] = await Promise.all([
+          fetchTasks({ [list.replace('-', '_')]: true, projectID }),
+          fetchProjectByID(projectID),
+        ]);
+
+        setTasks(tasksRes);
+        setProject(projectRes);
+      } else {
+        const tasksRes = await fetchTasks({ [list.replace('-', '_')]: true, projectID });
+
+        setTasks(tasksRes);
+      }
     }
 
     init();
-  }, [list, id]);
+  }, [list, projectID]);
 
   const delinkify = (str) =>
     str
@@ -28,25 +38,20 @@ export default function Editor(props) {
 
   const delist = delinkify(list);
 
-  const openNew = () => {
-    const project = Storage.getToDoList().getProject(list);
-    open({ isNew: true, task: {}, project });
-  };
-
   return (
     <main className="editor">
       <div className="editor-header">
-        <h3 id="list-name">{delist}</h3>
+        <h3 id="list-name">{project.name || delist}</h3>
       </div>
       <ul className="editor-list">
         {
           tasks.map((task) => (
               <li key={task.name}>
-                <Task task={task} project={task.project} open={open} />
+                <Task task={task} project={task.project}/>
               </li>
           ))
         }
-        <button className="add-task-btn" onClick={openNew}>
+        <button className="add-task-btn">
           <Icon className="add-task-icon" path={mdiPlus} />
           <p>Add task</p>
         </button>
@@ -56,8 +61,9 @@ export default function Editor(props) {
 }
 
 function Task(props) {
-  const { task, project, open } = props;
+  const { task, project } = props;
   const [completed, setCompleted] = useState(task.completed);
+  const navigate = useNavigate();
 
   const deleteTask = (e) => {
     e.stopPropagation();
@@ -75,22 +81,18 @@ function Task(props) {
     ? `radial-gradient(${project.color} 30%, ${project.color}33 40%)`
     : `${project.color}33`;
 
-  const openTask = (e) => {
-    e.stopPropagation();
-    open({ isNew: false, task, project });
-  };
-
   return (
-    <div className="task" onClick={openTask}>
+    <div className="task" onClick={() => navigate(`task/${task._id}`)} >
       <button
         className="checkbox"
         style={{ borderColor: project.color, background: bg }}
         onClick={completeTask}
       ></button>
-      <button tabIndex="0" onClick={openTask} className="task-name">{task.name}</button>
+      <button tabIndex="0" className="task-name">{task.name}</button>
       <button className="centering">
         <Icon path={mdiClose} className="delete-task-btn icon" onClick={deleteTask} />
       </button>
+      <Outlet context={{ project, task }} />
     </div>
   );
 }
