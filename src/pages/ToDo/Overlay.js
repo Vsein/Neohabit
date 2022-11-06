@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
+import ProjectTag from './ProjectTag';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay() {
+  const { taskID } = useParams();
   const { project, task } = useOutletContext();
   const navigate = useNavigate();
   const [taskName, setTaskName] = useState(task.name);
   const [taskDescription, setTaskDescription] = useState(task.description);
+
+  useEffect(() => {
+    console.log(task);
+    console.log(taskID);
+    setTaskName(task.name);
+    setTaskDescription(task.description);
+  }, [taskID]);
 
   const close = (e) => {
     e.stopPropagation();
@@ -20,17 +29,7 @@ export default function Overlay() {
       <div className="modal modal-active" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div className="tag">
-            <div className="centering">
-              <div
-                className="project-circle"
-                style={{ backgroundColor: project.color }}
-              ></div>
-            </div>
-            {project.name === 'Neohabit' ? (
-              <p className="neohabit" />
-            ) : (
-              <p>{project.name}</p>
-            )}
+            <ProjectTag project={project} />
           </div>
           <button className="close-modal-button icon" onClick={close}>
             <Icon path={mdiClose} />

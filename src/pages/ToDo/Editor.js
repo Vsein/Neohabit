@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Outlet } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiClose } from '@mdi/js';
-import { fetchTasks, fetchProjectByID } from '../api/get';
-import { deleteTask } from '../api/delete';
+import { fetchTasks, fetchProjectByID } from '../../api/get';
+import { deleteTask } from '../../api/delete';
 
 export default function Editor() {
   const { list, projectID } = useParams();
   const [tasks, setTasks] = useState([]);
   const [project, setProject] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function init() {
@@ -52,7 +53,7 @@ export default function Editor() {
               </li>
           ))
         }
-        <button className="add-task-btn">
+        <button className="add-task-btn" onClick={() => navigate('task/new')}>
           <Icon className="add-task-icon" path={mdiPlus} />
           <p>Add task</p>
         </button>

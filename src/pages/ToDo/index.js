@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import '../styles/main.scss';
-import MainMenu from '../components/MainMenu';
-import Sidebar from '../components/Sidebar';
-import SidebarMobile from '../components/SidebarMobile';
-import Editor from '../components/Editor';
-import Overlay from '../components/Overlay';
-import { fetchProjects, fetchFilters } from '../api/get';
+import '../../styles/main.scss';
+import MainMenu from './MainMenu';
+import Sidebar from './Sidebar';
+import SidebarMobile from './SidebarMobile';
+import Editor from './Editor';
+import Overlay from './Overlay';
+import { fetchProjects, fetchFilters } from '../../api/get';
 
 export default function ToDo() {
   useEffect(() => {

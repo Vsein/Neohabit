@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ToDo from './pages/ToDoPage';
-import Signup from './pages/SignupPage';
-import Dashboard from './pages/DashboardPage';
+import ToDo from './pages/ToDo';
+import Signup from './pages/SignUp';
+import Dashboard from './pages/Dashboard';
 
 const App = () => (
   <BrowserRouter>

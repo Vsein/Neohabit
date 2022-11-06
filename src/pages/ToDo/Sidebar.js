@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
+import ProjectTag from './ProjectTag';
 
 export default function Sidebar(props) {
   const { hidden, filters, projects } = props;
@@ -62,17 +63,7 @@ function Project(props) {
         backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : '')
       }}
     >
-      <div className="centering">
-        <div
-          className="project-circle"
-          style={{ backgroundColor: project.color }}
-        />
-      </div>
-      {project.name === 'Neohabit' ? (
-        <p className="neohabit" />
-      ) : (
-        <p>{project.name}</p>
-      )}
+      <ProjectTag project={project} />
     </NavLink>
   );
 }
