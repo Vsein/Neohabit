@@ -9,17 +9,31 @@ import Editor from '../components/Editor';
 import Overlay from '../components/Overlay';
 import Task from '../modules/Task';
 import Project from '../modules/Project';
+import { fetchProjects, fetchFilters } from '../api/get';
 
 export default function ToDo() {
   useEffect(() => {
     document.title = 'To-do list | Neohabit';
   });
 
-  const [sidebarHidden, setSidebarHidden] = useState(false);
-  const toggleSidebar = () => {
-    setSidebarHidden(!sidebarHidden);
-  };
+  const [projects, setProjects] = useState([]);
+  const [filters, setFilters] = useState([]);
+  const [id, setId] = useState('');
 
+  useEffect(() => {
+    async function init() {
+      const [projectsFetched, filtersFetched] = await Promise.all([
+        fetchProjects(),
+        fetchFilters(),
+      ]);
+
+      setProjects(projectsFetched);
+      setFilters(filtersFetched);
+    }
+    init();
+  }, []);
+
+  const [sidebarHidden, setSidebarHidden] = useState(false);
   const [overlayContent, setOverlayContent] = useState({
     task: new Task(),
     project: new Project(),
@@ -27,6 +41,10 @@ export default function ToDo() {
   });
   const [overlayActive, setOverlayActive] = useState(false);
   const [currentID, setCurrentID] = useState({});
+
+  const toggleSidebar = () => {
+    setSidebarHidden(!sidebarHidden);
+  };
 
   const openOverlay = ({ isNew, task, project }) => {
     if (isNew) {
@@ -59,8 +77,9 @@ export default function ToDo() {
   return (
     <div id="content">
       <MainMenu toggleSidebar={toggleSidebar} />
-      <Sidebar hidden={sidebarHidden}/>
+      <Sidebar hidden={sidebarHidden} projects={projects} filters={filters} setId={setId}/>
       <Routes>
+        <Route path=":list/:id" element={<Editor open={openOverlay} />} />
         <Route path=":list" element={<Editor open={openOverlay} />} />
       </Routes>
       <Overlay
@@ -72,7 +91,7 @@ export default function ToDo() {
         modify={setOverlayContent}
         submit={submitTask}
       />
-      <SidebarMobile />
+      <SidebarMobile projects={projects} filters={filters} />
     </div>
   );
 }

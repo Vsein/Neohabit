@@ -1,12 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiClose } from '@mdi/js';
 import Storage from '../modules/Storage';
+import { fetchTasks } from '../api/get';
 
 export default function Editor(props) {
   const { open } = props;
-  let { list } = useParams();
+  const { list, id } = useParams();
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    async function init() {
+      const tasksRes = await fetchTasks({ [list.replace('-', '_')]: true, id });
+      setTasks(tasksRes);
+    }
+    console.log(list);
+    console.log(id);
+
+    init();
+  }, [list, id]);
 
   const delinkify = (str) =>
     str
@@ -15,7 +28,7 @@ export default function Editor(props) {
       .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
       .join(' ');
 
-  list = delinkify(list);
+  const delist = delinkify(list);
 
   const openNew = () => {
     const project = Storage.getToDoList().getProject(list);
@@ -25,18 +38,16 @@ export default function Editor(props) {
   return (
     <main className="editor">
       <div className="editor-header">
-        <h3 id="list-name">{list}</h3>
+        <h3 id="list-name">{delist}</h3>
       </div>
       <ul className="editor-list">
-        {Storage.getToDoList()
-          .filterProjects(list)
-          .map((project) =>
-            project.tasks.map((task) => (
+        {
+          tasks.map((task) => (
               <li key={task.name}>
-                <Task task={task} project={project} open={open} />
+                <Task task={task} project={task.project} open={open} />
               </li>
-            )),
-          )}
+          ))
+        }
         <button className="add-task-btn" onClick={openNew}>
           <Icon className="add-task-icon" path={mdiPlus} />
           <p>Add task</p>

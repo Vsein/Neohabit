@@ -2,32 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
-import Storage from '../modules/Storage';
 
 export default function Sidebar(props) {
-  const { hidden } = props;
+  const { hidden, filters, projects, setId } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
-  const [projects, setProjects] = useState([]);
 
   const toggleProjectsCollapsed = () => {
     setProjectsCollapsed(!projectsCollapsed);
   };
 
-  useEffect(() => {
-    async function fetchProjects() {
-      const res = await fetch('http://localhost:9000/api/projects');
-      const textRes = await res.text();
-      const projectsRes = JSON.parse(textRes);
-      setProjects(projectsRes);
-    }
-    fetchProjects();
-  }, []);
-
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
       <ul className="filters">
-        {Storage.getToDoList()
-          .getFilters()
+        {
+          filters
           .map((filter, i) => (
             <li key={`filter-${i}`}>
               <Filter filter={filter} />
@@ -51,7 +39,7 @@ export default function Sidebar(props) {
             projects
             .map((project, i) => (
               <li key={`project-${i}`}>
-                <Project project={project} />
+                <Project project={project} setId={setId} />
               </li>
             ))
           }
@@ -62,14 +50,14 @@ export default function Sidebar(props) {
 }
 
 function Project(props) {
-  const { project } = props;
+  const { project, setId } = props;
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
     <NavLink
       className={({ isActive }) => (isActive ? 'project active' : 'project')}
-      to={`/${linkify(project.name)}`}
+      to={`/project/${linkify(project._id)}`}
       style={{
         backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : '')
       }}
