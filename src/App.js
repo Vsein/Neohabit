@@ -4,7 +4,7 @@ import ToDo from './pages/ToDoPage';
 import Signup from './pages/SignupPage';
 import Dashboard from './pages/DashboardPage';
 
-const RouteSwitch = () => (
+const App = () => (
   <BrowserRouter>
     <Routes>
       <Route path="/todo/*" element={<ToDo />} />
@@ -14,4 +14,4 @@ const RouteSwitch = () => (
   </BrowserRouter>
 );
 
-export default RouteSwitch;
+export default App;
