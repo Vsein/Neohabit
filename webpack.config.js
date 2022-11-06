@@ -7,12 +7,14 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     static: './dist',
+    hot: true,
     historyApiFallback: true,
   },
   plugins: [new HtmlWebpackPlugin({ title: 'Neohabit' })],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
     clean: true,
   },
   module: {

@@ -15,8 +15,6 @@ export default function Editor(props) {
       const tasksRes = await fetchTasks({ [list.replace('-', '_')]: true, id });
       setTasks(tasksRes);
     }
-    console.log(list);
-    console.log(id);
 
     init();
   }, [list, id]);
