@@ -42,7 +42,7 @@ export default function Editor() {
   return (
     <main className="editor">
       <div className="editor-header">
-        <h3 id="list-name">{project.name || delist}</h3>
+        <h3 id="list-name">{list === 'project' ? project.name : delist}</h3>
       </div>
       <ul className="editor-list">
         {
