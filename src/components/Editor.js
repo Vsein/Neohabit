@@ -3,6 +3,7 @@ import { useParams, useNavigate, Outlet } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiClose } from '@mdi/js';
 import { fetchTasks, fetchProjectByID } from '../api/get';
+import { deleteTask } from '../api/delete';
 
 export default function Editor() {
   const { list, projectID } = useParams();
@@ -65,10 +66,10 @@ function Task(props) {
   const [completed, setCompleted] = useState(task.completed);
   const navigate = useNavigate();
 
-  const deleteTask = (e) => {
+  const deleteThisTask = (e) => {
     e.stopPropagation();
-    Storage.deleteTask(project.name, task.name);
-    e.target.parentElement.remove();
+    deleteTask(task._id);
+    e.target.parentElement.parentElement.remove();
   };
 
   const completeTask = (e) => {
@@ -89,8 +90,8 @@ function Task(props) {
         onClick={completeTask}
       ></button>
       <button tabIndex="0" className="task-name">{task.name}</button>
-      <button className="centering">
-        <Icon path={mdiClose} className="delete-task-btn icon" onClick={deleteTask} />
+      <button className="centering" onClick={deleteThisTask}>
+        <Icon path={mdiClose} className="delete-task-btn icon" />
       </button>
       <Outlet context={{ project, task }} />
     </div>
