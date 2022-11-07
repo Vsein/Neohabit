@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/main.scss';
+import '../../styles/main.scss';
 import Icon from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 

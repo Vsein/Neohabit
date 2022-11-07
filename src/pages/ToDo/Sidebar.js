@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
-import Storage from '../modules/Storage';
+import ProjectTag from './ProjectTag';
 
 export default function Sidebar(props) {
-  const { hidden } = props;
+  const { hidden, filters, projects } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
   const toggleProjectsCollapsed = () => {
@@ -15,8 +15,8 @@ export default function Sidebar(props) {
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
       <ul className="filters">
-        {Storage.getToDoList()
-          .getFilters()
+        {
+          filters
           .map((filter, i) => (
             <li key={`filter-${i}`}>
               <Filter filter={filter} />
@@ -36,13 +36,14 @@ export default function Sidebar(props) {
         <ul
           className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
         >
-          {Storage.getToDoList()
-            .getProjects()
+          {
+            projects
             .map((project, i) => (
               <li key={`project-${i}`}>
                 <Project project={project} />
               </li>
-            ))}
+            ))
+          }
         </ul>
       </ul>
     </aside>
@@ -57,22 +58,12 @@ function Project(props) {
   return (
     <NavLink
       className={({ isActive }) => (isActive ? 'project active' : 'project')}
-      to={`/${linkify(project.name)}`}
+      to={`project/${linkify(project._id)}`}
       style={{
         backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : '')
       }}
     >
-      <div className="centering">
-        <div
-          className="project-circle"
-          style={{ backgroundColor: project.color }}
-        />
-      </div>
-      {project.name === 'Neohabit' ? (
-        <p className="neohabit" />
-      ) : (
-        <p>{project.name}</p>
-      )}
+      <ProjectTag project={project} />
     </NavLink>
   );
 }
@@ -85,7 +76,7 @@ function Filter(props) {
   return (
     <NavLink
       className={({ isActive }) => (isActive ? 'filter active' : 'filter')}
-      to={`/${linkify(filter.name)}`}
+      to={`${linkify(filter.name)}`}
     >
       <Icon path={filter.image} height="20px" width="20px" />
       <p>{filter.name}</p>

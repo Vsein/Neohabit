@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import '../styles/main.scss';
+import '../../styles/main.scss';
 import Icon from '@mdi/react';
 import {
   mdiHome,
@@ -14,7 +14,7 @@ import {
   mdiEyeOutline,
   mdiShareVariantOutline,
 } from '@mdi/js';
-import pfp from '../assets/pfp.jpg';
+import pfp from '../../assets/pfp.jpg';
 
 export default function Signup() {
   useEffect(() => {

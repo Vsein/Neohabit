@@ -1,23 +1,18 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
-import Storage from '../modules/Storage';
 
-export default function SidebarMobile() {
+export default function SidebarMobile(props) {
+  const { filters, projects } = props;
+
   return (
     <aside className="sidebar-mobile">
       <ul className="filters-mobile">
-        {Storage.getToDoList()
-          .getFilters()
-          .map((filter, i) => (
-            <FilterMobile
-              filter={filter}
-              key={`filter-${i}`}
-            />
-          ))}
+        {filters.map((filter, i) => (
+          <FilterMobile filter={filter} key={`filter-${i}`} />
+        ))}
       </ul>
-      <ul className="projects-mobile">
-      </ul>
+      <ul className="projects-mobile"></ul>
     </aside>
   );
 }
@@ -30,7 +25,7 @@ function FilterMobile(props) {
   return (
     <li>
       <NavLink
-        className={({ isActive }) => (isActive ? 'filter-mobile active' : 'filter-mobile')}
+        className={({ isActive }) => isActive ? 'filter-mobile active' : 'filter-mobile'}
         to={`/${linkify(filter.name)}`}
         tabIndex="0"
       >
