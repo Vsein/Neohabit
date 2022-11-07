@@ -35,6 +35,16 @@ async function fetchProjectByID(projectID) {
   return project;
 }
 
+async function fetchProject({ is_default }) {
+  let url = 'http://localhost:9000/api/project?';
+  if (is_default) url += 'default=true';
+  const res = await fetch(url);
+  const textRes = await res.text();
+  const project = JSON.parse(textRes);
+
+  return project;
+}
+
 async function fetchTaskByID(taskID) {
   const res = await fetch(`http://localhost:9000/api/task/${taskID}/details`);
   const textRes = await res.text();
@@ -48,5 +58,6 @@ export {
   fetchFilters,
   fetchTasks,
   fetchProjectByID,
+  fetchProject,
   fetchTaskByID,
 };

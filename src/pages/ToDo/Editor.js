@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Outlet } from 'react-router-dom';
+import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiClose } from '@mdi/js';
 import { fetchTasks, fetchProjectByID } from '../../api/get';
@@ -10,6 +10,7 @@ export default function Editor() {
   const [tasks, setTasks] = useState([]);
   const [project, setProject] = useState({});
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     async function init() {
@@ -27,9 +28,8 @@ export default function Editor() {
         setTasks(tasksRes);
       }
     }
-
     init();
-  }, [list, projectID]);
+  }, [list, projectID, location.pathname]);
 
   const delinkify = (str) =>
     str
@@ -48,7 +48,7 @@ export default function Editor() {
       <ul className="editor-list">
         {
           tasks.map((task) => (
-              <li key={task.name}>
+              <li key={task._id}>
                 <Task task={task} project={task.project}/>
               </li>
           ))
