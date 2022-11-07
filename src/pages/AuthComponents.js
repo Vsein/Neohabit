@@ -50,7 +50,7 @@ function UsernameField() {
 function EmailField() {
   return (
     <div>
-      <label htmlFor="mail">E-mail</label>
+      <label htmlFor="usermail">E-mail</label>
       <input
         className="registration-field"
         type="email"

@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import '../../styles/main.scss';
 import {
   AuthSidebar,
   AuthIntro,
-  UsernameField,
   EmailField,
   PasswordField,
 } from '../AuthComponents';
 
-export default function SignUp() {
+export default function Login() {
   useEffect(() => {
-    document.title = 'Signup | Neohabit';
+    document.title = 'Login | Neohabit';
   });
 
   return (
@@ -18,26 +18,24 @@ export default function SignUp() {
       <AuthSidebar />
       <div className="registration-container">
         <AuthIntro />
-        <SignUpForm />
+        <LoginForm />
         <p className="login-ref">
-          Already have an account? <a href="">Log in</a>
+          Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink>
         </p>
       </div>
     </div>
   );
 }
 
-function SignUpForm() {
+function LoginForm() {
   return (
     <form className="registration" id="registration" action="#">
-      <h2>Register:</h2>
+      <h2>Enter:</h2>
       <div className="registration-fields">
-        <UsernameField />
         <EmailField />
         <PasswordField type="define" />
-        <PasswordField type="confirm" />
         <button type="submit" className="create-acc-btn">
-          Create Account
+          Log in
         </button>
       </div>
     </form>
