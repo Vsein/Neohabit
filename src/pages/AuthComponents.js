@@ -50,12 +50,11 @@ function UsernameField() {
 function EmailField() {
   return (
     <div>
-      <label htmlFor="usermail">E-mail</label>
+      <label htmlFor="email">E-mail</label>
       <input
         className="registration-field"
         type="email"
-        id="mail"
-        name="usermail"
+        name="email"
         required
       />
     </div>
@@ -69,14 +68,13 @@ function PasswordField(props) {
 
   return (
     <div>
-      <label htmlFor="pwd">
+      <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'} >
         {type === 'confirm' ? 'Confirm Password' : 'Password'}
       </label>
       <div className="registration-field-container">
         <input
           className="registration-field"
           type={passwordHidden ? 'password' : 'test'}
-          id="pwd"
           name={type === 'confirm' ? 'password_confirm' : 'password'}
           required
           minLength="8"

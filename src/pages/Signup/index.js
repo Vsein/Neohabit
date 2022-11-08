@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../../styles/main.scss';
 import {
   AuthSidebar,
@@ -29,8 +29,23 @@ export default function Signup() {
 }
 
 function SignupForm() {
+  const navigate = useNavigate();
+
+  async function signup(e) {
+    e.preventDefault();
+    const formData = new FormData(document.forms.signupForm);
+    const data = new URLSearchParams([...formData.entries()]);
+    const res = await fetch('http://localhost:9000/api/signup', { method: 'POST', body: data });
+    const resText = await res.text();
+    if (resText === 'Logged in!') {
+      navigate('/dashboard');
+    } else {
+      console.log('OOps');
+    }
+  }
+
   return (
-    <form className="registration" id="registration" action="#">
+    <form className="registration" id="signupForm" onSubmit={signup}>
       <h2>Register:</h2>
       <div className="registration-fields">
         <UsernameField />

@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../../styles/main.scss';
 import {
   AuthSidebar,
   AuthIntro,
   EmailField,
+  UsernameField,
   PasswordField,
 } from '../AuthComponents';
 
@@ -28,11 +29,26 @@ export default function Login() {
 }
 
 function LoginForm() {
+  const navigate = useNavigate();
+
+  async function login(e) {
+    e.preventDefault();
+    const formData = new FormData(document.forms.loginForm);
+    const data = new URLSearchParams([...formData.entries()]);
+    const res = await fetch('http://localhost:9000/api/login', { method: 'POST', body: data });
+    const resText = await res.text();
+    if (resText === 'Logged in!') {
+      navigate('/dashboard');
+    } else {
+      console.log('OOps');
+    }
+  }
+
   return (
-    <form className="registration" id="registration" action="#">
+    <form className="registration" id="loginForm" onSubmit={login}>
       <h2>Enter:</h2>
       <div className="registration-fields">
-        <EmailField />
+        <UsernameField />
         <PasswordField type="define" />
         <button type="submit" className="create-acc-btn">
           Log in
