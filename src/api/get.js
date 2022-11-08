@@ -53,6 +53,14 @@ async function fetchTaskByID(taskID) {
   return task;
 }
 
+async function checkAuthentication() {
+  const res = await fetch('http://localhost:9000/api/checkauthentication');
+  const textRes = await res.text();
+  const auth = JSON.parse(textRes);
+
+  return auth;
+}
+
 export {
   fetchProjects,
   fetchFilters,
@@ -60,4 +68,5 @@ export {
   fetchProjectByID,
   fetchProject,
   fetchTaskByID,
+  checkAuthentication,
 };
