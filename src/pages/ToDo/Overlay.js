@@ -3,8 +3,13 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import ProjectTag from './ProjectTag';
-import { fetchProject, fetchProjectByID, fetchTaskByID } from '../../api/get';
-import { updateTask, createTask } from '../../api/post';
+import {
+  fetchProject,
+  fetchProjectByID,
+  fetchTaskByID,
+  updateTask,
+  createTask,
+} from '../../api/todolist';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay() {
@@ -96,20 +101,30 @@ export default function Overlay() {
           </label>
         </div>
         <div className="modal-buttons">
-          <button className="form-button" id="cancel-form-button" onClick={close}>
+          <button
+            className="form-button"
+            id="cancel-form-button"
+            onClick={close}
+          >
             Cancel
           </button>
-          {
-            task ? (
-              <button className="form-button" id="submit-form-button" onClick={updateThisTask}>
-                Save
-              </button>
-            ) : (
-              <button className="form-button" id="submit-form-button" onClick={createNewTask}>
-                Add task
-              </button>
-            )
-          }
+          {task ? (
+            <button
+              className="form-button"
+              id="submit-form-button"
+              onClick={updateThisTask}
+            >
+              Save
+            </button>
+          ) : (
+            <button
+              className="form-button"
+              id="submit-form-button"
+              onClick={createNewTask}
+            >
+              Add task
+            </button>
+          )}
         </div>
       </div>
     </div>

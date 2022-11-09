@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import SidebarMobile from './SidebarMobile';
 import Editor from './Editor';
 import Overlay from './Overlay';
-import { fetchProjects, fetchFilters } from '../../api/get';
+import { fetchProjects, fetchFilters } from '../../api/todolist';
 
 export default function ToDo() {
   useEffect(() => {

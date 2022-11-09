@@ -11,7 +11,7 @@ import ToDo from './pages/ToDo';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import { checkAuthentication } from './api/get';
+import { setAuthToken } from './api/axios';
 
 const App = () => (
   <BrowserRouter>
@@ -30,9 +30,20 @@ const PrivateRoutes = () => {
   const [loggedIn, setLoggedIn] = useState(true);
   const location = useLocation();
 
+  const token = localStorage.getItem('token');
+  if (token) setAuthToken(token);
+
+  function hasJWT() {
+    if (localStorage.getItem('token')) {
+      setAuthToken(token);
+      return true;
+    }
+    return false;
+  }
+
   useEffect(() => {
     async function init() {
-      const status = await checkAuthentication();
+      const status = hasJWT();
       setLoggedIn(status);
     }
     init();

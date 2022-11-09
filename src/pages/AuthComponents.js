@@ -32,7 +32,7 @@ function AuthIntro() {
 function UsernameField() {
   return (
     <div>
-      <label htmlFor="name">First Name</label>
+      <label htmlFor="name">Username</label>
       <input
         className="registration-field"
         type="text"
