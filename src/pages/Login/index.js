@@ -9,7 +9,7 @@ import {
   UsernameField,
   PasswordField,
 } from '../AuthComponents';
-import { setAuthToken } from '../../api/axios';
+import { setAuthToken } from '../../api/auth';
 
 export default function Login() {
   useEffect(() => {
@@ -33,23 +33,7 @@ export default function Login() {
 function LoginForm() {
   const navigate = useNavigate();
 
-  async function login(e) {
-    e.preventDefault();
-    const formData = new FormData(document.forms.loginForm);
-    const data = new URLSearchParams([...formData.entries()]);
-    const res = await fetch('http://localhost:9000/api/login', {
-      method: 'POST',
-      body: data,
-    });
-    const resText = await res.text();
-    if (resText === 'Logged in!') {
-      navigate('/dashboard');
-    } else {
-      console.log('OOps');
-    }
-  }
-
-  const handleSubmit = (e) => {
+  const login = (e) => {
     e.preventDefault();
     const formData = new FormData(document.forms.loginForm);
     const data = new URLSearchParams([...formData.entries()]);
@@ -61,13 +45,13 @@ function LoginForm() {
         localStorage.setItem('token', token);
         console.log(token);
         setAuthToken(token);
-        window.location.href = '/';
+        navigate('/dashboard');
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <form className="registration" id="loginForm" onSubmit={handleSubmit}>
+    <form className="registration" id="loginForm" onSubmit={login}>
       <h2>Enter:</h2>
       <div className="registration-fields">
         <EmailField />

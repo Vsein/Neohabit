@@ -11,7 +11,7 @@ import ToDo from './pages/ToDo';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import { setAuthToken } from './api/axios';
+import { setAuthToken } from './api/auth';
 
 const App = () => (
   <BrowserRouter>

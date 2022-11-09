@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../../styles/main.scss';
 import {
   AuthSidebar,
@@ -8,6 +9,7 @@ import {
   EmailField,
   PasswordField,
 } from '../AuthComponents';
+import { setAuthToken } from '../../api/auth';
 
 export default function Signup() {
   useEffect(() => {
@@ -31,18 +33,22 @@ export default function Signup() {
 function SignupForm() {
   const navigate = useNavigate();
 
-  async function signup(e) {
+  const signup = (e) => {
     e.preventDefault();
     const formData = new FormData(document.forms.signupForm);
     const data = new URLSearchParams([...formData.entries()]);
-    const res = await fetch('http://localhost:9000/api/signup', { method: 'POST', body: data });
-    const resText = await res.text();
-    if (resText === 'Logged in!') {
-      navigate('/dashboard');
-    } else {
-      console.log('OOps');
-    }
-  }
+
+    axios.post('http://localhost:9000/signup', data);
+    axios.post('http://localhost:9000/login', data)
+      .then((response) => {
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+        console.log(token);
+        setAuthToken(token);
+        navigate('/dashboard');
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <form className="registration" id="signupForm" onSubmit={signup}>
