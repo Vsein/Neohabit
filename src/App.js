@@ -13,28 +13,12 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import { setAuthToken } from './api/auth';
 
-const App = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/signup/" element={<Signup />} />
-      <Route path="/login/" element={<Login />} />
-      <Route path="/" element={<PrivateRoutes />}>
-        <Route path="/dashboard/" element={<Dashboard />} />
-        <Route path="/todo/*" element={<ToDo />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
-);
-
-const PrivateRoutes = () => {
+const App = () => {
   const [loggedIn, setLoggedIn] = useState(true);
-  const location = useLocation();
-
-  const token = localStorage.getItem('token');
-  if (token) setAuthToken(token);
 
   function hasJWT() {
-    if (localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
+    if (token) {
       setAuthToken(token);
       return true;
     }
@@ -42,21 +26,48 @@ const PrivateRoutes = () => {
   }
 
   useEffect(() => {
-    async function init() {
-      const status = hasJWT();
-      setLoggedIn(status);
-    }
-    init();
+    setLoggedIn(hasJWT());
   }, []);
 
   if (loggedIn === undefined) {
     return null; // or loading indicator/spinner/etc
   }
 
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AuthRoutes loggedIn={loggedIn} />}>
+          <Route path="/signup/" element={<Signup />} />
+          <Route path="/login/" element={<Login />} />
+        </Route>
+        <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} />}>
+          <Route path="/dashboard/" element={<Dashboard />} />
+          <Route path="/todo/*" element={<ToDo />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+const PrivateRoutes = (params) => {
+  const { loggedIn } = params;
+  const location = useLocation();
+
   return loggedIn ? (
     <Outlet />
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />
+  );
+};
+
+const AuthRoutes = (params) => {
+  const { loggedIn } = params;
+  const location = useLocation();
+
+  return loggedIn ? (
+    <Navigate to="/dashboard" replace state={{ from: location }} />
+  ) : (
+    <Outlet />
   );
 };
 
