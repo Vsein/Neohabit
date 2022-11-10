@@ -11,7 +11,7 @@
   display: grid;
   grid-template-areas:
     'menu    menu'
-    'sidebar editor';
+    'sidebar main';
   grid-template-rows: 60px 1fr;
   grid-template-columns: min-content 1fr;
   background-color: #efefef;

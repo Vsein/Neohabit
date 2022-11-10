@@ -11,6 +11,7 @@ import ToDo from './pages/ToDo';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import HabitsPage from './pages/Habits';
 import { setAuthToken } from './api/auth';
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} />}>
           <Route path="/dashboard/" element={<Dashboard />} />
           <Route path="/todo/*" element={<ToDo />} />
+          <Route path="/habits/*" element={<HabitsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
