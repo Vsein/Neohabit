@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import '../../styles/main.scss';
 import Icon from '@mdi/react';
 import {
   mdiHome,

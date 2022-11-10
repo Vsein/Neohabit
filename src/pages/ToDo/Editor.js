@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiClose } from '@mdi/js';
-import { fetchTasks, fetchProjectByID } from '../../api/get';
-import { deleteTask } from '../../api/delete';
+import { fetchTasks, fetchProjectByID, deleteTask } from '../../api/todolist';
 
 export default function Editor() {
   const { list, projectID } = useParams();

@@ -21,7 +21,12 @@ module.exports = {
     rules: [
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          'resolve-url-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,

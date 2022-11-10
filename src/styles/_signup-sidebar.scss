@@ -4,7 +4,7 @@
   min-height: 100vh;
 }
 
-.sidebar-signup {
+.sidebar-auth {
   display: block;
   flex: 1 1 auto;
   background-image: url("../assets/heatmap.png");
@@ -12,13 +12,13 @@
   background-repeat: repeat-y;
   background-color: #EFEFEF;
   width: min(66.84vh, 100vw);
-}
 
-.sidebar-header {
-  margin-block: 10%;
-  text-align: center;
-  padding: 1em;
-  background-color: #b0b0b0aa;
+  &-header {
+    margin-block: 10%;
+    text-align: center;
+    padding: 1em;
+    background-color: #b0b0b0aa;
+  }
 }
 
 .registration-container {
@@ -30,7 +30,7 @@
   width: min(500px, 100%);
 }
 
-.welcome {
+.auth-intro {
   max-width: 70ch;
   padding-inline: 2em;
   flex: 2;
@@ -59,6 +59,7 @@
 }
 
 .registration-fields {
+  max-width: 70ch;
   display: flex;
   flex-flow: row wrap;
   gap: 1em;
@@ -69,6 +70,7 @@
 }
 
 .registration-field {
+  width: 100%;
   height: 36px;
   background-color: #8EC07C;
   border-radius: 10px;
