@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import '../../styles/main.scss';
 import {
   AuthSidebar,
   AuthIntro,
@@ -9,7 +7,7 @@ import {
   EmailField,
   PasswordField,
 } from '../AuthComponents';
-import { setAuthToken } from '../../api/auth';
+import { sendSignupRequest } from '../../api/auth';
 
 export default function Signup() {
   useEffect(() => {
@@ -33,21 +31,12 @@ export default function Signup() {
 function SignupForm() {
   const navigate = useNavigate();
 
-  const signup = (e) => {
+  const signup = async (e) => {
     e.preventDefault();
     const formData = new FormData(document.forms.signupForm);
     const data = new URLSearchParams([...formData.entries()]);
-
-    axios.post('http://localhost:9000/signup', data);
-    axios.post('http://localhost:9000/login', data)
-      .then((response) => {
-        const token = response.data.token;
-        localStorage.setItem('token', token);
-        console.log(token);
-        setAuthToken(token);
-        navigate('/dashboard');
-      })
-      .catch((err) => console.log(err));
+    const isSuccessful = await sendSignupRequest(data);
+    if (isSuccessful) navigate('/dashboard');
   };
 
   return (

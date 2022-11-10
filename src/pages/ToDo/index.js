@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import '../../styles/main.scss';
 import MainMenu from './MainMenu';
 import Sidebar from './Sidebar';
 import SidebarMobile from './SidebarMobile';
