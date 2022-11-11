@@ -40,7 +40,7 @@ export default function Editor() {
   const delist = delinkify(list);
 
   return (
-    <main className="editor">
+    <div className="editor">
       <div className="editor-header">
         <h3 id="list-name">{list === 'project' ? project.name : delist}</h3>
       </div>
@@ -58,7 +58,7 @@ export default function Editor() {
         </button>
       </ul>
       <Outlet />
-    </main>
+    </div>
   );
 }
 

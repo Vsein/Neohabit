@@ -1,5 +1,15 @@
-.editor {
+.tasklists {
   grid-area: main;
+
+  &-navigation {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    height: 50px;
+  }
+}
+
+.editor {
   padding: 18px 36px 36px;
   width: min(800px, 100%);
   margin-inline: auto;

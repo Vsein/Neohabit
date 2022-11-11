@@ -18,11 +18,10 @@
 
 .projects,
 .filters {
-  display: grid;
-  grid-auto-rows: 35px;
-  gap: 3px;
   align-items: center;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 50px;
 }
 
 .projects-header {
@@ -88,7 +87,7 @@
 
 .filter {
   @include sidebar-item;
-  padding-inline: 10px;
+  padding-inline: 15px;
 
   &.active.important {
     background-color: #ffd70033;
@@ -97,7 +96,7 @@
 
 .project {
   @include sidebar-item;
-  padding: 10px;
+  padding-inline: 15px;
 }
 
 .tag {
