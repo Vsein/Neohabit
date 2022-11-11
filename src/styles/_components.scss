@@ -97,3 +97,44 @@
     text-decoration: none;
   }
 }
+
+.pfp {
+  border-radius: 50%;
+  cursor: pointer;
+
+  &.small {
+    height: 50px;
+    width: 50px;
+  }
+
+  &.big {
+    height: 75px;
+    width: 75px;
+  }
+
+  &.tiny {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.account-info {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-template-rows: 26px 26px;
+  align-items: center;
+  column-gap: 10px;
+  padding-top: 10px;
+
+  & > .pfp {
+    grid-row: span 2;
+  }
+
+  & > p {
+    line-height: 1em;
+  }
+}
+
+.account-username {
+  font-size: 0.9rem;
+}

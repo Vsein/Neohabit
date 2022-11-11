@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
-  mdiHome,
-  mdiFamilyTree,
-  mdiTrendingUp,
-  mdiCheckboxMultipleMarked,
-  mdiPost,
   mdiCog,
   mdiMenu,
-  mdiApps,
+  mdiLogoutVariant,
+  mdiAccount,
+  mdiBell,
 } from '@mdi/js';
+import PFP from './ProfilePicture';
+import AccountInfo from './AccountInfo';
 
 export default function MainMenu(props) {
   const { toggleSidebar } = props;
@@ -28,58 +27,43 @@ export default function MainMenu(props) {
   return (
     <nav className="menu">
       <button
-        className="logo-section sidebar-toggle-container"
+        className="logo-section left sidebar-toggle-container"
         onClick={toggleSidebar}
       >
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
       </button>
       <h2 className="logo neohabit"></h2>
+        {/* <Icon path={mdiApps} className="icon" /> */}
+      {/* </button> */}
+      <button className='logo-section'>
+        <Icon path={mdiBell} alt="bell" className="icon notifications"/>
+      </button>
       <button
-        className={`logo-section menu-toggle ${menuOpened ? 'active' : ''}`}
+        className={`logo-section right menu-toggle ${menuOpened ? 'active' : ''}`}
         onClick={toggleMenu}
       >
-        <Icon path={mdiApps} className="icon" />
+        <PFP type='tiny'/>
       </button>
       <ul
         className={`menu-container ${menuOpened ? 'active' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
+        <AccountInfo />
+        <hr />
         <MenuSection
-          path={mdiHome}
-          title="Dashboard"
-          status="raw"
-          to="/dashboard"
-          raw="true"
-        />
-        <MenuSection
-          path={mdiFamilyTree}
-          title="Skill trees"
-          status="Coming soon"
-          to="/skill-trees"
-        />
-        <MenuSection
-          path={mdiTrendingUp}
-          title="Habits"
-          status="raw"
-          to="/habits"
-          raw="true"
-        />
-        <MenuSection
-          path={mdiCheckboxMultipleMarked}
-          title="To-do"
-          to="/todo"
-        />
-        <MenuSection
-          path={mdiPost}
-          title="Blog"
-          status="Coming soon"
-          to="/blog"
+          path={mdiAccount}
+          title="Profile"
+          to="/profile"
         />
         <MenuSection
           path={mdiCog}
           title="Settings"
-          status="Coming soon"
           to="/settings"
+        />
+        <MenuSection
+          path={mdiLogoutVariant}
+          title="Log out"
+          to="/logout"
         />
       </ul>
     </nav>
@@ -97,9 +81,6 @@ function MenuSection(props) {
       >
         <Icon path={path} className="icon" />
         <p className="link">{title}</p>
-        <div className={`ribbon ribbon-top-right ${raw ? 'ribbon-raw' : ''}`}>
-          <span>{status}</span>
-        </div>
       </NavLink>
     </li>
   );

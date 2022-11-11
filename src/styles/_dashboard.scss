@@ -1,7 +1,7 @@
 #content-dashboard {
   height: 100%;
   display: grid;
-  grid-template: 75px 100px 1fr / 5fr;
+  grid-template: 100px 1fr / 5fr;
   background-color: #EFEFEF;
 
   & > div {
@@ -46,20 +46,6 @@
 
 .notifications {
   margin-left: auto;
-}
-
-.pfp {
-  border-radius: 50%;
-
-  &.small {
-    height: 50px;
-    width: 50px;
-  }
-
-  &.big {
-    height: 75px;
-    width: 75px;
-  }
 }
 
 .welcome {

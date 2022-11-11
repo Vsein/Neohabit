@@ -1,19 +1,13 @@
 import React, { useEffect } from 'react';
 import Icon from '@mdi/react';
 import {
-  mdiHome,
-  mdiFamilyTree,
-  mdiTrendingUp,
-  mdiCheckboxMultipleMarked,
-  mdiPost,
-  mdiCog,
   mdiMagnify,
   mdiBell,
   mdiStarOutline,
   mdiEyeOutline,
   mdiShareVariantOutline,
 } from '@mdi/js';
-import pfp from '../../assets/pfp.jpg';
+import PFP from '../../components/ProfilePicture';
 
 export default function Signup() {
   useEffect(() => {
@@ -22,13 +16,11 @@ export default function Signup() {
 
   return (
     <div id="content-dashboard">
-      <div className="dashboard-header">
-        <Icon path={mdiMagnify} alt="search" id="search-img" className="icon" />
-        <input type="search" className="searchbar" />
-        <Icon path={mdiBell} alt="bell" className="icon notifications"/>
-        <PFP type="small" />
-        <p className="name">Serene Coder</p>
-      </div>
+      {/* <div className="dashboard-header"> */}
+      {/*   <Icon path={mdiMagnify} alt="search" id="search-img" className="icon" /> */}
+      {/*   <input type="search" className="searchbar" /> */}
+      {/*   <Icon path={mdiBell} alt="bell" className="icon notifications"/> */}
+      {/* </div> */}
 
       <div className="controls">
         <PFP type="big" />
@@ -79,29 +71,6 @@ export default function Signup() {
         </div>
       </div>
     </div>
-  );
-}
-
-function MenuSection(props) {
-  const { name, path } = props;
-  return (
-    <button className="dashboard-menu-section">
-      <Icon path={path} className="icon" />
-      <p>{name}</p>
-    </button>
-  );
-}
-
-function PFP(props) {
-  const { type } = props;
-  return (
-    <a tabIndex="0">
-      <img
-        src={pfp}
-        alt="profile pic"
-        className={`pfp ${type}`}
-      />
-    </a>
   );
 }
 
