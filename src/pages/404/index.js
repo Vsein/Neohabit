@@ -8,14 +8,6 @@ export default function NotFound() {
 
   const navigate = useNavigate();
 
-  const goBack = () => {
-    if (window.history.state && window.history.state.idx > 0) {
-      navigate(-1);
-    } else {
-      navigate('/', { replace: true });
-    }
-  }
-
   return (
     <main className="editor">
       <div className="editor-header">
@@ -23,7 +15,7 @@ export default function NotFound() {
       </div>
       <p className="back-ref">
         There doesn&apos;t seem to be anything...
-        <a tabIndex="0" onClick={goBack}>Go back</a>
+        <a tabIndex="0" onClick={() => navigate(-1)}>Go back</a>
       </p>
     </main>
   );

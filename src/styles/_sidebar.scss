@@ -7,7 +7,7 @@
   flex-direction: column;
   gap: 15px;
   padding: 15px;
-  transition: 1.5s;
+  // transition: 1.5s;
   white-space: nowrap;
   overflow: hidden;
 
@@ -30,6 +30,38 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.navigation {
+  display: grid;
+  grid-auto-rows: 35px;
+  gap: 5px;
+
+  &-section {
+    height: 100%;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 30px 60px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    padding-inline: 5px;
+
+    &.active, &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+  }
+
+  &-section-collapsed {
+    display: grid;
+    grid-template-rows: 25px 10px;
+  }
+
+  & .ribbon {
+    visibility: hidden;
+  }
 }
 
 @mixin sidebar-item {

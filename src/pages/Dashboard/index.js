@@ -22,18 +22,6 @@ export default function Signup() {
 
   return (
     <div id="content-dashboard">
-      <div className="dashboard-menu">
-        <h2 className="neohabit logo" />
-        <div />
-        <MenuSection name="Dashboard" path={mdiHome} />
-        <MenuSection name="Skill trees" path={mdiFamilyTree} />
-        <MenuSection name="Current habits" path={mdiTrendingUp} />
-        <MenuSection name="To-do" path={mdiCheckboxMultipleMarked} />
-        <MenuSection name="Blog" path={mdiPost} />
-        <div />
-        <MenuSection name="Settings" path={mdiCog} />
-      </div>
-
       <div className="dashboard-header">
         <Icon path={mdiMagnify} alt="search" id="search-img" className="icon" />
         <input type="search" className="searchbar" />

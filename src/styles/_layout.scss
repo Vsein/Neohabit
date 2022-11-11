@@ -45,28 +45,49 @@
   }
 
   @media (min-width: 550px) {
-    .sidebar {
-      width: 180px;
-
-      &-hidden {
-        @include sidebar-hidden;
-      }
-    }
-
     .editor {
       padding: 18px;
+    }
+
+    .sidebar {
+      width: 250px;
+    }
+
+    .sidebar-hidden {
+      // width: 75px;
+      width: 75px;
+      padding: 5px;
+      // @include sidebar-hidden;
+
+      & .navigation {
+        grid-auto-rows: 60px;
+        gap: 5px;
+      }
+
+      & .navigation-section {
+        display: grid;
+        grid-template-rows: 25px 20px;
+        grid-template-columns: max-content;
+        gap: 5px;
+        font-size: 16px;
+        text-align: center;
+        justify-content: center;
+        padding-block: 5px;
+        border-radius: 10px;
+        padding-inline: 0px;
+      }
+
+      & .ribbon {
+        visibility: visible;
+      }
+
+      & .filters, & .projects, & .projects-container {
+        visibility: hidden;
+      }
     }
   }
 
   @media (min-width: 700px) {
-    .sidebar {
-      width: 270px;
-
-      &-hidden {
-        @include sidebar-hidden;
-      }
-    }
-
     .editor {
       padding: 18px 36px 36px;
     }

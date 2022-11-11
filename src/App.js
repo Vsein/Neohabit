@@ -77,7 +77,7 @@ const PrivateRoutes = (params) => {
     init();
   }, []);
 
-  const [sidebarHidden, setSidebarHidden] = useState(false);
+  const [sidebarHidden, setSidebarHidden] = useState(true);
 
   const toggleSidebar = () => {
     setSidebarHidden(!sidebarHidden);
