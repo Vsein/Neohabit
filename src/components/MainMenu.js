@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
   mdiHome,
@@ -47,38 +48,59 @@ export default function MainMenu(props) {
           path={mdiHome}
           title="Dashboard"
           status="raw"
-          href="https://vsein.github.io/profile-page/"
+          to="/dashboard"
           raw="true"
         />
         <MenuSection
           path={mdiFamilyTree}
           title="Skill trees"
           status="Coming soon"
+          to="/skill-trees"
         />
-        <MenuSection path={mdiTrendingUp} title="Habits" status="Coming soon" />
+        <MenuSection
+          path={mdiTrendingUp}
+          title="Habits"
+          status="raw"
+          to="/habits"
+          raw="true"
+        />
         <MenuSection
           path={mdiCheckboxMultipleMarked}
           title="To-do"
-          active="true"
+          to="/todo"
         />
-        <MenuSection path={mdiPost} title="Blog" status="Coming soon" />
-        <MenuSection path={mdiCog} title="Settings" status="Coming soon" />
+        <MenuSection
+          path={mdiPost}
+          title="Blog"
+          status="Coming soon"
+          to="/blog"
+        />
+        <MenuSection
+          path={mdiCog}
+          title="Settings"
+          status="Coming soon"
+          to="/settings"
+        />
       </ul>
     </nav>
   );
 }
 
 function MenuSection(props) {
-  const { path, href, title, status, raw, active } = props;
+  const { path, to, title, status, raw } = props;
   return (
     <li>
-      <a className={`menu-section ${active ? 'active' : ''}`} tabIndex="0" href={href}>
+      <NavLink
+        className={({ isActive }) => isActive ? 'menu-section active' : 'menu-section' }
+        tabIndex="0"
+        to={to}
+      >
         <Icon path={path} className="icon" />
         <p className="link">{title}</p>
         <div className={`ribbon ribbon-top-right ${raw ? 'ribbon-raw' : ''}`}>
           <span>{status}</span>
         </div>
-      </a>
+      </NavLink>
     </li>
   );
 }

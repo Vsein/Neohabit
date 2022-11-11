@@ -1,28 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import MainMenu from './MainMenu';
 // import Habits from './Habits';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
-import { mdiPlus, mdiClose } from '@mdi/js';
-import { fetchTasks, fetchProjectByID, deleteTask } from '../../api/todolist';
+import { mdiPlus } from '@mdi/js';
 
 export default function HabitsPage() {
   useEffect(() => {
     document.title = 'Habits | Neohabit';
   });
 
-  const [sidebarHidden, setSidebarHidden] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarHidden(!sidebarHidden);
-  };
-
   return (
-    <div id="content">
-      <MainMenu toggleSidebar={toggleSidebar} />
-      <Habits />
-    </div>
+    <Habits />
   );
 }
 

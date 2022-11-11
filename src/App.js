@@ -12,7 +12,12 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import HabitsPage from './pages/Habits';
+import NotFound from './pages/404';
+import MainMenu from './components/MainMenu';
+import Sidebar from './components/Sidebar';
+import SidebarMobile from './components/SidebarMobile';
 import { setAuthToken } from './api/auth';
+import { fetchProjects, fetchFilters } from './api/todolist';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -45,6 +50,7 @@ const App = () => {
           <Route path="/dashboard/" element={<Dashboard />} />
           <Route path="/todo/*" element={<ToDo />} />
           <Route path="/habits/*" element={<HabitsPage />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -55,8 +61,35 @@ const PrivateRoutes = (params) => {
   const { loggedIn } = params;
   const location = useLocation();
 
+  const [projects, setProjects] = useState([]);
+  const [filters, setFilters] = useState([]);
+
+  useEffect(() => {
+    async function init() {
+      const [projectsFetched, filtersFetched] = await Promise.all([
+        fetchProjects(),
+        fetchFilters(),
+      ]);
+
+      setProjects(projectsFetched);
+      setFilters(filtersFetched);
+    }
+    init();
+  }, []);
+
+  const [sidebarHidden, setSidebarHidden] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarHidden(!sidebarHidden);
+  };
+
   return loggedIn ? (
-    <Outlet />
+    <div id="content">
+      <MainMenu toggleSidebar={toggleSidebar} />
+      <Sidebar hidden={sidebarHidden} projects={projects} filters={filters} />
+      <Outlet />
+      <SidebarMobile projects={projects} filters={filters} />
+    </div>
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />
   );

@@ -77,3 +77,10 @@
   padding-inline: 35px 30px;
   background-color: #A76214;
 }
+
+.back-ref {
+  & > a {
+    color: #144e12;
+    text-decoration: none;
+  }
+}
