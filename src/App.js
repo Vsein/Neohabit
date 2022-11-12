@@ -12,23 +12,15 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import HabitsPage from './pages/Habits';
+import Logout from './pages/Logout';
 import NotFound from './pages/404';
 import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
 // import SidebarMobile from './components/SidebarMobile';
-import { setAuthToken } from './api/auth';
+import { hasJWT } from './api/auth';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(true);
-
-  function hasJWT() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setAuthToken(token);
-      return true;
-    }
-    return false;
-  }
 
   useEffect(() => {
     setLoggedIn(hasJWT());
@@ -41,14 +33,15 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AuthRoutes loggedIn={loggedIn} />}>
+        <Route path="/" element={<AuthRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
           <Route path="/signup/" element={<Signup />} />
           <Route path="/login/" element={<Login />} />
         </Route>
-        <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} />}>
+        <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
           <Route path="/dashboard/" element={<Dashboard />} />
           <Route path="/todo/*" element={<ToDo />} />
           <Route path="/habits/*" element={<HabitsPage />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
@@ -57,8 +50,12 @@ const App = () => {
 };
 
 const PrivateRoutes = (params) => {
-  const { loggedIn } = params;
+  const { loggedIn, changeAuth } = params;
   const location = useLocation();
+
+  useEffect(() => {
+    changeAuth(hasJWT());
+  }, [location.pathname]);
 
   const [sidebarHidden, setSidebarHidden] = useState(true);
 
@@ -79,8 +76,12 @@ const PrivateRoutes = (params) => {
 };
 
 const AuthRoutes = (params) => {
-  const { loggedIn } = params;
+  const { loggedIn, changeAuth } = params;
   const location = useLocation();
+
+  useEffect(() => {
+    changeAuth(hasJWT());
+  }, [location.pathname]);
 
   return loggedIn ? (
     <Navigate to="/dashboard" replace state={{ from: location }} />
