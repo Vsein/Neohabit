@@ -67,10 +67,47 @@ const DayNames = {
   5: 'Fri',
 };
 
-function Cell({ color }) {
+function Cell({ color, date, value }) {
   const style = { backgroundColor: color };
+  const formattedDate = date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 
-  return <div className="timeline-cells-cell" style={style}></div>;
+  function changeCellOffset(e) {
+    const cell = e.target;
+    const parent = e.target.parentElement;
+    const rect = cell.getBoundingClientRect();
+    const rectParent = parent.getBoundingClientRect();
+    if (rect.x - 50 < rectParent.x || rect.x - 50 < 36) {
+      cell.classList.add('offset--2');
+    } else if (rect.x - 100 < rectParent.x || rect.x - 100 < 36) {
+      cell.classList.add('offset--1');
+    } else if (rect.x + 50 > rectParent.x + rectParent.width) {
+      cell.classList.add('offset-2');
+    } else if (rect.x + 100 > rectParent.x + rectParent.width) {
+      cell.classList.add('offset-1');
+    }
+  }
+
+  let content;
+  if (!value) {
+    content = `No activity on ${formattedDate}`;
+  } else if (value === 1) {
+    content = `1 action on ${formattedDate}`;
+  } else {
+    content = `${value} actions on ${formattedDate}`;
+  }
+
+  return (
+    <div
+      className="timeline-cells-cell"
+      style={style}
+      data-attr={content}
+      onMouseEnter={changeCellOffset}
+    />
+  );
 }
 
 function Month({ dateStart, index }) {
@@ -117,19 +154,27 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
         </div>
 
         <div className="timeline-cells">
-          {
-            Array.from(new Array(data[0].date.getDay())).map((_, index) => (
-            <Cell key={index} color="#00000000" />
+          {Array.from(new Array(data[0].date.getDay())).map((_, index) => (
+            <Cell key={index} color="#00000000" date="" />
           ))}
           {cells.map((_, index) => {
             const date = new Date(
               new Date().setDate(dateStart.getDate() + index),
             );
             const dataPoint = data.find((d) => isSameDay(date, d.date));
+            const value = dataPoint ? dataPoint.value : 0;
             const alpha = colorMultiplier * dataPoint.value;
             const color = colorFunc({ alpha });
 
-            return <Cell key={index} index={index} date={date} color={color} />;
+            return (
+              <Cell
+                key={index}
+                index={index}
+                value={value}
+                date={date}
+                color={color}
+              />
+            );
           })}
         </div>
       </div>

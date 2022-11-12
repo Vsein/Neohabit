@@ -7,7 +7,6 @@ $cell-weekdays-width: 33px;
   grid-area: main;
   padding: 18px 36px 36px;
   margin-inline: auto;
-  overflow: hidden;
 
   &-header {
     display: flex;
@@ -23,10 +22,9 @@ $cell-weekdays-width: 33px;
 }
 
 .timeline {
-  margin-bottom: 30px;
   overflow: hidden;
   position: relative;
-  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 9);
+  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 12);
 
   .timeline-months {
     display: flex;
@@ -80,7 +78,7 @@ $cell-weekdays-width: 33px;
     }
 
     .timeline-cells {
-      display: inline-flex;
+      display: flex;
       flex-direction: column;
       flex-wrap: wrap;
       height: calc((#{$cell-height} + #{$cell-margin} * 2) * 7);
@@ -93,9 +91,46 @@ $cell-weekdays-width: 33px;
         margin: $cell-margin;
         border-radius: 1px;
         background-color: rgba(0, 0, 0, 0.05);
+        position: relative;
+
+        &.offset--2:before {
+          left: 0px;
+        }
+
+        &.offset--1:before {
+          left: -50px;
+        }
+
+        &.offset-1:before {
+          left: -145px;
+        }
+
+        &.offset-2:before {
+          left: -190px;
+        }
+
+        &:before {
+          content: attr(data-attr);
+          padding: 10px;
+          position: absolute;
+          top: 12px;
+          visibility: hidden;
+          left: -100px;
+          width: 200px;
+          text-align: center;
+          font-size: 13px;
+          background-color: #545454;
+          color: white;
+          z-index: 3;
+          border-radius: 10px;
+        }
 
         &:hover {
           border: 1px solid rgba(0, 0, 0, 0.3);
+
+          &:before {
+            visibility: visible;
+          }
         }
       }
     }
