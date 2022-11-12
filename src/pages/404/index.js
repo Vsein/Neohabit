@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function NotFound() {
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function NotFound() {
       </div>
       <p className="back-ref">
         There doesn&apos;t seem to be anything...
-        <a tabIndex="0" onClick={() => navigate(-1)}>Go back</a>
+        <Link onClick={() => navigate(-1)}>Go back</Link>
       </p>
     </main>
   );
