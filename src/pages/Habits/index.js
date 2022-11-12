@@ -10,9 +10,7 @@ export default function HabitsPage() {
     document.title = 'Habits | Neohabit';
   });
 
-  return (
-    <Habits />
-  );
+  return <Habits />;
 }
 
 function Habits() {
@@ -98,9 +96,10 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
 
   const colorMultiplier = 1 / (max - min);
 
-  const isSameDay = (dateToCheck, actualDate) => (dateToCheck.getDate() === actualDate.getDate()
-     && dateToCheck.getMonth() === actualDate.getMonth()
-     && dateToCheck.getFullYear() === actualDate.getFullYear());
+  const isSameDay = (dateToCheck, actualDate) =>
+    dateToCheck.getDate() === actualDate.getDate() &&
+    dateToCheck.getMonth() === actualDate.getMonth() &&
+    dateToCheck.getFullYear() === actualDate.getFullYear();
 
   return (
     <div className="timeline">
@@ -118,8 +117,14 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
         </div>
 
         <div className="timeline-cells">
+          {
+            Array.from(new Array(data[0].date.getDay())).map((_, index) => (
+            <Cell key={index} color="#00000000" />
+          ))}
           {cells.map((_, index) => {
-            const date = new Date(new Date().setDate(dateStart.getDate() + index));
+            const date = new Date(
+              new Date().setDate(dateStart.getDate() + index),
+            );
             const dataPoint = data.find((d) => isSameDay(date, d.date));
             const alpha = colorMultiplier * dataPoint.value;
             const color = colorFunc({ alpha });
