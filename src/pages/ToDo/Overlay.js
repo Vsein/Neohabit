@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import ProjectTag from './ProjectTag';
+import ProjectTag from '../../components/ProjectTag';
 import {
   fetchProject,
   fetchProjectByID,

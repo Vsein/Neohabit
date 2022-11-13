@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import MainMenu from './MainMenu';
-import Sidebar from './Sidebar';
-import SidebarMobile from './SidebarMobile';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Editor from './Editor';
 import Overlay from './Overlay';
+import Navigation from './Navigation';
 import { fetchProjects, fetchFilters } from '../../api/todolist';
 
 export default function ToDo() {
@@ -12,6 +10,22 @@ export default function ToDo() {
     document.title = 'To-do list | Neohabit';
   });
 
+  return (
+    <Routes>
+      <Route element={<ToDoPageLayout />}>
+        <Route index element={<Navigate to="all" />} />
+        <Route path=":list/:projectID" element={<Editor />} >
+          <Route path="task/:taskID" element={<Overlay />} />
+        </Route>
+        <Route path=":list" element={<Editor />} >
+          <Route path="task/:taskID" element={<Overlay />} />
+        </Route>
+      </Route>
+    </Routes>
+  );
+}
+
+function ToDoPageLayout() {
   const [projects, setProjects] = useState([]);
   const [filters, setFilters] = useState([]);
 
@@ -28,25 +42,10 @@ export default function ToDo() {
     init();
   }, []);
 
-  const [sidebarHidden, setSidebarHidden] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarHidden(!sidebarHidden);
-  };
-
   return (
-    <div id="content">
-      <MainMenu toggleSidebar={toggleSidebar} />
-      <Sidebar hidden={sidebarHidden} projects={projects} filters={filters} />
-      <Routes>
-        <Route path=":list/:projectID" element={<Editor />} >
-          <Route path="task/:taskID" element={<Overlay />} />
-        </Route>
-        <Route path=":list" element={<Editor />} >
-          <Route path="task/:taskID" element={<Overlay />} />
-        </Route>
-      </Routes>
-      <SidebarMobile projects={projects} filters={filters} />
-    </div>
+    <main className="tasklists">
+      <Navigation projects={projects} filters={filters}/>
+      <Outlet />
+    </main>
   );
 }

@@ -7,6 +7,15 @@ const setAuthToken = (token) => {
   } else delete axios.defaults.headers.common['Authorization'];
 };
 
+const hasJWT = () => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    setAuthToken(token);
+    return true;
+  }
+  return false;
+}
+
 const sendLoginRequest = async (data) => {
   const sent = await axios
     .post('http://localhost:9000/login', data)
@@ -30,4 +39,4 @@ const sendSignupRequest = async (data) => {
   return sent;
 };
 
-export { setAuthToken, sendLoginRequest, sendSignupRequest };
+export { setAuthToken, hasJWT, sendLoginRequest, sendSignupRequest };

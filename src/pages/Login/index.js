@@ -5,7 +5,7 @@ import {
   AuthIntro,
   EmailField,
   PasswordField,
-} from '../AuthComponents';
+} from '../../components/Auth';
 import { sendLoginRequest } from '../../api/auth';
 
 export default function Login() {
