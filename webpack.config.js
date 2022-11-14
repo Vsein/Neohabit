@@ -10,7 +10,12 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
   },
-  plugins: [new HtmlWebpackPlugin({ title: 'Neohabit' })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Neohabit',
+      favicon: './src/logos/favicon.ico',
+    }),
+  ],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
