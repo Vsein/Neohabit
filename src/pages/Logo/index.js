@@ -7,7 +7,7 @@ import { mdiPlus } from '@mdi/js';
 
 export default function HabitsPage() {
   useEffect(() => {
-    document.title = 'Habits | Neohabit';
+    document.title = 'Logo | Neohabit';
   });
 
   return <Habits />;
@@ -25,14 +25,16 @@ function Line(gapStart, gapLength, inc, i, start, len=14) {
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
   let data = [];
+  // const periods = [gapStart + i * inc, gapLength / 7, len - gapStart - gapLength - i * inc];
   const periods = [gapStart + i * inc, gapLength, len - gapStart - gapLength - i * inc];
   data = data.concat(LineGap(start, periods[0]));
-  data = data.concat(LineActive(start + periods[0], periods[1]));
-  data = data.concat(LineGap(start + periods[0] + periods[1], periods[2]));
+  // data = data.concat(LineActive(start + periods[0], periods[1], 7));
+  data = data.concat(LineActiveRandom(start + data.length, periods[1]));
+  data = data.concat(LineGap(start + data.length, periods[2]));
   return data;
 }
 
-function LineActive(start, len=14) {
+function LineActive(start, len=14, height=1, width=1) {
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
   const dataActive = Array.from(new Array(len)).map((_, index) => ({
@@ -40,7 +42,30 @@ function LineActive(start, len=14) {
       new Date().setDate(dateStart.getDate() + index + start),
     ),
     value: randomRange(25, 100),
+    height,
+    width,
   }));
+  return dataActive;
+}
+
+function LineActiveRandom(start, len=14, height=1, width=1) {
+  const dateEnd = new Date();
+  const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
+  let dataActive = [];
+  let cnt = 0;
+  for (let i = 0; i < len;) {
+    const curLen = randomRange(1, Math.min(5, len - i));
+    i += curLen;
+    dataActive.push({
+      date: new Date(
+        new Date().setDate(dateStart.getDate() + cnt + start),
+      ),
+      value: randomRange(40, 100),
+      height: curLen,
+      width,
+    });
+    cnt++;
+  }
   return dataActive;
 }
 
@@ -52,6 +77,7 @@ function LineGap(start, len=14) {
       new Date().setDate(dateStart.getDate() + index + start),
     ),
     value: 0,
+    height: 1,
   }));
   return dataActive;
 }
@@ -66,17 +92,24 @@ function Habits() {
 
   const len = 14;
 
-  data = data.concat(LineActive(data.length, len));
-  data = data.concat(LineActive(data.length, len));
-  data = data.concat(LineActive(data.length, len));
+  data = data.concat(LineActiveRandom(data.length, 14));
+  data = data.concat(LineActiveRandom(data.length, 14));
+  data = data.concat(LineActiveRandom(data.length, 14));
+  // data = data.concat(LineActive(data.length, 1, 14));
 
   for (let i = 0; i < 6; i++) {
     data = data.concat(Line(1, 7, 1, i, data.length, len));
   }
 
-  data = data.concat(LineActive(data.length, len));
-  data = data.concat(LineActive(data.length, len));
-  data = data.concat(LineActive(data.length, len));
+  data = data.concat(LineActiveRandom(data.length, 14));
+  data = data.concat(LineActiveRandom(data.length, 14));
+  data = data.concat(LineActiveRandom(data.length, 14));
+  // data = data.concat(LineActive(data.length, 1, 14));
+  // data = data.concat(LineActive(data.length, 1, 14));
+  // data = data.concat(LineActive(data.length, 1, 14));
+  // data = data.concat(LineActive(data.length, len));
+  // data = data.concat(LineActive(data.length, len));
+  // data = data.concat(LineActive(data.length, len));
 
   return (
     <main className="logonh">
@@ -94,51 +127,16 @@ function Habits() {
   );
 }
 
-const DayNames = {
-  1: 'Mon',
-  3: 'Wed',
-  5: 'Fri',
-};
-
-function Cell({ color, date, value }) {
-  const style = { backgroundColor: color };
-  const formattedDate = date.toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
-  function changeCellOffset(e) {
-    const cell = e.target;
-    const parent = e.target.parentElement;
-    const rect = cell.getBoundingClientRect();
-    const rectParent = parent.getBoundingClientRect();
-    if (rect.x - 50 < rectParent.x || rect.x - 50 < 36) {
-      cell.classList.add('offset--2');
-    } else if (rect.x - 100 < rectParent.x || rect.x - 100 < 36) {
-      cell.classList.add('offset--1');
-    } else if (rect.x + 50 > rectParent.x + rectParent.width) {
-      cell.classList.add('offset-2');
-    } else if (rect.x + 100 > rectParent.x + rectParent.width) {
-      cell.classList.add('offset-1');
-    }
-  }
-
-  let content;
-  if (!value) {
-    content = `No activity on ${formattedDate}`;
-  } else if (value === 1) {
-    content = `1 action on ${formattedDate}`;
-  } else {
-    content = `${value} actions on ${formattedDate}`;
-  }
-
+function Cell({ color, date, value, height, width }) {
+  const style = {
+    backgroundColor: color,
+    height: 11 * height + 2 * 2 * (height - 1),
+    width: 11 * width + 2 * 2 * (width - 1),
+  };
   return (
     <div
       className="timeline-logo-cells-cell"
       style={style}
-      data-attr={content}
-      onMouseEnter={changeCellOffset}
     />
   );
 }
@@ -146,8 +144,6 @@ function Cell({ color, date, value }) {
 function Timeline({ dateStart, dateEnd, data, colorFunc }) {
   console.log(data.length);
   const cells = Array.from(new Array(data.length));
-  const weekDays = Array.from(new Array(7));
-  const months = Array.from(new Array(Math.floor(data.length / 7)));
 
   const min = Math.min(0, ...data.map((d) => d.value));
   const max = Math.max(...data.map((d) => d.value));
@@ -164,16 +160,15 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
 
       <div className="timeline-logo-body">
         <div className="timeline-logo-cells">
-          {/* {Array.from(new Array(data[0].date.getDay())).map((_, index) => ( */}
-          {/*   <Cell key={index} color="#00000000" date="" /> */}
-          {/* ))} */}
           {cells.map((_, index) => {
             const date = new Date(
               new Date().setDate(dateStart.getDate() + index),
             );
             const dataPoint = data.find((d) => isSameDay(date, d.date));
             const value = dataPoint ? dataPoint.value : 0;
-            const alpha = colorMultiplier * dataPoint.value;
+            const height = dataPoint ? dataPoint.height : 1;
+            const width = dataPoint ? dataPoint.width : 1;
+            const alpha = colorMultiplier * value;
             const color = colorFunc({ alpha });
 
             return (
@@ -182,6 +177,8 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
                 index={index}
                 value={value}
                 date={date}
+                height={height}
+                width={width}
                 color={color}
               />
             );

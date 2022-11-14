@@ -26,56 +26,10 @@ $cell-weekdays-width: 33px;
   height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
   width: calc(12 * 15px);
 
-  .timeline-logo-months {
-    display: flex;
-    // padding-left: $cell-weekdays-width;
-    padding-left: 50px;
-    justify-content: flex-end;
-
-    &-month {
-      width: $cell-width;
-      margin: $cell-margin;
-      border: 1px solid transparent;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .Jan~.Jan,
-    .Feb~.Feb,
-    .Mar~.Mar,
-    .Apr~.Apr,
-    .May~.May,
-    .Jun~.Jun,
-    .Jul~.Jul,
-    .Aug~.Aug,
-    .Sep~.Sep,
-    .Oct~.Oct,
-    .Nov~.Nov,
-    .Dec~.Dec {
-      visibility: hidden;
-    }
-  }
-
   &-body {
     display: flex;
     position: absolute;
     right: 0px;
-
-    .timeline-weekdays {
-      display: inline-flex;
-      flex-direction: column;
-      width: $cell-weekdays-width;
-
-      &-weekday {
-        font-size: 12px;
-        line-height: 12px;
-        font-weight: 600;
-        height: $cell-height;
-        border: 1px solid transparent;
-        margin: $cell-margin;
-        vertical-align: middle;
-      }
-    }
 
     .timeline-logo-cells {
       display: flex;
@@ -93,44 +47,8 @@ $cell-weekdays-width: 33px;
         background-color: rgba(0, 0, 0, 0.05);
         position: relative;
 
-        &.offset--2:before {
-          left: 0px;
-        }
-
-        &.offset--1:before {
-          left: -50px;
-        }
-
-        &.offset-1:before {
-          left: -145px;
-        }
-
-        &.offset-2:before {
-          left: -190px;
-        }
-
-        &:before {
-          content: attr(data-attr);
-          padding: 10px;
-          position: absolute;
-          top: 12px;
-          visibility: hidden;
-          left: -100px;
-          width: 200px;
-          text-align: center;
-          font-size: 13px;
-          background-color: #545454;
-          color: white;
-          z-index: 3;
-          border-radius: 10px;
-        }
-
         &:hover {
           border: 1px solid rgba(0, 0, 0, 0.3);
-
-          &:before {
-            visibility: visible;
-          }
         }
       }
     }
