@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
+import { YearData } from '../../components/Heatmap';
 
 export default function HabitsPage() {
   useEffect(() => {
@@ -19,10 +20,12 @@ function Habits() {
   const diffTime = Math.abs(dateStart - dateEnd);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  const data = Array.from(new Array(365)).map((_, index) => ({
-    date: new Date(new Date().setDate(dateStart.getDate() + index)),
-    value: Math.floor(Math.random() * 100),
-  }));
+  // const data = Array.from(new Array(365)).map((_, index) => ({
+  //   date: new Date(new Date().setDate(dateStart.getDate() + index)),
+  //   value: Math.floor(Math.random() * 100),
+  // }));
+
+  const data = YearData();
 
   return (
     <main className="habits">
@@ -67,8 +70,12 @@ const DayNames = {
   5: 'Fri',
 };
 
-function Cell({ color, date, value }) {
-  const style = { backgroundColor: color };
+function Cell({ color, date, value, height = 1, width = 1 }) {
+  const style = {
+    backgroundColor: color,
+    height: 11 * height + 2 * 2 * (height - 1),
+    width: 11 * width + 2 * 2 * (width - 1),
+  };
   const formattedDate = date.toLocaleString('en-US', {
     year: 'numeric',
     month: 'short',
@@ -124,9 +131,9 @@ function WeekDay({ index }) {
 }
 
 function Timeline({ dateStart, dateEnd, data, colorFunc }) {
-  const cells = Array.from(new Array(365));
+  const cells = Array.from(new Array(data.length));
   const weekDays = Array.from(new Array(7));
-  const months = Array.from(new Array(Math.floor(365 / 7)));
+  const months = Array.from(new Array(Math.floor(data.length / 7)));
 
   const min = Math.min(0, ...data.map((d) => d.value));
   const max = Math.max(...data.map((d) => d.value));
@@ -163,7 +170,9 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
             );
             const dataPoint = data.find((d) => isSameDay(date, d.date));
             const value = dataPoint ? dataPoint.value : 0;
-            const alpha = colorMultiplier * dataPoint.value;
+            const alpha = colorMultiplier * value;
+            const height = dataPoint ? dataPoint.height : 1;
+            const width = dataPoint ? dataPoint.width : 1;
             const color = colorFunc({ alpha });
 
             return (
@@ -172,6 +181,8 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
                 index={index}
                 value={value}
                 date={date}
+                height={height}
+                width={width}
                 color={color}
               />
             );

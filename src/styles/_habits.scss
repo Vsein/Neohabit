@@ -24,7 +24,8 @@ $cell-weekdays-width: 33px;
 .timeline {
   overflow: hidden;
   position: relative;
-  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 12);
+  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 18);
+  width: calc(53 * 15px);
 
   .timeline-months {
     display: flex;
@@ -81,7 +82,7 @@ $cell-weekdays-width: 33px;
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
-      height: calc((#{$cell-height} + #{$cell-margin} * 2) * 7);
+      height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
       width: calc(53 * 15px);
 
       &-cell {
