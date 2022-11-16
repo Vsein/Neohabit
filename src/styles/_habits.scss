@@ -99,7 +99,7 @@ $cell-weekdays-width: 33px;
 
     &-cell {
       flex: 0 0 1;
-      height: $cell-height;
+      height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
       width: $cell-width;
       // border: 1px solid rgba(0, 0, 0, 0.1);
       margin: $cell-margin;

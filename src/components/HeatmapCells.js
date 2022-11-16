@@ -8,12 +8,10 @@ function formatDate(date) {
   });
 }
 
-function Cell({ color, date, value, height = 2, width = 1 }) {
-  const emptyAbove = (date.getDay() - 1) * 2;
+function Cell({ color, date, value, height = 1, width = 1 }) {
   const style = {
     backgroundColor: color,
-    // marginTop: 11 * emptyAbove + 2 * 2 * (emptyAbove - 1) + 6,
-    height: 11 * height + 2 * 2 * (height - 1),
+    '--height': height,
     width: 11 * width + 2 * 2 * (width - 1),
   };
   const formattedDate = date.toLocaleString('en-US', {
@@ -57,9 +55,9 @@ function Cell({ color, date, value, height = 2, width = 1 }) {
   );
 }
 
-function CellPeriod({ dateStart, dateEnd, color, value, multiplier = 2 }) {
+function CellPeriod({ dateStart, dateEnd, color, value, multiplier = 2, basePeriod = 24 }) {
   const diffTime = Math.abs(dateStart - dateEnd);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * basePeriod));
   let width = (diffDays - (7 - dateStart.getDay()) - dateEnd.getDay()) / 7;
   if (diffDays > 7 * multiplier) {
     if (dateStart.getDay() === 0) width++;

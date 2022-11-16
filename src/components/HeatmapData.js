@@ -1,4 +1,5 @@
 // It's not really a component right now, just some helper functions for generating stuff
+import { addDays } from 'date-fns';
 
 function random() {
   return Math.floor(Math.random() * 100);
@@ -8,7 +9,7 @@ function randomRange(start, end) {
   return Math.floor(Math.random() * (end - start + 1) + start);
 }
 
-function LineActiveStraight(start, len=14, width=1) {
+function LineActiveStraight(start, len = 14, width = 1) {
   // returns a cell of height len. If len === 1, returns a square cell
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
@@ -21,24 +22,28 @@ function LineActiveStraight(start, len=14, width=1) {
     width,
   };
 }
-function LineGapStraight(start, len=14, width=1) {
+function LineGapStraight(start, len = 14, width = 1) {
   // returns an inactive cell of height len. If len === 1, returns a square cell
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
   return {
-    date: new Date(
-      new Date().setDate(dateStart.getDate() + start),
-    ),
+    date: new Date(new Date().setDate(dateStart.getDate() + start)),
     value: -1,
     height: len,
     width,
   };
 }
 
-function LineActiveRandom(start, len=14, height=1, width=1, min=Infinity) {
+function LineActiveRandom(
+  start,
+  len = 14,
+  height = 1,
+  width = 1,
+  min = Infinity,
+) {
   const dataActive = [];
   let cnt = 0;
-  for (let i = 0; i < len;) {
+  for (let i = 0; i < len; ) {
     const curLen = randomRange(1, Math.min(5, len - i, min));
     dataActive.push(LineActiveStraight(cnt + start, curLen));
     i += curLen;
@@ -47,10 +52,10 @@ function LineActiveRandom(start, len=14, height=1, width=1, min=Infinity) {
   return dataActive;
 }
 
-function LineGapRandom(start, len=14) {
+function LineGapRandom(start, len = 14) {
   const dataGap = [];
   let cnt = 0;
-  for (let i = 0; i < len;) {
+  for (let i = 0; i < len; ) {
     const curLen = randomRange(1, Math.min(5, len - i, min));
     dataGap.push(LineGapStraight(cnt + start, curLen));
     i += curLen;
@@ -59,10 +64,10 @@ function LineGapRandom(start, len=14) {
   return dataGap;
 }
 
-function LineRandom(start, len=14) {
+function LineRandom(start, len = 14) {
   const data = [];
   let cnt = 0;
-  for (let i = 0; i < len;) {
+  for (let i = 0; i < len; ) {
     if (cnt % 2) {
       const curLen = randomRange(1, Math.min(1, len - i));
       data.push(LineGapStraight(cnt + start, curLen));
@@ -77,13 +82,11 @@ function LineRandom(start, len=14) {
   return data;
 }
 
-function LineGap(start, len=14) {
+function LineGap(start, len = 14) {
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
   const dataActive = Array.from(new Array(len)).map((_, index) => ({
-    date: new Date(
-      new Date().setDate(dateStart.getDate() + index + start),
-    ),
+    date: new Date(new Date().setDate(dateStart.getDate() + index + start)),
     value: 0,
     height: 1,
     width: 1,
@@ -91,16 +94,19 @@ function LineGap(start, len=14) {
   return dataActive;
 }
 
-function Line(gapStart, gapLength, inc, i, start, len=14) {
+function Line(gapStart, gapLength, inc, i, start, len = 14) {
   let data = [];
-  const periods = [gapStart + i * inc, gapLength, len - gapStart - gapLength - i * inc];
+  const periods = [
+    gapStart + i * inc,
+    gapLength,
+    len - gapStart - gapLength - i * inc,
+  ];
   data = data.concat(LineGap(start, periods[0]));
   data = data.concat(LineActiveRandom(start + data.length, periods[1]));
   // data = data.concat(LineRandom(start + data.length, periods[1]));
   data = data.concat(LineGap(start + data.length, periods[2]));
   return data;
 }
-
 
 function Logo() {
   let data = [];
@@ -121,18 +127,62 @@ function Logo() {
   return data;
 }
 
-function YearData() {
-  let data = [];
-  const len = 7;
-
-  // data = data.concat(LineActiveRandom(7 - new Date().getDay(), 14));
-
-  for (let i = 0; i < 50; i++) {
-    data = data.concat(LineActiveRandom(i * 7, 14));
-  }
+function YearDataSimple(dateStart) {
+  const data = Array.from(new Array(365)).map((_, index) => ({
+    date: addDays(dateStart, index),
+    value: Math.floor(Math.random() * 100),
+  }));
 
   return data;
 }
+
+function YearDataRandom() {
+  let data = [];
+  const len = 7;
+
+  data = data.concat(LineActiveRandom(data.length, 7 - new Date().getDay()));
+  for (let i = 1; i < 52; i++) {
+    data = data.concat(LineActiveRandom(data.length, len));
+  }
+  data = data.concat(LineActiveRandom(data.length, new Date().getDay() + 1));
+
+  return data;
+}
+
+const DATA1 = [
+  {
+    date: new Date(new Date().setTime(new Date().getTime() - 200 * 24 * 3.6e6)),
+    value: 500,
+  },
+  {
+    date: new Date(new Date().setTime(new Date().getTime() - 190 * 24 * 3.6e6)),
+    value: 500,
+  },
+  {
+    date: new Date(new Date().setTime(new Date().getTime() - 180 * 24 * 3.6e6)),
+    value: 150,
+  },
+  {
+    date: new Date(new Date().setTime(new Date().getTime() - 170 * 24 * 3.6e6)),
+    value: 25,
+  },
+  {
+    date: new Date(new Date().setTime(new Date().getTime() - 153 * 24 * 3.6e6)),
+    value: 100,
+  },
+  {
+    date: new Date(new Date().setTime(new Date().getTime() - 152 * 24 * 3.6e6)),
+    value: 500,
+  },
+  {
+    date: new Date(new Date().setTime(new Date().getTime() - 150 * 24 * 3.6e6)),
+    value: 500,
+  },
+  {
+    date: new Date(new Date().setTime(new Date().getTime() - 148 * 24 * 3.6e6)),
+    value: 500,
+  },
+];
 
 export {
   LineActiveStraight,
@@ -140,5 +190,7 @@ export {
   LineGap,
   Line,
   Logo,
-  YearData,
+  YearDataSimple,
+  YearDataRandom,
+  DATA1,
 };
