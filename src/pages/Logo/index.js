@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Logo } from '../../components/Heatmap';
+import { Logo } from '../../components/HeatmapData';
 
 export default function HabitsPage() {
   useEffect(() => {
@@ -10,12 +10,11 @@ export default function HabitsPage() {
 }
 
 function Habits() {
-  const dateEnd = new Date();
-  const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
-  const diffTime = Math.abs(dateStart - dateEnd);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
   const data = Logo();
+  const dateEnd = new Date();
+  const dateStart = new Date(new Date().setYear(dateEnd.getFullYear() - 1));
+  console.log(dateStart);
+  console.log(data);
 
   return (
     <main className="logonh">
@@ -66,7 +65,7 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
         <div className="timeline-logo-cells">
           {cells.map((_, index) => {
             const date = new Date(
-              new Date().setDate(dateStart.getDate() + index),
+              new Date().setDate(dateStart.getDate() + index - 365),
             );
             const dataPoint = data.find((d) => isSameDay(date, d.date));
             const value = dataPoint ? dataPoint.value : 0;
@@ -74,6 +73,9 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
             const width = dataPoint ? dataPoint.width : 1;
             const alpha = colorMultiplier * value;
             const color = colorFunc({ alpha });
+            // const alpha = (value !== 0 ? colorMultiplier * height : 0);
+            // const alpha = (value !== 0 ? colorMultiplier * 14 : 0);
+            // const color = (value !== -1 ? colorFunc({ alpha }) : '#ccc');
 
             return (
               <Cell
