@@ -1,0 +1,56 @@
+$cell-height : 11px;
+$cell-width : 11px;
+$cell-margin:2px;
+$cell-weekdays-width: 33px;
+
+.logonh {
+  grid-area: main;
+  padding: 4rem;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: min-content auto;
+    height: min-content;
+
+  &-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    margin: 1.5rem;
+  }
+}
+
+.timeline-logo {
+  overflow: hidden;
+  position: relative;
+  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
+  width: calc(12 * 15px);
+
+  &-body {
+    display: flex;
+    position: absolute;
+    right: 0px;
+
+    .timeline-logo-cells {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
+      width: calc(12 * 15px);
+
+      &-cell {
+        height: $cell-height;
+        width: $cell-width;
+        // border: 1px solid rgba(0, 0, 0, 0.1);
+        margin: $cell-margin;
+        border-radius: 1px;
+        background-color: rgba(0, 0, 0, 0.05);
+        position: relative;
+
+        &:hover {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+  }
+}

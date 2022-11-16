@@ -13,6 +13,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import HabitsPage from './pages/Habits';
 import Logout from './pages/Logout';
+import Logo from './pages/Logo';
 import NotFound from './pages/404';
 import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/todo/*" element={<ToDo />} />
           <Route path="/habits/*" element={<HabitsPage />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/logo" element={<Logo />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

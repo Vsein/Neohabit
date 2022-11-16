@@ -1,6 +1,6 @@
-$cell-height : 11px;
-$cell-width : 11px;
-$cell-margin:2px;
+$cell-height: 11px;
+$cell-width: 11px;
+$cell-margin: 2px;
 $cell-weekdays-width: 33px;
 
 .habits {
@@ -22,115 +22,256 @@ $cell-weekdays-width: 33px;
 }
 
 .timeline {
-  overflow: hidden;
+  // overflow: hidden;
+  --multiplier: 1;
   position: relative;
-  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 12);
+  display: grid;
+  grid-template-areas: 'months months', 'weekdays cells';
+  grid-template-rows: $cell-height calc(
+      (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
+    );
+  // grid-template-columns: calc(#{$cell-weekdays-width} * var(--multiplier)) calc(
+  //     45 * 15px
+  //   );
+  grid-template-columns: min-content calc(
+      45 * 15px
+    );
+  column-gap: 15px;
+  row-gap: 2px;
 
   .timeline-months {
+    // grid-area: months;
     display: flex;
-    // padding-left: $cell-weekdays-width;
-    padding-left: 50px;
-    justify-content: flex-end;
+    // gap: calc(#{$cell-margin} * 2);
+    gap: 5px;
+    margin-inline: 2px;
 
     &-month {
       width: $cell-width;
-      margin: $cell-margin;
+      line-height: 100%;
       border: 1px solid transparent;
       font-size: 12px;
       font-weight: 600;
     }
 
-    .Jan~.Jan,
-    .Feb~.Feb,
-    .Mar~.Mar,
-    .Apr~.Apr,
-    .May~.May,
-    .Jun~.Jun,
-    .Jul~.Jul,
-    .Aug~.Aug,
-    .Sep~.Sep,
-    .Oct~.Oct,
-    .Nov~.Nov,
-    .Dec~.Dec {
+    .Jan ~ .Jan,
+    .Feb ~ .Feb,
+    .Mar ~ .Mar,
+    .Apr ~ .Apr,
+    .May ~ .May,
+    .Jun ~ .Jun,
+    .Jul ~ .Jul,
+    .Aug ~ .Aug,
+    .Sep ~ .Sep,
+    .Oct ~ .Oct,
+    .Nov ~ .Nov,
+    .Dec ~ .Dec {
       visibility: hidden;
     }
   }
 
-  &-body {
+  .timeline-weekdays {
+    // grid-area: weekdays;
+    display: inline-flex;
+    flex-direction: column;
+
+    &-weekday {
+      line-height: 100%;
+      font-size: calc(#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1) + 1px);
+      height: calc(#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1));
+      font-weight: 600;
+      border: 1px solid transparent;
+      margin: $cell-margin;
+      vertical-align: middle;
+    }
+  }
+
+  .timeline-cells {
+    // grid-area: cells;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
     display: flex;
-    position: absolute;
-    right: 0px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100%;
+    // position: absolute;
+    // left: 0px;
 
-    .timeline-weekdays {
-      display: inline-flex;
-      flex-direction: column;
-      width: $cell-weekdays-width;
+    &-cell {
+      flex: 0 0 1;
+      height: $cell-height;
+      width: $cell-width;
+      // border: 1px solid rgba(0, 0, 0, 0.1);
+      margin: $cell-margin;
+      border-radius: 1px;
+      background-color: rgba(0, 0, 0, 0.05);
+      position: relative;
 
-      &-weekday {
-        font-size: 12px;
-        line-height: 12px;
-        font-weight: 600;
-        height: $cell-height;
-        border: 1px solid transparent;
-        margin: $cell-margin;
-        vertical-align: middle;
+      &.offset--2:before {
+        left: 0px;
+      }
+
+      &.offset--1:before {
+        left: -50px;
+      }
+
+      &.offset-1:before {
+        left: -145px;
+      }
+
+      &.offset-2:before {
+        left: -190px;
+      }
+
+      &:before {
+        content: attr(data-attr);
+        padding: 10px;
+        position: absolute;
+        top: 12px;
+        visibility: hidden;
+        left: -100px;
+        width: 200px;
+        text-align: center;
+        font-size: 13px;
+        background-color: #545454;
+        color: white;
+        z-index: 3;
+        border-radius: 10px;
+      }
+
+      &:hover {
+        border: 1px solid rgba(0, 0, 0, 0.3);
+
+        &:before {
+          visibility: visible;
+        }
       }
     }
 
-    .timeline-cells {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      height: calc((#{$cell-height} + #{$cell-margin} * 2) * 7);
-      width: calc(53 * 15px);
+    &-cell-period {
+      flex: 0 0 1;
+      // border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border: 1px solid transparent;
+      margin: $cell-margin;
+      border-radius: 1px;
+      background-color: rgba(0, 0, 0, 0.05);
+      position: relative;
 
-      &-cell {
-        height: $cell-height;
-        width: $cell-width;
-        // border: 1px solid rgba(0, 0, 0, 0.1);
-        margin: $cell-margin;
-        border-radius: 1px;
-        background-color: rgba(0, 0, 0, 0.05);
-        position: relative;
+      &.whole {
+        margin-inline: 0px;
+      }
 
-        &.offset--2:before {
-          left: 0px;
+      &-before {
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border: 1px solid transparent;
+        border-right: none;
+        margin: -1px;
+        height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+        width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
+        position: absolute;
+        left: -15px;
+        bottom: 0px;
+        visibility: visible;
+        display: block;
+        background-color: inherit;
+      }
+
+      &-after {
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border: 1px solid transparent;
+        border-left: none;
+        margin: -1px;
+        height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+        width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
+        // width: 16px;
+        position: absolute;
+        right: -15px;
+        top: 0px;
+        visibility: visible;
+        display: block;
+        background-color: inherit;
+      }
+
+      &.whole .timeline-cells-cell-period-before {
+        width: 11px;
+        left: -13px;
+      }
+
+      &.whole .timeline-cells-cell-period-after {
+        width: 11px;
+        right: -13px;
+      }
+
+      &:before {
+        content: attr(data-attr);
+        padding: 10px;
+        position: absolute;
+        visibility: hidden;
+        // left: -100px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 50%;
+        right: 50%;
+        transform: translate(-50%, -50%);
+        // margin-top: auto;
+        // margin-bottom: auto;
+        // top: 0;
+        // bottom: 0;
+        bottom: -95px;
+        width: 200px;
+        height: min-content;
+        text-align: center;
+        font-size: 13px;
+        background-color: #545454;
+        color: white;
+        z-index: 3;
+        border-radius: 10px;
+      }
+
+      &.whole {
+        border: none;
+
+        & > .timeline-cells-cell-period-before {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          border: 1px solid transparent;
         }
 
-        &.offset--1:before {
-          left: -50px;
+        & > .timeline-cells-cell-period-after {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          border: 1px solid transparent;
+        }
+      }
+
+      &:hover {
+        border: 1px solid rgba(0, 0, 0, 0.3);
+
+        &.whole {
+          border: none;
+
+          & > .timeline-cells-cell-period-before {
+            border: 1px solid rgba(0, 0, 0, 0.3);
+          }
+
+          & > .timeline-cells-cell-period-after {
+            border: 1px solid rgba(0, 0, 0, 0.3);
+          }
         }
 
-        &.offset-1:before {
-          left: -145px;
+        & > .timeline-cells-cell-period-before {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          border-right: none;
+          margin: -1px;
         }
 
-        &.offset-2:before {
-          left: -190px;
+        & > .timeline-cells-cell-period-after {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          border-left: none;
+          margin: -1px;
         }
 
         &:before {
-          content: attr(data-attr);
-          padding: 10px;
-          position: absolute;
-          top: 12px;
-          visibility: hidden;
-          left: -100px;
-          width: 200px;
-          text-align: center;
-          font-size: 13px;
-          background-color: #545454;
-          color: white;
-          z-index: 3;
-          border-radius: 10px;
-        }
-
-        &:hover {
-          border: 1px solid rgba(0, 0, 0, 0.3);
-
-          &:before {
-            visibility: visible;
-          }
+          visibility: visible;
         }
       }
     }
