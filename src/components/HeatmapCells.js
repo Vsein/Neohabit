@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  differenceInDays,
+  differenceInHours,
   isSameWeek,
   differenceInCalendarWeeks,
   startOfWeek,
@@ -16,9 +16,10 @@ function formatDate(date) {
   });
 }
 
-function Cell({ color, date, value, height = 1, width = 1 }) {
+function Cell({ color, date, value, height = 1, width = 1, opacity = 1 }) {
   const style = {
     backgroundColor: color,
+    // opacity: opacity,
     '--height': height,
   };
 
@@ -64,13 +65,21 @@ function CellPeriod({
   dateEnd,
   color,
   value,
-  multiplier = 2,
   basePeriod = 24,
+  opacity = 1,
 }) {
-  const diffDays = differenceInDays(addMilliseconds(dateEnd, 1), dateStart);
+  const diffDays =
+    differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
+  console.log(diffDays);
   if (isSameWeek(dateStart, dateEnd)) {
     return (
-      <Cell color={color} value={value} date={dateStart} height={diffDays} />
+      <Cell
+        color={color}
+        value={value}
+        date={dateStart}
+        height={diffDays}
+        opacity={opacity}
+      />
     );
   }
   let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
@@ -80,15 +89,22 @@ function CellPeriod({
     backgroundColor: color,
     '--height': 7,
     '--width': width,
+    // opacity: opacity,
     // width: (width === 1 ? 16 : 11 * width + 2 * 2 * (width - 1)),
   };
+  const beforeHeight =
+    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) /
+    basePeriod;
   const styleBefore = {
-    '--height': dateStart.getDay() ? 7 - dateStart.getDay() : 0,
+    '--height': beforeHeight,
     '--width': 1,
     visibility: dateStart.getDay() ? 'visible' : 'hidden',
   };
+  const afterHeight =
+    differenceInHours(addMilliseconds(dateEnd, 1), startOfWeek(dateEnd)) /
+    basePeriod;
   const styleAfter = {
-    '--height': dateEnd.getDay() + 1,
+    '--height': afterHeight,
     '--width': 1,
   };
   const formattedDateStart = formatDate(dateStart);
@@ -117,20 +133,16 @@ function CellPeriod({
         />
         <div className="timeline-cells-cell-period-after" style={styleAfter} />
       </div>
-      <TallDummy height={(dateEnd.getDay() + 1) * multiplier} />
+      <TallDummy height={afterHeight} />
     </>
   );
 }
 
 function TallDummy({ height }) {
-  // What's next, dummy thick? Stupid horny?
-  const width = 1;
   const style = {
-    height: 11 * height + 2 * 2 * (height - 1),
-    width: 11 * width + 2 * 2 * (width - 1),
-    margin: 2,
+    '--height': height,
   };
-  return <div style={style} />;
+  return <div style={style} className="dummy" />;
 }
 
 function CellWeek({ dateStart, dateEnd }) {

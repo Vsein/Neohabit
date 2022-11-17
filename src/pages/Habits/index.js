@@ -7,6 +7,7 @@ import {
   TimelineCells,
   TimelineMonthCells,
   TimelineWeekCells,
+  TimelineElimination,
 } from '../../components/Heatmap';
 import { YearDataSimple, YearDataRandom, DATA1 } from '../../components/HeatmapData';
 
@@ -21,7 +22,7 @@ export default function HabitsPage() {
 function Habits() {
   const dateEnd = new Date();
   const dateStart = subYears(dateEnd, 1);
-  const dayLength = 1;
+  const dayLength = 2;
 
   return (
     <main className="habits">
@@ -65,6 +66,14 @@ function Habits() {
         <TimelineWeekCells
           data={DATA1}
           colorFunc={({ alpha }) => `rgba(220, 5,  3, ${alpha})`}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          dayLength={dayLength}
+        />
+        <h4>Habit</h4>
+        <TimelineElimination
+          data={DATA1}
+          colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
           dateStart={dateStart}
           dateEnd={dateEnd}
           dayLength={dayLength}

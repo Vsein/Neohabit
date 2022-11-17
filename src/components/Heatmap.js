@@ -8,6 +8,8 @@ import {
   addMonths,
   startOfMonth,
   endOfMonth,
+  addHours,
+  subMilliseconds,
 } from 'date-fns';
 import { Cell, CellPeriod } from './HeatmapCells';
 import { TimelineMonths, TimelineWeekdays } from './HeatmapHeaders';
@@ -188,4 +190,80 @@ function TimelineWeekCells({ dateStart, dateEnd, data, colorFunc, dayLength }) {
   );
 }
 
-export { TimelineSimple, TimelineCells, TimelineMonthCells, TimelineWeekCells };
+function TimelineElimination({
+  dateStart,
+  dateEnd,
+  data,
+  colorFunc,
+  dayLength,
+}) {
+  const weeks = Array.from(new Array(Math.floor(35)));
+  const colorMultiplier = 1 / 1000;
+  let i = 0;
+
+  let dateNow = startOfWeek(dateStart);
+  const basePeriod = 12;
+
+  return (
+    <div className="timeline" style={{ '--multiplier': dayLength }}>
+      <div /> {/* a temporary empty element for a grid */}
+      <TimelineMonths dateStart={dateStart} />
+      <TimelineWeekdays dateStart={dateStart} />
+      <div className="timeline-cells">
+        {weeks.map((_, index) => {
+          const endOfTheWeek = endOfWeek(dateNow);
+          const periods = [];
+          while (dateNow <= endOfTheWeek) {
+            const dateNext = addHours(dateNow, basePeriod * (index + 1));
+            let value = 0;
+            while (i < data.length && data[i].date < dateNow) {
+              value += data[i].value;
+              i++;
+            }
+            // const alpha = colorMultiplier * value;
+            const alpha = basePeriod * (index + 1) / (24 * 7);
+            console.log(alpha);
+            let color;
+            if (alpha < 0.2) color = '#C2E1C4';
+            else if (alpha < 0.4) color = '#8CC276';
+            else if (alpha < 0.6) color = '#61BF5A';
+            else if (alpha < 0.8) color = '#3AB03B';
+            else color = '#069F02';
+            // color = alpha ? colorFunc({ alpha }) : 'lightgreen';
+            periods.push({
+              color,
+              value,
+              dateStart: dateNow,
+              dateEnd: subMilliseconds(dateNext, 1),
+            });
+            dateNow = dateNext;
+          }
+          // console.log(periods);
+          return (
+            <>
+              {periods.map((period, Index) => (
+                <CellPeriod
+                  key={Index}
+                  dateStart={period.dateStart}
+                  dateEnd={period.dateEnd}
+                  color={period.color}
+                  value={period.value}
+                  multiplier={2}
+                  basePeriod={24}
+                />
+              ))}
+            </>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export {
+  TimelineSimple,
+  TimelineCells,
+  TimelineMonthCells,
+  TimelineWeekCells,
+  TimelineElimination,
+};
