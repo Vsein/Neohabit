@@ -1,4 +1,12 @@
 import React from 'react';
+import {
+  differenceInDays,
+  isSameWeek,
+  differenceInCalendarWeeks,
+  startOfWeek,
+  endOfWeek,
+  addMilliseconds,
+} from 'date-fns';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -12,13 +20,7 @@ function Cell({ color, date, value, height = 1, width = 1 }) {
   const style = {
     backgroundColor: color,
     '--height': height,
-    width: 11 * width + 2 * 2 * (width - 1),
   };
-  const formattedDate = date.toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
 
   function changeCellOffset(e) {
     const cell = e.target;
@@ -35,6 +37,8 @@ function Cell({ color, date, value, height = 1, width = 1 }) {
       cell.classList.add('offset-1');
     }
   }
+
+  const formattedDate = formatDate(date);
 
   let content;
   if (!value) {
@@ -55,28 +59,36 @@ function Cell({ color, date, value, height = 1, width = 1 }) {
   );
 }
 
-function CellPeriod({ dateStart, dateEnd, color, value, multiplier = 2, basePeriod = 24 }) {
-  const diffTime = Math.abs(dateStart - dateEnd);
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * basePeriod));
-  let width = (diffDays - (7 - dateStart.getDay()) - dateEnd.getDay()) / 7;
-  if (diffDays > 7 * multiplier) {
-    if (dateStart.getDay() === 0) width++;
-    if (dateEnd.getDay() === 6) width++;
+function CellPeriod({
+  dateStart,
+  dateEnd,
+  color,
+  value,
+  multiplier = 2,
+  basePeriod = 24,
+}) {
+  const diffDays = differenceInDays(addMilliseconds(dateEnd, 1), dateStart);
+  if (isSameWeek(dateStart, dateEnd)) {
+    return (
+      <Cell color={color} value={value} date={dateStart} height={diffDays} />
+    );
   }
-  const height = 7 * multiplier;
-
+  let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
+  width += dateStart.getTime() === startOfWeek(dateStart).getTime();
+  width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
     backgroundColor: color,
-    height: 11 * height + 2 * 2 * (height - 1),
-    width: (width === 1 ? 16 : 11 * width + 2 * 2 * (width - 1)),
+    '--height': 7,
+    '--width': width,
+    // width: (width === 1 ? 16 : 11 * width + 2 * 2 * (width - 1)),
   };
   const styleBefore = {
-    '--height': (dateStart.getDay() ? 7 - dateStart.getDay() : 0),
+    '--height': dateStart.getDay() ? 7 - dateStart.getDay() : 0,
     '--width': 1,
-    visibility: (dateStart.getDay() ? 'visible' : 'hidden'),
+    visibility: dateStart.getDay() ? 'visible' : 'hidden',
   };
   const styleAfter = {
-    '--height': (dateEnd.getDay() + 1),
+    '--height': dateEnd.getDay() + 1,
     '--width': 1,
   };
   const formattedDateStart = formatDate(dateStart);
@@ -99,8 +111,11 @@ function CellPeriod({ dateStart, dateEnd, color, value, multiplier = 2, basePeri
         data-attr={content}
         // onMouseEnter={changeCellOffset}
       >
-        <div className="timeline-cells-cell-period-before" style={styleBefore}/>
-        <div className="timeline-cells-cell-period-after" style={styleAfter}/>
+        <div
+          className="timeline-cells-cell-period-before"
+          style={styleBefore}
+        />
+        <div className="timeline-cells-cell-period-after" style={styleAfter} />
       </div>
       <TallDummy height={(dateEnd.getDay() + 1) * multiplier} />
     </>
@@ -115,25 +130,11 @@ function TallDummy({ height }) {
     width: 11 * width + 2 * 2 * (width - 1),
     margin: 2,
   };
-  return (
-    <div style={style} />
-  );
+  return <div style={style} />;
 }
 
 function CellWeek({ dateStart, dateEnd }) {
-  return (
-    <Cell
-      value={value}
-      date={dateStart}
-      color={color}
-      heigth={14}
-    />
-  );
+  return <Cell value={value} date={dateStart} color={color} heigth={14} />;
 }
 
-export {
-  Cell,
-  CellWeek,
-  CellPeriod,
-  TallDummy,
-};
+export { Cell, CellWeek, CellPeriod, TallDummy };

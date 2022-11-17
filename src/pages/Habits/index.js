@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
+import { subYears } from 'date-fns';
 import { mdiPlus } from '@mdi/js';
 import {
   TimelineSimple,
@@ -19,7 +20,7 @@ export default function HabitsPage() {
 
 function Habits() {
   const dateEnd = new Date();
-  const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
+  const dateStart = subYears(dateEnd, 1);
   const dayLength = 1;
 
   return (

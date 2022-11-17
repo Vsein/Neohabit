@@ -1,5 +1,14 @@
 import React from 'react';
-import { isSameDay, subDays, addDays } from 'date-fns';
+import {
+  isSameDay,
+  subDays,
+  addDays,
+  startOfWeek,
+  endOfWeek,
+  addMonths,
+  startOfMonth,
+  endOfMonth,
+} from 'date-fns';
 import { Cell, CellPeriod } from './HeatmapCells';
 import { TimelineMonths, TimelineWeekdays } from './HeatmapHeaders';
 
@@ -117,14 +126,8 @@ function TimelineMonthCells({
       <TimelineWeekdays dateStart={dateStart} />
       <div className="timeline-cells">
         {months.map((_, index) => {
-          const startOfTheMonth = new Date(
-            new Date().setMonth(dateStart.getMonth() + index - 12, 1),
-          );
-          const endOfTheMonth = new Date(
-            startOfTheMonth.getFullYear(),
-            startOfTheMonth.getMonth() + 1,
-            0,
-          );
+          const startOfTheMonth = startOfMonth(addMonths(dateStart, index));
+          const endOfTheMonth = endOfMonth(startOfTheMonth);
           let value = 0;
           while (i < data.length && data[i].date < endOfTheMonth) {
             value += data[i].value;
@@ -160,16 +163,8 @@ function TimelineWeekCells({ dateStart, dateEnd, data, colorFunc, dayLength }) {
       <TimelineWeekdays dateStart={dateStart} />
       <div className="timeline-cells">
         {weeks.map((_, index) => {
-          const startOfTheWeek = new Date(
-            new Date().setDate(
-              dateStart.getDate() - dateStart.getDay() + index * 7 - 365,
-            ),
-          );
-          const endOfTheWeek = new Date(
-            new Date().setDate(
-              dateStart.getDate() - dateStart.getDay() + 6 + index * 7 - 365,
-            ),
-          );
+          const startOfTheWeek = startOfWeek(addDays(dateStart, index * 7));
+          const endOfTheWeek = endOfWeek(startOfTheWeek);
           let value = 0;
           while (i < data.length && data[i].date < endOfTheWeek) {
             value += data[i].value;
@@ -193,9 +188,4 @@ function TimelineWeekCells({ dateStart, dateEnd, data, colorFunc, dayLength }) {
   );
 }
 
-export {
-  TimelineSimple,
-  TimelineCells,
-  TimelineMonthCells,
-  TimelineWeekCells,
-};
+export { TimelineSimple, TimelineCells, TimelineMonthCells, TimelineWeekCells };

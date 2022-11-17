@@ -127,7 +127,7 @@ $cell-weekdays-width: 33px;
         content: attr(data-attr);
         padding: 10px;
         position: absolute;
-        top: 12px;
+        bottom: -45px;
         visibility: hidden;
         left: -100px;
         width: 200px;
@@ -151,6 +151,8 @@ $cell-weekdays-width: 33px;
     &-cell-period {
       flex: 0 0 1;
       // border: 1px solid rgba(0, 0, 0, 0.1);
+      height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+      width: calc(11px * var(--width) + 4px * calc(var(--width) - 1));
       border: 1px solid rgba(0, 0, 0, 0.3);
       border: 1px solid transparent;
       margin: $cell-margin;

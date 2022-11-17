@@ -1,7 +1,8 @@
 import React from 'react';
+import { addWeeks } from 'date-fns';
 
 function Month({ dateStart, index }) {
-  const date = new Date(new Date().setTime(dateStart.getTime() + index * 7 * 24 * 3.6e6));
+  const date = addWeeks(dateStart, index);
   const monthName = date.toLocaleString('en-US', { month: 'short' });
 
   return (
