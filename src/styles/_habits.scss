@@ -97,14 +97,20 @@ $cell-weekdays-width: 33px;
     // position: absolute;
     // left: 0px;
 
+    .dummy {
+      height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+      width: $cell-width;
+      margin: $cell-margin;
+    }
+
     &-cell {
       flex: 0 0 1;
-      height: $cell-height;
+      height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
       width: $cell-width;
       // border: 1px solid rgba(0, 0, 0, 0.1);
       margin: $cell-margin;
       border-radius: 1px;
-      background-color: rgba(0, 0, 0, 0.05);
+      // background-color: rgba(0, 0, 0, 0.05);
       position: relative;
 
       &.offset--2:before {
@@ -127,7 +133,7 @@ $cell-weekdays-width: 33px;
         content: attr(data-attr);
         padding: 10px;
         position: absolute;
-        top: 12px;
+        bottom: -45px;
         visibility: hidden;
         left: -100px;
         width: 200px;
@@ -150,8 +156,8 @@ $cell-weekdays-width: 33px;
 
     &-cell-period {
       flex: 0 0 1;
-      // border: 1px solid rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(0, 0, 0, 0.3);
+      height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+      width: calc(11px * var(--width) + 4px * calc(var(--width) - 1));
       border: 1px solid transparent;
       margin: $cell-margin;
       border-radius: 1px;
@@ -160,47 +166,43 @@ $cell-weekdays-width: 33px;
 
       &.whole {
         margin-inline: 0px;
+        border-left: none;
+        border-right: none;
+      }
+
+      @mixin shaped-cell {
+        // border: 1px solid transparent;
+        margin: -1px;
+        height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+        width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
+        position: absolute;
+        visibility: visible;
+        display: block;
+        background-color: inherit;
       }
 
       &-before {
-        border: 1px solid rgba(0, 0, 0, 0.3);
-        border: 1px solid transparent;
+        @include shaped-cell;
         border-right: none;
-        margin: -1px;
-        height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
-        width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
-        position: absolute;
         left: -15px;
         bottom: 0px;
-        visibility: visible;
-        display: block;
-        background-color: inherit;
       }
 
       &-after {
-        border: 1px solid rgba(0, 0, 0, 0.3);
-        border: 1px solid transparent;
+        @include shaped-cell;
         border-left: none;
-        margin: -1px;
-        height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
-        width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
-        // width: 16px;
-        position: absolute;
         right: -15px;
         top: 0px;
-        visibility: visible;
-        display: block;
-        background-color: inherit;
       }
 
       &.whole .timeline-cells-cell-period-before {
         width: 11px;
-        left: -13px;
+        left: -12px;
       }
 
       &.whole .timeline-cells-cell-period-after {
         width: 11px;
-        right: -13px;
+        right: -12px;
       }
 
       &:before {
@@ -208,16 +210,11 @@ $cell-weekdays-width: 33px;
         padding: 10px;
         position: absolute;
         visibility: hidden;
-        // left: -100px;
         margin-left: auto;
         margin-right: auto;
         left: 50%;
         right: 50%;
         transform: translate(-50%, -50%);
-        // margin-top: auto;
-        // margin-bottom: auto;
-        // top: 0;
-        // bottom: 0;
         bottom: -95px;
         width: 200px;
         height: min-content;
@@ -229,25 +226,12 @@ $cell-weekdays-width: 33px;
         border-radius: 10px;
       }
 
-      &.whole {
-        border: none;
-
-        & > .timeline-cells-cell-period-before {
-          border: 1px solid rgba(0, 0, 0, 0.3);
-          border: 1px solid transparent;
-        }
-
-        & > .timeline-cells-cell-period-after {
-          border: 1px solid rgba(0, 0, 0, 0.3);
-          border: 1px solid transparent;
-        }
-      }
-
       &:hover {
         border: 1px solid rgba(0, 0, 0, 0.3);
 
         &.whole {
-          border: none;
+        border-left: none;
+        border-right: none;
 
           & > .timeline-cells-cell-period-before {
             border: 1px solid rgba(0, 0, 0, 0.3);
@@ -261,13 +245,11 @@ $cell-weekdays-width: 33px;
         & > .timeline-cells-cell-period-before {
           border: 1px solid rgba(0, 0, 0, 0.3);
           border-right: none;
-          margin: -1px;
         }
 
         & > .timeline-cells-cell-period-after {
           border: 1px solid rgba(0, 0, 0, 0.3);
           border-left: none;
-          margin: -1px;
         }
 
         &:before {

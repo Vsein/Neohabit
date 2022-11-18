@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
+import { subYears } from 'date-fns';
 import { mdiPlus } from '@mdi/js';
-import { TimelineCells, TimelineMonthCells, TimelineWeekCells } from '../../components/Heatmap';
-import { YearData } from '../../components/HeatmapData';
 import {
-  TimelineMonths,
-  TimelineWeekdays,
-} from '../../components/HeatmapHeaders';
+  TimelineSimple,
+  TimelineCells,
+  TimelineMonthCells,
+  TimelineWeekCells,
+  TimelineElimination,
+} from '../../components/Heatmap';
+import { YearDataSimple, YearDataRandom, DATA1 } from '../../components/HeatmapData';
 
 export default function HabitsPage() {
   useEffect(() => {
@@ -18,67 +21,8 @@ export default function HabitsPage() {
 
 function Habits() {
   const dateEnd = new Date();
-  const dateStart = new Date(new Date().setFullYear(dateEnd.getFullYear() - 1));
-  const minPeriod = 7;
-  const dayLength = 1;
-
-  // const data = Array.from(new Array(365)).map((_, index) => ({
-  //   date: new Date(new Date().setDate(dateStart.getDate() + index)),
-  //   value: Math.floor(Math.random() * 100),
-  // }));
-
-  // const data = YearData();
-
-  const data = [
-    {
-      date: new Date(
-        new Date().setTime(new Date().getTime() - 200 * 24 * 3.6e6),
-      ),
-      value: 500,
-    },
-    {
-      date: new Date(
-        new Date().setTime(new Date().getTime() - 190 * 24 * 3.6e6),
-      ),
-      value: 500,
-    },
-    {
-      date: new Date(
-        new Date().setTime(new Date().getTime() - 180 * 24 * 3.6e6),
-      ),
-      value: 150,
-    },
-    {
-      date: new Date(
-        new Date().setTime(new Date().getTime() - 170 * 24 * 3.6e6),
-      ),
-      value: 25,
-    },
-    {
-      date: new Date(
-        new Date().setTime(new Date().getTime() - 153 * 24 * 3.6e6),
-      ),
-      value: 100,
-    },
-    {
-      date: new Date(
-        new Date().setTime(new Date().getTime() - 152 * 24 * 3.6e6),
-      ),
-      value: 500,
-    },
-    {
-      date: new Date(
-        new Date().setTime(new Date().getTime() - 150 * 24 * 3.6e6),
-      ),
-      value: 500,
-    },
-    {
-      date: new Date(
-        new Date().setTime(new Date().getTime() - 148 * 24 * 3.6e6),
-      ),
-      value: 500,
-    },
-  ];
+  const dateStart = subYears(dateEnd, 1);
+  const dayLength = 2;
 
   return (
     <main className="habits">
@@ -87,30 +31,51 @@ function Habits() {
       </div>
       <ul className="habits-list">
         <h4>Habit</h4>
-        <Timeline
+        <TimelineSimple
           dateStart={dateStart}
           dateEnd={dateEnd}
-          data={data}
+          data={YearDataSimple(dateStart)}
           colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
-          minPeriod={minPeriod}
           dayLength={dayLength}
         />
         <h4>Habit</h4>
-        <Timeline
+        <TimelineSimple
           dateStart={dateStart}
           dateEnd={dateEnd}
-          data={data}
+          data={YearDataRandom(dateStart)}
+          colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
+          dayLength={dayLength}
+        />
+        <h4>Habit</h4>
+        <TimelineCells
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          data={[]}
           colorFunc={({ alpha }) => `rgba(220, 5,  3, ${alpha})`}
-          minPeriod={minPeriod}
           dayLength={dayLength}
         />
         <h4>Habit</h4>
-        <Timeline
+        <TimelineMonthCells
+          data={DATA1}
+          colorFunc={({ alpha }) => `rgba(5, 5,  200, ${alpha})`}
           dateStart={dateStart}
           dateEnd={dateEnd}
-          data={data}
-          colorFunc={({ alpha }) => `rgba(5, 5,  200, ${alpha})`}
-          minPeriod={minPeriod}
+          dayLength={dayLength}
+        />
+        <h4>Habit</h4>
+        <TimelineWeekCells
+          data={DATA1}
+          colorFunc={({ alpha }) => `rgba(220, 5,  3, ${alpha})`}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          dayLength={dayLength}
+        />
+        <h4>Habit</h4>
+        <TimelineElimination
+          data={DATA1}
+          colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
           dayLength={dayLength}
         />
         <button className="add-task-btn">
@@ -119,23 +84,5 @@ function Habits() {
         </button>
       </ul>
     </main>
-  );
-}
-
-function Timeline({ dateStart, dateEnd, data, colorFunc, dayLength }) {
-  return (
-    <div className="timeline"
-      // style={{ '--multiplier': dayLength}}
-    >
-      <div />
-      <TimelineMonths dateStart={dateStart} />
-      <TimelineWeekdays dateStart={dateStart} />
-      <TimelineWeekCells
-        data={data}
-        colorFunc={colorFunc}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-      />
-    </div>
   );
 }
