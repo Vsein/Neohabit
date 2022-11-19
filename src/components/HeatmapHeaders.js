@@ -10,7 +10,7 @@ function Month({ dateStart, index }) {
   );
 }
 
-function TimelineMonths({ dateStart }) {
+function HeatmapMonths({ dateStart }) {
   const months = Array.from(new Array(Math.floor(365 / 7)));
   return (
     <div className="timeline-months">
@@ -31,7 +31,7 @@ function WeekDay({ index }) {
   return <div className="timeline-weekdays-weekday">{DayNames[index]}</div>;
 }
 
-function TimelineWeekdays({ dateStart }) {
+function HeatmapWeekdays({ dateStart }) {
   const weekDays = Array.from(new Array(7));
   return (
     <div className="timeline-weekdays">
@@ -43,6 +43,6 @@ function TimelineWeekdays({ dateStart }) {
 }
 
 export {
-  TimelineMonths,
-  TimelineWeekdays,
+  HeatmapMonths,
+  HeatmapWeekdays,
 };

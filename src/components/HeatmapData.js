@@ -1,5 +1,15 @@
 // It's not really a component right now, just some helper functions for generating stuff
-import { addDays, subDays, subYears } from 'date-fns';
+import {
+  addDays,
+  subDays,
+  addWeeks,
+  subYears,
+  addMonths,
+  startOfWeek,
+  startOfMonth,
+  endOfWeek,
+  startOfDay,
+} from 'date-fns';
 
 function random() {
   return Math.floor(Math.random() * 100);
@@ -182,6 +192,89 @@ const DATA1 = [
   },
 ];
 
+const dateYearBefore = startOfDay(subYears(new Date(), 1));
+
+const PERIODS1 = [
+  {
+    date: dateYearBefore,
+    frequency: 24,
+  },
+  {
+    date: new Date(),
+  },
+];
+
+const PERIODS2 = Array.from(new Array(13)).map((_, index) => ({
+  date: startOfMonth(addMonths(dateYearBefore, index)),
+}));
+
+const PERIODS3 = [
+  {
+    date: dateYearBefore,
+  },
+  {
+    date: new Date(),
+  },
+];
+
+const PERIODS4 = [
+  {
+    date: startOfWeek(dateYearBefore),
+    frequency: 24 * 7,
+  },
+  {
+    date: new Date(),
+  },
+];
+
+const PERIODS5 = [
+  {
+    date: dateYearBefore,
+    frequency: 12,
+  },
+  {
+    date: addWeeks(dateYearBefore, 3),
+    frequency: 24,
+  },
+  {
+    date: addWeeks(dateYearBefore, 7),
+    frequency: 24 * 7,
+  },
+  {
+    date: addWeeks(dateYearBefore, 7),
+    frequency: 24 * 7,
+  },
+  {
+    date: new Date(),
+  },
+];
+
+let len = 0;
+const PERIODS6 = Array.from(new Array(130)).map((_, index) => {
+  if (index === 129)
+    return {
+      date: new Date(),
+    };
+  const curLen = randomRange(1, 5);
+  len += curLen;
+  return {
+    date: addDays(startOfDay(dateYearBefore), len),
+  };
+});
+
+let curPeriod = 0;
+const PERIODS7 = Array.from(new Array(35)).map((_, index) => {
+  if (index === 34)
+    return {
+      date: new Date(),
+    };
+  curPeriod += 12;
+  return {
+    date: addWeeks(startOfDay(dateYearBefore), index),
+    frequency: curPeriod,
+  };
+});
+
 export {
   LineActiveStraight,
   LineActiveRandom,
@@ -191,4 +284,11 @@ export {
   YearDataSimple,
   YearDataRandom,
   DATA1,
+  PERIODS1,
+  PERIODS2,
+  PERIODS3,
+  PERIODS4,
+  PERIODS5,
+  PERIODS6,
+  PERIODS7,
 };

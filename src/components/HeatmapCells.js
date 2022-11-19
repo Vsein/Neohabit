@@ -70,7 +70,6 @@ function CellPeriod({
 }) {
   const diffDays =
     differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
-  console.log(diffDays);
   if (isSameWeek(dateStart, dateEnd)) {
     return (
       <Cell
