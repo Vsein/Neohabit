@@ -7,6 +7,7 @@ $cell-weekdays-width: 33px;
   grid-area: main;
   padding: 18px 36px 36px;
   margin-inline: auto;
+  width: min(100%, 950px);
 
   &-header {
     display: flex;
@@ -21,30 +22,31 @@ $cell-weekdays-width: 33px;
   }
 }
 
-.timeline {
-  // overflow: hidden;
-  --multiplier: 1;
+.habit {
   position: relative;
+  overflow: hidden;
+  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 21);
+  width: 100%;
+}
+
+.heatmap {
+  --multiplier: 1;
+  position: absolute;
+  right: 0px;
   display: grid;
-  grid-template-areas: 'months months', 'weekdays cells';
   grid-template-rows: $cell-height calc(
       (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
     );
-  // grid-template-columns: calc(#{$cell-weekdays-width} * var(--multiplier)) calc(
-  //     45 * 15px
-  //   );
-  grid-template-columns: min-content calc(
-      45 * 15px
-    );
+  grid-template-columns: min-content calc(53 * 15px);
   column-gap: 15px;
   row-gap: 2px;
 
-  .timeline-months {
-    // grid-area: months;
+  .heatmap-months {
     display: flex;
-    // gap: calc(#{$cell-margin} * 2);
     gap: 5px;
     margin-inline: 2px;
+    grid-column: 2;
+    grid-row: 1;
 
     &-month {
       width: $cell-width;
@@ -70,15 +72,22 @@ $cell-weekdays-width: 33px;
     }
   }
 
-  .timeline-weekdays {
-    // grid-area: weekdays;
+  .heatmap-weekdays {
     display: inline-flex;
     flex-direction: column;
+    grid-column: 1;
+    grid-row: 2;
 
     &-weekday {
       line-height: 100%;
-      font-size: calc(#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1) + 1px);
-      height: calc(#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1));
+      font-size: calc(
+        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
+          (var(--multiplier) - 1) + 1px
+      );
+      height: calc(
+        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
+          (var(--multiplier) - 1)
+      );
       font-weight: 600;
       border: 1px solid transparent;
       margin: $cell-margin;
@@ -86,31 +95,45 @@ $cell-weekdays-width: 33px;
     }
   }
 
-  .timeline-cells {
-    // grid-area: cells;
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
+  .heatmap-cells {
+    grid-column: 2;
+    grid-row: 2;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     height: 100%;
-    // position: absolute;
-    // left: 0px;
 
     .dummy {
-      height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+      height: calc(
+        11px * var(--height) * var(--multiplier) + 4px *
+          calc(var(--height) * var(--multiplier) - 1)
+      );
       width: $cell-width;
       margin: $cell-margin;
     }
 
+    @mixin cell-info {
+      content: attr(data-attr);
+      padding: 10px;
+      position: absolute;
+      visibility: hidden;
+      width: 200px;
+      text-align: center;
+      font-size: 13px;
+      background-color: #545454;
+      color: white;
+      z-index: 3;
+      border-radius: 10px;
+    }
+
     &-cell {
-      flex: 0 0 1;
-      height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+      height: calc(
+        11px * var(--height) * var(--multiplier) + 4px *
+          calc(var(--height) * var(--multiplier) - 1)
+      );
       width: $cell-width;
-      // border: 1px solid rgba(0, 0, 0, 0.1);
       margin: $cell-margin;
       border-radius: 1px;
-      // background-color: rgba(0, 0, 0, 0.05);
       position: relative;
 
       &.offset--2:before {
@@ -130,50 +153,41 @@ $cell-weekdays-width: 33px;
       }
 
       &:before {
+        @include cell-info;
         content: attr(data-attr);
         padding: 10px;
         position: absolute;
         bottom: -45px;
         visibility: hidden;
         left: -100px;
-        width: 200px;
-        text-align: center;
-        font-size: 13px;
-        background-color: #545454;
-        color: white;
-        z-index: 3;
-        border-radius: 10px;
+      }
+
+      &:hover:before {
+        visibility: visible;
       }
 
       &:hover {
         border: 1px solid rgba(0, 0, 0, 0.3);
-
-        &:before {
-          visibility: visible;
-        }
       }
     }
 
     &-cell-period {
-      flex: 0 0 1;
-      height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+      height: calc(
+        11px * var(--height) * var(--multiplier) + 4px *
+          calc(var(--height) * var(--multiplier) - 1)
+      );
       width: calc(11px * var(--width) + 4px * calc(var(--width) - 1));
       border: 1px solid transparent;
       margin: $cell-margin;
       border-radius: 1px;
-      background-color: rgba(0, 0, 0, 0.05);
       position: relative;
 
-      &.whole {
-        margin-inline: 0px;
-        border-left: none;
-        border-right: none;
-      }
-
       @mixin shaped-cell {
-        // border: 1px solid transparent;
         margin: -1px;
-        height: calc(11px * var(--height) * var(--multiplier) + 4px * calc(var(--height) * var(--multiplier) - 1));
+        height: calc(
+          11px * var(--height) * var(--multiplier) + 4px *
+            calc(var(--height) * var(--multiplier) - 1)
+        );
         width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
         position: absolute;
         visibility: visible;
@@ -195,65 +209,61 @@ $cell-weekdays-width: 33px;
         top: 0px;
       }
 
-      &.whole .timeline-cells-cell-period-before {
-        width: 11px;
-        left: -12px;
-      }
-
-      &.whole .timeline-cells-cell-period-after {
-        width: 11px;
-        right: -12px;
-      }
-
       &:before {
-        content: attr(data-attr);
-        padding: 10px;
-        position: absolute;
-        visibility: hidden;
+        @include cell-info;
         margin-left: auto;
         margin-right: auto;
         left: 50%;
         right: 50%;
         transform: translate(-50%, -50%);
         bottom: -95px;
-        width: 200px;
         height: min-content;
-        text-align: center;
-        font-size: 13px;
-        background-color: #545454;
-        color: white;
-        z-index: 3;
-        border-radius: 10px;
       }
 
-      &:hover {
-        border: 1px solid rgba(0, 0, 0, 0.3);
+      &:hover:before {
+        visibility: visible;
+      }
 
-        &.whole {
+      &.whole {
+        margin-inline: 0px;
         border-left: none;
         border-right: none;
 
-          & > .timeline-cells-cell-period-before {
-            border: 1px solid rgba(0, 0, 0, 0.3);
-          }
-
-          & > .timeline-cells-cell-period-after {
-            border: 1px solid rgba(0, 0, 0, 0.3);
-          }
+        & .heatmap-cells-cell-period-before {
+          width: 11px;
+          left: -12px;
         }
 
-        & > .timeline-cells-cell-period-before {
+        & .heatmap-cells-cell-period-after {
+          width: 11px;
+          right: -12px;
+        }
+      }
+
+      &.wide:hover {
+        border: 1px solid rgba(0, 0, 0, 0.3);
+
+        & > .heatmap-cells-cell-period-before {
           border: 1px solid rgba(0, 0, 0, 0.3);
           border-right: none;
         }
 
-        & > .timeline-cells-cell-period-after {
+        & > .heatmap-cells-cell-period-after {
           border: 1px solid rgba(0, 0, 0, 0.3);
           border-left: none;
         }
+      }
 
-        &:before {
-          visibility: visible;
+      &.whole:hover {
+        border-top: 1px solid rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+
+        & > .heatmap-cells-cell-period-before {
+          border: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        & > .heatmap-cells-cell-period-after {
+          border: 1px solid rgba(0, 0, 0, 0.3);
         }
       }
     }

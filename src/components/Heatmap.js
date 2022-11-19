@@ -65,27 +65,29 @@ function Heatmap({
     differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
 
   return (
-    <div className="timeline" style={{ '--multiplier': dayLength }}>
-      <div /> {/* a temporary empty element for a grid */}
-      <HeatmapMonths dateStart={dateStart} />
-      <HeatmapWeekdays dateStart={dateStart} />
-      <div className="timeline-cells">
-        <TallDummy height={dummyHeight} />
-        {periods.map((period, index) => (
-          <>
-            {period.map((chunk, Index) => (
-              <CellPeriod
-                key={Index}
-                dateStart={chunk.dateStart}
-                dateEnd={chunk.dateEnd}
-                color={chunk.color}
-                value={chunk.value}
-                multiplier={2}
-                basePeriod={24}
-              />
-            ))}
-          </>
-        ))}
+    <div className="habit">
+      <h4>Habit</h4>
+      <div className="heatmap" style={{ '--multiplier': dayLength }}>
+        <HeatmapMonths dateStart={dateStart} />
+        <HeatmapWeekdays dateStart={dateStart} />
+        <div className="heatmap-cells">
+          <TallDummy height={dummyHeight} />
+          {periods.map((period, index) => (
+            <>
+              {period.map((chunk, Index) => (
+                <CellPeriod
+                  key={Index}
+                  dateStart={chunk.dateStart}
+                  dateEnd={chunk.dateEnd}
+                  color={chunk.color}
+                  value={chunk.value}
+                  multiplier={2}
+                  basePeriod={24}
+                />
+              ))}
+            </>
+          ))}
+        </div>
       </div>
     </div>
   );

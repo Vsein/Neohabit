@@ -45,7 +45,6 @@ function Habits() {
         <h3>Habits</h3>
       </div>
       <ul className="habits-list">
-        <h4>Habit</h4>
         <Heatmap
           data={YearDataSimple(dateStart)}
           dataPeriods={PERIODS1}
@@ -55,7 +54,6 @@ function Habits() {
           dayLength={dayLength}
           useElimination={false}
         />
-        <h4>Habit</h4>
         <Heatmap
           data={YearDataSimple(dateStart)}
           dataPeriods={PERIODS6}
@@ -65,7 +63,6 @@ function Habits() {
           dayLength={dayLength}
           useElimination={false}
         />
-        <h4>Habit</h4>
         <Heatmap
           data={[]}
           dataPeriods={PERIODS3}
@@ -75,7 +72,6 @@ function Habits() {
           dayLength={dayLength}
           useElimination={false}
         />
-        <h4>Habit</h4>
         <Heatmap
           data={DATA1}
           dataPeriods={PERIODS2}
@@ -85,7 +81,6 @@ function Habits() {
           dayLength={dayLength}
           useElimination={false}
         />
-        <h4>Habit</h4>
         <Heatmap
           data={DATA1}
           dataPeriods={PERIODS4}
@@ -95,7 +90,6 @@ function Habits() {
           dayLength={dayLength}
           useElimination={false}
         />
-        <h4>Habit</h4>
         <Heatmap
           data={DATA1}
           dataPeriods={PERIODS7}
@@ -104,7 +98,6 @@ function Habits() {
           dateEnd={dateEnd}
           dayLength={dayLength}
         />
-        <h4>Habit</h4>
         <Heatmap
           data={DATA1}
           dataPeriods={PERIODS5}
