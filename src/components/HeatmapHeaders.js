@@ -1,19 +1,19 @@
 import React from 'react';
-import { addWeeks } from 'date-fns';
+import { addWeeks, getWeekOfMonth } from 'date-fns';
 
 function Month({ dateStart, index }) {
   const date = addWeeks(dateStart, index);
   const monthName = date.toLocaleString('en-US', { month: 'short' });
-
-  return (
-    <div className={`timeline-months-month ${monthName}`}>{monthName}</div>
-  );
+  if (getWeekOfMonth(date) === 2 || index === 0) {
+    return <div className="heatmap-months-month active">{monthName}</div>;
+  }
+  return <div className="heatmap-months-month">{monthName}</div>;
 }
 
-function TimelineMonths({ dateStart }) {
+function HeatmapMonths({ dateStart }) {
   const months = Array.from(new Array(Math.floor(365 / 7)));
   return (
-    <div className="timeline-months">
+    <div className="heatmap-months">
       {months.map((_, index) => (
         <Month key={index} index={index} dateStart={dateStart} />
       ))}
@@ -28,13 +28,13 @@ const DayNames = {
 };
 
 function WeekDay({ index }) {
-  return <div className="timeline-weekdays-weekday">{DayNames[index]}</div>;
+  return <div className="heatmap-weekdays-weekday">{DayNames[index]}</div>;
 }
 
-function TimelineWeekdays({ dateStart }) {
+function HeatmapWeekdays({ dateStart }) {
   const weekDays = Array.from(new Array(7));
   return (
-    <div className="timeline-weekdays">
+    <div className="heatmap-weekdays">
       {weekDays.map((_, index) => (
         <WeekDay key={index} index={index} dateStart={dateStart} />
       ))}
@@ -42,7 +42,4 @@ function TimelineWeekdays({ dateStart }) {
   );
 }
 
-export {
-  TimelineMonths,
-  TimelineWeekdays,
-};
+export { HeatmapMonths, HeatmapWeekdays };

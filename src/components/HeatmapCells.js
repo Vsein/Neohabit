@@ -16,10 +16,9 @@ function formatDate(date) {
   });
 }
 
-function Cell({ color, date, value, height = 1, width = 1, opacity = 1 }) {
+function Cell({ color, date, value, height = 1, width = 1 }) {
   const style = {
     backgroundColor: color,
-    // opacity: opacity,
     '--height': height,
   };
 
@@ -52,7 +51,7 @@ function Cell({ color, date, value, height = 1, width = 1, opacity = 1 }) {
 
   return (
     <div
-      className="timeline-cells-cell"
+      className="heatmap-cells-cell"
       style={style}
       data-attr={content}
       onMouseEnter={changeCellOffset}
@@ -70,7 +69,6 @@ function CellPeriod({
 }) {
   const diffDays =
     differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
-  console.log(diffDays);
   if (isSameWeek(dateStart, dateEnd)) {
     return (
       <Cell
@@ -89,8 +87,6 @@ function CellPeriod({
     backgroundColor: color,
     '--height': 7,
     '--width': width,
-    // opacity: opacity,
-    // width: (width === 1 ? 16 : 11 * width + 2 * 2 * (width - 1)),
   };
   const beforeHeight =
     differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) /
@@ -101,12 +97,16 @@ function CellPeriod({
     visibility: dateStart.getDay() ? 'visible' : 'hidden',
   };
   const afterHeight =
-    differenceInHours(addMilliseconds(dateEnd, 1), startOfWeek(dateEnd)) /
-    basePeriod;
+    differenceInHours(
+      addMilliseconds(dateEnd, 1),
+      startOfWeek(addMilliseconds(dateEnd, 1)),
+    ) / basePeriod;
+  console.log(afterHeight);
   const styleAfter = {
     '--height': afterHeight,
     '--width': 1,
   };
+  if (afterHeight === 0) styleAfter.visibility = 'hidden';
   const formattedDateStart = formatDate(dateStart);
   const formattedDateEnd = formatDate(dateEnd);
 
@@ -122,18 +122,17 @@ function CellPeriod({
   return (
     <>
       <div
-        className={`timeline-cells-cell-period ${diffDays <= 7 ? 'whole' : ''}`}
+        className={`heatmap-cells-cell-period ${
+          diffDays <= 7 ? 'whole' : 'wide'
+        }`}
         style={style}
         data-attr={content}
         // onMouseEnter={changeCellOffset}
       >
-        <div
-          className="timeline-cells-cell-period-before"
-          style={styleBefore}
-        />
-        <div className="timeline-cells-cell-period-after" style={styleAfter} />
+        <div className="heatmap-cells-cell-period-before" style={styleBefore} />
+        <div className="heatmap-cells-cell-period-after" style={styleAfter} />
       </div>
-      <TallDummy height={afterHeight} />
+      {afterHeight ? <TallDummy height={afterHeight} /> : <> </>}
     </>
   );
 }
@@ -145,8 +144,4 @@ function TallDummy({ height }) {
   return <div style={style} className="dummy" />;
 }
 
-function CellWeek({ dateStart, dateEnd }) {
-  return <Cell value={value} date={dateStart} color={color} heigth={14} />;
-}
-
-export { Cell, CellWeek, CellPeriod, TallDummy };
+export { Cell, CellPeriod, TallDummy };
