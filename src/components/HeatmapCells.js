@@ -97,12 +97,16 @@ function CellPeriod({
     visibility: dateStart.getDay() ? 'visible' : 'hidden',
   };
   const afterHeight =
-    differenceInHours(addMilliseconds(dateEnd, 1), startOfWeek(dateEnd)) /
-    basePeriod;
+    differenceInHours(
+      addMilliseconds(dateEnd, 1),
+      startOfWeek(addMilliseconds(dateEnd, 1)),
+    ) / basePeriod;
+  console.log(afterHeight);
   const styleAfter = {
     '--height': afterHeight,
     '--width': 1,
   };
+  if (afterHeight === 0) styleAfter.visibility = 'hidden';
   const formattedDateStart = formatDate(dateStart);
   const formattedDateEnd = formatDate(dateEnd);
 
@@ -118,18 +122,17 @@ function CellPeriod({
   return (
     <>
       <div
-        className={`heatmap-cells-cell-period ${diffDays <= 7 ? 'whole' : 'wide'}`}
+        className={`heatmap-cells-cell-period ${
+          diffDays <= 7 ? 'whole' : 'wide'
+        }`}
         style={style}
         data-attr={content}
         // onMouseEnter={changeCellOffset}
       >
-        <div
-          className="heatmap-cells-cell-period-before"
-          style={styleBefore}
-        />
+        <div className="heatmap-cells-cell-period-before" style={styleBefore} />
         <div className="heatmap-cells-cell-period-after" style={styleAfter} />
       </div>
-      <TallDummy height={afterHeight} />
+      {afterHeight ? <TallDummy height={afterHeight} /> : <> </>}
     </>
   );
 }

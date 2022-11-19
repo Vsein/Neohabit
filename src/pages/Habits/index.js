@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
-import { subYears, addWeeks } from 'date-fns';
+import { subYears, startOfDay } from 'date-fns';
 import { mdiPlus } from '@mdi/js';
 import {
   Heatmap,
@@ -27,7 +27,7 @@ export default function HabitsPage() {
 }
 
 function Habits() {
-  const dateEnd = new Date();
+  const dateEnd = startOfDay(new Date());
   const dateStart = subYears(dateEnd, 1);
   const dayLength = 2;
 

@@ -204,7 +204,7 @@ const PERIODS1 = [
   },
 ];
 
-const PERIODS2 = Array.from(new Array(13)).map((_, index) => ({
+const PERIODS2 = Array.from(new Array(14)).map((_, index) => ({
   date: startOfMonth(addMonths(dateYearBefore, index)),
 }));
 
@@ -258,12 +258,12 @@ const PERIODS6 = Array.from(new Array(130)).map((_, index) => {
   const curLen = randomRange(1, 5);
   len += curLen;
   return {
-    date: addDays(startOfDay(dateYearBefore), len),
+    date: addDays(startOfWeek(dateYearBefore), len),
   };
 });
 
 let curPeriod = 0;
-const PERIODS7 = Array.from(new Array(35)).map((_, index) => {
+const PERIODS7 = Array.from(new Array(36)).map((_, index) => {
   if (index === 34)
     return {
       date: new Date(),

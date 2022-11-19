@@ -1,13 +1,13 @@
 import React from 'react';
-import { addWeeks } from 'date-fns';
+import { addWeeks, getWeekOfMonth } from 'date-fns';
 
 function Month({ dateStart, index }) {
   const date = addWeeks(dateStart, index);
   const monthName = date.toLocaleString('en-US', { month: 'short' });
-
-  return (
-    <div className={`heatmap-months-month ${monthName}`}>{monthName}</div>
-  );
+  if (getWeekOfMonth(date) === 2 || index === 0) {
+    return <div className="heatmap-months-month active">{monthName}</div>;
+  }
+  return <div className="heatmap-months-month">{monthName}</div>;
 }
 
 function HeatmapMonths({ dateStart }) {
@@ -42,7 +42,4 @@ function HeatmapWeekdays({ dateStart }) {
   );
 }
 
-export {
-  HeatmapMonths,
-  HeatmapWeekdays,
-};
+export { HeatmapMonths, HeatmapWeekdays };

@@ -38,13 +38,10 @@ $cell-weekdays-width: 33px;
       (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
     );
   grid-template-columns: min-content calc(53 * 15px);
-  column-gap: 15px;
-  row-gap: 2px;
+  row-gap: 5px;
 
   .heatmap-months {
     display: flex;
-    gap: 5px;
-    margin-inline: 2px;
     grid-column: 2;
     grid-row: 1;
 
@@ -54,21 +51,12 @@ $cell-weekdays-width: 33px;
       border: 1px solid transparent;
       font-size: 12px;
       font-weight: 600;
-    }
-
-    .Jan ~ .Jan,
-    .Feb ~ .Feb,
-    .Mar ~ .Mar,
-    .Apr ~ .Apr,
-    .May ~ .May,
-    .Jun ~ .Jun,
-    .Jul ~ .Jul,
-    .Aug ~ .Aug,
-    .Sep ~ .Sep,
-    .Oct ~ .Oct,
-    .Nov ~ .Nov,
-    .Dec ~ .Dec {
+      margin: $cell-margin;
       visibility: hidden;
+
+      &.active {
+        visibility: visible;
+      }
     }
   }
 

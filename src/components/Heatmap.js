@@ -3,6 +3,7 @@ import {
   addHours,
   subMilliseconds,
   min,
+  max,
   startOfDay,
   differenceInHours,
   startOfWeek,
@@ -30,7 +31,7 @@ function Heatmap({
       const lastDate = min([dateEnd, periods[index + 1].date]);
       const periodChunks = [];
       while (dateNow < lastDate) {
-        const startOfTheChunk = dateNow;
+        const startOfTheChunk = max([dateNow, dateStart]);
         const endOfTheChunk = period.frequency
           ? min([addHours(dateNow, period.frequency), dateEnd])
           : lastDate;
@@ -60,7 +61,8 @@ function Heatmap({
     setPeriods(populatedPeriods);
   }, []);
 
-  const dummyLastDay = min([dateStart, dataPeriods[0].date]);
+  const dummyLastDay = max([dateStart, dataPeriods[0].date]);
+  console.log(dummyLastDay);
   const dummyHeight =
     differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
 
@@ -68,7 +70,7 @@ function Heatmap({
     <div className="habit">
       <h4>Habit</h4>
       <div className="heatmap" style={{ '--multiplier': dayLength }}>
-        <HeatmapMonths dateStart={dateStart} />
+        <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
         <div className="heatmap-cells">
           <TallDummy height={dummyHeight} />
