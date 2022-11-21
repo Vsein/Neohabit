@@ -9,7 +9,7 @@ import {
 } from '@mdi/js';
 import PFP from '../../components/ProfilePicture';
 
-export default function Signup() {
+export default function Dashboard() {
   useEffect(() => {
     document.title = 'Dashboard | Neohabit';
   });
