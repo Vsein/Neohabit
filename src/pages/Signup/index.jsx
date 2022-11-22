@@ -7,7 +7,7 @@ import {
   EmailField,
   PasswordField,
 } from '../../components/Auth';
-import { sendSignupRequest } from '../../api/auth';
+import { sendSignupRequest } from '../../utils/auth';
 
 export default function Signup() {
   useEffect(() => {

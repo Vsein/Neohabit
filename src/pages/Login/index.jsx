@@ -6,7 +6,7 @@ import {
   EmailField,
   PasswordField,
 } from '../../components/Auth';
-import { sendLoginRequest } from '../../api/auth';
+import { sendLoginRequest } from '../../utils/auth';
 
 export default function Login() {
   useEffect(() => {

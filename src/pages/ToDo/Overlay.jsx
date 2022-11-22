@@ -9,7 +9,7 @@ import {
   fetchTaskByID,
   updateTask,
   createTask,
-} from '../../api/todolist';
+} from '../../utils/todolist';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay() {

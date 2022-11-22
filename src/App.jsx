@@ -19,7 +19,7 @@ import Landing from './pages/Landing';
 import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
 // import SidebarMobile from './components/SidebarMobile';
-import { hasJWT } from './api/auth';
+import { hasJWT } from './utils/auth';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(true);

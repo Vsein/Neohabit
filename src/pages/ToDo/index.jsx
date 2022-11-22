@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Editor from './Editor';
 import Overlay from './Overlay';
 import Navigation from './Navigation';
-import { fetchProjects, fetchFilters } from '../../api/todolist';
+import { fetchProjects, fetchFilters } from '../../utils/todolist';
 
 export default function ToDo() {
   useEffect(() => {
