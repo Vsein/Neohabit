@@ -1,0 +1,149 @@
+$cell-height: 11px;
+$cell-width: 11px;
+$cell-margin: 2px;
+$cell-weekdays-width: 33px;
+
+#content-landing {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-items: center;
+  background-color: white;
+}
+
+.landing {
+  background-image: url('../assets/neohabit-background.png');
+  box-shadow: inset 0px 0px 277px 3px #4c3f37;
+
+}
+
+.landing-header {
+  width: calc(100vw - 2em);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &-links {
+    display: flex;
+    list-style-type: none;
+    gap: 30px;
+    padding: 0;
+    margin: 0;
+  }
+
+  &-container {
+    display: flex;
+    justify-content: center;
+    height: 75px;
+    background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
+    align-items: center;
+  }
+}
+
+.landing-intro {
+  position: relative;
+  height: calc(100vh - 75px);
+  // height: calc(15px * 30);
+  overflow: hidden;
+
+  &-text {
+    font-size: 3rem;
+    position: absolute;
+    width: min(100%, 700px);
+    z-index: 4;
+    top: 0;
+    bottom: 0;
+    margin: auto 50px;
+    padding: 30px;
+    height: min-content;
+    background-color: rgba(255, 255, 255, 0.8);
+    background-color: white;
+    // border-radius: 30px;
+    border-radius: 3px;
+  }
+}
+
+.landing-heatmap-cells {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
+  height: 105vh;
+  width: 100vw;
+
+  &-cell {
+    height: $cell-height;
+    width: $cell-width;
+    // border: 1px solid rgba(0, 0, 0, 0.1);
+    margin: $cell-margin;
+    border-radius: 1px;
+    background-color: rgba(0, 0, 0, 0.05);
+    position: relative;
+
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+.landing-about {
+  height: 105vh;
+  background-color: white;
+  display: flex;
+  align-items: center;
+
+  &-text {
+    max-width: 65ch;
+    margin: 0 auto;
+    padding: 30px;
+
+    &-header {
+      text-align: center;
+    }
+
+    & p {
+      padding-block: 10px;
+      color: #545454;
+    }
+  }
+}
+
+.landing-features {
+  height: 105vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-container {
+    background-color: white;
+    padding-inline: 30px;
+    height: 500px;
+    width: 900px;
+  }
+
+  &-text {
+    text-align: center;
+    padding: 20px;
+    font-size: 2rem;
+  }
+}
+
+.landing-footer {
+  &-container {
+    display: flex;
+    justify-content: center;
+    height: 75px;
+    background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
+    align-items: center;
+  }
+}
+
+.landing-about {
+  height: 100vh;
+  background-color: white;
+}
+
+.landing-lastcall {
+  height: 100vh;
+}

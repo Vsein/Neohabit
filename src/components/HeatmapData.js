@@ -157,6 +157,21 @@ function YearDataRandom() {
   return data;
 }
 
+function LotsOfRandom() {
+  let data = [];
+  const len = 7;
+
+  data = data.concat(LineActiveRandom(data.length, 5000));
+
+//   data = data.concat(LineActiveRandom(data.length, 7 - new Date().getDay()));
+//   for (let i = 1; i < 800; i++) {
+//     data = data.concat(LineActiveRandom(data.length, len));
+//   }
+//   data = data.concat(LineActiveRandom(data.length, new Date().getDay() + 1));
+
+  return data;
+}
+
 const DATA1 = [
   {
     date: subDays(new Date(), 200),
@@ -283,6 +298,7 @@ export {
   Logo,
   YearDataSimple,
   YearDataRandom,
+  LotsOfRandom,
   DATA1,
   PERIODS1,
   PERIODS2,

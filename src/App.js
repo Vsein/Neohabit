@@ -15,6 +15,7 @@ import HabitsPage from './pages/Habits';
 import Logout from './pages/Logout';
 import Logo from './pages/Logo';
 import NotFound from './pages/404';
+import Landing from './pages/Landing';
 import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
 // import SidebarMobile from './components/SidebarMobile';
@@ -34,6 +35,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Landing />} />
         <Route path="/" element={<AuthRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
           <Route path="/signup/" element={<Signup />} />
           <Route path="/login/" element={<Login />} />
