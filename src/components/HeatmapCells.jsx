@@ -101,7 +101,6 @@ function CellPeriod({
       addMilliseconds(dateEnd, 1),
       startOfWeek(addMilliseconds(dateEnd, 1)),
     ) / basePeriod;
-  console.log(afterHeight);
   const styleAfter = {
     '--height': afterHeight,
     '--width': 1,

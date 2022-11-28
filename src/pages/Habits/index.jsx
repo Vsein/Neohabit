@@ -27,6 +27,10 @@ export default function HabitsPage() {
 }
 
 function Habits() {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
   const dateEnd = startOfDay(new Date());
   const dateStart = subYears(dateEnd, 1);
   const dayLength = 2;
@@ -38,15 +42,18 @@ function Habits() {
     if (alpha < 0.8) return '#3AB03B';
     return '#069F02';
   };
+  const yearData = YearDataSimple(dateStart);
 
-  return (
+  return !loaded ?
+    <div className="loader"/>
+    : (
     <main className="habits">
       <div className="habits-header">
         <h3>Habits</h3>
       </div>
       <ul className="habits-list">
         <Heatmap
-          data={YearDataSimple(dateStart)}
+          data={yearData}
           dataPeriods={PERIODS1}
           colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
           dateStart={dateStart}
@@ -55,7 +62,7 @@ function Habits() {
           useElimination={false}
         />
         <Heatmap
-          data={YearDataSimple(dateStart)}
+          data={yearData}
           dataPeriods={PERIODS6}
           colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
           dateStart={dateStart}

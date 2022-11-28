@@ -7,7 +7,7 @@ import {
   Outlet,
   useLocation,
 } from 'react-router-dom';
-import ToDo from './pages/ToDo';
+import ToDoList from './pages/ToDoList';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -24,8 +24,13 @@ import { hasJWT } from './utils/auth';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(true);
 
+  const loader = document.querySelector('.loader');
+  const showLoader = () => loader.classList.remove('loader--hide');
+  const hideLoader = () => loader.classList.add('loader--hide');
+
   useEffect(() => {
     setLoggedIn(hasJWT());
+    hideLoader();
   }, []);
 
   if (loggedIn === undefined) {
@@ -42,7 +47,7 @@ const App = () => {
         </Route>
         <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
           <Route path="/dashboard/" element={<Dashboard />} />
-          <Route path="/todo/*" element={<ToDo />} />
+          <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/habits/*" element={<HabitsPage />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/logo" element={<Logo />} />

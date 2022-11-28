@@ -20,53 +20,58 @@ function Heatmap({
   dataPeriods,
   useElimination = true,
 }) {
-  const [periods, setPeriods] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   let Max = 0;
 
-  useEffect(() => {
-    let dateNow = dataPeriods[0].date;
-    let i = 0;
-    const populatedPeriods = dataPeriods.map((period, index, periods) => {
-      if (!periods[index + 1]) return [];
-      const lastDate = min([dateEnd, periods[index + 1].date]);
-      const periodChunks = [];
-      while (dateNow < lastDate) {
-        const startOfTheChunk = max([dateNow, dateStart]);
-        const endOfTheChunk = period.frequency
-          ? min([addHours(dateNow, period.frequency), dateEnd])
-          : lastDate;
-        let value = 0;
-        while (i < data.length && data[i].date < endOfTheChunk) {
-          value += data[i].value;
-          i++;
-        }
-        if (value > Max) Max = value;
-        let alpha;
-        if (useElimination) {
-          alpha = period.frequency / (24 * 7);
-        } else {
-          alpha = (1 / Max) * value;
-        }
-        const color = alpha ? colorFunc({ alpha }) : '#e0e0e0';
-        periodChunks.push({
-          color,
-          value,
-          dateStart: startOfTheChunk,
-          dateEnd: subMilliseconds(endOfTheChunk, 1),
-        });
-        dateNow = endOfTheChunk;
+  let dateNow = dataPeriods[0].date;
+  let i = 0;
+  const periods = dataPeriods.map((period, index, periods) => {
+    if (!periods[index + 1]) return [];
+    const lastDate = min([dateEnd, periods[index + 1].date]);
+    const periodChunks = [];
+    while (dateNow < lastDate) {
+      const startOfTheChunk = max([dateNow, dateStart]);
+      const endOfTheChunk = period.frequency
+        ? min([addHours(dateNow, period.frequency), dateEnd])
+        : lastDate;
+      let value = 0;
+      while (i < data.length && data[i].date < endOfTheChunk) {
+        value += data[i].value;
+        i++;
       }
-      return periodChunks;
-    });
-    setPeriods(populatedPeriods);
+      if (value > Max) Max = value;
+      let alpha;
+      if (useElimination) {
+        alpha = period.frequency / (24 * 7);
+      } else {
+        alpha = (1 / Max) * value;
+      }
+      const color = alpha ? colorFunc({ alpha }) : '#e0e0e0';
+      periodChunks.push({
+        color,
+        value,
+        dateStart: startOfTheChunk,
+        dateEnd: subMilliseconds(endOfTheChunk, 1),
+      });
+      dateNow = endOfTheChunk;
+    }
+    return periodChunks;
+  });
+
+  useEffect(() => {
+    setLoaded(true);
   }, []);
 
   const dummyLastDay = max([dateStart, dataPeriods[0].date]);
-  console.log(dummyLastDay);
   const dummyHeight =
     differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
 
-  return (
+  return !loaded ? (
+    <div
+      className="habit loading"
+      style={{ backgroundColor: '#ddd', borderRadius: '20px' }}
+    />
+  ) : (
     <div className="habit">
       <h4>Habit</h4>
       <div className="heatmap" style={{ '--multiplier': dayLength }}>
