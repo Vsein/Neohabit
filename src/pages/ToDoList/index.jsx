@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
 import Editor from './Editor';
 import Overlay from './Overlay';
 import Navigation from './Navigation';
 import { fetchProjects, fetchFilters } from '../../utils/todolist';
+import { useGetProjectsQuery, useGetFiltersQuery, useGetTasksQuery } from '../../state/services/todolist';
 
-export default function ToDo() {
+export default function ToDoList() {
   useEffect(() => {
     document.title = 'To-do list | Neohabit';
   });
 
   return (
     <Routes>
-      <Route element={<ToDoPageLayout />}>
+      <Route element={<ToDoListLayout />}>
         <Route index element={<Navigate to="all" />} />
         <Route path=":list/:projectID" element={<Editor />} >
           <Route path="task/:taskID" element={<Overlay />} />
@@ -25,26 +26,19 @@ export default function ToDo() {
   );
 }
 
-function ToDoPageLayout() {
-  const [projects, setProjects] = useState([]);
-  const [filters, setFilters] = useState([]);
-
-  useEffect(() => {
-    async function init() {
-      const [projectsFetched, filtersFetched] = await Promise.all([
-        fetchProjects(),
-        fetchFilters(),
-      ]);
-
-      setProjects(projectsFetched);
-      setFilters(filtersFetched);
-    }
-    init();
-  }, []);
+function ToDoListLayout() {
+  const projects = useGetProjectsQuery();
+  const filters = useGetFiltersQuery();
+  const { pathname } = useLocation();
 
   return (
     <main className="tasklists">
-      <Navigation projects={projects} filters={filters}/>
+      {
+        filters.isFetching || projects.isFetching ?
+          <div className="loader"/>
+          :
+          <Navigation projects={projects.data} filters={filters.data}/>
+      }
       <Outlet />
     </main>
   );
