@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiClose } from '@mdi/js';
-import { fetchTasks, fetchProjectByID, deleteTask } from '../../utils/todolist';
-import { useGetTasksQuery, useGetProjectsQuery } from '../../state/services/todolist';
+import {
+  useGetTasksQuery,
+  useGetProjectsQuery,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+} from '../../state/services/todolist';
 
 export default function Editor() {
   const tasks = useGetTasksQuery();
@@ -57,18 +61,20 @@ export default function Editor() {
 function Task(props) {
   const { task, project } = props;
   const [completed, setCompleted] = useState(task.completed);
+  const [deleteTask, { isLoading }] = useDeleteTaskMutation()
+  const [updateTask] = useUpdateTaskMutation()
   const navigate = useNavigate();
 
   const deleteThisTask = (e) => {
     e.stopPropagation();
     deleteTask(task._id);
-    e.target.parentElement.parentElement.remove();
+    e.target.parentElement.parentElement.parentElement.remove();
   };
 
   const completeTask = (e) => {
     e.stopPropagation();
-    Storage.completeTask(project.name, task.name);
     setCompleted(!completed);
+    updateTask({ taskID: task._id, values: { ...task, completed: !completed } });
   };
 
   const bg = completed

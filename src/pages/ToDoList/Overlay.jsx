@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import ProjectTag from '../../components/ProjectTag';
-import { updateTask, createTask } from '../../utils/todolist';
 import {
   useGetProjectsQuery,
   useGetTasksQuery,
+  useUpdateTaskMutation,
+  useCreateTaskMutation,
 } from '../../state/services/todolist';
 // import bin from '../icons/trash-can-outline.svg';
 
@@ -17,6 +18,8 @@ export default function Overlay() {
   const project =
     useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
     useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
+  const [updateTask, { isLoading }] = useUpdateTaskMutation()
+  const [createTask] = useCreateTaskMutation()
   const navigate = useNavigate();
 
   const close = (e) => {
@@ -24,11 +27,11 @@ export default function Overlay() {
     navigate('..');
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     if (task) {
-      updateTask(taskID, values);
+      await updateTask({ taskID, values });
     } else {
-      createTask(values);
+      await createTask(values);
     }
     navigate('..');
   };
@@ -37,6 +40,7 @@ export default function Overlay() {
     <div className="overlay overlay-active" onClick={close}>
       <Form
         initialValues={{
+          completed: task?.completed ?? false,
           name: task?.name ?? '',
           description: task?.description ?? '',
           projectID: task?.project._id ?? project._id,
