@@ -3,10 +3,11 @@ import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiPlus, mdiClose } from '@mdi/js';
 import { fetchTasks, fetchProjectByID, deleteTask } from '../../utils/todolist';
-import { useGetTasksQuery } from '../../state/services/todolist';
+import { useGetTasksQuery, useGetProjectsQuery } from '../../state/services/todolist';
 
 export default function Editor() {
   const tasks = useGetTasksQuery();
+  const projects = useGetProjectsQuery();
   const { list, projectID } = useParams();
   const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ export default function Editor() {
 
   const delist = delinkify(list);
 
-  return tasks.isFetching ? (
+  return tasks.isFetching || projects.isFetching ? (
     <> </>
   ) : (
     <div className="editor">

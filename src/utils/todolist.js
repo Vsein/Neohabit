@@ -49,13 +49,13 @@ async function fetchTaskByID(taskID) {
 }
 
 async function updateTask(id, formData) {
-  const data = new URLSearchParams([...formData]);
+  const data = new URLSearchParams(formData);
   const res = await apiClient.post(`task/${id}/update`, data);
 }
 
 async function createTask(formData) {
-  const data = new URLSearchParams([...formData]);
-  const res = await apiClient.post('task/create', data);
+  const data = new URLSearchParams(formData);
+  const res = await apiClient.post('task/create',data);
 }
 
 async function deleteTask(id) {

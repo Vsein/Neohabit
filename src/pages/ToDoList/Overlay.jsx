@@ -1,132 +1,101 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { Form, Field } from 'react-final-form';
+import { useNavigate, useParams } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import ProjectTag from '../../components/ProjectTag';
+import { updateTask, createTask } from '../../utils/todolist';
 import {
-  fetchProject,
-  fetchProjectByID,
-  fetchTaskByID,
-  updateTask,
-  createTask,
-} from '../../utils/todolist';
+  useGetProjectsQuery,
+  useGetTasksQuery,
+} from '../../state/services/todolist';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay() {
-  const { taskID } = useParams();
-  const [task, setTask] = useState();
+  const { projectID, taskID } = useParams();
+  const task = useGetTasksQuery().data.find((task1) => task1._id == taskID);
+  const project =
+    useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
+    useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
   const navigate = useNavigate();
-  const [taskName, setTaskName] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
-  const [project, setProject] = useState({ name: 'Default', color: '#8a8a8a' });
-  const location = useLocation();
-
-  useEffect(() => {
-    async function init() {
-      if (taskID === 'new') {
-        let url = location.pathname.split('/');
-        if (!url[url.length - 1]) url.pop();
-        if (url[url.length - 4] === 'project') {
-          const projectFetched = await fetchProjectByID(url[url.length - 3]);
-          setProject(projectFetched);
-        } else {
-          const projectFetched = await fetchProject({ is_default: true });
-          setProject(projectFetched);
-        }
-        return;
-      }
-      const taskRes = await fetchTaskByID(taskID);
-      setTask(taskRes);
-      setTaskName(taskRes.name);
-      setTaskDescription(taskRes.description);
-    }
-
-    init();
-  }, [taskID]);
 
   const close = (e) => {
     e.stopPropagation();
     navigate('..');
   };
 
-  const createNewTask = () => {
-    const formData = new FormData();
-    formData.append('name', taskName);
-    formData.append('description', taskDescription);
-    formData.append('projectID', project._id);
-    createTask(formData);
-    navigate('..');
-  };
-
-  const updateThisTask = () => {
-    const formData = new FormData();
-    formData.append('name', taskName);
-    formData.append('description', taskDescription);
-    formData.append('projectID', task.project._id);
-    updateTask(taskID, formData);
+  const onSubmit = (values) => {
+    if (task) {
+      updateTask(taskID, values);
+    } else {
+      createTask(values);
+    }
     navigate('..');
   };
 
   return (
     <div className="overlay overlay-active" onClick={close}>
-      <div className="modal modal-active" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <div className="tag">
-            <ProjectTag project={task ? task.project : project} />
-          </div>
-          <button className="close-modal-button icon" onClick={close}>
-            <Icon path={mdiClose} />
-          </button>
-        </div>
-        <div className="modal-details">
-          <label htmlFor="task-name">
-            <textarea
-              className="form-task-name"
-              name="task-name"
-              rows="1"
-              placeholder="Change task name"
-              value={taskName}
-              onChange={(e) => setTaskName(e.target.value)}
-            />
-          </label>
-          <label htmlFor="task-description">
-            <textarea
-              className="form-task-description"
-              name="task-description"
-              rows="1"
-              placeholder="Change description"
-              value={taskDescription}
-              onChange={(e) => setTaskDescription(e.target.value)}
-            />
-          </label>
-        </div>
-        <div className="modal-buttons">
-          <button
-            className="form-button"
-            id="cancel-form-button"
-            onClick={close}
+      <Form
+        initialValues={{
+          name: task?.name ?? '',
+          description: task?.description ?? '',
+          projectID: task?.project._id ?? project._id,
+        }}
+        onSubmit={onSubmit}
+        render={({ handleSubmit, form, submitting, pristine, values }) => (
+          <form
+            onSubmit={handleSubmit}
+            className="modal modal-active"
+            onClick={(e) => e.stopPropagation()}
           >
-            Cancel
-          </button>
-          {task ? (
-            <button
-              className="form-button"
-              id="submit-form-button"
-              onClick={updateThisTask}
-            >
-              Save
-            </button>
-          ) : (
-            <button
-              className="form-button"
-              id="submit-form-button"
-              onClick={createNewTask}
-            >
-              Add task
-            </button>
-          )}
-        </div>
-      </div>
+            <div className="modal-header">
+              <div className="tag">
+                <ProjectTag project={task ? task.project : project} />
+              </div>
+              <button className="close-modal-button icon" onClick={close}>
+                <Icon path={mdiClose} />
+              </button>
+            </div>
+            <div className="modal-details">
+              <label htmlFor="task-name">
+                <Field
+                  name="name"
+                  component="textarea"
+                  placeholder="Change task name"
+                  rows="1"
+                  className="form-task-name"
+                />
+              </label>
+              <label htmlFor="task-description">
+                <Field
+                  name="description"
+                  component="textarea"
+                  placeholder="Change description"
+                  rows="1"
+                  className="form-task-description"
+                />
+              </label>
+            </div>
+            <div className="modal-buttons">
+              <button
+                className="form-button"
+                id="cancel-form-button"
+                onClick={close}
+              >
+                Cancel
+              </button>
+              <button
+                className="form-button"
+                id="submit-form-button"
+                type="submit"
+                disabled={submitting || pristine}
+              >
+                {task ? 'Save' : 'Add task'}
+              </button>
+            </div>
+          </form>
+        )}
+      />
     </div>
   );
 }
