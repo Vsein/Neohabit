@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { isSameDay } from 'date-fns';
 import PFP from '../../components/ProfilePicture';
 import { LotsOfRandom } from '../../components/HeatmapData';
+import useTitle from '../../hooks/useTitle';
 
 export default function Landing() {
-  useEffect(() => {
-    document.title = 'About | Neohabit';
-  });
-
+  useTitle('About | Neohabit');
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setYear(dateEnd.getFullYear() - 1));
 

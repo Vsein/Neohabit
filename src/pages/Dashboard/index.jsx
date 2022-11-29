@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Icon from '@mdi/react';
 import {
   mdiMagnify,
@@ -8,11 +8,10 @@ import {
   mdiShareVariantOutline,
 } from '@mdi/js';
 import PFP from '../../components/ProfilePicture';
+import useTitle from '../../hooks/useTitle';
 
 export default function Dashboard() {
-  useEffect(() => {
-    document.title = 'Dashboard | Neohabit';
-  });
+  useTitle('Dashboard | Neohabit');
 
   return (
     <div id="content-dashboard">

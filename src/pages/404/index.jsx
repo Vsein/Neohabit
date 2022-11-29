@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import useTitle from '../../hooks/useTitle';
 
 export default function NotFound() {
-  useEffect(() => {
-    document.title = '404 | Neohabit';
-  });
-
+  useTitle('404 | Neohabit');
   const navigate = useNavigate();
 
   return (

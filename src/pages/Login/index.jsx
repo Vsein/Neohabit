@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   AuthSidebar,
@@ -7,11 +7,10 @@ import {
   PasswordField,
 } from '../../components/Auth';
 import { sendLoginRequest } from '../../utils/auth';
+import useTitle from '../../hooks/useTitle';
 
 export default function Login() {
-  useEffect(() => {
-    document.title = 'Login | Neohabit';
-  });
+  useTitle('Login | Neohabit');
 
   return (
     <div id="content-signup">

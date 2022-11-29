@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
 import { subYears, startOfDay } from 'date-fns';
 import { mdiPlus } from '@mdi/js';
-import {
-  Heatmap,
-} from '../../components/Heatmap';
+import { Heatmap } from '../../components/Heatmap';
 import {
   YearDataSimple,
   YearDataRandom,
@@ -17,16 +15,10 @@ import {
   PERIODS6,
   PERIODS7,
 } from '../../components/HeatmapData';
+import useTitle from '../../hooks/useTitle';
 
-export default function HabitsPage() {
-  useEffect(() => {
-    document.title = 'Habits | Neohabit';
-  });
-
-  return <Habits />;
-}
-
-function Habits() {
+export default function Habits() {
+  useTitle('Habits | Neohabit');
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     setLoaded(true);
@@ -44,9 +36,9 @@ function Habits() {
   };
   const yearData = YearDataSimple(dateStart);
 
-  return !loaded ?
-    <div className="loader"/>
-    : (
+  return !loaded ? (
+    <div className="loader" />
+  ) : (
     <main className="habits">
       <div className="habits-header">
         <h3>Habits</h3>

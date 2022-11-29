@@ -11,7 +11,7 @@ import ToDoList from './pages/ToDoList';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import HabitsPage from './pages/Habits';
+import Habits from './pages/Habits';
 import Logout from './pages/Logout';
 import Logo from './pages/Logo';
 import NotFound from './pages/404';
@@ -48,7 +48,7 @@ const App = () => {
         <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
           <Route path="/dashboard/" element={<Dashboard />} />
           <Route path="/todo/*" element={<ToDoList />} />
-          <Route path="/habits/*" element={<HabitsPage />} />
+          <Route path="/habits/*" element={<Habits />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/logo" element={<Logo />} />
           <Route path="*" element={<NotFound />} />
