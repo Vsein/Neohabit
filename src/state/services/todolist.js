@@ -4,7 +4,6 @@ import { current } from '@reduxjs/toolkit';
 export const todolistApi = createApi({
   reducerPath: 'todolistApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:9000/api/' }),
-  tagTypes: ['Task'],
   endpoints: (builder) => ({
     getProjects: builder.query({
       query: () => ({
@@ -32,20 +31,18 @@ export const todolistApi = createApi({
         method: 'POST',
         params: { secret_token: localStorage.getItem('token') },
       }),
-      invalidatesTags: ['Task'],
-      // this section doesn't work, because it seems it should use usecacheupdate or smth like that
-      // onQueryStarted(values, { dispatch, queryFulfilled }) {
-      //   const patchResult = dispatch(
-      //     todolistApi.util.updateQueryData(
-      //       'getTasks',
-      //       undefined,
-      //       async (draft) => {
-      //         const res = await queryFulfilled;
-      //         Object.assign(draft, res.data);
-      //       },
-      //     ),
-      //   );
-      // },
+      async onQueryStarted(values, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        const patchResult = dispatch(
+          todolistApi.util.updateQueryData(
+            'getTasks',
+            undefined,
+            (draft) => {
+              draft.push(res.data);
+            },
+          ),
+        );
+      },
     }),
     updateTask: builder.mutation({
       query: ({ taskID, values }) => ({
@@ -78,7 +75,18 @@ export const todolistApi = createApi({
         method: 'DELETE',
         params: { secret_token: localStorage.getItem('token') },
       }),
-      invalidatesTags: ['Task'],
+      onQueryStarted(taskID, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          todolistApi.util.updateQueryData(
+            'getTasks',
+            undefined,
+            (draft) => {
+              const index = draft.findIndex((task) => task._id == taskID);
+              draft.splice(index, 1);
+            },
+          ),
+        );
+      },
     }),
   }),
 });

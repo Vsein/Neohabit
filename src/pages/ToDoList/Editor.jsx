@@ -68,7 +68,6 @@ function Task(props) {
   const deleteThisTask = (e) => {
     e.stopPropagation();
     deleteTask(task._id);
-    e.target.parentElement.parentElement.parentElement.remove();
   };
 
   const completeTask = (e) => {
