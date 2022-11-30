@@ -24,13 +24,8 @@ import { hasJWT } from './utils/auth';
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(true);
 
-  const loader = document.querySelector('.loader');
-  const showLoader = () => loader.classList.remove('loader--hide');
-  const hideLoader = () => loader.classList.add('loader--hide');
-
   useEffect(() => {
     setLoggedIn(hasJWT());
-    hideLoader();
   }, []);
 
   if (loggedIn === undefined) {

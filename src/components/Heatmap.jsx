@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   addHours,
   subMilliseconds,
@@ -10,6 +10,7 @@ import {
 } from 'date-fns';
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
+import useLoaded from '../hooks/useLoaded';
 
 function Heatmap({
   dateStart,
@@ -20,7 +21,7 @@ function Heatmap({
   dataPeriods,
   useElimination = true,
 }) {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded] = useLoaded();
   let Max = 0;
 
   let dateNow = dataPeriods[0].date;
@@ -57,10 +58,6 @@ function Heatmap({
     }
     return periodChunks;
   });
-
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
 
   const dummyLastDay = max([dateStart, dataPeriods[0].date]);
   const dummyHeight =

@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
+import useLogout from '../../hooks/useLogout';
 
 export default function Logout() {
-  const [loggedOut, setLoggedOut] = useState(false);
-
-  useEffect(() => {
-    localStorage.clear();
-    setLoggedOut(true);
-  }, []);
+  const [loggedOut] = useLogout();
 
   return loggedOut ? (
-    <div />
+    <div className="loader" />
   ) : (
     <Navigate to="/login" replace />
   );

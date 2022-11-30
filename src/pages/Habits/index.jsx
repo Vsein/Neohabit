@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Icon from '@mdi/react';
 import { subYears, startOfDay } from 'date-fns';
 import { mdiPlus } from '@mdi/js';
@@ -16,13 +16,11 @@ import {
   PERIODS7,
 } from '../../components/HeatmapData';
 import useTitle from '../../hooks/useTitle';
+import useLoaded from '../../hooks/useLoaded';
 
 export default function Habits() {
   useTitle('Habits | Neohabit');
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
+  const [loaded] = useLoaded();
   const dateEnd = startOfDay(new Date());
   const dateStart = subYears(dateEnd, 1);
   const dayLength = 2;
