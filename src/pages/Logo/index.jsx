@@ -1,15 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Logo } from '../../components/HeatmapData';
+import useTitle from '../../hooks/useTitle';
 
-export default function HabitsPage() {
-  useEffect(() => {
-    document.title = 'Logo | Neohabit';
-  });
-
-  return <Habits />;
-}
-
-function Habits() {
+export default function LogoPage() {
+  useTitle('Logo | Neohabit');
   const data = Logo();
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setYear(dateEnd.getFullYear() - 1));

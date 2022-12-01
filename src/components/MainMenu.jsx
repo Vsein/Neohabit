@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
@@ -10,19 +10,11 @@ import {
 } from '@mdi/js';
 import PFP from './ProfilePicture';
 import AccountInfo from './AccountInfo';
+import useMenuToggler from '../hooks/useMenuToggler';
 
 export default function MainMenu(props) {
   const { toggleSidebar } = props;
-  const [menuOpened, setMenuOpened] = useState(false);
-
-  const toggleMenu = (e) => {
-    e.stopPropagation();
-    setMenuOpened(!menuOpened);
-  };
-
-  useEffect(() => {
-    document.addEventListener('click', () => setMenuOpened(false));
-  });
+  const [menuOpened, { toggleMenu }] = useMenuToggler();
 
   return (
     <nav className="menu">

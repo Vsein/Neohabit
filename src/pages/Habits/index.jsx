@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Icon from '@mdi/react';
 import { subYears, startOfDay } from 'date-fns';
 import { mdiPlus } from '@mdi/js';
-import {
-  Heatmap,
-} from '../../components/Heatmap';
+import { Heatmap } from '../../components/Heatmap';
 import {
   YearDataSimple,
   YearDataRandom,
@@ -17,16 +15,12 @@ import {
   PERIODS6,
   PERIODS7,
 } from '../../components/HeatmapData';
+import useTitle from '../../hooks/useTitle';
+import useLoaded from '../../hooks/useLoaded';
 
-export default function HabitsPage() {
-  useEffect(() => {
-    document.title = 'Habits | Neohabit';
-  });
-
-  return <Habits />;
-}
-
-function Habits() {
+export default function Habits() {
+  useTitle('Habits | Neohabit');
+  const [loaded] = useLoaded();
   const dateEnd = startOfDay(new Date());
   const dateStart = subYears(dateEnd, 1);
   const dayLength = 2;
@@ -38,15 +32,18 @@ function Habits() {
     if (alpha < 0.8) return '#3AB03B';
     return '#069F02';
   };
+  const yearData = YearDataSimple(dateStart);
 
-  return (
+  return !loaded ? (
+    <div className="loader" />
+  ) : (
     <main className="habits">
       <div className="habits-header">
         <h3>Habits</h3>
       </div>
       <ul className="habits-list">
         <Heatmap
-          data={YearDataSimple(dateStart)}
+          data={yearData}
           dataPeriods={PERIODS1}
           colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
           dateStart={dateStart}
@@ -55,7 +52,7 @@ function Habits() {
           useElimination={false}
         />
         <Heatmap
-          data={YearDataSimple(dateStart)}
+          data={yearData}
           dataPeriods={PERIODS6}
           colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
           dateStart={dateStart}
