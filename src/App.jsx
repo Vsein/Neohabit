@@ -12,6 +12,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Habits from './pages/Habits';
+import Project from './pages/Project';
 import Logout from './pages/Logout';
 import Logo from './pages/Logo';
 import NotFound from './pages/404';
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/dashboard/" element={<Dashboard />} />
           <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/habits/*" element={<Habits />} />
+          <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/logo" element={<Logo />} />
           <Route path="*" element={<NotFound />} />

@@ -7,14 +7,16 @@ export default function NotFound() {
   const navigate = useNavigate();
 
   return (
-    <main className="editor">
-      <div className="editor-header">
-        <h3>Error: 404</h3>
+    <main>
+      <div className="editor">
+        <div className="editor-header">
+          <h3>Error: 404</h3>
+        </div>
+        <p className="back-ref">
+          There doesn&apos;t seem to be anything...
+          <Link onClick={() => navigate(-1)}>Go back</Link>
+        </p>
       </div>
-      <p className="back-ref">
-        There doesn&apos;t seem to be anything...
-        <Link onClick={() => navigate(-1)}>Go back</Link>
-      </p>
     </main>
   );
 }

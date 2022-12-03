@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
-import { mdiChevronDown } from '@mdi/js';
 import ProjectTag from '../../components/ProjectTag';
 
 export default function Navigation(props) {
   const { filters, projects } = props;
-  const [projectsCollapsed, setProjectsCollapsed] = useState(false);
-
-  const toggleProjectsCollapsed = () => {
-    setProjectsCollapsed(!projectsCollapsed);
-  };
 
   return (
     <nav className="tasklists-navigation">
@@ -27,26 +21,6 @@ export default function Navigation(props) {
             <Project project={project} />
           </li>
         ))}
-        {/* <li className="projects-header"> */}
-        {/*   <p>Projects</p> */}
-        {/*   <button className="centering" onClick={toggleProjectsCollapsed}> */}
-        {/*     <Icon */}
-        {/*       className={`icon projects-arrow ${ */}
-        {/*         projectsCollapsed ? '' : 'active' */}
-        {/*       }`} */}
-        {/*       path={mdiChevronDown} */}
-        {/*     /> */}
-        {/*   </button> */}
-        {/* </li> */}
-        {/* <ul */}
-        {/*   className={`projects-container ${projectsCollapsed ? '' : 'active'}`} */}
-        {/* > */}
-        {/*   {projects.map((project, i) => ( */}
-        {/*     <li key={`project-${i}`}> */}
-        {/*       <Project project={project} /> */}
-        {/*     </li> */}
-        {/*   ))} */}
-        {/* </ul> */}
       </ul>
     </nav>
   );

@@ -31,13 +31,11 @@ function ToDoListLayout() {
   const projects = useGetProjectsQuery();
   const filters = useGetFiltersQuery();
 
-  return (
+  return filters.isFetching || projects.isFetching ? (
+    <div className="loader" />
+  ) : (
     <main className="tasklists">
-      {filters.isFetching || projects.isFetching ? (
-        <div className="loader" />
-      ) : (
-        <Navigation projects={projects.data} filters={filters.data} />
-      )}
+      <Navigation projects={projects.data} filters={filters.data} />
       <Outlet />
     </main>
   );
