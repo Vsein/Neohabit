@@ -1,14 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom';
-import Icon from '@mdi/react';
-import {
-  mdiMagnify,
-  mdiBell,
-  mdiStarOutline,
-  mdiEyeOutline,
-  mdiShareVariantOutline,
-} from '@mdi/js';
-import PFP from '../../components/ProfilePicture';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import useTitle from '../../hooks/useTitle';
 import { useGetProjectsQuery } from '../../state/services/todolist';
 import Header from './Header';

@@ -1,26 +1,15 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import Icon from '@mdi/react';
-import { mdiPlus, mdiClose } from '@mdi/js';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import {
   useGetTasksQuery,
   useGetProjectsQuery,
-  useUpdateTaskMutation,
-  useDeleteTaskMutation,
 } from '../../state/services/todolist';
+import Tasklist from '../../components/Tasklist';
 
 export default function Editor() {
   const tasks = useGetTasksQuery();
   const projects = useGetProjectsQuery();
   const { list, projectID } = useParams();
-  const navigate = useNavigate();
-
-  const isInThisCategory = (task) => {
-    if (list === 'project') return task.project._id === projectID;
-    if (list === 'this-week') return false;
-    if (list === 'today') return false;
-    return true;
-  };
 
   const delinkify = (str) =>
     str
@@ -34,65 +23,11 @@ export default function Editor() {
   return tasks.isFetching || projects.isFetching ? (
     <> </>
   ) : (
-    <div className="editor">
-      <div className="editor-header">
-        <h3 id="list-name">
-          {list !== 'project' ? delist : tasks.data[0]?.project.name}
-        </h3>
-      </div>
-      <ul className="editor-list">
-        {tasks.data
-          .filter((task) => isInThisCategory(task))
-          .map((task) => (
-            <li key={task._id}>
-              <Task task={task} project={task.project} />
-            </li>
-          ))}
-        <button className="add-task-btn" onClick={() => navigate('task/new')}>
-          <Icon className="add-task-icon" path={mdiPlus} />
-          <p>Add task</p>
-        </button>
-      </ul>
-      <Outlet />
-    </div>
-  );
-}
-
-function Task(props) {
-  const { task, project } = props;
-  const [completed, setCompleted] = useState(task.completed);
-  const [deleteTask, { isLoading }] = useDeleteTaskMutation()
-  const [updateTask] = useUpdateTaskMutation()
-  const navigate = useNavigate();
-
-  const deleteThisTask = (e) => {
-    e.stopPropagation();
-    deleteTask(task._id);
-  };
-
-  const completeTask = (e) => {
-    e.stopPropagation();
-    setCompleted(!completed);
-    updateTask({ taskID: task._id, values: { ...task, completed: !completed } });
-  };
-
-  const bg = completed
-    ? `radial-gradient(${project.color} 30%, ${project.color}33 40%)`
-    : `${project.color}33`;
-
-  return (
-    <div className="task" onClick={() => navigate(`task/${task._id}`)}>
-      <button
-        className="checkbox"
-        style={{ borderColor: project.color, background: bg }}
-        onClick={completeTask}
-      ></button>
-      <button tabIndex="0" className="task-name">
-        {task.name}
-      </button>
-      <button className="centering" onClick={deleteThisTask}>
-        <Icon path={mdiClose} className="delete-task-btn icon" />
-      </button>
-    </div>
+    <Tasklist
+      name={list !== 'project' ? delist : tasks.data[0]?.project.name}
+      tasks={tasks.data}
+      projectID={projectID}
+      list={list}
+    />
   );
 }
