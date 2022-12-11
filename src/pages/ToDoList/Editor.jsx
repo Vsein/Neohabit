@@ -23,11 +23,13 @@ export default function Editor() {
   return tasks.isFetching || projects.isFetching ? (
     <> </>
   ) : (
-    <Tasklist
-      name={list !== 'project' ? delist : tasks.data[0]?.project.name}
-      tasks={tasks.data}
-      projectID={projectID}
-      list={list}
-    />
+    <div className="tasklist">
+      <Tasklist
+        name={list !== 'project' ? delist : tasks.data[0]?.project.name}
+        tasks={tasks.data}
+        projectID={projectID}
+        list={list}
+      />
+    </div>
   );
 }

@@ -16,7 +16,7 @@ export default function Tasklist(params) {
   };
 
   return (
-    <div className="tasklist">
+    <>
       <div className="tasklist-header">
         <h3 id="list-name">{name}</h3>
       </div>
@@ -34,6 +34,6 @@ export default function Tasklist(params) {
         </button>
       </ul>
       <Outlet />
-    </div>
+    </>
   );
 }
