@@ -38,7 +38,7 @@ $cell-weekdays-width: 33px;
   grid-template-rows: $cell-height calc(
       (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
     );
-  grid-template-columns: min-content calc(53 * 15px);
+  grid-template-columns: min-content calc(54 * 15px);
   row-gap: 5px;
 
   .heatmap-months {

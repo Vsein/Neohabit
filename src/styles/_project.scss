@@ -1,0 +1,168 @@
+#content-project {
+  height: 100%;
+  display: grid;
+  grid-template: 125px min-content 1fr / 5fr;
+  background-color: #EFEFEF;
+
+  & > div {
+    align-self: stretch;
+  }
+}
+
+.dashboard-menu {
+  padding: 15px 15px 15px 5px;
+  grid-row: span 3;
+  background: linear-gradient(0.1turn, #C0EFA6, #71C639 45% 60%, #A7C4BE);
+  display: grid;
+  grid-auto-rows: 50px;
+  align-items: center;
+
+  &-section {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+    text-align: left;
+  }
+}
+
+.projectpage-header {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 24px;
+}
+
+.project-overview {
+  padding: 18px 36px 36px;
+  width: min(950px, 100%);
+  margin-inline: auto;
+}
+
+.searchbar {
+  flex: 1;
+  max-width: 500px;
+  height: 32px;
+  background-color: #EFEFEF;
+  border: none;
+  border-radius: 7px;
+  padding: 5px;
+}
+
+.notifications {
+  margin-left: auto;
+}
+
+.welcome {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hello {
+  font-size: 80%;
+}
+
+.username {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+}
+
+.dashboard-btn {
+  width: min-content;
+  font-size: 80%;
+  padding: 5px;
+  color: #F9FAF8;
+  background-color: #144e12;
+  padding: 10px 32px;
+  border-radius: 7px;
+  font-weight: bold;
+  height: auto;
+  cursor: pointer;
+}
+
+#new {
+  margin-left: auto;
+}
+
+.main {
+  background-color: #EFEFEF;
+  display: grid;
+  grid-template-columns: 2.5fr 1.5fr;
+  padding: 24px;
+  gap: 24px;
+}
+
+.dashboard-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-auto-rows: 250px;
+  gap: 24px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 7px;
+  padding: 1em;
+  border-left: 8px solid #53D64E;
+  display: grid;
+}
+
+.news {
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-rows: minmax(min-content, max-content);
+  justify-content: start;
+  gap: 24px;
+}
+
+.posts {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-rows: repeat(auto-fill, 1fr);
+  gap: 5px;
+  background-color: white;
+  border-radius: 7px;
+  padding: 1em;
+  font-size: 0.8rem;
+}
+
+.skill-icon {
+  font-size: 0.9em;
+  height: 95px;
+  width: 95px;
+  border-radius: 50%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  flex: 0 0 1;
+}
+
+.trending-skills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 12px;
+  background-color: white;
+  border-radius: 7px;
+  padding: 1em;
+}
+
+.card-footer {
+  align-self: end;
+  justify-self: end;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.card-text {
+  font-size: 0.9em;
+}
+
+.card-text h4 {
+  padding-bottom: 0.5rem;
+  margin: 0;
+}

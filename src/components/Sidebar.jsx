@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
@@ -8,10 +8,23 @@ import {
   mdiCheckboxMultipleMarked,
   mdiPost,
   mdiCog,
+  mdiChevronDown,
 } from '@mdi/js';
+import {
+  useGetProjectsQuery,
+  useGetFiltersQuery,
+} from '../state/services/todolist';
+import ProjectTag from './ProjectTag';
 
 export default function Sidebar(props) {
+  const projects = useGetProjectsQuery();
+  const filters = useGetFiltersQuery();
   const { hidden } = props;
+  const [projectsCollapsed, setProjectsCollapsed] = useState(false);
+
+  const toggleProjectsCollapsed = () => {
+    setProjectsCollapsed(!projectsCollapsed);
+  };
 
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
@@ -54,6 +67,31 @@ export default function Sidebar(props) {
           to="/settings"
         />
       </ul>
+      <hr />
+      <ul className="projects">
+        <li className="projects-header">
+          <p>Projects</p>
+          <button className="centering" onClick={toggleProjectsCollapsed}>
+            <Icon
+              className={`icon projects-arrow ${
+                projectsCollapsed ? '' : 'active'
+              }`}
+              path={mdiChevronDown}
+            />
+          </button>
+        </li>
+        <ul
+          className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
+        >
+          {projects.isFetching ? (
+            <div className="loader" />
+          ) : projects.data.map((project, i) => (
+            <li key={`project-${i}`}>
+              <Project project={project} />
+            </li>
+          ))}
+        </ul>
+      </ul>
     </aside>
   );
 }
@@ -76,5 +114,24 @@ function NavigationSection(props) {
         </div>
       </NavLink>
     </li>
+  );
+}
+
+function Project(props) {
+  const { project } = props;
+
+  const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
+
+  return (
+    <NavLink
+      className={({ isActive }) => (isActive ? 'project active' : 'project')}
+      to={`project/${linkify(project._id)}`}
+      style={{
+        backgroundColor: ({ isActive }) =>
+          isActive ? `${project.color}33` : '',
+      }}
+    >
+      <ProjectTag project={project} />
+    </NavLink>
   );
 }
