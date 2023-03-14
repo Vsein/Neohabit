@@ -13,6 +13,13 @@ function formatDate(date) {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
+    // The below are needed only for dev stage, I'm thinking of hiding
+    // the time and whatnot if the period starts exactly at 0:00.
+    // And it's also kinda sucky to use US locale. With all those AMs
+    // ans PMs it gets pretty ambiguous quickly.
+    weekday: 'short',
+    hour: 'numeric',
+    minute: 'numeric',
   });
 }
 
@@ -94,7 +101,7 @@ function CellPeriod({
   const styleBefore = {
     '--height': beforeHeight,
     '--width': 1,
-    visibility: dateStart.getDay() ? 'visible' : 'hidden',
+    visibility: beforeHeight !== 7 ? 'visible' : 'hidden',
   };
   const afterHeight =
     differenceInHours(
