@@ -37,7 +37,7 @@ export default function Landing() {
           {/*   dateEnd={dateEnd} */}
           {/* /> */}
           <h1 className="landing-intro-text">
-            Your self-improvement app which actually works
+            Your self-improvement app which actually helps
           </h1>
         </section>
         <section className="landing-about">
