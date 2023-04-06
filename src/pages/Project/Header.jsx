@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useParams } from 'react-router-dom';
-import { useGetProjectsQuery } from '../../state/services/todolist';
+import { useGetProjectsQuery } from '../../state/services/project';
 
 export default function Header() {
   const { projectID } = useParams();

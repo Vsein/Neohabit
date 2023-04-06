@@ -3,10 +3,8 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Editor from './Editor';
 import Overlay from './Overlay';
 import Navigation from './Navigation';
-import {
-  useGetProjectsQuery,
-  useGetFiltersQuery,
-} from '../../state/services/todolist';
+import { useGetFiltersQuery } from '../../state/services/todolist';
+import { useGetProjectsQuery } from '../../state/services/project';
 import useTitle from '../../hooks/useTitle';
 
 export default function ToDoList() {

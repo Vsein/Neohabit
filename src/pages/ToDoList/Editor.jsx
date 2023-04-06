@@ -1,9 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  useGetTasksQuery,
-  useGetProjectsQuery,
-} from '../../state/services/todolist';
+import { useGetTasksQuery } from '../../state/services/todolist';
+import { useGetProjectsQuery } from '../../state/services/project';
 import Tasklist from '../../components/Tasklist';
 
 export default function Editor() {

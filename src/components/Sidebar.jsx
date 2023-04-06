@@ -9,11 +9,11 @@ import {
   mdiPost,
   mdiCog,
   mdiChevronDown,
+  mdiPlus,
 } from '@mdi/js';
-import {
-  useGetProjectsQuery,
-  useGetFiltersQuery,
-} from '../state/services/todolist';
+import { useGetFiltersQuery } from '../state/services/todolist';
+import { useGetProjectsQuery } from '../state/services/project';
+import OverlayProject from './OverlayProject';
 import ProjectTag from './ProjectTag';
 
 export default function Sidebar(props) {
@@ -21,9 +21,14 @@ export default function Sidebar(props) {
   const filters = useGetFiltersQuery();
   const { hidden } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
+  const [projectsOverlayActive, setProjectsOverlayActive] = useState(false);
 
   const toggleProjectsCollapsed = () => {
     setProjectsCollapsed(!projectsCollapsed);
+  };
+
+  const toggleProjectsOverlay = () => {
+    setProjectsOverlayActive(!projectsOverlayActive);
   };
 
   return (
@@ -79,17 +84,29 @@ export default function Sidebar(props) {
               path={mdiChevronDown}
             />
           </button>
+          <button className="centering" onClick={toggleProjectsOverlay}>
+            <Icon path={mdiPlus} className="icon" />
+          </button>
         </li>
         <ul
           className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
         >
           {projects.isFetching ? (
             <div className="loader" />
-          ) : projects.data.map((project, i) => (
-            <li key={`project-${i}`}>
-              <Project project={project} />
-            </li>
-          ))}
+          ) : (
+            <>
+              {' '}
+              {projects.data.map((project, i) => (
+                <li key={`project-${i}`}>
+                  <Project project={project} />
+                </li>
+              ))}
+              <OverlayProject
+                active={projectsOverlayActive}
+                toggleActive={toggleProjectsOverlay}
+              />
+            </>
+          )}
         </ul>
       </ul>
     </aside>

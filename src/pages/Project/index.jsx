@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import useTitle from '../../hooks/useTitle';
-import { useGetProjectsQuery } from '../../state/services/todolist';
+import { useGetProjectsQuery } from '../../state/services/project';
 import Header from './Header';
 import Navigation from './Navigation';
 import Overview from './Overview';

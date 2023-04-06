@@ -14,11 +14,6 @@ export const todolistApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getProjects: builder.query({
-      query: () => ({
-        url: 'projects',
-      }),
-    }),
     getFilters: builder.query({
       query: () => ({
         url: 'filters',
@@ -84,7 +79,6 @@ export const todolistApi = createApi({
 });
 
 export const {
-  useGetProjectsQuery,
   useGetFiltersQuery,
   useGetTasksQuery,
   useCreateTaskMutation,
