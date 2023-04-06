@@ -92,9 +92,12 @@
 
 
 .back-ref {
+
   & > a {
     color: #144e12;
     text-decoration: none;
+    width: min-content;
+    white-space: nowrap;
   }
 }
 
