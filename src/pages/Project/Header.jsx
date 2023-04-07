@@ -1,13 +1,23 @@
 import React from 'react';
-
-import { useParams } from 'react-router-dom';
-import { useGetProjectsQuery } from '../../state/services/project';
+import { useParams, useNavigate } from 'react-router-dom';
+import {
+  useGetProjectsQuery,
+  useDeleteProjectMutation,
+} from '../../state/services/project';
 
 export default function Header() {
   const { projectID } = useParams();
   const project =
     useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
     useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
+  const [deleteProject] = useDeleteProjectMutation();
+  const navigate = useNavigate();
+
+  const deleteThisProject = (e) => {
+    deleteProject(projectID);
+    navigate('...');
+    navigate('/dashboard');
+  };
 
   return (
     <div className="projectpage-header">
@@ -16,8 +26,8 @@ export default function Header() {
         <p className="hello">Hello there,</p>
         <p className="username">Serene Coder (&#64;Vsein)</p>
       </div>
-      <button className="dashboard-btn" id="new">
-        New
+      <button className="dashboard-btn" id="new" onClick={deleteThisProject}>
+        Delete
       </button>
       <button className="dashboard-btn" id="upload">
         Upload

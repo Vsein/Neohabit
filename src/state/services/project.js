@@ -34,10 +34,25 @@ export const projectApi = createApi({
         );
       },
     }),
+    deleteProject: builder.mutation({
+      query: (projectID) => ({
+        url: `project/${projectID}/delete`,
+        method: 'DELETE',
+      }),
+      onQueryStarted(projectID, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            const index = draft.findIndex((project) => project._id == projectID);
+            draft.splice(index, 1);
+          }),
+        );
+      },
+    }),
   }),
 });
 
 export const {
   useGetProjectsQuery,
   useCreateProjectMutation,
+  useDeleteProjectMutation,
 } = projectApi;
