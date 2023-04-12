@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Field } from 'react-final-form';
-import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import ProjectTag from './ProjectTag';
@@ -8,35 +8,41 @@ import {
   useGetProjectsQuery,
   useCreateProjectMutation,
 } from '../state/services/project';
+import { close } from '../state/features/overlay/overlaySlice';
 // import bin from '../icons/trash-can-outline.svg';
 
-export default function OverlayProject(props) {
-  const { active, toggleActive } = props;
-  const project = useGetProjectsQuery().data.find(
-    (projecto) => projecto.name == 'Default',
-  );
+export default function OverlayProject() {
+  const projectID = useSelector((state) => state.overlay.ID);
+  const dispatch = useDispatch();
+  const project =
+    useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
+    useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
   const [createProject] = useCreateProjectMutation();
-  const navigate = useNavigate();
 
-  const close = (e) => {
+  const closeOverlay = (e) => {
     e.stopPropagation();
-    toggleActive();
+    dispatch(close());
   };
 
   const onSubmit = async (values) => {
-    await createProject(values);
-    toggleActive();
+    if (project.name == 'Default') {
+      await createProject(values);
+    } else {
+    }
+    dispatch(close());
   };
 
-  return (
+  return project.isFetching ? (
+    <> </>
+  ) : (
     <div
-      className={active ? 'overlay overlay-active' : 'overlay'}
-      onClick={close}
+      className={useSelector((state) => state.overlay.isActive) ? 'overlay overlay-active' : 'overlay'}
+      onClick={closeOverlay}
     >
       <Form
         initialValues={{
-          name: '',
-          color: '',
+          name: project?.name,
+          color: project?.color,
         }}
         onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -77,7 +83,7 @@ export default function OverlayProject(props) {
               <button
                 className="form-button"
                 id="cancel-form-button"
-                onClick={close}
+                onClick={closeOverlay}
               >
                 Cancel
               </button>

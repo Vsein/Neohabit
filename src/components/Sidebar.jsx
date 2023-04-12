@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
 import Icon from '@mdi/react';
 import {
   mdiHome,
@@ -15,10 +16,12 @@ import { useGetFiltersQuery } from '../state/services/todolist';
 import { useGetProjectsQuery } from '../state/services/project';
 import OverlayProject from './OverlayProject';
 import ProjectTag from './ProjectTag';
+import { open } from '../state/features/overlay/overlaySlice';
 
 export default function Sidebar(props) {
   const projects = useGetProjectsQuery();
   const filters = useGetFiltersQuery();
+  const dispatch = useDispatch();
   const { hidden } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
   const [projectsOverlayActive, setProjectsOverlayActive] = useState(false);
@@ -27,8 +30,8 @@ export default function Sidebar(props) {
     setProjectsCollapsed(!projectsCollapsed);
   };
 
-  const toggleProjectsOverlay = () => {
-    setProjectsOverlayActive(!projectsOverlayActive);
+  const openOverlay = () => {
+    dispatch(open());
   };
 
   return (
@@ -84,7 +87,7 @@ export default function Sidebar(props) {
               path={mdiChevronDown}
             />
           </button>
-          <button className="centering" onClick={toggleProjectsOverlay}>
+          <button className="centering" onClick={openOverlay}>
             <Icon path={mdiPlus} className="icon" />
           </button>
         </li>
@@ -101,10 +104,7 @@ export default function Sidebar(props) {
                   <Project project={project} />
                 </li>
               ))}
-              <OverlayProject
-                active={projectsOverlayActive}
-                toggleActive={toggleProjectsOverlay}
-              />
+              <OverlayProject />
             </>
           )}
         </ul>

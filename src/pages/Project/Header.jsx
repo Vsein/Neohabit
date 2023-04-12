@@ -1,9 +1,11 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
 import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
 } from '../../state/services/project';
+import { changeTo, open } from '../../state/features/overlay/overlaySlice';
 
 export default function Header() {
   const { projectID } = useParams();
@@ -11,6 +13,7 @@ export default function Header() {
     useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
     useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
   const [deleteProject] = useDeleteProjectMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const deleteThisProject = (e) => {
@@ -21,7 +24,12 @@ export default function Header() {
 
   return (
     <div className="projectpage-header">
-      <Skill color={project.color} name={project.name} />
+      <Link onClick={() => {
+        dispatch(changeTo(projectID));
+        dispatch(open());
+      }}>
+        <Skill color={project.color} name={project.name} />
+      </Link>
       <div className="welcome">
         <p className="hello">Hello there,</p>
         <p className="username">Serene Coder (&#64;Vsein)</p>
