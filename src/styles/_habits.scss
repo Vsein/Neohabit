@@ -7,7 +7,7 @@ $cell-weekdays-width: 33px;
   grid-area: main;
   padding: 18px 36px 36px;
   margin-inline: auto;
-  width: min(100%, 965px);
+  width: min(100%, 980px);
 
   &-header {
     display: flex;
@@ -27,13 +27,17 @@ $cell-weekdays-width: 33px;
   position: relative;
   overflow: hidden;
   height: calc((#{$cell-height} + #{$cell-margin} * 2) * 21);
-  width: 100%;
+  background-color: #FAFAFA;
+  padding-block: 5px;
+  padding-inline: 12px;
+  border-radius: 10px;
+  border: 1px solid #bbb;
 }
 
 .heatmap {
   --multiplier: 1;
   position: absolute;
-  right: 0px;
+  right: 5px;
   display: grid;
   grid-template-rows: $cell-height calc(
       (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
