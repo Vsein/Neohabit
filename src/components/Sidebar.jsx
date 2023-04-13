@@ -16,7 +16,7 @@ import { useGetFiltersQuery } from '../state/services/todolist';
 import { useGetProjectsQuery } from '../state/services/project';
 import OverlayProject from './OverlayProject';
 import ProjectTag from './ProjectTag';
-import { open } from '../state/features/overlay/overlaySlice';
+import { changeTo, open } from '../state/features/overlay/overlaySlice';
 
 export default function Sidebar(props) {
   const projects = useGetProjectsQuery();
@@ -24,7 +24,6 @@ export default function Sidebar(props) {
   const dispatch = useDispatch();
   const { hidden } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
-  const [projectsOverlayActive, setProjectsOverlayActive] = useState(false);
 
   const toggleProjectsCollapsed = () => {
     setProjectsCollapsed(!projectsCollapsed);
@@ -32,6 +31,7 @@ export default function Sidebar(props) {
 
   const openOverlay = () => {
     dispatch(open());
+    dispatch(changeTo(''));
   };
 
   return (

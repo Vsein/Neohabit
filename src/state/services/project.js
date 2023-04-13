@@ -19,6 +19,11 @@ export const projectApi = createApi({
         url: 'projects',
       }),
     }),
+    getProject: builder.query({
+      query: (id) => ({
+        url: `project/${id}/details`,
+      }),
+    }),
     createProject: builder.mutation({
       query: (values) => ({
         url: 'project/create',
@@ -48,11 +53,32 @@ export const projectApi = createApi({
         );
       },
     }),
+    updateProject: builder.mutation({
+      query: ({ projectID, values }) => ({
+        url: `project/${projectID}/update`,
+        body: new URLSearchParams(values),
+        method: 'POST',
+      }),
+      onQueryStarted({ projectID, values }, { dispatch }) {
+        const patchResult = dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            const project = draft.find((project) => project._id == projectID);
+            if (project) {
+              project.name = values.name;
+              project.description = values.description;
+              project.completed = values.completed;
+            }
+          }),
+        );
+      },
+    }),
   }),
 });
 
 export const {
   useGetProjectsQuery,
+  useGetProjectQuery,
   useCreateProjectMutation,
   useDeleteProjectMutation,
+  useUpdateProjectMutation,
 } = projectApi;
