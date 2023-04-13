@@ -19,6 +19,8 @@ import NotFound from './pages/404';
 import Landing from './pages/Landing';
 import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
+import OverlayProject from './components/OverlayProject';
+import { useGetProjectsQuery } from './state/services/project';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './utils/auth';
 
@@ -37,11 +39,19 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/" element={<AuthRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
+        <Route
+          path="/"
+          element={<AuthRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}
+        >
           <Route path="/signup/" element={<Signup />} />
           <Route path="/login/" element={<Login />} />
         </Route>
-        <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
+        <Route
+          path="/"
+          element={
+            <PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />
+          }
+        >
           <Route path="/dashboard/" element={<Dashboard />} />
           <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/habits/*" element={<Habits />} />
@@ -69,13 +79,20 @@ const PrivateRoutes = (params) => {
     setSidebarHidden(!sidebarHidden);
   };
 
+  const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
+
   return loggedIn ? (
-    <div id="content">
-      <MainMenu toggleSidebar={toggleSidebar} />
-      <Sidebar hidden={sidebarHidden} />
-      <Outlet />
-      {/* <SidebarMobile /> */}
-    </div>
+    <>
+      <div id="content">
+        <MainMenu toggleSidebar={toggleSidebar} />
+        <Sidebar hidden={sidebarHidden} />
+        <Outlet />
+        {/* <SidebarMobile /> */}
+      </div>
+      { isFetching || isLoading ? <> </> :
+      <OverlayProject />
+      }
+    </>
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />
   );

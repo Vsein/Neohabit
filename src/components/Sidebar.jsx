@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
   mdiHome,
@@ -14,7 +14,6 @@ import {
 } from '@mdi/js';
 import { useGetFiltersQuery } from '../state/services/todolist';
 import { useGetProjectsQuery } from '../state/services/project';
-import OverlayProject from './OverlayProject';
 import ProjectTag from './ProjectTag';
 import { changeTo, open } from '../state/features/overlay/overlaySlice';
 
@@ -97,15 +96,11 @@ export default function Sidebar(props) {
           {projects.isFetching ? (
             <div className="loader" />
           ) : (
-            <>
-              {' '}
-              {projects.data.map((project, i) => (
-                <li key={`project-${i}`}>
-                  <Project project={project} />
-                </li>
-              ))}
-              <OverlayProject />
-            </>
+            projects.data.map((project, i) => (
+              <li key={`project-${i}`}>
+                <Project project={project} />
+              </li>
+            ))
           )}
         </ul>
       </ul>
