@@ -27,7 +27,7 @@ export const todolistApi = createApi({
     }),
     createTask: builder.mutation({
       query: (values) => ({
-        url: 'task/create',
+        url: 'task',
         body: new URLSearchParams(values),
         method: 'POST',
       }),
@@ -42,9 +42,9 @@ export const todolistApi = createApi({
     }),
     updateTask: builder.mutation({
       query: ({ taskID, values }) => ({
-        url: `task/${taskID}/update`,
+        url: `task/${taskID}`,
         body: new URLSearchParams(values),
-        method: 'POST',
+        method: 'PUT',
       }),
       onQueryStarted({ taskID, values }, { dispatch }) {
         const patchResult = dispatch(
@@ -63,7 +63,7 @@ export const todolistApi = createApi({
     }),
     deleteTask: builder.mutation({
       query: (taskID) => ({
-        url: `task/${taskID}/delete`,
+        url: `task/${taskID}`,
         method: 'DELETE',
       }),
       onQueryStarted(taskID, { dispatch, queryFulfilled }) {
