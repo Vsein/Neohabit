@@ -2,14 +2,16 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { todolistApi } from './services/todolist';
 import { projectApi } from './services/project';
-import overlayReducer from './features/overlay/overlaySlice';
+import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
+import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
 
 const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [todolistApi.reducerPath]: todolistApi.reducer,
     [projectApi.reducerPath]: projectApi.reducer,
-    overlay: overlayReducer,
+    projectOverlay: projectOverlayReducer,
+    taskOverlay: taskOverlayReducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.

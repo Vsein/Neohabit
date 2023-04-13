@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Editor from './Editor';
-import Overlay from './Overlay';
 import Navigation from './Navigation';
 import { useGetFiltersQuery } from '../../state/services/todolist';
 import { useGetProjectsQuery } from '../../state/services/project';
@@ -14,12 +13,8 @@ export default function ToDoList() {
     <Routes>
       <Route element={<ToDoListLayout />}>
         <Route index element={<Navigate to="all" />} />
-        <Route path=":list/:projectID" element={<Editor />}>
-          <Route path="task/:taskID" element={<Overlay />} />
-        </Route>
-        <Route path=":list" element={<Editor />}>
-          <Route path="task/:taskID" element={<Overlay />} />
-        </Route>
+        <Route path=":list/:projectID" element={<Editor />} />
+        <Route path=":list" element={<Editor />} />
       </Route>
     </Routes>
   );

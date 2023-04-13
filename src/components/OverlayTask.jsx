@@ -1,30 +1,40 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import ProjectTag from '../../components/ProjectTag';
+import ProjectTag from './ProjectTag';
 import {
   useGetTasksQuery,
   useUpdateTaskMutation,
   useCreateTaskMutation,
-} from '../../state/services/todolist';
-import { useGetProjectsQuery, } from '../../state/services/project';
+} from '../state/services/todolist';
+import { useGetProjectsQuery } from '../state/services/project';
+import { close } from '../state/features/taskOverlay/taskOverlaySlice';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay() {
-  const { projectID, taskID } = useParams();
+  const dispatch = useDispatch();
+  const { isActive } = useSelector((state) => ({
+    isActive: state.taskOverlay.isActive,
+  }));
+  const { taskID } = useSelector((state) => ({
+    taskID: state.taskOverlay.taskID,
+  }));
   const task = useGetTasksQuery().data.find((task1) => task1._id == taskID);
+  const { projectID } = useSelector((state) => ({
+    projectID: state.taskOverlay.projectID,
+  }));
+  const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
   const project =
-    useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
-    useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
-  const [updateTask, { isLoading }] = useUpdateTaskMutation()
-  const [createTask] = useCreateTaskMutation()
-  const navigate = useNavigate();
+    projects.find((projecto) => projecto._id == projectID) ??
+    projects.find((projecto) => projecto.name == 'Default');
+  const [updateTask] = useUpdateTaskMutation();
+  const [createTask] = useCreateTaskMutation();
 
-  const close = (e) => {
+  const closeOverlay = (e) => {
     e.stopPropagation();
-    navigate('..');
+    dispatch(close());
   };
 
   const onSubmit = async (values) => {
@@ -33,11 +43,20 @@ export default function Overlay() {
     } else {
       await createTask(values);
     }
-    navigate('..');
+    dispatch(close());
   };
 
+  if (isLoading || isFetching) return <div>Loading...</div>;
+  if (!project) return <div>Missing project!</div>;
+
   return (
-    <div className="overlay overlay-active" onClick={close}>
+    <div
+      className={isActive ? 'overlay overlay-active' : 'overlay'}
+      onClick={closeOverlay}
+    >
+      {isLoading || isFetching ? (
+        <> </>
+      ) : (
       <Form
         initialValues={{
           completed: task?.completed ?? false,
@@ -84,7 +103,7 @@ export default function Overlay() {
               <button
                 className="form-button"
                 id="cancel-form-button"
-                onClick={close}
+                onClick={closeOverlay}
               >
                 Cancel
               </button>
@@ -100,6 +119,7 @@ export default function Overlay() {
           </form>
         )}
       />
+      )}
     </div>
   );
 }

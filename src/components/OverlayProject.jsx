@@ -9,16 +9,16 @@ import {
   useCreateProjectMutation,
   useUpdateProjectMutation,
 } from '../state/services/project';
-import { close } from '../state/features/overlay/overlaySlice';
+import { close } from '../state/features/projectOverlay/projectOverlaySlice';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function OverlayProject() {
   const dispatch = useDispatch();
   const { isActive } = useSelector((state) => ({
-    isActive: state.overlay.isActive,
+    isActive: state.projectOverlay.isActive,
   }));
   const { projectID } = useSelector((state) => ({
-    projectID: state.overlay.ID,
+    projectID: state.projectOverlay.ID,
   }));
   const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
   const project = projects.find((projecto) => projecto._id == projectID) ?? {

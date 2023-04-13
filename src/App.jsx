@@ -20,7 +20,9 @@ import Landing from './pages/Landing';
 import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
 import OverlayProject from './components/OverlayProject';
+import OverlayTask from './components/OverlayTask';
 import { useGetProjectsQuery } from './state/services/project';
+import { useGetTasksQuery } from './state/services/todolist';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './utils/auth';
 
@@ -79,7 +81,8 @@ const PrivateRoutes = (params) => {
     setSidebarHidden(!sidebarHidden);
   };
 
-  const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
+  const projects = useGetProjectsQuery();
+  const tasks = useGetTasksQuery();
 
   return loggedIn ? (
     <>
@@ -89,9 +92,17 @@ const PrivateRoutes = (params) => {
         <Outlet />
         {/* <SidebarMobile /> */}
       </div>
-      { isFetching || isLoading ? <> </> :
-      <OverlayProject />
-      }
+      {projects.isFetching ||
+      projects.isLoading ||
+      tasks.isFetching ||
+      tasks.isLoading ? (
+        <> </>
+      ) : (
+        <>
+          <OverlayProject />
+          <OverlayTask />
+        </>
+      )}
     </>
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />

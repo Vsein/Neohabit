@@ -5,7 +5,7 @@ import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
 } from '../../state/services/project';
-import { changeTo, open } from '../../state/features/overlay/overlaySlice';
+import { changeTo, open } from '../../state/features/projectOverlay/projectOverlaySlice';
 
 export default function Header() {
   const { projectID } = useParams();

@@ -15,7 +15,7 @@ import {
 import { useGetFiltersQuery } from '../state/services/todolist';
 import { useGetProjectsQuery } from '../state/services/project';
 import ProjectTag from './ProjectTag';
-import { changeTo, open } from '../state/features/overlay/overlaySlice';
+import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 
 export default function Sidebar(props) {
   const projects = useGetProjectsQuery();
