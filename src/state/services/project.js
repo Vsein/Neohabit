@@ -21,12 +21,12 @@ export const projectApi = createApi({
     }),
     getProject: builder.query({
       query: (id) => ({
-        url: `project/${id}/details`,
+        url: `project/${id}`,
       }),
     }),
     createProject: builder.mutation({
       query: (values) => ({
-        url: 'project/create',
+        url: 'project',
         body: new URLSearchParams(values),
         method: 'POST',
       }),
@@ -41,7 +41,7 @@ export const projectApi = createApi({
     }),
     deleteProject: builder.mutation({
       query: (projectID) => ({
-        url: `project/${projectID}/delete`,
+        url: `project/${projectID}`,
         method: 'DELETE',
       }),
       onQueryStarted(projectID, { dispatch, queryFulfilled }) {
@@ -55,9 +55,9 @@ export const projectApi = createApi({
     }),
     updateProject: builder.mutation({
       query: ({ projectID, values }) => ({
-        url: `project/${projectID}/update`,
+        url: `project/${projectID}`,
         body: new URLSearchParams(values),
-        method: 'POST',
+        method: 'PUT',
       }),
       onQueryStarted({ projectID, values }, { dispatch }) {
         const patchResult = dispatch(
@@ -65,6 +65,7 @@ export const projectApi = createApi({
             const project = draft.find((project) => project._id == projectID);
             if (project) {
               project.name = values.name;
+              project.color = values.color;
               project.description = values.description;
               project.completed = values.completed;
             }
