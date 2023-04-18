@@ -27,7 +27,7 @@ export const projectApi = createApi({
     createProject: builder.mutation({
       query: (values) => ({
         url: 'project',
-        body: new URLSearchParams(values),
+        body: values,
         method: 'POST',
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
@@ -56,7 +56,7 @@ export const projectApi = createApi({
     updateProject: builder.mutation({
       query: ({ projectID, values }) => ({
         url: `project/${projectID}`,
-        body: new URLSearchParams(values),
+        body: values,
         method: 'PUT',
       }),
       onQueryStarted({ projectID, values }, { dispatch }) {

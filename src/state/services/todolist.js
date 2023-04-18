@@ -28,7 +28,7 @@ export const todolistApi = createApi({
     createTask: builder.mutation({
       query: (values) => ({
         url: 'task',
-        body: new URLSearchParams(values),
+        body: values,
         method: 'POST',
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
@@ -43,7 +43,7 @@ export const todolistApi = createApi({
     updateTask: builder.mutation({
       query: ({ taskID, values }) => ({
         url: `task/${taskID}`,
-        body: new URLSearchParams(values),
+        body: values,
         method: 'PUT',
       }),
       onQueryStarted({ taskID, values }, { dispatch }) {
