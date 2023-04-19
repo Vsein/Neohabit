@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { todolistApi } from './services/todolist';
 import { projectApi } from './services/project';
+import { heatmapApi } from './services/heatmap';
 import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
 
@@ -10,6 +11,7 @@ const store = configureStore({
     // Add the generated reducer as a specific top-level slice
     [todolistApi.reducerPath]: todolistApi.reducer,
     [projectApi.reducerPath]: projectApi.reducer,
+    [heatmapApi.reducerPath]: heatmapApi.reducer,
     projectOverlay: projectOverlayReducer,
     taskOverlay: taskOverlayReducer,
   },
@@ -19,6 +21,7 @@ const store = configureStore({
     getDefaultMiddleware().concat([
       todolistApi.middleware,
       projectApi.middleware,
+      heatmapApi.middleware,
     ]),
 });
 

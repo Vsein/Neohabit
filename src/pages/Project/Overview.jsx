@@ -1,10 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { subYears, startOfDay } from 'date-fns';
-import { Heatmap } from '../../components/Heatmap';
+import { Heatmap } from '../../components/HeatmapFinal';
 import { YearDataSimple, PERIODS6 } from '../../components/HeatmapData';
 import { useGetTasksQuery } from '../../state/services/todolist';
 import { useGetProjectsQuery } from '../../state/services/project';
+import { useGetHeatmapsQuery } from '../../state/services/heatmap';
 import Tasklist from '../../components/Tasklist';
 
 export default function Project() {
@@ -14,6 +15,9 @@ export default function Project() {
   const project =
     useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
     useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
+  const heatmap =
+    useGetHeatmapsQuery().data.find((heatmapo) => heatmapo.project._id == projectID) ??
+    [];
 
   const dateEnd = startOfDay(new Date());
   const dateStart = subYears(dateEnd, 1);
@@ -25,7 +29,7 @@ export default function Project() {
   ) : (
     <div className="project-overview">
       <Heatmap
-        data={yearData}
+        data={heatmap.data}
         dataPeriods={PERIODS6}
         // colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha * 265})`}
         colorFunc={({ alpha }) => {

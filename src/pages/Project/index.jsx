@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import useTitle from '../../hooks/useTitle';
 import { useGetProjectsQuery } from '../../state/services/project';
+import { useGetHeatmapsQuery } from '../../state/services/heatmap';
 import Header from './Header';
 import Navigation from './Navigation';
 import Overview from './Overview';
@@ -25,8 +26,9 @@ export default function Project() {
 
 function ProjectLayout() {
   const projects = useGetProjectsQuery();
+  const heatmaps = useGetHeatmapsQuery();
 
-  return projects.isFetching ? (
+  return projects.isFetching || heatmaps.isLoading || heatmaps.isFetching ? (
     <div className="loader" />
   ) : (
     <div id="content-project">
