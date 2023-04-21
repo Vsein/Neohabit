@@ -29,11 +29,11 @@ export default function Project() {
   ) : (
     <div className="project-overview">
       <Heatmap
-        data={heatmap.data}
+        heatmap={heatmap}
         dataPeriods={PERIODS6}
         // colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha * 265})`}
         colorFunc={({ alpha }) => {
-          const alphaHex = Math.round(alpha * 265).toString(16);
+          const alphaHex = alpha == 1 ? 'ff' : Math.round(alpha * 256).toString(16);
           return `${project.color}${alphaHex}`;
         }
         }

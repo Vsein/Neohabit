@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   addDays,
   addHours,
@@ -9,45 +9,63 @@ import {
   differenceInHours,
   startOfWeek,
 } from 'date-fns';
+import { Form, Field } from 'react-final-form';
+import Icon from '@mdi/react';
+import { mdiPlus } from '@mdi/js';
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
+import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 
 function Heatmap({
   dateStart,
   dateEnd,
-  data = [],
+  heatmap = {
+    data: [],
+  },
   colorFunc,
   dayLength,
   useElimination = true,
 }) {
   const [loaded] = useLoaded();
+  const Data = heatmap.data;
+  const data = [...Data];
+  data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   let dateNow = dateStart;
   let i = 0;
   const periods = [];
-  while (dateNow < dateEnd) {
-    const startOfTheChunk = max([dateNow, dateStart]);
-    let value = 0;
-    while (i < data.length) {
-      value += data[i].value;
-      i++;
-    }
-    const endOfTheChunk = value ? min([addDays(dateNow, value), dateEnd]) : dateEnd;
-    const alpha = 0;
-    const color = alpha ? colorFunc({ alpha }) : '#e0e0e0';
+  for (let i = 0; i < data.length; i++) {
     periods.push({
-      color,
-      value,
-      dateStart: startOfTheChunk,
-      dateEnd: subMilliseconds(endOfTheChunk, 1),
+      color: '#e0e0e0',
+      value: 0,
+      dateStart: dateNow,
+      dateEnd: subMilliseconds(startOfDay(new Date(data[i].date)), 1),
     });
-    dateNow = endOfTheChunk;
+    periods.push({
+      color: colorFunc({ alpha: 1 }),
+      value: 1000,
+      dateStart: new Date(data[i].date),
+      dateEnd: subMilliseconds(addHours(startOfDay(new Date(data[i].date)), 24), 1),
+    });
+    dateNow = addHours(new Date(data[i].date), 24);
   }
+  periods.push({
+    color: '#e0e0e0',
+    value: 0,
+    dateStart: dateNow,
+    dateEnd: dateEnd,
+  })
+  console.log(periods);
 
   const dummyLastDay = dateStart;
   const dummyHeight =
     differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
+
+  const [updateHeatmap] = useUpdateHeatmapMutation();
+  const onSubmit = async (values) => {
+    await updateHeatmap({ heatmapID: heatmap._id, values });
+  };
 
   return !loaded ? (
     <div
@@ -56,7 +74,49 @@ function Heatmap({
     />
   ) : (
     <div className="habit">
-      <h4>Habit</h4>
+      <div className="habit-header">
+        <h4>Habit</h4>
+        <Form
+          initialValues={{
+            date: undefined,
+            value: undefined,
+          }}
+          onSubmit={onSubmit}
+          render={({ handleSubmit, form, submitting, pristine, values }) => (
+            <form onSubmit={handleSubmit} className="habit-form">
+              <div className="habit-form-date">
+                <label htmlFor="date-name">
+                  <Field
+                    name="date"
+                    component="input"
+                    type="date"
+                    placeholder="Change project name"
+                    max="<?= date('Y-m-d'); ?>"
+                    rows="1"
+                    className="habit-form-input"
+                  />
+                </label>
+              </div>
+              <div className="habit-form-counter">
+                <label htmlFor="date-name">
+                  <Field
+                    name="value"
+                    component="input"
+                    type="number"
+                    placeholder="1"
+                    max="999"
+                    min="0"
+                    className="habit-form-input"
+                  />
+                </label>
+              </div>
+              <button className="habit-button" type="submit" disabled={submitting || pristine }>
+                <Icon path={mdiPlus} className="add-task-icon icon" />
+              </button>
+            </form>
+          )}
+        />
+      </div>
       <div className="heatmap" style={{ '--multiplier': dayLength }}>
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />

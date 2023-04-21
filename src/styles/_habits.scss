@@ -32,6 +32,39 @@ $cell-weekdays-width: 33px;
   padding-inline: 12px;
   border-radius: 10px;
   border: 1px solid #bbb;
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-button {
+    width: min-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-form {
+    display: flex;
+    gap: 8px;
+
+    & > * {
+      border: 1px solid #343434;
+      border-radius: 10px;
+      padding: 0px;
+    }
+
+    &-input {
+      padding: 5px;
+      height: min-content;
+    }
+
+    &-counter {
+      width: 50px;
+    }
+  }
 }
 
 .heatmap {
