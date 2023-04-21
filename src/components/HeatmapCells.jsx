@@ -6,6 +6,7 @@ import {
   startOfWeek,
   endOfWeek,
   addMilliseconds,
+  startOfDay,
 } from 'date-fns';
 
 function formatDate(date) {
@@ -96,7 +97,7 @@ function CellPeriod({
     '--width': width,
   };
   const beforeHeight =
-    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) /
+    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), startOfDay(dateStart)) /
     basePeriod;
   const styleBefore = {
     '--height': beforeHeight,
