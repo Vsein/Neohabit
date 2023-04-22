@@ -1,12 +1,14 @@
 .tasklists {
   grid-area: main;
   position: relative;
+  overflow: hidden;
 
   &-navigation {
     background-color: white;
     display: flex;
     align-items: center;
     height: 50px;
+    overflow: scroll;
   }
 }
 

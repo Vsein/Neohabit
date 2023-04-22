@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
   mdiHome,
@@ -9,21 +10,27 @@ import {
   mdiPost,
   mdiCog,
   mdiChevronDown,
+  mdiPlus,
 } from '@mdi/js';
-import {
-  useGetProjectsQuery,
-  useGetFiltersQuery,
-} from '../state/services/todolist';
+import { useGetFiltersQuery } from '../state/services/todolist';
+import { useGetProjectsQuery } from '../state/services/project';
 import ProjectTag from './ProjectTag';
+import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 
 export default function Sidebar(props) {
   const projects = useGetProjectsQuery();
   const filters = useGetFiltersQuery();
+  const dispatch = useDispatch();
   const { hidden } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
   const toggleProjectsCollapsed = () => {
     setProjectsCollapsed(!projectsCollapsed);
+  };
+
+  const openOverlay = () => {
+    dispatch(open());
+    dispatch(changeTo(''));
   };
 
   return (
@@ -79,17 +86,22 @@ export default function Sidebar(props) {
               path={mdiChevronDown}
             />
           </button>
+          <button className="centering" onClick={openOverlay}>
+            <Icon path={mdiPlus} className="icon" />
+          </button>
         </li>
         <ul
           className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
         >
           {projects.isFetching ? (
             <div className="loader" />
-          ) : projects.data.map((project, i) => (
-            <li key={`project-${i}`}>
-              <Project project={project} />
-            </li>
-          ))}
+          ) : (
+            projects.data.map((project, i) => (
+              <li key={`project-${i}`}>
+                <Project project={project} />
+              </li>
+            ))
+          )}
         </ul>
       </ul>
     </aside>

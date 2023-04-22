@@ -14,11 +14,6 @@ export const todolistApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getProjects: builder.query({
-      query: () => ({
-        url: 'projects',
-      }),
-    }),
     getFilters: builder.query({
       query: () => ({
         url: 'filters',
@@ -32,8 +27,8 @@ export const todolistApi = createApi({
     }),
     createTask: builder.mutation({
       query: (values) => ({
-        url: 'task/create',
-        body: new URLSearchParams(values),
+        url: 'task',
+        body: values,
         method: 'POST',
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
@@ -47,9 +42,9 @@ export const todolistApi = createApi({
     }),
     updateTask: builder.mutation({
       query: ({ taskID, values }) => ({
-        url: `task/${taskID}/update`,
-        body: new URLSearchParams(values),
-        method: 'POST',
+        url: `task/${taskID}`,
+        body: values,
+        method: 'PUT',
       }),
       onQueryStarted({ taskID, values }, { dispatch }) {
         const patchResult = dispatch(
@@ -68,7 +63,7 @@ export const todolistApi = createApi({
     }),
     deleteTask: builder.mutation({
       query: (taskID) => ({
-        url: `task/${taskID}/delete`,
+        url: `task/${taskID}`,
         method: 'DELETE',
       }),
       onQueryStarted(taskID, { dispatch, queryFulfilled }) {
@@ -84,7 +79,6 @@ export const todolistApi = createApi({
 });
 
 export const {
-  useGetProjectsQuery,
   useGetFiltersQuery,
   useGetTasksQuery,
   useCreateTaskMutation,
