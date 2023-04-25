@@ -2,12 +2,12 @@
   content: '';
 
   &:before {
-    color: #144e12;
+    color: var(--signature-color);
     content: 'neo';
   }
 
   &:after {
-    color: black;
+    color: var(--support-color);
     content: 'habit';
   }
 }

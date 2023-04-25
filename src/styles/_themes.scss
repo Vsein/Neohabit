@@ -1,0 +1,9 @@
+:root {
+  --signature-color: #144e12;
+  --support-color: black;
+}
+
+:root.dark {
+  --signature-color: #00C4CD;
+  --support-color: white;
+}
