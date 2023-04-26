@@ -5,8 +5,8 @@
   width: 6em;
   height: 6em;
   border: 1em solid transparent;
-  border-left: 1em solid #144e12;
-  border-bottom: 1em solid #144e12;
+  border-left: 1em solid var(--signature-color);
+  border-bottom: 1em solid var(--signature-color);
   border-radius: 50%;
   animation: load8 1.1s infinite linear;
   // transition: opacity 0.3s;
