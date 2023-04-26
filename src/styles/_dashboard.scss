@@ -2,32 +2,14 @@
   height: 100%;
   display: grid;
   grid-template: 100px 1fr / 5fr;
-  background-color: #EFEFEF;
 
   & > div {
     align-self: stretch;
   }
 }
 
-.dashboard-menu {
-  padding: 15px 15px 15px 5px;
-  grid-row: span 3;
-  background: linear-gradient(0.1turn, #C0EFA6, #71C639 45% 60%, #A7C4BE);
-  display: grid;
-  grid-auto-rows: 50px;
-  align-items: center;
-
-  &-section {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    align-items: center;
-    text-align: left;
-  }
-}
-
 .dashboard-header, .controls {
-  background-color: white;
+  background-color: var(--main-background-color);
   display: flex;
   align-items: center;
   padding: 12px 24px;
@@ -38,7 +20,7 @@
   flex: 1;
   max-width: 500px;
   height: 32px;
-  background-color: #EFEFEF;
+  background-color: var(--support-background-color);
   border: none;
   border-radius: 7px;
   padding: 5px;
@@ -69,7 +51,7 @@
   font-size: 80%;
   padding: 5px;
   color: #F9FAF8;
-  background-color: #144e12;
+  background-color: var(--signature-color);
   padding: 10px 32px;
   border-radius: 7px;
   font-weight: bold;
@@ -82,7 +64,7 @@
 }
 
 .main {
-  background-color: #EFEFEF;
+  background-color: var(--support-background-color);
   display: grid;
   grid-template-columns: 2.5fr 1.5fr;
   padding: 24px;
@@ -97,10 +79,10 @@
 }
 
 .card {
-  background-color: white;
+  background-color: var(--main-background-color);
   border-radius: 7px;
   padding: 1em;
-  border-left: 8px solid #53D64E;
+  border-left: 8px solid var(--calm-signature-color);
   display: grid;
 }
 
@@ -117,13 +99,14 @@
   grid-auto-flow: row;
   grid-template-rows: repeat(auto-fill, 1fr);
   gap: 5px;
-  background-color: white;
+  background-color: var(--main-background-color);
   border-radius: 7px;
   padding: 1em;
   font-size: 0.8rem;
 }
 
 .skill-icon {
+  color: var(--contrast-text-color);
   font-size: 0.9em;
   height: 95px;
   width: 95px;
@@ -139,7 +122,7 @@
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 12px;
-  background-color: white;
+  background-color: var(--main-background-color);
   border-radius: 7px;
   padding: 1em;
 }

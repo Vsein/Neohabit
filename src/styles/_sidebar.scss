@@ -2,7 +2,8 @@
 
 .sidebar {
   grid-area: sidebar;
-  background-color: #fafafa;
+  // background-color: #fafafa;
+  background-color: var(--main-background-color);
   display: flex;
   flex-direction: column;
   gap: 15px;

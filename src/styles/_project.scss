@@ -2,7 +2,7 @@
   height: 100%;
   display: grid;
   grid-template: 125px min-content 1fr / 5fr;
-  background-color: #EFEFEF;
+  background-color: var(--support-background-color);
 
   & > div {
     align-self: stretch;
@@ -10,7 +10,7 @@
 }
 
 .projectpage-header {
-  background-color: white;
+  background-color: var(--main-background-color);
   display: flex;
   align-items: center;
   padding: 12px 24px;

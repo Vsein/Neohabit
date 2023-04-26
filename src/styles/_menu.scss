@@ -11,7 +11,12 @@
   grid-area: menu;
   width: 100vw;
   padding: 15px;
-  background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
+  background: linear-gradient(
+    0.1turn,
+    var(--gradient-color-1),
+    var(--gradient-color-2) 45% 60%,
+    var(--gradient-color-3)
+  );
   z-index: 2;
 
   &-container {
@@ -24,7 +29,7 @@
     align-content: center;
     transition: none;
     box-shadow: 0 0 3px 1px silver;
-    background-color: white;
+    background-color: var(--main-background-color);
     border-radius: 10px;
     overflow: hidden;
     margin: 10px;
@@ -52,7 +57,7 @@
     transition: 0.3s ease-out;
 
     &.active {
-    background-color: #00000022;
+      background-color: #00000022;
     }
 
     &:hover {
@@ -74,8 +79,10 @@
   justify-content: center;
   border-radius: 50%;
   transition: 0.3s ease-out;
+  color: black;
 
-  &:hover, &.active {
+  &:hover,
+  &.active {
     background-color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
   }
