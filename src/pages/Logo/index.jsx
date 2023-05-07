@@ -5,7 +5,7 @@ import useTitle from '../../hooks/useTitle';
 export default function LogoPage() {
   useTitle('Logo | Neohabit');
   return (
-    <Bamboo/>
+    <LogoComponent/>
   );
 }
 
@@ -19,7 +19,7 @@ function LogoComponent() {
         dateStart={dateStart}
         dateEnd={dateEnd}
         data={data}
-        colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
+        colorFunc={({ alpha }) => `rgba(0, 196, 205, ${alpha})`}
       />
       <div className="logonh-container">
         <h1 className="logo neohabit" />

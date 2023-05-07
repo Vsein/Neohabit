@@ -74,7 +74,7 @@ function MenuSection(props) {
 }
 
 function ThemeToggle() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
   const title = `Theme: ${theme}`;
   const changeTheme = () => {
     const root = document.documentElement;
