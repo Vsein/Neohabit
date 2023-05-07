@@ -12,7 +12,7 @@ $cell-weekdays-width: 33px;
 }
 
 .landing {
-  background-image: url('../assets/neohabit-background.png');
+  background-image: var(--bamboo);
   box-shadow: inset 0px 0px 277px 3px #4c3f37;
 
 }
@@ -25,6 +25,7 @@ $cell-weekdays-width: 33px;
   align-items: center;
 
   &-links {
+    color: var(--support-color);
     display: flex;
     list-style-type: none;
     gap: 30px;
@@ -36,7 +37,12 @@ $cell-weekdays-width: 33px;
     display: flex;
     justify-content: center;
     height: 75px;
-    background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
+    background: linear-gradient(
+      0.1turn,
+      var(--gradient-color-1),
+      var(--gradient-color-2) 45% 60%,
+      var(--gradient-color-3)
+    );
     align-items: center;
   }
 }
@@ -58,7 +64,7 @@ $cell-weekdays-width: 33px;
     padding: 30px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
-    background-color: white;
+    background-color: var(--main-background-color);
     // border-radius: 30px;
     border-radius: 3px;
   }
@@ -89,7 +95,7 @@ $cell-weekdays-width: 33px;
 
 .landing-about {
   height: 105vh;
-  background-color: white;
+  background-color: var(--main-background-color);
   display: flex;
   align-items: center;
 
@@ -104,7 +110,8 @@ $cell-weekdays-width: 33px;
 
     & p {
       padding-block: 10px;
-      color: #545454;
+      // color: #545454;
+      color: var(--text-color);
     }
   }
 }
@@ -116,7 +123,7 @@ $cell-weekdays-width: 33px;
   justify-content: center;
 
   &-container {
-    background-color: white;
+    background-color: var(--main-background-color);
     padding-inline: 30px;
     height: 500px;
     width: 900px;
@@ -134,14 +141,14 @@ $cell-weekdays-width: 33px;
     display: flex;
     justify-content: center;
     height: 75px;
-    background: linear-gradient(0.1turn, #c0efa6, #71c639 45% 60%, #a7c4be);
+    background: linear-gradient(
+      0.1turn,
+      var(--gradient-color-1),
+      var(--gradient-color-2) 45% 60%,
+      var(--gradient-color-3)
+    );
     align-items: center;
   }
-}
-
-.landing-about {
-  height: 105vh;
-  background-color: white;
 }
 
 .landing-lastcall {
