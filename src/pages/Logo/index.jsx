@@ -1,15 +1,18 @@
 import React from 'react';
-import { Logo } from '../../components/HeatmapData';
+import { Logo, LotsOfRandom } from '../../components/HeatmapData';
 import useTitle from '../../hooks/useTitle';
 
 export default function LogoPage() {
   useTitle('Logo | Neohabit');
+  return (
+    <Bamboo/>
+  );
+}
+
+function LogoComponent() {
   const data = Logo();
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setYear(dateEnd.getFullYear() - 1));
-  console.log(dateStart);
-  console.log(data);
-
   return (
     <main className="logonh">
       <Timeline
@@ -22,6 +25,21 @@ export default function LogoPage() {
         <h1 className="logo neohabit" />
       </div>
     </main>
+  );
+}
+
+function Bamboo() {
+  const data = LotsOfRandom();
+  const dateEnd = new Date();
+  const dateStart = new Date(new Date().setYear(dateEnd.getFullYear() - 1));
+  return (
+    <Timeline
+      dateStart={dateStart}
+      dateEnd={dateEnd}
+      data={data}
+      colorFunc={({ alpha }) => `rgba(0, 196, 205, ${alpha})`}
+      logo={false}
+    />
   );
 }
 
@@ -39,7 +57,7 @@ function Cell({ color, date, value, height, width }) {
   );
 }
 
-function Timeline({ dateStart, dateEnd, data, colorFunc }) {
+function Timeline({ dateStart, dateEnd, data, colorFunc, logo = true }) {
   const cells = Array.from(new Array(data.length));
 
   const min = Math.min(0, ...data.map((d) => d.value));
@@ -53,10 +71,9 @@ function Timeline({ dateStart, dateEnd, data, colorFunc }) {
     dateToCheck.getFullYear() === actualDate.getFullYear();
 
   return (
-    <div className="timeline-logo">
-
-      <div className="timeline-logo-body">
-        <div className="timeline-logo-cells">
+    <div className={logo ? 'timeline-logo' : 'bamboo'}>
+      <div className={logo ? 'timeline-logo-body' : 'bamboo-body'}>
+        <div className={logo ? 'timeline-logo-cells' : 'bamboo-cells'}>
           {cells.map((_, index) => {
             const date = new Date(
               new Date().setDate(dateStart.getDate() + index - 365),

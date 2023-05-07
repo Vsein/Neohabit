@@ -1,6 +1,6 @@
-$cell-height : 11px;
-$cell-width : 11px;
-$cell-margin:2px;
+$cell-height: 11px;
+$cell-width: 11px;
+$cell-margin: 2px;
 $cell-weekdays-width: 33px;
 
 .logonh {
@@ -9,7 +9,7 @@ $cell-weekdays-width: 33px;
   margin-inline: auto;
   display: grid;
   grid-template-columns: min-content auto;
-    height: min-content;
+  height: min-content;
 
   &-container {
     display: grid;
@@ -30,27 +30,45 @@ $cell-weekdays-width: 33px;
     display: flex;
     position: absolute;
     right: 0px;
+  }
 
-    .timeline-logo-cells {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
-      width: calc(12 * 15px);
+  &-cells {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
+    width: calc(12 * 15px);
+  }
 
-      &-cell {
-        height: $cell-height;
-        width: $cell-width;
-        // border: 1px solid rgba(0, 0, 0, 0.1);
-        margin: $cell-margin;
-        border-radius: 1px;
-        background-color: rgba(0, 0, 0, 0.05);
-        position: relative;
+  &-cells-cell {
+    height: $cell-height;
+    width: $cell-width;
+    // border: 1px solid rgba(0, 0, 0, 0.1);
+    margin: $cell-margin;
+    border-radius: 1px;
+    background-color: rgba(0, 0, 0, 0.05);
+    position: relative;
 
-        &:hover {
-          border: 1px solid rgba(0, 0, 0, 0.3);
-        }
-      }
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.3);
     }
+  }
+}
+
+.bamboo {
+  overflow: hidden;
+  width: 100vw;
+  height: 120vh;
+
+  &-body {
+    display: flex;
+  }
+
+  &-cells {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100vw;
+    height: 120vh;
   }
 }
