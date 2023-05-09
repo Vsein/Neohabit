@@ -11,10 +11,6 @@ import {
   startOfDay,
 } from 'date-fns';
 
-function random() {
-  return Math.floor(Math.random() * 100);
-}
-
 function randomRange(start, end) {
   return Math.floor(Math.random() * (end - start + 1) + start);
 }
@@ -45,9 +41,9 @@ function LineGapStraight(start, len = 14, width = 1) {
 function LineActiveRandom(
   start,
   len = 14,
+  min = Infinity,
   height = 1,
   width = 1,
-  min = Infinity,
 ) {
   const dataActive = [];
   let cnt = 0;
@@ -102,7 +98,7 @@ function LineGap(start, len = 14) {
   return dataActive;
 }
 
-function Line(gapStart, gapLength, inc, i, start, len = 14) {
+function Line(gapStart, gapLength, inc, i, start, len = 14, min = Infinity) {
   let data = [];
   const periods = [
     gapStart + i * inc,
@@ -110,7 +106,7 @@ function Line(gapStart, gapLength, inc, i, start, len = 14) {
     len - gapStart - gapLength - i * inc,
   ];
   data = data.concat(LineGap(start, periods[0]));
-  data = data.concat(LineActiveRandom(start + data.length, periods[1]));
+  data = data.concat(LineActiveRandom(start + data.length, periods[1], min));
   // data = data.concat(LineRandom(start + data.length, periods[1]));
   data = data.concat(LineGap(start + data.length, periods[2]));
   return data;
@@ -132,6 +128,17 @@ function Logo() {
   data = data.concat(Line(0, 14, 1, 0, data.length, len));
   data = data.concat(Line(0, 14, 1, 0, data.length, len));
   data = data.concat(Line(0, 14, 1, 0, data.length, len));
+  return data;
+}
+
+function LogoMini() {
+  let data = [];
+
+  data = data.concat(Line(0, 4, 1, 0, data.length, 4, 1));
+  data = data.concat(Line(1, 1, 1, 0, data.length, 4));
+  data = data.concat(Line(2, 1, 1, 0, data.length, 4));
+  data = data.concat(Line(0, 4, 1, 0, data.length, 4, 1));
+
   return data;
 }
 
@@ -296,6 +303,7 @@ export {
   LineGap,
   Line,
   Logo,
+  LogoMini,
   YearDataSimple,
   YearDataRandom,
   LotsOfRandom,

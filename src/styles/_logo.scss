@@ -20,7 +20,7 @@ $cell-weekdays-width: 33px;
   }
 }
 
-.timeline-logo {
+.logo-heatmap {
   overflow: hidden;
   position: relative;
   height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
@@ -41,10 +41,7 @@ $cell-weekdays-width: 33px;
   }
 
   &-cells-cell {
-    height: $cell-height;
-    width: $cell-width;
     // border: 1px solid rgba(0, 0, 0, 0.1);
-    margin: $cell-margin;
     border-radius: 1px;
     background-color: rgba(0, 0, 0, 0.05);
     position: relative;
@@ -70,5 +67,26 @@ $cell-weekdays-width: 33px;
     flex-wrap: wrap;
     width: 100vw;
     height: 120vh;
+  }
+}
+
+.logomini-heatmap {
+  overflow: hidden;
+  position: relative;
+  height: calc((20px + 1px * 2) * 4);
+  width: calc((20px + 1px * 2) * 4);
+
+  &-body {
+    display: flex;
+    position: absolute;
+    right: 0px;
+  }
+
+  &-cells {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: calc((20px + 1px * 2) * 4);
+    width: calc((20px + 1px * 2) * 4);
   }
 }

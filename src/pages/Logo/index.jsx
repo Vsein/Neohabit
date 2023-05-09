@@ -1,15 +1,13 @@
 import React from 'react';
-import { Logo, LotsOfRandom } from '../../components/HeatmapData';
+import { Logo, LogoMini, LotsOfRandom } from '../../components/HeatmapData';
 import useTitle from '../../hooks/useTitle';
 
 export default function LogoPage() {
   useTitle('Logo | Neohabit');
-  return (
-    <LogoComponent/>
-  );
+  return <LogoFavicon />;
 }
 
-function LogoComponent() {
+function LogoNeohabit() {
   const data = Logo();
   const dateEnd = new Date();
   const dateStart = new Date(new Date().setYear(dateEnd.getFullYear() - 1));
@@ -20,6 +18,7 @@ function LogoComponent() {
         dateEnd={dateEnd}
         data={data}
         colorFunc={({ alpha }) => `rgba(0, 196, 205, ${alpha})`}
+        mode="logo-heatmap"
       />
       <div className="logonh-container">
         <h1 className="logo neohabit" />
@@ -38,26 +37,46 @@ function Bamboo() {
       dateEnd={dateEnd}
       data={data}
       colorFunc={({ alpha }) => `rgba(0, 196, 205, ${alpha})`}
-      logo={false}
+      mode="bamboo"
     />
   );
 }
 
-function Cell({ color, date, value, height, width }) {
-  const style = {
-    backgroundColor: color,
-    height: 11 * height + 2 * 2 * (height - 1),
-    width: 11 * width + 2 * 2 * (width - 1),
-  };
+function LogoFavicon() {
+  const data = LogoMini();
+  const dateEnd = new Date();
+  const dateStart = new Date(new Date().setYear(dateEnd.getFullYear() - 1));
   return (
-    <div
-      className="timeline-logo-cells-cell"
-      style={style}
+    <Timeline
+      dateStart={dateStart}
+      dateEnd={dateEnd}
+      data={data}
+      colorFunc={({ alpha }) => `rgba(0, 196, 205, ${alpha})`}
+      mode="logomini-heatmap"
     />
   );
 }
 
-function Timeline({ dateStart, dateEnd, data, colorFunc, logo = true }) {
+function Cell({ color, date, value, height, width, mode }) {
+  const style =
+    mode === 'logomini-heatmap'
+      ? {
+          backgroundColor: color,
+          height: 20 * height + 2 * 1 * (height - 1),
+          width: 20 * width + 2 * 1 * (width - 1),
+          margin: 1,
+        }
+      : {
+          backgroundColor: color,
+          height: 11 * height + 2 * 2 * (height - 1),
+          width: 11 * width + 2 * 2 * (width - 1),
+          margin: 2,
+        };
+  return <div className="logo-heatmap-cells-cell" style={style} />;
+}
+
+function Timeline({ dateStart, dateEnd, data, colorFunc, mode }) {
+  // the modes are "logo", "logomini", "bamboo", each representing the above functions
   const cells = Array.from(new Array(data.length));
 
   const min = Math.min(0, ...data.map((d) => d.value));
@@ -71,9 +90,9 @@ function Timeline({ dateStart, dateEnd, data, colorFunc, logo = true }) {
     dateToCheck.getFullYear() === actualDate.getFullYear();
 
   return (
-    <div className={logo ? 'timeline-logo' : 'bamboo'}>
-      <div className={logo ? 'timeline-logo-body' : 'bamboo-body'}>
-        <div className={logo ? 'timeline-logo-cells' : 'bamboo-cells'}>
+    <div className={mode}>
+      <div className={`${mode}-body`}>
+        <div className={`${mode}-cells`}>
           {cells.map((_, index) => {
             const date = new Date(
               new Date().setDate(dateStart.getDate() + index - 365),
@@ -97,6 +116,7 @@ function Timeline({ dateStart, dateEnd, data, colorFunc, logo = true }) {
                 height={height}
                 width={width}
                 color={color}
+                mode={mode}
               />
             );
           })}
