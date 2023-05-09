@@ -10,6 +10,10 @@
   --gradient-color-2: #71c639;
   --gradient-color-3: #a7c4be;
   --bamboo: url('../assets/neohabit-background.png');
+  --auth-heatmap: url('../asstets/heatmap.png');
+  --transparent-bg-color: #b0b0b0aa;
+  --registration-field-active-bg-color: #88cd6f;
+  --registration-field-bg-color: #8ec07c;
 }
 
 :root {
@@ -24,4 +28,8 @@
   --gradient-color-2: #1c2128;
   --gradient-color-3: #009096;
   --bamboo: url('../assets/neohabit-background-dark.png');
+  --auth-heatmap: url('../assets/heatmap-dark.png');
+  --transparent-bg-color: #404040aa;
+  --registration-field-active-bg-color: #009BA2;
+  --registration-field-bg-color: #2D3333;
 }
