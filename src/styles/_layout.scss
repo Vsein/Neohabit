@@ -14,7 +14,7 @@
     'sidebar main';
   grid-template-rows: 60px 1fr;
   grid-template-columns: min-content 1fr;
-  background-color: #efefef;
+  // background-color: #efefef;
   @media (max-width: 550px) {
     .sidebar {
       @include sidebar-hidden;

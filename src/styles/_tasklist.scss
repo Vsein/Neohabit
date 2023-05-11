@@ -2,13 +2,15 @@
   grid-area: main;
   position: relative;
   overflow: hidden;
+  background-color: var(--support-background-color);
 
   &-navigation {
-    background-color: white;
+    background-color: iherit;
     display: flex;
     align-items: center;
     height: 50px;
     overflow: scroll;
+    background-color: var(--main-background-color);
   }
 }
 
@@ -31,6 +33,7 @@
 }
 
 @mixin editor-list-item {
+  background-color: var(--main-background-color);
   padding-inline: 10px;
   display: grid;
   grid-template-columns: 20px 1fr auto;
@@ -44,7 +47,6 @@
 
 .task {
   @include editor-list-item;
-  background-color: white;
 
   &-name {
     text-align: left;

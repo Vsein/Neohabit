@@ -8,6 +8,7 @@ $cell-weekdays-width: 33px;
   padding: 18px 36px 36px;
   margin-inline: auto;
   width: min(100%, 980px);
+  background-color: var(--support-background-color);
 
   &-header {
     display: flex;
@@ -27,7 +28,7 @@ $cell-weekdays-width: 33px;
   position: relative;
   overflow: hidden;
   height: calc((#{$cell-height} + #{$cell-margin} * 2) * 21);
-  background-color: #FAFAFA;
+  background-color: var(--main-background-color);
   padding-block: 5px;
   padding-inline: 12px;
   border-radius: 10px;

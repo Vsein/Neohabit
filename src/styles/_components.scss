@@ -2,12 +2,12 @@
   content: '';
 
   &:before {
-    color: #144e12;
+    color: var(--signature-color);
     content: 'neo';
   }
 
   &:after {
-    color: black;
+    color: var(--support-color);
     content: 'habit';
   }
 }
@@ -52,9 +52,9 @@
     position: relative;
     display: block;
     width: 110px;
-    background-color: #144e12;
+    background-color: var(--signature-color);
     box-shadow: 0 5px 10px rgba(0,0,0,.1);
-    color: #fff;
+    color: white;
     font: 700 12px/1 'Lato', sans-serif;
     text-shadow: 0 1px 1px rgba(0,0,0,.2);
     text-transform: uppercase;
@@ -94,7 +94,7 @@
 .back-ref {
 
   & > a {
-    color: #144e12;
+    color: var(--signature-color);
     text-decoration: none;
     width: min-content;
     white-space: nowrap;
