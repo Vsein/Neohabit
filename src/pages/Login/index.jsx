@@ -32,7 +32,7 @@ function LoginForm() {
   const login = async (e) => {
     e.preventDefault();
     const formData = new FormData(document.forms.loginForm);
-    const data = new URLSearchParams([...formData.entries()]);
+    const data = Object.fromEntries(formData.entries());
     const isSuccessful = await sendLoginRequest(data);
     if (isSuccessful) navigate('/dashboard');
   };

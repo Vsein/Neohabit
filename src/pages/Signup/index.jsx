@@ -33,7 +33,7 @@ function SignupForm() {
   const signup = async (e) => {
     e.preventDefault();
     const formData = new FormData(document.forms.signupForm);
-    const data = new URLSearchParams([...formData.entries()]);
+    const data = Object.fromEntries(formData.entries());
     const isSuccessful = await sendSignupRequest(data);
     if (isSuccessful) navigate('/dashboard');
   };
