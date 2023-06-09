@@ -41,7 +41,6 @@ $cell-margin: 2px;
   grid-template-columns: 175px min-content;
   row-gap: 5px;
 
-
   .overview-months {
     display: flex;
     grid-column: 2;
@@ -102,6 +101,7 @@ $cell-margin: 2px;
       font-size: 15px;
 
       &-name {
+        line-height: 15px;
         text-overflow: ellipsis;
         overflow: hidden;
         width: 160px;
