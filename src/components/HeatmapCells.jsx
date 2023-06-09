@@ -97,7 +97,7 @@ function CellPeriod({
     '--width': width,
   };
   const beforeHeight =
-    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), startOfDay(dateStart)) /
+    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) /
     basePeriod;
   const styleBefore = {
     '--height': beforeHeight,
