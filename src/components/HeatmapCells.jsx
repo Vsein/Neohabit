@@ -59,7 +59,7 @@ function Cell({ color, date, value, height = 1, width = 1 }) {
 
   return (
     <div
-      className="heatmap-cells-cell"
+      className="cell"
       style={style}
       data-attr={content}
       onMouseEnter={changeCellOffset}
@@ -129,24 +129,25 @@ function CellPeriod({
   return (
     <>
       <div
-        className={`heatmap-cells-cell-period ${
+        className={`cell-period ${
           diffDays <= 7 ? 'whole' : 'wide'
         }`}
         style={style}
         data-attr={content}
         // onMouseEnter={changeCellOffset}
       >
-        <div className="heatmap-cells-cell-period-before" style={styleBefore} />
-        <div className="heatmap-cells-cell-period-after" style={styleAfter} />
+        <div className="cell-period-before" style={styleBefore} />
+        <div className="cell-period-after" style={styleAfter} />
       </div>
       {afterHeight ? <TallDummy height={afterHeight} /> : <> </>}
     </>
   );
 }
 
-function TallDummy({ height }) {
+function TallDummy({ height, vertical = false }) {
   const style = {
-    '--height': height,
+    [vertical ? '--width' : '--height']: height,
+    [vertical ? '--height' : '--width']: 1,
   };
   return <div style={style} className="dummy" />;
 }

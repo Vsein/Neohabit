@@ -23,6 +23,7 @@ function Heatmap({
 }) {
   const [loaded] = useLoaded();
   let Max = 0;
+  console.log(dateStart);
 
   let dateNow = dataPeriods[0].date;
   let i = 0;
@@ -74,7 +75,7 @@ function Heatmap({
       <div className="heatmap" style={{ '--multiplier': dayLength }}>
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
-        <div className="heatmap-cells">
+        <div className="heatmap-cells" style={{ '--cell-width': '11px', '--cell-height': '11px' }}>
           <TallDummy height={dummyHeight} />
           {periods.map((period, index) => (
             <>

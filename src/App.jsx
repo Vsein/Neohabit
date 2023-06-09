@@ -11,6 +11,7 @@ import ToDoList from './pages/ToDoList';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Overview from './pages/Overview';
 import Habits from './pages/Habits';
 import Project from './pages/Project';
 import Logout from './pages/Logout';
@@ -54,7 +55,7 @@ const App = () => {
             <PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />
           }
         >
-          <Route path="/dashboard/" element={<Dashboard />} />
+          <Route path="/dashboard/" element={<Overview />} />
           <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/habits/*" element={<Habits />} />
           <Route path="/project/:projectID/*" element={<Project />} />
