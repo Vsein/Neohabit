@@ -1,0 +1,117 @@
+$cell-height: 11px;
+$cell-width: 11px;
+$cell-margin: 2px;
+
+.overview-controls {
+  background-color: var(--main-background-color);
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 24px;
+}
+
+.overview-container {
+  position: relative;
+  overflow: hidden;
+  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 25);
+  background-color: var(--main-background-color);
+  border-radius: 10px;
+  border: 1px solid #bbb;
+  width: 820px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+
+.overview-centering {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin: 30px;
+}
+
+.overview {
+  height: min-content;
+  --multiplier: 1;
+  position: absolute;
+  right: 5px;
+  display: grid;
+  grid-template-rows: $cell-height $cell-height min-content;
+  grid-template-columns: 175px min-content;
+  row-gap: 5px;
+
+  .overview-months {
+    display: flex;
+    grid-column: 2;
+    grid-row: 1;
+
+    &-month {
+      width: 15px;
+      line-height: 100%;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 600;
+      margin: $cell-margin;
+      visibility: hidden;
+
+      &.active {
+        visibility: visible;
+      }
+    }
+  }
+
+  .overview-days {
+    display: inline-flex;
+    flex-direction: row;
+    grid-column: 2;
+    grid-row: 2;
+
+    &-day {
+      line-height: 100%;
+      font-size: calc(
+        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
+          (var(--multiplier) - 1) + 1px
+      );
+      height: calc(
+        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
+          (var(--multiplier) - 1)
+      );
+      width: 15px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      margin: $cell-margin;
+      vertical-align: middle;
+    }
+  }
+
+  .overview-projects {
+    grid-column: 1;
+    grid-row: 3;
+    display: grid;
+    grid-template-rows: 15px;
+    row-gap: 6px;
+    height: 100%;
+    width: 800px;
+
+    .overview-project {
+      display: grid;
+      grid-template-columns: 175px 625px;
+      grid-template-rows: 18px;
+      font-size: 15px;
+
+      &-name {
+        line-height: 15px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 160px;
+        white-space: nowrap;
+      }
+
+      &-cells {
+        height: 11px;
+        display: flex;
+      }
+    }
+  }
+}

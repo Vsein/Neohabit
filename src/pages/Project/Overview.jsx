@@ -27,7 +27,7 @@ export default function Project() {
   return tasks.isFetching || projects.isFetching ? (
     <> </>
   ) : (
-    <div className="project-overview">
+    <div className="project-overview" style={{ '--cell-height': '11px', '--cell-width': '11px' }}>
       <Heatmap
         heatmap={heatmap}
         dataPeriods={PERIODS6}

@@ -10,7 +10,8 @@
   padding: 15px;
   // transition: 1.5s;
   white-space: nowrap;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   & p {
     line-height: 20px;
@@ -47,9 +48,10 @@
     overflow: hidden;
     border-radius: 5px;
     padding-inline: 5px;
+    outline: none;
 
     &.active, &:hover {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: rgba(0, 0, 0, 0.5);
       cursor: pointer;
     }
   }

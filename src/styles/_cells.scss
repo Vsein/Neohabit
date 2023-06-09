@@ -1,0 +1,166 @@
+$cell-margin: 2px;
+
+.dummy {
+  height: calc(
+    var(--cell-height) * var(--height) * var(--multiplier) + 4px *
+      calc(var(--height) * var(--multiplier) - 1)
+  );
+  width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
+  margin: $cell-margin;
+}
+
+@mixin cell-info {
+  content: attr(data-attr);
+  padding: 10px;
+  position: absolute;
+  visibility: hidden;
+  width: 200px;
+  text-align: center;
+  font-size: 13px;
+  background-color: #545454;
+  color: white;
+  z-index: 3;
+  border-radius: 10px;
+}
+
+.cell {
+  height: calc(
+    var(--cell-height) * var(--height) * var(--multiplier) + 4px *
+      calc(var(--height) * var(--multiplier) - 1)
+  );
+  width: var(--cell-width);
+  margin: $cell-margin;
+  border-radius: 1px;
+  position: relative;
+
+  &.offset--2:before {
+    left: 0px;
+  }
+
+  &.offset--1:before {
+    left: -50px;
+  }
+
+  &.offset-1:before {
+    left: -145px;
+  }
+
+  &.offset-2:before {
+    left: -190px;
+  }
+
+  &:before {
+    @include cell-info;
+    content: attr(data-attr);
+    padding: 10px;
+    position: absolute;
+    bottom: -45px;
+    visibility: hidden;
+    left: -100px;
+  }
+
+  &:hover:before {
+    visibility: visible;
+  }
+
+  &:hover {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+}
+
+.cell-period {
+  height: calc(
+    var(--cell-height) * var(--height) * var(--multiplier) + 4px *
+      calc(var(--height) * var(--multiplier) - 1)
+  );
+  width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
+  border: 1px solid transparent;
+  margin: $cell-margin;
+  border-radius: 1px;
+  position: relative;
+
+  @mixin shaped-cell {
+    margin: -1px;
+    height: calc(
+      var(--cell-height) * var(--height) * var(--multiplier) + 4px *
+        calc(var(--height) * var(--multiplier) - 1)
+    );
+    width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
+    position: absolute;
+    visibility: visible;
+    display: block;
+    background-color: inherit;
+  }
+
+  &-before {
+    @include shaped-cell;
+    border-right: none;
+    left: -15px;
+    bottom: 0px;
+  }
+
+  &-after {
+    @include shaped-cell;
+    border-left: none;
+    right: -15px;
+    top: 0px;
+  }
+
+  &:before {
+    @include cell-info;
+    margin-left: auto;
+    margin-right: auto;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    bottom: -95px;
+    height: min-content;
+  }
+
+  &:hover:before {
+    visibility: visible;
+  }
+
+  &.whole {
+    margin-inline: 0px;
+    border-left: none;
+    border-right: none;
+
+    & .cell-period-before {
+      width: 11px;
+      left: -12px;
+    }
+
+    & .cell-period-after {
+      width: 11px;
+      right: -12px;
+    }
+  }
+
+  &.wide:hover {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+
+    & > .cell-period-before {
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border-right: none;
+    }
+
+    & > .cell-period-after {
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border-left: none;
+    }
+  }
+
+  &.whole:hover {
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+
+    & > .cell-period-before {
+      border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+
+    & > .cell-period-after {
+      border: 1px solid rgba(0, 0, 0, 0.3);
+    }
+  }
+}
