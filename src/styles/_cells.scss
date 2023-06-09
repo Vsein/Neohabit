@@ -1,14 +1,11 @@
-$cell-height: 11px;
-$cell-width: 11px;
 $cell-margin: 2px;
-$cell-weekdays-width: 33px;
 
 .dummy {
   height: calc(
-    11px * var(--height) * var(--multiplier) + 4px *
+    var(--cell-height) * var(--height) * var(--multiplier) + 4px *
       calc(var(--height) * var(--multiplier) - 1)
   );
-  width: calc(11px * var(--width) + 4px * calc(var(--width) - 1));
+  width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
   margin: $cell-margin;
 }
 
@@ -28,10 +25,10 @@ $cell-weekdays-width: 33px;
 
 .cell {
   height: calc(
-    11px * var(--height) * var(--multiplier) + 4px *
+    var(--cell-height) * var(--height) * var(--multiplier) + 4px *
       calc(var(--height) * var(--multiplier) - 1)
   );
-  width: $cell-width;
+  width: var(--cell-width);
   margin: $cell-margin;
   border-radius: 1px;
   position: relative;
@@ -73,10 +70,10 @@ $cell-weekdays-width: 33px;
 
 .cell-period {
   height: calc(
-    11px * var(--height) * var(--multiplier) + 4px *
+    var(--cell-height) * var(--height) * var(--multiplier) + 4px *
       calc(var(--height) * var(--multiplier) - 1)
   );
-  width: calc(11px * var(--width) + 4px * calc(var(--width) - 1));
+  width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
   border: 1px solid transparent;
   margin: $cell-margin;
   border-radius: 1px;
@@ -85,7 +82,7 @@ $cell-weekdays-width: 33px;
   @mixin shaped-cell {
     margin: -1px;
     height: calc(
-      11px * var(--height) * var(--multiplier) + 4px *
+      var(--cell-height) * var(--height) * var(--multiplier) + 4px *
         calc(var(--height) * var(--multiplier) - 1)
     );
     width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
