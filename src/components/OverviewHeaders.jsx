@@ -97,8 +97,8 @@ function OverviewHeatmap({
           dataSorted.map((point, index) => {
             const date = new Date(point.date);
             const gap = differenceInDays(date, dateNow);
-            if (gap <= 0) return <> </>;
-            dateNow = date;
+            if (gap < 0) return <> </>;
+            dateNow = addDays(date, 1);
             return (
               <>
                 {gap > 1 ? <TallDummy height={gap} vertical={true} /> : <> </>}
