@@ -105,7 +105,7 @@ function OverviewHeatmap({
                 <CellPeriod
                   dateStart={date}
                   dateEnd={addDays(date, 1)}
-                  color="green"
+                  color={project.color}
                   value={1}
                   multiplier={1}
                   basePeriod={24}
