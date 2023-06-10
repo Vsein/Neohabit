@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   differenceInDays,
   getDate,
@@ -86,9 +87,15 @@ function OverviewHeatmap({
     dataSorted.sort((a, b) => compareAsc(new Date(a.date), new Date(b.date)));
     console.log(dataSorted);
   }
+  const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
   return (
     <div className="overview-project">
-      <div className="overview-project-name">{project.name}</div>
+      <NavLink
+        className="overview-project-name"
+        to={`../project/${linkify(project._id)}`}
+      >
+        {project.name}
+      </NavLink>
       <div
         className="overview-project-cells"
         style={{ '--cell-height': '15px', '--cell-width': '15px' }}
