@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
 import {
   differenceInDays,
   getDate,
@@ -9,9 +10,12 @@ import {
   addHours,
   compareAsc,
 } from 'date-fns';
-import { useGetProjectsQuery } from '../state/services/project';
+import Icon from '@mdi/react';
+import { mdiDelete, mdiPencil, mdiPlus } from '@mdi/js';
+import { useGetProjectsQuery, useDeleteProjectMutation } from '../state/services/project';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { CellPeriod, TallDummy } from './HeatmapCells';
+import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 
 function Month({ dateStart, index }) {
   const date = addDays(dateStart, index);
@@ -83,6 +87,11 @@ function OverviewHeatmap({
   heatmap,
   useElimination = true,
 }) {
+  const [deleteProject] = useDeleteProjectMutation();
+  const dispatch = useDispatch();
+  const deleteChosenProject = (e) => {
+    deleteProject(project._id);
+  };
   let dateNow = dateStart;
   const data = heatmap?.data;
   let dataSorted;
@@ -92,6 +101,7 @@ function OverviewHeatmap({
     console.log(dataSorted);
   }
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
+
 
   return (
     <div className="overview-project">
@@ -129,6 +139,22 @@ function OverviewHeatmap({
         ) : (
           <></>
         )}
+      </div>
+      <div className="overview-project-controls">
+        <button className="overview-project-button">
+          <Icon path={mdiPlus} />
+        </button>
+        <Link
+          className="overview-project-button"
+          onClick={() => {
+            dispatch(changeTo(project._id));
+            dispatch(open());
+          }}>
+          <Icon path={mdiPencil} />
+        </Link>
+        <button className="overview-project-button" onClick={deleteChosenProject}>
+          <Icon path={mdiDelete} />
+        </button>
       </div>
     </div>
   );
