@@ -53,9 +53,13 @@ function OverviewProjects({ dateStart, dateEnd }) {
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
 
-  return projects.isFetching || heatmaps.isFetching ? (
-    <div className="loader" />
-  ) : (
+  if (projects.isFetching || heatmaps.isFetching) {
+    return <div className="loader" />;
+  }
+
+  document.documentElement.style.setProperty('--projects', projects.data.length);
+
+  return (
     <div className="overview-projects">
       {projects.data.map((project, i) => (
         <OverviewHeatmap
@@ -88,6 +92,7 @@ function OverviewHeatmap({
     console.log(dataSorted);
   }
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
+
   return (
     <div className="overview-project">
       <NavLink

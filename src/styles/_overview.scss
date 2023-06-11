@@ -13,7 +13,7 @@ $cell-margin: 2px;
 .overview-container {
   position: relative;
   overflow: hidden;
-  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 25);
+  height: min(500px, calc(50px + (18px + #{$cell-margin} * 2) * var(--projects)));
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid #bbb;
