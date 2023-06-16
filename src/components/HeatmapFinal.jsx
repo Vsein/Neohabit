@@ -69,10 +69,7 @@ function Heatmap({
   };
 
   return !loaded ? (
-    <div
-      className="habit loading"
-      style={{ backgroundColor: '#ddd', borderRadius: '20px' }}
-    />
+    <div className="habit loading" />
   ) : (
     <div className="habit">
       <div className="habit-header">

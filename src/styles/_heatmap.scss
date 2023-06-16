@@ -34,6 +34,11 @@ $cell-weekdays-width: 33px;
   border-radius: 10px;
   border: 1px solid #bbb;
 
+  &.loading {
+    background-color: var(--support-background-color);
+    border-radius: 20px;
+  }
+
   &-header {
     display: flex;
     justify-content: space-between;
