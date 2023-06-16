@@ -25,9 +25,9 @@ $cell-weekdays-width: 33px;
 }
 
 .habit {
-  position: relative;
   overflow: hidden;
-  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 21);
+  position: relative;
+  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 18);
   background-color: var(--main-background-color);
   padding-block: 5px;
   padding-inline: 12px;
@@ -70,19 +70,23 @@ $cell-weekdays-width: 33px;
 
 .heatmap {
   --multiplier: 1;
+  overflow-x: scroll;
   position: absolute;
   right: 5px;
   display: grid;
+  width: min(100%, 980px);
+  direction: rtl;
   grid-template-rows: $cell-height calc(
       (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
     );
-  grid-template-columns: min-content calc(55 * 15px);
+  grid-template-columns: calc(55 * 15px) min-content ;
   row-gap: 5px;
 
   .heatmap-months {
     display: flex;
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 1;
+    direction: ltr;
 
     &-month {
       width: $cell-width;
@@ -102,8 +106,9 @@ $cell-weekdays-width: 33px;
   .heatmap-weekdays {
     display: inline-flex;
     flex-direction: column;
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 2;
+    padding-left: 5px;
 
     &-weekday {
       line-height: 100%;
@@ -123,7 +128,8 @@ $cell-weekdays-width: 33px;
   }
 
   .heatmap-cells {
-    grid-column: 2;
+    direction: ltr;
+    grid-column: 1;
     grid-row: 2;
     display: flex;
     flex-direction: column;
