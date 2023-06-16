@@ -48,7 +48,7 @@ function Heatmap({
       } else {
         alpha = (1 / Max) * value;
       }
-      const color = alpha ? colorFunc({ alpha }) : '#e0e0e0';
+      const color = alpha ? colorFunc({ alpha }) : '';
       periodChunks.push({
         color,
         value,

@@ -38,7 +38,7 @@ function Heatmap({
   for (let i = 0; i < data.length; i++) {
     const dateStartChunk = startOfDay(new Date(data[i].date));
     periods.push({
-      color: '#e0e0e0',
+      color: '',
       value: 0,
       dateStart: dateNow,
       dateEnd: subMilliseconds(startOfDay(new Date(data[i].date)), 1),
@@ -52,7 +52,7 @@ function Heatmap({
     dateNow = addHours(dateStartChunk, 24);
   }
   periods.push({
-    color: '#e0e0e0',
+    color: '',
     value: 0,
     dateStart: dateNow,
     dateEnd: dateEnd,
