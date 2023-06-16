@@ -16,7 +16,7 @@ $cell-margin: 2px;
   height: max(200px, calc(50px + (18px + #{$cell-margin} * 2) * var(--projects)));
   background-color: var(--main-background-color);
   border-radius: 10px;
-  border: 1px solid #bbb;
+  border: 1px solid var(--border-color);
   width: 855px;
 }
 

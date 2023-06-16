@@ -32,7 +32,7 @@ $cell-weekdays-width: 33px;
   padding-block: 5px;
   padding-inline: 12px;
   border-radius: 10px;
-  border: 1px solid #bbb;
+  border: 1px solid var(--border-color);
 
   &.loading {
     background-color: var(--support-background-color);

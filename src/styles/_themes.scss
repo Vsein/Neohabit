@@ -1,5 +1,6 @@
 :root.light {
   --signature-color: #144e12;
+  --signature-color-transparent: #144e1233;
   --calm-signature-color: #43D64E;
   --support-color: black;
   --main-background-color: white;
@@ -15,10 +16,15 @@
   --registration-field-active-bg-color: #88cd6f;
   --registration-field-bg-color: #8ec07c;
   --cell-border-color: rgba(0, 0, 0, 0.7);
+  --button-text-color: #f9faf8;
+  --button-bg-color: #bbb;
+  --button-bg-lighter-color: #ddd;
+  --border-color: #bbb;
 }
 
 :root {
   --signature-color: #00C4CD;
+  --signature-color-transparent: #00C4CD33;
   --calm-signature-color: #008187;
   --support-color: white;
   --main-background-color: #2D3333;
@@ -34,4 +40,8 @@
   --registration-field-active-bg-color: #009BA2;
   --registration-field-bg-color: #2D3333;
   --cell-border-color: rgba(255, 255, 255, 0.7);
+  --button-text-color: #f9faf8;
+  --button-bg-color: #545454;
+  --button-bg-lighter-color: #777;
+  --border-color: #999;
 }
