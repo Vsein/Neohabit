@@ -13,16 +13,12 @@ $cell-margin: 2px;
 .overview-container {
   position: relative;
   overflow: hidden;
-  height: min(500px, calc(50px + (18px + #{$cell-margin} * 2) * var(--projects)));
+  height: max(200px, calc(50px + (18px + #{$cell-margin} * 2) * var(--projects)));
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid #bbb;
   width: 855px;
-  display: grid;
-  justify-content: center;
-  align-content: center;
 }
-
 
 .overview-centering {
   display: grid;
@@ -31,8 +27,12 @@ $cell-margin: 2px;
   margin: 30px;
 }
 
+.overview-loader {
+  height: 250px;
+  width: 100%;
+}
+
 .overview {
-  height: min-content;
   --multiplier: 1;
   position: absolute;
   right: 5px;
@@ -91,8 +91,6 @@ $cell-margin: 2px;
     display: grid;
     grid-template-rows: 15px;
     row-gap: 6px;
-    height: 100%;
-    width: 800px;
 
     .overview-project {
       display: grid;
