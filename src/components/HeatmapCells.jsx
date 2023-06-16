@@ -19,10 +19,39 @@ function formatDate(date) {
     // And it's also kinda sucky to use US locale. With all those AMs
     // ans PMs it gets pretty ambiguous quickly.
     weekday: 'short',
-    hour: 'numeric',
-    minute: 'numeric',
   });
 }
+
+async function changeCellOffset(e, content) {
+  const cell = e.target;
+  const parent = document.querySelector('.habit') || document.querySelector('.overview-container');
+  const rect = cell.getBoundingClientRect();
+  const rectParent = parent.getBoundingClientRect();
+  const cellTip = document.querySelector('.cell-tip');
+  cellTip.textContent = content;
+  const tipWidth = cellTip.getBoundingClientRect().width;
+  let offset = tipWidth / 2 + 15;
+  if (rect.x - 50 < rectParent.x || rect.x - 50 < 36) {
+    offset = tipWidth / 4;
+  } else if (rect.x - 100 < rectParent.x || rect.x - 100 < 36) {
+    offset = tipWidth / 2;
+  } else if (rect.x + 50 > rectParent.x + rectParent.width) {
+    offset = tipWidth;
+  } else if (rect.x + 100 > rectParent.x + rectParent.width) {
+    offset = tipWidth / 4 * 3;
+  }
+  cellTip.classList.remove('hidden');
+  cellTip.style.top = `${window.pageYOffset + rect.y - 40}px`;
+  cellTip.style.left = `${rect.x + rect.width / 2 - offset + 15}px`;
+  cellTip.style.pointerEvents = 'none';
+}
+
+function hideTip() {
+  const cellTip = document.querySelector('.cell-tip');
+  cellTip.classList.add('hidden');
+  cellTip.style.pointerEvents = 'auto';
+}
+
 
 function Cell({ color, date, value, height = 1, width = 1 }) {
   const style = {
@@ -30,24 +59,7 @@ function Cell({ color, date, value, height = 1, width = 1 }) {
     '--height': height,
   };
 
-  function changeCellOffset(e) {
-    const cell = e.target;
-    const parent = e.target.parentElement;
-    const rect = cell.getBoundingClientRect();
-    const rectParent = parent.getBoundingClientRect();
-    if (rect.x - 50 < rectParent.x || rect.x - 50 < 36) {
-      cell.classList.add('offset--2');
-    } else if (rect.x - 100 < rectParent.x || rect.x - 100 < 36) {
-      cell.classList.add('offset--1');
-    } else if (rect.x + 50 > rectParent.x + rectParent.width) {
-      cell.classList.add('offset-2');
-    } else if (rect.x + 100 > rectParent.x + rectParent.width) {
-      cell.classList.add('offset-1');
-    }
-  }
-
   const formattedDate = formatDate(date);
-
   let content;
   if (!value) {
     content = `No activity on ${formattedDate}`;
@@ -61,8 +73,8 @@ function Cell({ color, date, value, height = 1, width = 1 }) {
     <div
       className="cell"
       style={style}
-      data-attr={content}
-      onMouseEnter={changeCellOffset}
+      onMouseEnter={(e) => changeCellOffset(e, content)}
+      onMouseLeave={hideTip}
     />
   );
 }
@@ -133,8 +145,8 @@ function CellPeriod({
           diffDays <= 7 ? 'whole' : 'wide'
         }`}
         style={style}
-        data-attr={content}
-        // onMouseEnter={changeCellOffset}
+        onMouseEnter={(e) => changeCellOffset(e, content)}
+        onMouseLeave={hideTip}
       >
         <div className="cell-period-before" style={styleBefore} />
         <div className="cell-period-after" style={styleAfter} />

@@ -72,10 +72,18 @@ function Heatmap({
   ) : (
     <div className="habit">
       <h4>Habit</h4>
-      <div className="heatmap" style={{ '--multiplier': dayLength }}>
+      <div
+        className="heatmap"
+        style={{
+          '--multiplier': dayLength,
+        }}
+      >
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
-        <div className="heatmap-cells" style={{ '--cell-width': '11px', '--cell-height': '11px' }}>
+        <div
+          className="heatmap-cells"
+          style={{ '--cell-width': '11px', '--cell-height': '11px' }}
+        >
           <TallDummy height={dummyHeight} />
           {periods.map((period, index) => (
             <>
