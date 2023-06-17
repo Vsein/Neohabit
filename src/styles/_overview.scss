@@ -11,17 +11,19 @@ $cell-margin: 2px;
 }
 
 .overview-container {
+  direction: rtl;
   position: relative;
-  overflow: hidden;
+  overflow-y: hidden;
   height: max(200px, calc(50px + (18px + #{$cell-margin} * 2) * var(--projects)));
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  width: 855px;
+  width: min(855px, 100%);
+  padding-right: 5px;
 }
 
 .overview-centering {
-  display: grid;
+  display: flex;
   justify-content: center;
   align-items: center;
   margin: 30px;
@@ -33,15 +35,16 @@ $cell-margin: 2px;
 }
 
 .overview {
+  width: min(100%, 845px);
   --multiplier: 1;
   position: absolute;
-  right: 5px;
   display: grid;
   grid-template-rows: $cell-height $cell-height min-content;
-  grid-template-columns: 175px min-content 40px;
+  grid-template-columns: 40px min-content 180px;
   row-gap: 5px;
 
   .overview-months {
+    direction: ltr;
     display: flex;
     grid-column: 2;
     grid-row: 1;
@@ -62,6 +65,7 @@ $cell-margin: 2px;
   }
 
   .overview-days {
+    direction: ltr;
     display: inline-flex;
     flex-direction: row;
     grid-column: 2;
@@ -86,11 +90,13 @@ $cell-margin: 2px;
   }
 
   .overview-projects {
-    grid-column: 1;
+    direction: ltr;
+    grid-column: 3;
     grid-row: 3;
     display: grid;
     grid-template-rows: 15px;
     row-gap: 6px;
+    padding-left: 5px;
 
     .overview-project {
       display: grid;
