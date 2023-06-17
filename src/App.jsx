@@ -80,6 +80,7 @@ const PrivateRoutes = (params) => {
   const [sidebarHidden, setSidebarHidden] = useState(true);
 
   const toggleSidebar = () => {
+    document.querySelector('.sidebar').scrollTop = 0;
     setSidebarHidden(!sidebarHidden);
   };
 
