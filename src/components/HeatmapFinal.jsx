@@ -1,21 +1,16 @@
 import React, { useEffect } from 'react';
 import {
-  addDays,
   addHours,
   subMilliseconds,
-  min,
-  max,
   startOfDay,
   differenceInHours,
   startOfWeek,
 } from 'date-fns';
-import { Form, Field } from 'react-final-form';
-import Icon from '@mdi/react';
-import { mdiPlus } from '@mdi/js';
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
+import DataPointForm from './DataPointForm';
 
 function Heatmap({
   dateStart,
@@ -74,46 +69,7 @@ function Heatmap({
     <div className="habit">
       <div className="habit-header">
         <h4>Habit</h4>
-        <Form
-          initialValues={{
-            date: undefined,
-            value: undefined,
-          }}
-          onSubmit={onSubmit}
-          render={({ handleSubmit, form, submitting, pristine, values }) => (
-            <form onSubmit={handleSubmit} className="habit-form">
-              <div className="habit-form-date">
-                <label htmlFor="date-name">
-                  <Field
-                    name="date"
-                    component="input"
-                    type="date"
-                    placeholder="Change project name"
-                    max="<?= date('Y-m-d'); ?>"
-                    rows="1"
-                    className="habit-form-input"
-                  />
-                </label>
-              </div>
-              <div className="habit-form-counter">
-                <label htmlFor="date-name">
-                  <Field
-                    name="value"
-                    component="input"
-                    type="number"
-                    placeholder="1"
-                    max="999"
-                    min="0"
-                    className="habit-form-input"
-                  />
-                </label>
-              </div>
-              <button className="habit-button" type="submit" disabled={submitting || pristine }>
-                <Icon path={mdiPlus} className="add-task-icon icon" />
-              </button>
-            </form>
-          )}
-        />
+        <DataPointForm onSubmit={onSubmit}/>
       </div>
       <div className="heatmap" style={{ '--multiplier': dayLength }}>
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
