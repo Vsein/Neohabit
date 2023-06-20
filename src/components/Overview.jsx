@@ -14,6 +14,7 @@ import {
   changeTo,
   open,
 } from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
 import { OverviewMonths, OverviewDays } from './OverviewHeaders';
 
@@ -116,7 +117,19 @@ function OverviewHeatmap({
         )}
       </div>
       <div className="overview-project-controls">
-        <button className="overview-project-button">
+        <button
+          className="overview-project-button"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(changeHeatmapTo(heatmap?._id));
+            const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+            const cell = e.target;
+            const rect = cell.getBoundingClientRect();
+            cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 11}px`;
+            cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 290}px`;
+            cellAddDropdown.classList.remove('hidden')
+          }}
+        >
           <Icon path={mdiPlus} />
         </button>
         <Link

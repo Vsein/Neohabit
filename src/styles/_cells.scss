@@ -140,3 +140,25 @@ $cell-margin: 2px;
     visibility: hidden;
   }
 }
+
+.cell-add-dropdown {
+  position: absolute;
+  text-align: center;
+  font-size: 12px;
+  background-color: #545454;
+  color: white;
+  z-index: 3;
+  border-radius: 10px;
+  visibility: visible;
+  white-space: nowrap;
+  width: min-content;
+  height: 40px;
+
+  & .habit-form {
+    padding: 5px;
+  }
+
+  &.hidden {
+    visibility: hidden;
+  }
+}

@@ -5,6 +5,7 @@ import { projectApi } from './services/project';
 import { heatmapApi } from './services/heatmap';
 import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
+import cellAddReducer from './features/cellAdd/cellAddSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     [heatmapApi.reducerPath]: heatmapApi.reducer,
     projectOverlay: projectOverlayReducer,
     taskOverlay: taskOverlayReducer,
+    cellAdd: cellAddReducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.

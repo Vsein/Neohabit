@@ -23,6 +23,7 @@ import Sidebar from './components/Sidebar';
 import OverlayProject from './components/OverlayProject';
 import OverlayTask from './components/OverlayTask';
 import CellTip from './components/CellTip';
+import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetProjectsQuery } from './state/services/project';
 import { useGetTasksQuery } from './state/services/todolist';
 // import SidebarMobile from './components/SidebarMobile';
@@ -94,6 +95,7 @@ const PrivateRoutes = (params) => {
         <Sidebar hidden={sidebarHidden} />
         <Outlet />
         <CellTip />
+        <CellAdd />
         {/* <SidebarMobile /> */}
       </div>
       {projects.isFetching ||
