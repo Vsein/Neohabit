@@ -1,21 +1,16 @@
 import React, { useEffect } from 'react';
 import {
-  addDays,
   addHours,
   subMilliseconds,
-  min,
-  max,
   startOfDay,
   differenceInHours,
   startOfWeek,
 } from 'date-fns';
-import { Form, Field } from 'react-final-form';
-import Icon from '@mdi/react';
-import { mdiPlus } from '@mdi/js';
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
+import DataPointForm from './DataPointForm';
 
 function Heatmap({
   dateStart,
@@ -38,7 +33,7 @@ function Heatmap({
   for (let i = 0; i < data.length; i++) {
     const dateStartChunk = startOfDay(new Date(data[i].date));
     periods.push({
-      color: '#e0e0e0',
+      color: '',
       value: 0,
       dateStart: dateNow,
       dateEnd: subMilliseconds(startOfDay(new Date(data[i].date)), 1),
@@ -52,7 +47,7 @@ function Heatmap({
     dateNow = addHours(dateStartChunk, 24);
   }
   periods.push({
-    color: '#e0e0e0',
+    color: '',
     value: 0,
     dateStart: dateNow,
     dateEnd: dateEnd,
@@ -69,54 +64,12 @@ function Heatmap({
   };
 
   return !loaded ? (
-    <div
-      className="habit loading"
-      style={{ backgroundColor: '#ddd', borderRadius: '20px' }}
-    />
+    <div className="habit loading" />
   ) : (
     <div className="habit">
       <div className="habit-header">
         <h4>Habit</h4>
-        <Form
-          initialValues={{
-            date: undefined,
-            value: undefined,
-          }}
-          onSubmit={onSubmit}
-          render={({ handleSubmit, form, submitting, pristine, values }) => (
-            <form onSubmit={handleSubmit} className="habit-form">
-              <div className="habit-form-date">
-                <label htmlFor="date-name">
-                  <Field
-                    name="date"
-                    component="input"
-                    type="date"
-                    placeholder="Change project name"
-                    max="<?= date('Y-m-d'); ?>"
-                    rows="1"
-                    className="habit-form-input"
-                  />
-                </label>
-              </div>
-              <div className="habit-form-counter">
-                <label htmlFor="date-name">
-                  <Field
-                    name="value"
-                    component="input"
-                    type="number"
-                    placeholder="1"
-                    max="999"
-                    min="0"
-                    className="habit-form-input"
-                  />
-                </label>
-              </div>
-              <button className="habit-button" type="submit" disabled={submitting || pristine }>
-                <Icon path={mdiPlus} className="add-task-icon icon" />
-              </button>
-            </form>
-          )}
-        />
+        <DataPointForm onSubmit={onSubmit}/>
       </div>
       <div className="heatmap" style={{ '--multiplier': dayLength }}>
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />

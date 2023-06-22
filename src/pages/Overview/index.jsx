@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from '@mdi/react';
 import { subMonths, startOfDay } from 'date-fns';
 import PFP from '../../components/ProfilePicture';
-import { OverviewMonths, OverviewDays, OverviewProjects } from '../../components/OverviewHeaders';
+import Overview from '../../components/Overview';
 import useTitle from '../../hooks/useTitle';
 
 export default function Dashboard() {
@@ -16,11 +16,7 @@ export default function Dashboard() {
       </div>
       <div className="overview-centering">
         <div className="overview-container">
-          <div className="overview">
-            <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
-            <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
-            <OverviewProjects dateStart={dateStart} dateEnd={dateEnd} />
-          </div>
+          <Overview dateStart={dateStart} dateEnd={dateEnd} />
         </div>
       </div>
     </div>

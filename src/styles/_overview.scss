@@ -11,37 +11,40 @@ $cell-margin: 2px;
 }
 
 .overview-container {
+  direction: rtl;
   position: relative;
-  overflow: hidden;
-  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 25);
+  overflow-y: hidden;
+  height: max(200px, calc(50px + (18px + #{$cell-margin} * 2) * var(--projects)));
   background-color: var(--main-background-color);
   border-radius: 10px;
-  border: 1px solid #bbb;
-  width: 820px;
-  display: grid;
-  justify-content: center;
-  align-content: center;
+  border: 1px solid var(--border-color);
+  width: min(855px, 100%);
+  padding-right: 5px;
 }
 
-
 .overview-centering {
-  display: grid;
+  display: flex;
   justify-content: center;
   align-items: center;
   margin: 30px;
 }
 
+.overview-loader {
+  height: 250px;
+  width: 100%;
+}
+
 .overview {
-  height: min-content;
+  width: min(100%, 845px);
   --multiplier: 1;
   position: absolute;
-  right: 5px;
   display: grid;
   grid-template-rows: $cell-height $cell-height min-content;
-  grid-template-columns: 175px min-content;
+  grid-template-columns: 40px min-content 180px;
   row-gap: 5px;
 
   .overview-months {
+    direction: ltr;
     display: flex;
     grid-column: 2;
     grid-row: 1;
@@ -62,6 +65,7 @@ $cell-margin: 2px;
   }
 
   .overview-days {
+    direction: ltr;
     display: inline-flex;
     flex-direction: row;
     grid-column: 2;
@@ -86,17 +90,17 @@ $cell-margin: 2px;
   }
 
   .overview-projects {
-    grid-column: 1;
+    direction: ltr;
+    grid-column: 3;
     grid-row: 3;
     display: grid;
     grid-template-rows: 15px;
     row-gap: 6px;
-    height: 100%;
-    width: 800px;
+    padding-left: 5px;
 
     .overview-project {
       display: grid;
-      grid-template-columns: 175px 625px;
+      grid-template-columns: 175px 610px 50px;
       grid-template-rows: 18px;
       font-size: 15px;
 
@@ -111,6 +115,21 @@ $cell-margin: 2px;
       &-cells {
         height: 11px;
         display: flex;
+      }
+
+      &-controls {
+        width: 100%;
+        display: grid;
+        grid-auto-columns: 18px;
+        grid-auto-flow: column;
+        grid-gap: 3px;
+      }
+
+      &-button {
+        height: 18px;
+        width: 18px;
+        outline: none;
+        cursor: pointer;
       }
     }
   }

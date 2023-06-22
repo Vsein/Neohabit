@@ -48,7 +48,7 @@ function Heatmap({
       } else {
         alpha = (1 / Max) * value;
       }
-      const color = alpha ? colorFunc({ alpha }) : '#e0e0e0';
+      const color = alpha ? colorFunc({ alpha }) : '';
       periodChunks.push({
         color,
         value,
@@ -65,17 +65,22 @@ function Heatmap({
     differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
 
   return !loaded ? (
-    <div
-      className="habit loading"
-      style={{ backgroundColor: '#ddd', borderRadius: '20px' }}
-    />
+    <div className="habit loading" />
   ) : (
     <div className="habit">
       <h4>Habit</h4>
-      <div className="heatmap" style={{ '--multiplier': dayLength }}>
+      <div
+        className="heatmap"
+        style={{
+          '--multiplier': dayLength,
+        }}
+      >
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
-        <div className="heatmap-cells" style={{ '--cell-width': '11px', '--cell-height': '11px' }}>
+        <div
+          className="heatmap-cells"
+          style={{ '--cell-width': '11px', '--cell-height': '11px' }}
+        >
           <TallDummy height={dummyHeight} />
           {periods.map((period, index) => (
             <>

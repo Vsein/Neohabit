@@ -32,7 +32,7 @@
   width: min(800px, 100vw - 3em);
   min-height: 600px;
   border-radius: 8px;
-  background-color: #efefef;
+  background-color: var(--support-background-color);
   padding: 1em;
   transform: translate(-50%, -50%) scale(0);
 
@@ -50,7 +50,7 @@
   &-details {
     height: 100%;
     width: 100%;
-    background-color: #fff;
+    background-color: var(--main-background-color);
     padding: 10px;
     border-radius: 10px;
   }
@@ -80,8 +80,8 @@
 
 .form-button {
   font-size: 80%;
-  color: #f9faf8;
-  background-color: #144e12;
+  color: var(--button-text-color);
+  background-color: var(--signature-color);
   padding: 10px 0px;
   border-radius: 7px;
   font-weight: bold;
@@ -94,6 +94,6 @@
 
 #cancel-form-button {
   margin-left: auto;
-  color: black;
-  background-color: silver;
+  color: var(--support-color);
+  background-color: var(--button-bg-color);
 }

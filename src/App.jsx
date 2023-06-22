@@ -22,6 +22,8 @@ import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
 import OverlayProject from './components/OverlayProject';
 import OverlayTask from './components/OverlayTask';
+import CellTip from './components/CellTip';
+import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetProjectsQuery } from './state/services/project';
 import { useGetTasksQuery } from './state/services/todolist';
 // import SidebarMobile from './components/SidebarMobile';
@@ -79,6 +81,7 @@ const PrivateRoutes = (params) => {
   const [sidebarHidden, setSidebarHidden] = useState(true);
 
   const toggleSidebar = () => {
+    document.querySelector('.sidebar').scrollTop = 0;
     setSidebarHidden(!sidebarHidden);
   };
 
@@ -91,6 +94,8 @@ const PrivateRoutes = (params) => {
         <MainMenu toggleSidebar={toggleSidebar} />
         <Sidebar hidden={sidebarHidden} />
         <Outlet />
+        <CellTip />
+        <CellAdd />
         {/* <SidebarMobile /> */}
       </div>
       {projects.isFetching ||

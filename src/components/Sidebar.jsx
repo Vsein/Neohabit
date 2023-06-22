@@ -94,7 +94,9 @@ export default function Sidebar(props) {
           className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
         >
           {projects.isFetching ? (
-            <div className="loader" />
+            <div className="projects-loader">
+              <div className="loader" />
+            </div>
           ) : (
             projects.data.map((project, i) => (
               <li key={`project-${i}`}>
