@@ -38,9 +38,7 @@ export default function Habits() {
   };
   const yearData = YearDataSimple(dateStart);
 
-  return !loaded ? (
-    <div className="loader" />
-  ) : (
+  return loaded && (
     <main className="habits">
       <div className="habits-header">
         <h3>Habits</h3>
