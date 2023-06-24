@@ -30,13 +30,8 @@ export default function Project() {
     <div className="project-overview" style={{ '--cell-height': '11px', '--cell-width': '11px' }}>
       <Heatmap
         heatmap={heatmap}
-        dataPeriods={PERIODS6}
         // colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha * 265})`}
-        colorFunc={({ alpha }) => {
-          const alphaHex = alpha == 1 ? 'ff' : Math.round(alpha * 256).toString(16);
-          return `${project.color}${alphaHex}`;
-        }
-        }
+        color={project.color}
         dateStart={dateStart}
         dateEnd={dateEnd}
         dayLength={dayLength}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
   addHours,
   subMilliseconds,
@@ -11,19 +12,57 @@ import {
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
+import { changeTo } from '../state/features/theme/themeSlice';
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    }
+    : null;
+}
+
+function mixColors(base, goal, alpha) {
+  const rgb = {
+    r: Math.round(base.r + (goal.r - base.r) * alpha),
+    g: Math.round(base.g + (goal.g - base.g) * alpha),
+    b: Math.round(base.b + (goal.b - base.b) * alpha),
+  }
+  console.log(base, goal);
+  console.log(rgb, alpha);
+  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+}
+
+function generatePalette(base, goal) {
+  const palette = []
+  for (let i = 0; i <= 10; i++) {
+    const rgb = mixColors(base, goal, 0.1 * i);
+    palette.push(rgb);
+  }
+  return palette;
+}
 
 function Heatmap({
   dateStart,
   dateEnd,
   data,
-  colorFunc,
+  color,
   dayLength,
   dataPeriods,
   useElimination = true,
 }) {
   const [loaded] = useLoaded();
+  const { themeRgb } = useSelector((state) => ({
+    themeRgb: state.theme.colorRgb,
+  }));
   let Max = 0;
   console.log(dateStart);
+
+  const colorRGB = hexToRgb(color);
+  const palette = generatePalette(themeRgb, colorRGB);
 
   let dateNow = dataPeriods[0].date;
   let i = 0;
@@ -48,9 +87,8 @@ function Heatmap({
       } else {
         alpha = (1 / Max) * value;
       }
-      const color = alpha ? colorFunc({ alpha }) : '';
       periodChunks.push({
-        color,
+        color: palette[Math.min(10, Math.ceil(alpha * 10 + (alpha ? 1 : 0)))],
         value,
         dateStart: startOfTheChunk,
         dateEnd: subMilliseconds(endOfTheChunk, 1),

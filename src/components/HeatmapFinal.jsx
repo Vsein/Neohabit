@@ -12,13 +12,24 @@ import useLoaded from '../hooks/useLoaded';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import DataPointForm from './DataPointForm';
 
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    }
+    : null;
+}
+
 function Heatmap({
   dateStart,
   dateEnd,
   heatmap = {
     data: [],
   },
-  colorFunc,
+  color,
   dayLength,
   useElimination = true,
 }) {
@@ -26,6 +37,23 @@ function Heatmap({
   const Data = heatmap.data;
   const data = [...Data];
   data.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const colorRGB = hexToRgb(color);
+  console.log(colorRGB);
+  const themeBGSupportColor =
+    document.documentElement.className === 'dark'
+      ? { r: 204, g: 204, b: 204 }
+      : { r: 165, g: 158, b: 205 };
+  console.log(colorRGB);
+
+  function mixColors(base, goal, alpha) {
+    const rgb = {
+      r: Math.round(base.r + (goal.r - base.r) * alpha),
+      g: Math.round(base.g + (goal.g - base.g) * alpha),
+      b: Math.round(base.b + (goal.b - base.b) * alpha),
+    }
+    return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+  }
 
   let dateNow = dateStart;
   let i = 0;
@@ -39,10 +67,13 @@ function Heatmap({
       dateEnd: subMilliseconds(startOfDay(new Date(data[i].date)), 1),
     });
     periods.push({
-      color: colorFunc({ alpha: 1 }),
+      color: mixColors(themeBGSupportColor, colorRGB, 1),
       value: 1000,
       dateStart: dateStartChunk,
-      dateEnd: subMilliseconds(addHours(startOfDay(new Date(data[i].date)), 24), 1),
+      dateEnd: subMilliseconds(
+        addHours(startOfDay(new Date(data[i].date)), 24),
+        1,
+      ),
     });
     dateNow = addHours(dateStartChunk, 24);
   }
@@ -51,7 +82,7 @@ function Heatmap({
     value: 0,
     dateStart: dateNow,
     dateEnd: dateEnd,
-  })
+  });
   console.log(periods);
 
   const dummyLastDay = dateStart;
@@ -69,7 +100,7 @@ function Heatmap({
     <div className="habit">
       <div className="habit-header">
         <h4>Habit</h4>
-        <DataPointForm onSubmit={onSubmit}/>
+        <DataPointForm onSubmit={onSubmit} />
       </div>
       <div className="heatmap" style={{ '--multiplier': dayLength }}>
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />

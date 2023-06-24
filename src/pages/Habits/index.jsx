@@ -24,6 +24,10 @@ export default function Habits() {
   const dateEnd = startOfDay(new Date());
   const dateStart = subYears(dateEnd, 1);
   const dayLength = 2;
+  const green = '#03A003';
+  const red = '#DC0503';
+  const blue = '#0505C8';
+  const green2 = '#069F02';
 
   const getGreenPalette = ({ alpha }) => {
     if (alpha < 0.2) return '#C2E1C4';
@@ -45,7 +49,7 @@ export default function Habits() {
         <Heatmap
           data={yearData}
           dataPeriods={PERIODS1}
-          colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
+          color={green}
           dateStart={dateStart}
           dateEnd={dateEnd}
           dayLength={dayLength}
@@ -54,7 +58,7 @@ export default function Habits() {
         <Heatmap
           data={yearData}
           dataPeriods={PERIODS6}
-          colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
+          color={green}
           dateStart={dateStart}
           dateEnd={dateEnd}
           dayLength={dayLength}
@@ -63,7 +67,7 @@ export default function Habits() {
         <Heatmap
           data={[]}
           dataPeriods={PERIODS3}
-          colorFunc={({ alpha }) => `rgba(220, 5,  3, ${alpha})`}
+          color={red}
           dateStart={dateStart}
           dateEnd={dateEnd}
           dayLength={dayLength}
@@ -72,7 +76,7 @@ export default function Habits() {
         <Heatmap
           data={DATA1}
           dataPeriods={PERIODS2}
-          colorFunc={({ alpha }) => `rgba(5, 5,  200, ${alpha})`}
+          color={blue}
           dateStart={dateStart}
           dateEnd={dateEnd}
           dayLength={dayLength}
@@ -81,7 +85,7 @@ export default function Habits() {
         <Heatmap
           data={DATA1}
           dataPeriods={PERIODS4}
-          colorFunc={({ alpha }) => `rgba(220, 5,  3, ${alpha})`}
+          color={red}
           dateStart={dateStart}
           dateEnd={dateEnd}
           dayLength={dayLength}
@@ -90,7 +94,7 @@ export default function Habits() {
         <Heatmap
           data={DATA1}
           dataPeriods={PERIODS7}
-          colorFunc={getGreenPalette}
+          color={green2}
           dateStart={dateStart}
           dateEnd={dateEnd}
           dayLength={dayLength}
@@ -98,7 +102,7 @@ export default function Habits() {
         <Heatmap
           data={DATA1}
           dataPeriods={PERIODS5}
-          colorFunc={getGreenPalette}
+          color={green2}
           dateStart={dateStart}
           dateEnd={dateEnd}
           dayLength={dayLength}
