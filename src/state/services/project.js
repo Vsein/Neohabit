@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { current } from '@reduxjs/toolkit';
+import { heatmapApi } from './heatmap';
 
 export const projectApi = createApi({
   reducerPath: 'projectApi',
@@ -32,9 +33,15 @@ export const projectApi = createApi({
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
-        const patchResult = dispatch(
+        console.log(res.data);
+        dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            draft.push(res.data);
+            draft.push(res.data.project);
+          }),
+        );
+        dispatch(
+          heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
+            draft.push(res.data.heatmap);
           }),
         );
       },

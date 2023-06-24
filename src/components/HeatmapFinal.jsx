@@ -34,7 +34,7 @@ function Heatmap({
   useElimination = true,
 }) {
   const [loaded] = useLoaded();
-  const Data = heatmap.data;
+  const Data = heatmap?.data ?? [];
   const data = [...Data];
   data.sort((a, b) => new Date(a.date) - new Date(b.date));
 

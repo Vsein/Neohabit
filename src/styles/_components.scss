@@ -40,7 +40,8 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid green;
+  border: 2px solid var(--signature-color);
+  background-color: var(--signature-color-transparent);
 }
 
 .ribbon {
