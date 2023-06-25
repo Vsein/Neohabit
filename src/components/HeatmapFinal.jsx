@@ -39,12 +39,10 @@ function Heatmap({
   data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   const colorRGB = hexToRgb(color);
-  console.log(colorRGB);
   const themeBGSupportColor =
     document.documentElement.className === 'dark'
       ? { r: 204, g: 204, b: 204 }
       : { r: 165, g: 158, b: 205 };
-  console.log(colorRGB);
 
   function mixColors(base, goal, alpha) {
     const rgb = {

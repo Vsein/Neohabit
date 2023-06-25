@@ -31,8 +31,6 @@ function mixColors(base, goal, alpha) {
     g: Math.round(base.g + (goal.g - base.g) * alpha),
     b: Math.round(base.b + (goal.b - base.b) * alpha),
   }
-  console.log(base, goal);
-  console.log(rgb, alpha);
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 }
 
@@ -59,7 +57,6 @@ function Heatmap({
     themeRgb: state.theme.colorRgb,
   }));
   let Max = 0;
-  console.log(dateStart);
 
   const colorRGB = hexToRgb(color);
   const palette = generatePalette(themeRgb, colorRGB);
