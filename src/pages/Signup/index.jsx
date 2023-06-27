@@ -7,7 +7,7 @@ import {
   EmailField,
   PasswordField,
 } from '../../components/Auth';
-import { sendSignupRequest } from '../../utils/auth';
+import { useSignupMutation, useLoginMutation } from '../../state/services/auth';
 import useTitle from '../../hooks/useTitle';
 
 export default function Signup() {
@@ -29,12 +29,15 @@ export default function Signup() {
 
 function SignupForm() {
   const navigate = useNavigate();
+  const [sendSignupRequest] = useSignupMutation();
+  const [sendLoginRequest] = useLoginMutation();
 
   const signup = async (e) => {
     e.preventDefault();
     const formData = new FormData(document.forms.signupForm);
     const data = Object.fromEntries(formData.entries());
     const isSuccessful = await sendSignupRequest(data);
+    await sendLoginRequest(data);
     if (isSuccessful) navigate('/dashboard');
   };
 

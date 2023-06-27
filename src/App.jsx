@@ -27,7 +27,7 @@ import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetProjectsQuery } from './state/services/project';
 import { useGetTasksQuery } from './state/services/todolist';
 // import SidebarMobile from './components/SidebarMobile';
-import { hasJWT } from './utils/auth';
+import { hasJWT } from './state/services/auth';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(true);

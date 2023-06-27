@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import api from './services/api';
+import authApi from './services/auth';
 import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
@@ -10,6 +11,7 @@ const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [api.reducerPath]: api.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     projectOverlay: projectOverlayReducer,
     taskOverlay: taskOverlayReducer,
     cellAdd: cellAddReducer,
@@ -20,6 +22,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
       api.middleware,
+      authApi.middleware,
     ]),
 });
 
