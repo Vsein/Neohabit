@@ -1,18 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { current } from '@reduxjs/toolkit';
+import api from './api';
+import { heatmapApi } from './heatmap';
 
-export const projectApi = createApi({
-  reducerPath: 'projectApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/api/',
-    prepareHeaders: (headers, { getState }) => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getProjects: builder.query({
       query: () => ({
@@ -32,9 +21,14 @@ export const projectApi = createApi({
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
-        const patchResult = dispatch(
+        dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            draft.push(res.data);
+            draft.push(res.data.project);
+          }),
+        );
+        dispatch(
+          heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
+            draft.push(res.data.heatmap);
           }),
         );
       },
@@ -47,7 +41,9 @@ export const projectApi = createApi({
       onQueryStarted(projectID, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const index = draft.findIndex((project) => project._id == projectID);
+            const index = draft.findIndex(
+              (project) => project._id == projectID,
+            );
             draft.splice(index, 1);
           }),
         );

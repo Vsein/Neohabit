@@ -1,18 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { current } from '@reduxjs/toolkit';
+import api from './api';
 
-export const heatmapApi = createApi({
-  reducerPath: 'heatmapApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/api/',
-    prepareHeaders: (headers, { getState }) => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+export const heatmapApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getHeatmaps: builder.query({
       query: () => ({

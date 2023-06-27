@@ -1,29 +1,25 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { todolistApi } from './services/todolist';
-import { projectApi } from './services/project';
-import { heatmapApi } from './services/heatmap';
+import api from './services/api';
 import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
+import themeReducer from './features/theme/themeSlice';
 
 const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
-    [todolistApi.reducerPath]: todolistApi.reducer,
-    [projectApi.reducerPath]: projectApi.reducer,
-    [heatmapApi.reducerPath]: heatmapApi.reducer,
+    [api.reducerPath]: api.reducer,
     projectOverlay: projectOverlayReducer,
     taskOverlay: taskOverlayReducer,
     cellAdd: cellAddReducer,
+    theme: themeReducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat([
-      todolistApi.middleware,
-      projectApi.middleware,
-      heatmapApi.middleware,
+      api.middleware,
     ]),
 });
 

@@ -75,7 +75,6 @@ function OverviewHeatmap({
   if (data) {
     dataSorted = [...data];
     dataSorted.sort((a, b) => compareAsc(new Date(a.date), new Date(b.date)));
-    console.log(dataSorted);
   }
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 

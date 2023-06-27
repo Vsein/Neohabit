@@ -47,7 +47,16 @@ export default function Overlay() {
   };
 
   if (isLoading || isFetching) return <div>Loading...</div>;
-  if (!project) return <div>Missing project!</div>;
+  if (!project) {
+    return (
+      <div
+        className={isActive ? 'overlay overlay-active' : 'overlay'}
+        onClick={closeOverlay}
+      >
+        Missing project!
+      </div>
+    );
+  };
 
   return (
     <div
@@ -57,68 +66,68 @@ export default function Overlay() {
       {isLoading || isFetching ? (
         <> </>
       ) : (
-      <Form
-        initialValues={{
-          completed: task?.completed ?? false,
-          name: task?.name ?? '',
-          description: task?.description ?? '',
-          projectID: task?.project._id ?? project._id,
-        }}
-        onSubmit={onSubmit}
-        render={({ handleSubmit, form, submitting, pristine, values }) => (
-          <form
-            onSubmit={handleSubmit}
-            className="modal modal-active"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-header">
-              <div className="tag">
-                <ProjectTag project={task ? task.project : project} />
+        <Form
+          initialValues={{
+            completed: task?.completed ?? false,
+            name: task?.name ?? '',
+            description: task?.description ?? '',
+            projectID: task?.project._id ?? project._id,
+          }}
+          onSubmit={onSubmit}
+          render={({ handleSubmit, form, submitting, pristine, values }) => (
+            <form
+              onSubmit={handleSubmit}
+              className="modal modal-active"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="modal-header">
+                <div className="tag">
+                  <ProjectTag project={task ? task.project : project} />
+                </div>
+                <button className="close-modal-button icon" onClick={close}>
+                  <Icon path={mdiClose} />
+                </button>
               </div>
-              <button className="close-modal-button icon" onClick={close}>
-                <Icon path={mdiClose} />
-              </button>
-            </div>
-            <div className="modal-details">
-              <label htmlFor="task-name">
-                <Field
-                  name="name"
-                  component="textarea"
-                  placeholder="Change task name"
-                  rows="1"
-                  className="form-task-name"
-                />
-              </label>
-              <label htmlFor="task-description">
-                <Field
-                  name="description"
-                  component="textarea"
-                  placeholder="Change description"
-                  rows="1"
-                  className="form-task-description"
-                />
-              </label>
-            </div>
-            <div className="modal-buttons">
-              <button
-                className="form-button"
-                id="cancel-form-button"
-                onClick={closeOverlay}
-              >
-                Cancel
-              </button>
-              <button
-                className="form-button"
-                id="submit-form-button"
-                type="submit"
-                disabled={submitting || pristine}
-              >
-                {task ? 'Save' : 'Add task'}
-              </button>
-            </div>
-          </form>
-        )}
-      />
+              <div className="modal-details">
+                <label htmlFor="task-name">
+                  <Field
+                    name="name"
+                    component="textarea"
+                    placeholder="Change task name"
+                    rows="1"
+                    className="form-task-name"
+                  />
+                </label>
+                <label htmlFor="task-description">
+                  <Field
+                    name="description"
+                    component="textarea"
+                    placeholder="Change description"
+                    rows="1"
+                    className="form-task-description"
+                  />
+                </label>
+              </div>
+              <div className="modal-buttons">
+                <button
+                  className="form-button"
+                  id="cancel-form-button"
+                  onClick={closeOverlay}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="form-button"
+                  id="submit-form-button"
+                  type="submit"
+                  disabled={submitting || pristine}
+                >
+                  {task ? 'Save' : 'Add task'}
+                </button>
+              </div>
+            </form>
+          )}
+        />
       )}
     </div>
   );

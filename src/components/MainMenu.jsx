@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
   mdiCog,
@@ -13,6 +14,7 @@ import {
 import PFP from './ProfilePicture';
 import AccountInfo from './AccountInfo';
 import useMenuToggler from '../hooks/useMenuToggler';
+import { changeTo } from '../state/features/theme/themeSlice';
 
 export default function MainMenu(props) {
   const { toggleSidebar } = props;
@@ -74,11 +76,13 @@ function MenuSection(props) {
 }
 
 function ThemeToggle() {
+  const dispatch = useDispatch();
   const [theme, setTheme] = useState('dark');
   const title = `Theme: ${theme}`;
   const changeTheme = () => {
     const root = document.documentElement;
     const newTheme = root.className === 'dark' ? 'light' : 'dark';
+    dispatch(changeTo(newTheme));
     const link = document.querySelector("link[rel~='icon']");
     link.href = newTheme === 'dark' ? './logos/favicon-dark2.ico' : './logos/favicon.ico';
     root.className = newTheme;

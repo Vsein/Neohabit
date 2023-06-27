@@ -11,7 +11,7 @@ export default function Tasklist(params) {
   const dispatch = useDispatch();
 
   const isInThisCategory = (task) => {
-    if (list === 'project') return task.project._id === projectID;
+    if (list === 'project') return task?.project?._id === projectID;
     if (list === 'this-week') return false;
     if (list === 'today') return false;
     return true;
@@ -31,7 +31,7 @@ export default function Tasklist(params) {
           .filter((task) => isInThisCategory(task))
           .map((task) => (
             <li key={task._id}>
-              <Task task={task} project={task.project} />
+              <Task task={task} project={task?.project} />
             </li>
           ))}
         <button className="add-task-btn" onClick={addTask}>
