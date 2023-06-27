@@ -6,7 +6,7 @@ import {
   EmailField,
   PasswordField,
 } from '../../components/Auth';
-import { sendLoginRequest } from '../../utils/auth';
+import { useLoginMutation } from '../../state/services/auth';
 import useTitle from '../../hooks/useTitle';
 
 export default function Login() {
@@ -28,6 +28,7 @@ export default function Login() {
 
 function LoginForm() {
   const navigate = useNavigate();
+  const [sendLoginRequest] = useLoginMutation();
 
   const login = async (e) => {
     e.preventDefault();
