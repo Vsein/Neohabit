@@ -18,6 +18,7 @@ import Logout from './pages/Logout';
 import Logo from './pages/Logo';
 import NotFound from './pages/404';
 import Landing from './pages/Landing';
+import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
 import OverlayProject from './components/OverlayProject';
@@ -63,6 +64,7 @@ const App = () => {
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/logo" element={<Logo />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

@@ -1,0 +1,31 @@
+.settingsc-container {
+  grid-area: main;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-rows: 100px 1fr;
+  height: 100%;
+  width: 300px;
+}
+
+.settings-bar {
+  background-color: var(--main-background-color);
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: left;
+}
+
+.settings-option {
+  padding: 15px;
+  padding-inline: 20px;
+  width: min-content;
+}
+
+.settings {
+  padding: 20px;
+  padding-inline: 35px;
+}
+
+.settings-section {
+  margin-bottom: 15px;
+}
