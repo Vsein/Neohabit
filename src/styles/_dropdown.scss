@@ -7,7 +7,6 @@
 
   &-container {
     display: grid;
-    grid-auto-rows: 35px;
     gap: 3px;
     width: 100%;
     position: absolute;
@@ -19,6 +18,7 @@
     pointer-events: none;
 
     &.active {
+      grid-auto-rows: 35px;
       top: calc(100%);
       visibility: visible;
       opacity: 1;

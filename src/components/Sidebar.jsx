@@ -76,7 +76,6 @@ export default function Sidebar(props) {
       <hr />
       <ul className="projects">
         <li className="projects-header">
-          <p>Projects</p>
           <button className="centering" onClick={toggleProjectsCollapsed}>
             <Icon
               className={`icon projects-arrow ${
@@ -85,7 +84,8 @@ export default function Sidebar(props) {
               path={mdiChevronDown}
             />
           </button>
-          <button className="centering" onClick={openOverlay}>
+          <p>Projects</p>
+          <button className="centering add" onClick={openOverlay}>
             <Icon path={mdiPlus} className="icon" />
           </button>
         </li>
