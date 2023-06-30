@@ -70,7 +70,6 @@ export default function Sidebar(props) {
         <NavigationSection
           path={mdiCog}
           title="Settings"
-          status="soon"
           to="/settings"
         />
       </ul>
