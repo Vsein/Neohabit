@@ -15,7 +15,7 @@
   justify-content: left;
 }
 
-.settings-option {
+.settings-type {
   padding: 15px;
   padding-inline: 20px;
   width: min-content;
@@ -28,4 +28,37 @@
 
 .settings-section {
   margin-bottom: 15px;
+}
+
+.settings-option {
+  color: var(--support-text-color);
+  display: flex;
+  justify-content: space-between;
+  width: min(700px, 100%);
+  align-items: center;
+}
+
+.settings-chooser {
+  display: flex;
+  gap: 10px;
+}
+
+.settings-btn {
+  width: max-content;
+  padding: 8px 30px;
+  border: 2px solid transparent;
+
+  &.dark {
+    background-color: #2D3333;
+    color: #bbb;
+  }
+
+  &.light {
+    background-color: white;
+    color: black;
+  }
+
+  &.active {
+    border: 2px solid var(--border-color);
+  }
 }
