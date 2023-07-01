@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Icon from '@mdi/react';
+import { mdiChevronDown } from '@mdi/js';
 import useTitle from '../../hooks/useTitle';
 import useAnchor from '../../hooks/useAnchor';
 import useThemeToggler from '../../hooks/useThemeToggler';
@@ -7,7 +9,6 @@ import useThemeToggler from '../../hooks/useThemeToggler';
 export default function Settings() {
   useTitle('Settings | Neohabit');
   useAnchor();
-  const [theme, { changeTheme }] = useThemeToggler();
 
   return (
     <main className="settings-container">
@@ -23,39 +24,71 @@ export default function Settings() {
         </Link>
       </div>
       <div className="settings">
-        <div className="settings-section">
-          <h1 id="general">&gt; General</h1>
-          <div className="settings-option">
-            <div className="settings-name">
-              <h3>Preferred theme</h3>
-            </div>
-            <div className="settings-chooser">
-              <button
-                className={`dashboard-btn settings-btn dark ${
-                  theme === 'dark' ? 'active' : ''
-                }`}
-                onClick={() => changeTheme('dark')}
-              >
-                Dark
-              </button>
-              <button
-                className={`dashboard-btn settings-btn light ${
-                  theme === 'light' ? 'active' : ''
-                }`}
-                onClick={() => changeTheme('light')}
-              >
-                Light
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="settings-section">
-          <h1 id="heatmaps">&gt; Heatmaps</h1>
-        </div>
-        <div className="settings-section">
-          <h1 id="account">&gt; Account</h1>
-        </div>
+        <SettingsSection name="general" elements={<ThemeOption />} />
+        <SettingsSection name="heatmaps" />
+        <SettingsSection name="account" />
       </div>
     </main>
+  );
+}
+
+function SettingsSection({ name, elements }) {
+  const [settingCollapsed, setSettingCollapsed] = useState(false);
+
+  const toggleSettingCollapsed = () => {
+    setSettingCollapsed(!settingCollapsed);
+  };
+
+  return (
+    <div className="settings-section">
+      <div id={name} className="settings-section-header">
+        <button className="centering" onClick={toggleSettingCollapsed}>
+          <Icon
+            className={`icon big settings-section-arrow ${
+              settingCollapsed ? '' : 'active'
+            }`}
+            path={mdiChevronDown}
+          />
+        </button>
+        <h1>{name}</h1>
+      </div>
+      <div
+        className={`settings-section-container ${
+          settingCollapsed ? '' : 'active'
+        }`}
+      >
+        {elements}
+      </div>
+    </div>
+  );
+}
+
+function ThemeOption() {
+  const [theme, { changeTheme }] = useThemeToggler();
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Preferred theme</h3>
+      </div>
+      <div className="settings-chooser">
+        <button
+          className={`dashboard-btn settings-btn dark ${
+            theme === 'dark' ? 'active' : ''
+          }`}
+          onClick={() => changeTheme('dark')}
+        >
+          Dark
+        </button>
+        <button
+          className={`dashboard-btn settings-btn light ${
+            theme === 'light' ? 'active' : ''
+          }`}
+          onClick={() => changeTheme('light')}
+        >
+          Light
+        </button>
+      </div>
+    </div>
   );
 }
