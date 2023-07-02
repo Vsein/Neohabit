@@ -4,7 +4,7 @@ import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import useTitle from '../../hooks/useTitle';
 import useAnchor from '../../hooks/useAnchor';
-import useThemeToggler from '../../hooks/useThemeToggler';
+import { useGetSettingsQuery, useChangeThemeMutation } from '../../state/services/settings';
 
 export default function Settings() {
   useTitle('Settings | Neohabit');
@@ -64,7 +64,9 @@ function SettingsSection({ name, elements }) {
 }
 
 function ThemeOption() {
-  const [theme, { changeTheme }] = useThemeToggler();
+  const [changeTheme] = useChangeThemeMutation();
+  const settings = useGetSettingsQuery();
+  const theme = settings.data.prefer_dark ? 'dark' : 'light';
 
   return (
     <div className="settings-option">
@@ -76,7 +78,7 @@ function ThemeOption() {
           className={`dashboard-btn settings-btn dark ${
             theme === 'dark' ? 'active' : ''
           }`}
-          onClick={() => changeTheme('dark')}
+          onClick={() => changeTheme(true)}
         >
           Dark
         </button>
@@ -84,7 +86,7 @@ function ThemeOption() {
           className={`dashboard-btn settings-btn light ${
             theme === 'light' ? 'active' : ''
           }`}
-          onClick={() => changeTheme('light')}
+          onClick={() => changeTheme(false)}
         >
           Light
         </button>

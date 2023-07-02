@@ -13,7 +13,7 @@ import {
 import PFP from './ProfilePicture';
 import AccountInfo from './AccountInfo';
 import useMenuToggler from '../hooks/useMenuToggler';
-import useThemeToggler from '../hooks/useThemeToggler';
+import { useGetSettingsQuery, useChangeThemeMutation } from '../state/services/settings';
 
 export default function MainMenu(props) {
   const { toggleSidebar } = props;
@@ -75,20 +75,21 @@ function MenuSection(props) {
 }
 
 function ThemeToggle() {
-  const [theme, { changeTheme }] = useThemeToggler();
-  const title = `Theme: ${theme}`;
+  const [changeTheme] = useChangeThemeMutation();
+  const settings = useGetSettingsQuery();
+  const theme = settings.data.prefer_dark ? 'dark' : 'light';
 
   return (
     <li>
       <a
         className="menu-section"
-        onClick={() => changeTheme(theme === 'dark' ? 'light' : 'dark')}
+        onClick={() => changeTheme(theme !== 'dark')}
       >
         <Icon
           path={theme === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
           className="icon"
         />
-        <p className="link">{title}</p>
+        <p className="link">{`Theme: ${theme}`}</p>
       </a>
     </li>
   );
