@@ -116,7 +116,7 @@ function Heatmap({
           className="heatmap-cells"
           style={{ '--cell-width': '11px', '--cell-height': '11px' }}
         >
-          <TallDummy height={dummyHeight} />
+          {dummyHeight ? <TallDummy height={dummyHeight} /> : <> </>}
           {periods.map((period, index) => (
             <>
               {period.map((chunk, Index) => (

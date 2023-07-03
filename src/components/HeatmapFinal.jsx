@@ -104,7 +104,7 @@ function Heatmap({
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
         <div className="heatmap-cells">
-          <TallDummy height={dummyHeight} />
+          {dummyHeight ? <TallDummy height={dummyHeight} /> : <> </>}
           {periods.map((chunk, index) => (
             <CellPeriod
               key={index}
