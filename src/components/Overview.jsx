@@ -9,6 +9,7 @@ import {
   useDeleteProjectMutation,
 } from '../state/services/project';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
+import { useGetSettingsQuery } from '../state/services/settings';
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import {
   changeTo,
@@ -22,6 +23,7 @@ export default function Overview({ dateStart, dateEnd }) {
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
+  const settings = useGetSettingsQuery();
 
   if (!loaded || projects.isFetching || heatmaps.isFetching) {
     return (
@@ -37,7 +39,9 @@ export default function Overview({ dateStart, dateEnd }) {
   );
 
   return (
-    <div className="overview">
+    <div className="overview" style={{
+      '--multiplier': settings.data.cell_height_multiplier,
+    }}>
       <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
       <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
       <div className="overview-projects">
@@ -104,7 +108,6 @@ function OverviewHeatmap({
                   dateEnd={addDays(date, 1)}
                   color={project.color}
                   value={1}
-                  multiplier={1}
                   basePeriod={24}
                   vertical={true}
                 />

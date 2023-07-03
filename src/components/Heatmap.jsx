@@ -12,16 +12,16 @@ import {
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
-import { changeTo } from '../state/features/theme/themeSlice';
+import { useGetSettingsQuery } from '../state/services/settings';
 
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16),
-    }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
     : null;
 }
 
@@ -30,12 +30,12 @@ function mixColors(base, goal, alpha) {
     r: Math.round(base.r + (goal.r - base.r) * alpha),
     g: Math.round(base.g + (goal.g - base.g) * alpha),
     b: Math.round(base.b + (goal.b - base.b) * alpha),
-  }
+  };
   return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 }
 
 function generatePalette(base, goal) {
-  const palette = []
+  const palette = [];
   for (let i = 0; i <= 10; i++) {
     const rgb = mixColors(base, goal, 0.1 * i);
     palette.push(rgb);
@@ -53,6 +53,7 @@ function Heatmap({
   useElimination = true,
 }) {
   const [loaded] = useLoaded();
+  const settings = useGetSettingsQuery();
   const { themeRgb } = useSelector((state) => ({
     themeRgb: state.theme.colorRgb,
   }));
@@ -102,14 +103,14 @@ function Heatmap({
   return !loaded ? (
     <div className="habit loading" />
   ) : (
-    <div className="habit">
+    <div
+      className="habit"
+      style={{
+        '--multiplier': settings.data.cell_height_multiplier,
+      }}
+    >
       <h4>Habit</h4>
-      <div
-        className="heatmap"
-        style={{
-          '--multiplier': dayLength,
-        }}
-      >
+      <div className="heatmap">
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
         <div
@@ -126,7 +127,6 @@ function Heatmap({
                   dateEnd={chunk.dateEnd}
                   color={chunk.color}
                   value={chunk.value}
-                  multiplier={2}
                   basePeriod={24}
                 />
               ))}
