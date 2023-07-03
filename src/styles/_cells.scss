@@ -20,22 +20,6 @@ $cell-margin: 2px;
   position: relative;
   background-color: var(--support-background-color);
 
-  &.offset--2:before {
-    left: 0px;
-  }
-
-  &.offset--1:before {
-    left: -50px;
-  }
-
-  &.offset-1:before {
-    left: -145px;
-  }
-
-  &.offset-2:before {
-    left: -190px;
-  }
-
   &:hover {
     border: 1px solid var(--cell-border-color);
   }
@@ -60,6 +44,7 @@ $cell-margin: 2px;
         calc(var(--height) * var(--multiplier) - 1)
     );
     width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
+    border-radius: 1px;
     position: absolute;
     visibility: visible;
     display: block;
@@ -87,12 +72,12 @@ $cell-margin: 2px;
 
     & .cell-period-before {
       width: 11px;
-      left: -12px;
+      left: -12.3px;
     }
 
     & .cell-period-after {
       width: 11px;
-      right: -12px;
+      right: -12.35px;
     }
   }
 
