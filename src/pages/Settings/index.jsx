@@ -4,7 +4,11 @@ import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import useTitle from '../../hooks/useTitle';
 import useAnchor from '../../hooks/useAnchor';
-import { useGetSettingsQuery, useChangeThemeMutation } from '../../state/services/settings';
+import {
+  useGetSettingsQuery,
+  useChangeThemeMutation,
+  useChangeCellHeightMutation,
+} from '../../state/services/settings';
 
 export default function Settings() {
   useTitle('Settings | Neohabit');
@@ -25,7 +29,7 @@ export default function Settings() {
       </div>
       <div className="settings">
         <SettingsSection name="general" elements={<ThemeOption />} />
-        <SettingsSection name="heatmaps" />
+        <SettingsSection name="heatmaps" elements={<HeatmapHeightOption />} />
         <SettingsSection name="account" />
       </div>
     </main>
@@ -89,6 +93,37 @@ function ThemeOption() {
           onClick={() => changeTheme(false)}
         >
           Light
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function HeatmapHeightOption() {
+  const [changeCellHeight] = useChangeCellHeightMutation();
+  const settings = useGetSettingsQuery();
+  const cellHeight = settings.data.cell_height_multiplier;
+  const [cellHeightInput, setCellHeightInput] = useState(cellHeight);
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Heatmap Height</h3>
+      </div>
+      <div className="settings-chooser">
+        <input
+          className="settings-input settings-btn"
+          type="number"
+          min="1"
+          max="4"
+          value={cellHeightInput}
+          onChange={(e) => setCellHeightInput(e.target.value)}
+        />
+        <button
+          className="settings-input settings-save-btn"
+          onClick={() => changeCellHeight(cellHeightInput)}
+        >
+          Save
         </button>
       </div>
     </div>

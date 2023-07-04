@@ -44,7 +44,31 @@ export const settingsApi = api.injectEndpoints({
         );
       },
     }),
+    changeCellHeight: builder.mutation({
+      query: (cellHeight) => ({
+        url: 'settings/cell_height',
+        body: { cellHeight },
+        method: 'PUT',
+      }),
+      async onQueryStarted(cellHeight, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        console.log(cellHeight);
+        dispatch(
+          settingsApi.util.updateQueryData(
+            'getSettings',
+            undefined,
+            (draft) => {
+              draft.cell_height_multiplier = cellHeight;
+            },
+          ),
+        );
+      },
+    }),
   }),
 });
 
-export const { useGetSettingsQuery, useChangeThemeMutation } = settingsApi;
+export const {
+  useGetSettingsQuery,
+  useChangeThemeMutation,
+  useChangeCellHeightMutation,
+} = settingsApi;

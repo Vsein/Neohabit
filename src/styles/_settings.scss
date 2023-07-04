@@ -80,3 +80,16 @@
     text-transform: capitalize;
   }
 }
+
+.settings-input {
+  color: var(--text-color);
+  font-size: 80%;
+  border: 2px solid var(--border-color);
+  background-color: var(--main-background-color);
+  border-radius: 7px;
+  padding: 8px 10px;
+}
+
+.settings-save-btn {
+  padding-inline: 30px;
+}
