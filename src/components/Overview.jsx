@@ -40,7 +40,8 @@ export default function Overview({ dateStart, dateEnd }) {
 
   return (
     <div className="overview" style={{
-      '--multiplier': settings.data.cell_height_multiplier,
+      // '--multiplier': settings.data.cell_height_multiplier,
+      '--multiplier': 1,
     }}>
       <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
       <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
