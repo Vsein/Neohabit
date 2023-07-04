@@ -22,6 +22,11 @@ export const settingsApi = api.injectEndpoints({
         dispatch(changeTo(newTheme));
       },
     }),
+    getSelf: builder.query({
+      query: () => ({
+        url: 'user/im',
+      }),
+    }),
     changeTheme: builder.mutation({
       query: (preferDark) => ({
         url: 'settings/theme',
@@ -69,6 +74,7 @@ export const settingsApi = api.injectEndpoints({
 
 export const {
   useGetSettingsQuery,
+  useGetSelfQuery,
   useChangeThemeMutation,
   useChangeCellHeightMutation,
 } = settingsApi;

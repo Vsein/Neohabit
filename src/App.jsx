@@ -28,19 +28,29 @@ import { hideTip } from './components/HeatmapCells';
 import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetProjectsQuery } from './state/services/project';
 import { useGetTasksQuery } from './state/services/todolist';
-import { useGetSettingsQuery } from './state/services/settings';
+import {
+  useGetSettingsQuery,
+  useGetSelfQuery,
+} from './state/services/settings';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(undefined);
   const settings = useGetSettingsQuery();
+  const userInfo = useGetSelfQuery();
 
   useEffect(() => {
     setLoggedIn(hasJWT());
   }, []);
 
-  if (loggedIn === undefined || settings.isFetching || settings.isLoading) {
+  if (
+    loggedIn === undefined ||
+    settings.isFetching ||
+    settings.isLoading ||
+    userInfo.isFetching ||
+    userInfo.isLoading
+  ) {
     return null; // or loading indicator/spinner/etc
   }
 
