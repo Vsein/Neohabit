@@ -165,4 +165,4 @@ function TallDummy({ height, vertical = false }) {
   return <div style={style} className="dummy" />;
 }
 
-export { Cell, CellPeriod, TallDummy };
+export { Cell, CellPeriod, TallDummy, hideTip };
