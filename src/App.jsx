@@ -38,20 +38,12 @@ import { hasJWT } from './state/services/auth';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(undefined);
-  const settings = useGetSettingsQuery();
-  const userInfo = useGetSelfQuery();
 
   useEffect(() => {
     setLoggedIn(hasJWT());
   }, []);
 
-  if (
-    loggedIn === undefined ||
-    settings.isFetching ||
-    settings.isLoading ||
-    userInfo.isFetching ||
-    userInfo.isLoading
-  ) {
+  if (loggedIn === undefined) {
     return null; // or loading indicator/spinner/etc
   }
 
@@ -89,6 +81,8 @@ const App = () => {
 const PrivateRoutes = (params) => {
   const { loggedIn, changeAuth } = params;
   const location = useLocation();
+  const settings = useGetSettingsQuery();
+  const userInfo = useGetSelfQuery();
 
   useEffect(() => {
     changeAuth(hasJWT());
@@ -107,6 +101,15 @@ const PrivateRoutes = (params) => {
 
   const projects = useGetProjectsQuery();
   const tasks = useGetTasksQuery();
+
+  if (
+    settings.isFetching ||
+    settings.isLoading ||
+    userInfo.isFetching ||
+    userInfo.isLoading
+  ) {
+    return null; // or loading indicator/spinner/etc
+  }
 
   return loggedIn ? (
     <>
