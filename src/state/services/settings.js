@@ -27,6 +27,12 @@ export const settingsApi = api.injectEndpoints({
         url: 'user/im',
       }),
     }),
+    deleteSelf: builder.mutation({
+      query: () => ({
+        url: 'user/im',
+        method: 'DELETE',
+      }),
+    }),
     changeTheme: builder.mutation({
       query: (preferDark) => ({
         url: 'settings/theme',
@@ -75,6 +81,7 @@ export const settingsApi = api.injectEndpoints({
 export const {
   useGetSettingsQuery,
   useGetSelfQuery,
+  useDeleteSelfMutation,
   useChangeThemeMutation,
   useChangeCellHeightMutation,
 } = settingsApi;

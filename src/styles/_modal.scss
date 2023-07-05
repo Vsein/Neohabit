@@ -41,8 +41,8 @@
   }
 
   &-header {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-auto-flow: column;
     justify-content: space-between;
     align-items: center;
   }

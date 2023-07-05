@@ -4,6 +4,7 @@ import api from './services/api';
 import authApi from './services/auth';
 import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
+import deleteOverlayReducer from './features/deleteOverlay/deleteOverlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
 import themeReducer from './features/theme/themeSlice';
 
@@ -14,6 +15,7 @@ const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     projectOverlay: projectOverlayReducer,
     taskOverlay: taskOverlayReducer,
+    deleteOverlay: deleteOverlayReducer,
     cellAdd: cellAddReducer,
     theme: themeReducer,
   },

@@ -60,6 +60,10 @@
     color: black;
   }
 
+  &.delete {
+    background-color: red;
+  }
+
   &.active {
     border: 2px solid var(--border-color);
   }
@@ -92,4 +96,20 @@
 
 .settings-save-btn {
   padding-inline: 30px;
+}
+
+.modal-settings {
+  width: 400px;
+  min-height: 100px;
+  height: 200px;
+  grid-template-rows: 1fr 1fr;
+}
+
+.modal-footnote {
+  color: var(--support-text-color);
+  line-height: 1em;
+}
+
+.form-button.delete {
+  background-color: red;
 }

@@ -7,13 +7,13 @@ export default function AccountInfo() {
 
   return (
     <div className="account-info">
-      <img
-        src={pfp}
-        alt="profile pic"
-        className="pfp small"
-      />
+      <img src={pfp} alt="profile pic" className="pfp small" />
       <p>Serene Coder</p>
-      <p className="account-username">{`@${self.data.username}`} </p>
+      {self.isLoading || self.isFetching ? (
+        <></>
+      ) : (
+        <p className="account-username">{`@${self.data.username}`} </p>
+      )}
     </div>
   );
 }

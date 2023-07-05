@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import useTitle from '../../hooks/useTitle';
@@ -9,6 +10,7 @@ import {
   useChangeThemeMutation,
   useChangeCellHeightMutation,
 } from '../../state/services/settings';
+import { open } from '../../state/features/deleteOverlay/deleteOverlaySlice';
 
 export default function Settings() {
   useTitle('Settings | Neohabit');
@@ -30,7 +32,7 @@ export default function Settings() {
       <div className="settings">
         <SettingsSection name="general" elements={<ThemeOption />} />
         <SettingsSection name="heatmaps" elements={<HeatmapHeightOption />} />
-        <SettingsSection name="account" />
+        <SettingsSection name="account" elements={<DeleteAccountOption />}/>
       </div>
     </main>
   );
@@ -124,6 +126,29 @@ function HeatmapHeightOption() {
           onClick={() => changeCellHeight(cellHeightInput)}
         >
           Save
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function DeleteAccountOption() {
+  const dispatch = useDispatch();
+  const openOverlay = () => {
+    dispatch(open());
+  };
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Delete account</h3>
+      </div>
+      <div className="settings-chooser">
+        <button
+          className="dashboard-btn settings-btn delete"
+          onClick={openOverlay}
+        >
+          Delete
         </button>
       </div>
     </div>

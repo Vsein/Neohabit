@@ -23,6 +23,7 @@ import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
 import OverlayProject from './components/OverlayProject';
 import OverlayTask from './components/OverlayTask';
+import OverlayDelete from './components/OverlayDelete';
 import CellTip from './components/CellTip';
 import { hideTip } from './components/HeatmapCells';
 import CellAdd from './state/features/cellAdd/CellAdd';
@@ -117,6 +118,7 @@ const PrivateRoutes = (params) => {
         <CellAdd />
         {/* <SidebarMobile /> */}
       </div>
+      <OverlayDelete />
       {projects.isFetching ||
       projects.isLoading ||
       tasks.isFetching ||
