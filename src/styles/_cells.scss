@@ -65,6 +65,17 @@ $cell-margin: 2px;
     top: 0px;
   }
 
+  &-connector {
+    @include shaped-cell;
+    margin-inline: 0px;
+    left: -3px;
+    width: 6px;
+    top: calc(
+      var(--cell-height) * var(--offset-top) * var(--multiplier) + 4px *
+        calc(var(--offset-top) * var(--multiplier))
+    );
+  }
+
   &.whole {
     margin-inline: 0px;
     border-left: none;
@@ -105,6 +116,11 @@ $cell-margin: 2px;
 
     & > .cell-period-after {
       border: 1px solid var(--cell-border-color);
+    }
+
+    & > .cell-period-connector {
+      border-top: 1px solid var(--cell-border-color);
+      border-bottom: 1px solid var(--cell-border-color);
     }
   }
 }
