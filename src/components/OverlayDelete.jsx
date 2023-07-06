@@ -24,6 +24,7 @@ export default function Overlay() {
   const deleteAccount = async () => {
     await deleteSelf();
     dispatch(close());
+    dispatch({ type: 'RESET' });
     localStorage.clear();
     navigate('/login');
   };
