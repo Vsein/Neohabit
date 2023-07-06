@@ -7,7 +7,9 @@ import {
   max,
   startOfDay,
   differenceInHours,
+  differenceInWeeks,
   startOfWeek,
+  endOfWeek,
 } from 'date-fns';
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
@@ -61,6 +63,7 @@ function Heatmap({
 
   const colorRGB = hexToRgb(color);
   const palette = generatePalette(themeRgb, colorRGB);
+  const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 
   let dateNow = dataPeriods[0].date;
   let i = 0;
@@ -107,6 +110,7 @@ function Heatmap({
       className="habit"
       style={{
         '--multiplier': settings.data.cell_height_multiplier,
+        '--weeks': diffWeeks,
       }}
     >
       <h4>Habit</h4>

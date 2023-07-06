@@ -4,7 +4,9 @@ import {
   subMilliseconds,
   startOfDay,
   differenceInHours,
+  differenceInWeeks,
   startOfWeek,
+  endOfWeek,
 } from 'date-fns';
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
@@ -54,6 +56,7 @@ function Heatmap({
     }
     return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
   }
+  const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 
   let dateNow = dateStart;
   let i = 0;
@@ -101,6 +104,7 @@ function Heatmap({
       className="habit"
       style={{
         '--multiplier': settings.data.cell_height_multiplier,
+        '--weeks': diffWeeks,
       }}
     >
       <div className="habit-header">

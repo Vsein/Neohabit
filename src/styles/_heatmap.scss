@@ -28,12 +28,13 @@ $cell-weekdays-width: 33px;
 
 .habit {
   --multiplier: 1;
+  --weeks: 53;
   overflow: hidden;
   position: relative;
   height: calc(
     32px + 5px + #{$cell-height} + 5px + (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier) + 5px
   );
-  width: min(100%, calc(55 * 15px + 15px +
+  width: min(100%, calc(var(--weeks) * 15px - 2px + 15px +
         (#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
           (var(--multiplier) - 1)) * 2.5
       )
@@ -88,7 +89,7 @@ $cell-weekdays-width: 33px;
   position: absolute;
   right: 5px;
   display: grid;
-  width: min(100%, calc(55 * 15px + 15px +
+  width: min(100%, calc(var(--weeks) * 15px - 2px + 15px +
         (#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
           (var(--multiplier) - 1)) * 2.5
       )
@@ -97,7 +98,7 @@ $cell-weekdays-width: 33px;
   grid-template-rows: $cell-height calc(
       (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
     );
-  grid-template-columns: calc(55 * 15px) min-content;
+  grid-template-columns: calc(var(--weeks) * 15px - 2px) min-content;
   row-gap: 5px;
 
   .heatmap-months {
