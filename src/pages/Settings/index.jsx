@@ -122,7 +122,7 @@ function HeatmapHeightOption() {
           onChange={(e) => setCellHeightInput(e.target.value)}
         />
         <button
-          className="settings-input settings-save-btn"
+          className="settings-input settings-save-btn dashboard-btn"
           onClick={() => changeCellHeight(cellHeightInput)}
         >
           Save
