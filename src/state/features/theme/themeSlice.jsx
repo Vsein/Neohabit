@@ -1,5 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export const changeTheme = (newTheme) => {
+  const root = document.documentElement;
+  const link = document.querySelector("link[rel~='icon']");
+  link.href =
+    newTheme === 'dark' ? './logos/favicon-dark2.ico' : './logos/favicon.ico';
+  root.className = newTheme;
+};
+
 const darkTheme = {
   rgb: { r: 28, g: 33, b: 40 },
   hex: '#1C2128',

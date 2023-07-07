@@ -105,10 +105,10 @@ export default function Habits() {
           dateEnd={dateEnd}
           dayLength={dayLength}
         />
-        <button className="add-task-btn">
-          <Icon className="add-task-icon" path={mdiPlus} />
-          <p>Add habit</p>
-        </button>
+        {/* <button className="add-task-btn"> */}
+        {/*   <Icon className="add-task-icon" path={mdiPlus} /> */}
+        {/*   <p>Add habit</p> */}
+        {/* </button> */}
       </ul>
     </main>
   );

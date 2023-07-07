@@ -1,0 +1,115 @@
+@import 'dropdown';
+
+.settingsc-container {
+  grid-area: main;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-rows: 100px 1fr;
+  height: 100%;
+  width: 300px;
+}
+
+.settings-bar {
+  background-color: var(--main-background-color);
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: left;
+}
+
+.settings-type {
+  padding: 15px;
+  padding-inline: 20px;
+  width: min-content;
+}
+
+.settings {
+  padding: 20px;
+  padding-inline: 35px;
+}
+
+.settings-section {
+  margin-bottom: 15px;
+}
+
+.settings-option {
+  color: var(--support-text-color);
+  display: flex;
+  justify-content: space-between;
+  width: min(700px, 100%);
+  align-items: center;
+}
+
+.settings-chooser {
+  display: flex;
+  gap: 10px;
+}
+
+.settings-btn {
+  width: max-content;
+  padding: 8px 30px;
+  border: 2px solid transparent;
+
+  &.dark {
+    background-color: #2D3333;
+    color: #bbb;
+  }
+
+  &.light {
+    background-color: white;
+    color: black;
+  }
+
+  &.delete {
+    background-color: red;
+  }
+
+  &.active {
+    border: 2px solid var(--border-color);
+  }
+}
+
+.settings-section {
+  @include dropdown;
+  @include dropdown-arrow;
+  @include dropdown-collapse;
+
+  &-header {
+    margin-left: -8px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    text-transform: capitalize;
+  }
+}
+
+.settings-input {
+  color: var(--text-color);
+  font-size: 80%;
+  border: 2px solid var(--border-color);
+  background-color: var(--main-background-color);
+  border-radius: 7px;
+  padding: 8px 10px;
+}
+
+.settings-save-btn {
+  padding-inline: 30px;
+}
+
+.modal-settings {
+  width: 400px;
+  min-height: 100px;
+  height: 200px;
+  grid-template-rows: 1fr 1fr;
+}
+
+.modal-footnote {
+  color: var(--support-text-color);
+  line-height: 1em;
+}
+
+.form-button.delete {
+  background-color: red;
+}

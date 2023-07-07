@@ -27,10 +27,16 @@
 }
 
 .projects-header {
+  width: 100%;
   display: flex;
   flex-direction: row;
+  gap: 5px;
   justify-content: space-between;
   align-items: center;
+
+  & .add {
+    margin-left: auto;
+  }
 }
 
 .navigation {
@@ -99,7 +105,7 @@
 
 .project {
   @include sidebar-item;
-  padding-inline: 15px;
+  padding-inline: 9px;
 }
 
 .tag {
@@ -116,15 +122,7 @@
 
 .projects {
   @include dropdown;
-
-  &-arrow {
-    transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8);
-    transform: rotate(90deg);
-
-    &.active {
-      transform: none;
-    }
-  }
+  @include dropdown-arrow;
 }
 
 .sidebar-mobile {

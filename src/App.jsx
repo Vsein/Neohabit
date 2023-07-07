@@ -18,19 +18,26 @@ import Logout from './pages/Logout';
 import Logo from './pages/Logo';
 import NotFound from './pages/404';
 import Landing from './pages/Landing';
+import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
 import Sidebar from './components/Sidebar';
 import OverlayProject from './components/OverlayProject';
 import OverlayTask from './components/OverlayTask';
+import OverlayDelete from './components/OverlayDelete';
 import CellTip from './components/CellTip';
+import { hideTip } from './components/HeatmapCells';
 import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetProjectsQuery } from './state/services/project';
 import { useGetTasksQuery } from './state/services/todolist';
+import {
+  useGetSettingsQuery,
+  useGetSelfQuery,
+} from './state/services/settings';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(undefined);
 
   useEffect(() => {
     setLoggedIn(hasJWT());
@@ -63,6 +70,7 @@ const App = () => {
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/logo" element={<Logo />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
@@ -73,10 +81,16 @@ const App = () => {
 const PrivateRoutes = (params) => {
   const { loggedIn, changeAuth } = params;
   const location = useLocation();
+  const settings = useGetSettingsQuery();
+  const userInfo = useGetSelfQuery();
 
   useEffect(() => {
     changeAuth(hasJWT());
   }, [location.pathname]);
+
+  useEffect(() => {
+    document.addEventListener('click', hideTip);
+  });
 
   const [sidebarHidden, setSidebarHidden] = useState(true);
 
@@ -88,6 +102,15 @@ const PrivateRoutes = (params) => {
   const projects = useGetProjectsQuery();
   const tasks = useGetTasksQuery();
 
+  if (
+    settings.isFetching ||
+    settings.isLoading ||
+    userInfo.isFetching ||
+    userInfo.isLoading
+  ) {
+    return null; // or loading indicator/spinner/etc
+  }
+
   return loggedIn ? (
     <>
       <div id="content">
@@ -98,6 +121,7 @@ const PrivateRoutes = (params) => {
         <CellAdd />
         {/* <SidebarMobile /> */}
       </div>
+      <OverlayDelete />
       {projects.isFetching ||
       projects.isLoading ||
       tasks.isFetching ||

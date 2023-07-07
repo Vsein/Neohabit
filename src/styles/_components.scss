@@ -17,6 +17,11 @@
   width: 30px;
   justify-self: center;
 
+  &.big {
+    height: 40px;
+    width: 40px;
+  }
+
   &:hover {
     cursor: pointer;
   }

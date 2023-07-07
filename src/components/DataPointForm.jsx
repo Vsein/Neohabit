@@ -12,7 +12,13 @@ export default function DataPointForm({ onSubmit }) {
       }}
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
-        <form onSubmit={handleSubmit} className="habit-form">
+        <form
+          onSubmit={async (e) => {
+            await handleSubmit(e);
+            form.reset();
+          }}
+          className="habit-form"
+        >
           <div className="habit-form-date">
             <label htmlFor="date-name">
               <Field

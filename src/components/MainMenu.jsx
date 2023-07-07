@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
   mdiCog,
@@ -14,7 +13,7 @@ import {
 import PFP from './ProfilePicture';
 import AccountInfo from './AccountInfo';
 import useMenuToggler from '../hooks/useMenuToggler';
-import { changeTo } from '../state/features/theme/themeSlice';
+import { useGetSettingsQuery, useChangeThemeMutation } from '../state/services/settings';
 
 export default function MainMenu(props) {
   const { toggleSidebar } = props;
@@ -76,31 +75,21 @@ function MenuSection(props) {
 }
 
 function ThemeToggle() {
-  const dispatch = useDispatch();
-  const [theme, setTheme] = useState('dark');
-  const title = `Theme: ${theme}`;
-  const changeTheme = () => {
-    const root = document.documentElement;
-    const newTheme = root.className === 'dark' ? 'light' : 'dark';
-    dispatch(changeTo(newTheme));
-    const link = document.querySelector("link[rel~='icon']");
-    link.href = newTheme === 'dark' ? './logos/favicon-dark2.ico' : './logos/favicon.ico';
-    root.className = newTheme;
-    setTheme(newTheme);
-  };
+  const [changeTheme] = useChangeThemeMutation();
+  const settings = useGetSettingsQuery();
+  const theme = settings.data.prefer_dark ? 'dark' : 'light';
 
   return (
     <li>
-      <a className="menu-section" onClick={changeTheme}>
+      <a
+        className="menu-section"
+        onClick={() => changeTheme(theme !== 'dark')}
+      >
         <Icon
-          path={
-            theme === 'dark'
-              ? mdiMoonWaxingCrescent
-              : mdiWhiteBalanceSunny
-          }
+          path={theme === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
           className="icon"
         />
-        <p className="link">{title}</p>
+        <p className="link">{`Theme: ${theme}`}</p>
       </a>
     </li>
   );

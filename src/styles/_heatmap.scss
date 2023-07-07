@@ -6,13 +6,15 @@ $cell-weekdays-width: 33px;
 .habits {
   grid-area: main;
   padding: 18px 36px 36px;
-  margin-inline: auto;
-  width: min(100%, 980px);
   background-color: var(--support-background-color);
 
   &-header {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+
+    & h3 {
+    }
   }
 
   &-list {
@@ -25,18 +27,27 @@ $cell-weekdays-width: 33px;
 }
 
 .habit {
+  --multiplier: 1;
+  --weeks: 53;
   overflow: hidden;
   position: relative;
-  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 18);
+  height: calc(
+    32px + 5px + #{$cell-height} + 5px + (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier) + 5px
+  );
+  width: min(100%, calc(var(--weeks) * 15px - 2px + 15px +
+        (#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
+          (var(--multiplier) - 1)) * 2.5
+      )
+  );
   background-color: var(--main-background-color);
   padding-block: 5px;
   padding-inline: 12px;
   border-radius: 10px;
   border: 1px solid var(--border-color);
+  margin-inline: auto;
 
   &.loading {
     background-color: var(--support-background-color);
-    border-radius: 20px;
   }
 
   &-header {
@@ -74,17 +85,20 @@ $cell-weekdays-width: 33px;
 }
 
 .heatmap {
-  --multiplier: 1;
   overflow-x: scroll;
   position: absolute;
   right: 5px;
   display: grid;
-  width: min(100%, 980px);
+  width: min(100%, calc(var(--weeks) * 15px - 2px + 15px +
+        (#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
+          (var(--multiplier) - 1)) * 2.5
+      )
+  );
   direction: rtl;
   grid-template-rows: $cell-height calc(
       (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
     );
-  grid-template-columns: calc(55 * 15px) min-content ;
+  grid-template-columns: calc(var(--weeks) * 15px - 2px) min-content;
   row-gap: 5px;
 
   .heatmap-months {

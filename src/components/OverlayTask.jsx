@@ -76,7 +76,10 @@ export default function Overlay() {
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
             <form
-              onSubmit={handleSubmit}
+              onSubmit={async (e) => {
+                await handleSubmit(e);
+                form.reset();
+              }}
               className="modal modal-active"
               onClick={(e) => e.stopPropagation()}
             >

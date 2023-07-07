@@ -85,6 +85,10 @@
       & .filters, & .projects, & .projects-container {
         visibility: hidden;
       }
+
+      & .projects-arrow {
+        opacity: 0;
+      }
     }
   }
 

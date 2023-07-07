@@ -38,7 +38,7 @@ async function changeCellOffset(e, content) {
   } else if (rect.x + 50 > rectParent.x + rectParent.width) {
     offset = tipWidth;
   } else if (rect.x + 100 > rectParent.x + rectParent.width) {
-    offset = tipWidth / 4 * 3;
+    offset = (tipWidth / 4) * 3;
   }
   cellTip.classList.remove('hidden');
   cellTip.style.top = `${window.pageYOffset + rect.y - 40}px`;
@@ -51,7 +51,6 @@ function hideTip() {
   cellTip.classList.add('hidden');
   cellTip.style.pointerEvents = 'auto';
 }
-
 
 function Cell({ color, date, value, height = 1, width = 1 }) {
   const style = {
@@ -142,15 +141,22 @@ function CellPeriod({
   return (
     <>
       <div
-        className={`cell-period ${
-          diffDays <= 7 ? 'whole' : 'wide'
-        }`}
+        className={`cell-period ${width ? 'wide' : 'whole'}`}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, content)}
         onMouseLeave={hideTip}
       >
         <div className="cell-period-before" style={styleBefore} />
         <div className="cell-period-after" style={styleAfter} />
+        {diffDays > 7 && !width && (
+          <div
+            className="cell-period-connector"
+            style={{
+              '--height': afterHeight - (7 - beforeHeight),
+              '--offset-top': 7 - beforeHeight,
+            }}
+          />
+        )}
       </div>
       {afterHeight ? <TallDummy height={afterHeight} /> : <> </>}
     </>
@@ -165,4 +171,4 @@ function TallDummy({ height, vertical = false }) {
   return <div style={style} className="dummy" />;
 }
 
-export { Cell, CellPeriod, TallDummy };
+export { Cell, CellPeriod, TallDummy, hideTip };

@@ -7,7 +7,6 @@
 
   &-container {
     display: grid;
-    grid-auto-rows: 35px;
     gap: 3px;
     width: 100%;
     position: absolute;
@@ -19,6 +18,7 @@
     pointer-events: none;
 
     &.active {
+      grid-auto-rows: 35px;
       top: calc(100%);
       visibility: visible;
       opacity: 1;
@@ -33,5 +33,28 @@
     display: grid;
     justify-content: center;
     align-content: center;
+  }
+}
+
+@mixin dropdown-arrow {
+  &-arrow {
+    transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8), opacity 0s,
+      color 0s;
+    transform: rotate(-90deg);
+
+    &.active {
+      transform: none;
+    }
+  }
+}
+
+@mixin dropdown-collapse {
+  &-container {
+    position: relative;
+    display: none;
+
+    &.active {
+      display: contents;
+    }
   }
 }

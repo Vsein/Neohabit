@@ -1,29 +1,38 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import api from './services/api';
 import authApi from './services/auth';
 import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
+import deleteOverlayReducer from './features/deleteOverlay/deleteOverlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
-import themeReducer from './features/theme/themeSlice';
+import themeReducer, { changeTheme } from './features/theme/themeSlice';
+
+const combinedReducer = combineReducers({
+  [api.reducerPath]: api.reducer,
+  [authApi.reducerPath]: authApi.reducer,
+  projectOverlay: projectOverlayReducer,
+  taskOverlay: taskOverlayReducer,
+  deleteOverlay: deleteOverlayReducer,
+  cellAdd: cellAddReducer,
+  theme: themeReducer,
+});
+
+const rootReducer = (state, action) => {
+  if (action.type === 'RESET') {
+    state = undefined;
+    // I'm not sure whether I should make it the default behavior
+    // changeTheme('dark');
+  }
+  return combinedReducer(state, action);
+};
 
 const store = configureStore({
-  reducer: {
-    // Add the generated reducer as a specific top-level slice
-    [api.reducerPath]: api.reducer,
-    [authApi.reducerPath]: authApi.reducer,
-    projectOverlay: projectOverlayReducer,
-    taskOverlay: taskOverlayReducer,
-    cellAdd: cellAddReducer,
-    theme: themeReducer,
-  },
+  reducer: rootReducer,
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([
-      api.middleware,
-      authApi.middleware,
-    ]),
+    getDefaultMiddleware().concat([api.middleware, authApi.middleware]),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

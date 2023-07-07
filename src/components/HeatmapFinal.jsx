@@ -4,13 +4,16 @@ import {
   subMilliseconds,
   startOfDay,
   differenceInHours,
+  differenceInWeeks,
   startOfWeek,
+  endOfWeek,
 } from 'date-fns';
 import { CellPeriod, TallDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import DataPointForm from './DataPointForm';
+import { useGetSettingsQuery } from '../state/services/settings';
 
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -34,6 +37,7 @@ function Heatmap({
   useElimination = true,
 }) {
   const [loaded] = useLoaded();
+  const settings = useGetSettingsQuery();
   const Data = heatmap?.data ?? [];
   const data = [...Data];
   data.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -52,6 +56,7 @@ function Heatmap({
     }
     return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
   }
+  const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 
   let dateNow = dateStart;
   let i = 0;
@@ -95,16 +100,22 @@ function Heatmap({
   return !loaded ? (
     <div className="habit loading" />
   ) : (
-    <div className="habit">
+    <div
+      className="habit"
+      style={{
+        '--multiplier': settings.data.cell_height_multiplier,
+        '--weeks': diffWeeks,
+      }}
+    >
       <div className="habit-header">
         <h4>Habit</h4>
         <DataPointForm onSubmit={onSubmit} />
       </div>
-      <div className="heatmap" style={{ '--multiplier': dayLength }}>
+      <div className="heatmap">
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
         <div className="heatmap-cells">
-          <TallDummy height={dummyHeight} />
+          {dummyHeight ? <TallDummy height={dummyHeight} /> : <> </>}
           {periods.map((chunk, index) => (
             <CellPeriod
               key={index}
@@ -112,7 +123,6 @@ function Heatmap({
               dateEnd={chunk.dateEnd}
               color={chunk.color}
               value={chunk.value}
-              multiplier={2}
               basePeriod={24}
             />
           ))}
