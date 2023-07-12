@@ -50,6 +50,7 @@ function hideTip() {
   const cellTip = document.querySelector('.cell-tip');
   cellTip.classList.add('hidden');
   cellTip.style.pointerEvents = 'auto';
+  cellTip.style.top = '0px';
 }
 
 function Cell({ color, date, value, height = 1, width = 1 }) {
