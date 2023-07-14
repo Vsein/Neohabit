@@ -60,4 +60,5 @@
 
 .stopwatch-icon {
   color: var(--text-color);
+  transition: all 0.3s ease-out, color 0s;
 }
