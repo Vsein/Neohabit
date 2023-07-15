@@ -9,12 +9,14 @@ import {
 import {
   useGetStopwatchQuery,
   useUpdateStopwatchMutation,
+  useFinishStopwatchMutation,
 } from '../state/services/stopwatch';
 
 export default function Stopwatch() {
   const stopwatch = useGetStopwatchQuery();
   const [isPaused, setIsPaused] = useState(stopwatch.data.is_paused);
   const [updateStopwatch] = useUpdateStopwatchMutation();
+  const [finishStopwatch] = useFinishStopwatchMutation();
 
   const calcCurrentDuration = () => {
     if (!stopwatch.data.is_initiated) {
@@ -89,6 +91,13 @@ export default function Stopwatch() {
     document.title = '0:00:00 | Neohabit';
   };
 
+  const finishCountdown = () => {
+    finishStopwatch({ values: { ...stopwatch.data } });
+    setIsPaused(true);
+    setCurrentDuration(0);
+    document.title = '0:00:00 | Neohabit';
+  }
+
   useEffect(() => {
     if (!isPaused) {
       let timerInterval = setInterval(() => {
@@ -135,7 +144,10 @@ export default function Stopwatch() {
             className="icon big sidebar-toggle"
           />
         </button>
-        <button className="logo-section sidebar-toggle-container centering stopwatch-icon">
+        <button
+          className="logo-section sidebar-toggle-container centering stopwatch-icon"
+          onClick={finishCountdown}
+        >
           <Icon
             path={mdiFlagCheckered}
             className="icon medium sidebar-toggle"
