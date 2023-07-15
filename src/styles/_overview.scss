@@ -18,7 +18,7 @@ $cell-margin: 2px;
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  width: min(855px, 100%);
+  width: min(877px, 100%);
   padding-right: 5px;
 }
 
@@ -35,12 +35,12 @@ $cell-margin: 2px;
 }
 
 .overview {
-  width: min(100%, 845px);
+  width: min(100%, 870px);
   --multiplier: 1;
   position: absolute;
   display: grid;
   grid-template-rows: $cell-height $cell-height min-content;
-  grid-template-columns: 40px min-content 180px;
+  grid-template-columns: 40px min-content 200px;
   row-gap: 5px;
 
   .overview-months {
@@ -108,7 +108,6 @@ $cell-margin: 2px;
         line-height: 15px;
         text-overflow: ellipsis;
         overflow: hidden;
-        width: 160px;
         white-space: nowrap;
       }
 
