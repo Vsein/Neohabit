@@ -20,7 +20,7 @@ export const heatmapApi = api.injectEndpoints({
             console.log(values);
             if (Heatmap) {
               Heatmap.data.push(values);
-              Heatmap.data.sort((a, b) => a.date - b.date );
+              Heatmap.data.sort((a, b) => a.date - b.date);
             }
           }),
         );

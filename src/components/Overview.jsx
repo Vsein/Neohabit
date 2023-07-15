@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { differenceInDays, addDays, compareAsc } from 'date-fns';
+import { differenceInDays, addDays, compareAsc, startOfDay, endOfDay } from 'date-fns';
 import Icon from '@mdi/react';
-import { mdiDelete, mdiPencil, mdiPlus } from '@mdi/js';
+import { mdiDelete, mdiPencil, mdiPlus, mdiTimer } from '@mdi/js';
 import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
@@ -18,6 +18,7 @@ import {
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
 import { OverviewMonths, OverviewDays } from './OverviewHeaders';
+import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 
 export default function Overview({ dateStart, dateEnd }) {
   const [loaded] = useLoaded();
@@ -70,9 +71,17 @@ function OverviewHeatmap({
   useElimination = true,
 }) {
   const [deleteProject] = useDeleteProjectMutation();
+  const [updateStopwatch] = useUpdateStopwatchMutation();
   const dispatch = useDispatch();
   const deleteChosenProject = (e) => {
     deleteProject(project._id);
+  };
+  const setStopwatchProject = () => {
+    updateStopwatch({
+      values: {
+        project: project,
+      },
+    });
   };
   let dateNow = dateStart;
   const data = heatmap?.data;
@@ -97,7 +106,7 @@ function OverviewHeatmap({
       >
         {dataSorted ? (
           dataSorted.map((point, index) => {
-            const date = new Date(point.date);
+            const date = startOfDay(new Date(point.date));
             const gap = differenceInDays(date, dateNow);
             if (gap < 0) return <> </>;
             dateNow = addDays(date, 1);
@@ -106,7 +115,7 @@ function OverviewHeatmap({
                 {gap > 1 ? <TallDummy height={gap} vertical={true} /> : <> </>}
                 <CellPeriod
                   dateStart={date}
-                  dateEnd={addDays(date, 1)}
+                  dateEnd={endOfDay(date)}
                   color={project.color}
                   value={1}
                   basePeriod={24}
@@ -134,6 +143,12 @@ function OverviewHeatmap({
           }}
         >
           <Icon path={mdiPlus} />
+        </button>
+        <button
+          className="overview-project-button"
+          onClick={setStopwatchProject}
+        >
+          <Icon path={mdiTimer} />
         </button>
         <Link
           className="overview-project-button"

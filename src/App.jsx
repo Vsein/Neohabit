@@ -20,6 +20,7 @@ import NotFound from './pages/404';
 import Landing from './pages/Landing';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
+import Stopwatch from './components/Stopwatch';
 import Sidebar from './components/Sidebar';
 import OverlayProject from './components/OverlayProject';
 import OverlayTask from './components/OverlayTask';
@@ -29,6 +30,7 @@ import { hideTip } from './components/HeatmapCells';
 import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetProjectsQuery } from './state/services/project';
 import { useGetTasksQuery } from './state/services/todolist';
+import { useGetStopwatchQuery } from './state/services/stopwatch';
 import {
   useGetSettingsQuery,
   useGetSelfQuery,
@@ -83,6 +85,7 @@ const PrivateRoutes = (params) => {
   const location = useLocation();
   const settings = useGetSettingsQuery();
   const userInfo = useGetSelfQuery();
+  const stopwatch = useGetStopwatchQuery();
 
   useEffect(() => {
     changeAuth(hasJWT());
@@ -106,7 +109,9 @@ const PrivateRoutes = (params) => {
     settings.isFetching ||
     settings.isLoading ||
     userInfo.isFetching ||
-    userInfo.isLoading
+    userInfo.isLoading ||
+    stopwatch.isFetching ||
+    stopwatch.isLoading
   ) {
     return null; // or loading indicator/spinner/etc
   }
@@ -121,6 +126,7 @@ const PrivateRoutes = (params) => {
         <CellAdd />
         {/* <SidebarMobile /> */}
       </div>
+      <Stopwatch />
       <OverlayDelete />
       {projects.isFetching ||
       projects.isLoading ||
