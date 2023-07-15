@@ -18,7 +18,7 @@ $cell-margin: 2px;
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  width: min(877px, 100%);
+  width: min(900px, 100%);
   padding-right: 5px;
 }
 
@@ -35,12 +35,12 @@ $cell-margin: 2px;
 }
 
 .overview {
-  width: min(100%, 870px);
+  width: min(100%, 890px);
   --multiplier: 1;
   position: absolute;
   display: grid;
   grid-template-rows: $cell-height $cell-height min-content;
-  grid-template-columns: 40px min-content 200px;
+  grid-template-columns: 65px min-content 200px;
   row-gap: 5px;
 
   .overview-months {
@@ -96,11 +96,10 @@ $cell-margin: 2px;
     display: grid;
     grid-template-rows: 15px;
     row-gap: 6px;
-    padding-left: 5px;
 
     .overview-project {
       display: grid;
-      grid-template-columns: 175px 610px 50px;
+      grid-template-columns: 200px 610px 75px;
       grid-template-rows: 18px;
       font-size: 15px;
 
@@ -109,6 +108,7 @@ $cell-margin: 2px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+        padding-left: 5px;
       }
 
       &-cells {
