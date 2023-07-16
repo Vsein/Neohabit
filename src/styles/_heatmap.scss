@@ -74,8 +74,10 @@ $cell-weekdays-width: 33px;
     }
 
     &-input {
-      padding: 5px;
+      padding: 3px;
       height: min-content;
+      font-size: 12px;
+      line-height: 12px;
     }
 
     &-counter {
