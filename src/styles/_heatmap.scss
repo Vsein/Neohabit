@@ -68,14 +68,16 @@ $cell-weekdays-width: 33px;
     gap: 8px;
 
     & > * {
-      border: 1px solid #343434;
+      border: 1px solid var(--important-border-color);
       border-radius: 10px;
       padding: 0px;
     }
 
     &-input {
-      padding: 5px;
+      padding: 3px;
       height: min-content;
+      font-size: 12px;
+      line-height: 12px;
     }
 
     &-counter {

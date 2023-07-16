@@ -50,7 +50,7 @@ export default function DataPointForm({ onSubmit }) {
             type="submit"
             disabled={submitting || pristine}
           >
-            <Icon path={mdiPlus} className="add-task-icon icon" />
+            <Icon path={mdiPlus} className="icon small" />
           </button>
         </form>
       )}
