@@ -146,14 +146,15 @@ $cell-margin: 2px;
   position: absolute;
   text-align: center;
   font-size: 12px;
-  background-color: #545454;
-  color: white;
+  background-color: var(--secondary-background-color);
+  color: var(--text-color);
   z-index: 3;
   border-radius: 10px;
   visibility: visible;
   white-space: nowrap;
   width: min-content;
   height: 40px;
+  border: 1px solid var(--border-color);
 
   & .habit-form {
     padding: 5px;
