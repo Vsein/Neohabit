@@ -95,12 +95,12 @@ $cell-margin: 2px;
     grid-row: 3;
     display: grid;
     grid-template-rows: 15px;
-    row-gap: 6px;
+    row-gap: 2px;
 
     .overview-project {
       display: grid;
       grid-template-columns: 200px 610px 75px;
-      grid-template-rows: 18px;
+      grid-template-rows: 17px;
       font-size: 15px;
 
       &-name {
