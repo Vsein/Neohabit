@@ -38,18 +38,22 @@ function Heatmap({
   const periods = [];
   for (let i = 0; i < data.length; i++) {
     const dateStartChunk = startOfDay(new Date(data[i].date));
-    periods.push({
-      color: '',
-      value: 0,
-      dateStart: dateNow,
-      dateEnd: subMilliseconds(startOfDay(new Date(data[i].date)), 1),
-    });
+    const diffDays =
+      differenceInHours(dateStartChunk, dateNow) / 24;
+    if (diffDays) {
+      periods.push({
+        color: '',
+        value: 0,
+        dateStart: dateNow,
+        dateEnd: subMilliseconds(dateStartChunk, 1),
+      });
+    }
     periods.push({
       color,
       value: 1000,
       dateStart: dateStartChunk,
       dateEnd: subMilliseconds(
-        addHours(startOfDay(new Date(data[i].date)), 24),
+        addHours(dateStartChunk, 24),
         1,
       ),
     });
