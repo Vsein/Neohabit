@@ -7,6 +7,8 @@ import {
   compareAsc,
   startOfDay,
   endOfDay,
+  min,
+  max,
 } from 'date-fns';
 import Icon from '@mdi/react';
 import { mdiDelete, mdiPencil, mdiPlus, mdiTimer } from '@mdi/js';
@@ -16,7 +18,7 @@ import {
 } from '../state/services/project';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
-import { CellPeriod, Cell } from './HeatmapCells';
+import { CellPeriod, Cell, CellDummy } from './HeatmapCells';
 import {
   changeTo,
   open,
@@ -93,7 +95,12 @@ function OverviewHeatmap({
       },
     });
   };
-  let dateNow = dateStart;
+  const dateCreation = new Date(project?.date_of_creation ?? dateStart);
+  if (min([dateCreation, dateEnd]) === dateEnd) {
+    return <> </>;
+  }
+  let dateNow = max([dateStart, dateCreation]);
+  const gap = differenceInDays(dateNow, dateStart);
   const data = heatmap?.data;
   let dataSorted;
   if (data) {
@@ -116,7 +123,8 @@ function OverviewHeatmap({
         className="overview-project-cells"
         style={{ '--cell-height': '15px', '--cell-width': '15px' }}
       >
-        {dataSorted ? (
+        {gap > 0 && <CellDummy length={gap} vertical={false} />}
+        {dataSorted &&
           dataSorted.map((point, index) => {
             const date = startOfDay(new Date(point.date));
             const gap = differenceInDays(date, dateNow);
@@ -145,11 +153,8 @@ function OverviewHeatmap({
                 />
               </>
             );
-          })
-        ) : (
-          <></>
-        )}
-        {differenceInDays(addDays(dateEnd, 1), dateNow) > 0 ? (
+          })}
+        {differenceInDays(addDays(dateEnd, 1), dateNow) > 0 && (
           <CellPeriod
             dateStart={dateNow}
             dateEnd={addDays(dateEnd, 1)}
@@ -158,8 +163,6 @@ function OverviewHeatmap({
             basePeriod={24}
             vertical={false}
           />
-        ) : (
-          <></>
         )}
       </div>
       <div className="overview-project-controls">
