@@ -1,7 +1,13 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { differenceInDays, addDays, compareAsc, startOfDay, endOfDay } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  differenceInDays,
+  addDays,
+  compareAsc,
+  startOfDay,
+  endOfDay,
+} from 'date-fns';
 import Icon from '@mdi/react';
 import { mdiDelete, mdiPencil, mdiPlus, mdiTimer } from '@mdi/js';
 import {
@@ -10,13 +16,14 @@ import {
 } from '../state/services/project';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
-import { CellPeriod, TallDummy } from './HeatmapCells';
+import { CellPeriod, Cell } from './HeatmapCells';
 import {
   changeTo,
   open,
 } from '../state/features/projectOverlay/projectOverlaySlice';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
+import usePaletteGenerator from '../hooks/usePaletteGenerator';
 import { OverviewMonths, OverviewDays } from './OverviewHeaders';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 
@@ -40,10 +47,13 @@ export default function Overview({ dateStart, dateEnd }) {
   );
 
   return (
-    <div className="overview" style={{
-      // '--multiplier': settings.data.cell_height_multiplier,
-      '--multiplier': 1,
-    }}>
+    <div
+      className="overview"
+      style={{
+        // '--multiplier': settings.data.cell_height_multiplier,
+        '--multiplier': 1,
+      }}
+    >
       <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
       <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
       <div className="overview-projects">
@@ -92,6 +102,8 @@ function OverviewHeatmap({
   }
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
+  const palette = usePaletteGenerator(project.color);
+
   return (
     <div className="overview-project">
       <NavLink
@@ -112,18 +124,40 @@ function OverviewHeatmap({
             dateNow = addDays(date, 1);
             return (
               <>
-                {gap > 1 ? <TallDummy height={gap} vertical={true} /> : <> </>}
+                {gap > 1 ? (
+                  <Cell
+                    date={date}
+                    color={palette[0]}
+                    value={0}
+                    length={gap}
+                    vertical={false}
+                  />
+                ) : (
+                  <> </>
+                )}
                 <CellPeriod
                   dateStart={date}
                   dateEnd={endOfDay(date)}
                   color={project.color}
                   value={1}
                   basePeriod={24}
-                  vertical={true}
+                  vertical={false}
                 />
               </>
             );
           })
+        ) : (
+          <></>
+        )}
+        {differenceInDays(addDays(dateEnd, 1), dateNow) > 0 ? (
+          <CellPeriod
+            dateStart={dateNow}
+            dateEnd={addDays(dateEnd, 1)}
+            color={palette[0]}
+            value={1}
+            basePeriod={24}
+            vertical={false}
+          />
         ) : (
           <></>
         )}
@@ -134,12 +168,13 @@ function OverviewHeatmap({
           onClick={(e) => {
             e.stopPropagation();
             dispatch(changeHeatmapTo(heatmap?._id));
-            const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+            const cellAddDropdown =
+              document.querySelector('.cell-add-dropdown');
             const cell = e.target;
             const rect = cell.getBoundingClientRect();
             cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 11}px`;
             cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 290}px`;
-            cellAddDropdown.classList.remove('hidden')
+            cellAddDropdown.classList.remove('hidden');
           }}
         >
           <Icon path={mdiPlus} />
