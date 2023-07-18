@@ -8,7 +8,7 @@ import {
   startOfWeek,
   endOfWeek,
 } from 'date-fns';
-import { CellPeriod, TallDummy } from './HeatmapCells';
+import { CellPeriod, CellDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
@@ -115,7 +115,7 @@ function Heatmap({
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
         <div className="heatmap-cells">
-          {dummyHeight ? <TallDummy height={dummyHeight} /> : <> </>}
+          {dummyHeight ? <CellDummy length={dummyHeight} /> : <> </>}
           {periods.map((chunk, index) => (
             <CellPeriod
               key={index}

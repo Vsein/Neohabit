@@ -11,7 +11,7 @@ import {
   startOfWeek,
   endOfWeek,
 } from 'date-fns';
-import { CellPeriod, TallDummy } from './HeatmapCells';
+import { CellPeriod, CellDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
 import { useGetSettingsQuery } from '../state/services/settings';
@@ -121,7 +121,7 @@ function Heatmap({
           className="heatmap-cells"
           style={{ '--cell-width': '11px', '--cell-height': '11px' }}
         >
-          {dummyHeight ? <TallDummy height={dummyHeight} /> : <> </>}
+          {dummyHeight ? <CellDummy length={dummyHeight} /> : <> </>}
           {periods.map((period, index) => (
             <>
               {period.map((chunk, Index) => (

@@ -14,7 +14,7 @@ $cell-margin: 2px;
     var(--cell-height) * var(--height) * var(--multiplier) + 4px *
       calc(var(--height) * var(--multiplier) - 1)
   );
-  width: var(--cell-width);
+  width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
   margin: $cell-margin;
   border-radius: 1px;
   position: relative;
