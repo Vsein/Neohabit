@@ -15,17 +15,6 @@ import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import DataPointForm from './DataPointForm';
 import { useGetSettingsQuery } from '../state/services/settings';
 
-function hexToRgb(hex) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16),
-    }
-    : null;
-}
-
 function Heatmap({
   dateStart,
   dateEnd,
@@ -42,20 +31,6 @@ function Heatmap({
   const data = [...Data];
   data.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  const colorRGB = hexToRgb(color);
-  const themeBGSupportColor =
-    document.documentElement.className === 'dark'
-      ? { r: 204, g: 204, b: 204 }
-      : { r: 165, g: 158, b: 205 };
-
-  function mixColors(base, goal, alpha) {
-    const rgb = {
-      r: Math.round(base.r + (goal.r - base.r) * alpha),
-      g: Math.round(base.g + (goal.g - base.g) * alpha),
-      b: Math.round(base.b + (goal.b - base.b) * alpha),
-    }
-    return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-  }
   const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 
   let dateNow = dateStart;
@@ -70,7 +45,7 @@ function Heatmap({
       dateEnd: subMilliseconds(startOfDay(new Date(data[i].date)), 1),
     });
     periods.push({
-      color: mixColors(themeBGSupportColor, colorRGB, 1),
+      color,
       value: 1000,
       dateStart: dateStartChunk,
       dateEnd: subMilliseconds(
