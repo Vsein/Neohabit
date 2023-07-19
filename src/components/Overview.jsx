@@ -132,7 +132,7 @@ function OverviewHeatmap({
             dateNow = addDays(date, 1);
             return (
               <>
-                {gap > 1 ? (
+                {gap > 0 ? (
                   <Cell
                     date={date}
                     color={palette[0]}
@@ -147,7 +147,7 @@ function OverviewHeatmap({
                   dateStart={date}
                   dateEnd={endOfDay(date)}
                   color={project.color}
-                  value={1}
+                  value={point.value}
                   basePeriod={24}
                   vertical={false}
                 />
@@ -159,7 +159,7 @@ function OverviewHeatmap({
             dateStart={dateNow}
             dateEnd={addDays(dateEnd, 1)}
             color={palette[0]}
-            value={1}
+            value={0}
             basePeriod={24}
             vertical={false}
           />
