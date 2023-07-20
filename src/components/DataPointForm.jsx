@@ -8,7 +8,7 @@ export default function DataPointForm({ onSubmit }) {
     <Form
       initialValues={{
         date: undefined,
-        value: undefined,
+        value: 1,
       }}
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -29,6 +29,7 @@ export default function DataPointForm({ onSubmit }) {
                 max="<?= date('Y-m-d'); ?>"
                 rows="1"
                 className="habit-form-input"
+                required
               />
             </label>
           </div>
@@ -42,6 +43,7 @@ export default function DataPointForm({ onSubmit }) {
                 max="999"
                 min="0"
                 className="habit-form-input"
+                required
               />
             </label>
           </div>
