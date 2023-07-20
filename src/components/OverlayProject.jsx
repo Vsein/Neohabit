@@ -77,24 +77,20 @@ export default function OverlayProject() {
                 </button>
               </div>
               <div className="modal-details">
-                <label htmlFor="project-name">
-                  <Field
-                    name="name"
-                    component="textarea"
-                    placeholder="Change project name"
-                    rows="1"
-                    className="form-task-name"
-                  />
-                </label>
-                <label htmlFor="task-color">
-                  <Field
-                    name="color"
-                    component="textarea"
-                    placeholder="Change color"
-                    rows="1"
-                    className="form-task-description"
-                  />
-                </label>
+                <Field
+                  name="name"
+                  component="textarea"
+                  placeholder="Change project name"
+                  rows="1"
+                  className="form-task-name"
+                />
+                <Field
+                  name="color"
+                  component="textarea"
+                  placeholder="Change color"
+                  rows="1"
+                  className="form-task-description"
+                />
               </div>
               <div className="modal-buttons">
                 <button
