@@ -11,7 +11,7 @@ function Month({ dateStart, index }) {
 }
 
 function OverviewMonths({ dateStart, dateEnd }) {
-  const days = Array.from(new Array(33));
+  const days = Array.from(new Array(differenceInDays(dateEnd, dateStart) + 1));
   return (
     <div className="overview-months">
       {days.map((_, index) => (
