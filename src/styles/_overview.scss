@@ -20,13 +20,16 @@ $cell-margin: 2px;
   border: 1px solid var(--border-color);
   width: min(900px, 100%);
   padding-right: 5px;
+  flex-direction: column;
 }
 
 .overview-centering {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 30px;
+  gap: 5px;
 }
 
 .overview-loader {
@@ -132,4 +135,16 @@ $cell-margin: 2px;
       }
     }
   }
+}
+
+.overview-project-add {
+  background-color: var(--secondary-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  width: min(100%, 900px);
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
