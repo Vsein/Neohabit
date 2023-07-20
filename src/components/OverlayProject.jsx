@@ -72,7 +72,11 @@ export default function OverlayProject() {
                 <div className="tag">
                   <ProjectTag project={project} />
                 </div>
-                <button className="close-modal-button icon" onClick={close}>
+                <button
+                  className="close-modal-button icon"
+                  onClick={closeOverlay}
+                  type="button"
+                >
                   <Icon path={mdiClose} />
                 </button>
               </div>
@@ -94,6 +98,7 @@ export default function OverlayProject() {
               </div>
               <div className="modal-buttons">
                 <button
+                  type="button"
                   className="form-button"
                   id="cancel-form-button"
                   onClick={closeOverlay}
