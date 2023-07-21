@@ -158,7 +158,7 @@ function OverviewHeatmap({
         {gap > 0 && <CellDummy length={gap} vertical={false} />}
         {dataSorted &&
           dataSorted.map((point, index) => {
-            if (isSameDay(min([dateEnd, new Date(point.date)]), dateEnd)) {
+            if (differenceInDays(dateEnd, new Date(point.date)) < 0) {
               return <> </>;
             }
             const date = startOfDay(new Date(point.date));
