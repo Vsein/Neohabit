@@ -9,9 +9,17 @@ import {
   endOfDay,
   min,
   max,
+  isSameDay,
 } from 'date-fns';
 import Icon from '@mdi/react';
-import { mdiDelete, mdiPencil, mdiPlus, mdiTimer } from '@mdi/js';
+import {
+  mdiDelete,
+  mdiPencil,
+  mdiPlus,
+  mdiTimer,
+  mdiMenuLeft,
+  mdiMenuRight,
+} from '@mdi/js';
 import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
@@ -26,14 +34,16 @@ import {
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
 import usePaletteGenerator from '../hooks/usePaletteGenerator';
+import useDatePeriod from '../hooks/useDatePeriod';
 import { OverviewMonths, OverviewDays } from './OverviewHeaders';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 
-export default function Overview({ dateStart, dateEnd }) {
+export default function Overview() {
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
+  const [dateEnd, dateStart, { moveLeft, moveRight }] = useDatePeriod();
 
   if (!loaded || projects.isFetching || heatmaps.isFetching) {
     return (
@@ -56,8 +66,14 @@ export default function Overview({ dateStart, dateEnd }) {
         '--multiplier': 1,
       }}
     >
+      <button className="overview-move-left" onClick={moveLeft}>
+        <Icon path={mdiMenuLeft} className="icon" />
+      </button>
       <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
       <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
+      <button className="overview-move-right" onClick={moveRight}>
+        <Icon path={mdiMenuRight} className="icon" />
+      </button>
       <div className="overview-projects">
         {projects.data.map((project, i) => (
           <OverviewHeatmap
@@ -126,7 +142,11 @@ function OverviewHeatmap({
         {gap > 0 && <CellDummy length={gap} vertical={false} />}
         {dataSorted &&
           dataSorted.map((point, index) => {
+            if (isSameDay(min([dateEnd, new Date(point.date)]), dateEnd)) {
+              return <> </>;
+            }
             const date = startOfDay(new Date(point.date));
+            const dateNowTmp = dateNow;
             const gap = differenceInDays(date, dateNow);
             if (gap < 0) return <> </>;
             dateNow = addDays(date, 1);
@@ -134,7 +154,7 @@ function OverviewHeatmap({
               <>
                 {gap > 0 ? (
                   <Cell
-                    date={date}
+                    date={dateNowTmp}
                     color={palette[0]}
                     value={0}
                     length={gap}
