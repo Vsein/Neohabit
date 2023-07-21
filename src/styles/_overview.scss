@@ -144,18 +144,33 @@ $cell-margin: 2px;
     }
   }
 
-  &-move-left {
+  &-topbar-left {
+    padding-left: 35px;
     display: flex;
     grid-column: 3;
     grid-row: 1 / 3;
-    width: min-content;
+    direction: ltr;
+    justify-content: space-around;
   }
 
-  &-move-right {
-    display: ltr;
+  &-topbar-right {
+    direction: ltr;
     display: flex;
     grid-column: 1;
     grid-row: 1 / 3;
+  }
+
+  &-year-move {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  &-period-move-left {
+    width: min-content;
+  }
+
+  &-period-move-right {
     width: min-content;
     margin-right: auto;
   }

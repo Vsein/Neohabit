@@ -10,6 +10,7 @@ import {
   min,
   max,
   isSameDay,
+  getYear,
 } from 'date-fns';
 import Icon from '@mdi/react';
 import {
@@ -43,7 +44,8 @@ export default function Overview() {
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
-  const [dateEnd, dateStart, { moveLeft, moveRight }] = useDatePeriod();
+  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear }] =
+    useDatePeriod();
 
   if (!loaded || projects.isFetching || heatmaps.isFetching) {
     return (
@@ -66,14 +68,28 @@ export default function Overview() {
         '--multiplier': 1,
       }}
     >
-      <button className="overview-move-left" onClick={moveLeft}>
-        <Icon path={mdiMenuLeft} className="icon" />
-      </button>
+      <div className="overview-topbar-left">
+        <div className="overview-year-move">
+          <button className="overview-period-move-left" onClick={subYear}>
+            <Icon path={mdiMenuLeft} className="icon" />
+          </button>
+          <h3>{getYear(dateStart)}</h3>
+          <button className="overview-period-move-right" onClick={addYear}>
+            <Icon path={mdiMenuRight} className="icon" />
+          </button>
+        </div>
+
+        <button className="overview-period-move-left" onClick={subMonth}>
+          <Icon path={mdiMenuLeft} className="icon" />
+        </button>
+      </div>
       <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
       <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
-      <button className="overview-move-right" onClick={moveRight}>
-        <Icon path={mdiMenuRight} className="icon" />
-      </button>
+      <div className="overview-topbar-right">
+        <button className="overview-period-move-right" onClick={addMonth}>
+          <Icon path={mdiMenuRight} className="icon" />
+        </button>
+      </div>
       <div className="overview-projects">
         {projects.data.map((project, i) => (
           <OverviewHeatmap
