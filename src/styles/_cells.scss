@@ -20,9 +20,41 @@ $cell-margin: 2px;
   position: relative;
   background-color: var(--support-background-color);
 
+  &.dotted {
+    background-color: var(--main-background-color);
+    background-image: radial-gradient(var(--color) 1px, transparent 0);
+    border-radius: 0px;
+    background-size: 3px 3px;
+    background-position: -1px -1px;
+    border: 1px solid transparent;
+  }
+
   &:hover {
     border: 1px solid var(--cell-border-color);
   }
+
+  &.fractured {
+    background-color: var(--main-background-color);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    border: none;
+
+    &:hover {
+      border: none;
+
+      & > * {
+        border: 1px solid var(--cell-border-color);
+      }
+    }
+  }
+}
+
+.cell-fraction {
+  height: calc((var(--cell-height) - 2px) * var(--height) * var(--multiplier));
+  width: calc((var(--cell-width) - 2px) * var(--width));
+  border-radius: 1px;
+  position: relative;
 }
 
 .cell-period {
@@ -123,6 +155,9 @@ $cell-margin: 2px;
       border-bottom: 1px solid var(--cell-border-color);
     }
   }
+}
+
+.cell-fraction {
 }
 
 .cell-tip {
