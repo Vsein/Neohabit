@@ -16,16 +16,20 @@ import Icon from '@mdi/react';
 import {
   mdiDelete,
   mdiPencil,
-  mdiPlus,
+  mdiPlusBox,
   mdiTimer,
   mdiMenuLeft,
   mdiMenuRight,
+  mdiCheckboxMarked,
 } from '@mdi/js';
 import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
 } from '../state/services/project';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
+import {
+  useGetHeatmapsQuery,
+  useUpdateHeatmapMutation,
+} from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { CellPeriod, Cell, CellDummy } from './HeatmapCells';
 import {
@@ -116,6 +120,7 @@ function OverviewHeatmap({
 }) {
   const [deleteProject] = useDeleteProjectMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
+  const [updateHeatmap] = useUpdateHeatmapMutation();
   const dispatch = useDispatch();
   const deleteChosenProject = (e) => {
     deleteProject(project._id);
@@ -125,6 +130,12 @@ function OverviewHeatmap({
       values: {
         project: project,
       },
+    });
+  };
+  const addCell = async () => {
+    await updateHeatmap({
+      heatmapID: heatmap?._id,
+      values: { value: 1, date: Date.now() },
     });
   };
   const dateCreation = new Date(project?.date_of_creation ?? dateStart);
@@ -212,11 +223,17 @@ function OverviewHeatmap({
             const cell = e.target;
             const rect = cell.getBoundingClientRect();
             cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 11}px`;
-            cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 290}px`;
+            cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 275}px`;
             cellAddDropdown.classList.remove('hidden');
           }}
         >
-          <Icon path={mdiPlus} />
+          <Icon path={mdiPlusBox} />
+        </button>
+        <button
+          className="overview-project-button"
+          onClick={addCell}
+        >
+          <Icon path={mdiCheckboxMarked} />
         </button>
         <button
           className="overview-project-button"
