@@ -95,6 +95,10 @@ $cell-margin: 2px;
         box-shadow: 0px 0px 4px 2px var(--signature-color);
         border-radius: 3px;
       }
+
+      &.weekend {
+        color: var(--bright-signature-color);
+      }
     }
   }
 

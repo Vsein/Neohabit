@@ -1,5 +1,11 @@
 import React from 'react';
-import { differenceInDays, getDate, addDays, isToday } from 'date-fns';
+import {
+  differenceInDays,
+  getDate,
+  addDays,
+  isToday,
+  isWeekend,
+} from 'date-fns';
 
 function Month({ dateStart, index }) {
   const date = addDays(dateStart, index);
@@ -24,7 +30,11 @@ function OverviewMonths({ dateStart, dateEnd }) {
 function Day({ dateStart, index }) {
   const date = addDays(dateStart, index);
   return (
-    <div className={`overview-days-day ${isToday(date) ? 'today' : ''}`}>
+    <div
+      className={`overview-days-day ${isToday(date) ? 'today' : ''} ${
+        isWeekend(date) ? 'weekend' : ''
+      }`}
+    >
       {getDate(date)}
     </div>
   );
