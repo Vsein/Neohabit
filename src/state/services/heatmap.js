@@ -1,4 +1,5 @@
 import api from './api';
+import { isSameDay } from 'date-fns';
 
 export const heatmapApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -13,15 +14,27 @@ export const heatmapApi = api.injectEndpoints({
         body: values,
         method: 'PUT',
       }),
-      onQueryStarted({ heatmapID, values }, { dispatch }) {
+      async onQueryStarted(
+        { heatmapID, values },
+        { dispatch, queryFulfilled },
+      ) {
+        const res = await queryFulfilled;
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
             const Heatmap = draft.find((heatmap) => heatmap._id == heatmapID);
-            console.log(values);
-            if (Heatmap) {
+            const index = Heatmap.data.findIndex((point) =>
+              isSameDay(new Date(point.date), new Date(values.date)),
+            );
+            if (index != -1) {
+              Heatmap.data = Heatmap.data.map((point) =>
+                isSameDay(new Date(point.date), new Date(values.date))
+                  ? { ...point, value: point.value + 1 }
+                  : point,
+              );
+            } else {
               Heatmap.data.push(values);
-              Heatmap.data.sort((a, b) => a.date - b.date);
             }
+            Heatmap.data.sort((a, b) => a.date - b.date);
           }),
         );
       },
@@ -29,7 +42,4 @@ export const heatmapApi = api.injectEndpoints({
   }),
 });
 
-export const {
-  useGetHeatmapsQuery,
-  useUpdateHeatmapMutation,
-} = heatmapApi;
+export const { useGetHeatmapsQuery, useUpdateHeatmapMutation } = heatmapApi;

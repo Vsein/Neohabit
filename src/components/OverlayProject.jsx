@@ -72,32 +72,33 @@ export default function OverlayProject() {
                 <div className="tag">
                   <ProjectTag project={project} />
                 </div>
-                <button className="close-modal-button icon" onClick={close}>
+                <button
+                  className="close-modal-button icon"
+                  onClick={closeOverlay}
+                  type="button"
+                >
                   <Icon path={mdiClose} />
                 </button>
               </div>
               <div className="modal-details">
-                <label htmlFor="project-name">
-                  <Field
-                    name="name"
-                    component="textarea"
-                    placeholder="Change project name"
-                    rows="1"
-                    className="form-task-name"
-                  />
-                </label>
-                <label htmlFor="task-color">
-                  <Field
-                    name="color"
-                    component="textarea"
-                    placeholder="Change color"
-                    rows="1"
-                    className="form-task-description"
-                  />
-                </label>
+                <Field
+                  name="name"
+                  component="textarea"
+                  placeholder="Change project name"
+                  rows="1"
+                  className="form-task-name"
+                />
+                <Field
+                  name="color"
+                  component="textarea"
+                  placeholder="Change color"
+                  rows="1"
+                  className="form-task-description"
+                />
               </div>
               <div className="modal-buttons">
                 <button
+                  type="button"
                   className="form-button"
                   id="cancel-form-button"
                   onClick={closeOverlay}

@@ -53,10 +53,11 @@ function hideTip() {
   cellTip.style.top = '0px';
 }
 
-function Cell({ color, date, value, height = 1, width = 1 }) {
+function Cell({ color, date, value, length, vertical = true }) {
   const style = {
     backgroundColor: color,
-    '--height': height,
+    [vertical ? '--width' : '--height']: 1,
+    [vertical ? '--height' : '--width']: length,
   };
 
   const formattedDate = formatDate(date);
@@ -85,22 +86,23 @@ function CellPeriod({
   color,
   value,
   basePeriod = 24,
-  opacity = 1,
+  vertical = true,
 }) {
   const diffDays =
     differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
 
-  if (isSameWeek(dateStart, dateEnd)) {
+  if (isSameWeek(dateStart, dateEnd) || !vertical) {
     return (
       <Cell
         color={color}
         value={value}
         date={dateStart}
-        height={diffDays}
-        opacity={opacity}
+        length={diffDays}
+        vertical={vertical}
       />
     );
   }
+
   let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
@@ -159,17 +161,17 @@ function CellPeriod({
           />
         )}
       </div>
-      {afterHeight ? <TallDummy height={afterHeight} /> : <> </>}
+      {afterHeight ? <CellDummy length={afterHeight} /> : <> </>}
     </>
   );
 }
 
-function TallDummy({ height, vertical = false }) {
+function CellDummy({ length, vertical = true }) {
   const style = {
-    [vertical ? '--width' : '--height']: height,
-    [vertical ? '--height' : '--width']: 1,
+    [vertical ? '--width' : '--height']: 1,
+    [vertical ? '--height' : '--width']: length,
   };
   return <div style={style} className="dummy" />;
 }
 
-export { Cell, CellPeriod, TallDummy, hideTip };
+export { Cell, CellPeriod, CellDummy, hideTip };

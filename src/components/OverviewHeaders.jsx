@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  differenceInDays,
-  getDate,
-  addDays,
-} from 'date-fns';
+import { differenceInDays, getDate, addDays, isToday } from 'date-fns';
 
 function Month({ dateStart, index }) {
   const date = addDays(dateStart, index);
@@ -15,7 +11,7 @@ function Month({ dateStart, index }) {
 }
 
 function OverviewMonths({ dateStart, dateEnd }) {
-  const days = Array.from(new Array(33));
+  const days = Array.from(new Array(differenceInDays(dateEnd, dateStart) + 1));
   return (
     <div className="overview-months">
       {days.map((_, index) => (
@@ -27,7 +23,11 @@ function OverviewMonths({ dateStart, dateEnd }) {
 
 function Day({ dateStart, index }) {
   const date = addDays(dateStart, index);
-  return <div className="overview-days-day">{getDate(date)}</div>;
+  return (
+    <div className={`overview-days-day ${isToday(date) ? 'today' : ''}`}>
+      {getDate(date)}
+    </div>
+  );
 }
 
 function OverviewDays({ dateStart, dateEnd }) {

@@ -1,30 +1,55 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { differenceInDays, addDays, compareAsc, startOfDay, endOfDay } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  differenceInDays,
+  addDays,
+  compareAsc,
+  startOfDay,
+  endOfDay,
+  min,
+  max,
+  isSameDay,
+  getYear,
+} from 'date-fns';
 import Icon from '@mdi/react';
-import { mdiDelete, mdiPencil, mdiPlus, mdiTimer } from '@mdi/js';
+import {
+  mdiDelete,
+  mdiPencil,
+  mdiPlusBox,
+  mdiTimer,
+  mdiMenuLeft,
+  mdiMenuRight,
+  mdiCheckboxMarked,
+} from '@mdi/js';
 import {
   useGetProjectsQuery,
   useDeleteProjectMutation,
 } from '../state/services/project';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
+import {
+  useGetHeatmapsQuery,
+  useUpdateHeatmapMutation,
+} from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
-import { CellPeriod, TallDummy } from './HeatmapCells';
+import { CellPeriod, Cell, CellDummy } from './HeatmapCells';
 import {
   changeTo,
   open,
 } from '../state/features/projectOverlay/projectOverlaySlice';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
+import usePaletteGenerator from '../hooks/usePaletteGenerator';
+import useDatePeriod from '../hooks/useDatePeriod';
 import { OverviewMonths, OverviewDays } from './OverviewHeaders';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 
-export default function Overview({ dateStart, dateEnd }) {
+export default function Overview() {
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
+  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear }] =
+    useDatePeriod();
 
   if (!loaded || projects.isFetching || heatmaps.isFetching) {
     return (
@@ -40,12 +65,35 @@ export default function Overview({ dateStart, dateEnd }) {
   );
 
   return (
-    <div className="overview" style={{
-      // '--multiplier': settings.data.cell_height_multiplier,
-      '--multiplier': 1,
-    }}>
+    <div
+      className="overview"
+      style={{
+        // '--multiplier': settings.data.cell_height_multiplier,
+        '--multiplier': 1,
+      }}
+    >
+      <div className="overview-topbar-left">
+        <div className="overview-year-move">
+          <button className="overview-period-move-left" onClick={subYear}>
+            <Icon path={mdiMenuLeft} className="icon" />
+          </button>
+          <h3>{getYear(dateStart)}</h3>
+          <button className="overview-period-move-right" onClick={addYear}>
+            <Icon path={mdiMenuRight} className="icon" />
+          </button>
+        </div>
+
+        <button className="overview-period-move-left" onClick={subMonth}>
+          <Icon path={mdiMenuLeft} className="icon" />
+        </button>
+      </div>
       <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
       <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
+      <div className="overview-topbar-right">
+        <button className="overview-period-move-right" onClick={addMonth}>
+          <Icon path={mdiMenuRight} className="icon" />
+        </button>
+      </div>
       <div className="overview-projects">
         {projects.data.map((project, i) => (
           <OverviewHeatmap
@@ -72,6 +120,7 @@ function OverviewHeatmap({
 }) {
   const [deleteProject] = useDeleteProjectMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
+  const [updateHeatmap] = useUpdateHeatmapMutation();
   const dispatch = useDispatch();
   const deleteChosenProject = (e) => {
     deleteProject(project._id);
@@ -83,7 +132,18 @@ function OverviewHeatmap({
       },
     });
   };
-  let dateNow = dateStart;
+  const addCell = async () => {
+    await updateHeatmap({
+      heatmapID: heatmap?._id,
+      values: { value: 1, date: Date.now() },
+    });
+  };
+  const dateCreation = new Date(project?.date_of_creation ?? dateStart);
+  if (min([dateCreation, dateEnd]) === dateEnd) {
+    return <> </>;
+  }
+  let dateNow = max([dateStart, dateCreation]);
+  const gap = differenceInDays(dateNow, dateStart);
   const data = heatmap?.data;
   let dataSorted;
   if (data) {
@@ -91,6 +151,8 @@ function OverviewHeatmap({
     dataSorted.sort((a, b) => compareAsc(new Date(a.date), new Date(b.date)));
   }
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
+
+  const palette = usePaletteGenerator(project.color);
 
   return (
     <div className="overview-project">
@@ -104,28 +166,50 @@ function OverviewHeatmap({
         className="overview-project-cells"
         style={{ '--cell-height': '15px', '--cell-width': '15px' }}
       >
-        {dataSorted ? (
+        {gap > 0 && <CellDummy length={gap} vertical={false} />}
+        {dataSorted &&
           dataSorted.map((point, index) => {
+            if (differenceInDays(dateEnd, new Date(point.date)) < 0) {
+              return <> </>;
+            }
             const date = startOfDay(new Date(point.date));
+            const dateNowTmp = dateNow;
             const gap = differenceInDays(date, dateNow);
             if (gap < 0) return <> </>;
             dateNow = addDays(date, 1);
             return (
               <>
-                {gap > 1 ? <TallDummy height={gap} vertical={true} /> : <> </>}
+                {gap > 0 ? (
+                  <Cell
+                    date={dateNowTmp}
+                    color={palette[0]}
+                    value={0}
+                    length={gap}
+                    vertical={false}
+                  />
+                ) : (
+                  <> </>
+                )}
                 <CellPeriod
                   dateStart={date}
                   dateEnd={endOfDay(date)}
                   color={project.color}
-                  value={1}
+                  value={point.value}
                   basePeriod={24}
-                  vertical={true}
+                  vertical={false}
                 />
               </>
             );
-          })
-        ) : (
-          <></>
+          })}
+        {differenceInDays(addDays(dateEnd, 1), dateNow) > 0 && (
+          <CellPeriod
+            dateStart={dateNow}
+            dateEnd={addDays(dateEnd, 1)}
+            color={palette[0]}
+            value={0}
+            basePeriod={24}
+            vertical={false}
+          />
         )}
       </div>
       <div className="overview-project-controls">
@@ -134,15 +218,22 @@ function OverviewHeatmap({
           onClick={(e) => {
             e.stopPropagation();
             dispatch(changeHeatmapTo(heatmap?._id));
-            const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+            const cellAddDropdown =
+              document.querySelector('.cell-add-dropdown');
             const cell = e.target;
             const rect = cell.getBoundingClientRect();
             cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 11}px`;
-            cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 290}px`;
-            cellAddDropdown.classList.remove('hidden')
+            cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 275}px`;
+            cellAddDropdown.classList.remove('hidden');
           }}
         >
-          <Icon path={mdiPlus} />
+          <Icon path={mdiPlusBox} />
+        </button>
+        <button
+          className="overview-project-button"
+          onClick={addCell}
+        >
+          <Icon path={mdiCheckboxMarked} />
         </button>
         <button
           className="overview-project-button"

@@ -11,39 +11,11 @@ import {
   startOfWeek,
   endOfWeek,
 } from 'date-fns';
-import { CellPeriod, TallDummy } from './HeatmapCells';
+import { CellPeriod, CellDummy } from './HeatmapCells';
 import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
 import useLoaded from '../hooks/useLoaded';
+import usePaletteGenerator from '../hooks/usePaletteGenerator';
 import { useGetSettingsQuery } from '../state/services/settings';
-
-function hexToRgb(hex) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : null;
-}
-
-function mixColors(base, goal, alpha) {
-  const rgb = {
-    r: Math.round(base.r + (goal.r - base.r) * alpha),
-    g: Math.round(base.g + (goal.g - base.g) * alpha),
-    b: Math.round(base.b + (goal.b - base.b) * alpha),
-  };
-  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
-}
-
-function generatePalette(base, goal) {
-  const palette = [];
-  for (let i = 0; i <= 10; i++) {
-    const rgb = mixColors(base, goal, 0.1 * i);
-    palette.push(rgb);
-  }
-  return palette;
-}
 
 function Heatmap({
   dateStart,
@@ -56,13 +28,9 @@ function Heatmap({
 }) {
   const [loaded] = useLoaded();
   const settings = useGetSettingsQuery();
-  const { themeRgb } = useSelector((state) => ({
-    themeRgb: state.theme.colorRgb,
-  }));
   let Max = 0;
 
-  const colorRGB = hexToRgb(color);
-  const palette = generatePalette(themeRgb, colorRGB);
+  const palette = usePaletteGenerator(color);
   const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 
   let dateNow = dataPeriods[0].date;
@@ -121,7 +89,7 @@ function Heatmap({
           className="heatmap-cells"
           style={{ '--cell-width': '11px', '--cell-height': '11px' }}
         >
-          {dummyHeight ? <TallDummy height={dummyHeight} /> : <> </>}
+          {dummyHeight ? <CellDummy length={dummyHeight} /> : <> </>}
           {periods.map((period, index) => (
             <>
               {period.map((chunk, Index) => (
