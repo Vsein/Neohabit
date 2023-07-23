@@ -1,18 +1,29 @@
 import { useState } from 'react';
-import { startOfDay, subMonths, addMonths, subYears, addYears } from 'date-fns';
+import {
+  startOfDay,
+  startOfMonth,
+  isFirstDayOfMonth,
+  lastDayOfMonth,
+  subMonths,
+  addMonths,
+  subYears,
+  addYears,
+} from 'date-fns';
 
 export default function useDatePeriod() {
   const [dateEnd, setDateEnd] = useState(startOfDay(new Date()));
   const [dateStart, setDateStart] = useState(subMonths(dateEnd, 1));
 
   const subMonth = (e) => {
-    setDateStart(subMonths(dateStart, 1));
-    setDateEnd(subMonths(dateEnd, 1));
+    const tmpStart = subMonths(dateStart, 1);
+    setDateStart(startOfMonth(tmpStart));
+    setDateEnd(lastDayOfMonth(tmpStart));
   };
 
   const addMonth = (e) => {
-    setDateStart(addMonths(dateStart, 1));
-    setDateEnd(addMonths(dateEnd, 1));
+    const tmpStart = addMonths(dateStart, 1);
+    setDateStart(startOfMonth(tmpStart));
+    setDateEnd(lastDayOfMonth(tmpStart));
   };
 
   const subYear = (e) => {
