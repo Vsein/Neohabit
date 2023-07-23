@@ -135,7 +135,7 @@ function CellFractured({ color, date, value, length, vertical = true }) {
   };
   return (
     <div
-      className={`cell ${dotted ? '' : 'fractured'}`}
+      className={`cell ${dotted ? 'dotted' : 'fractured'}`}
       style={style}
       onMouseEnter={(e) => changeCellOffset(e, content)}
       onMouseLeave={hideTip}
@@ -160,7 +160,7 @@ function CellPeriod({
     differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
 
   if (isSameWeek(dateStart, dateEnd) || !vertical) {
-    return value <= 1 || value == undefined || value > 9 ? (
+    return value <= 1 || value == undefined || vertical ? (
       <Cell
         color={color}
         value={value}
