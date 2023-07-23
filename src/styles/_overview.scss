@@ -179,6 +179,12 @@ $cell-margin: 2px;
     width: min-content;
     margin-right: auto;
   }
+
+  &-period-refresh {
+    margin-left: auto;
+    width: min-content;
+    padding-top: 3px;
+  }
 }
 
 .overview-project-add {

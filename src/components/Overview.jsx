@@ -21,6 +21,7 @@ import {
   mdiMenuLeft,
   mdiMenuRight,
   mdiCheckboxMarked,
+  mdiCalendarRefresh,
 } from '@mdi/js';
 import {
   useGetProjectsQuery,
@@ -48,7 +49,7 @@ export default function Overview() {
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
-  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear }] =
+  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, refresh }] =
     useDatePeriod();
 
   if (!loaded || projects.isFetching || heatmaps.isFetching) {
@@ -92,6 +93,9 @@ export default function Overview() {
       <div className="overview-topbar-right">
         <button className="overview-period-move-right" onClick={addMonth}>
           <Icon path={mdiMenuRight} className="icon" />
+        </button>
+        <button className="overview-period-refresh" onClick={refresh}>
+          <Icon path={mdiCalendarRefresh} className="icon small centering" />
         </button>
       </div>
       <div className="overview-projects">

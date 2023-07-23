@@ -36,5 +36,15 @@ export default function useDatePeriod() {
     setDateEnd(addYears(dateEnd, 1));
   };
 
-  return [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear }];
+  const refresh = (e) => {
+    const tmpStart = startOfDay(new Date());
+    setDateEnd(tmpStart);
+    setDateStart(subMonths(tmpStart, 1));
+  };
+
+  return [
+    dateEnd,
+    dateStart,
+    { subMonth, addMonth, subYear, addYear, refresh },
+  ];
 }
