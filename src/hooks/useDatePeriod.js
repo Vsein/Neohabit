@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   startOfDay,
   startOfMonth,
-  isFirstDayOfMonth,
   lastDayOfMonth,
   subMonths,
   addMonths,
@@ -15,7 +14,7 @@ export default function useDatePeriod() {
   const [dateStart, setDateStart] = useState(subMonths(dateEnd, 1));
 
   const subMonth = (e) => {
-    const tmpStart = subMonths(dateStart, 1);
+    const tmpStart = subMonths(dateEnd, 1);
     setDateStart(startOfMonth(tmpStart));
     setDateEnd(lastDayOfMonth(tmpStart));
   };
