@@ -23,7 +23,7 @@ function formatDate(date) {
 }
 
 async function changeCellOffset(e, content) {
-  const cell = e.target;
+  const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
   const parent =
     document.querySelector('.habit') ||
     document.querySelector('.overview-container');
