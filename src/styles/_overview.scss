@@ -16,7 +16,7 @@ $cell-margin: 2px;
   overflow-y: hidden;
   height: max(
     200px,
-    calc(50px + (18px + #{$cell-margin} * 2) * var(--projects))
+    calc(30px + (17px + #{$cell-margin}) * var(--projects) + 10px)
   );
   background-color: var(--main-background-color);
   border-radius: 10px;
