@@ -146,7 +146,7 @@ function OverviewHeatmap({
   if (min([dateCreation, dateEnd]) === dateEnd) {
     return <> </>;
   }
-  let dateNow = max([dateStart, dateCreation]);
+  let dateNow = max([dateStart, startOfDay(dateCreation)]);
   const gap = differenceInDays(dateNow, dateStart);
   const data = heatmap?.data;
   let dataSorted;
