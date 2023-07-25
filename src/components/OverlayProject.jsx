@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Field } from 'react-final-form';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
+import { HexColorPicker, HexColorInput } from 'react-colorful';
 import ProjectTag from './ProjectTag';
 import {
   useGetProjectsQuery,
@@ -13,6 +14,7 @@ import { close } from '../state/features/projectOverlay/projectOverlaySlice';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function OverlayProject() {
+  const [color, setColor] = useState('#aabbcc');
   const dispatch = useDispatch();
   const { isActive } = useSelector((state) => ({
     isActive: state.projectOverlay.isActive,
@@ -56,7 +58,7 @@ export default function OverlayProject() {
         <Form
           initialValues={{
             name: project?.name,
-            color: project?.color,
+            color,
           }}
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -87,14 +89,12 @@ export default function OverlayProject() {
                   placeholder="Change project name"
                   rows="1"
                   className="form-task-name"
+                  required
                 />
-                <Field
-                  name="color"
-                  component="textarea"
-                  placeholder="Change color"
-                  rows="1"
-                  className="form-task-description"
-                />
+                <div className="form-task-description">
+                  <HexColorPicker color={color} onChange={setColor} />
+                  <HexColorInput color={color} onChange={setColor} prefixed />
+                </div>
               </div>
               <div className="modal-buttons">
                 <button
