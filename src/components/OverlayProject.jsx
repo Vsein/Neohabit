@@ -14,7 +14,6 @@ import { close } from '../state/features/projectOverlay/projectOverlaySlice';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function OverlayProject() {
-  const [color, setColor] = useState('#aabbcc');
   const dispatch = useDispatch();
   const { isActive } = useSelector((state) => ({
     isActive: state.projectOverlay.isActive,
@@ -25,7 +24,8 @@ export default function OverlayProject() {
   const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
   const project = projects.find((projecto) => projecto._id == projectID) ?? {
     name: '',
-    color: '',
+    color: '#aabbcc',
+    description: '',
   };
   const [createProject] = useCreateProjectMutation();
   const [updateProject] = useUpdateProjectMutation();
@@ -58,7 +58,8 @@ export default function OverlayProject() {
         <Form
           initialValues={{
             name: project?.name,
-            color,
+            description: project?.description,
+            color: project?.color,
           }}
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -91,10 +92,32 @@ export default function OverlayProject() {
                   className="form-task-name"
                   required
                 />
-                <div className="form-task-description">
-                  <HexColorPicker color={color} onChange={setColor} />
-                  <HexColorInput color={color} onChange={setColor} prefixed />
-                </div>
+                <Field
+                  name="description"
+                  component="textarea"
+                  placeholder="Change description"
+                  rows="1"
+                  className="form-task-description"
+                />
+                <Field name="color">
+                  {({ input }) => (
+                    <div className="form-task-name">
+                      <HexColorPicker
+                        color={project?.color}
+                        onChange={(coloro) => {
+                          input.onChange(coloro);
+                        }}
+                      />
+                      <HexColorInput
+                        color={project?.color}
+                        onChange={(coloro) => {
+                          input.onChange(coloro);
+                        }}
+                        prefixed
+                      />
+                    </div>
+                  )}
+                </Field>
               </div>
               <div className="modal-buttons">
                 <button
