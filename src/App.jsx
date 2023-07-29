@@ -26,7 +26,6 @@ import OverlayProject from './components/OverlayProject';
 import OverlayTask from './components/OverlayTask';
 import OverlayDelete from './components/OverlayDelete';
 import CellTip from './components/CellTip';
-import { hideTip } from './components/HeatmapCells';
 import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetProjectsQuery } from './state/services/project';
 import { useGetTasksQuery } from './state/services/todolist';
@@ -90,10 +89,6 @@ const PrivateRoutes = (params) => {
   useEffect(() => {
     changeAuth(hasJWT());
   }, [location.pathname]);
-
-  useEffect(() => {
-    document.addEventListener('click', hideTip);
-  });
 
   const [sidebarHidden, setSidebarHidden] = useState(true);
 

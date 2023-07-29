@@ -8,52 +8,7 @@ import {
   addMilliseconds,
   startOfDay,
 } from 'date-fns';
-
-function formatDate(date) {
-  return date.toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    // The below are needed only for dev stage, I'm thinking of hiding
-    // the time and whatnot if the period starts exactly at 0:00.
-    // And it's also kinda sucky to use US locale. With all those AMs
-    // ans PMs it gets pretty ambiguous quickly.
-    weekday: 'short',
-  });
-}
-
-async function changeCellOffset(e, content) {
-  const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
-  const parent =
-    document.querySelector('.habit') ||
-    document.querySelector('.overview-container');
-  const rect = cell.getBoundingClientRect();
-  const rectParent = parent.getBoundingClientRect();
-  const cellTip = document.querySelector('.cell-tip');
-  cellTip.textContent = content;
-  const tipWidth = cellTip.getBoundingClientRect().width;
-  let offset = tipWidth / 2 + 15;
-  if (rect.x - 50 < rectParent.x || rect.x - 50 < 36) {
-    offset = tipWidth / 4;
-  } else if (rect.x - 100 < rectParent.x || rect.x - 100 < 36) {
-    offset = tipWidth / 2;
-  } else if (rect.x + 50 > rectParent.x + rectParent.width) {
-    offset = tipWidth;
-  } else if (rect.x + 100 > rectParent.x + rectParent.width) {
-    offset = (tipWidth / 4) * 3;
-  }
-  cellTip.classList.remove('hidden');
-  cellTip.style.top = `${window.pageYOffset + rect.y - 40}px`;
-  cellTip.style.left = `${rect.x + rect.width / 2 - offset + 15}px`;
-  cellTip.style.pointerEvents = 'none';
-}
-
-function hideTip() {
-  const cellTip = document.querySelector('.cell-tip');
-  cellTip.classList.add('hidden');
-  cellTip.style.pointerEvents = 'auto';
-  cellTip.style.top = '0px';
-}
+import { formatTipContent, hideTip, changeCellOffset } from './CellTip';
 
 function Cell({ color, date, value, length, vertical = true }) {
   const style = {
@@ -61,16 +16,11 @@ function Cell({ color, date, value, length, vertical = true }) {
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
-
-  const formattedDate = formatDate(date);
-  let content;
-  if (!value) {
-    content = `No activity on ${formattedDate}`;
-  } else if (value === 1) {
-    content = `1 action on ${formattedDate}`;
-  } else {
-    content = `${value} actions on ${formattedDate}`;
-  }
+  const content = formatTipContent({
+    actions: value,
+    period: false,
+    dateStart: date,
+  });
 
   return (
     <div
@@ -89,18 +39,13 @@ function CellFractured({ color, date, value, length, vertical = true }) {
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
+  const content = formatTipContent({
+    actions: value,
+    period: false,
+    dateStart: date,
+  });
+
   let dotted = false;
-
-  const formattedDate = formatDate(date);
-  let content;
-  if (!value) {
-    content = `No activity on ${formattedDate}`;
-  } else if (value === 1) {
-    content = `1 action on ${formattedDate}`;
-  } else {
-    content = `${value} actions on ${formattedDate}`;
-  }
-
   let fractionHeight = 15;
   let fractionWidth = 15;
   if (value <= 2) {
@@ -205,17 +150,12 @@ function CellPeriod({
     '--width': 1,
   };
   if (afterHeight === 0) styleAfter.visibility = 'hidden';
-  const formattedDateStart = formatDate(dateStart);
-  const formattedDateEnd = formatDate(dateEnd);
-
-  let content;
-  if (!value) {
-    content = `No activity on ${formattedDateStart} - ${formattedDateEnd}`;
-  } else if (value === 1) {
-    content = `1 action on ${formattedDateStart} - ${formattedDateEnd}`;
-  } else {
-    content = `${value} actions on ${formattedDateStart} - ${formattedDateEnd}`;
-  }
+  const content = formatTipContent({
+    actions: value,
+    period: false,
+    dateStart,
+    dateEnd,
+  });
 
   return (
     <>
@@ -250,4 +190,4 @@ function CellDummy({ length, vertical = true }) {
   return <div style={style} className="dummy" />;
 }
 
-export { Cell, CellPeriod, CellDummy, hideTip };
+export { Cell, CellPeriod, CellDummy };
