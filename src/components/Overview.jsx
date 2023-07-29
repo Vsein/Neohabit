@@ -11,6 +11,7 @@ import {
   max,
   isSameDay,
   getYear,
+  subMilliseconds,
 } from 'date-fns';
 import Icon from '@mdi/react';
 import {
@@ -184,11 +185,11 @@ function OverviewHeatmap({
             return (
               <>
                 {gap > 0 ? (
-                  <Cell
-                    date={dateNowTmp}
+                  <CellPeriod
+                    dateStart={dateNowTmp}
+                    dateEnd={subMilliseconds(date, 1)}
                     color={palette[0]}
                     value={0}
-                    length={gap}
                     vertical={false}
                   />
                 ) : (
@@ -208,7 +209,7 @@ function OverviewHeatmap({
         {differenceInDays(addDays(dateEnd, 1), dateNow) > 0 && (
           <CellPeriod
             dateStart={dateNow}
-            dateEnd={addDays(dateEnd, 1)}
+            dateEnd={subMilliseconds(addDays(dateEnd, 1), 1)}
             color={palette[0]}
             value={0}
             basePeriod={24}

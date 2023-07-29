@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   differenceInHours,
+  differenceInDays,
   isSameWeek,
   differenceInCalendarWeeks,
   startOfWeek,
@@ -10,7 +11,7 @@ import {
 } from 'date-fns';
 import { formatTipContent, hideTip, changeCellOffset } from './CellTip';
 
-function Cell({ color, date, value, length, vertical = true }) {
+function Cell({ color, dateStart, dateEnd, value, length, vertical = true }) {
   const style = {
     backgroundColor: color,
     [vertical ? '--width' : '--height']: 1,
@@ -18,8 +19,9 @@ function Cell({ color, date, value, length, vertical = true }) {
   };
   const content = formatTipContent({
     actions: value,
-    period: false,
-    dateStart: date,
+    period: !!differenceInDays(dateEnd, dateStart),
+    dateStart,
+    dateEnd,
   });
 
   return (
@@ -109,7 +111,8 @@ function CellPeriod({
       <Cell
         color={color}
         value={value}
-        date={dateStart}
+        dateStart={dateStart}
+        dateEnd={dateEnd}
         length={diffDays}
         vertical={vertical}
       />
