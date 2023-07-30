@@ -180,8 +180,13 @@ $cell-margin: 2px;
     margin-right: auto;
   }
 
-  &-period-refresh {
+  &-period-end {
     margin-left: auto;
+    width: min-content;
+    padding-top: 3px;
+  }
+
+  &-period-refresh {
     width: min-content;
     padding-top: 3px;
   }

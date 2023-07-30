@@ -10,8 +10,8 @@ import {
 } from 'date-fns';
 
 export default function useDatePeriod() {
-  const [dateEnd, setDateEnd] = useState(startOfDay(new Date()));
-  const [dateStart, setDateStart] = useState(subMonths(dateEnd, 1));
+  const [dateStart, setDateStart] = useState(startOfDay(new Date()));
+  const [dateEnd, setDateEnd] = useState(addMonths(dateStart, 1));
 
   const subMonth = (e) => {
     const tmpStart = subMonths(dateEnd, 1);
@@ -35,15 +35,21 @@ export default function useDatePeriod() {
     setDateEnd(addYears(dateEnd, 1));
   };
 
-  const refresh = (e) => {
+  const setToPast = (e) => {
     const tmpStart = startOfDay(new Date());
     setDateEnd(tmpStart);
     setDateStart(subMonths(tmpStart, 1));
   };
 
+  const refresh = (e) => {
+    const tmpStart = startOfDay(new Date());
+    setDateStart(tmpStart);
+    setDateEnd(addMonths(tmpStart, 1));
+  };
+
   return [
     dateEnd,
     dateStart,
-    { subMonth, addMonth, subYear, addYear, refresh },
+    { subMonth, addMonth, subYear, addYear, setToPast, refresh },
   ];
 }
