@@ -52,8 +52,11 @@ export default function Overview() {
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
-  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, refresh }] =
-    useDatePeriod();
+  const [
+    dateEnd,
+    dateStart,
+    { subMonth, addMonth, subYear, addYear, setToPast, refresh },
+  ] = useDatePeriod();
 
   if (!loaded || projects.isFetching || heatmaps.isFetching) {
     return (
@@ -151,12 +154,15 @@ function OverviewHeatmap({
   const openCellAddDropdown = (e, isTarget) => {
     e.stopPropagation();
     dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isTarget }));
-    const cellAddDropdown =
-      document.querySelector('.cell-add-dropdown');
+    const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
-    cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
-    cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 275 - (isTarget ? 70 : 0)}px`;
+    cellAddDropdown.style.top = `${
+      window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)
+    }px`;
+    cellAddDropdown.style.left = `${
+      rect.x + rect.width / 2 - 275 - (isTarget ? 70 : 0)
+    }px`;
     cellAddDropdown.classList.remove('hidden');
   };
   const dateCreation = new Date(project?.date_of_creation ?? dateStart);
@@ -172,6 +178,7 @@ function OverviewHeatmap({
     dataSorted.sort((a, b) => compareAsc(new Date(a.date), new Date(b.date)));
   }
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
+  const target = { is_target: false, date: undefined, value: 0, period: 0 };
 
   const palette = usePaletteGenerator(project.color);
 
@@ -190,48 +197,138 @@ function OverviewHeatmap({
         {gap > 0 && <CellDummy length={gap} vertical={false} />}
         {dataSorted &&
           dataSorted.map((point, index) => {
-            if (point?.is_target) return <> </>;
-            if (differenceInDays(dateEnd, new Date(point.date)) < 0) {
-              return <> </>;
-            }
-            const date = startOfDay(new Date(point.date));
-            const dateNowTmp = dateNow;
-            const gap = differenceInDays(date, dateNow);
-            if (gap < 0) return <> </>;
-            dateNow = addDays(date, 1);
-            return (
-              <>
-                {gap > 0 ? (
-                  <CellPeriod
-                    dateStart={dateNowTmp}
-                    dateEnd={subMilliseconds(date, 1)}
-                    color={palette[0]}
-                    value={0}
-                    vertical={false}
-                  />
-                ) : (
-                  <> </>
-                )}
+            if (point?.is_target) {
+              const date = startOfDay(new Date(point.date));
+              Object.assign(target, point);
+              target.currentValue = 0;
+              target.currentDateStart = startOfDay(new Date(point.date));
+              return differenceInDays(dateNow, date) ? (
                 <CellPeriod
-                  dateStart={date}
-                  dateEnd={endOfDay(date)}
-                  color={project.color}
-                  value={point.value}
+                  key={index}
+                  dateStart={dateNow}
+                  dateEnd={subMilliseconds(date, 1)}
+                  color={palette[0]}
+                  value={0}
                   basePeriod={24}
                   vertical={false}
                 />
-              </>
-            );
+              ) : (
+                <> </>
+              );
+            }
+            if (differenceInDays(dateEnd, new Date(point.date)) < 0) {
+              return <> </>;
+            }
+            if (!target.is_target) {
+              const date = startOfDay(new Date(point.date));
+              const dateNowTmp = dateNow;
+              const gap = differenceInDays(date, dateNow);
+              if (gap < 0) return <> </>;
+              dateNow = addDays(date, 1);
+              return (
+                <>
+                  {gap > 0 ? (
+                    <CellPeriod
+                      dateStart={dateNowTmp}
+                      dateEnd={subMilliseconds(date, 1)}
+                      color={palette[0]}
+                      value={0}
+                      vertical={false}
+                    />
+                  ) : (
+                    <> </>
+                  )}
+                  <CellPeriod
+                    dateStart={date}
+                    dateEnd={endOfDay(date)}
+                    color={project.color}
+                    value={point.value}
+                    basePeriod={24}
+                    vertical={false}
+                  />
+                </>
+              );
+            }
+            const date = startOfDay(new Date(point.date));
+            const gap = differenceInDays(date, target.currentDateStart);
+            if (gap >= target.period) {
+              const diffInPeriods = Math.floor(gap / target.period);
+              const firstDate = target.currentDateStart;
+              const firstValue = target.currentValue;
+              const firstColor = target.currentValue
+                ? project.color
+                : palette[0];
+              target.currentValue = 0;
+              target.currentDateStart = addDays(
+                firstDate,
+                diffInPeriods * target.period,
+              );
+              return Array.from(new Array(diffInPeriods)).map((_, index) => (
+                <CellPeriod
+                  key={index}
+                  dateStart={addDays(firstDate, index * target.period)}
+                  dateEnd={subMilliseconds(
+                    addDays(firstDate, (index + 1) * target.period),
+                    1,
+                  )}
+                  color={index ? palette[0] : firstColor}
+                  value={index ? 0 : firstValue}
+                  basePeriod={24}
+                  vertical={false}
+                />
+              ));
+            }
+            target.currentValue += point.value;
           })}
-        {differenceInDays(addDays(dateEnd, 1), dateNow) > 0 && (
-          <CellPeriod
-            dateStart={dateNow}
-            dateEnd={subMilliseconds(addDays(dateEnd, 1), 1)}
-            color={palette[0]}
-            value={0}
-            basePeriod={24}
-            vertical={false}
-          />
+        {differenceInDays(addDays(dateEnd, 1), dateNow) > 0 &&
+          !target.is_target && (
+            <CellPeriod
+              dateStart={dateNow}
+              dateEnd={subMilliseconds(addDays(dateEnd, 1), 1)}
+              color={palette[0]}
+              value={0}
+              basePeriod={24}
+              vertical={false}
+            />
+          )}
+        {target.is_target && (
+          <>
+            <CellPeriod
+              dateStart={target.currentDateStart}
+              dateEnd={subMilliseconds(
+                addDays(target.currentDateStart, target.period),
+                1,
+              )}
+              color={target.value ? project.color : palette[0]}
+              value={target.value}
+              basePeriod={24}
+              vertical={false}
+            />
+            {Array.from(
+              new Array(
+                differenceInDays(
+                  addDays(dateEnd, 1),
+                  addDays(target.currentDateStart, target.period),
+                ),
+              ),
+            ).map((_, index) => (
+              <CellPeriod
+                key={index}
+                dateStart={addDays(
+                  target.currentDateStart,
+                  (index + 1) * target.period,
+                )}
+                dateEnd={subMilliseconds(
+                  addDays(target.currentDateStart, (index + 2) * target.period),
+                  1,
+                )}
+                color={palette[0]}
+                value={0}
+                basePeriod={24}
+                vertical={false}
+              />
+            ))}
+          </>
         )}
       </div>
       <div className="overview-project-controls">
@@ -241,10 +338,7 @@ function OverviewHeatmap({
         >
           <Icon path={mdiPlusBox} />
         </button>
-        <button
-          className="overview-project-button"
-          onClick={addCell}
-        >
+        <button className="overview-project-button" onClick={addCell}>
           <Icon path={mdiCheckboxMarked} />
         </button>
         <button
