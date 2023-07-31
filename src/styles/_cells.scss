@@ -187,10 +187,12 @@ $cell-margin: 2px;
   visibility: visible;
   white-space: nowrap;
   width: min-content;
-  height: 40px;
+  height: 57px;
   border: 1px solid var(--border-color);
+  padding: 3px;
 
-  & .habit-form {
+  &.target {
+    height: 85px;
     padding: 5px;
   }
 

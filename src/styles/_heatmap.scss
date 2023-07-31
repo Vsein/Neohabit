@@ -65,9 +65,25 @@ $cell-weekdays-width: 33px;
 
   &-form {
     display: flex;
+    align-items: center;
+    width: min-content;
     gap: 8px;
 
-    & > * {
+    &.target {
+      width: 320px;
+      flex-wrap: wrap;
+      gap: 3px;
+
+      & > button {
+        margin-left: auto;
+      }
+
+      & > span {
+        white-space: pre;
+      }
+    }
+
+    & > div, & > button {
       border: 1px solid var(--important-border-color);
       border-radius: 10px;
       padding: 0px;

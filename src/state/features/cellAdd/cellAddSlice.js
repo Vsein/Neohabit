@@ -4,11 +4,13 @@ export const cellAddSlice = createSlice({
   name: 'cellAdd',
   initialState: {
     heatmapID: '',
+    isTarget: false,
   },
   reducers: {
     changeHeatmapTo: (state, action) => ({
       ...state,
-      heatmapID: action.payload,
+      heatmapID: action.payload.heatmapID,
+      isTarget: action.payload.isTarget,
     }),
   },
 });

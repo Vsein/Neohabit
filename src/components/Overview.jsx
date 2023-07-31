@@ -24,6 +24,7 @@ import {
   mdiCheckboxMarked,
   mdiCalendarEnd,
   mdiCalendarRefresh,
+  mdiViewGridPlusOutline,
 } from '@mdi/js';
 import {
   useGetProjectsQuery,
@@ -147,6 +148,17 @@ function OverviewHeatmap({
       values: { value: 1, date: Date.now() },
     });
   };
+  const openCellAddDropdown = (e, isTarget) => {
+    e.stopPropagation();
+    dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isTarget }));
+    const cellAddDropdown =
+      document.querySelector('.cell-add-dropdown');
+    const cell = e.target;
+    const rect = cell.getBoundingClientRect();
+    cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
+    cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 275 - (isTarget ? 70 : 0)}px`;
+    cellAddDropdown.classList.remove('hidden');
+  };
   const dateCreation = new Date(project?.date_of_creation ?? dateStart);
   if (min([dateCreation, dateEnd]) === dateEnd) {
     return <> </>;
@@ -178,6 +190,7 @@ function OverviewHeatmap({
         {gap > 0 && <CellDummy length={gap} vertical={false} />}
         {dataSorted &&
           dataSorted.map((point, index) => {
+            if (point?.is_target) return <> </>;
             if (differenceInDays(dateEnd, new Date(point.date)) < 0) {
               return <> </>;
             }
@@ -224,17 +237,7 @@ function OverviewHeatmap({
       <div className="overview-project-controls">
         <button
           className="overview-project-button"
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatch(changeHeatmapTo(heatmap?._id));
-            const cellAddDropdown =
-              document.querySelector('.cell-add-dropdown');
-            const cell = e.target;
-            const rect = cell.getBoundingClientRect();
-            cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 11}px`;
-            cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 275}px`;
-            cellAddDropdown.classList.remove('hidden');
-          }}
+          onClick={(e) => openCellAddDropdown(e, false)}
         >
           <Icon path={mdiPlusBox} />
         </button>
@@ -249,6 +252,12 @@ function OverviewHeatmap({
           onClick={setStopwatchProject}
         >
           <Icon path={mdiTimer} />
+        </button>
+        <button
+          className="overview-project-button"
+          onClick={(e) => openCellAddDropdown(e, true)}
+        >
+          <Icon path={mdiViewGridPlusOutline} />
         </button>
         <Link
           className="overview-project-button"
