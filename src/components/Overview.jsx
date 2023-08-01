@@ -201,8 +201,11 @@ function OverviewHeatmap({
               const date = startOfDay(new Date(point.date));
               Object.assign(target, point);
               target.currentValue = 0;
-              target.currentDateStart = startOfDay(new Date(point.date));
-              return differenceInDays(dateNow, date) ? (
+              target.currentDateStart = max([
+                startOfDay(new Date(point.date)),
+                dateStart,
+              ]);
+              return differenceInDays(date, dateNow) > 0 ? (
                 <CellPeriod
                   key={index}
                   dateStart={dateNow}
@@ -258,7 +261,7 @@ function OverviewHeatmap({
               const firstColor = target.currentValue
                 ? project.color
                 : palette[0];
-              target.currentValue = 0;
+              target.currentValue = point.value;
               target.currentDateStart = addDays(
                 firstDate,
                 diffInPeriods * target.period,
@@ -278,7 +281,9 @@ function OverviewHeatmap({
                 />
               ));
             }
-            target.currentValue += point.value;
+            if (gap >= 0 && gap <= target.period) {
+              target.currentValue += point.value;
+            }
           })}
         {differenceInDays(addDays(dateEnd, 1), dateNow) > 0 &&
           !target.is_target && (
@@ -299,8 +304,8 @@ function OverviewHeatmap({
                 addDays(target.currentDateStart, target.period),
                 1,
               )}
-              color={target.value ? project.color : palette[0]}
-              value={target.value}
+              color={target.currentValue ? project.color : palette[0]}
+              value={target.currentValue}
               basePeriod={24}
               vertical={false}
             />
