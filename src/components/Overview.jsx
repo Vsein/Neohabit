@@ -153,7 +153,7 @@ function OverviewHeatmap({
   };
   const openCellAddDropdown = (e, isTarget) => {
     e.stopPropagation();
-    dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isTarget }));
+    dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isActive: true, isTarget }));
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
@@ -163,7 +163,6 @@ function OverviewHeatmap({
     cellAddDropdown.style.left = `${
       rect.x + rect.width / 2 - 275 - (isTarget ? 70 : 0)
     }px`;
-    cellAddDropdown.classList.remove('hidden');
   };
   const dateCreation = new Date(project?.date_of_creation ?? dateStart);
   if (min([dateCreation, dateEnd]) === dateEnd) {

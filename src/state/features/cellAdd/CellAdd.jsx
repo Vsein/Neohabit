@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import DataPointForm from '../../../components/DataPointForm';
 import TargetPointForm from '../../../components/TargetPointForm';
 import { useUpdateHeatmapMutation } from '../../services/heatmap';
+import { close } from './cellAddSlice';
 
 export default function CellAdd() {
+  const dispatch = useDispatch();
   const [updateHeatmap] = useUpdateHeatmapMutation();
   const { heatmapID } = useSelector((state) => ({
     heatmapID: state.cellAdd.heatmapID,
@@ -12,19 +14,26 @@ export default function CellAdd() {
   const { isTarget } = useSelector((state) => ({
     isTarget: state.cellAdd.isTarget,
   }));
+  const { isActive } = useSelector((state) => ({
+    isActive: state.cellAdd.isActive,
+  }));
+  const closeDropdown = () => {
+    dispatch(close());
+  };
   useEffect(() => {
-    document.addEventListener('click', () =>
-      document.querySelector('.cell-add-dropdown').classList.add('hidden'),
-    );
+    document.addEventListener('click', closeDropdown);
+    return () => {
+      document.removeEventListener('click', closeDropdown);
+    };
   });
   const onSubmit = async (values) => {
     await updateHeatmap({ heatmapID, values });
-    document.querySelector('.cell-add-dropdown').classList.add('hidden');
+    closeDropdown();
   };
 
   return isTarget ? (
     <div
-      className="cell-add-dropdown target centering hidden"
+      className={`cell-add-dropdown target centering ${isActive ? '' : 'hidden'}`}
       onClick={(e) => e.stopPropagation()}
     >
       <h3>Add new target</h3>
@@ -32,7 +41,7 @@ export default function CellAdd() {
     </div>
   ) : (
     <div
-      className="cell-add-dropdown centering hidden"
+      className={`cell-add-dropdown centering ${isActive ? '' : 'hidden'}`}
       onClick={(e) => e.stopPropagation()}
     >
       <h3>Add completed actions</h3>

@@ -70,6 +70,7 @@ function hideTip() {
 export default function CellTip() {
   useEffect(() => {
     document.addEventListener('click', hideTip);
+    return () => document.removeEventListener('click', hideTip);
   });
 
   return (
