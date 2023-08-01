@@ -197,14 +197,11 @@ function OverviewHeatmap({
         {gap > 0 && <CellDummy length={gap} vertical={false} />}
         {dataSorted &&
           dataSorted.map((point, index) => {
-            if (point?.is_target) {
-              const date = startOfDay(new Date(point.date));
+            const date = startOfDay(new Date(point.date));
+            if (point?.is_target && differenceInDays(dateStart, date) > 0) {
               Object.assign(target, point);
               target.currentValue = 0;
-              target.currentDateStart = max([
-                startOfDay(new Date(point.date)),
-                dateStart,
-              ]);
+              target.currentDateStart = max([date, dateStart]);
               return differenceInDays(date, dateNow) > 0 ? (
                 <CellPeriod
                   key={index}
@@ -223,7 +220,6 @@ function OverviewHeatmap({
               return <> </>;
             }
             if (!target.is_target) {
-              const date = startOfDay(new Date(point.date));
               const dateNowTmp = dateNow;
               const gap = differenceInDays(date, dateNow);
               if (gap < 0) return <> </>;
@@ -252,7 +248,6 @@ function OverviewHeatmap({
                 </>
               );
             }
-            const date = startOfDay(new Date(point.date));
             const gap = differenceInDays(date, target.currentDateStart);
             if (gap >= target.period) {
               const diffInPeriods = Math.floor(gap / target.period);
