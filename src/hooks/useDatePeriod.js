@@ -3,27 +3,27 @@ import {
   startOfDay,
   isFirstDayOfMonth,
   startOfMonth,
-  lastDayOfMonth,
   subMonths,
   addMonths,
   subYears,
   addYears,
+  addDays,
 } from 'date-fns';
 
 export default function useDatePeriod() {
   const [dateStart, setDateStart] = useState(startOfDay(new Date()));
-  const [dateEnd, setDateEnd] = useState(addMonths(dateStart, 1));
+  const [dateEnd, setDateEnd] = useState(addDays(dateStart, 31));
 
   const subMonth = (e) => {
     const tmpStart = subMonths(isFirstDayOfMonth(dateStart) ? dateStart : dateEnd, 1);
     setDateStart(startOfMonth(tmpStart));
-    setDateEnd(lastDayOfMonth(tmpStart));
+    setDateEnd(addDays(tmpStart, 31));
   };
 
   const addMonth = (e) => {
     const tmpStart = addMonths(dateStart, 1);
     setDateStart(startOfMonth(tmpStart));
-    setDateEnd(lastDayOfMonth(tmpStart));
+    setDateEnd(addDays(tmpStart, 31));
   };
 
   const subYear = (e) => {
@@ -39,13 +39,13 @@ export default function useDatePeriod() {
   const setToPast = (e) => {
     const tmpStart = startOfDay(new Date());
     setDateEnd(tmpStart);
-    setDateStart(subMonths(tmpStart, 1));
+    setDateStart(addDays(tmpStart, -31));
   };
 
   const refresh = (e) => {
     const tmpStart = startOfDay(new Date());
     setDateStart(tmpStart);
-    setDateEnd(addMonths(tmpStart, 1));
+    setDateEnd(addDays(tmpStart, 31));
   };
 
   return [
