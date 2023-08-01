@@ -198,20 +198,40 @@ function OverviewHeatmap({
         {dataSorted &&
           dataSorted.map((point, index) => {
             const date = startOfDay(new Date(point.date));
-            if (point?.is_target && differenceInDays(dateStart, date) > 0) {
+            if (point?.is_target && differenceInDays(dateStart, date) > -30) {
+              const tmpPeriod = target.period;
+              const tmpValue = target.currentValue;
               Object.assign(target, point);
               target.currentValue = 0;
               target.currentDateStart = max([date, dateStart]);
               return differenceInDays(date, dateNow) > 0 ? (
-                <CellPeriod
-                  key={index}
-                  dateStart={dateNow}
-                  dateEnd={subMilliseconds(date, 1)}
-                  color={palette[0]}
-                  value={0}
-                  basePeriod={24}
-                  vertical={false}
-                />
+                <>
+                  <CellPeriod
+                    key={index}
+                    dateStart={dateNow}
+                    dateEnd={subMilliseconds(addDays(dateNow, tmpPeriod), 1)}
+                    color={tmpValue ? project.color : palette[0]}
+                    value={tmpValue}
+                    basePeriod={24}
+                    vertical={false}
+                  />
+                  {Array.from(
+                    new Array(differenceInDays(date, dateNow) - 1),
+                  ).map((_, Index) => (
+                    <CellPeriod
+                      key={Index}
+                      dateStart={addDays(dateNow, (Index + 1) * tmpPeriod)}
+                      dateEnd={subMilliseconds(
+                        addDays(dateNow, (Index + 2) * tmpPeriod),
+                        1,
+                      )}
+                      color={palette[0]}
+                      value={0}
+                      basePeriod={24}
+                      vertical={false}
+                    />
+                  ))}
+                </>
               ) : (
                 <> </>
               );
@@ -261,6 +281,7 @@ function OverviewHeatmap({
                 firstDate,
                 diffInPeriods * target.period,
               );
+              dateNow = target.currentDateStart;
               return Array.from(new Array(diffInPeriods)).map((_, index) => (
                 <CellPeriod
                   key={index}
@@ -306,10 +327,10 @@ function OverviewHeatmap({
             />
             {Array.from(
               new Array(
-                differenceInDays(
+                Math.floor(differenceInDays(
                   addDays(dateEnd, 1),
                   addDays(target.currentDateStart, target.period),
-                ),
+                ) / target.period),
               ),
             ).map((_, index) => (
               <CellPeriod
