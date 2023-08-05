@@ -15,14 +15,14 @@ export default function useDatePeriod() {
   const [dateEnd, setDateEnd] = useState(addDays(dateStart, 31));
 
   const subMonth = (e) => {
-    const tmpStart = subMonths(isFirstDayOfMonth(dateStart) ? dateStart : dateEnd, 1);
-    setDateStart(startOfMonth(tmpStart));
+    const tmpStart = startOfMonth(subMonths(isFirstDayOfMonth(dateStart) ? dateStart : dateEnd, 1));
+    setDateStart(tmpStart);
     setDateEnd(addDays(tmpStart, 31));
   };
 
   const addMonth = (e) => {
-    const tmpStart = addMonths(dateStart, 1);
-    setDateStart(startOfMonth(tmpStart));
+    const tmpStart = startOfMonth(addMonths(dateStart, 1));
+    setDateStart(tmpStart);
     setDateEnd(addDays(tmpStart, 31));
   };
 
