@@ -6,6 +6,7 @@ import {
   startOfDay,
   endOfDay,
   min,
+  max,
   subMilliseconds,
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
@@ -22,9 +23,18 @@ export default function OverviewHeatmap({
   let dataSorted;
   if (data) {
     dataSorted = [...data, { date: endOfDay(dateEnd), value: undefined, isLast: 1 }];
-    dataSorted.sort((a, b) => compareDesc(new Date(b.date), new Date(a.date)));
+    dataSorted.sort((a, b) => {
+      const res = compareDesc(new Date(b.date), new Date(a.date));
+      if (res === 0) {
+        return -2 * a.is_target + 1;
+      }
+      return res;
+    });
   }
-  const current = { date: dateStart, targetPeriod: undefined, targetValue: 1, value: 0 };
+  const current = { date: dateStart, value: 0 };
+  // current.date === current Target Period Start if period is defined,
+  // otherwise it's the current date
+  const target = { start: undefined, period: undefined, value: 1 };
   const palette = usePaletteGenerator(project.color);
   const dateCreation = startOfDay(new Date(project?.date_of_creation ?? dateStart));
 
@@ -40,8 +50,20 @@ export default function OverviewHeatmap({
         }
         if (compareDesc(date, dateStart) === 1) {
           if (point?.is_target) {
-            current.targetPeriod = point.period;
-            current.targetValue = point.value;
+            target.period = point.period;
+            target.value = point.value;
+            target.start = date;
+            current.date = date;
+            current.value = 0;
+          } else if (target.period) {
+            const diffInPeriods = Math.floor(differenceInDays(date, current.date)
+              / target.period);
+            if (diffInPeriods === 0) {
+              current.value += point.value;
+            } else {
+              current.date = addDays(current.date, diffInPeriods * target.period);
+              current.value = point.value;
+            }
           }
           return <> </>;
         }
@@ -51,9 +73,17 @@ export default function OverviewHeatmap({
           gap = Math.max(differenceInDays(dateOfFirstEntry, dateStart), 0);
           current.date = dateOfFirstEntry;
         }
-        if (current.targetPeriod === undefined) {
+        if (target.period === undefined) {
           const dateNowTmp = current.date;
-          current.date = addDays(date, 1);
+          if (point?.is_target) {
+            target.period = point.period;
+            target.value = point.value;
+            target.start = date;
+            current.date = date;
+            current.value = 0;
+          } else {
+            current.date = addDays(date, 1);
+          }
           return (
             <>
               {gap > 0 && <CellDummy key={index} length={gap} vertical={false} />}
@@ -80,26 +110,40 @@ export default function OverviewHeatmap({
             </>
           );
         }
-        const first = { ...current };
-        const diffInPeriods = Math.floor(differenceInDays(date, current.date) / first.targetPeriod)
-          + (point?.isLast || 0);
-        current.date = addDays(first.date, diffInPeriods * first.targetPeriod);
-        if (point?.is_target) {
-          current.targetPeriod = point.period;
-          current.targetValue = point.value;
+        const periodsToStart = Math.floor(differenceInDays(dateStart, current.date) / target.period);
+        if (periodsToStart > 0) {
+          current.date = addDays(current.date, periodsToStart * target.period);
           current.value = 0;
+        }
+        const previous = { ...current };
+        const previousTarget = { ...target };
+        let diffInPeriods = Math.floor(differenceInDays(date, current.date)
+          / target.period) + (point?.isLast || 0);
+        if (point?.is_target) {
+          if (differenceInDays(date, current.date) % target.period) {
+            diffInPeriods += 1;
+          }
+          target.period = point.period;
+          target.value = point.value;
+          target.start = date;
+          current.date = date;
+          current.value = 0;
+        } else if (diffInPeriods === 0) {
+          current.value += point.value;
+          return <> </>;
         } else {
+          current.date = addDays(current.date, diffInPeriods * target.period);
           current.value = point.value;
         }
         return Array.from(new Array(diffInPeriods)).map((_, Index) => (
           <CellPeriod
             key={Index}
-            dateStart={addDays(first.date, Index * first.targetPeriod)}
+            dateStart={max([addDays(previous.date, Index * previousTarget.period), dateStart])}
             dateEnd={subMilliseconds(min([
-              addDays(first.date, (Index + 1) * first.targetPeriod),
-              addDays(dateEnd, 1)]), 1)}
-            color={Index || !first.value ? palette[0] : project.color}
-            value={Index ? 0 : first.value}
+              addDays(previous.date, (Index + 1) * previousTarget.period),
+              addDays(dateEnd, 1), current.date]), 1)}
+            color={Index || !previous.value ? palette[0] : project.color}
+            value={Index ? 0 : previous.value}
             basePeriod={24}
             vertical={false}
           />
