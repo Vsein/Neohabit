@@ -5,12 +5,13 @@ import {
   addDays,
   isToday,
   isWeekend,
+  isLastDayOfMonth,
 } from 'date-fns';
 
 function Month({ dateStart, index }) {
   const date = addDays(dateStart, index);
   const monthName = date.toLocaleString('en-US', { month: 'short' });
-  if (getDate(date) === 1 || index === 0) {
+  if (getDate(date) === 1 || (index === 0 && !isLastDayOfMonth(date))) {
     return <div className="overview-months-month active">{monthName}</div>;
   }
   return <div className="overview-months-month">{monthName}</div>;

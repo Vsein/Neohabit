@@ -8,8 +8,13 @@ export default function useMenuToggler() {
     setMenuOpened(!menuOpened);
   };
 
+  const closeMenu = () => {
+    setMenuOpened(false);
+  };
+
   useEffect(() => {
-    document.addEventListener('click', () => setMenuOpened(false));
+    document.addEventListener('click', closeMenu);
+    return () => document.removeEventListener('click', closeMenu);
   });
 
   return [menuOpened, { toggleMenu }];

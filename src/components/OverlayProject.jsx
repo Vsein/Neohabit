@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Field } from 'react-final-form';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
+import { HexColorPicker, HexColorInput } from 'react-colorful';
 import ProjectTag from './ProjectTag';
 import {
   useGetProjectsQuery,
@@ -23,7 +24,8 @@ export default function OverlayProject() {
   const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
   const project = projects.find((projecto) => projecto._id == projectID) ?? {
     name: '',
-    color: '',
+    color: '#aabbcc',
+    description: '',
   };
   const [createProject] = useCreateProjectMutation();
   const [updateProject] = useUpdateProjectMutation();
@@ -56,6 +58,7 @@ export default function OverlayProject() {
         <Form
           initialValues={{
             name: project?.name,
+            description: project?.description,
             color: project?.color,
           }}
           onSubmit={onSubmit}
@@ -87,14 +90,34 @@ export default function OverlayProject() {
                   placeholder="Change project name"
                   rows="1"
                   className="form-task-name"
+                  required
                 />
                 <Field
-                  name="color"
+                  name="description"
                   component="textarea"
-                  placeholder="Change color"
+                  placeholder="Change description"
                   rows="1"
                   className="form-task-description"
                 />
+                <Field name="color">
+                  {({ input }) => (
+                    <div className="form-task-name">
+                      <HexColorPicker
+                        color={input.value}
+                        onChange={(coloro) => {
+                          input.onChange(coloro);
+                        }}
+                      />
+                      <HexColorInput
+                        color={input.value}
+                        onChange={(coloro) => {
+                          input.onChange(coloro);
+                        }}
+                        prefixed
+                      />
+                    </div>
+                  )}
+                </Field>
               </div>
               <div className="modal-buttons">
                 <button

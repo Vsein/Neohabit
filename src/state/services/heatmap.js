@@ -25,7 +25,7 @@ export const heatmapApi = api.injectEndpoints({
             const index = Heatmap.data.findIndex((point) =>
               isSameDay(new Date(point.date), new Date(values.date)),
             );
-            if (index != -1) {
+            if (index != -1 && !values?.is_target) {
               Heatmap.data = Heatmap.data.map((point) =>
                 isSameDay(new Date(point.date), new Date(values.date))
                   ? { ...point, value: point.value + 1 }
