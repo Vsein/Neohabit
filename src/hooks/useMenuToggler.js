@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import useKeyPress from './useKeyPress';
 
 export default function useMenuToggler() {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -7,6 +8,8 @@ export default function useMenuToggler() {
     e.stopPropagation();
     setMenuOpened(!menuOpened);
   };
+
+  useKeyPress(['i'], toggleMenu);
 
   const closeMenu = () => {
     setMenuOpened(false);

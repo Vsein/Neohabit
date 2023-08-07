@@ -36,6 +36,7 @@ import {
 } from './state/services/settings';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
+import useKeyPress from './hooks/useKeyPress';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(undefined);
@@ -96,6 +97,8 @@ const PrivateRoutes = (params) => {
     document.querySelector('.sidebar').scrollTop = 0;
     setSidebarHidden(!sidebarHidden);
   };
+
+  useKeyPress(['Tab'], toggleSidebar);
 
   const projects = useGetProjectsQuery();
   const tasks = useGetTasksQuery();

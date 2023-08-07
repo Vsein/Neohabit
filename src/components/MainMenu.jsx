@@ -24,6 +24,7 @@ export default function MainMenu(props) {
       <button
         className="logo-section left sidebar-toggle-container"
         onClick={toggleSidebar}
+        title="Toggle sidebar [Tab]"
       >
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
       </button>
@@ -38,6 +39,7 @@ export default function MainMenu(props) {
           menuOpened ? 'active' : ''
         }`}
         onClick={toggleMenu}
+        title="Toggle menu [I]"
       >
         <PFP type="tiny" />
       </button>

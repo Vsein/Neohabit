@@ -5,6 +5,7 @@ import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import Task from './Task';
 import { changeTo } from '../state/features/taskOverlay/taskOverlaySlice';
+import useKeyPress from '../hooks/useKeyPress';
 
 export default function Tasklist(params) {
   const { name, tasks, projectID, list } = params;
@@ -21,6 +22,8 @@ export default function Tasklist(params) {
     dispatch(changeTo({ taskID: '', projectID }));
   }
 
+  useKeyPress(['t'], addTask);
+
   return (
     <>
       <div className="tasklist-header">
@@ -34,7 +37,7 @@ export default function Tasklist(params) {
               <Task task={task} project={task?.project} />
             </li>
           ))}
-        <button className="add-task-btn" onClick={addTask}>
+        <button className="add-task-btn" onClick={addTask} title="Add task [T]">
           <Icon className="add-task-icon" path={mdiPlus} />
           <p>Add task</p>
         </button>

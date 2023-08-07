@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
@@ -16,6 +16,7 @@ import { useGetFiltersQuery } from '../state/services/todolist';
 import { useGetProjectsQuery } from '../state/services/project';
 import ProjectTag from './ProjectTag';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import useKeyPress from '../hooks/useKeyPress';
 
 export default function Sidebar(props) {
   const projects = useGetProjectsQuery();
@@ -33,6 +34,8 @@ export default function Sidebar(props) {
     dispatch(changeTo(''));
   };
 
+  useKeyPress(['a'], openOverlay);
+
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
       <ul className="navigation">
@@ -42,12 +45,14 @@ export default function Sidebar(props) {
           status="raw"
           to="/dashboard"
           raw="true"
+          num="1"
         />
         <NavigationSection
           path={mdiFamilyTree}
           title={hidden ? 'Skills' : 'Skill trees'}
           status="soon"
           to="/skill-trees"
+          num="2"
         />
         <NavigationSection
           path={mdiTrendingUp}
@@ -55,22 +60,26 @@ export default function Sidebar(props) {
           status="raw"
           to="/habits"
           raw="true"
+          num="3"
         />
         <NavigationSection
           path={mdiCheckboxMultipleMarked}
           title="To-do"
           to="/todo"
+          num="4"
         />
         <NavigationSection
           path={mdiPost}
           title="Blog"
           status="soon"
           to="/blog"
+          num="5"
         />
         <NavigationSection
           path={mdiCog}
           title="Settings"
           to="/settings"
+          num="6"
         />
       </ul>
       <hr />
@@ -85,7 +94,7 @@ export default function Sidebar(props) {
             />
           </button>
           <p>Projects</p>
-          <button className="centering add" onClick={openOverlay}>
+          <button className="centering add" onClick={openOverlay} title="Add project [A]">
             <Icon path={mdiPlus} className="icon" />
           </button>
         </li>
@@ -110,7 +119,11 @@ export default function Sidebar(props) {
 }
 
 function NavigationSection(props) {
-  const { path, to, title, status, raw } = props;
+  const { path, to, title, status, raw, num } = props;
+  const navigate = useNavigate();
+
+  useKeyPress([num], () => navigate(to));
+
   return (
     <li>
       <NavLink
@@ -119,6 +132,7 @@ function NavigationSection(props) {
         }
         tabIndex="0"
         to={to}
+        title={`${title} [${num}]`}
       >
         <Icon path={path} className="icon" />
         <p className="link">{title}</p>
@@ -143,6 +157,7 @@ function Project(props) {
         backgroundColor: ({ isActive }) =>
           isActive ? `${project.color}33` : '',
       }}
+      title={project.name}
     >
       <ProjectTag project={project} />
     </NavLink>

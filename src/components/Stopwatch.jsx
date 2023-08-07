@@ -11,6 +11,7 @@ import {
   useUpdateStopwatchMutation,
   useFinishStopwatchMutation,
 } from '../state/services/stopwatch';
+import useKeyPress from '../hooks/useKeyPress';
 
 export default function Stopwatch() {
   const stopwatch = useGetStopwatchQuery();
@@ -77,6 +78,8 @@ export default function Stopwatch() {
     setIsPaused(!isPaused);
   };
 
+  useKeyPress(['p'], togglePause);
+
   const resetStopwatch = () => {
     updateStopwatch({
       values: {
@@ -91,12 +94,16 @@ export default function Stopwatch() {
     document.title = '0:00:00 | Neohabit';
   };
 
+  useKeyPress(['r'], resetStopwatch);
+
   const finishCountdown = () => {
     finishStopwatch({ values: { ...stopwatch.data } });
     setIsPaused(true);
     setCurrentDuration(0);
     document.title = '0:00:00 | Neohabit';
-  }
+  };
+
+  useKeyPress(['f'], finishCountdown);
 
   useEffect(() => {
     if (!isPaused) {
@@ -132,12 +139,14 @@ export default function Stopwatch() {
         <button
           className="logo-section sidebar-toggle-container centering right stopwatch-icon"
           onClick={resetStopwatch}
+          title="Reset [R]"
         >
           <Icon path={mdiRestart} className="icon medium sidebar-toggle" />
         </button>
         <button
           className="logo-section sidebar-toggle-container centering stopwatch-icon"
           onClick={togglePause}
+          title={isPaused ? 'Play [P]' : 'Pause [P]'}
         >
           <Icon
             path={isPaused ? mdiPlay : mdiPause}
@@ -147,6 +156,7 @@ export default function Stopwatch() {
         <button
           className="logo-section sidebar-toggle-container centering stopwatch-icon"
           onClick={finishCountdown}
+          title="Finish [F]"
         >
           <Icon
             path={mdiFlagCheckered}

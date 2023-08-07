@@ -11,6 +11,7 @@ import {
 } from '../state/services/todolist';
 import { useGetProjectsQuery } from '../state/services/project';
 import { close } from '../state/features/taskOverlay/taskOverlaySlice';
+import useKeyPress from '../hooks/useKeyPress';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay() {
@@ -36,6 +37,8 @@ export default function Overlay() {
     e.stopPropagation();
     dispatch(close());
   };
+
+  useKeyPress(['c'], closeOverlay);
 
   const onSubmit = async (values) => {
     if (task) {

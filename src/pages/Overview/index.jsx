@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { mdiPlus } from '@mdi/js';
 import Overview from '../../components/Overview';
 import useTitle from '../../hooks/useTitle';
+import useKeyPress from '../../hooks/useKeyPress';
 import { changeTo, open } from '../../state/features/projectOverlay/projectOverlaySlice';
 
 export default function Dashboard() {
@@ -15,6 +16,8 @@ export default function Dashboard() {
     dispatch(changeTo(''));
   };
 
+  useKeyPress(['a'], openOverlay);
+
   return (
     <div id="content-overview">
       <div className="overview-controls">
@@ -23,7 +26,7 @@ export default function Dashboard() {
         <div className="overview-container">
           <Overview />
         </div>
-        <button className="overview-project-add" onClick={openOverlay} >
+        <button className="overview-project-add" onClick={openOverlay} title="Add project [A]">
           <Icon className="icon small" path={mdiPlus} />
           <p>Add project</p>
         </button>

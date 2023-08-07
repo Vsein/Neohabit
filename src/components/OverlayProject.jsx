@@ -11,6 +11,7 @@ import {
   useUpdateProjectMutation,
 } from '../state/services/project';
 import { close } from '../state/features/projectOverlay/projectOverlaySlice';
+import useKeyPress from '../hooks/useKeyPress';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function OverlayProject() {
@@ -34,6 +35,8 @@ export default function OverlayProject() {
     e.stopPropagation();
     dispatch(close());
   };
+
+  useKeyPress(['c'], closeOverlay);
 
   const onSubmit = async (values) => {
     if (project.name == '') {
@@ -79,6 +82,7 @@ export default function OverlayProject() {
                   className="close-modal-button icon"
                   onClick={closeOverlay}
                   type="button"
+                  title="Close [C]"
                 >
                   <Icon path={mdiClose} />
                 </button>
@@ -125,6 +129,7 @@ export default function OverlayProject() {
                   className="form-button"
                   id="cancel-form-button"
                   onClick={closeOverlay}
+                  title="Cancel [C]"
                 >
                   Cancel
                 </button>
