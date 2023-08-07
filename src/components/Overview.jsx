@@ -34,6 +34,7 @@ import useDatePeriod from '../hooks/useDatePeriod';
 import { OverviewMonths, OverviewDays } from './OverviewHeaders';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import OverviewHeatmap from './OverviewHeatmap';
+import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
   const [loaded] = useLoaded();
@@ -45,6 +46,9 @@ export default function Overview() {
     dateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, refresh },
   ] = useDatePeriod();
+
+  useKeyPress(['h'], subMonth);
+  useKeyPress(['l'], addMonth);
 
   if (!loaded || projects.isFetching || heatmaps.isFetching) {
     return (
@@ -78,20 +82,20 @@ export default function Overview() {
           </button>
         </div>
 
-        <button className="overview-period-move-left" onClick={subMonth}>
+        <button className="overview-period-move-left" onClick={subMonth} title="Move month to the left [H]">
           <Icon path={mdiMenuLeft} className="icon" />
         </button>
       </div>
       <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
       <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
       <div className="overview-topbar-right">
-        <button className="overview-period-move-right" onClick={addMonth}>
+        <button className="overview-period-move-right" onClick={addMonth} title="Move month to the right [L]">
           <Icon path={mdiMenuRight} className="icon" />
         </button>
-        <button className="overview-period-end" onClick={setToPast}>
+        <button className="overview-period-end" onClick={setToPast} title="Set today as the period end">
           <Icon path={mdiCalendarEnd} className="icon small centering" />
         </button>
-        <button className="overview-period-refresh" onClick={refresh}>
+        <button className="overview-period-refresh" onClick={refresh} title="Set today as the period start">
           <Icon path={mdiCalendarRefresh} className="icon small centering" />
         </button>
       </div>
@@ -160,6 +164,7 @@ function OverviewProject({
       <NavLink
         className="overview-project-name"
         to={`../project/${linkify(project._id)}`}
+        title={project.name}
       >
         {project.name}
       </NavLink>
@@ -174,21 +179,24 @@ function OverviewProject({
         <button
           className="overview-project-button"
           onClick={(e) => openCellAddDropdown(e, false)}
+          title="Add N copmleted actions on X day"
         >
           <Icon path={mdiPlusBox} />
         </button>
-        <button className="overview-project-button" onClick={addCell}>
+        <button className="overview-project-button" onClick={addCell} title="Add 1 completed action today">
           <Icon path={mdiCheckboxMarked} />
         </button>
         <button
           className="overview-project-button"
           onClick={setStopwatchProject}
+          title="Start stopwatch of this project"
         >
           <Icon path={mdiTimer} />
         </button>
         <button
           className="overview-project-button"
           onClick={(e) => openCellAddDropdown(e, true)}
+          title="Add a new target"
         >
           <Icon path={mdiViewGridPlusOutline} />
         </button>
@@ -198,12 +206,14 @@ function OverviewProject({
             dispatch(changeTo(project._id));
             dispatch(open());
           }}
+          title="Edit project"
         >
           <Icon path={mdiPencil} />
         </Link>
         <button
           className="overview-project-button"
           onClick={deleteChosenProject}
+          title="Delete project"
         >
           <Icon path={mdiDelete} />
         </button>
