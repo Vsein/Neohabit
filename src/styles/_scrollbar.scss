@@ -1,60 +1,14 @@
-.os-scrollbar {
-  // The size of the scrollbar
-  --os-size: 5px;
-  // The axis-perpedicular padding of the scrollbar (horizontal: padding-y, vertical: padding-x)
-  --os-padding-perpendicular: 0;
-  // The axis padding of the scrollbar (horizontal: padding-x, vertical: padding-y)
-  --os-padding-axis: 0;
-  // The border radius of the scrollbar track
-  --os-track-border-radius: 0;
-  // The background of the scrollbar track
-  --os-track-bg: none;
-  // The :hover background of the scrollbar track
-  --os-track-bg-hover: none;
-  // The :active background of the scrollbar track
-  --os-track-bg-active: none;
-  // The border of the scrollbar track
-  --os-track-border: none;
-  // The :hover background of the scrollbar track
-  --os-track-border-hover: none;
-  // The :active background of the scrollbar track
-  --os-track-border-active: none;
-  // The border radius of the scrollbar handle
-  --os-handle-border-radius: 0;
-  // The background of the scrollbar handle
-  --os-handle-bg: var(--scrollbar-color);
-  // The :hover background of the scrollbar handle
-  --os-handle-bg-hover: var(--cell-border-color);
-  // The :active background of the scrollbar handle
-  --os-handle-bg-active: var(--cell-border-color);
-  // The border of the scrollbar handle
-  --os-handle-border: none;
-  // The :hover border of the scrollbar handle
-  --os-handle-border-hover: none;
-  // The :active border of the scrollbar handle
-  --os-handle-border-active: none;
-  // The min size of the scrollbar handle
-  --os-handle-min-size: 33px;
-  // The max size of the scrollbar handle
-  --os-handle-max-size: none;
-  // The axis-perpedicular size of the scrollbar handle (horizontal: height, vertical: width)
-  --os-handle-perpendicular-size: 100%;
-  // The :hover axis-perpedicular size of the scrollbar handle (horizontal: height, vertical: width)
-  --os-handle-perpendicular-size-hover: 200%;
-  // The :active axis-perpedicular size of the scrollbar handle (horizontal: height, vertical: width)
-  --os-handle-perpendicular-size-active: 200%;
-  // Increases the interactive area of the scrollbar handle.
-  --os-handle-interactive-area-offset: 100px;
-}
-
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     transition: 1.0s;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: rgba(127, 127, 127, 0.6);
+    background-clip: padding-box;
+    border: 1px solid transparent;
+    border-radius: 5px;
     transition: 1.0s;
 }
 
@@ -64,9 +18,14 @@
     transition: 0.3s;
 }
 
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
 ::-webkit-scrollbar-thumb:vertical:active,
 ::-webkit-scrollbar-thumb:horizontal:active {
-    background: rgba(95, 91, 91);
+    background: rgba(95, 91, 91, 1);
+
 }
 
 ::-webkit-scrollbar-corner {
