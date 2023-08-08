@@ -7,8 +7,6 @@ import {
   Outlet,
   useLocation,
 } from 'react-router-dom';
-import 'overlayscrollbars/overlayscrollbars.css';
-import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import ToDoList from './pages/ToDoList';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -118,26 +116,14 @@ const PrivateRoutes = (params) => {
 
   return loggedIn ? (
     <>
-      <OverlayScrollbarsComponent
-        defer
-        options={{
-          sizeAutoCapable: false,
-          scrollbars: {
-            theme: 'os-theme-dark',
-            autoHide: 'move',
-            autoHideDelay: '800',
-          },
-        }}
-      >
-        <div id="content">
-          <MainMenu toggleSidebar={toggleSidebar} />
-          <Sidebar hidden={sidebarHidden} />
-          <Outlet />
-          <CellTip />
-          <CellAdd />
-          {/* <SidebarMobile /> */}
-        </div>
-      </OverlayScrollbarsComponent>
+      <div id="content">
+        <MainMenu toggleSidebar={toggleSidebar} />
+        <Sidebar hidden={sidebarHidden} />
+        <Outlet />
+        <CellTip />
+        <CellAdd />
+        {/* <SidebarMobile /> */}
+      </div>
       <Stopwatch />
       <OverlayDelete />
       {projects.isFetching ||
@@ -168,19 +154,7 @@ const AuthRoutes = (params) => {
   return loggedIn ? (
     <Navigate to="/dashboard" replace state={{ from: location }} />
   ) : (
-    <OverlayScrollbarsComponent
-      defer
-      options={{
-        sizeAutoCapable: false,
-        scrollbars: {
-          theme: 'os-theme-dark',
-          autoHide: 'move',
-          autoHideDelay: '800',
-        },
-      }}
-    >
-      <Outlet />
-    </OverlayScrollbarsComponent>
+    <Outlet />
   );
 };
 
