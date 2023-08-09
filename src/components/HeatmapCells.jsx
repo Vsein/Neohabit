@@ -34,7 +34,15 @@ function Cell({ color, dateStart, dateEnd, value, length, vertical = true }) {
   );
 }
 
-function CellFractured({ color, date, value, length, vertical = true }) {
+function CellFractured({
+  color,
+  blankColor,
+  date,
+  value,
+  targetValue,
+  length,
+  vertical = true,
+}) {
   const style = {
     '--color': color,
     gap: '2px',
@@ -47,27 +55,28 @@ function CellFractured({ color, date, value, length, vertical = true }) {
     dateStart: date,
   });
 
+  const fractions = Math.max(value, targetValue);
   let dotted = false;
   let fractionHeight = 15;
   let fractionWidth = 15;
-  if (value <= 2) {
+  if (fractions <= 2) {
     fractionHeight = 1 / 2;
-  } else if (value <= 4) {
+  } else if (fractions <= 4) {
     fractionHeight = 1 / 2;
     fractionWidth = 1 / 2;
-  } else if (value <= 6) {
+  } else if (fractions <= 6) {
     fractionHeight = 1 / 2;
     fractionWidth = 1 / 3;
     style.columnGap = '1px';
-  } else if (value <= 9) {
+  } else if (fractions <= 9) {
     fractionHeight = 1 / 3;
     fractionWidth = 1 / 3;
     style.gap = '1px';
-  } else if (value <= 12) {
+  } else if (fractions <= 12) {
     fractionHeight = 1 / 3;
     fractionWidth = 1 / 5;
     style.gap = '1px';
-  } else if (value <= 16) {
+  } else if (fractions <= 16) {
     fractionHeight = 1 / 5;
     fractionWidth = 1 / 5;
     style.gap = '1px';
@@ -80,6 +89,10 @@ function CellFractured({ color, date, value, length, vertical = true }) {
     '--width': fractionWidth,
     margin: 0,
   };
+  const styleFractionBlank = {
+    ...styleFraction,
+    backgroundColor: blankColor,
+  };
   return (
     <div
       className={`cell ${dotted ? 'dotted' : 'fractured'}`}
@@ -88,8 +101,12 @@ function CellFractured({ color, date, value, length, vertical = true }) {
       onMouseLeave={hideTip}
     >
       {!dotted &&
-        [...Array(+value)].map((point) => (
-          <div key={point} className="cell-fraction" style={styleFraction} />
+        [...Array(+fractions)].map((point, index) => (
+          <div
+            key={point}
+            className="cell-fraction"
+            style={index >= value ? styleFractionBlank : styleFraction}
+          />
         ))}
     </div>
   );
@@ -99,15 +116,17 @@ function CellPeriod({
   dateStart,
   dateEnd,
   color,
+  blankColor,
   value,
   basePeriod = 24,
   vertical = true,
+  targetValue = 1,
 }) {
   const diffDays =
     differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
-
   if (isSameWeek(dateStart, dateEnd) || !vertical) {
-    return value <= 1 || value == undefined || vertical ? (
+    return (value <= 1 || value == undefined || vertical) &&
+      targetValue === 1 ? (
       <Cell
         color={color}
         value={value}
@@ -119,10 +138,12 @@ function CellPeriod({
     ) : (
       <CellFractured
         color={color}
+        blankColor={blankColor}
         value={value}
         date={dateStart}
         length={diffDays}
         vertical={vertical}
+        targetValue={targetValue}
       />
     );
   }

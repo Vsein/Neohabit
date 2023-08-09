@@ -143,9 +143,11 @@ export default function OverviewHeatmap({
               addDays(previous.date, (Index + 1) * previousTarget.period),
               addDays(dateEnd, 1), current.date]), 1)}
             color={Index || !previous.value ? palette[0] : project.color}
+            blankColor={palette[0]}
             value={Index ? 0 : previous.value}
             basePeriod={24}
             vertical={false}
+            targetValue={previousTarget.value}
           />
         ));
       })}
