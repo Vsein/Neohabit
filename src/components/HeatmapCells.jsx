@@ -83,6 +83,10 @@ function CellFractured({
   } else {
     dotted = true;
   }
+
+  fractionWidth *= length;
+  fractionWidth += (length - 1) * (2 / 15);
+
   const styleFraction = {
     backgroundColor: color,
     '--height': fractionHeight,
