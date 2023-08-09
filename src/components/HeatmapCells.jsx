@@ -8,10 +8,11 @@ import {
   endOfWeek,
   addMilliseconds,
   startOfDay,
+  min,
 } from 'date-fns';
 import { formatTipContent, hideTip, changeCellOffset } from './CellTip';
 
-function Cell({ color, dateStart, dateEnd, value, length, vertical = true }) {
+function Cell({ color, dateStart, dateEnd, value, length, targetStart, vertical = true }) {
   const style = {
     backgroundColor: color,
     [vertical ? '--width' : '--height']: 1,
@@ -20,7 +21,7 @@ function Cell({ color, dateStart, dateEnd, value, length, vertical = true }) {
   const content = formatTipContent({
     actions: value,
     period: !!differenceInDays(dateEnd, dateStart),
-    dateStart,
+    dateStart: targetStart || dateStart,
     dateEnd,
   });
 
@@ -37,9 +38,11 @@ function Cell({ color, dateStart, dateEnd, value, length, vertical = true }) {
 function CellFractured({
   color,
   blankColor,
-  date,
+  dateStart,
+  dateEnd,
   value,
   targetValue,
+  targetStart,
   length,
   vertical = true,
 }) {
@@ -51,8 +54,9 @@ function CellFractured({
   };
   const content = formatTipContent({
     actions: value,
-    period: false,
-    dateStart: date,
+    period: !!length,
+    dateStart: targetStart || dateStart,
+    dateEnd,
   });
 
   const fractions = Math.max(value, targetValue);
@@ -125,6 +129,7 @@ function CellPeriod({
   basePeriod = 24,
   vertical = true,
   targetValue = 1,
+  targetStart = undefined,
 }) {
   const diffDays =
     differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
@@ -135,6 +140,7 @@ function CellPeriod({
         color={color}
         value={value}
         dateStart={dateStart}
+        targetStart={targetStart}
         dateEnd={dateEnd}
         length={diffDays}
         vertical={vertical}
@@ -144,10 +150,12 @@ function CellPeriod({
         color={color}
         blankColor={blankColor}
         value={value}
-        date={dateStart}
+        dateStart={dateStart}
+        dateEnd={dateEnd}
         length={diffDays}
         vertical={vertical}
         targetValue={targetValue}
+        targetStart={targetStart}
       />
     );
   }

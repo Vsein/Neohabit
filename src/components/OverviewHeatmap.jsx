@@ -138,6 +138,7 @@ export default function OverviewHeatmap({
         return Array.from(new Array(diffInPeriods)).map((_, Index) => (
           <CellPeriod
             key={Index}
+            targetStart={addDays(previous.date, Index * previousTarget.period)}
             dateStart={max([addDays(previous.date, Index * previousTarget.period), dateStart])}
             dateEnd={subMilliseconds(min([
               addDays(previous.date, (Index + 1) * previousTarget.period),
