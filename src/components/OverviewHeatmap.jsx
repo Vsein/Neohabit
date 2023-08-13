@@ -18,6 +18,7 @@ export default function OverviewHeatmap({
   project,
   heatmap,
   useElimination = true,
+  vertical = false,
 }) {
   const data = heatmap?.data;
   let dataSorted;
@@ -86,7 +87,7 @@ export default function OverviewHeatmap({
           }
           return (
             <>
-              {gap > 0 && <CellDummy key={index} length={gap} vertical={false} />}
+              {gap > 0 && <CellDummy key={index} length={gap} vertical={vertical} />}
               {(differenceInDays(date, dateNowTmp) > 0
                   || (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap))
                   && <CellPeriod
@@ -94,7 +95,7 @@ export default function OverviewHeatmap({
                     dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
                     color={palette[0]}
                     value={0}
-                    vertical={false}
+                    vertical={vertical}
                   />
                 }
               {!point?.isLast && !point.is_target
@@ -104,7 +105,7 @@ export default function OverviewHeatmap({
                     color={project.color}
                     value={point.value}
                     basePeriod={24}
-                    vertical={false}
+                    vertical={vertical}
                   />
               }
             </>
@@ -147,7 +148,7 @@ export default function OverviewHeatmap({
             blankColor={palette[0]}
             value={Index ? 0 : previous.value}
             basePeriod={24}
-            vertical={false}
+            vertical={vertical}
             targetValue={previousTarget.value}
           />
         ));
