@@ -121,7 +121,6 @@ function OverviewProject({
   dateEnd,
   project,
   heatmap,
-  useElimination = true,
 }) {
   const [deleteProject] = useDeleteProjectMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
@@ -173,7 +172,6 @@ function OverviewProject({
         project={project}
         dateStart={dateStart}
         dateEnd={dateEnd}
-        useElimination={useElimination}
       />
       <div className="overview-project-controls">
         <button

@@ -17,7 +17,6 @@ export default function OverviewHeatmap({
   dateEnd,
   project,
   heatmap,
-  useElimination = true,
   vertical = false,
 }) {
   const data = heatmap?.data;
@@ -96,6 +95,7 @@ export default function OverviewHeatmap({
                     color={palette[0]}
                     value={0}
                     vertical={vertical}
+                    elimination={project?.elimination}
                   />
                 }
               {!point?.isLast && !point.is_target
@@ -106,6 +106,7 @@ export default function OverviewHeatmap({
                     value={point.value}
                     basePeriod={24}
                     vertical={vertical}
+                    elimination={project?.elimination}
                   />
               }
             </>
@@ -149,6 +150,7 @@ export default function OverviewHeatmap({
             value={Index ? 0 : previous.value}
             basePeriod={24}
             vertical={vertical}
+            elimination={project?.elimination}
             targetValue={previousTarget.value}
           />
         ));

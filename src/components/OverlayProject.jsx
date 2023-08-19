@@ -63,6 +63,7 @@ export default function OverlayProject() {
             name: project?.name,
             description: project?.description,
             color: project?.color,
+            elimination: project?.elimination,
           }}
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -122,6 +123,15 @@ export default function OverlayProject() {
                     </div>
                   )}
                 </Field>
+                <div className="form-task-description">
+                  <Field
+                    name="elimination"
+                    component="input"
+                    type="checkbox"
+                    className="checkbox"
+                  />
+                  <label>Use elimination</label>
+                </div>
               </div>
               <div className="modal-buttons">
                 <button
