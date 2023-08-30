@@ -59,6 +59,11 @@
   background-color: var(--signature-color-transparent);
 }
 
+
+input[type="checkbox"]:checked.checkbox {
+    background: radial-gradient(var(--signature-color) 30%, var(--signature-color-transparent) 40%);
+}
+
 .ribbon {
   position: absolute;
   width: 80px;

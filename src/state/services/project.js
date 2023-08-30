@@ -64,6 +64,7 @@ export const projectApi = api.injectEndpoints({
               project.color = values.color;
               project.description = values.description;
               project.completed = values.completed;
+              project.elminiation = values.elimination;
             }
           }),
         );

@@ -54,6 +54,7 @@ $cell-margin: 2px;
   width: calc((var(--cell-width) - 2px) * var(--width));
   border-radius: 1px;
   position: relative;
+  background-color: var(--support-background-color);
 }
 
 .cell-period {
@@ -154,9 +155,6 @@ $cell-margin: 2px;
       border-bottom: 1px solid var(--cell-border-color);
     }
   }
-}
-
-.cell-fraction {
 }
 
 .cell-tip {

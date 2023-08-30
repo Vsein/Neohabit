@@ -76,6 +76,9 @@
   padding: 5px 10px;
   font-size: 0.9em;
   height: min-content;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .form-button {

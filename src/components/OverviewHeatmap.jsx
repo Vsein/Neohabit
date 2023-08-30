@@ -17,7 +17,7 @@ export default function OverviewHeatmap({
   dateEnd,
   project,
   heatmap,
-  useElimination = true,
+  vertical = false,
 }) {
   const data = heatmap?.data;
   let dataSorted;
@@ -86,7 +86,7 @@ export default function OverviewHeatmap({
           }
           return (
             <>
-              {gap > 0 && <CellDummy key={index} length={gap} vertical={false} />}
+              {gap > 0 && <CellDummy key={index} length={gap} vertical={vertical} />}
               {(differenceInDays(date, dateNowTmp) > 0
                   || (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap))
                   && <CellPeriod
@@ -94,7 +94,8 @@ export default function OverviewHeatmap({
                     dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
                     color={palette[0]}
                     value={0}
-                    vertical={false}
+                    vertical={vertical}
+                    elimination={project?.elimination}
                   />
                 }
               {!point?.isLast && !point.is_target
@@ -104,7 +105,8 @@ export default function OverviewHeatmap({
                     color={project.color}
                     value={point.value}
                     basePeriod={24}
-                    vertical={false}
+                    vertical={vertical}
+                    elimination={project?.elimination}
                   />
               }
             </>
@@ -138,14 +140,18 @@ export default function OverviewHeatmap({
         return Array.from(new Array(diffInPeriods)).map((_, Index) => (
           <CellPeriod
             key={Index}
+            targetStart={addDays(previous.date, Index * previousTarget.period)}
             dateStart={max([addDays(previous.date, Index * previousTarget.period), dateStart])}
             dateEnd={subMilliseconds(min([
               addDays(previous.date, (Index + 1) * previousTarget.period),
               addDays(dateEnd, 1), current.date]), 1)}
             color={Index || !previous.value ? palette[0] : project.color}
+            blankColor={palette[0]}
             value={Index ? 0 : previous.value}
             basePeriod={24}
-            vertical={false}
+            vertical={vertical}
+            elimination={project?.elimination}
+            targetValue={previousTarget.value}
           />
         ));
       })}
