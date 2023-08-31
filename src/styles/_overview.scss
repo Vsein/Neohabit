@@ -18,7 +18,7 @@ $cell-margin: 2px;
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  width: min(930px, 100%);
+  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
   padding-right: 5px;
   flex-direction: column;
 }
@@ -43,7 +43,7 @@ $cell-margin: 2px;
   display: grid;
   margin-top: 5px;
   grid-template-rows: 20px $cell-height 15px min-content;
-  grid-template-columns: 115px 608px 200px;
+  grid-template-columns: 115px calc(var(--length) * 19px) 200px;
   row-gap: 4px;
 
   .overview-months {
@@ -109,7 +109,7 @@ $cell-margin: 2px;
 
     .overview-project {
       display: grid;
-      grid-template-columns: 200px 608px 90px;
+      grid-template-columns: 200px calc(var(--length) * 19px) 90px;
       font-size: 15px;
 
       &-name {
@@ -199,7 +199,7 @@ $cell-margin: 2px;
   border-radius: 10px;
   display: grid;
   grid-template-columns: 30px 1fr;
-  width: min(100%, 930px);
+  width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
   justify-content: center;
   align-items: center;
   cursor: pointer;

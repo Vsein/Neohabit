@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getYear, formatISO, startOfDay } from 'date-fns';
+import { getYear, formatISO, startOfDay, differenceInDays } from 'date-fns';
 import Icon from '@mdi/react';
 import {
   mdiDelete,
@@ -14,6 +14,7 @@ import {
   mdiCalendarEnd,
   mdiCalendarStart,
   mdiViewGridPlusOutline,
+  mdiPlus,
 } from '@mdi/js';
 import { useGetProjectsQuery, useDeleteProjectMutation } from '../state/services/project';
 import { useGetHeatmapsQuery, useUpdateHeatmapMutation } from '../state/services/heatmap';
@@ -41,6 +42,17 @@ export default function Overview() {
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture },
   ] = useDatePeriod();
 
+  const dispatch = useDispatch();
+
+  const openOverlay = () => {
+    dispatch(open());
+    dispatch(changeTo(''));
+  };
+
+  useKeyPress(['a'], openOverlay);
+
+  const datePeriodLength = differenceInDays(dateEnd, dateStart) + 1;
+
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
 
@@ -55,71 +67,83 @@ export default function Overview() {
   document.documentElement.style.setProperty('--projects', projects.data.length);
 
   return (
-    <div
-      className="overview-container"
-      style={{
-        // '--multiplier': settings.data.cell_height_multiplier,
-        '--multiplier': 1,
-        '--negate-margin-block': 2,
-        '--cell-height': '15px',
-        '--cell-width': '15px',
-      }}
-    >
-      <div className="overview">
-        <OverviewDates
-          dateStart={dateStart}
-          setDateStart={setDateStart}
-          dateEnd={dateEnd}
-          setDateEnd={setDateEnd}
-        />
-        <div className="overview-topbar-left">
-          <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
-          <button
-            className="overview-period-move-left"
-            onClick={subMonth}
-            title="Move month to the left [H]"
-          >
-            <Icon path={mdiMenuLeft} className="icon" />
-          </button>
-        </div>
-        <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
-        <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
-        <div className="overview-topbar-right">
-          <button
-            className="overview-period-move-right"
-            onClick={addMonth}
-            title="Move month to the right [L]"
-          >
-            <Icon path={mdiMenuRight} className="icon" />
-          </button>
-          <button
-            className="overview-period-start"
-            onClick={setToFuture}
-            title="Set today as the period start"
-          >
-            <Icon path={mdiCalendarStart} className="icon small centering" />
-          </button>
-          <button
-            className="overview-period-end"
-            onClick={setToPast}
-            title="Set today as the period end"
-          >
-            <Icon path={mdiCalendarEnd} className="icon small centering" />
-          </button>
-        </div>
-        <div className="overview-projects">
-          {projects.data.map((project, i) => (
-            <OverviewProject
-              key={i}
-              project={project}
-              dateStart={dateStart}
-              dateEnd={dateEnd}
-              heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id == project._id)}
-            />
-          ))}
+    <>
+      <div
+        className="overview-container"
+        style={{
+          // '--multiplier': settings.data.cell_height_multiplier,
+          '--multiplier': 1,
+          '--negate-margin-block': 2,
+          '--cell-height': '15px',
+          '--cell-width': '15px',
+          '--length': datePeriodLength,
+        }}
+      >
+        <div className="overview">
+          <OverviewDates
+            dateStart={dateStart}
+            setDateStart={setDateStart}
+            dateEnd={dateEnd}
+            setDateEnd={setDateEnd}
+          />
+          <div className="overview-topbar-left">
+            <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
+            <button
+              className="overview-period-move-left"
+              onClick={subMonth}
+              title="Move month to the left [H]"
+            >
+              <Icon path={mdiMenuLeft} className="icon" />
+            </button>
+          </div>
+          <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
+          <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
+          <div className="overview-topbar-right">
+            <button
+              className="overview-period-move-right"
+              onClick={addMonth}
+              title="Move month to the right [L]"
+            >
+              <Icon path={mdiMenuRight} className="icon" />
+            </button>
+            <button
+              className="overview-period-start"
+              onClick={setToFuture}
+              title="Set today as the period start"
+            >
+              <Icon path={mdiCalendarStart} className="icon small centering" />
+            </button>
+            <button
+              className="overview-period-end"
+              onClick={setToPast}
+              title="Set today as the period end"
+            >
+              <Icon path={mdiCalendarEnd} className="icon small centering" />
+            </button>
+          </div>
+          <div className="overview-projects">
+            {projects.data.map((project, i) => (
+              <OverviewProject
+                key={i}
+                project={project}
+                dateStart={dateStart}
+                dateEnd={dateEnd}
+                heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id == project._id)}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      <button
+        className="overview-project-add"
+        onClick={openOverlay}
+        title="Add project [A]"
+        style={{ '--length': datePeriodLength }}
+      >
+        <Icon className="icon small" path={mdiPlus} />
+        <p>Add project</p>
+      </button>
+    </>
   );
 }
 
