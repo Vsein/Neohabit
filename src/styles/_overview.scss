@@ -177,12 +177,12 @@ $cell-margin: 2px;
   }
 
   &-period-end {
-    margin-left: auto;
     width: min-content;
     padding-top: 3px;
   }
 
-  &-period-refresh {
+  &-period-start {
+    margin-left: auto;
     width: min-content;
     padding-top: 3px;
   }

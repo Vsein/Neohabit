@@ -56,11 +56,11 @@ export default function useDatePeriod() {
     setDateStart(addDays(tmpStart, -31));
   };
 
-  const refresh = (e) => {
+  const setToFuture = (e) => {
     const tmpStart = startOfDay(new Date());
     setDateStart(tmpStart);
     setDateEnd(addDays(tmpStart, 31));
   };
 
-  return [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, refresh }];
+  return [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, setToFuture }];
 }

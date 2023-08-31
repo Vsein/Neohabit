@@ -12,7 +12,7 @@ import {
   mdiMenuRight,
   mdiCheckboxMarked,
   mdiCalendarEnd,
-  mdiCalendarRefresh,
+  mdiCalendarStart,
   mdiViewGridPlusOutline,
 } from '@mdi/js';
 import { useGetProjectsQuery, useDeleteProjectMutation } from '../state/services/project';
@@ -32,7 +32,7 @@ export default function Overview() {
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
-  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, refresh }] =
+  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, setToFuture }] =
     useDatePeriod();
 
   useKeyPress(['h'], subMonth);
@@ -86,18 +86,18 @@ export default function Overview() {
           <Icon path={mdiMenuRight} className="icon" />
         </button>
         <button
+          className="overview-period-start"
+          onClick={setToFuture}
+          title="Set today as the period start"
+        >
+          <Icon path={mdiCalendarStart} className="icon small centering" />
+        </button>
+        <button
           className="overview-period-end"
           onClick={setToPast}
           title="Set today as the period end"
         >
           <Icon path={mdiCalendarEnd} className="icon small centering" />
-        </button>
-        <button
-          className="overview-period-refresh"
-          onClick={refresh}
-          title="Set today as the period start"
-        >
-          <Icon path={mdiCalendarRefresh} className="icon small centering" />
         </button>
       </div>
       <div className="overview-projects">
