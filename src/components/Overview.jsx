@@ -62,16 +62,7 @@ export default function Overview() {
     >
       <div className="overview">
         <div className="overview-topbar-left">
-          <div className="overview-year-move">
-            <button className="overview-period-move-left" onClick={subYear}>
-              <Icon path={mdiMenuLeft} className="icon" />
-            </button>
-            <h3>{getYear(dateStart)}</h3>
-            <button className="overview-period-move-right" onClick={addYear}>
-              <Icon path={mdiMenuRight} className="icon" />
-            </button>
-          </div>
-
+          <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
           <button
             className="overview-period-move-left"
             onClick={subMonth}
@@ -217,6 +208,20 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap }) {
           <Icon path={mdiDelete} />
         </button>
       </div>
+    </div>
+  );
+}
+
+function OverviewYear({ subYear, addYear, dateStart }) {
+  return (
+    <div className="overview-year-move">
+      <button className="overview-period-move-left" onClick={subYear}>
+        <Icon path={mdiMenuLeft} className="icon" />
+      </button>
+      <h3>{getYear(dateStart)}</h3>
+      <button className="overview-period-move-right" onClick={addYear}>
+        <Icon path={mdiMenuRight} className="icon" />
+      </button>
     </div>
   );
 }
