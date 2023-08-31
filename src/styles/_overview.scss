@@ -141,6 +141,10 @@ $cell-margin: 2px;
         width: 18px;
         outline: none;
         cursor: pointer;
+
+        &:hover {
+          color: var(--color);
+        }
       }
     }
   }

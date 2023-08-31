@@ -143,7 +143,8 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap }) {
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
     cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
-    cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 275 - (isTarget ? 70 : 0)}px`;
+    cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
+    cellAddDropdown.style.borderColor = project.color;
   };
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
@@ -163,7 +164,7 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap }) {
         dateStart={dateStart}
         dateEnd={dateEnd}
       />
-      <div className="overview-project-controls">
+      <div className="overview-project-controls" style={{"--color": project.color}}>
         <button
           className="overview-project-button"
           onClick={(e) => openCellAddDropdown(e, false)}
