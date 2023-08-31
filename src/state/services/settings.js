@@ -75,6 +75,22 @@ export const settingsApi = api.injectEndpoints({
         );
       },
     }),
+    changeOverviewFirstDay: builder.mutation({
+      query: (overviewCurrentIsFirst) => ({
+        url: 'settings/overview_orientation',
+        body: { overviewCurrentIsFirst },
+        method: 'PUT',
+      }),
+      async onQueryStarted(overviewCurrentIsFirst, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        console.log(overviewCurrentIsFirst);
+        dispatch(
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.overview_current_is_first = overviewCurrentIsFirst;
+          }),
+        );
+      },
+    }),
   }),
 });
 
@@ -85,4 +101,5 @@ export const {
   useChangeThemeMutation,
   useChangeCellHeightMutation,
   useChangeOverviewOrientationMutation,
+  useChangeOverviewFirstDayMutation,
 } = settingsApi;

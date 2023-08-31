@@ -9,10 +9,24 @@ import {
   addYears,
   addDays,
 } from 'date-fns';
+import { useGetSettingsQuery } from '../state/services/settings';
 
 export default function useDatePeriod() {
-  const [dateStart, setDateStart] = useState(startOfDay(new Date()));
-  const [dateEnd, setDateEnd] = useState(addDays(dateStart, 31));
+  const settings = useGetSettingsQuery();
+  const state = settings.data.overview_current_is_first;
+
+  const getStart = () => {
+    const curDate = startOfDay(new Date());
+    return state ? useState(curDate) : useState(addDays(curDate, -31));
+  };
+
+  const getEnd = () => {
+    const curDate = startOfDay(new Date());
+    return state ? useState(addDays(curDate, 31)) : useState(curDate);
+  };
+
+  const [dateStart, setDateStart] = getStart()
+  const [dateEnd, setDateEnd] = getEnd();
 
   const subMonth = (e) => {
     const tmpStart = startOfMonth(subMonths(isFirstDayOfMonth(dateStart) ? dateStart : dateEnd, 1));

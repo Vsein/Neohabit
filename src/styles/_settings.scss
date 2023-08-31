@@ -28,16 +28,13 @@
   padding-inline: 35px;
 }
 
-.settings-section {
-  margin-bottom: 15px;
-}
-
 .settings-option {
   color: var(--support-text-color);
   display: flex;
   justify-content: space-between;
   width: min(700px, 100%);
   align-items: center;
+  margin-block: 5px;
 }
 
 .settings-chooser {
@@ -50,6 +47,7 @@
   padding: 8px 30px;
   border: 2px solid transparent;
   background-color: var(--calm-signature-color);
+  color: var(--text-color);
 
   &.active {
     border: 2px solid var(--signature-color);

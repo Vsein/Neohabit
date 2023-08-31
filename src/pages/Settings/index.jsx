@@ -10,6 +10,7 @@ import {
   useChangeThemeMutation,
   useChangeCellHeightMutation,
   useChangeOverviewOrientationMutation,
+  useChangeOverviewFirstDayMutation,
 } from '../../state/services/settings';
 import { open } from '../../state/features/deleteOverlay/deleteOverlaySlice';
 
@@ -35,7 +36,15 @@ export default function Settings() {
       </div>
       <div className="settings">
         <SettingsSection name="general" elements={<ThemeOption />} />
-        <SettingsSection name="overview" elements={<OverviewOrientationOption />} />
+        <SettingsSection
+          name="overview"
+          elements={
+            <>
+              <OverviewOrientationOption />
+              <OverviewFirstDayOption />
+            </>
+          }
+        />
         <SettingsSection name="heatmaps" elements={<HeatmapHeightOption />} />
         <SettingsSection name="account" elements={<DeleteAccountOption />} />
       </div>
@@ -118,6 +127,34 @@ function OverviewOrientationOption() {
           onClick={() => changeOverview(true)}
         >
           Vertical
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function OverviewFirstDayOption() {
+  const [changeFirstDay] = useChangeOverviewFirstDayMutation();
+  const settings = useGetSettingsQuery();
+  const state = settings.data.overview_current_is_first;
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Use current day as...</h3>
+      </div>
+      <div className="settings-chooser">
+        <button
+          className={`dashboard-btn settings-btn ${state ? 'active' : ''}`}
+          onClick={() => changeFirstDay(true)}
+        >
+          Period start
+        </button>
+        <button
+          className={`dashboard-btn settings-btn ${state ? '' : 'active'}`}
+          onClick={() => changeFirstDay(false)}
+        >
+          Period end
         </button>
       </div>
     </div>
