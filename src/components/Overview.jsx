@@ -32,6 +32,7 @@ export default function Overview() {
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
+  const vertical = settings.data.overview_vertical;
   const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, setToFuture }] =
     useDatePeriod();
 
@@ -50,66 +51,71 @@ export default function Overview() {
 
   return (
     <div
-      className="overview"
+      className="overview-container"
       style={{
         // '--multiplier': settings.data.cell_height_multiplier,
         '--multiplier': 1,
+        '--negate-margin-block': 2,
+        '--cell-height': '15px',
+        '--cell-width': '15px',
       }}
     >
-      <div className="overview-topbar-left">
-        <div className="overview-year-move">
-          <button className="overview-period-move-left" onClick={subYear}>
+      <div className="overview">
+        <div className="overview-topbar-left">
+          <div className="overview-year-move">
+            <button className="overview-period-move-left" onClick={subYear}>
+              <Icon path={mdiMenuLeft} className="icon" />
+            </button>
+            <h3>{getYear(dateStart)}</h3>
+            <button className="overview-period-move-right" onClick={addYear}>
+              <Icon path={mdiMenuRight} className="icon" />
+            </button>
+          </div>
+
+          <button
+            className="overview-period-move-left"
+            onClick={subMonth}
+            title="Move month to the left [H]"
+          >
             <Icon path={mdiMenuLeft} className="icon" />
           </button>
-          <h3>{getYear(dateStart)}</h3>
-          <button className="overview-period-move-right" onClick={addYear}>
+        </div>
+        <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
+        <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
+        <div className="overview-topbar-right">
+          <button
+            className="overview-period-move-right"
+            onClick={addMonth}
+            title="Move month to the right [L]"
+          >
             <Icon path={mdiMenuRight} className="icon" />
           </button>
+          <button
+            className="overview-period-start"
+            onClick={setToFuture}
+            title="Set today as the period start"
+          >
+            <Icon path={mdiCalendarStart} className="icon small centering" />
+          </button>
+          <button
+            className="overview-period-end"
+            onClick={setToPast}
+            title="Set today as the period end"
+          >
+            <Icon path={mdiCalendarEnd} className="icon small centering" />
+          </button>
         </div>
-
-        <button
-          className="overview-period-move-left"
-          onClick={subMonth}
-          title="Move month to the left [H]"
-        >
-          <Icon path={mdiMenuLeft} className="icon" />
-        </button>
-      </div>
-      <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
-      <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
-      <div className="overview-topbar-right">
-        <button
-          className="overview-period-move-right"
-          onClick={addMonth}
-          title="Move month to the right [L]"
-        >
-          <Icon path={mdiMenuRight} className="icon" />
-        </button>
-        <button
-          className="overview-period-start"
-          onClick={setToFuture}
-          title="Set today as the period start"
-        >
-          <Icon path={mdiCalendarStart} className="icon small centering" />
-        </button>
-        <button
-          className="overview-period-end"
-          onClick={setToPast}
-          title="Set today as the period end"
-        >
-          <Icon path={mdiCalendarEnd} className="icon small centering" />
-        </button>
-      </div>
-      <div className="overview-projects">
-        {projects.data.map((project, i) => (
-          <OverviewProject
-            key={i}
-            project={project}
-            dateStart={dateStart}
-            dateEnd={dateEnd}
-            heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id == project._id)}
-          />
-        ))}
+        <div className="overview-projects">
+          {projects.data.map((project, i) => (
+            <OverviewProject
+              key={i}
+              project={project}
+              dateStart={dateStart}
+              dateEnd={dateEnd}
+              heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id == project._id)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -164,7 +170,7 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap }) {
         dateStart={dateStart}
         dateEnd={dateEnd}
       />
-      <div className="overview-project-controls" style={{"--color": project.color}}>
+      <div className="overview-project-controls" style={{ '--color': project.color }}>
         <button
           className="overview-project-button"
           onClick={(e) => openCellAddDropdown(e, false)}

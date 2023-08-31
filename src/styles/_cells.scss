@@ -16,6 +16,7 @@ $cell-margin: 2px;
   );
   width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
   margin: $cell-margin;
+  margin-block: calc(2px - var(--negate-margin-block));
   border-radius: 1px;
   position: relative;
   background-color: var(--support-background-color);

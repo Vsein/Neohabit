@@ -14,11 +14,11 @@ $cell-margin: 2px;
   direction: rtl;
   position: relative;
   overflow-y: hidden;
-  height: max(200px, calc(30px + (17px + #{$cell-margin}) * var(--projects) + 10px));
+  height: max(200px, calc(30px + (17px + #{$cell-margin}) * var(--projects) * var(--multiplier) + 10px));
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  width: min(945px, 100%);
+  width: min(935px, 100%);
   padding-right: 5px;
   flex-direction: column;
 }
@@ -42,8 +42,8 @@ $cell-margin: 2px;
   position: absolute;
   display: grid;
   grid-template-rows: $cell-height 15px min-content;
-  grid-template-columns: 130px 608px 200px;
-  row-gap: 3px;
+  grid-template-columns: 120px 608px 200px;
+  row-gap: 4px;
 
   .overview-months {
     direction: ltr;
@@ -109,7 +109,6 @@ $cell-margin: 2px;
     .overview-project {
       display: grid;
       grid-template-columns: 200px 608px 90px;
-      grid-template-rows: 17px;
       font-size: 15px;
 
       &-name {
@@ -121,24 +120,25 @@ $cell-margin: 2px;
       }
 
       &-cells {
-        height: 11px;
+        height: var(--cell-height);
         display: flex;
+        align-self: center;
       }
 
       &-controls {
         width: 100%;
         display: grid;
         align-items: center;
-        padding-block: 1px;
+        align-self: center;
         padding-inline: 10px;
-        grid-auto-columns: 18px;
+        grid-auto-columns: 17px;
         grid-auto-flow: column;
-        grid-gap: 3px;
+        grid-gap: 2px;
       }
 
       &-button {
-        height: 18px;
-        width: 18px;
+        height: 17px;
+        width: 17px;
         outline: none;
         cursor: pointer;
 
@@ -198,7 +198,7 @@ $cell-margin: 2px;
   border-radius: 10px;
   display: grid;
   grid-template-columns: 30px 1fr;
-  width: min(100%, 945px);
+  width: min(100%, 935px);
   justify-content: center;
   align-items: center;
   cursor: pointer;

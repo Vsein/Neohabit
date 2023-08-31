@@ -39,10 +39,7 @@ export default function OverviewHeatmap({
   const dateCreation = startOfDay(new Date(project?.date_of_creation ?? dateStart));
 
   return (
-    <div
-      className="overview-project-cells"
-      style={{ '--cell-height': '15px', '--cell-width': '15px' }}
-    >
+    <div className="overview-project-cells">
       {dataSorted &&
         dataSorted.map((point, index) => {
           const date = startOfDay(new Date(point.date));

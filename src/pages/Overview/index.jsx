@@ -22,9 +22,7 @@ export default function Dashboard() {
     <div id="content-overview">
       <div className="overview-controls"></div>
       <div className="overview-centering">
-        <div className="overview-container">
-          <Overview />
-        </div>
+        <Overview />
         <button className="overview-project-add" onClick={openOverlay} title="Add project [A]">
           <Icon className="icon small" path={mdiPlus} />
           <p>Add project</p>
