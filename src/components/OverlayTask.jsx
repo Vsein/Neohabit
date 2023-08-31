@@ -52,20 +52,14 @@ export default function Overlay() {
   if (isLoading || isFetching) return <div>Loading...</div>;
   if (!project) {
     return (
-      <div
-        className={isActive ? 'overlay overlay-active' : 'overlay'}
-        onClick={closeOverlay}
-      >
+      <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
         Missing project!
       </div>
     );
-  };
+  }
 
   return (
-    <div
-      className={isActive ? 'overlay overlay-active' : 'overlay'}
-      onClick={closeOverlay}
-    >
+    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
       {isLoading || isFetching ? (
         <> </>
       ) : (
@@ -115,11 +109,7 @@ export default function Overlay() {
                 </label>
               </div>
               <div className="modal-buttons">
-                <button
-                  className="form-button"
-                  id="cancel-form-button"
-                  onClick={closeOverlay}
-                >
+                <button className="form-button" id="cancel-form-button" onClick={closeOverlay}>
                   Cancel
                 </button>
                 <button

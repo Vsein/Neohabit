@@ -28,6 +28,6 @@ export const taskOverlaySlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeTo, close, open } = taskOverlaySlice.actions
+export const { changeTo, close, open } = taskOverlaySlice.actions;
 
-export default taskOverlaySlice.reducer
+export default taskOverlaySlice.reducer;

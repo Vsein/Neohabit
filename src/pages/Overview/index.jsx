@@ -20,8 +20,7 @@ export default function Dashboard() {
 
   return (
     <div id="content-overview">
-      <div className="overview-controls">
-      </div>
+      <div className="overview-controls"></div>
       <div className="overview-centering">
         <div className="overview-container">
           <Overview />

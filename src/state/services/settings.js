@@ -37,13 +37,9 @@ export const settingsApi = api.injectEndpoints({
         changeTheme(newTheme);
         dispatch(changeTo(newTheme));
         dispatch(
-          settingsApi.util.updateQueryData(
-            'getSettings',
-            undefined,
-            (draft) => {
-              draft.prefer_dark = preferDark;
-            },
-          ),
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.prefer_dark = preferDark;
+          }),
         );
       },
     }),
@@ -57,13 +53,9 @@ export const settingsApi = api.injectEndpoints({
         const res = await queryFulfilled;
         console.log(cellHeight);
         dispatch(
-          settingsApi.util.updateQueryData(
-            'getSettings',
-            undefined,
-            (draft) => {
-              draft.cell_height_multiplier = cellHeight;
-            },
-          ),
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.cell_height_multiplier = cellHeight;
+          }),
         );
       },
     }),

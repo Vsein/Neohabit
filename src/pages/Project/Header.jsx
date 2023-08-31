@@ -1,10 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
-import {
-  useGetProjectsQuery,
-  useDeleteProjectMutation,
-} from '../../state/services/project';
+import { useDispatch } from 'react-redux';
+import { useGetProjectsQuery, useDeleteProjectMutation } from '../../state/services/project';
 import { changeTo, open } from '../../state/features/projectOverlay/projectOverlaySlice';
 
 export default function Header() {
@@ -24,10 +21,12 @@ export default function Header() {
 
   return (
     <div className="projectpage-header">
-      <Link onClick={() => {
-        dispatch(changeTo(projectID));
-        dispatch(open());
-      }}>
+      <Link
+        onClick={() => {
+          dispatch(changeTo(projectID));
+          dispatch(open());
+        }}
+      >
         <Skill color={project.color} name={project.name} />
       </Link>
       <div className="welcome">

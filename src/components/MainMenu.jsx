@@ -35,9 +35,7 @@ export default function MainMenu(props) {
         <Icon path={mdiBell} alt="bell" className="icon notifications" />
       </button>
       <button
-        className={`logo-section right menu-toggle ${
-          menuOpened ? 'active' : ''
-        }`}
+        className={`logo-section right menu-toggle ${menuOpened ? 'active' : ''}`}
         onClick={toggleMenu}
         title="Toggle menu [I]"
       >
@@ -63,9 +61,7 @@ function MenuSection(props) {
   return (
     <li>
       <NavLink
-        className={({ isActive }) =>
-          isActive ? 'menu-section active' : 'menu-section'
-        }
+        className={({ isActive }) => (isActive ? 'menu-section active' : 'menu-section')}
         tabIndex="0"
         to={to}
       >
@@ -83,10 +79,7 @@ function ThemeToggle() {
 
   return (
     <li>
-      <a
-        className="menu-section"
-        onClick={() => changeTheme(theme !== 'dark')}
-      >
+      <a className="menu-section" onClick={() => changeTheme(theme !== 'dark')}>
         <Icon
           path={theme === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
           className="icon"

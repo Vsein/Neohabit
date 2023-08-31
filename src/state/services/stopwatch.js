@@ -17,13 +17,9 @@ export const stopwatchApi = api.injectEndpoints({
       async onQueryStarted({ values }, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
         const patchResult = dispatch(
-          stopwatchApi.util.updateQueryData(
-            'getStopwatch',
-            undefined,
-            (draft) => {
-              Object.assign(draft, values);
-            },
-          ),
+          stopwatchApi.util.updateQueryData('getStopwatch', undefined, (draft) => {
+            Object.assign(draft, values);
+          }),
         );
       },
     }),
@@ -36,19 +32,15 @@ export const stopwatchApi = api.injectEndpoints({
       async onQueryStarted({ values }, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
         const patchResult = dispatch(
-          stopwatchApi.util.updateQueryData(
-            'getStopwatch',
-            undefined,
-            (draft) => {
-              const resettedValues = {
-                is_paused: true,
-                is_initiated: false,
-                pause_duration: 0,
-                duration: 0,
-              };
-              Object.assign(draft, resettedValues);
-            },
-          ),
+          stopwatchApi.util.updateQueryData('getStopwatch', undefined, (draft) => {
+            const resettedValues = {
+              is_paused: true,
+              is_initiated: false,
+              pause_duration: 0,
+              duration: 0,
+            };
+            Object.assign(draft, resettedValues);
+          }),
         );
         dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
@@ -64,8 +56,5 @@ export const stopwatchApi = api.injectEndpoints({
   }),
 });
 
-export const {
-  useGetStopwatchQuery,
-  useUpdateStopwatchMutation,
-  useFinishStopwatchMutation,
-} = stopwatchApi;
+export const { useGetStopwatchQuery, useUpdateStopwatchMutation, useFinishStopwatchMutation } =
+  stopwatchApi;

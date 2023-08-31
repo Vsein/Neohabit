@@ -32,7 +32,7 @@ export default function Settings() {
       <div className="settings">
         <SettingsSection name="general" elements={<ThemeOption />} />
         <SettingsSection name="heatmaps" elements={<HeatmapHeightOption />} />
-        <SettingsSection name="account" elements={<DeleteAccountOption />}/>
+        <SettingsSection name="account" elements={<DeleteAccountOption />} />
       </div>
     </main>
   );
@@ -50,19 +50,13 @@ function SettingsSection({ name, elements }) {
       <div id={name} className="settings-section-header">
         <button className="centering" onClick={toggleSettingCollapsed}>
           <Icon
-            className={`icon big settings-section-arrow ${
-              settingCollapsed ? '' : 'active'
-            }`}
+            className={`icon big settings-section-arrow ${settingCollapsed ? '' : 'active'}`}
             path={mdiChevronDown}
           />
         </button>
         <h1>{name}</h1>
       </div>
-      <div
-        className={`settings-section-container ${
-          settingCollapsed ? '' : 'active'
-        }`}
-      >
+      <div className={`settings-section-container ${settingCollapsed ? '' : 'active'}`}>
         {elements}
       </div>
     </div>
@@ -81,17 +75,13 @@ function ThemeOption() {
       </div>
       <div className="settings-chooser">
         <button
-          className={`dashboard-btn settings-btn dark ${
-            theme === 'dark' ? 'active' : ''
-          }`}
+          className={`dashboard-btn settings-btn dark ${theme === 'dark' ? 'active' : ''}`}
           onClick={() => changeTheme(true)}
         >
           Dark
         </button>
         <button
-          className={`dashboard-btn settings-btn light ${
-            theme === 'light' ? 'active' : ''
-          }`}
+          className={`dashboard-btn settings-btn light ${theme === 'light' ? 'active' : ''}`}
           onClick={() => changeTheme(false)}
         >
           Light
@@ -144,10 +134,7 @@ function DeleteAccountOption() {
         <h3>Delete account</h3>
       </div>
       <div className="settings-chooser">
-        <button
-          className="dashboard-btn settings-btn delete"
-          onClick={openOverlay}
-        >
+        <button className="dashboard-btn settings-btn delete" onClick={openOverlay}>
           Delete
         </button>
       </div>

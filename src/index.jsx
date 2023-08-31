@@ -5,11 +5,11 @@ import App from './App';
 import store from './state/store';
 import './styles/main.scss';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

@@ -36,8 +36,7 @@ function Project(props) {
       className={({ isActive }) => (isActive ? 'project active' : 'project')}
       to={`project/${linkify(project._id)}`}
       style={{
-        backgroundColor: ({ isActive }) =>
-          isActive ? `${project.color}33` : '',
+        backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
       }}
     >
       <ProjectTag project={project} />

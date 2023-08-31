@@ -26,6 +26,6 @@ export const projectOverlaySlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeTo, close, open } = projectOverlaySlice.actions
+export const { changeTo, close, open } = projectOverlaySlice.actions;
 
-export default projectOverlaySlice.reducer
+export default projectOverlaySlice.reducer;

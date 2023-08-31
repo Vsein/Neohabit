@@ -15,19 +15,10 @@ import {
   mdiCalendarRefresh,
   mdiViewGridPlusOutline,
 } from '@mdi/js';
-import {
-  useGetProjectsQuery,
-  useDeleteProjectMutation,
-} from '../state/services/project';
-import {
-  useGetHeatmapsQuery,
-  useUpdateHeatmapMutation,
-} from '../state/services/heatmap';
+import { useGetProjectsQuery, useDeleteProjectMutation } from '../state/services/project';
+import { useGetHeatmapsQuery, useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
-import {
-  changeTo,
-  open,
-} from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
@@ -41,11 +32,8 @@ export default function Overview() {
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
-  const [
-    dateEnd,
-    dateStart,
-    { subMonth, addMonth, subYear, addYear, setToPast, refresh },
-  ] = useDatePeriod();
+  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, refresh }] =
+    useDatePeriod();
 
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
@@ -58,10 +46,7 @@ export default function Overview() {
     );
   }
 
-  document.documentElement.style.setProperty(
-    '--projects',
-    projects.data.length,
-  );
+  document.documentElement.style.setProperty('--projects', projects.data.length);
 
   return (
     <div
@@ -82,20 +67,36 @@ export default function Overview() {
           </button>
         </div>
 
-        <button className="overview-period-move-left" onClick={subMonth} title="Move month to the left [H]">
+        <button
+          className="overview-period-move-left"
+          onClick={subMonth}
+          title="Move month to the left [H]"
+        >
           <Icon path={mdiMenuLeft} className="icon" />
         </button>
       </div>
       <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
       <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
       <div className="overview-topbar-right">
-        <button className="overview-period-move-right" onClick={addMonth} title="Move month to the right [L]">
+        <button
+          className="overview-period-move-right"
+          onClick={addMonth}
+          title="Move month to the right [L]"
+        >
           <Icon path={mdiMenuRight} className="icon" />
         </button>
-        <button className="overview-period-end" onClick={setToPast} title="Set today as the period end">
+        <button
+          className="overview-period-end"
+          onClick={setToPast}
+          title="Set today as the period end"
+        >
           <Icon path={mdiCalendarEnd} className="icon small centering" />
         </button>
-        <button className="overview-period-refresh" onClick={refresh} title="Set today as the period start">
+        <button
+          className="overview-period-refresh"
+          onClick={refresh}
+          title="Set today as the period start"
+        >
           <Icon path={mdiCalendarRefresh} className="icon small centering" />
         </button>
       </div>
@@ -106,9 +107,7 @@ export default function Overview() {
             project={project}
             dateStart={dateStart}
             dateEnd={dateEnd}
-            heatmap={heatmaps.data.find(
-              (heatmapo) => heatmapo.project._id == project._id,
-            )}
+            heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id == project._id)}
           />
         ))}
       </div>
@@ -116,12 +115,7 @@ export default function Overview() {
   );
 }
 
-function OverviewProject({
-  dateStart,
-  dateEnd,
-  project,
-  heatmap,
-}) {
+function OverviewProject({ dateStart, dateEnd, project, heatmap }) {
   const [deleteProject] = useDeleteProjectMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
@@ -148,12 +142,8 @@ function OverviewProject({
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
-    cellAddDropdown.style.top = `${
-      window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)
-    }px`;
-    cellAddDropdown.style.left = `${
-      rect.x + rect.width / 2 - 275 - (isTarget ? 70 : 0)
-    }px`;
+    cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
+    cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 275 - (isTarget ? 70 : 0)}px`;
   };
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
@@ -181,7 +171,11 @@ function OverviewProject({
         >
           <Icon path={mdiPlusBox} />
         </button>
-        <button className="overview-project-button" onClick={addCell} title="Add 1 completed action today">
+        <button
+          className="overview-project-button"
+          onClick={addCell}
+          title="Add 1 completed action today"
+        >
           <Icon path={mdiCheckboxMarked} />
         </button>
         <button

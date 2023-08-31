@@ -108,11 +108,7 @@ function CellFractured({
     >
       {!dotted &&
         [...Array(+fractions)].map((point, index) => (
-          <div
-            key={point}
-            className="cell-fraction"
-            style={getStyle(index)}
-          />
+          <div key={point} className="cell-fraction" style={getStyle(index)} />
         ))}
     </div>
   );
@@ -130,11 +126,9 @@ function CellPeriod({
   targetStart = undefined,
   elimination,
 }) {
-  const diffDays =
-    differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
+  const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
   if (isSameWeek(dateStart, dateEnd) || !vertical) {
-    return (value <= 1 || value == undefined || vertical) &&
-      targetValue === 1 ? (
+    return (value <= 1 || value == undefined || vertical) && targetValue === 1 ? (
       <Cell
         color={color}
         value={value}
@@ -169,18 +163,15 @@ function CellPeriod({
     '--width': width,
   };
   const beforeHeight =
-    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) /
-    basePeriod;
+    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) / basePeriod;
   const styleBefore = {
     '--height': beforeHeight,
     '--width': 1,
     visibility: beforeHeight !== 7 ? 'visible' : 'hidden',
   };
   const afterHeight =
-    differenceInHours(
-      addMilliseconds(dateEnd, 1),
-      startOfWeek(addMilliseconds(dateEnd, 1)),
-    ) / basePeriod;
+    differenceInHours(addMilliseconds(dateEnd, 1), startOfWeek(addMilliseconds(dateEnd, 1))) /
+    basePeriod;
   const styleAfter = {
     '--height': afterHeight,
     '--width': 1,

@@ -41,9 +41,7 @@ export const projectApi = api.injectEndpoints({
       onQueryStarted(projectID, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const index = draft.findIndex(
-              (project) => project._id == projectID,
-            );
+            const index = draft.findIndex((project) => project._id == projectID);
             draft.splice(index, 1);
           }),
         );

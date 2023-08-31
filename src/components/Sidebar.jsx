@@ -62,34 +62,16 @@ export default function Sidebar(props) {
           raw="true"
           num="3"
         />
-        <NavigationSection
-          path={mdiCheckboxMultipleMarked}
-          title="To-do"
-          to="/todo"
-          num="4"
-        />
-        <NavigationSection
-          path={mdiPost}
-          title="Blog"
-          status="soon"
-          to="/blog"
-          num="5"
-        />
-        <NavigationSection
-          path={mdiCog}
-          title="Settings"
-          to="/settings"
-          num="6"
-        />
+        <NavigationSection path={mdiCheckboxMultipleMarked} title="To-do" to="/todo" num="4" />
+        <NavigationSection path={mdiPost} title="Blog" status="soon" to="/blog" num="5" />
+        <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
       </ul>
       <hr />
       <ul className="projects">
         <li className="projects-header">
           <button className="centering" onClick={toggleProjectsCollapsed}>
             <Icon
-              className={`icon projects-arrow ${
-                projectsCollapsed ? '' : 'active'
-              }`}
+              className={`icon projects-arrow ${projectsCollapsed ? '' : 'active'}`}
               path={mdiChevronDown}
             />
           </button>
@@ -98,9 +80,7 @@ export default function Sidebar(props) {
             <Icon path={mdiPlus} className="icon" />
           </button>
         </li>
-        <ul
-          className={`projects-container ${projectsCollapsed ? '' : 'active'}`}
-        >
+        <ul className={`projects-container ${projectsCollapsed ? '' : 'active'}`}>
           {projects.isFetching ? (
             <div className="projects-loader">
               <div className="loader" />
@@ -154,8 +134,7 @@ function Project(props) {
       className={({ isActive }) => (isActive ? 'project active' : 'project')}
       to={`project/${linkify(project._id)}`}
       style={{
-        backgroundColor: ({ isActive }) =>
-          isActive ? `${project.color}33` : '',
+        backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
       }}
       title={project.name}
     >

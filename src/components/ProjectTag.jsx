@@ -5,16 +5,9 @@ export default function ProjectTag(props) {
   return (
     <>
       <div className="centering">
-        <div
-          className="project-circle"
-          style={{ backgroundColor: project.color }}
-        ></div>
+        <div className="project-circle" style={{ backgroundColor: project.color }}></div>
       </div>
-      {project.name === 'Neohabit' ? (
-        <p className="neohabit" />
-      ) : (
-        <p>{project.name}</p>
-      )}
+      {project.name === 'Neohabit' ? <p className="neohabit" /> : <p>{project.name}</p>}
     </>
   );
 }

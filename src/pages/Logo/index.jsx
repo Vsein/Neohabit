@@ -94,9 +94,7 @@ function Timeline({ dateStart, dateEnd, data, colorFunc, mode }) {
       <div className={`${mode}-body`}>
         <div className={`${mode}-cells`}>
           {cells.map((_, index) => {
-            const date = new Date(
-              new Date().setDate(dateStart.getDate() + index - 365),
-            );
+            const date = new Date(new Date().setDate(dateStart.getDate() + index - 365));
             const dataPoint = data.find((d) => isSameDay(date, d.date));
             const value = dataPoint ? dataPoint.value : 0;
             const height = dataPoint ? dataPoint.height : 1;

@@ -16,8 +16,7 @@ export default function Project() {
   const project =
     useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
     useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
-  const heatmap =
-    useGetHeatmapsQuery().data.find((heatmapo) => heatmapo.project._id == projectID)
+  const heatmap = useGetHeatmapsQuery().data.find((heatmapo) => heatmapo.project._id == projectID);
 
   console.log(heatmaps);
 
@@ -39,12 +38,7 @@ export default function Project() {
         dayLength={dayLength}
         useElimination={false}
       />
-      <Tasklist
-        name="Tasks"
-        tasks={tasks.data}
-        projectID={projectID}
-        list="project"
-      />
+      <Tasklist name="Tasks" tasks={tasks.data} projectID={projectID} list="project" />
     </div>
   );
 }

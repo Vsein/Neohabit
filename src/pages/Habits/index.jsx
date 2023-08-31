@@ -38,78 +38,80 @@ export default function Habits() {
   };
   const yearData = YearDataSimple(dateStart);
 
-  return loaded && (
-    <main className="habits">
-      <div className="habits-header">
-        <h3>Habits</h3>
-      </div>
-      <ul className="habits-list">
-        <Heatmap
-          data={yearData}
-          dataPeriods={PERIODS1}
-          color={green}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          dayLength={dayLength}
-          useElimination={false}
-        />
-        <Heatmap
-          data={yearData}
-          dataPeriods={PERIODS6}
-          color={green}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          dayLength={dayLength}
-          useElimination={false}
-        />
-        <Heatmap
-          data={[]}
-          dataPeriods={PERIODS3}
-          color={red}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          dayLength={dayLength}
-          useElimination={false}
-        />
-        <Heatmap
-          data={DATA1}
-          dataPeriods={PERIODS2}
-          color={blue}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          dayLength={dayLength}
-          useElimination={false}
-        />
-        <Heatmap
-          data={DATA1}
-          dataPeriods={PERIODS4}
-          color={red}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          dayLength={dayLength}
-          useElimination={false}
-        />
-        <Heatmap
-          data={DATA1}
-          dataPeriods={PERIODS7}
-          color={green2}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          dayLength={dayLength}
-        />
-        <Heatmap
-          data={DATA1}
-          dataPeriods={PERIODS5}
-          color={green2}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          dayLength={dayLength}
-        />
-        {/* <button className="add-task-btn"> */}
-        {/*   <Icon className="add-task-icon" path={mdiPlus} /> */}
-        {/*   <p>Add habit</p> */}
-        {/* </button> */}
-      </ul>
-    </main>
+  return (
+    loaded && (
+      <main className="habits">
+        <div className="habits-header">
+          <h3>Habits</h3>
+        </div>
+        <ul className="habits-list">
+          <Heatmap
+            data={yearData}
+            dataPeriods={PERIODS1}
+            color={green}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            dayLength={dayLength}
+            useElimination={false}
+          />
+          <Heatmap
+            data={yearData}
+            dataPeriods={PERIODS6}
+            color={green}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            dayLength={dayLength}
+            useElimination={false}
+          />
+          <Heatmap
+            data={[]}
+            dataPeriods={PERIODS3}
+            color={red}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            dayLength={dayLength}
+            useElimination={false}
+          />
+          <Heatmap
+            data={DATA1}
+            dataPeriods={PERIODS2}
+            color={blue}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            dayLength={dayLength}
+            useElimination={false}
+          />
+          <Heatmap
+            data={DATA1}
+            dataPeriods={PERIODS4}
+            color={red}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            dayLength={dayLength}
+            useElimination={false}
+          />
+          <Heatmap
+            data={DATA1}
+            dataPeriods={PERIODS7}
+            color={green2}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            dayLength={dayLength}
+          />
+          <Heatmap
+            data={DATA1}
+            dataPeriods={PERIODS5}
+            color={green2}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            dayLength={dayLength}
+          />
+          {/* <button className="add-task-btn"> */}
+          {/*   <Icon className="add-task-icon" path={mdiPlus} /> */}
+          {/*   <p>Add habit</p> */}
+          {/* </button> */}
+        </ul>
+      </main>
+    )
   );
 }
