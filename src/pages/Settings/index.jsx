@@ -9,6 +9,7 @@ import {
   useGetSettingsQuery,
   useChangeThemeMutation,
   useChangeCellHeightMutation,
+  useChangeOverviewOrientationMutation,
 } from '../../state/services/settings';
 import { open } from '../../state/features/deleteOverlay/deleteOverlaySlice';
 
@@ -22,6 +23,9 @@ export default function Settings() {
         <Link className="settings-type" to="#general">
           General
         </Link>
+        <Link className="settings-type" to="#overview">
+          Overview
+        </Link>
         <Link className="settings-type" to="#heatmaps">
           Heatmaps
         </Link>
@@ -31,6 +35,7 @@ export default function Settings() {
       </div>
       <div className="settings">
         <SettingsSection name="general" elements={<ThemeOption />} />
+        <SettingsSection name="overview" elements={<OverviewOrientationOption />} />
         <SettingsSection name="heatmaps" elements={<HeatmapHeightOption />} />
         <SettingsSection name="account" elements={<DeleteAccountOption />} />
       </div>
@@ -85,6 +90,34 @@ function ThemeOption() {
           onClick={() => changeTheme(false)}
         >
           Light
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function OverviewOrientationOption() {
+  const [changeOverview] = useChangeOverviewOrientationMutation();
+  const settings = useGetSettingsQuery();
+  const state = settings.data.overview_vertical;
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Preferred overview orientation</h3>
+      </div>
+      <div className="settings-chooser">
+        <button
+          className={`dashboard-btn settings-btn ${state ? '' : 'active'}`}
+          onClick={() => changeOverview(false)}
+        >
+          Horizontal
+        </button>
+        <button
+          className={`dashboard-btn settings-btn ${state ? 'active' : ''}`}
+          onClick={() => changeOverview(true)}
+        >
+          Vertical
         </button>
       </div>
     </div>

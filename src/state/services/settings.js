@@ -59,6 +59,22 @@ export const settingsApi = api.injectEndpoints({
         );
       },
     }),
+    changeOverviewOrientation: builder.mutation({
+      query: (overviewVertical) => ({
+        url: 'settings/overview_orientation',
+        body: { overviewVertical },
+        method: 'PUT',
+      }),
+      async onQueryStarted(overviewVertical, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        console.log(overviewVertical);
+        dispatch(
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.overview_vertical = overviewVertical;
+          }),
+        );
+      },
+    }),
   }),
 });
 
@@ -68,4 +84,5 @@ export const {
   useDeleteSelfMutation,
   useChangeThemeMutation,
   useChangeCellHeightMutation,
+  useChangeOverviewOrientationMutation,
 } = settingsApi;
