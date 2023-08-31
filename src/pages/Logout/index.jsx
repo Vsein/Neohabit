@@ -5,9 +5,5 @@ import useLogout from '../../hooks/useLogout';
 export default function Logout() {
   const [loggedOut] = useLogout();
 
-  return loggedOut ? (
-    <div className="loader" />
-  ) : (
-    <Navigate to="/login" replace />
-  );
+  return loggedOut ? <div className="loader" /> : <Navigate to="/login" replace />;
 }

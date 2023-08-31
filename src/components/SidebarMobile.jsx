@@ -25,7 +25,7 @@ function FilterMobile(props) {
   return (
     <li>
       <NavLink
-        className={({ isActive }) => isActive ? 'filter-mobile active' : 'filter-mobile'}
+        className={({ isActive }) => (isActive ? 'filter-mobile active' : 'filter-mobile')}
         to={`${linkify(filter.name)}`}
         tabIndex="0"
       >

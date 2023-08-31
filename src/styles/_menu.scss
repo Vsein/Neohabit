@@ -52,7 +52,9 @@
     border-radius: 7px;
     position: relative;
     overflow: hidden;
-    transition: all 0.3s ease-out, color 0s;
+    transition:
+      all 0.3s ease-out,
+      color 0s;
 
     &.active {
       background-color: #00000022;

@@ -47,11 +47,7 @@ export default function DataPointForm({ onSubmit }) {
               />
             </label>
           </div>
-          <button
-            className="habit-button"
-            type="submit"
-            disabled={submitting || pristine}
-          >
+          <button className="habit-button" type="submit" disabled={submitting || pristine}>
             <Icon path={mdiPlus} className="icon small" />
           </button>
         </form>

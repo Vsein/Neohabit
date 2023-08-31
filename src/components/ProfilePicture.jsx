@@ -5,11 +5,7 @@ export default function PFP(props) {
   const { type } = props;
   return (
     <a tabIndex="0" className="centering">
-      <img
-        src={pfp}
-        alt="profile pic"
-        className={`pfp ${type}`}
-      />
+      <img src={pfp} alt="profile pic" className={`pfp ${type}`} />
     </a>
   );
 }

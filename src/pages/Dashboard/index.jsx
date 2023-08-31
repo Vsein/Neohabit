@@ -27,9 +27,15 @@ export default function Dashboard() {
           <p className="hello">Hello there,</p>
           <p className="username">Serene Coder (&#64;Vsein)</p>
         </div>
-        <button className="dashboard-btn" id="new">New</button>
-        <button className="dashboard-btn" id="upload">Upload</button>
-        <button className="dashboard-btn" id="share-variant-outline">Share</button>
+        <button className="dashboard-btn" id="new">
+          New
+        </button>
+        <button className="dashboard-btn" id="upload">
+          Upload
+        </button>
+        <button className="dashboard-btn" id="share-variant-outline">
+          Share
+        </button>
       </div>
 
       <div className="main">
@@ -60,11 +66,11 @@ export default function Dashboard() {
           <div className="trending">
             <h3>Trending skill trees</h3>
             <div className="trending-skills">
-              <Skill color="#edad0e" name="Cooking"/>
-              <Skill color="#ffa500" name="Finance"/>
-              <Skill color="#00ed76" name="Languages"/>
-              <Skill color="#00c4cd" name="Maths"/>
-              <Skill color="#009acd" name="IT"/>
+              <Skill color="#edad0e" name="Cooking" />
+              <Skill color="#ffa500" name="Finance" />
+              <Skill color="#00ed76" name="Languages" />
+              <Skill color="#00c4cd" name="Maths" />
+              <Skill color="#009acd" name="IT" />
             </div>
           </div>
         </div>
@@ -79,8 +85,8 @@ function ProjectCard() {
       <div className="card-text">
         <h4>Signup-form</h4>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua.
         </p>
       </div>
       <div className="card-footer">
@@ -91,11 +97,7 @@ function ProjectCard() {
           <Icon path={mdiEyeOutline} alt="github" className="icon" />
         </button>
         <button>
-          <Icon
-            path={mdiShareVariantOutline}
-            alt="share-variant-outline"
-            className="icon"
-          />
+          <Icon path={mdiShareVariantOutline} alt="share-variant-outline" className="icon" />
         </button>
       </div>
     </a>
@@ -108,8 +110,8 @@ function Post(props) {
     <a className="post" tabIndex="0">
       <h4>{title}</h4>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-        do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua.
       </p>
     </a>
   );

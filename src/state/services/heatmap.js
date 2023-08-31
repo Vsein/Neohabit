@@ -14,10 +14,7 @@ export const heatmapApi = api.injectEndpoints({
         body: values,
         method: 'PUT',
       }),
-      async onQueryStarted(
-        { heatmapID, values },
-        { dispatch, queryFulfilled },
-      ) {
+      async onQueryStarted({ heatmapID, values }, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {

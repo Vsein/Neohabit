@@ -8,7 +8,8 @@
   }
 }
 
-.dashboard-header, .controls {
+.dashboard-header,
+.controls {
   background-color: var(--main-background-color);
   display: flex;
   align-items: center;
@@ -42,7 +43,7 @@
 }
 
 .username {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
 }
 
@@ -50,7 +51,7 @@
   width: min-content;
   font-size: 80%;
   padding: 5px;
-  color: #F9FAF8;
+  color: #f9faf8;
   background-color: var(--signature-color);
   padding: 10px 32px;
   border-radius: 7px;

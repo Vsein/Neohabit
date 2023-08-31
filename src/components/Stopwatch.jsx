@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
-import {
-  mdiPause,
-  mdiPlay,
-  mdiRestart,
-  mdiFlagCheckered,
-} from '@mdi/js';
+import { mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered } from '@mdi/js';
 import {
   useGetStopwatchQuery,
   useUpdateStopwatchMutation,
@@ -27,9 +22,8 @@ export default function Stopwatch() {
       return stopwatch.data.duration;
     }
     return (
-      Math.floor(
-        Math.abs((Date.now() - new Date(stopwatch.data.start_time)) / 1000),
-      ) - stopwatch.data.pause_duration
+      Math.floor(Math.abs((Date.now() - new Date(stopwatch.data.start_time)) / 1000)) -
+      stopwatch.data.pause_duration
     );
   };
 
@@ -127,12 +121,8 @@ export default function Stopwatch() {
             backgroundColor: stopwatch.data?.project?.color,
           }}
         ></div>
-        <h3 className="progressbar-progress-countdown time">
-          {clockify(currentDuration)}
-        </h3>
-        <h3 className="progressbar-progress-countdown time-left">
-          {clockify(baseDuration)}
-        </h3>
+        <h3 className="progressbar-progress-countdown time">{clockify(currentDuration)}</h3>
+        <h3 className="progressbar-progress-countdown time-left">{clockify(baseDuration)}</h3>
       </div>
       <div className="progressbar-controls">
         <h3>{stopwatch.data?.project?.name}</h3>
@@ -148,20 +138,14 @@ export default function Stopwatch() {
           onClick={togglePause}
           title={isPaused ? 'Play [P]' : 'Pause [P]'}
         >
-          <Icon
-            path={isPaused ? mdiPlay : mdiPause}
-            className="icon big sidebar-toggle"
-          />
+          <Icon path={isPaused ? mdiPlay : mdiPause} className="icon big sidebar-toggle" />
         </button>
         <button
           className="logo-section sidebar-toggle-container centering stopwatch-icon"
           onClick={finishCountdown}
           title="Finish [F]"
         >
-          <Icon
-            path={mdiFlagCheckered}
-            className="icon medium sidebar-toggle"
-          />
+          <Icon path={mdiFlagCheckered} className="icon medium sidebar-toggle" />
         </button>
       </div>
     </footer>

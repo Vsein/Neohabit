@@ -36,52 +36,41 @@ export default function Landing() {
           {/*   dateStart={dateStart} */}
           {/*   dateEnd={dateEnd} */}
           {/* /> */}
-          <h1 className="landing-intro-text">
-            Your self-improvement app which actually helps
-          </h1>
+          <h1 className="landing-intro-text">Your self-improvement app which actually helps</h1>
         </section>
         <section className="landing-about">
           <div className="landing-about-text">
-            <h2 className="landing-about-text-header">
-              The Precursor
-            </h2>
+            <h2 className="landing-about-text-header">The Precursor</h2>
             <p>
-              Have you noticed that almost every self-improvement app has a
-              system of streaks, in one way or another?
+              Have you noticed that almost every self-improvement app has a system of streaks, in
+              one way or another?
             </p>
             <p>
-              We believe that thinking that relapses somehow ruin your progress
-              is not only unhealthy, but can be outright dangerous when it
-              comes to self-improvement. Not because you're building wrong
-              habits, but just of the mindset you put yourself in.
+              We believe that thinking that relapses somehow ruin your progress is not only
+              unhealthy, but can be outright dangerous when it comes to self-improvement. Not
+              because you're building wrong habits, but just of the mindset you put yourself in.
             </p>
             <p>
-              The people who have never ever learned that what they've been
-              doing for years is somehow wrong, might be better off than people
-              who obsess with having a bad habit.
+              The people who have never ever learned that what they've been doing for years is
+              somehow wrong, might be better off than people who obsess with having a bad habit.
             </p>
             <br />
             <p>
-              We aim to make your life easier by incorporating progressive
-              overload into habit-building, so that you can have a better
-              relationships with yourself!
+              We aim to make your life easier by incorporating progressive overload into
+              habit-building, so that you can have a better relationships with yourself!
             </p>
           </div>
         </section>
         <section className="landing-features">
           <div className="landing-features-container">
-            <h3 className="landing-features-text">
-              Features you won't find anywhere else
-            </h3>
+            <h3 className="landing-features-text">Features you won't find anywhere else</h3>
             {/* Skill trees, projects, heatmaps */}
           </div>
         </section>
         <section className="landing-about">
           {/* Learn more about how it works, the blog or something */}
         </section>
-        <section className="landing-lastcall">
-          {/* Some things about billing */}
-        </section>
+        <section className="landing-lastcall">{/* Some things about billing */}</section>
       </main>
       <footer className="landing-footer-container">
         <div className="landing-footer">
@@ -112,9 +101,7 @@ function Heatmap({ dateStart, colorFunc, data }) {
   return (
     <div className="landing-heatmap-cells">
       {cells.map((_, index) => {
-        const date = new Date(
-          new Date().setDate(dateStart.getDate() + index - 365),
-        );
+        const date = new Date(new Date().setDate(dateStart.getDate() + index - 365));
         const dataPoint = data.find((d) => isSameDay(date, d.date));
         const value = dataPoint ? dataPoint.value : 0;
         const height = dataPoint ? dataPoint.height : 1;

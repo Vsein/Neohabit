@@ -20,7 +20,7 @@ export default function Tasklist(params) {
 
   const addTask = (e) => {
     dispatch(changeTo({ taskID: '', projectID }));
-  }
+  };
 
   useKeyPress(['t'], addTask);
 

@@ -56,7 +56,8 @@
     padding-inline: 5px;
     outline: none;
 
-    &.active, &:hover {
+    &.active,
+    &:hover {
       background-color: rgba(0, 0, 0, 0.3);
       cursor: pointer;
     }
@@ -156,7 +157,8 @@
   padding: 10px;
   transition: background-color 0.3s ease-out;
 
-  &:hover, &.active {
+  &:hover,
+  &.active {
     background-color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
   }

@@ -59,9 +59,8 @@
   background-color: var(--signature-color-transparent);
 }
 
-
-input[type="checkbox"]:checked.checkbox {
-    background: radial-gradient(var(--signature-color) 30%, var(--signature-color-transparent) 40%);
+input[type='checkbox']:checked.checkbox {
+  background: radial-gradient(var(--signature-color) 30%, var(--signature-color-transparent) 40%);
 }
 
 .ribbon {
@@ -74,10 +73,12 @@ input[type="checkbox"]:checked.checkbox {
     display: block;
     width: 110px;
     background-color: var(--signature-color);
-    box-shadow: 0 5px 10px rgba(0,0,0,.1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     color: white;
-    font: 700 12px/1 'Lato', sans-serif;
-    text-shadow: 0 1px 1px rgba(0,0,0,.2);
+    font:
+      700 12px/1 'Lato',
+      sans-serif;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     text-transform: uppercase;
     padding-inline: 25px 30px;
   }
@@ -96,7 +97,7 @@ input[type="checkbox"]:checked.checkbox {
 
 .ribbon-raw span {
   padding-inline: 35px 30px;
-  background-color: #A76214;
+  background-color: #a76214;
 }
 
 .ribbon-top {
@@ -111,9 +112,7 @@ input[type="checkbox"]:checked.checkbox {
   }
 }
 
-
 .back-ref {
-
   & > a {
     color: var(--signature-color);
     text-decoration: none;

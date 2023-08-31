@@ -68,8 +68,7 @@ function Heatmap({
   });
 
   const dummyLastDay = max([dateStart, dataPeriods[0].date]);
-  const dummyHeight =
-    differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
+  const dummyHeight = differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
 
   return !loaded ? (
     <div className="habit loading" />
@@ -85,10 +84,7 @@ function Heatmap({
       <div className="heatmap">
         <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
         <HeatmapWeekdays dateStart={dateStart} />
-        <div
-          className="heatmap-cells"
-          style={{ '--cell-width': '11px', '--cell-height': '11px' }}
-        >
+        <div className="heatmap-cells" style={{ '--cell-width': '11px', '--cell-height': '11px' }}>
           {dummyHeight ? <CellDummy length={dummyHeight} /> : <> </>}
           {periods.map((period, index) => (
             <>

@@ -84,7 +84,9 @@
         visibility: visible;
       }
 
-      & .filters, & .projects, & .projects-container {
+      & .filters,
+      & .projects,
+      & .projects-container {
         visibility: hidden;
       }
 

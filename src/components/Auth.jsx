@@ -16,14 +16,12 @@ function AuthIntro() {
   return (
     <section className="auth-intro">
       <p className="paragraph">
-        Are you struggling to find a good accountability partner? With this app,
-        you&apos;ll learn how to be your own accountability partner. As well as
-        develop real skills, and not get entrapped by some statistics which only
-        stump your growth.
+        Are you struggling to find a good accountability partner? With this app, you&apos;ll learn
+        how to be your own accountability partner. As well as develop real skills, and not get
+        entrapped by some statistics which only stump your growth.
       </p>
       <p className="paragraph">
-        You know what to do, my friend. <span className="neohabit" /> will just
-        help you realize it.
+        You know what to do, my friend. <span className="neohabit" /> will just help you realize it.
       </p>
     </section>
   );
@@ -51,12 +49,7 @@ function EmailField() {
   return (
     <div>
       <label htmlFor="email">E-mail</label>
-      <input
-        className="registration-field"
-        type="email"
-        name="email"
-        required
-      />
+      <input className="registration-field" type="email" name="email" required />
     </div>
   );
 }
@@ -68,7 +61,7 @@ function PasswordField(props) {
 
   return (
     <div>
-      <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'} >
+      <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'}>
         {type === 'confirm' ? 'Confirm Password' : 'Password'}
       </label>
       <div className="registration-field-container">
@@ -90,10 +83,4 @@ function PasswordField(props) {
   );
 }
 
-export {
-  AuthSidebar,
-  AuthIntro,
-  UsernameField,
-  EmailField,
-  PasswordField,
-};
+export { AuthSidebar, AuthIntro, UsernameField, EmailField, PasswordField };

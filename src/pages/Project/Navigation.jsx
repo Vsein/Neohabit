@@ -24,10 +24,7 @@ function Section(props) {
 
   return (
     <li>
-      <NavLink
-        className={({ isActive }) => (isActive ? 'filter active' : 'filter')}
-        to={to}
-      >
+      <NavLink className={({ isActive }) => (isActive ? 'filter active' : 'filter')} to={to}>
         {/* <Icon path={filter.image} height="20px" width="20px" /> */}
         <p>{name}</p>
       </NavLink>

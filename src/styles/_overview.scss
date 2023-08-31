@@ -14,10 +14,7 @@ $cell-margin: 2px;
   direction: rtl;
   position: relative;
   overflow-y: hidden;
-  height: max(
-    200px,
-    calc(30px + (17px + #{$cell-margin}) * var(--projects) + 10px)
-  );
+  height: max(200px, calc(30px + (17px + #{$cell-margin}) * var(--projects) + 10px));
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
@@ -79,8 +76,7 @@ $cell-margin: 2px;
     &-day {
       line-height: 100%;
       font-size: calc(
-        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 *
-          (var(--multiplier) - 1) + 1px
+        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1) + 1px
       );
       text-align: center;
       padding-block: 2px;

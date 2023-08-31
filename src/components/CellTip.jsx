@@ -35,9 +35,7 @@ function formatTipContent(values) {
 
 function changeCellOffset(e, content) {
   const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
-  const parent =
-    document.querySelector('.habit') ||
-    document.querySelector('.overview-container');
+  const parent = document.querySelector('.habit') || document.querySelector('.overview-container');
   const rect = cell.getBoundingClientRect();
   const rectParent = parent.getBoundingClientRect();
   const cellTip = document.querySelector('.cell-tip');
@@ -59,7 +57,6 @@ function changeCellOffset(e, content) {
   cellTip.style.pointerEvents = 'none';
 }
 
-
 function hideTip() {
   const cellTip = document.querySelector('.cell-tip');
   cellTip.classList.add('hidden');
@@ -73,10 +70,7 @@ export default function CellTip() {
     return () => document.removeEventListener('click', hideTip);
   });
 
-  return (
-    <div className="cell-tip hidden">
-    </div>
-  );
+  return <div className="cell-tip hidden"></div>;
 }
 
 export { hideTip, formatDate, formatTipContent, changeCellOffset };

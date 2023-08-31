@@ -38,13 +38,7 @@ function LineGapStraight(start, len = 14, width = 1) {
   };
 }
 
-function LineActiveRandom(
-  start,
-  len = 14,
-  min = Infinity,
-  height = 1,
-  width = 1,
-) {
+function LineActiveRandom(start, len = 14, min = Infinity, height = 1, width = 1) {
   const dataActive = [];
   let cnt = 0;
   for (let i = 0; i < len; ) {
@@ -100,11 +94,7 @@ function LineGap(start, len = 14) {
 
 function Line(gapStart, gapLength, inc, i, start, len = 14, min = Infinity) {
   let data = [];
-  const periods = [
-    gapStart + i * inc,
-    gapLength,
-    len - gapStart - gapLength - i * inc,
-  ];
+  const periods = [gapStart + i * inc, gapLength, len - gapStart - gapLength - i * inc];
   data = data.concat(LineGap(start, periods[0]));
   data = data.concat(LineActiveRandom(start + data.length, periods[1], min));
   // data = data.concat(LineRandom(start + data.length, periods[1]));
@@ -170,11 +160,11 @@ function LotsOfRandom() {
 
   data = data.concat(LineActiveRandom(data.length, 5000));
 
-//   data = data.concat(LineActiveRandom(data.length, 7 - new Date().getDay()));
-//   for (let i = 1; i < 800; i++) {
-//     data = data.concat(LineActiveRandom(data.length, len));
-//   }
-//   data = data.concat(LineActiveRandom(data.length, new Date().getDay() + 1));
+  //   data = data.concat(LineActiveRandom(data.length, 7 - new Date().getDay()));
+  //   for (let i = 1; i < 800; i++) {
+  //     data = data.concat(LineActiveRandom(data.length, len));
+  //   }
+  //   data = data.concat(LineActiveRandom(data.length, new Date().getDay() + 1));
 
   return data;
 }

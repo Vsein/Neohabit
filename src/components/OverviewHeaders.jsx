@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  differenceInDays,
-  getDate,
-  addDays,
-  isToday,
-  isWeekend,
-  isLastDayOfMonth,
-} from 'date-fns';
+import { differenceInDays, getDate, addDays, isToday, isWeekend, isLastDayOfMonth } from 'date-fns';
 
 function Month({ dateStart, index }) {
   const date = addDays(dateStart, index);

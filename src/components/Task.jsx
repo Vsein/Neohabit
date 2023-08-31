@@ -3,10 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import {
-  useUpdateTaskMutation,
-  useDeleteTaskMutation,
-} from '../state/services/todolist';
+import { useUpdateTaskMutation, useDeleteTaskMutation } from '../state/services/todolist';
 import { changeTo, open } from '../state/features/taskOverlay/taskOverlaySlice';
 
 export default function Task(props) {

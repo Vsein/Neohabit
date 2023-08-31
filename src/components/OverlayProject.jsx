@@ -51,10 +51,7 @@ export default function OverlayProject() {
   if (!project) return <div>Missing project!</div>;
 
   return (
-    <div
-      className={isActive ? 'overlay overlay-active' : 'overlay'}
-      onClick={closeOverlay}
-    >
+    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
       {isLoading || isFetching ? (
         <> </>
       ) : (

@@ -48,9 +48,5 @@ export default function useDatePeriod() {
     setDateEnd(addDays(tmpStart, 31));
   };
 
-  return [
-    dateEnd,
-    dateStart,
-    { subMonth, addMonth, subYear, addYear, setToPast, refresh },
-  ];
+  return [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, refresh }];
 }

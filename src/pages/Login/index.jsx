@@ -1,11 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import {
-  AuthSidebar,
-  AuthIntro,
-  EmailField,
-  PasswordField,
-} from '../../components/Auth';
+import { AuthSidebar, AuthIntro, EmailField, PasswordField } from '../../components/Auth';
 import { useLoginMutation } from '../../state/services/auth';
 import useTitle from '../../hooks/useTitle';
 

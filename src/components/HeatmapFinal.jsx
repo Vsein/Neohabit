@@ -38,8 +38,7 @@ function Heatmap({
   const periods = [];
   for (let i = 0; i < data.length; i++) {
     const dateStartChunk = startOfDay(new Date(data[i].date));
-    const diffDays =
-      differenceInHours(dateStartChunk, dateNow) / 24;
+    const diffDays = differenceInHours(dateStartChunk, dateNow) / 24;
     if (diffDays) {
       periods.push({
         color: '',
@@ -52,10 +51,7 @@ function Heatmap({
       color,
       value: 1000,
       dateStart: dateStartChunk,
-      dateEnd: subMilliseconds(
-        addHours(dateStartChunk, 24),
-        1,
-      ),
+      dateEnd: subMilliseconds(addHours(dateStartChunk, 24), 1),
     });
     dateNow = addHours(dateStartChunk, 24);
   }
@@ -68,8 +64,7 @@ function Heatmap({
   console.log(periods);
 
   const dummyLastDay = dateStart;
-  const dummyHeight =
-    differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
+  const dummyHeight = differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
 
   const [updateHeatmap] = useUpdateHeatmapMutation();
   const onSubmit = async (values) => {
