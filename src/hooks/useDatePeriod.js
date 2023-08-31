@@ -25,7 +25,7 @@ export default function useDatePeriod() {
     return state ? useState(addDays(curDate, 31)) : useState(curDate);
   };
 
-  const [dateStart, setDateStart] = getStart()
+  const [dateStart, setDateStart] = getStart();
   const [dateEnd, setDateEnd] = getEnd();
 
   const subMonth = (e) => {
@@ -62,5 +62,11 @@ export default function useDatePeriod() {
     setDateEnd(addDays(tmpStart, 31));
   };
 
-  return [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, setToFuture }];
+  return [
+    dateEnd,
+    setDateEnd,
+    dateStart,
+    setDateStart,
+    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture },
+  ];
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getYear } from 'date-fns';
+import { getYear, formatISO, startOfDay } from 'date-fns';
 import Icon from '@mdi/react';
 import {
   mdiDelete,
@@ -33,8 +33,13 @@ export default function Overview() {
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
-  const [dateEnd, dateStart, { subMonth, addMonth, subYear, addYear, setToPast, setToFuture }] =
-    useDatePeriod();
+  const [
+    dateEnd,
+    setDateEnd,
+    dateStart,
+    setDateStart,
+    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture },
+  ] = useDatePeriod();
 
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
@@ -61,6 +66,12 @@ export default function Overview() {
       }}
     >
       <div className="overview">
+        <OverviewDates
+          dateStart={dateStart}
+          setDateStart={setDateStart}
+          dateEnd={dateEnd}
+          setDateEnd={setDateEnd}
+        />
         <div className="overview-topbar-left">
           <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
           <button
@@ -222,6 +233,30 @@ function OverviewYear({ subYear, addYear, dateStart }) {
       <button className="overview-period-move-right" onClick={addYear}>
         <Icon path={mdiMenuRight} className="icon" />
       </button>
+    </div>
+  );
+}
+
+function OverviewDates({ setDateStart, dateStart, setDateEnd, dateEnd }) {
+  return (
+    <div className="overview-dates">
+      <input
+        type="date"
+        value={formatISO(dateStart, { representation: 'date' })}
+        max="<?= date('Y-m-d'); ?>"
+        rows="1"
+        className="overview-dates-picker"
+        onChange={(e) => setDateStart(startOfDay(new Date(e.target.value)))}
+      />
+      -
+      <input
+        type="date"
+        value={formatISO(dateEnd, { representation: 'date' })}
+        max="<?= date('Y-m-d'); ?>"
+        rows="1"
+        className="overview-dates-picker"
+        onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
+      />
     </div>
   );
 }
