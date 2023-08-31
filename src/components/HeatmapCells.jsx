@@ -62,20 +62,21 @@ function CellFractured({
 
   const fractions = Math.max(value, targetValue);
   let dotted = false;
-  let fractionHeight = 15;
-  let fractionWidth = 15;
+  let fractionHeight;
+  let fractionWidth;
   if (fractions <= 2) {
     fractionHeight = 1 / 2;
   } else if (fractions <= 4) {
     fractionHeight = 1 / 2;
-    fractionWidth = 1 / 2;
+    fractionWidth = 1 / 1.9;
+    style.columnGap = length > 1 ? '1px' : '0px';
   } else if (fractions <= 6) {
     fractionHeight = 1 / 2;
-    fractionWidth = 1 / 3;
-    style.columnGap = '1px';
+    fractionWidth = length > 1 ? 1 / 3.1 : 1 / 3;
+    style.columnGap = length > 1 ? '2px' : '1px';
   } else if (fractions <= 9) {
     fractionHeight = 1 / 3;
-    fractionWidth = 1 / 3;
+    fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
     style.gap = '1px';
   } else if (fractions <= 12) {
     fractionHeight = 1 / 3;
