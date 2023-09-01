@@ -11,6 +11,7 @@ $cell-margin: 2px;
 }
 
 .overview-container {
+  --negate-margin-block: 2;
   direction: rtl;
   position: relative;
   overflow-y: hidden;

@@ -27,8 +27,7 @@ $cell-weekdays-width: 33px;
 }
 
 .habit {
-  --multiplier: 1;
-  --weeks: 53;
+  --negate-margin-block: 0px;
   overflow: hidden;
   position: relative;
   height: calc(

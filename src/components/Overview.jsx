@@ -93,7 +93,6 @@ export default function Overview() {
         style={{
           // '--multiplier': settings.data.cell_height_multiplier,
           '--multiplier': 1,
-          '--negate-margin-block': 2,
           '--cell-height': '15px',
           '--cell-width': '15px',
           '--length': datePeriodLength,
