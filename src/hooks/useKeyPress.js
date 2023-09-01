@@ -10,6 +10,11 @@ export default function useKeyPress(keys, callback, node = null) {
   // handle what happens on key press
   const handleKeyPress = useCallback(
     (event) => {
+      // check if one of the pressed key is from the input
+      const exclude = ['input', 'textarea'];
+      if (exclude.indexOf(event.target.tagName.toLowerCase()) !== -1) {
+        return 0;
+      }
       // check if one of the key is part of the ones we want
       if (keys.some((key) => event.key === key)) {
         callbackRef.current(event);
