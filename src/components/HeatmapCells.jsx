@@ -69,7 +69,7 @@ function CellFractured({
   } else if (fractions <= 4) {
     fractionHeight = 1 / 2;
     fractionWidth = 1 / 2;
-    style.columnGap = length > 1 ? '1px' : '0px';
+    style.columnGap = length > 1 ? '1px' : '2px';
   } else if (fractions <= 6) {
     fractionHeight = 1 / 2;
     fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
