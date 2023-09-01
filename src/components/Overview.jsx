@@ -15,6 +15,7 @@ import {
   mdiCalendarStart,
   mdiViewGridPlusOutline,
   mdiPlus,
+  mdiCog,
 } from '@mdi/js';
 import { useGetProjectsQuery, useDeleteProjectMutation } from '../state/services/project';
 import { useGetHeatmapsQuery, useUpdateHeatmapMutation } from '../state/services/heatmap';
@@ -68,6 +69,24 @@ export default function Overview() {
 
   return (
     <>
+      <div className="overview-header" style={{ '--length': datePeriodLength }}>
+        <h3>Overview</h3>
+        <OverviewDates
+          dateStart={dateStart}
+          setDateStart={setDateStart}
+          dateEnd={dateEnd}
+          setDateEnd={setDateEnd}
+        />
+        <div className="overview-settings">
+          <NavLink
+            className="overview-open-settings"
+            to="/settings#overview"
+            title="Open overview settings"
+          >
+            <Icon path={mdiCog} className="icon small centering" />
+          </NavLink>
+        </div>
+      </div>
       <div
         className="overview-container"
         style={{
@@ -80,12 +99,6 @@ export default function Overview() {
         }}
       >
         <div className="overview">
-          <OverviewDates
-            dateStart={dateStart}
-            setDateStart={setDateStart}
-            dateEnd={dateEnd}
-            setDateEnd={setDateEnd}
-          />
           <div className="overview-topbar-left">
             <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
             <button
