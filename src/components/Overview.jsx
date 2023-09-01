@@ -13,6 +13,7 @@ import {
   mdiCheckboxMarked,
   mdiCalendarEnd,
   mdiCalendarStart,
+  mdiCalendarRefresh,
   mdiViewGridPlusOutline,
   mdiPlus,
   mdiCog,
@@ -40,7 +41,7 @@ export default function Overview() {
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture },
+    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset },
   ] = useDatePeriod();
 
   const dispatch = useDispatch();
@@ -120,18 +121,25 @@ export default function Overview() {
               <Icon path={mdiMenuRight} className="icon" />
             </button>
             <button
-              className="overview-period-start"
-              onClick={setToFuture}
-              title="Set today as the period start"
-            >
-              <Icon path={mdiCalendarStart} className="icon small centering" />
-            </button>
-            <button
               className="overview-period-end"
               onClick={setToPast}
               title="Set today as the period end"
             >
               <Icon path={mdiCalendarEnd} className="icon small centering" />
+            </button>
+            <button
+              className="overview-period-start"
+              onClick={reset}
+              title="Reset date period to preferred defaults"
+            >
+              <Icon path={mdiCalendarRefresh} className="icon small centering" />
+            </button>
+            <button
+              className="overview-period-start"
+              onClick={setToFuture}
+              title="Set today as the period start"
+            >
+              <Icon path={mdiCalendarStart} className="icon small centering" />
             </button>
           </div>
           <div className="overview-projects">
