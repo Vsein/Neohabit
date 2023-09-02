@@ -16,13 +16,18 @@ import {
   mdiCalendarEnd,
   mdiCalendarStart,
   mdiCalendarRefresh,
+  mdiCalendarText,
+  mdiCalendarWeekend,
   mdiViewGridPlusOutline,
   mdiPlus,
   mdiCog,
 } from '@mdi/js';
 import { useGetProjectsQuery, useDeleteProjectMutation } from '../state/services/project';
 import { useGetHeatmapsQuery, useUpdateHeatmapMutation } from '../state/services/heatmap';
-import { useGetSettingsQuery } from '../state/services/settings';
+import {
+  useGetSettingsQuery,
+  useChangeOverviewOrientationMutation,
+} from '../state/services/settings';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
@@ -34,6 +39,7 @@ import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
   const [loaded] = useLoaded();
+  const [changeOverview] = useChangeOverviewOrientationMutation();
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
@@ -84,6 +90,20 @@ export default function Overview() {
           setDateEnd={setDateEnd}
         />
         <div className="overview-settings">
+          <button
+            className={`overview-open-settings ${vertical ? '' : 'active'}`}
+            onClick={() => changeOverview(false)}
+            title="Change to horizontal orientation"
+          >
+            <Icon path={mdiCalendarText} className="icon small centering" />
+          </button>
+          <button
+            className={`overview-open-settings ${vertical ? 'active' : ''}`}
+            onClick={() => changeOverview(true)}
+            title="Change to vertical orientation"
+          >
+            <Icon path={mdiCalendarWeekend} className="icon small centering" />
+          </button>
           <NavLink
             className="overview-open-settings"
             to="/settings#overview"

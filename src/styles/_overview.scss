@@ -325,4 +325,11 @@ $cell-margin: 2px;
 
 .overview-settings {
   grid-area: settings;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  .overview-open-settings.active {
+    color: var(--bright-signature-color);
+  }
 }
