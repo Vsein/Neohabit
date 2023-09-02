@@ -1,29 +1,21 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { differenceInDays } from 'date-fns';
 import Icon from '@mdi/react';
 import {
-  mdiDelete,
-  mdiPencil,
-  mdiPlusBox,
-  mdiTimer,
   mdiMenuLeft,
   mdiMenuRight,
   mdiMenuUp,
   mdiMenuDown,
-  mdiCheckboxMarked,
   mdiCalendarEnd,
   mdiCalendarStart,
   mdiCalendarRefresh,
-  mdiViewGridPlusOutline,
   mdiPlus,
 } from '@mdi/js';
-import { useGetProjectsQuery, useDeleteProjectMutation } from '../state/services/project';
-import { useGetHeatmapsQuery, useUpdateHeatmapMutation } from '../state/services/heatmap';
+import { useGetProjectsQuery } from '../state/services/project';
+import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
-import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import {
@@ -33,8 +25,8 @@ import {
   OverviewYear,
   OverviewDates,
 } from './OverviewHeaders';
-import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import OverviewHeatmap from './OverviewHeatmap';
+import ProjectControls from './ProjectComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
@@ -43,6 +35,7 @@ export default function Overview() {
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
+
   const datePeriodLength = settings.data?.overview_duration ?? 32;
   const [
     dateEnd,
@@ -51,18 +44,15 @@ export default function Overview() {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength - 1);
+  useKeyPress(['h'], subMonth);
+  useKeyPress(['l'], addMonth);
 
   const dispatch = useDispatch();
-
   const openOverlay = () => {
     dispatch(open());
     dispatch(changeTo(''));
   };
-
   useKeyPress(['a'], openOverlay);
-
-  useKeyPress(['h'], subMonth);
-  useKeyPress(['l'], addMonth);
 
   if (!loaded || projects.isFetching || heatmaps.isFetching) {
     return (
@@ -188,37 +178,6 @@ export default function Overview() {
 }
 
 function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
-  const [deleteProject] = useDeleteProjectMutation();
-  const [updateStopwatch] = useUpdateStopwatchMutation();
-  const [updateHeatmap] = useUpdateHeatmapMutation();
-  const dispatch = useDispatch();
-  const deleteChosenProject = (e) => {
-    deleteProject(project._id);
-  };
-  const setStopwatchProject = () => {
-    updateStopwatch({
-      values: {
-        project: project,
-      },
-    });
-  };
-  const addCell = async () => {
-    await updateHeatmap({
-      heatmapID: heatmap?._id,
-      values: { value: 1, date: Date.now() },
-    });
-  };
-  const openCellAddDropdown = (e, isTarget) => {
-    e.stopPropagation();
-    dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isActive: true, isTarget }));
-    const cellAddDropdown = document.querySelector('.cell-add-dropdown');
-    const cell = e.target;
-    const rect = cell.getBoundingClientRect();
-    cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
-    cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
-    cellAddDropdown.style.borderColor = project.color;
-  };
-
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
@@ -237,53 +196,7 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
         dateEnd={dateEnd}
         vertical={vertical}
       />
-      <div className="overview-project-controls" style={{ '--color': project.color }}>
-        <button
-          className="overview-project-button"
-          onClick={(e) => openCellAddDropdown(e, false)}
-          title="Add N copmleted actions on X day"
-        >
-          <Icon path={mdiPlusBox} />
-        </button>
-        <button
-          className="overview-project-button"
-          onClick={addCell}
-          title="Add 1 completed action today"
-        >
-          <Icon path={mdiCheckboxMarked} />
-        </button>
-        <button
-          className="overview-project-button"
-          onClick={setStopwatchProject}
-          title="Start stopwatch of this project"
-        >
-          <Icon path={mdiTimer} />
-        </button>
-        <button
-          className="overview-project-button"
-          onClick={(e) => openCellAddDropdown(e, true)}
-          title="Add a new target"
-        >
-          <Icon path={mdiViewGridPlusOutline} />
-        </button>
-        <Link
-          className="overview-project-button"
-          onClick={() => {
-            dispatch(changeTo(project._id));
-            dispatch(open());
-          }}
-          title="Edit project"
-        >
-          <Icon path={mdiPencil} />
-        </Link>
-        <button
-          className="overview-project-button"
-          onClick={deleteChosenProject}
-          title="Delete project"
-        >
-          <Icon path={mdiDelete} />
-        </button>
-      </div>
+      <ProjectControls project={project} heatmap={heatmap} />
     </div>
   );
 }
