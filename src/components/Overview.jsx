@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getYear, formatISO, startOfDay, differenceInDays } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import Icon from '@mdi/react';
 import {
   mdiDelete,
@@ -16,30 +16,29 @@ import {
   mdiCalendarEnd,
   mdiCalendarStart,
   mdiCalendarRefresh,
-  mdiCalendarText,
-  mdiCalendarWeekend,
   mdiViewGridPlusOutline,
   mdiPlus,
-  mdiCog,
 } from '@mdi/js';
 import { useGetProjectsQuery, useDeleteProjectMutation } from '../state/services/project';
 import { useGetHeatmapsQuery, useUpdateHeatmapMutation } from '../state/services/heatmap';
-import {
-  useGetSettingsQuery,
-  useChangeOverviewOrientationMutation,
-} from '../state/services/settings';
+import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
-import { OverviewMonths, OverviewDays } from './OverviewHeaders';
+import {
+  OverviewMonths,
+  OverviewDays,
+  OverviewSettings,
+  OverviewYear,
+  OverviewDates,
+} from './OverviewHeaders';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import OverviewHeatmap from './OverviewHeatmap';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
   const [loaded] = useLoaded();
-  const [changeOverview] = useChangeOverviewOrientationMutation();
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
@@ -89,29 +88,7 @@ export default function Overview() {
           dateEnd={dateEnd}
           setDateEnd={setDateEnd}
         />
-        <div className="overview-settings">
-          <button
-            className={`overview-open-settings ${vertical ? '' : 'active'}`}
-            onClick={() => changeOverview(false)}
-            title="Change to horizontal orientation"
-          >
-            <Icon path={mdiCalendarText} className="icon small centering" />
-          </button>
-          <button
-            className={`overview-open-settings ${vertical ? 'active' : ''}`}
-            onClick={() => changeOverview(true)}
-            title="Change to vertical orientation"
-          >
-            <Icon path={mdiCalendarWeekend} className="icon small centering" />
-          </button>
-          <NavLink
-            className="overview-open-settings"
-            to="/settings#overview"
-            title="Open overview settings"
-          >
-            <Icon path={mdiCog} className="icon small centering" />
-          </NavLink>
-        </div>
+        <OverviewSettings vertical={vertical} />
       </div>
       <div
         className={`overview-container ${vertical ? 'vertical' : ''}`}
@@ -306,44 +283,6 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
           <Icon path={mdiDelete} />
         </button>
       </div>
-    </div>
-  );
-}
-
-function OverviewYear({ subYear, addYear, dateStart }) {
-  return (
-    <div className="overview-year-move">
-      <button className="overview-period-move-left" onClick={subYear}>
-        <Icon path={mdiMenuLeft} className="icon" />
-      </button>
-      <h3>{getYear(dateStart)}</h3>
-      <button className="overview-period-move-right" onClick={addYear}>
-        <Icon path={mdiMenuRight} className="icon" />
-      </button>
-    </div>
-  );
-}
-
-function OverviewDates({ setDateStart, dateStart, setDateEnd, dateEnd }) {
-  return (
-    <div className="overview-dates">
-      <input
-        type="date"
-        value={formatISO(dateStart, { representation: 'date' })}
-        max="<?= date('Y-m-d'); ?>"
-        rows="1"
-        className="overview-dates-picker"
-        onChange={(e) => setDateStart(startOfDay(new Date(e.target.value)))}
-      />
-      -
-      <input
-        type="date"
-        value={formatISO(dateEnd, { representation: 'date' })}
-        max="<?= date('Y-m-d'); ?>"
-        rows="1"
-        className="overview-dates-picker"
-        onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
-      />
     </div>
   );
 }

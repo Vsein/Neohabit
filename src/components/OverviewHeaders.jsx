@@ -1,5 +1,19 @@
 import React from 'react';
-import { differenceInDays, getDate, addDays, isToday, isWeekend, isLastDayOfMonth } from 'date-fns';
+import { NavLink } from 'react-router-dom';
+import Icon from '@mdi/react';
+import {
+  formatISO,
+  startOfDay,
+  differenceInDays,
+  getDate,
+  getYear,
+  addDays,
+  isToday,
+  isWeekend,
+  isLastDayOfMonth,
+} from 'date-fns';
+import { mdiCalendarText, mdiCalendarWeekend, mdiCog, mdiMenuLeft, mdiMenuRight } from '@mdi/js';
+import { useChangeOverviewOrientationMutation } from '../state/services/settings';
 
 function Month({ dateStart, index }) {
   const date = addDays(dateStart, index);
@@ -45,4 +59,72 @@ function OverviewDays({ dateStart, dateEnd }) {
   );
 }
 
-export { OverviewMonths, OverviewDays };
+function OverviewSettings({ vertical }) {
+  const [changeOverview] = useChangeOverviewOrientationMutation();
+
+  return (
+    <div className="overview-settings">
+      <button
+        className={`overview-open-settings ${vertical ? '' : 'active'}`}
+        onClick={() => changeOverview(false)}
+        title="Change to horizontal orientation"
+      >
+        <Icon path={mdiCalendarText} className="icon small centering" />
+      </button>
+      <button
+        className={`overview-open-settings ${vertical ? 'active' : ''}`}
+        onClick={() => changeOverview(true)}
+        title="Change to vertical orientation"
+      >
+        <Icon path={mdiCalendarWeekend} className="icon small centering" />
+      </button>
+      <NavLink
+        className="overview-open-settings"
+        to="/settings#overview"
+        title="Open overview settings"
+      >
+        <Icon path={mdiCog} className="icon small centering" />
+      </NavLink>
+    </div>
+  );
+}
+
+function OverviewYear({ subYear, addYear, dateStart }) {
+  return (
+    <div className="overview-year-move">
+      <button className="overview-period-move-left" onClick={subYear}>
+        <Icon path={mdiMenuLeft} className="icon" />
+      </button>
+      <h3>{getYear(dateStart)}</h3>
+      <button className="overview-period-move-right" onClick={addYear}>
+        <Icon path={mdiMenuRight} className="icon" />
+      </button>
+    </div>
+  );
+}
+
+function OverviewDates({ setDateStart, dateStart, setDateEnd, dateEnd }) {
+  return (
+    <div className="overview-dates">
+      <input
+        type="date"
+        value={formatISO(dateStart, { representation: 'date' })}
+        max="<?= date('Y-m-d'); ?>"
+        rows="1"
+        className="overview-dates-picker"
+        onChange={(e) => setDateStart(startOfDay(new Date(e.target.value)))}
+      />
+      -
+      <input
+        type="date"
+        value={formatISO(dateEnd, { representation: 'date' })}
+        max="<?= date('Y-m-d'); ?>"
+        rows="1"
+        className="overview-dates-picker"
+        onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
+      />
+    </div>
+  );
+}
+
+export { OverviewMonths, OverviewDays, OverviewSettings, OverviewYear, OverviewDates };
