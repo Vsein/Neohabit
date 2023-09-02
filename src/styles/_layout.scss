@@ -6,6 +6,16 @@
   padding: 15px 0;
 }
 
+@mixin overview-header-small {
+  grid-template-columns: 1fr min-content;
+  grid-template-rows: 30px;
+  grid-template-areas:
+    'name settings'
+    'date date';
+  gap: 3px;
+  padding-bottom: 5px;
+}
+
 #content {
   min-height: calc(100vh - 60px);
   width: 100%;
@@ -52,13 +62,7 @@
 
   @media (max-width: 750px) {
     .overview-header {
-      grid-template-columns: 1fr min-content;
-      grid-template-rows: 30px;
-      grid-template-areas:
-        'name settings'
-        'date date';
-      gap: 3px;
-      padding-bottom: 5px;
+      @include overview-header-small;
     }
 
     .overview-centering {

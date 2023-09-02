@@ -1,3 +1,5 @@
+@import 'layout';
+
 $cell-height: 11px;
 $cell-width: 11px;
 $cell-margin: 2px;
@@ -287,13 +289,11 @@ $cell-margin: 2px;
 
   &.vertical {
     width: min(calc(50px + (17px + 2px) * var(--projects) + 10px), 100%);
-    grid-template-columns: 1fr min-content;
-    grid-template-rows: 30px;
-    grid-template-areas:
-      'name settings'
-      'date date';
-    gap: 3px;
-    padding-bottom: 5px;
+    @include overview-header-small;
+  }
+
+  &.small {
+    @include overview-header-small;
   }
 
   & > h3 {

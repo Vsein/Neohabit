@@ -43,13 +43,14 @@ export default function Overview() {
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
+  const datePeriodLength = settings.data?.overview_duration ?? 32;
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset },
-  ] = useDatePeriod();
+  ] = useDatePeriod(datePeriodLength - 1);
 
   const dispatch = useDispatch();
 
@@ -59,8 +60,6 @@ export default function Overview() {
   };
 
   useKeyPress(['a'], openOverlay);
-
-  const datePeriodLength = differenceInDays(dateEnd, dateStart) + 1;
 
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
@@ -78,7 +77,9 @@ export default function Overview() {
   return (
     <>
       <div
-        className={`overview-header ${vertical ? 'vertical' : ''}`}
+        className={`overview-header ${vertical ? 'vertical' : ''} ${
+          datePeriodLength < 14 ? 'small' : ''
+        }`}
         style={{ '--length': datePeriodLength }}
       >
         <h3>Overview</h3>

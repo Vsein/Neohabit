@@ -91,6 +91,22 @@ export const settingsApi = api.injectEndpoints({
         );
       },
     }),
+    changeOverviewDuration: builder.mutation({
+      query: (overviewDuration) => ({
+        url: 'settings/overview_duration',
+        body: { overviewDuration },
+        method: 'PUT',
+      }),
+      async onQueryStarted(overviewDuration, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        console.log(overviewDuration);
+        dispatch(
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.overview_duration = overviewDuration;
+          }),
+        );
+      },
+    }),
   }),
 });
 
@@ -102,4 +118,5 @@ export const {
   useChangeCellHeightMutation,
   useChangeOverviewOrientationMutation,
   useChangeOverviewFirstDayMutation,
+  useChangeOverviewDurationMutation,
 } = settingsApi;

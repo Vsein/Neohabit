@@ -11,6 +11,7 @@ import {
   useChangeCellHeightMutation,
   useChangeOverviewOrientationMutation,
   useChangeOverviewFirstDayMutation,
+  useChangeOverviewDurationMutation,
 } from '../../state/services/settings';
 import { open } from '../../state/features/deleteOverlay/deleteOverlaySlice';
 
@@ -42,6 +43,7 @@ export default function Settings() {
             <>
               <OverviewOrientationOption />
               <OverviewFirstDayOption />
+              <OverviewDurationOption />
             </>
           }
         />
@@ -155,6 +157,37 @@ function OverviewFirstDayOption() {
           onClick={() => changeFirstDay(false)}
         >
           Period end
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function OverviewDurationOption() {
+  const [changeOverviewDuration] = useChangeOverviewDurationMutation();
+  const settings = useGetSettingsQuery();
+  const overviewDuration = settings.data?.overview_duration ?? 32;
+  const [overviewDurationInput, setOverviewDurationInput] = useState(overviewDuration);
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Default overview period duration</h3>
+      </div>
+      <div className="settings-chooser">
+        <input
+          className="settings-input settings-btn"
+          type="number"
+          min="1"
+          max="365"
+          value={overviewDurationInput}
+          onChange={(e) => setOverviewDurationInput(e.target.value)}
+        />
+        <button
+          className="settings-input settings-save-btn dashboard-btn"
+          onClick={() => changeOverviewDuration(overviewDurationInput)}
+        >
+          Save
         </button>
       </div>
     </div>
