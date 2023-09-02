@@ -44,6 +44,35 @@
     .projects-container {
       visibility: hidden;
     }
+
+  }
+
+  @media (max-width: 750px) {
+    .overview-header {
+      grid-template-columns: 1fr min-content;
+      grid-template-rows: 30px;
+      grid-template-areas:
+      'name settings'
+      'date date';
+      gap: 3px;
+      padding-bottom: 5px;
+
+      .overview-settings {
+        grid-area: settings;
+      }
+
+      & > h3 {
+        grid-area: name;
+      }
+
+      .overview-dates {
+        grid-area: date;
+      }
+    }
+
+    .overview-centering {
+      margin: 10px;
+    }
   }
 
   @media (min-width: 550px) {
