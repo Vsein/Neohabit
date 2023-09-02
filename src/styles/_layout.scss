@@ -36,6 +36,10 @@
       text-align: left;
     }
 
+    .menu {
+      grid-template-columns: 0px 1fr 45px 45px;
+    }
+
     .editor {
       padding: 18px 9px;
       padding-bottom: 90px;
