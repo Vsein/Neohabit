@@ -10,6 +10,8 @@ import {
   mdiTimer,
   mdiMenuLeft,
   mdiMenuRight,
+  mdiMenuUp,
+  mdiMenuDown,
   mdiCheckboxMarked,
   mdiCalendarEnd,
   mdiCalendarStart,
@@ -70,7 +72,10 @@ export default function Overview() {
 
   return (
     <>
-      <div className="overview-header" style={{ '--length': datePeriodLength }}>
+      <div
+        className={`overview-header ${vertical ? 'vertical' : ''}`}
+        style={{ '--length': datePeriodLength }}
+      >
         <h3>Overview</h3>
         <OverviewDates
           dateStart={dateStart}
@@ -89,36 +94,43 @@ export default function Overview() {
         </div>
       </div>
       <div
-        className="overview-container"
+        className={`overview-container ${vertical ? 'vertical' : ''}`}
         style={{
           // '--multiplier': settings.data.cell_height_multiplier,
           '--multiplier': 1,
           '--cell-height': '15px',
           '--cell-width': '15px',
           '--length': datePeriodLength,
+          '--vertical': vertical * 1,
         }}
       >
-        <div className="overview">
+        <div className={`overview ${vertical ? 'vertical' : ''}`}>
           <div className="overview-topbar-left">
-            <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
+            {!vertical && (
+              <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
+            )}
             <button
               className="overview-period-move-left"
               onClick={subMonth}
               title="Move month to the left [H]"
             >
-              <Icon path={mdiMenuLeft} className="icon" />
+              <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
             </button>
           </div>
           <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
           <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
           <div className="overview-topbar-right">
-            <button
-              className="overview-period-move-right"
-              onClick={addMonth}
-              title="Move month to the right [L]"
-            >
-              <Icon path={mdiMenuRight} className="icon" />
-            </button>
+            {vertical ? (
+              <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
+            ) : (
+              <button
+                className="overview-period-move-right"
+                onClick={addMonth}
+                title="Move month to the right [L]"
+              >
+                <Icon path={mdiMenuRight} className="icon" />
+              </button>
+            )}
             <button
               className="overview-period-end"
               onClick={setToPast}
@@ -148,14 +160,24 @@ export default function Overview() {
                 project={project}
                 dateStart={dateStart}
                 dateEnd={dateEnd}
-                heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id == project._id)}
+                heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id === project._id)}
+                vertical={vertical}
               />
             ))}
           </div>
+          {vertical && (
+            <button
+              className="overview-period-move-down"
+              onClick={addMonth}
+              title="Move month to the right [L]"
+            >
+              <Icon path={mdiMenuDown} className="icon" />
+            </button>
+          )}
         </div>
       </div>
       <button
-        className="overview-project-add"
+        className={`overview-project-add ${vertical ? 'vertical' : ''}`}
         onClick={openOverlay}
         title="Add project [A]"
         style={{ '--length': datePeriodLength }}
@@ -167,7 +189,7 @@ export default function Overview() {
   );
 }
 
-function OverviewProject({ dateStart, dateEnd, project, heatmap }) {
+function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
   const [deleteProject] = useDeleteProjectMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
@@ -215,6 +237,7 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap }) {
         project={project}
         dateStart={dateStart}
         dateEnd={dateEnd}
+        vertical={vertical}
       />
       <div className="overview-project-controls" style={{ '--color': project.color }}>
         <button

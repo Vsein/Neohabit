@@ -95,6 +95,7 @@ export default function OverviewHeatmap({
                     value={0}
                     vertical={vertical}
                     elimination={project?.elimination}
+                    isOverview={true}
                   />
                 )}
                 {!point?.isLast && !point.is_target && (
@@ -106,6 +107,7 @@ export default function OverviewHeatmap({
                     basePeriod={24}
                     vertical={vertical}
                     elimination={project?.elimination}
+                    isOverview={true}
                   />
                 )}
               </>
@@ -158,6 +160,7 @@ export default function OverviewHeatmap({
               vertical={vertical}
               elimination={project?.elimination}
               targetValue={previousTarget.value}
+              isOverview={true}
             />
           ));
         })}

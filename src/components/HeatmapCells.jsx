@@ -94,8 +94,8 @@ function CellFractured({
   fractionWidth += (length - 1) * (2 / 15);
 
   const getStyle = (index) => ({
-    '--height': fractionHeight,
-    '--width': fractionWidth,
+    [vertical ? '--width' : '--height']: fractionHeight,
+    [vertical ? '--height' : '--width']: fractionWidth,
     margin: 0,
     [index < value ? 'backgroundColor' : '']: index >= targetValue && elimination ? 'black' : color,
   });
@@ -126,10 +126,11 @@ function CellPeriod({
   targetValue = 1,
   targetStart = undefined,
   elimination,
+  isOverview = false,
 }) {
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
-  if (isSameWeek(dateStart, dateEnd) || !vertical) {
-    return (value <= 1 || value == undefined || vertical) && targetValue === 1 ? (
+  if (isSameWeek(dateStart, dateEnd) || !vertical || isOverview) {
+    return (value <= 1 || value == undefined || !isOverview) && targetValue === 1 ? (
       <Cell
         color={color}
         value={value}
