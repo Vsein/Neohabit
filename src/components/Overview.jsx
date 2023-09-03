@@ -62,15 +62,23 @@ export default function Overview() {
     );
   }
 
-  document.documentElement.style.setProperty('--projects', projects.data.length);
-
   return (
-    <>
+    <div
+      className="overview-centering"
+      style={{
+        '--projects': projects.data.length,
+        '--length': datePeriodLength,
+        '--vertical': vertical * 1,
+        // '--multiplier': settings.data.cell_height_multiplier,
+        '--multiplier': 1,
+        '--cell-height': '15px',
+        '--cell-width': '15px',
+      }}
+    >
       <div
         className={`overview-header ${vertical ? 'vertical' : ''} ${
           datePeriodLength < 14 ? 'small' : ''
         }`}
-        style={{ '--length': datePeriodLength }}
       >
         <h3>Overview</h3>
         <OverviewDates
@@ -81,17 +89,7 @@ export default function Overview() {
         />
         <OverviewSettings vertical={vertical} />
       </div>
-      <div
-        className={`overview-container ${vertical ? 'vertical' : ''}`}
-        style={{
-          // '--multiplier': settings.data.cell_height_multiplier,
-          '--multiplier': 1,
-          '--cell-height': '15px',
-          '--cell-width': '15px',
-          '--length': datePeriodLength,
-          '--vertical': vertical * 1,
-        }}
-      >
+      <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
         <div className={`overview ${vertical ? 'vertical' : ''}`}>
           <div className="overview-topbar-left">
             {!vertical && (
@@ -168,12 +166,11 @@ export default function Overview() {
         className={`overview-project-add ${vertical ? 'vertical' : ''}`}
         onClick={openOverlay}
         title="Add project [A]"
-        style={{ '--length': datePeriodLength }}
       >
         <Icon className="icon small" path={mdiPlus} />
         <p>Add project</p>
       </button>
-    </>
+    </div>
   );
 }
 
