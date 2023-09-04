@@ -89,7 +89,7 @@ export default function OverviewHeatmap({
                 {(differenceInDays(date, dateNowTmp) > 0 ||
                   (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
                   <CellPeriod
-                    dateStart={dateNowTmp}
+                    dateStart={max([dateNowTmp, dateStart])}
                     dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
                     color={palette[0]}
                     value={0}
