@@ -35,6 +35,7 @@ $cell-margin: 2px;
     flex-wrap: wrap;
     justify-content: space-around;
     border: none;
+    overflow: hidden;
 
     &:hover {
       border: none;
