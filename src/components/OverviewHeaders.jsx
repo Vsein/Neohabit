@@ -19,15 +19,15 @@ function Month({ dateStart, index }) {
   const date = addDays(dateStart, index);
   const monthName = date.toLocaleString('en-US', { month: 'short' });
   if (getDate(date) === 1 || (index === 0 && !isLastDayOfMonth(date))) {
-    return <div className="overview-months-month active">{monthName}</div>;
+    return <div className="heatmap-months-month active">{monthName}</div>;
   }
-  return <div className="overview-months-month">{monthName}</div>;
+  return <div className="heatmap-months-month">{monthName}</div>;
 }
 
 function OverviewMonths({ dateStart, dateEnd }) {
   const days = Array.from(new Array(differenceInDays(dateEnd, dateStart) + 1));
   return (
-    <div className="overview-months">
+    <div className="heatmap-months">
       {days.map((_, index) => (
         <Month key={index} index={index} dateStart={dateStart} />
       ))}
@@ -105,13 +105,13 @@ function OverviewYear({ subYear, addYear, dateStart }) {
 
 function OverviewDates({ setDateStart, dateStart, setDateEnd, dateEnd }) {
   return (
-    <div className="overview-dates">
+    <div className="dates-period">
       <input
         type="date"
         value={formatISO(dateStart, { representation: 'date' })}
         max="<?= date('Y-m-d'); ?>"
         rows="1"
-        className="overview-dates-picker"
+        className="dates-period-picker"
         onChange={(e) => setDateStart(startOfDay(new Date(e.target.value)))}
       />
       -
@@ -120,7 +120,7 @@ function OverviewDates({ setDateStart, dateStart, setDateEnd, dateEnd }) {
         value={formatISO(dateEnd, { representation: 'date' })}
         max="<?= date('Y-m-d'); ?>"
         rows="1"
-        className="overview-dates-picker"
+        className="dates-period-picker"
         onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
       />
     </div>

@@ -1,0 +1,72 @@
+.heatmap-weekdays {
+  display: inline-flex;
+  flex-direction: column;
+  grid-area: weekdays;
+  padding-left: 5px;
+
+  &-weekday {
+    line-height: 100%;
+    font-size: calc(15px * var(--multiplier) - 4px + 1px);
+    height: calc(15px * var(--multiplier) - 4px);
+    font-weight: 600;
+    border: 1px solid transparent;
+    margin: 2px;
+    vertical-align: middle;
+  }
+}
+
+.heatmap-months {
+  direction: ltr;
+  display: flex;
+  grid-area: months;
+
+  &-month {
+    width: var(--cell-width);
+    height: var(--cell-height);
+    line-height: 100%;
+    border: 1px solid transparent;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 2px;
+    visibility: hidden;
+
+    &.active {
+      visibility: visible;
+    }
+  }
+}
+
+.dates-period {
+  direction: ltr;
+  grid-area: date;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 10px;
+  box-shadow: 0px 0px 4px 2px var(--signature-color);
+  border-radius: 6px;
+  height: 20px;
+
+  &-picker {
+    width: 115px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+}
+
+.project-controls {
+  width: 100%;
+  display: grid;
+  align-items: center;
+  align-self: center;
+  padding-inline: 3px;
+  grid-auto-columns: 17px;
+  grid-auto-flow: column;
+  grid-gap: 2px;
+
+  &.header {
+    grid-area: settings;
+  }
+}

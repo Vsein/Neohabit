@@ -119,59 +119,19 @@ $cell-weekdays-width: 33px;
     )
   );
   direction: rtl;
+  // note that parent direction is rtl, that's why the right and left are swapped
+  grid-template-areas:
+    'months   .'
+    'cells     weekdays';
   grid-template-rows: $cell-height calc(
       (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
     );
   grid-template-columns: calc(var(--weeks) * 15px - 2px) min-content;
   row-gap: 5px;
 
-  .heatmap-months {
-    display: flex;
-    grid-column: 1;
-    grid-row: 1;
-    direction: ltr;
-
-    &-month {
-      width: $cell-width;
-      line-height: 100%;
-      border: 1px solid transparent;
-      font-size: 12px;
-      font-weight: 600;
-      margin: $cell-margin;
-      visibility: hidden;
-
-      &.active {
-        visibility: visible;
-      }
-    }
-  }
-
-  .heatmap-weekdays {
-    display: inline-flex;
-    flex-direction: column;
-    grid-column: 2;
-    grid-row: 2;
-    padding-left: 5px;
-
-    &-weekday {
-      line-height: 100%;
-      font-size: calc(
-        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1) + 1px
-      );
-      height: calc(
-        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1)
-      );
-      font-weight: 600;
-      border: 1px solid transparent;
-      margin: $cell-margin;
-      vertical-align: middle;
-    }
-  }
-
   .heatmap-cells {
     direction: ltr;
-    grid-column: 1;
-    grid-row: 2;
+    grid-area: cells;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;

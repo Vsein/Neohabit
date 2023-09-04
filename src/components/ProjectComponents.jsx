@@ -16,7 +16,7 @@ import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 
-export default function ProjectControls({ project, heatmap }) {
+export default function ProjectControls({ project, heatmap, header }) {
   const [deleteProject] = useDeleteProjectMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
@@ -49,7 +49,7 @@ export default function ProjectControls({ project, heatmap }) {
   };
 
   return (
-    <div className="overview-project-controls" style={{ '--color': project.color }}>
+    <div className={`project-controls ${header ? 'header' : ''}`} style={{ '--color': project.color }}>
       <button
         className="overview-project-button"
         onClick={(e) => openCellAddDropdown(e, false)}
