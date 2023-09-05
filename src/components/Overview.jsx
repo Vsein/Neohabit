@@ -192,6 +192,7 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
         dateStart={dateStart}
         dateEnd={dateEnd}
         vertical={vertical}
+        isOverview={true}
       />
       <ProjectControls project={project} heatmap={heatmap} />
     </div>

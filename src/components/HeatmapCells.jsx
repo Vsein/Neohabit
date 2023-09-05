@@ -129,8 +129,8 @@ function CellPeriod({
   isOverview = false,
 }) {
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
-  if (isSameWeek(dateStart, dateEnd) || !vertical || isOverview) {
-    return (value <= 1 || value == undefined || !isOverview) && targetValue === 1 ? (
+  if (isSameWeek(dateStart, dateEnd) || isOverview) {
+    return (value <= 1 || value === undefined) && targetValue === 1 ? (
       <Cell
         color={color}
         value={value}
@@ -219,4 +219,53 @@ function CellDummy({ length, vertical = true }) {
   return <div style={style} className="dummy" />;
 }
 
-export { Cell, CellPeriod, CellDummy };
+function CellPeriodDummy({ dateStart, dateEnd, color, basePeriod = 24 }) {
+  const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
+  let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
+  width += dateStart.getTime() === startOfWeek(dateStart).getTime();
+  width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
+  const style = {
+    backgroundColor: color,
+    '--height': 7,
+    '--width': width,
+  };
+  const beforeHeight =
+    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) / basePeriod;
+  const styleBefore = {
+    '--height': beforeHeight,
+    '--width': 1,
+    visibility: beforeHeight !== 7 ? 'visible' : 'hidden',
+  };
+  const afterHeight =
+    differenceInHours(addMilliseconds(dateEnd, 1), startOfWeek(addMilliseconds(dateEnd, 1))) /
+    basePeriod;
+  const styleAfter = {
+    '--height': afterHeight,
+    '--width': 1,
+  };
+  if (afterHeight === 0) styleAfter.visibility = 'hidden';
+
+  return (
+    <>
+      <div
+        className={`cell-period ${width ? 'wide' : 'whole'}`}
+        style={style}
+      >
+        <div className="cell-period-before" style={styleBefore} />
+        <div className="cell-period-after" style={styleAfter} />
+        {diffDays > 7 && !width && (
+          <div
+            className="cell-period-connector"
+            style={{
+              '--height': afterHeight - (7 - beforeHeight),
+              '--offset-top': 7 - beforeHeight,
+            }}
+          />
+        )}
+      </div>
+      {afterHeight ? <CellDummy length={afterHeight} /> : <> </>}
+    </>
+  );
+}
+
+export { Cell, CellPeriod, CellDummy, CellPeriodDummy };

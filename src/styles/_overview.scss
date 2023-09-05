@@ -271,3 +271,18 @@ $cell-margin: 2px;
     color: var(--bright-signature-color);
   }
 }
+
+
+.overview-project-cells {
+  height: var(--cell-height);
+  display: flex;
+  align-self: center;
+
+  &.weekly {
+    direction: ltr;
+    grid-area: cells;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100%;
+  }
+}

@@ -6,9 +6,9 @@ import { YearDataSimple, PERIODS6 } from '../../components/HeatmapData';
 import { useGetTasksQuery } from '../../state/services/todolist';
 import { useGetProjectsQuery } from '../../state/services/project';
 import { useGetHeatmapsQuery } from '../../state/services/heatmap';
-import Tasklist from '../../components/Tasklist';
+import Project from '../../components/Project';
 
-export default function Project() {
+export default function ProjectOverview() {
   const tasks = useGetTasksQuery();
   const projects = useGetProjectsQuery();
   const heatmaps = useGetHeatmapsQuery();
@@ -28,17 +28,9 @@ export default function Project() {
   return tasks.isFetching || projects.isFetching || heatmaps.isFetching ? (
     <> </>
   ) : (
-    <div className="project-overview" style={{ '--cell-height': '11px', '--cell-width': '11px' }}>
-      <Heatmap
-        heatmap={heatmap}
-        // colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha * 265})`}
-        color={project.color}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-        dayLength={dayLength}
-        useElimination={false}
-      />
-      <Tasklist name="Tasks" tasks={tasks.data} projectID={projectID} list="project" />
-    </div>
+    <Project
+      heatmap={heatmap}
+      project={project}
+    />
   );
 }

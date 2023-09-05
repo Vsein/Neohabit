@@ -138,3 +138,30 @@ $cell-weekdays-width: 33px;
     height: 100%;
   }
 }
+
+.project-heatmap-container {
+  --negate-margin-block: 0px;
+  direction: rtl;
+  position: relative;
+  overflow-y: hidden;
+  background-color: var(--main-background-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding-right: 5px;
+  height: calc(20px + 15px * 7 * var(--multiplier));
+  width: min(100%, calc(var(--weeks) * 15px + 125px));
+
+}
+
+.project-heatmap {
+  direction: ltr;
+  --multiplier: 1;
+  position: absolute;
+  display: grid;
+  grid-template-areas:
+    '.        months'
+    'weekdays cells';
+  grid-template-rows: $cell-height calc(15px * 7 * var(--multiplier));
+  grid-template-columns: min-content calc(var(--weeks) * 15px - 2px);
+  row-gap: 4px;
+}
