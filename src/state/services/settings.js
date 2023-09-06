@@ -59,6 +59,54 @@ export const settingsApi = api.injectEndpoints({
         );
       },
     }),
+    changeOverviewOrientation: builder.mutation({
+      query: (overviewVertical) => ({
+        url: 'settings/overview_orientation',
+        body: { overviewVertical },
+        method: 'PUT',
+      }),
+      async onQueryStarted(overviewVertical, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        console.log(overviewVertical);
+        dispatch(
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.overview_vertical = overviewVertical;
+          }),
+        );
+      },
+    }),
+    changeOverviewFirstDay: builder.mutation({
+      query: (overviewCurrentIsFirst) => ({
+        url: 'settings/overview_orientation',
+        body: { overviewCurrentIsFirst },
+        method: 'PUT',
+      }),
+      async onQueryStarted(overviewCurrentIsFirst, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        console.log(overviewCurrentIsFirst);
+        dispatch(
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.overview_current_is_first = overviewCurrentIsFirst;
+          }),
+        );
+      },
+    }),
+    changeOverviewDuration: builder.mutation({
+      query: (overviewDuration) => ({
+        url: 'settings/overview_duration',
+        body: { overviewDuration },
+        method: 'PUT',
+      }),
+      async onQueryStarted(overviewDuration, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        console.log(overviewDuration);
+        dispatch(
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.overview_duration = overviewDuration;
+          }),
+        );
+      },
+    }),
   }),
 });
 
@@ -68,4 +116,7 @@ export const {
   useDeleteSelfMutation,
   useChangeThemeMutation,
   useChangeCellHeightMutation,
+  useChangeOverviewOrientationMutation,
+  useChangeOverviewFirstDayMutation,
+  useChangeOverviewDurationMutation,
 } = settingsApi;

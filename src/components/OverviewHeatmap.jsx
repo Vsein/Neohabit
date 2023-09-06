@@ -9,7 +9,7 @@ import {
   max,
   subMilliseconds,
 } from 'date-fns';
-import { CellPeriod, CellDummy } from './HeatmapCells';
+import { CellPeriod, CellDummy, CellPeriodDummy } from './HeatmapCells';
 import usePaletteGenerator from '../hooks/usePaletteGenerator';
 
 export default function OverviewHeatmap({
@@ -18,6 +18,7 @@ export default function OverviewHeatmap({
   project,
   heatmap,
   vertical = false,
+  isOverview,
 }) {
   const data = heatmap?.data;
   let dataSorted;
@@ -39,10 +40,7 @@ export default function OverviewHeatmap({
   const dateCreation = startOfDay(new Date(project?.date_of_creation ?? dateStart));
 
   return (
-    <div
-      className="overview-project-cells"
-      style={{ '--cell-height': '15px', '--cell-width': '15px' }}
-    >
+    <div className={`overview-project-cells ${isOverview ? '' : 'weekly'}`}>
       {dataSorted &&
         dataSorted.map((point, index) => {
           const date = startOfDay(new Date(point.date));
@@ -86,18 +84,29 @@ export default function OverviewHeatmap({
             } else {
               current.date = addDays(date, 1);
             }
+            console.log(project.name, dateNowTmp);
             return (
               <>
-                {gap > 0 && <CellDummy key={index} length={gap} vertical={vertical} />}
+                {gap > 0 &&
+                  (isOverview ? (
+                    <CellDummy key={index} length={gap} vertical={vertical} />
+                  ) : (
+                    <CellPeriodDummy
+                      dateStart={addDays(dateNowTmp, -gap)}
+                      dateEnd={subMilliseconds(dateNowTmp, 1)}
+                      color="transparent"
+                    />
+                  ))}
                 {(differenceInDays(date, dateNowTmp) > 0 ||
                   (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
                   <CellPeriod
-                    dateStart={dateNowTmp}
+                    dateStart={max([dateNowTmp, dateStart])}
                     dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
                     color={palette[0]}
                     value={0}
                     vertical={vertical}
                     elimination={project?.elimination}
+                    isOverview={isOverview}
                   />
                 )}
                 {!point?.isLast && !point.is_target && (
@@ -109,6 +118,7 @@ export default function OverviewHeatmap({
                     basePeriod={24}
                     vertical={vertical}
                     elimination={project?.elimination}
+                    isOverview={isOverview}
                   />
                 )}
               </>
@@ -161,6 +171,7 @@ export default function OverviewHeatmap({
               vertical={vertical}
               elimination={project?.elimination}
               targetValue={previousTarget.value}
+              isOverview={isOverview}
             />
           ));
         })}

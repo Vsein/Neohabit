@@ -9,6 +9,9 @@ import {
   useGetSettingsQuery,
   useChangeThemeMutation,
   useChangeCellHeightMutation,
+  useChangeOverviewOrientationMutation,
+  useChangeOverviewFirstDayMutation,
+  useChangeOverviewDurationMutation,
 } from '../../state/services/settings';
 import { open } from '../../state/features/deleteOverlay/deleteOverlaySlice';
 
@@ -22,6 +25,9 @@ export default function Settings() {
         <Link className="settings-type" to="#general">
           General
         </Link>
+        <Link className="settings-type" to="#overview">
+          Overview
+        </Link>
         <Link className="settings-type" to="#heatmaps">
           Heatmaps
         </Link>
@@ -31,6 +37,16 @@ export default function Settings() {
       </div>
       <div className="settings">
         <SettingsSection name="general" elements={<ThemeOption />} />
+        <SettingsSection
+          name="overview"
+          elements={
+            <>
+              <OverviewOrientationOption />
+              <OverviewFirstDayOption />
+              <OverviewDurationOption />
+            </>
+          }
+        />
         <SettingsSection name="heatmaps" elements={<HeatmapHeightOption />} />
         <SettingsSection name="account" elements={<DeleteAccountOption />} />
       </div>
@@ -85,6 +101,93 @@ function ThemeOption() {
           onClick={() => changeTheme(false)}
         >
           Light
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function OverviewOrientationOption() {
+  const [changeOverview] = useChangeOverviewOrientationMutation();
+  const settings = useGetSettingsQuery();
+  const state = settings.data.overview_vertical;
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Preferred overview orientation</h3>
+      </div>
+      <div className="settings-chooser">
+        <button
+          className={`dashboard-btn settings-btn ${state ? '' : 'active'}`}
+          onClick={() => changeOverview(false)}
+        >
+          Horizontal
+        </button>
+        <button
+          className={`dashboard-btn settings-btn ${state ? 'active' : ''}`}
+          onClick={() => changeOverview(true)}
+        >
+          Vertical
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function OverviewFirstDayOption() {
+  const [changeFirstDay] = useChangeOverviewFirstDayMutation();
+  const settings = useGetSettingsQuery();
+  const state = settings.data.overview_current_is_first;
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Use current day as...</h3>
+      </div>
+      <div className="settings-chooser">
+        <button
+          className={`dashboard-btn settings-btn ${state ? 'active' : ''}`}
+          onClick={() => changeFirstDay(true)}
+        >
+          Period start
+        </button>
+        <button
+          className={`dashboard-btn settings-btn ${state ? '' : 'active'}`}
+          onClick={() => changeFirstDay(false)}
+        >
+          Period end
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function OverviewDurationOption() {
+  const [changeOverviewDuration] = useChangeOverviewDurationMutation();
+  const settings = useGetSettingsQuery();
+  const overviewDuration = settings.data?.overview_duration ?? 32;
+  const [overviewDurationInput, setOverviewDurationInput] = useState(overviewDuration);
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Default overview period duration</h3>
+      </div>
+      <div className="settings-chooser">
+        <input
+          className="settings-input settings-btn"
+          type="number"
+          min="1"
+          max="365"
+          value={overviewDurationInput}
+          onChange={(e) => setOverviewDurationInput(e.target.value)}
+        />
+        <button
+          className="settings-input settings-save-btn dashboard-btn"
+          onClick={() => changeOverviewDuration(overviewDurationInput)}
+        >
+          Save
         </button>
       </div>
     </div>

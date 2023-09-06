@@ -35,7 +35,7 @@ function formatTipContent(values) {
 
 function changeCellOffset(e, content) {
   const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
-  const parent = document.querySelector('.habit') || document.querySelector('.overview-container');
+  const parent = document.querySelector('.habit') || document.querySelector('.project-heatmap-container') || document.querySelector('.overview-container');
   const rect = cell.getBoundingClientRect();
   const rectParent = parent.getBoundingClientRect();
   const cellTip = document.querySelector('.cell-tip');

@@ -79,6 +79,8 @@ function Heatmap({
       style={{
         '--multiplier': settings.data.cell_height_multiplier,
         '--weeks': diffWeeks,
+        '--cell-width': '11px',
+        '--cell-height': '11px',
       }}
     >
       <div className="habit-header">

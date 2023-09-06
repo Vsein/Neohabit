@@ -1,3 +1,5 @@
+@import 'layout';
+
 $cell-height: 11px;
 $cell-width: 11px;
 $cell-margin: 2px;
@@ -11,16 +13,21 @@ $cell-margin: 2px;
 }
 
 .overview-container {
+  --negate-margin-block: calc(2 - 2 * var(--vertical));
   direction: rtl;
   position: relative;
   overflow-y: hidden;
-  height: max(200px, calc(30px + (17px + #{$cell-margin}) * var(--projects) + 10px));
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  width: min(945px, 100%);
   padding-right: 5px;
-  flex-direction: column;
+  height: max(200px, calc(30px + 19px * var(--projects) * var(--multiplier) + 10px));
+  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+
+  &.vertical {
+    height: calc(var(--length) * 19px + 360px);
+    width: min(calc(50px + (17px + 2px) * var(--projects) * var(--multiplier) + 10px), 100%);
+  }
 }
 
 .overview-centering {
@@ -38,40 +45,74 @@ $cell-margin: 2px;
 }
 
 .overview {
+  direction: ltr;
   --multiplier: 1;
   position: absolute;
   display: grid;
+  grid-template-areas:
+    'topbar-left months   topbar-right'
+    'topbar-left days     topbar-right'
+    'projects    projects projects';
   grid-template-rows: $cell-height 15px min-content;
-  grid-template-columns: 130px 608px 200px;
-  row-gap: 3px;
+  grid-template-columns: 200px calc(var(--length) * 19px) 115px;
+  row-gap: 4px;
 
-  .overview-months {
-    direction: ltr;
-    display: flex;
-    grid-column: 2;
-    grid-row: 1;
+  &.vertical {
+    grid-template-areas:
+      'topbar-right topbar-right topbar-right'
+      'topbar-left  topbar-left  projects'
+      'months       days         projects'
+      'move-right   move-right   projects';
+    grid-template-rows: 30px 200px calc(var(--length) * 19px) 115px;
+    grid-template-columns: 25px 15px min-content;
+    gap: 3px;
 
-    &-month {
-      width: 15px;
-      line-height: 100%;
-      border: 1px solid transparent;
-      font-size: 12px;
-      font-weight: 600;
-      margin: $cell-margin;
-      visibility: hidden;
+    & > .heatmap-months,
+    & > .overview-days {
+      flex-direction: column;
+    }
 
-      &.active {
-        visibility: visible;
+    & > .overview-topbar-left {
+      align-items: end;
+      padding-left: 0px;
+
+      & > button {
+        height: 25px;
+      }
+    }
+
+    .overview-period-move-down {
+      grid-area: move-right;
+      margin-inline: auto;
+      display: flex;
+      align-items: start;
+      margin-top: -5px;
+      width: min-content;
+    }
+
+    & > .overview-projects {
+      writing-mode: vertical-lr;
+      overflow: hidden;
+      padding-left: 5px;
+      padding-top: 3px;
+
+      & .overview-project {
+        &-cells {
+          width: var(--cell-width);
+          height: min-content;
+        }
+
+        &-name {
+          padding-left: 0px;
+        }
       }
     }
   }
 
   .overview-days {
-    direction: ltr;
     display: inline-flex;
     flex-direction: row;
-    grid-column: 2;
-    grid-row: 2;
+    grid-area: days;
 
     &-day {
       line-height: 100%;
@@ -99,17 +140,14 @@ $cell-margin: 2px;
   }
 
   .overview-projects {
-    direction: ltr;
-    grid-column: 3;
-    grid-row: 3;
+    grid-area: projects;
     display: grid;
     grid-template-rows: 17px;
     row-gap: 2px;
 
     .overview-project {
       display: grid;
-      grid-template-columns: 200px 608px 90px;
-      grid-template-rows: 17px;
+      grid-template-columns: 200px calc(var(--length) * 19px) 90px;
       font-size: 15px;
 
       &-name {
@@ -120,45 +158,30 @@ $cell-margin: 2px;
         padding-left: 5px;
       }
 
-      &-cells {
-        height: 11px;
-        display: flex;
-      }
-
-      &-controls {
-        width: 100%;
-        display: grid;
-        align-items: center;
-        padding-block: 1px;
-        padding-inline: 10px;
-        grid-auto-columns: 18px;
-        grid-auto-flow: column;
-        grid-gap: 3px;
-      }
-
       &-button {
-        height: 18px;
-        width: 18px;
+        height: 17px;
+        width: 17px;
         outline: none;
         cursor: pointer;
+
+        &:hover {
+          color: var(--color);
+        }
       }
     }
   }
 
   &-topbar-left {
-    padding-left: 35px;
     display: flex;
-    grid-column: 3;
-    grid-row: 1 / 3;
-    direction: ltr;
+    padding-left: 35px;
+    grid-area: topbar-left;
     justify-content: space-around;
   }
 
   &-topbar-right {
-    direction: ltr;
     display: flex;
-    grid-column: 1;
-    grid-row: 1 / 3;
+    grid-area: topbar-right;
+    gap: 2px;
   }
 
   &-year-move {
@@ -182,9 +205,14 @@ $cell-margin: 2px;
     padding-top: 3px;
   }
 
-  &-period-refresh {
+  &-period-start {
     width: min-content;
     padding-top: 3px;
+  }
+
+  &-settings {
+    width: min-content;
+    margin-left: auto;
   }
 }
 
@@ -193,9 +221,68 @@ $cell-margin: 2px;
   border: 1px solid var(--border-color);
   border-radius: 10px;
   display: grid;
-  grid-template-columns: 30px 1fr;
-  width: min(100%, 945px);
+  grid-template-columns: 30px 1fr 30px;
+  width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  &.vertical {
+    width: min(calc(50px + (17px + 2px) * var(--projects) + 10px), 100%);
+  }
+}
+
+.overview-header {
+  background-color: var(--main-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  display: grid;
+  padding-inline: 5px;
+  grid-template-areas: 'name date settings';
+  grid-template-columns: 180px min-content 115px;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
+
+  &.vertical {
+    width: min(calc(50px + (17px + 2px) * var(--projects) + 10px), 100%);
+    @include overview-header-small;
+  }
+
+  &.small {
+    @include overview-header-small;
+  }
+
+  & > h3 {
+    grid-area: name;
+    width: min-content;
+    margin: auto;
+  }
+}
+
+.overview-settings {
+  grid-area: settings;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+
+  .overview-open-settings.active {
+    color: var(--bright-signature-color);
+  }
+}
+
+
+.overview-project-cells {
+  height: var(--cell-height);
+  display: flex;
+  align-self: center;
+
+  &.weekly {
+    direction: ltr;
+    grid-area: cells;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 100%;
+  }
 }

@@ -16,6 +16,7 @@ $cell-margin: 2px;
   );
   width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
   margin: $cell-margin;
+  margin-block: calc(2px - var(--negate-margin-block));
   border-radius: 1px;
   position: relative;
   background-color: var(--support-background-color);
@@ -34,6 +35,7 @@ $cell-margin: 2px;
     flex-wrap: wrap;
     justify-content: space-around;
     border: none;
+    overflow: hidden;
 
     &:hover {
       border: none;
@@ -182,7 +184,7 @@ $cell-margin: 2px;
   white-space: nowrap;
   width: min-content;
   height: 57px;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   padding: 3px;
 
   &.target {

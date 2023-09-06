@@ -2,14 +2,15 @@
 
 .menu {
   @include dropdown;
-  padding-bottom: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: center;
   grid-area: menu;
   width: 100%;
+  display: grid;
+  grid-template-columns: 100px 1fr 45px 45px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  gap: 10px;
+  align-items: center;
   padding: 15px;
   background: linear-gradient(
     0.1turn,

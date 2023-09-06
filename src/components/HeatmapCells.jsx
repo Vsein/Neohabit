@@ -62,20 +62,21 @@ function CellFractured({
 
   const fractions = Math.max(value, targetValue);
   let dotted = false;
-  let fractionHeight = 15;
-  let fractionWidth = 15;
+  let fractionHeight;
+  let fractionWidth;
   if (fractions <= 2) {
     fractionHeight = 1 / 2;
   } else if (fractions <= 4) {
     fractionHeight = 1 / 2;
-    fractionWidth = 1 / 2;
+    fractionWidth = length > 1 ? 1 / 1.9 : 1 / 2;
+    style.columnGap = length > 1 ? '1px' : '1px';
   } else if (fractions <= 6) {
     fractionHeight = 1 / 2;
-    fractionWidth = 1 / 3;
-    style.columnGap = '1px';
+    fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
+    style.columnGap = length > 1 ? '2px' : '1px';
   } else if (fractions <= 9) {
     fractionHeight = 1 / 3;
-    fractionWidth = 1 / 3;
+    fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
     style.gap = '1px';
   } else if (fractions <= 12) {
     fractionHeight = 1 / 3;
@@ -93,8 +94,8 @@ function CellFractured({
   fractionWidth += (length - 1) * (2 / 15);
 
   const getStyle = (index) => ({
-    '--height': fractionHeight,
-    '--width': fractionWidth,
+    [vertical ? '--width' : '--height']: fractionHeight,
+    [vertical ? '--height' : '--width']: fractionWidth,
     margin: 0,
     [index < value ? 'backgroundColor' : '']: index >= targetValue && elimination ? 'black' : color,
   });
@@ -125,10 +126,11 @@ function CellPeriod({
   targetValue = 1,
   targetStart = undefined,
   elimination,
+  isOverview = false,
 }) {
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
-  if (isSameWeek(dateStart, dateEnd) || !vertical) {
-    return (value <= 1 || value == undefined || vertical) && targetValue === 1 ? (
+  if (isSameWeek(dateStart, dateEnd) || isOverview) {
+    return (value <= 1 || value === undefined) && targetValue === 1 ? (
       <Cell
         color={color}
         value={value}
@@ -217,4 +219,53 @@ function CellDummy({ length, vertical = true }) {
   return <div style={style} className="dummy" />;
 }
 
-export { Cell, CellPeriod, CellDummy };
+function CellPeriodDummy({ dateStart, dateEnd, color, basePeriod = 24 }) {
+  const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
+  let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
+  width += dateStart.getTime() === startOfWeek(dateStart).getTime();
+  width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
+  const style = {
+    backgroundColor: color,
+    '--height': 7,
+    '--width': width,
+  };
+  const beforeHeight =
+    differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) / basePeriod;
+  const styleBefore = {
+    '--height': beforeHeight,
+    '--width': 1,
+    visibility: beforeHeight !== 7 ? 'visible' : 'hidden',
+  };
+  const afterHeight =
+    differenceInHours(addMilliseconds(dateEnd, 1), startOfWeek(addMilliseconds(dateEnd, 1))) /
+    basePeriod;
+  const styleAfter = {
+    '--height': afterHeight,
+    '--width': 1,
+  };
+  if (afterHeight === 0) styleAfter.visibility = 'hidden';
+
+  return (
+    <>
+      <div
+        className={`cell-period ${width ? 'wide' : 'whole'}`}
+        style={style}
+      >
+        <div className="cell-period-before" style={styleBefore} />
+        <div className="cell-period-after" style={styleAfter} />
+        {diffDays > 7 && !width && (
+          <div
+            className="cell-period-connector"
+            style={{
+              '--height': afterHeight - (7 - beforeHeight),
+              '--offset-top': 7 - beforeHeight,
+            }}
+          />
+        )}
+      </div>
+      {afterHeight ? <CellDummy length={afterHeight} /> : <> </>}
+    </>
+  );
+}
+
+export { Cell, CellPeriod, CellDummy, CellPeriodDummy };
