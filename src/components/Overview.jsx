@@ -7,25 +7,26 @@ import {
   mdiMenuRight,
   mdiMenuUp,
   mdiMenuDown,
+  mdiCalendarText,
+  mdiCalendarWeekend,
   mdiCalendarEnd,
   mdiCalendarStart,
   mdiCalendarRefresh,
+  mdiCog,
   mdiPlus,
 } from '@mdi/js';
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import { useGetSettingsQuery } from '../state/services/settings';
+import {
+  useGetSettingsQuery,
+  useChangeOverviewOrientationMutation,
+} from '../state/services/settings';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
-import {
-  OverviewMonths,
-  OverviewDays,
-  OverviewSettings,
-  OverviewYear,
-  OverviewDates,
-} from './OverviewHeaders';
-import OverviewHeatmap from './OverviewHeatmap';
+import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
+import { YearPicker, DatePeriodPicker } from './DatePickers';
+import Heatmap from './Heatmap';
 import ProjectControls from './ProjectComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
@@ -81,7 +82,7 @@ export default function Overview() {
         }`}
       >
         <h3>Overview</h3>
-        <OverviewDates
+        <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}
           dateEnd={dateEnd}
@@ -92,9 +93,7 @@ export default function Overview() {
       <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
         <div className={`overview ${vertical ? 'vertical' : ''}`}>
           <div className="overview-topbar-left">
-            {!vertical && (
-              <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
-            )}
+            {!vertical && <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />}
             <button
               className="overview-period-move-left"
               onClick={subMonth}
@@ -103,11 +102,11 @@ export default function Overview() {
               <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
             </button>
           </div>
-          <OverviewMonths dateStart={dateStart} dateEnd={dateEnd} />
-          <OverviewDays dateStart={dateStart} dateEnd={dateEnd} />
+          <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
+          <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
           <div className="overview-topbar-right">
             {vertical ? (
-              <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
+              <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
             ) : (
               <button
                 className="overview-period-move-right"
@@ -186,7 +185,7 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
       >
         {project.name}
       </NavLink>
-      <OverviewHeatmap
+      <Heatmap
         heatmap={heatmap}
         project={project}
         dateStart={dateStart}
@@ -195,6 +194,36 @@ function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
         isOverview={true}
       />
       <ProjectControls project={project} heatmap={heatmap} />
+    </div>
+  );
+}
+
+function OverviewSettings({ vertical }) {
+  const [changeOverview] = useChangeOverviewOrientationMutation();
+
+  return (
+    <div className="overview-settings">
+      <button
+        className={`overview-open-settings ${vertical ? '' : 'active'}`}
+        onClick={() => changeOverview(false)}
+        title="Change to horizontal orientation"
+      >
+        <Icon path={mdiCalendarText} className="icon small centering" />
+      </button>
+      <button
+        className={`overview-open-settings ${vertical ? 'active' : ''}`}
+        onClick={() => changeOverview(true)}
+        title="Change to vertical orientation"
+      >
+        <Icon path={mdiCalendarWeekend} className="icon small centering" />
+      </button>
+      <NavLink
+        className="overview-open-settings"
+        to="/settings#overview"
+        title="Open overview settings"
+      >
+        <Icon path={mdiCog} className="icon small centering" />
+      </NavLink>
     </div>
   );
 }

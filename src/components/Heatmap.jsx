@@ -12,7 +12,7 @@ import {
 import { CellPeriod, CellDummy, CellPeriodDummy } from './HeatmapCells';
 import usePaletteGenerator from '../hooks/usePaletteGenerator';
 
-export default function OverviewHeatmap({
+export default function Heatmap({
   dateStart,
   dateEnd,
   project,
