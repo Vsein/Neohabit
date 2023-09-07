@@ -8,7 +8,6 @@ import Overview from './pages/Overview';
 import Habits from './pages/Habits';
 import Project from './pages/Project';
 import Logout from './pages/Logout';
-import Logo from './pages/Logo';
 import NotFound from './pages/404';
 import Landing from './pages/Landing';
 import Settings from './pages/Settings';
@@ -53,7 +52,6 @@ const App = () => {
           <Route path="/habits/*" element={<Habits />} />
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/logo" element={<Logo />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Route>
