@@ -36,6 +36,14 @@ export default function OverviewHeatmap({
   // current.date === current Target Period Start if period is defined,
   // otherwise it's the current date
   const target = { start: undefined, period: undefined, value: 1 };
+  const setNewTarget = (point, date) => {
+    target.period = point.period;
+    target.value = point.value;
+    target.start = date;
+    current.date = date;
+    current.value = 0;
+  };
+
   const palette = usePaletteGenerator(project.color);
   const dateCreation = startOfDay(new Date(project?.date_of_creation ?? dateStart));
 
@@ -49,11 +57,7 @@ export default function OverviewHeatmap({
           }
           if (compareDesc(date, dateStart) === 1) {
             if (point?.is_target) {
-              target.period = point.period;
-              target.value = point.value;
-              target.start = date;
-              current.date = date;
-              current.value = 0;
+              setNewTarget(point, date);
             } else if (target.period) {
               const diffInPeriods = Math.floor(
                 differenceInDays(date, current.date) / target.period,
@@ -76,15 +80,10 @@ export default function OverviewHeatmap({
           if (target.period === undefined) {
             const dateNowTmp = current.date;
             if (point?.is_target) {
-              target.period = point.period;
-              target.value = point.value;
-              target.start = date;
-              current.date = date;
-              current.value = 0;
+              setNewTarget(point, date);
             } else {
               current.date = addDays(date, 1);
             }
-            console.log(project.name, dateNowTmp);
             return (
               <>
                 {gap > 0 &&
@@ -139,11 +138,7 @@ export default function OverviewHeatmap({
             if (differenceInDays(date, current.date) % target.period) {
               diffInPeriods += 1;
             }
-            target.period = point.period;
-            target.value = point.value;
-            target.start = date;
-            current.date = date;
-            current.value = 0;
+            setNewTarget(point, date);
           } else if (diffInPeriods === 0) {
             current.value += point.value;
             return <> </>;
