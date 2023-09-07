@@ -55,7 +55,7 @@ function CellFractured({
   };
   const content = formatTipContent({
     actions: value,
-    period: !!length,
+    period: length > 1,
     dateStart: targetStart || dateStart,
     dateEnd,
   });
@@ -181,7 +181,7 @@ function CellPeriod({
   if (afterHeight === 0) styleAfter.visibility = 'hidden';
   const content = formatTipContent({
     actions: value,
-    period: false,
+    period: true,
     dateStart,
     dateEnd,
   });

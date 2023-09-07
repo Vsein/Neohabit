@@ -1,109 +1,175 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import {
-  addHours,
-  subMilliseconds,
+  differenceInDays,
+  addDays,
+  compareDesc,
+  startOfDay,
+  endOfDay,
   min,
   max,
-  startOfDay,
-  differenceInHours,
-  differenceInWeeks,
-  startOfWeek,
-  endOfWeek,
+  subMilliseconds,
 } from 'date-fns';
-import { CellPeriod, CellDummy } from './HeatmapCells';
-import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
-import useLoaded from '../hooks/useLoaded';
+import { CellPeriod, CellDummy, CellPeriodDummy } from './HeatmapCells';
 import usePaletteGenerator from '../hooks/usePaletteGenerator';
-import { useGetSettingsQuery } from '../state/services/settings';
 
-function Heatmap({
+export default function Heatmap({
   dateStart,
   dateEnd,
-  data,
-  color,
-  dayLength,
-  dataPeriods,
-  useElimination = true,
+  project,
+  heatmap,
+  vertical = false,
+  isOverview,
 }) {
-  const [loaded] = useLoaded();
-  const settings = useGetSettingsQuery();
-  let Max = 0;
-
-  const palette = usePaletteGenerator(color);
-  const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
-
-  let dateNow = dataPeriods[0].date;
-  let i = 0;
-  const periods = dataPeriods.map((period, index, periods) => {
-    if (!periods[index + 1]) return [];
-    const lastDate = min([dateEnd, periods[index + 1].date]);
-    const periodChunks = [];
-    while (dateNow < lastDate) {
-      const startOfTheChunk = max([dateNow, dateStart]);
-      const endOfTheChunk = period.frequency
-        ? min([addHours(dateNow, period.frequency), dateEnd])
-        : lastDate;
-      let value = 0;
-      while (i < data.length && data[i].date < endOfTheChunk) {
-        value += data[i].value;
-        i++;
+  const data = heatmap?.data;
+  let dataSorted;
+  if (data) {
+    dataSorted = [...data, { date: endOfDay(dateEnd), value: undefined, isLast: 1 }];
+    dataSorted.sort((a, b) => {
+      const res = compareDesc(new Date(b.date), new Date(a.date));
+      if (res === 0) {
+        return -2 * a.is_target + 1;
       }
-      if (value > Max) Max = value;
-      let alpha;
-      if (useElimination) {
-        alpha = period.frequency / (24 * 7);
-      } else {
-        alpha = (1 / Max) * value;
-      }
-      periodChunks.push({
-        color: palette[Math.min(10, Math.ceil(alpha * 10 + (alpha ? 1 : 0)))],
-        value,
-        dateStart: startOfTheChunk,
-        dateEnd: subMilliseconds(endOfTheChunk, 1),
-      });
-      dateNow = endOfTheChunk;
-    }
-    return periodChunks;
-  });
+      return res;
+    });
+  }
+  const current = { date: dateStart, value: 0 };
+  // current.date === current Target Period Start if period is defined,
+  // otherwise it's the current date
+  const target = { start: undefined, period: undefined, value: 1 };
+  const setNewTarget = (point, date) => {
+    target.period = point.period;
+    target.value = point.value;
+    target.start = date;
+    current.date = date;
+    current.value = 0;
+  };
 
-  const dummyLastDay = max([dateStart, dataPeriods[0].date]);
-  const dummyHeight = differenceInHours(startOfDay(dummyLastDay), startOfWeek(dummyLastDay)) / 24;
+  const palette = usePaletteGenerator(project.color);
+  const dateCreation = startOfDay(new Date(project?.date_of_creation ?? dateStart));
 
-  return !loaded ? (
-    <div className="habit loading" />
-  ) : (
-    <div
-      className="habit"
-      style={{
-        '--multiplier': settings.data.cell_height_multiplier,
-        '--weeks': diffWeeks,
-      }}
-    >
-      <h4>Habit</h4>
-      <div className="heatmap" style={{ '--cell-width': '11px', '--cell-height': '11px' }}>
-        <HeatmapMonths dateStart={startOfWeek(dummyLastDay)} />
-        <HeatmapWeekdays dateStart={dateStart} />
-        <div className="heatmap-cells">
-          {dummyHeight ? <CellDummy length={dummyHeight} /> : <> </>}
-          {periods.map((period, index) => (
-            <>
-              {period.map((chunk, Index) => (
-                <CellPeriod
-                  key={Index}
-                  dateStart={chunk.dateStart}
-                  dateEnd={chunk.dateEnd}
-                  color={chunk.color}
-                  value={chunk.value}
-                  basePeriod={24}
-                />
-              ))}
-            </>
-          ))}
-        </div>
-      </div>
+  return (
+    <div className={`overview-project-cells ${isOverview ? '' : 'weekly'}`}>
+      {dataSorted &&
+        dataSorted.map((point, index) => {
+          const date = startOfDay(new Date(point.date));
+          if (compareDesc(dateEnd, date) === 1) {
+            return <> </>;
+          }
+          if (compareDesc(date, dateStart) === 1) {
+            if (point?.is_target) {
+              setNewTarget(point, date);
+            } else if (target.period) {
+              const diffInPeriods = Math.floor(
+                differenceInDays(date, current.date) / target.period,
+              );
+              if (diffInPeriods === 0) {
+                current.value += point.value;
+              } else {
+                current.date = addDays(current.date, diffInPeriods * target.period);
+                current.value = point.value;
+              }
+            }
+            return <> </>;
+          }
+          let gap;
+          if (index === 0 && compareDesc(dateStart, date) === 1) {
+            const dateOfFirstEntry = min([dateCreation, date]);
+            gap = Math.max(differenceInDays(dateOfFirstEntry, dateStart), 0);
+            current.date = dateOfFirstEntry;
+          }
+          if (target.period === undefined) {
+            const dateNowTmp = current.date;
+            if (point?.is_target) {
+              setNewTarget(point, date);
+            } else {
+              current.date = addDays(date, 1);
+            }
+            return (
+              <>
+                {gap > 0 &&
+                  (isOverview ? (
+                    <CellDummy key={index} length={gap} vertical={vertical} />
+                  ) : (
+                    <CellPeriodDummy
+                      dateStart={addDays(dateNowTmp, -gap)}
+                      dateEnd={subMilliseconds(dateNowTmp, 1)}
+                      color="transparent"
+                    />
+                  ))}
+                {(differenceInDays(date, dateNowTmp) > 0 ||
+                  (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
+                  <CellPeriod
+                    dateStart={max([dateNowTmp, dateStart])}
+                    dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
+                    color={palette[0]}
+                    value={0}
+                    vertical={vertical}
+                    elimination={project?.elimination}
+                    isOverview={isOverview}
+                  />
+                )}
+                {!point?.isLast && !point.is_target && (
+                  <CellPeriod
+                    dateStart={date}
+                    dateEnd={endOfDay(date)}
+                    color={project.color}
+                    value={point.value}
+                    basePeriod={24}
+                    vertical={vertical}
+                    elimination={project?.elimination}
+                    isOverview={isOverview}
+                  />
+                )}
+              </>
+            );
+          }
+          const periodsToStart = Math.floor(
+            differenceInDays(dateStart, current.date) / target.period,
+          );
+          if (periodsToStart > 0) {
+            current.date = addDays(current.date, periodsToStart * target.period);
+            current.value = 0;
+          }
+          const previous = { ...current };
+          const previousTarget = { ...target };
+          let diffInPeriods =
+            Math.floor(differenceInDays(date, current.date) / target.period) + (point?.isLast || 0);
+          if (point?.is_target) {
+            if (differenceInDays(date, current.date) % target.period) {
+              diffInPeriods += 1;
+            }
+            setNewTarget(point, date);
+          } else if (diffInPeriods === 0) {
+            current.value += point.value;
+            return <> </>;
+          } else {
+            current.date = addDays(current.date, diffInPeriods * target.period);
+            current.value = point.value;
+          }
+          return Array.from(new Array(diffInPeriods)).map((_, Index) => (
+            <CellPeriod
+              key={Index}
+              targetStart={addDays(previous.date, Index * previousTarget.period)}
+              dateStart={max([addDays(previous.date, Index * previousTarget.period), dateStart])}
+              dateEnd={subMilliseconds(
+                min([
+                  addDays(previous.date, (Index + 1) * previousTarget.period),
+                  addDays(dateEnd, 1),
+                  current.date,
+                ]),
+                1,
+              )}
+              color={Index || !previous.value ? palette[0] : project.color}
+              blankColor={palette[0]}
+              value={Index ? 0 : previous.value}
+              basePeriod={24}
+              vertical={vertical}
+              elimination={project?.elimination}
+              targetValue={previousTarget.value}
+              isOverview={isOverview}
+            />
+          ));
+        })}
     </div>
   );
 }
-
-export { Heatmap };

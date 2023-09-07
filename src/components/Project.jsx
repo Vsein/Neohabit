@@ -1,33 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
 import {
   addHours,
-  subMilliseconds,
-  startOfDay,
-  differenceInHours,
   differenceInWeeks,
   startOfWeek,
   endOfWeek,
 } from 'date-fns';
-import {
-  mdiMenuLeft,
-  mdiMenuRight,
-  mdiMenuUp,
-  mdiMenuDown,
-  mdiCalendarEnd,
-  mdiCalendarStart,
-  mdiCalendarRefresh,
-  mdiPlus,
-} from '@mdi/js';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
-import { OverviewMonths, OverviewDays, OverviewYear, OverviewDates } from './OverviewHeaders';
-import OverviewHeatmap from './OverviewHeatmap';
-import { HeatmapMonths, HeatmapWeekdays } from './HeatmapHeaders';
+import { YearPicker, DatePeriodPicker } from './DatePickers';
+import Heatmap from './Heatmap';
+import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import ProjectControls from './ProjectComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
@@ -64,7 +49,7 @@ export default function Project({ heatmap, project }) {
         style={{ '--length': diffWeeks - 21 }}
       >
         <h3>Heatmap</h3>
-        <OverviewDates
+        <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}
           dateEnd={dateEnd}
@@ -84,10 +69,10 @@ export default function Project({ heatmap, project }) {
         }}
       >
         <div className={`project-heatmap ${vertical ? 'vertical' : ''}`}>
-          <OverviewYear subYear={subYear} addYear={addYear} dateStart={dateStart} />
-          <HeatmapMonths dateStart={dateStart} dateEnd={dateEnd} />
+          <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
+          <HeatmapMonthsWeekly dateStart={dateStart} dateEnd={dateEnd} />
           <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
-          <OverviewHeatmap
+          <Heatmap
             heatmap={heatmap}
             project={project}
             dateStart={dateStart}
