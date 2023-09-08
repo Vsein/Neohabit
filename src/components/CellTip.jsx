@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { differenceInDays } from 'date-fns';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -26,6 +27,7 @@ function formatTipContent(values) {
     const formattedDateStart = formatDate(values.dateStart);
     const formattedDateEnd = formatDate(values.dateEnd);
     content += `${formattedDateStart} - ${formattedDateEnd}`;
+    content += ` (${differenceInDays(values.dateEnd, values.dateStart) + 1} days)`;
   } else {
     const formattedDate = formatDate(values.dateStart);
     content += `${formattedDate}`;
