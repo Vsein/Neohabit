@@ -1,5 +1,5 @@
-import api from './api';
 import { isSameDay } from 'date-fns';
+import api from './api';
 
 export const heatmapApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -18,14 +18,23 @@ export const heatmapApi = api.injectEndpoints({
         const res = await queryFulfilled;
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            const Heatmap = draft.find((heatmap) => heatmap._id == heatmapID);
+            const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
             const index = Heatmap.data.findIndex((point) =>
-              isSameDay(new Date(point.date), new Date(values.date)),
+              isSameDay(new Date(point.date), new Date(values.date)) && !point.is_target,
             );
-            if (index != -1 && !values?.is_target) {
+            const indexIsTarget = Heatmap.data.findIndex(
+              (point) => isSameDay(new Date(point.date), new Date(values.date)) && point.is_target,
+            );
+            if (index !== -1 && !values?.is_target) {
               Heatmap.data = Heatmap.data.map((point) =>
                 isSameDay(new Date(point.date), new Date(values.date))
-                  ? { ...point, value: point.value + 1 }
+                  ? { ...point, value: +point.value + 1 }
+                  : point,
+              );
+            } else if (indexIsTarget !== -1 && values.is_target) {
+              Heatmap.data = Heatmap.data.map((point) =>
+                isSameDay(new Date(point.date), new Date(values.date)) && point.is_target
+                  ? { ...point, value: values.value, period: values.period }
                   : point,
               );
             } else {
