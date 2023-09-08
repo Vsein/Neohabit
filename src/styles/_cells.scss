@@ -162,13 +162,15 @@ $cell-margin: 2px;
   font-size: 12px;
   background-color: #545454;
   color: white;
-  z-index: 3;
+  z-index: 5;
   border-radius: 10px;
   visibility: visible;
   white-space: nowrap;
+  pointer-events: auto;
 
   &.hidden {
     visibility: hidden;
+    pointer-events: none;
   }
 }
 

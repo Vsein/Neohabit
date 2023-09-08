@@ -33,12 +33,16 @@ function formatTipContent(values) {
   return content;
 }
 
-function changeCellOffset(e, content) {
+function changeCellOffset(e, content, override = false) {
+  const cellTip = document.querySelector('.cell-tip');
+  if (cellTip.classList.contains('fixated') && !override) return 0;
   const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
-  const parent = document.querySelector('.habit') || document.querySelector('.project-heatmap-container') || document.querySelector('.overview-container');
+  const parent =
+    document.querySelector('.habit') ||
+    document.querySelector('.project-heatmap-container') ||
+    document.querySelector('.overview-container');
   const rect = cell.getBoundingClientRect();
   const rectParent = parent.getBoundingClientRect();
-  const cellTip = document.querySelector('.cell-tip');
   cellTip.textContent = content;
   const tipWidth = cellTip.getBoundingClientRect().width;
   let offset = tipWidth / 2 + 15;
@@ -54,23 +58,42 @@ function changeCellOffset(e, content) {
   cellTip.classList.remove('hidden');
   cellTip.style.top = `${window.pageYOffset + rect.y - 40}px`;
   cellTip.style.left = `${rect.x + rect.width / 2 - offset + 15}px`;
-  cellTip.style.pointerEvents = 'none';
+  return 0;
 }
 
 function hideTip() {
   const cellTip = document.querySelector('.cell-tip');
+  if (cellTip.classList.contains('fixated')) return 0;
   cellTip.classList.add('hidden');
-  cellTip.style.pointerEvents = 'auto';
   cellTip.style.top = '0px';
+  return 0;
+}
+
+function fixateCellTip(e) {
+  e.stopPropagation();
+  const cellTip = document.querySelector('.cell-tip');
+  cellTip.classList.add('fixated');
+}
+
+function unfixateAndHideCellTip() {
+  const cellTip = document.querySelector('.cell-tip');
+  cellTip.classList.remove('fixated');
+  hideTip();
 }
 
 export default function CellTip() {
   useEffect(() => {
-    document.addEventListener('click', hideTip);
-    return () => document.removeEventListener('click', hideTip);
+    document.addEventListener('click', unfixateAndHideCellTip);
+    return () => document.removeEventListener('click', unfixateAndHideCellTip);
   });
 
-  return <div className="cell-tip hidden"></div>;
+  return (
+    <div
+      className="cell-tip hidden"
+      onMouseLeave={unfixateAndHideCellTip}
+      onClick={(e) => e.stopPropagation()}
+    ></div>
+  );
 }
 
-export { hideTip, formatDate, formatTipContent, changeCellOffset };
+export { hideTip, formatDate, formatTipContent, changeCellOffset, fixateCellTip };

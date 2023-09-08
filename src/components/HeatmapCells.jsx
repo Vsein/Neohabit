@@ -10,7 +10,7 @@ import {
   startOfDay,
   min,
 } from 'date-fns';
-import { formatTipContent, hideTip, changeCellOffset } from './CellTip';
+import { formatTipContent, hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 
 function Cell({ color, dateStart, dateEnd, value, length, targetStart, vertical = true }) {
   const style = {
@@ -31,6 +31,10 @@ function Cell({ color, dateStart, dateEnd, value, length, targetStart, vertical 
       style={style}
       onMouseEnter={(e) => changeCellOffset(e, content)}
       onMouseLeave={hideTip}
+      onClick={(e) => {
+        fixateCellTip(e);
+        changeCellOffset(e, content, true);
+      }}
     />
   );
 }
@@ -106,6 +110,10 @@ function CellFractured({
       style={style}
       onMouseEnter={(e) => changeCellOffset(e, content)}
       onMouseLeave={hideTip}
+      onClick={(e) => {
+        fixateCellTip(e);
+        changeCellOffset(e, content, true);
+      }}
     >
       {!dotted &&
         [...Array(+fractions)].map((point, index) => (
@@ -193,6 +201,10 @@ function CellPeriod({
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, content)}
         onMouseLeave={hideTip}
+        onClick={(e) => {
+          fixateCellTip(e);
+          changeCellOffset(e, content, true);
+        }}
       >
         <div className="cell-period-before" style={styleBefore} />
         <div className="cell-period-after" style={styleAfter} />
@@ -247,10 +259,7 @@ function CellPeriodDummy({ dateStart, dateEnd, color, basePeriod = 24 }) {
 
   return (
     <>
-      <div
-        className={`cell-period ${width ? 'wide' : 'whole'}`}
-        style={style}
-      >
+      <div className={`cell-period ${width ? 'wide' : 'whole'}`} style={style}>
         <div className="cell-period-before" style={styleBefore} />
         <div className="cell-period-after" style={styleAfter} />
         {diffDays > 7 && !width && (
