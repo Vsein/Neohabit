@@ -103,7 +103,7 @@ export default function OverlayProject() {
                 />
                 <Field name="color">
                   {({ input }) => (
-                    <div className="form-task-name">
+                    <div className="form-task-name" style={{ color: input.value }}>
                       <HexColorPicker
                         color={input.value}
                         onChange={(coloro) => {
