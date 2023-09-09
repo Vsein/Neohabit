@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { differenceInDays } from 'date-fns';
+import Icon from '@mdi/react';
+import { mdiPlusBox, mdiMinusBox, mdiDelete } from '@mdi/js';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -35,7 +37,7 @@ function changeCellOffset(e, periodContent, actions, override = false) {
     document.querySelector('.overview-container');
   const rect = cell.getBoundingClientRect();
   const rectParent = parent.getBoundingClientRect();
-  cellTip.firstChild.textContent = `Actions: ${actions}`;
+  cellTip.firstChild.firstChild.textContent = `Actions: ${actions}`;
   cellTip.firstChild.nextSibling.textContent = `Period: ${periodContent}`;
   const tipWidth = cellTip.getBoundingClientRect().width;
   let offset = tipWidth / 2 + 15;
@@ -86,7 +88,20 @@ export default function CellTip() {
       onMouseLeave={unfixateAndHideCellTip}
       onClick={(e) => e.stopPropagation()}
     >
-      <p className="cell-tip-actions"></p>
+      <div className="cell-tip-actions">
+        <p className="cell-tip-actions-text"></p>
+        <div className="cell-tip-actions-controls">
+          <button className="centering" title="Add 1 completed action in this period">
+            <Icon path={mdiPlusBox} className="icon tiny"/>
+          </button>
+          <button className="centering" title="Delete 1 completed action in this period">
+            <Icon path={mdiMinusBox} className="icon tiny"/>
+          </button>
+          <button className="centering" title="Delete all actions in this period">
+            <Icon path={mdiDelete} className="icon tiny"/>
+          </button>
+        </div>
+      </div>
       <p className="cell-tip-period"></p>
     </div>
   );

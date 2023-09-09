@@ -156,11 +156,12 @@ $cell-margin: 2px;
 }
 
 .cell-tip {
-  padding: 6px;
+  padding: 7px;
   padding-inline: 10px;
   position: absolute;
   text-align: left;
   font-size: 12px;
+  line-height: 14px;
   background-color: #545454;
   color: white;
   z-index: 5;
@@ -170,10 +171,26 @@ $cell-margin: 2px;
   pointer-events: auto;
   display: flex;
   flex-direction: column;
+  gap: 4px;
 
   &.hidden {
     visibility: hidden;
     pointer-events: none;
+  }
+
+  &-actions {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    gap: 10px;
+    align-items: center;
+
+    &-controls {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      align-self: center;
+      gap: 1px;
+    }
   }
 }
 
