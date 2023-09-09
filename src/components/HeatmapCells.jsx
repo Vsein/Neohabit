@@ -49,7 +49,7 @@ function CellFractured({
   const fractions = Math.max(value, targetValue);
   let dotted = false;
   let fractionHeight;
-  let fractionWidth;
+  let fractionWidth = 2;
   if (fractions <= 2) {
     fractionHeight = 1 / 2;
   } else if (fractions <= 4) {
