@@ -14,28 +14,18 @@ function formatDate(date) {
   });
 }
 
-function formatTipContent(values) {
-  let content;
-  if (!values.actions) {
-    content = 'No activity on ';
-  } else if (values.actions === 1) {
-    content = '1 action on ';
-  } else {
-    content = `${values.actions} actions on `;
-  }
+function formatPeriod(values) {
+  const formattedDateStart = formatDate(values.dateStart);
+  let period = formattedDateStart;
   if (values.period) {
-    const formattedDateStart = formatDate(values.dateStart);
     const formattedDateEnd = formatDate(values.dateEnd);
-    content += `${formattedDateStart} - ${formattedDateEnd}`;
-    content += ` (${differenceInDays(values.dateEnd, values.dateStart) + 1} days)`;
-  } else {
-    const formattedDate = formatDate(values.dateStart);
-    content += `${formattedDate}`;
+    period += ` - ${formattedDateEnd}`;
+    period += ` (${differenceInDays(values.dateEnd, values.dateStart) + 1} days)`;
   }
-  return content;
+  return period;
 }
 
-function changeCellOffset(e, content, override = false) {
+function changeCellOffset(e, periodContent, actions, override = false) {
   const cellTip = document.querySelector('.cell-tip');
   if (cellTip.classList.contains('fixated') && !override) return 0;
   const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
@@ -45,7 +35,8 @@ function changeCellOffset(e, content, override = false) {
     document.querySelector('.overview-container');
   const rect = cell.getBoundingClientRect();
   const rectParent = parent.getBoundingClientRect();
-  cellTip.textContent = content;
+  cellTip.firstChild.textContent = `Actions: ${actions}`;
+  cellTip.firstChild.nextSibling.textContent = `Period: ${periodContent}`;
   const tipWidth = cellTip.getBoundingClientRect().width;
   let offset = tipWidth / 2 + 15;
   if (rect.x - 50 < rectParent.x || rect.x - 50 < 36) {
@@ -58,7 +49,7 @@ function changeCellOffset(e, content, override = false) {
     offset = (tipWidth / 4) * 3;
   }
   cellTip.classList.remove('hidden');
-  cellTip.style.top = `${window.pageYOffset + rect.y - 40}px`;
+  cellTip.style.top = `${window.pageYOffset + rect.y - 51}px`;
   cellTip.style.left = `${rect.x + rect.width / 2 - offset + 15}px`;
   return 0;
 }
@@ -94,8 +85,11 @@ export default function CellTip() {
       className="cell-tip hidden"
       onMouseLeave={unfixateAndHideCellTip}
       onClick={(e) => e.stopPropagation()}
-    ></div>
+    >
+      <p className="cell-tip-actions"></p>
+      <p className="cell-tip-period"></p>
+    </div>
   );
 }
 
-export { hideTip, formatDate, formatTipContent, changeCellOffset, fixateCellTip };
+export { hideTip, formatDate, formatPeriod, changeCellOffset, fixateCellTip };

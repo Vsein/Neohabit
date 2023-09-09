@@ -1,39 +1,30 @@
 import React from 'react';
 import {
   differenceInHours,
-  differenceInDays,
   isSameWeek,
   differenceInCalendarWeeks,
   startOfWeek,
   endOfWeek,
   addMilliseconds,
-  startOfDay,
-  min,
 } from 'date-fns';
-import { formatTipContent, hideTip, changeCellOffset, fixateCellTip } from './CellTip';
+import { formatPeriod, hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 
-function Cell({ color, dateStart, dateEnd, value, length, targetStart, vertical = true }) {
+function Cell({ color, periodContent, value, length, vertical = true }) {
   const style = {
     backgroundColor: color,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
-  const content = formatTipContent({
-    actions: value,
-    period: !!differenceInDays(dateEnd, dateStart),
-    dateStart: targetStart || dateStart,
-    dateEnd,
-  });
 
   return (
     <div
       className="cell"
       style={style}
-      onMouseEnter={(e) => changeCellOffset(e, content)}
+      onMouseEnter={(e) => changeCellOffset(e, periodContent, value)}
       onMouseLeave={hideTip}
       onClick={(e) => {
         fixateCellTip(e);
-        changeCellOffset(e, content, true);
+        changeCellOffset(e, periodContent, value, true);
       }}
     />
   );
@@ -41,12 +32,9 @@ function Cell({ color, dateStart, dateEnd, value, length, targetStart, vertical 
 
 function CellFractured({
   color,
-  blankColor,
-  dateStart,
-  dateEnd,
+  periodContent,
   value,
   targetValue,
-  targetStart,
   length,
   vertical = true,
   elimination,
@@ -57,12 +45,6 @@ function CellFractured({
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
-  const content = formatTipContent({
-    actions: value,
-    period: length > 1,
-    dateStart: targetStart || dateStart,
-    dateEnd,
-  });
 
   const fractions = Math.max(value, targetValue);
   let dotted = false;
@@ -108,11 +90,11 @@ function CellFractured({
     <div
       className={`cell ${dotted ? 'dotted' : 'fractured'}`}
       style={style}
-      onMouseEnter={(e) => changeCellOffset(e, content)}
+      onMouseEnter={(e) => changeCellOffset(e, periodContent, value)}
       onMouseLeave={hideTip}
       onClick={(e) => {
         fixateCellTip(e);
-        changeCellOffset(e, content, true);
+        changeCellOffset(e, periodContent, value, true);
       }}
     >
       {!dotted &&
@@ -127,7 +109,6 @@ function CellPeriod({
   dateStart,
   dateEnd,
   color,
-  blankColor,
   value,
   basePeriod = 24,
   vertical = true,
@@ -137,28 +118,28 @@ function CellPeriod({
   isOverview = false,
 }) {
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
+  const periodContent = formatPeriod({
+    period: diffDays > 1,
+    dateStart: targetStart || dateStart,
+    dateEnd,
+  });
   if (isSameWeek(dateStart, dateEnd) || isOverview) {
     return (value <= 1 || value === undefined) && targetValue === 1 ? (
       <Cell
         color={color}
+        periodContent={periodContent}
         value={value}
-        dateStart={dateStart}
-        targetStart={targetStart}
-        dateEnd={dateEnd}
         length={diffDays}
         vertical={vertical}
       />
     ) : (
       <CellFractured
         color={color}
-        blankColor={blankColor}
+        periodContent={periodContent}
         value={value}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
+        targetValue={targetValue}
         length={diffDays}
         vertical={vertical}
-        targetValue={targetValue}
-        targetStart={targetStart}
         elimination={elimination}
       />
     );
@@ -187,23 +168,17 @@ function CellPeriod({
     '--width': 1,
   };
   if (afterHeight === 0) styleAfter.visibility = 'hidden';
-  const content = formatTipContent({
-    actions: value,
-    period: true,
-    dateStart,
-    dateEnd,
-  });
 
   return (
     <>
       <div
         className={`cell-period ${width ? 'wide' : 'whole'}`}
         style={style}
-        onMouseEnter={(e) => changeCellOffset(e, content)}
+        onMouseEnter={(e) => changeCellOffset(e, periodContent, value)}
         onMouseLeave={hideTip}
         onClick={(e) => {
           fixateCellTip(e);
-          changeCellOffset(e, content, true);
+          changeCellOffset(e, periodContent, value, true);
         }}
       >
         <div className="cell-period-before" style={styleBefore} />

@@ -156,9 +156,10 @@ $cell-margin: 2px;
 }
 
 .cell-tip {
-  padding: 10px;
+  padding: 6px;
+  padding-inline: 10px;
   position: absolute;
-  text-align: center;
+  text-align: left;
   font-size: 12px;
   background-color: #545454;
   color: white;
@@ -167,6 +168,8 @@ $cell-margin: 2px;
   visibility: visible;
   white-space: nowrap;
   pointer-events: auto;
+  display: flex;
+  flex-direction: column;
 
   &.hidden {
     visibility: hidden;
