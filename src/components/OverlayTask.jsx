@@ -16,16 +16,8 @@ import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overlay() {
   const dispatch = useDispatch();
-  const { isActive } = useSelector((state) => ({
-    isActive: state.taskOverlay.isActive,
-  }));
-  const { taskID } = useSelector((state) => ({
-    taskID: state.taskOverlay.taskID,
-  }));
+  const { isActive, taskID, projectID } = useSelector((state) => state.taskOverlay);
   const task = useGetTasksQuery().data.find((task1) => task1._id == taskID);
-  const { projectID } = useSelector((state) => ({
-    projectID: state.taskOverlay.projectID,
-  }));
   const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
   const project =
     projects.find((projecto) => projecto._id == projectID) ??

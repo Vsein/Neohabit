@@ -8,15 +8,7 @@ import { close } from './cellAddSlice';
 export default function CellAdd() {
   const dispatch = useDispatch();
   const [updateHeatmap] = useUpdateHeatmapMutation();
-  const { heatmapID } = useSelector((state) => ({
-    heatmapID: state.cellAdd.heatmapID,
-  }));
-  const { isTarget } = useSelector((state) => ({
-    isTarget: state.cellAdd.isTarget,
-  }));
-  const { isActive } = useSelector((state) => ({
-    isActive: state.cellAdd.isActive,
-  }));
+  const { heatmapID, isTarget, isActive } = useSelector((state) => state.cellAdd);
   const closeDropdown = () => {
     dispatch(close());
   };
