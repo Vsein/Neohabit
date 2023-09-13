@@ -1,4 +1,4 @@
-import { isSameDay } from 'date-fns';
+import { isSameDay, compareDesc } from 'date-fns';
 import api from './api';
 
 export const heatmapApi = api.injectEndpoints({
@@ -19,8 +19,8 @@ export const heatmapApi = api.injectEndpoints({
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
             const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
-            const index = Heatmap.data.findIndex((point) =>
-              isSameDay(new Date(point.date), new Date(values.date)) && !point.is_target,
+            const index = Heatmap.data.findIndex(
+              (point) => isSameDay(new Date(point.date), new Date(values.date)) && !point.is_target,
             );
             const indexIsTarget = Heatmap.data.findIndex(
               (point) => isSameDay(new Date(point.date), new Date(values.date)) && point.is_target,
@@ -45,7 +45,29 @@ export const heatmapApi = api.injectEndpoints({
         );
       },
     }),
+    deleteCellPeriod: builder.mutation({
+      query: ({ heatmapID, values }) => ({
+        url: `heatmap/${heatmapID}`,
+        body: values,
+        method: 'DELETE',
+      }),
+      async onQueryStarted({ heatmapID, values }, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        const patchResult = dispatch(
+          heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
+            const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
+            Heatmap.data = Heatmap.data.filter(
+              (point) =>
+                compareDesc(new Date(point.date), new Date(values.dateStart)) >= 0 ||
+                compareDesc(new Date(values.dateEnd), new Date(point.date)) >= 0 ||
+                point.is_target,
+            );
+          }),
+        );
+      },
+    }),
   }),
 });
 
-export const { useGetHeatmapsQuery, useUpdateHeatmapMutation } = heatmapApi;
+export const { useGetHeatmapsQuery, useUpdateHeatmapMutation, useDeleteCellPeriodMutation } =
+  heatmapApi;

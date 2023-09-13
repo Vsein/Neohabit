@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { differenceInDays } from 'date-fns';
+import { useSelector } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiPlusBox, mdiMinusBox, mdiDelete } from '@mdi/js';
+import { useDeleteCellPeriodMutation } from '../state/services/heatmap';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -16,18 +18,18 @@ function formatDate(date) {
   });
 }
 
-function formatPeriod(values) {
-  const formattedDateStart = formatDate(values.dateStart);
+function formatPeriod(isPeriod, dateStart, dateEnd = undefined) {
+  const formattedDateStart = formatDate(dateStart);
   let period = formattedDateStart;
-  if (values.period) {
-    const formattedDateEnd = formatDate(values.dateEnd);
+  if (isPeriod) {
+    const formattedDateEnd = formatDate(dateEnd);
     period += ` - ${formattedDateEnd}`;
-    period += ` (${differenceInDays(values.dateEnd, values.dateStart) + 1} days)`;
+    period += ` (${differenceInDays(dateEnd, dateStart) + 1} days)`;
   }
   return period;
 }
 
-function changeCellOffset(e, periodContent, actions, override = false) {
+function changeCellOffset(e, tipContent, actions, override = false) {
   const cellTip = document.querySelector('.cell-tip');
   if (cellTip.classList.contains('fixated') && !override) return 0;
   const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
@@ -38,7 +40,8 @@ function changeCellOffset(e, periodContent, actions, override = false) {
   const rect = cell.getBoundingClientRect();
   const rectParent = parent.getBoundingClientRect();
   cellTip.firstChild.firstChild.textContent = `Actions: ${actions}`;
-  cellTip.firstChild.nextSibling.textContent = `Period: ${periodContent}`;
+  const period = formatPeriod(tipContent.isPeriod, tipContent.dateStart, tipContent.dateEnd);
+  cellTip.firstChild.nextSibling.textContent = `Period: ${period}`;
   const tipWidth = cellTip.getBoundingClientRect().width;
   let offset = tipWidth / 2 + 15;
   if (rect.x - 50 < rectParent.x || rect.x - 50 < 36) {
@@ -81,6 +84,8 @@ export default function CellTip() {
     document.addEventListener('click', unfixateAndHideCellTip);
     return () => document.removeEventListener('click', unfixateAndHideCellTip);
   });
+  const { heatmapID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
+  const [deleteCellPeriod] = useDeleteCellPeriodMutation();
 
   return (
     <div
@@ -92,13 +97,17 @@ export default function CellTip() {
         <p className="cell-tip-actions-text"></p>
         <div className="cell-tip-actions-controls">
           <button className="centering" title="Add 1 completed action in this period">
-            <Icon path={mdiPlusBox} className="icon tiny"/>
+            <Icon path={mdiPlusBox} className="icon tiny" />
           </button>
           <button className="centering" title="Delete 1 completed action in this period">
-            <Icon path={mdiMinusBox} className="icon tiny"/>
+            <Icon path={mdiMinusBox} className="icon tiny" />
           </button>
-          <button className="centering" title="Delete all actions in this period">
-            <Icon path={mdiDelete} className="icon tiny"/>
+          <button
+            className="centering"
+            title="Delete all actions in this period"
+            onClick={() => deleteCellPeriod({ heatmapID, values: { dateStart, dateEnd, actions } })}
+          >
+            <Icon path={mdiDelete} className="icon tiny" />
           </button>
         </div>
       </div>

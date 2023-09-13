@@ -99,6 +99,7 @@ export default function Heatmap({
                 {(differenceInDays(date, dateNowTmp) > 0 ||
                   (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
                   <CellPeriod
+                    heatmapID={heatmap?._id}
                     dateStart={max([dateNowTmp, dateStart])}
                     dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
                     color={palette[0]}
@@ -110,6 +111,7 @@ export default function Heatmap({
                 )}
                 {!point?.isLast && !point.is_target && (
                   <CellPeriod
+                    heatmapID={heatmap?._id}
                     dateStart={date}
                     dateEnd={endOfDay(date)}
                     color={project.color}
@@ -148,6 +150,7 @@ export default function Heatmap({
           }
           return Array.from(new Array(diffInPeriods)).map((_, Index) => (
             <CellPeriod
+              heatmapID={heatmap?._id}
               key={Index}
               targetStart={addDays(previous.date, Index * previousTarget.period)}
               dateStart={max([addDays(previous.date, Index * previousTarget.period), dateStart])}
