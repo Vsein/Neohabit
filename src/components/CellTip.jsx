@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { differenceInDays, formatISO } from 'date-fns';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiPlusBox, mdiMinusBox, mdiDelete } from '@mdi/js';
 import { useDeleteCellPeriodMutation, useUpdateHeatmapMutation } from '../state/services/heatmap';
+import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -27,6 +28,11 @@ function formatPeriod(isPeriod, dateStart, dateEnd = undefined) {
     period += ` (${differenceInDays(dateEnd, dateStart) + 1} days)`;
   }
   return period;
+}
+
+function setCellTipActions(actions) {
+  const cellTip = document.querySelector('.cell-tip');
+  cellTip.firstChild.firstChild.textContent = `Actions: ${actions}`;
 }
 
 function changeCellOffset(e, tipContent, actions, override = false) {
@@ -80,6 +86,7 @@ function unfixateAndHideCellTip() {
 }
 
 export default function CellTip() {
+  const dispatch = useDispatch();
   useEffect(() => {
     document.addEventListener('click', unfixateAndHideCellTip);
     return () => document.removeEventListener('click', unfixateAndHideCellTip);
@@ -100,12 +107,14 @@ export default function CellTip() {
           <button
             className="centering"
             title="Add 1 completed action in this period"
-            onClick={() =>
+            onClick={() => {
               updateHeatmap({
                 heatmapID,
                 values: { date: formatISO(dateStart, { representation: 'date' }), value: 1 },
-              })
-            }
+              });
+              setCellTipActions(actions + 1);
+              dispatch(changeCellActions({ actions: actions + 1 }));
+            }}
           >
             <Icon path={mdiPlusBox} className="icon tiny" />
           </button>
@@ -115,7 +124,7 @@ export default function CellTip() {
           <button
             className="centering"
             title="Delete all actions in this period"
-            onClick={() =>
+            onClick={() => {
               deleteCellPeriod({
                 heatmapID,
                 values: {
@@ -123,8 +132,10 @@ export default function CellTip() {
                   dateEnd: formatISO(dateEnd, { representation: 'date' }),
                   actions,
                 },
-              })
-            }
+              });
+              setCellTipActions(0);
+              dispatch(changeCellActions({ actions: 0 }));
+            }}
           >
             <Icon path={mdiDelete} className="icon tiny" />
           </button>

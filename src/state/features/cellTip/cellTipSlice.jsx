@@ -16,10 +16,14 @@ export const cellTipSlice = createSlice({
       dateEnd: action.payload.dateEnd,
       actions: action.payload.actions,
     }),
+    changeCellActions: (state, action) => ({
+      ...state,
+      actions: action.payload.actions,
+    }),
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { changeCellPeriodTo } = cellTipSlice.actions;
+export const { changeCellPeriodTo, changeCellActions } = cellTipSlice.actions;
 
 export default cellTipSlice.reducer;
