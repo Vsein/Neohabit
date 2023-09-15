@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, formatISO } from 'date-fns';
 import { useSelector } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiPlusBox, mdiMinusBox, mdiDelete } from '@mdi/js';
-import { useDeleteCellPeriodMutation } from '../state/services/heatmap';
+import { useDeleteCellPeriodMutation, useUpdateHeatmapMutation } from '../state/services/heatmap';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -86,6 +86,7 @@ export default function CellTip() {
   });
   const { heatmapID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
   const [deleteCellPeriod] = useDeleteCellPeriodMutation();
+  const [updateHeatmap] = useUpdateHeatmapMutation();
 
   return (
     <div
@@ -96,7 +97,16 @@ export default function CellTip() {
       <div className="cell-tip-actions">
         <p className="cell-tip-actions-text"></p>
         <div className="cell-tip-actions-controls">
-          <button className="centering" title="Add 1 completed action in this period">
+          <button
+            className="centering"
+            title="Add 1 completed action in this period"
+            onClick={() =>
+              updateHeatmap({
+                heatmapID,
+                values: { date: formatISO(dateStart, { representation: 'date' }), value: 1 },
+              })
+            }
+          >
             <Icon path={mdiPlusBox} className="icon tiny" />
           </button>
           <button className="centering" title="Delete 1 completed action in this period">
@@ -105,7 +115,16 @@ export default function CellTip() {
           <button
             className="centering"
             title="Delete all actions in this period"
-            onClick={() => deleteCellPeriod({ heatmapID, values: { dateStart, dateEnd, actions } })}
+            onClick={() =>
+              deleteCellPeriod({
+                heatmapID,
+                values: {
+                  dateStart: formatISO(dateStart, { representation: 'date' }),
+                  dateEnd: formatISO(dateEnd, { representation: 'date' }),
+                  actions,
+                },
+              })
+            }
           >
             <Icon path={mdiDelete} className="icon tiny" />
           </button>

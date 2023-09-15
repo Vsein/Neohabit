@@ -1,4 +1,4 @@
-import { isSameDay, compareDesc } from 'date-fns';
+import { isSameDay, compareDesc, startOfDay, endOfDay } from 'date-fns';
 import api from './api';
 
 export const heatmapApi = api.injectEndpoints({
@@ -27,7 +27,7 @@ export const heatmapApi = api.injectEndpoints({
             );
             if (index !== -1 && !values?.is_target) {
               Heatmap.data = Heatmap.data.map((point) =>
-                isSameDay(new Date(point.date), new Date(values.date))
+                isSameDay(new Date(point.date), new Date(values.date)) && !point.is_target
                   ? { ...point, value: +point.value + 1 }
                   : point,
               );
@@ -58,9 +58,14 @@ export const heatmapApi = api.injectEndpoints({
             const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
             Heatmap.data = Heatmap.data.filter(
               (point) =>
-                compareDesc(new Date(point.date), new Date(values.dateStart)) >= 0 ||
-                compareDesc(new Date(values.dateEnd), new Date(point.date)) >= 0 ||
+                compareDesc(new Date(point.date), startOfDay(new Date(values.dateStart))) > 0 ||
+                compareDesc(endOfDay(new Date(values.dateEnd)), new Date(point.date)) > 0 ||
                 point.is_target,
+            );
+          }),
+        );
+      },
+    }),
             );
           }),
         );
