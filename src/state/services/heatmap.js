@@ -28,7 +28,7 @@ export const heatmapApi = api.injectEndpoints({
             if (index !== -1 && !values?.is_target) {
               Heatmap.data = Heatmap.data.map((point) =>
                 isSameDay(new Date(point.date), new Date(values.date)) && !point.is_target
-                  ? { ...point, value: +point.value + 1 }
+                  ? { ...point, value: +point.value + +values.value }
                   : point,
               );
             } else if (indexIsTarget !== -1 && values.is_target) {
@@ -38,7 +38,7 @@ export const heatmapApi = api.injectEndpoints({
                   : point,
               );
             } else {
-              Heatmap.data.push(values);
+              Heatmap.data.push({ ...values, value: +values.value });
             }
             Heatmap.data.sort((a, b) => a.date - b.date);
           }),
