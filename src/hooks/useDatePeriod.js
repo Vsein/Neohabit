@@ -29,7 +29,9 @@ export default function useDatePeriod(periodDuration) {
   const [dateEnd, setDateEnd] = getEnd();
 
   const subMonth = () => {
-    const tmpStart = startOfMonth(subMonths(isFirstDayOfMonth(dateStart) ? dateStart : dateEnd, 1));
+    const tmpStart = startOfMonth(
+      isFirstDayOfMonth(dateStart) ? subMonths(dateStart, 1) : dateStart,
+    );
     setDateStart(tmpStart);
     setDateEnd(addDays(tmpStart, periodDuration));
   };
