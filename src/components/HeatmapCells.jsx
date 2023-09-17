@@ -55,6 +55,7 @@ function CellFractured({
   const style = {
     '--color': color,
     gap: '2px',
+    [value ? 'boxShadow': '']: 'none',
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };

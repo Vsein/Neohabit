@@ -20,6 +20,7 @@ $cell-margin: 2px;
   border-radius: 1px;
   position: relative;
   background-color: var(--blank-cell-color);
+  box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
 
   &.dotted {
     background: repeating-conic-gradient(var(--color) 0% 27%, transparent 0% 100%) 50% / 3px 3px;
@@ -35,7 +36,12 @@ $cell-margin: 2px;
     flex-wrap: wrap;
     justify-content: space-around;
     border: none;
-    overflow: hidden;
+    // overflow: hidden;
+    box-shadow: none;
+
+    & > * {
+      box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
+    }
 
     &:hover {
       border: none;
