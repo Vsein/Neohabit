@@ -39,3 +39,5 @@ export default function usePaletteGenerator(color) {
 
   return palette;
 }
+
+export { mixColors, hexToRgb };
