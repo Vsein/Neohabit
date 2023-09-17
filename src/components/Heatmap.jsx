@@ -93,7 +93,6 @@ export default function Heatmap({
                     <CellPeriodDummy
                       dateStart={addDays(dateNowTmp, -gap)}
                       dateEnd={subMilliseconds(dateNowTmp, 1)}
-                      color="transparent"
                     />
                   ))}
                 {(differenceInDays(date, dateNowTmp) > 0 ||
@@ -163,7 +162,6 @@ export default function Heatmap({
                 1,
               )}
               color={Index || !previous.value ? palette[0] : project.color}
-              blankColor={palette[0]}
               value={Index ? 0 : previous.value}
               basePeriod={24}
               vertical={vertical}

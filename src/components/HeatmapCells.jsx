@@ -11,11 +11,12 @@ import {
 } from 'date-fns';
 import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
+import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
 function Cell({ color, tipContent, value, length, vertical = true }) {
   const dispatch = useDispatch();
   const style = {
-    backgroundColor: color,
+    [value ? 'backgroundColor' : '']: color,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
@@ -27,7 +28,13 @@ function Cell({ color, tipContent, value, length, vertical = true }) {
       onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
       onMouseLeave={hideTip}
       onClick={(e) => {
-        dispatch(changeCellPeriodTo({ ...tipContent, dateStart: getTime(tipContent.dateStart), dateEnd: getTime(tipContent.dateEnd)}));
+        dispatch(
+          changeCellPeriodTo({
+            ...tipContent,
+            dateStart: getTime(tipContent.dateStart),
+            dateEnd: getTime(tipContent.dateEnd),
+          }),
+        );
         fixateCellTip(e);
         changeCellOffset(e, tipContent, value, true);
       }}
@@ -48,6 +55,7 @@ function CellFractured({
   const style = {
     '--color': color,
     gap: '2px',
+    [value ? 'boxShadow': '']: 'none',
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
@@ -89,7 +97,10 @@ function CellFractured({
     [vertical ? '--width' : '--height']: fractionHeight,
     [vertical ? '--height' : '--width']: fractionWidth,
     margin: 0,
-    [index < value ? 'backgroundColor' : '']: index >= targetValue && elimination ? 'black' : color,
+    [index < value ? 'backgroundColor' : '']:
+      index >= targetValue && elimination
+        ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
+        : color,
   });
 
   return (
@@ -99,7 +110,13 @@ function CellFractured({
       onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
       onMouseLeave={hideTip}
       onClick={(e) => {
-        dispatch(changeCellPeriodTo({ ...tipContent, dateStart: getTime(tipContent.dateStart), dateEnd: getTime(tipContent.dateEnd)}));
+        dispatch(
+          changeCellPeriodTo({
+            ...tipContent,
+            dateStart: getTime(tipContent.dateStart),
+            dateEnd: getTime(tipContent.dateEnd),
+          }),
+        );
         fixateCellTip(e);
         changeCellOffset(e, tipContent, value, true);
       }}
@@ -160,7 +177,7 @@ function CellPeriod({
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    backgroundColor: color,
+    [value ? 'backgroundColor' : '']: color,
     '--height': 7,
     '--width': width,
   };
@@ -186,10 +203,15 @@ function CellPeriod({
         className={`cell-period ${width ? 'wide' : 'whole'}`}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
-
         onMouseLeave={hideTip}
         onClick={(e) => {
-          dispatch(changeCellPeriodTo({ ...tipContent, dateStart: getTime(tipContent.dateStart), dateEnd: getTime(tipContent.dateEnd)}));
+          dispatch(
+            changeCellPeriodTo({
+              ...tipContent,
+              dateStart: getTime(tipContent.dateStart),
+              dateEnd: getTime(tipContent.dateEnd),
+            }),
+          );
           fixateCellTip(e);
           changeCellOffset(e, tipContent, value, true);
         }}
@@ -225,7 +247,8 @@ function CellPeriodDummy({ dateStart, dateEnd, color, basePeriod = 24 }) {
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    backgroundColor: color,
+    backgroundColor: 'transparent',
+    '--cell-border-color': 'transparent',
     '--height': 7,
     '--width': width,
   };
