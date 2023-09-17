@@ -16,7 +16,7 @@ import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 function Cell({ color, tipContent, value, length, vertical = true }) {
   const dispatch = useDispatch();
   const style = {
-    backgroundColor: color,
+    [value ? 'backgroundColor' : '']: color,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
@@ -176,7 +176,7 @@ function CellPeriod({
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    backgroundColor: color,
+    [value ? 'backgroundColor' : '']: color,
     '--height': 7,
     '--width': width,
   };
@@ -246,7 +246,8 @@ function CellPeriodDummy({ dateStart, dateEnd, color, basePeriod = 24 }) {
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    backgroundColor: color,
+    backgroundColor: 'transparent',
+    '--cell-border-color': 'transparent',
     '--height': 7,
     '--width': width,
   };
