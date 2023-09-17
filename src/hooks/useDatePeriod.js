@@ -18,20 +18,16 @@ export default function useDatePeriod(periodDuration) {
 
   const getStart = () => {
     const curDate = startOfDay(new Date());
-    return state
-      ? useState(addDays(curDate, -offset))
-      : useState(addDays(curDate, -periodDuration + offset));
+    return state ? addDays(curDate, -offset) : addDays(curDate, -periodDuration + offset);
   };
 
   const getEnd = () => {
     const curDate = startOfDay(new Date());
-    return state
-      ? useState(addDays(curDate, periodDuration - offset))
-      : useState(addDays(curDate, offset));
+    return state ? addDays(curDate, periodDuration - offset) : addDays(curDate, offset);
   };
 
-  const [dateStart, setDateStart] = getStart();
-  const [dateEnd, setDateEnd] = getEnd();
+  const [dateStart, setDateStart] = useState(getStart());
+  const [dateEnd, setDateEnd] = useState(getEnd());
 
   const subMonth = () => {
     const tmpStart = startOfMonth(
@@ -59,20 +55,19 @@ export default function useDatePeriod(periodDuration) {
 
   const setToPast = () => {
     const tmpStart = startOfDay(new Date());
-    setDateEnd(tmpStart);
-    setDateStart(addDays(tmpStart, -periodDuration));
+    setDateEnd(addDays(tmpStart, offset));
+    setDateStart(addDays(tmpStart, -periodDuration + offset));
   };
 
   const setToFuture = () => {
     const tmpStart = startOfDay(new Date());
-    setDateStart(tmpStart);
-    setDateEnd(addDays(tmpStart, periodDuration));
+    setDateStart(addDays(tmpStart, -offset));
+    setDateEnd(addDays(tmpStart, periodDuration - offset));
   };
 
   const reset = () => {
-    const curDate = startOfDay(new Date());
-    setDateStart(state ? curDate : addDays(curDate, -periodDuration));
-    setDateEnd(state ? addDays(curDate, periodDuration) : curDate);
+    setDateStart(getStart());
+    setDateEnd(getEnd());
   };
 
   return [
