@@ -44,7 +44,7 @@ export default function Overview() {
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset },
+    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength - 1);
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
@@ -88,6 +88,8 @@ export default function Overview() {
           setDateStart={setDateStart}
           dateEnd={dateEnd}
           setDateEnd={setDateEnd}
+          subPeriod={subPeriod}
+          addPeriod={addPeriod}
         />
         <OverviewSettings vertical={vertical} />
       </div>
@@ -95,11 +97,7 @@ export default function Overview() {
         <div className={`overview ${vertical ? 'vertical' : ''}`}>
           <div className="overview-topbar-left">
             {!vertical && <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />}
-            <button
-              className="centering"
-              onClick={subMonth}
-              title="Move month to the left [H]"
-            >
+            <button className="centering" onClick={subMonth} title="Move month to the left [H]">
               <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
             </button>
           </div>
@@ -109,11 +107,7 @@ export default function Overview() {
             {vertical ? (
               <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
             ) : (
-              <button
-                className="centering"
-                onClick={addMonth}
-                title="Move month to the right [L]"
-              >
+              <button className="centering" onClick={addMonth} title="Move month to the right [L]">
                 <Icon path={mdiMenuRight} className="icon" />
               </button>
             )}

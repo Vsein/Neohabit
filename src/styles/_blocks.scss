@@ -36,9 +36,16 @@
   }
 }
 
-.dates-period {
+.dates-container {
   direction: ltr;
   grid-area: date;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dates-period {
   display: flex;
   flex-direction: row;
   gap: 10px;

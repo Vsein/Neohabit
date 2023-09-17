@@ -8,6 +8,7 @@ import {
   subYears,
   addYears,
   addDays,
+  differenceInDays,
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 
@@ -53,6 +54,18 @@ export default function useDatePeriod(periodDuration) {
     setDateEnd(addYears(dateEnd, 1));
   };
 
+  const subPeriod = () => {
+    const period = differenceInDays(dateEnd, dateStart) + 1;
+    setDateStart(addDays(dateStart, -period));
+    setDateEnd(addDays(dateEnd, -period));
+  };
+
+  const addPeriod = () => {
+    const period = differenceInDays(dateEnd, dateStart) + 1;
+    setDateStart(addDays(dateStart, period));
+    setDateEnd(addDays(dateEnd, period));
+  };
+
   const setToPast = () => {
     const tmpStart = startOfDay(new Date());
     setDateEnd(addDays(tmpStart, offset));
@@ -75,6 +88,6 @@ export default function useDatePeriod(periodDuration) {
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset },
+    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ];
 }

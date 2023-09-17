@@ -17,26 +17,34 @@ function YearPicker({ subYear, addYear, dateStart }) {
   );
 }
 
-function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd }) {
+function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPeriod, subPeriod }) {
   return (
-    <div className="dates-period">
-      <input
-        type="date"
-        value={formatISO(dateStart, { representation: 'date' })}
-        max="<?= date('Y-m-d'); ?>"
-        rows="1"
-        className="dates-period-picker"
-        onChange={(e) => setDateStart(startOfDay(new Date(e.target.value)))}
-      />
-      -
-      <input
-        type="date"
-        value={formatISO(dateEnd, { representation: 'date' })}
-        max="<?= date('Y-m-d'); ?>"
-        rows="1"
-        className="dates-period-picker"
-        onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
-      />
+    <div className="dates-container">
+      <button className="centering" onClick={subPeriod}>
+        <Icon path={mdiMenuLeft} className="icon" />
+      </button>
+      <div className="dates-period">
+        <input
+          type="date"
+          value={formatISO(dateStart, { representation: 'date' })}
+          max="<?= date('Y-m-d'); ?>"
+          rows="1"
+          className="dates-period-picker"
+          onChange={(e) => setDateStart(startOfDay(new Date(e.target.value)))}
+        />
+        -
+        <input
+          type="date"
+          value={formatISO(dateEnd, { representation: 'date' })}
+          max="<?= date('Y-m-d'); ?>"
+          rows="1"
+          className="dates-period-picker"
+          onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
+        />
+      </div>
+      <button className="centering left" onClick={addPeriod}>
+        <Icon path={mdiMenuRight} className="icon" />
+      </button>
     </div>
   );
 }
