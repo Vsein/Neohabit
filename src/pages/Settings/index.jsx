@@ -12,6 +12,7 @@ import {
   useChangeOverviewOrientationMutation,
   useChangeOverviewFirstDayMutation,
   useChangeOverviewDurationMutation,
+  useChangeOverviewOffsetMutation,
 } from '../../state/services/settings';
 import { open } from '../../state/features/deleteOverlay/deleteOverlaySlice';
 
@@ -43,6 +44,7 @@ export default function Settings() {
             <>
               <OverviewOrientationOption />
               <OverviewFirstDayOption />
+              <OverviewOffsetOption />
               <OverviewDurationOption />
             </>
           }
@@ -186,6 +188,37 @@ function OverviewDurationOption() {
         <button
           className="settings-input settings-save-btn dashboard-btn"
           onClick={() => changeOverviewDuration(overviewDurationInput)}
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function OverviewOffsetOption() {
+  const [changeOverviewOffset] = useChangeOverviewOffsetMutation();
+  const settings = useGetSettingsQuery();
+  const overviewOffset = settings.data?.overview_offset ?? 0;
+  const [overviewOffsetInput, setOverviewOffsetInput] = useState(overviewOffset);
+
+  return (
+    <div className="settings-option">
+      <div className="settings-name">
+        <h3>Offset from the period start/period end</h3>
+      </div>
+      <div className="settings-chooser">
+        <input
+          className="settings-input settings-btn"
+          type="number"
+          min="-365"
+          max="365"
+          value={overviewOffsetInput}
+          onChange={(e) => setOverviewOffsetInput(e.target.value)}
+        />
+        <button
+          className="settings-input settings-save-btn dashboard-btn"
+          onClick={() => changeOverviewOffset(overviewOffsetInput)}
         >
           Save
         </button>
