@@ -6,11 +6,11 @@ import { mdiMenuLeft, mdiMenuRight } from '@mdi/js';
 function YearPicker({ subYear, addYear, dateStart }) {
   return (
     <div className="overview-year-move">
-      <button className="overview-period-move-left" onClick={subYear}>
+      <button className="centering" onClick={subYear}>
         <Icon path={mdiMenuLeft} className="icon" />
       </button>
       <h3>{getYear(dateStart)}</h3>
-      <button className="overview-period-move-right" onClick={addYear}>
+      <button className="centering left" onClick={addYear}>
         <Icon path={mdiMenuRight} className="icon" />
       </button>
     </div>

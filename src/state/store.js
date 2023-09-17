@@ -6,6 +6,7 @@ import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
 import deleteOverlayReducer from './features/deleteOverlay/deleteOverlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
+import cellTipReducer from './features/cellTip/cellTipSlice';
 import themeReducer, { changeTheme } from './features/theme/themeSlice';
 
 const combinedReducer = combineReducers({
@@ -15,6 +16,7 @@ const combinedReducer = combineReducers({
   taskOverlay: taskOverlayReducer,
   deleteOverlay: deleteOverlayReducer,
   cellAdd: cellAddReducer,
+  cellTip: cellTipReducer,
   theme: themeReducer,
 });
 

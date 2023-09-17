@@ -95,7 +95,7 @@ export default function Overview() {
           <div className="overview-topbar-left">
             {!vertical && <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />}
             <button
-              className="overview-period-move-left"
+              className="centering"
               onClick={subMonth}
               title="Move month to the left [H]"
             >
@@ -109,7 +109,7 @@ export default function Overview() {
               <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
             ) : (
               <button
-                className="overview-period-move-right"
+                className="centering"
                 onClick={addMonth}
                 title="Move month to the right [L]"
               >

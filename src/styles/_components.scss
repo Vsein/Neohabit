@@ -32,9 +32,22 @@
     width: 25px;
   }
 
+  &.tiny {
+    height: 16px;
+    width: 16px;
+  }
+
   &:hover {
     cursor: pointer;
   }
+}
+
+.right {
+  margin-left: auto;
+}
+
+.left {
+  margin-right: auto;
 }
 
 .centering {

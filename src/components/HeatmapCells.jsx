@@ -1,69 +1,61 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
   differenceInHours,
-  differenceInDays,
   isSameWeek,
   differenceInCalendarWeeks,
   startOfWeek,
   endOfWeek,
   addMilliseconds,
-  startOfDay,
-  min,
+  getTime,
 } from 'date-fns';
-import { formatTipContent, hideTip, changeCellOffset } from './CellTip';
+import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
+import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
 
-function Cell({ color, dateStart, dateEnd, value, length, targetStart, vertical = true }) {
+function Cell({ color, tipContent, value, length, vertical = true }) {
+  const dispatch = useDispatch();
   const style = {
     backgroundColor: color,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
-  const content = formatTipContent({
-    actions: value,
-    period: !!differenceInDays(dateEnd, dateStart),
-    dateStart: targetStart || dateStart,
-    dateEnd,
-  });
 
   return (
     <div
       className="cell"
       style={style}
-      onMouseEnter={(e) => changeCellOffset(e, content)}
+      onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
       onMouseLeave={hideTip}
+      onClick={(e) => {
+        dispatch(changeCellPeriodTo({ ...tipContent, dateStart: getTime(tipContent.dateStart), dateEnd: getTime(tipContent.dateEnd)}));
+        fixateCellTip(e);
+        changeCellOffset(e, tipContent, value, true);
+      }}
     />
   );
 }
 
 function CellFractured({
   color,
-  blankColor,
-  dateStart,
-  dateEnd,
+  tipContent,
   value,
   targetValue,
-  targetStart,
   length,
   vertical = true,
   elimination,
 }) {
+  const dispatch = useDispatch();
   const style = {
     '--color': color,
     gap: '2px',
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
-  const content = formatTipContent({
-    actions: value,
-    period: length > 1,
-    dateStart: targetStart || dateStart,
-    dateEnd,
-  });
 
   const fractions = Math.max(value, targetValue);
   let dotted = false;
   let fractionHeight;
-  let fractionWidth;
+  let fractionWidth = 2;
   if (fractions <= 2) {
     fractionHeight = 1 / 2;
   } else if (fractions <= 4) {
@@ -104,8 +96,13 @@ function CellFractured({
     <div
       className={`cell ${dotted ? 'dotted' : 'fractured'}`}
       style={style}
-      onMouseEnter={(e) => changeCellOffset(e, content)}
+      onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
       onMouseLeave={hideTip}
+      onClick={(e) => {
+        dispatch(changeCellPeriodTo({ ...tipContent, dateStart: getTime(tipContent.dateStart), dateEnd: getTime(tipContent.dateEnd)}));
+        fixateCellTip(e);
+        changeCellOffset(e, tipContent, value, true);
+      }}
     >
       {!dotted &&
         [...Array(+fractions)].map((point, index) => (
@@ -116,10 +113,10 @@ function CellFractured({
 }
 
 function CellPeriod({
+  heatmapID = '',
   dateStart,
   dateEnd,
   color,
-  blankColor,
   value,
   basePeriod = 24,
   vertical = true,
@@ -128,29 +125,32 @@ function CellPeriod({
   elimination,
   isOverview = false,
 }) {
+  const dispatch = useDispatch();
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
+  const tipContent = {
+    heatmapID,
+    isPeriod: diffDays > 1,
+    dateStart: targetStart || dateStart,
+    dateEnd,
+    actions: value,
+  };
   if (isSameWeek(dateStart, dateEnd) || isOverview) {
     return (value <= 1 || value === undefined) && targetValue === 1 ? (
       <Cell
         color={color}
+        tipContent={tipContent}
         value={value}
-        dateStart={dateStart}
-        targetStart={targetStart}
-        dateEnd={dateEnd}
         length={diffDays}
         vertical={vertical}
       />
     ) : (
       <CellFractured
         color={color}
-        blankColor={blankColor}
+        tipContent={tipContent}
         value={value}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
+        targetValue={targetValue}
         length={diffDays}
         vertical={vertical}
-        targetValue={targetValue}
-        targetStart={targetStart}
         elimination={elimination}
       />
     );
@@ -179,20 +179,20 @@ function CellPeriod({
     '--width': 1,
   };
   if (afterHeight === 0) styleAfter.visibility = 'hidden';
-  const content = formatTipContent({
-    actions: value,
-    period: true,
-    dateStart,
-    dateEnd,
-  });
 
   return (
     <>
       <div
         className={`cell-period ${width ? 'wide' : 'whole'}`}
         style={style}
-        onMouseEnter={(e) => changeCellOffset(e, content)}
+        onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
+
         onMouseLeave={hideTip}
+        onClick={(e) => {
+          dispatch(changeCellPeriodTo({ ...tipContent, dateStart: getTime(tipContent.dateStart), dateEnd: getTime(tipContent.dateEnd)}));
+          fixateCellTip(e);
+          changeCellOffset(e, tipContent, value, true);
+        }}
       >
         <div className="cell-period-before" style={styleBefore} />
         <div className="cell-period-after" style={styleAfter} />
@@ -247,10 +247,7 @@ function CellPeriodDummy({ dateStart, dateEnd, color, basePeriod = 24 }) {
 
   return (
     <>
-      <div
-        className={`cell-period ${width ? 'wide' : 'whole'}`}
-        style={style}
-      >
+      <div className={`cell-period ${width ? 'wide' : 'whole'}`} style={style}>
         <div className="cell-period-before" style={styleBefore} />
         <div className="cell-period-after" style={styleAfter} />
         {diffDays > 7 && !width && (

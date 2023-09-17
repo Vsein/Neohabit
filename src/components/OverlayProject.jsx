@@ -16,12 +16,7 @@ import useKeyPress from '../hooks/useKeyPress';
 
 export default function OverlayProject() {
   const dispatch = useDispatch();
-  const { isActive } = useSelector((state) => ({
-    isActive: state.projectOverlay.isActive,
-  }));
-  const { projectID } = useSelector((state) => ({
-    projectID: state.projectOverlay.ID,
-  }));
+  const { isActive, projectID } = useSelector((state) => state.projectOverlay);
   const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
   const project = projects.find((projecto) => projecto._id == projectID) ?? {
     name: '',
@@ -103,7 +98,7 @@ export default function OverlayProject() {
                 />
                 <Field name="color">
                   {({ input }) => (
-                    <div className="form-task-name">
+                    <div className="form-task-name" style={{ color: input.value }}>
                       <HexColorPicker
                         color={input.value}
                         onChange={(coloro) => {

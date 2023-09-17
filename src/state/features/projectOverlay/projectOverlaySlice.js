@@ -5,14 +5,14 @@ export const projectOverlaySlice = createSlice({
   initialState: {
     isNew: true,
     isActive: false,
-    ID: '',
+    projectID: '',
   },
   reducers: {
     changeTo: (state, action) => ({
       ...state,
       isNew: false,
       isActive: true,
-      ID: action.payload,
+      projectID: action.payload,
     }),
     close: (state) => ({
       ...state,
