@@ -14,15 +14,20 @@ import { useGetSettingsQuery } from '../state/services/settings';
 export default function useDatePeriod(periodDuration) {
   const settings = useGetSettingsQuery();
   const state = settings.data.overview_current_is_first;
+  const offset = settings.data.overview_offset ?? 0;
 
   const getStart = () => {
     const curDate = startOfDay(new Date());
-    return state ? useState(curDate) : useState(addDays(curDate, -periodDuration));
+    return state
+      ? useState(addDays(curDate, -offset))
+      : useState(addDays(curDate, -periodDuration + offset));
   };
 
   const getEnd = () => {
     const curDate = startOfDay(new Date());
-    return state ? useState(addDays(curDate, periodDuration)) : useState(curDate);
+    return state
+      ? useState(addDays(curDate, periodDuration - offset))
+      : useState(addDays(curDate, offset));
   };
 
   const [dateStart, setDateStart] = getStart();

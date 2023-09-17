@@ -107,6 +107,21 @@ export const settingsApi = api.injectEndpoints({
         );
       },
     }),
+    changeOverviewOffset: builder.mutation({
+      query: (overviewOffset) => ({
+        url: 'settings/overview_offset',
+        body: { overviewOffset },
+        method: 'PUT',
+      }),
+      async onQueryStarted(overviewOffset, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        dispatch(
+          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
+            draft.overview_offset = +overviewOffset;
+          }),
+        );
+      },
+    }),
   }),
 });
 
@@ -119,4 +134,5 @@ export const {
   useChangeOverviewOrientationMutation,
   useChangeOverviewFirstDayMutation,
   useChangeOverviewDurationMutation,
+  useChangeOverviewOffsetMutation,
 } = settingsApi;
