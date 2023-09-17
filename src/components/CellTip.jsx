@@ -3,7 +3,11 @@ import { differenceInDays, formatISO } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiPlusBox, mdiMinusBox, mdiDelete } from '@mdi/js';
-import { useDeleteCellPeriodMutation, useUpdateHeatmapMutation } from '../state/services/heatmap';
+import {
+  useDeleteCellPeriodMutation,
+  useDecreaseCellPeriodMutation,
+  useUpdateHeatmapMutation,
+} from '../state/services/heatmap';
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
 
 function formatDate(date) {
@@ -93,6 +97,7 @@ export default function CellTip() {
   });
   const { heatmapID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
   const [deleteCellPeriod] = useDeleteCellPeriodMutation();
+  const [decreaseCellPeriod] = useDecreaseCellPeriodMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
 
   return (
@@ -118,7 +123,21 @@ export default function CellTip() {
           >
             <Icon path={mdiPlusBox} className="icon tiny" />
           </button>
-          <button className="centering" title="Delete 1 completed action in this period">
+          <button
+            className="centering"
+            title="Delete 1 completed action in this period"
+            onClick={() => {
+              decreaseCellPeriod({
+                heatmapID,
+                values: {
+                  dateStart: formatISO(dateStart, { representation: 'date' }),
+                  dateEnd: formatISO(dateEnd, { representation: 'date' }),
+                },
+              });
+              setCellTipActions(Math.max(actions - 1, 0));
+              dispatch(changeCellActions({ actions: Math.max(actions - 1, 0) }));
+            }}
+          >
             <Icon path={mdiMinusBox} className="icon tiny" />
           </button>
           <button
