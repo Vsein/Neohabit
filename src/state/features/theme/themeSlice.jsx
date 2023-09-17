@@ -8,8 +8,8 @@ export const changeTheme = (newTheme) => {
 };
 
 const darkTheme = {
-  rgb: { r: 28, g: 33, b: 40 },
-  hex: '#1C2128',
+  rgb: { r: 74, g: 74, b: 74 },
+  hex: '#4a4a4a',
 };
 
 const lightTheme = {

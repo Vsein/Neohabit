@@ -19,7 +19,7 @@ $cell-margin: 2px;
   margin-block: calc(2px - var(--negate-margin-block));
   border-radius: 1px;
   position: relative;
-  background-color: var(--support-background-color);
+  background-color: var(--blank-cell-color);
 
   &.dotted {
     background: repeating-conic-gradient(var(--color) 0% 27%, transparent 0% 100%) 50% / 3px 3px;
@@ -52,7 +52,7 @@ $cell-margin: 2px;
   width: calc((var(--cell-width) - 2px) * var(--width));
   border-radius: 1px;
   position: relative;
-  background-color: var(--support-background-color);
+  background-color: var(--blank-cell-color);
 }
 
 .cell-period {
@@ -65,7 +65,7 @@ $cell-margin: 2px;
   margin: $cell-margin;
   border-radius: 1px;
   position: relative;
-  background-color: var(--support-background-color);
+  background-color: var(--blank-cell-color);
 
   @mixin shaped-cell {
     margin: -1px;
