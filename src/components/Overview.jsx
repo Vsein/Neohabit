@@ -15,6 +15,7 @@ import {
   mdiCog,
   mdiPlus,
 } from '@mdi/js';
+import { differenceInDays } from 'date-fns';
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import {
@@ -68,7 +69,7 @@ export default function Overview() {
       className="overview-centering"
       style={{
         '--projects': projects.data.length,
-        '--length': datePeriodLength,
+        '--length': differenceInDays(dateEnd, dateStart) + 1,
         '--vertical': vertical * 1,
         // '--multiplier': settings.data.cell_height_multiplier,
         '--multiplier': 1,
