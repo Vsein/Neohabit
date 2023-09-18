@@ -1,20 +1,13 @@
 import React from 'react';
+import Projectlist from '../../components/Projectlist';
 import useTitle from '../../hooks/useTitle';
-import useLoaded from '../../hooks/useLoaded';
 
-export default function Projects() {
+export default function ProjectsPage() {
   useTitle('Projects | Neohabit');
-  const [loaded] = useLoaded();
 
   return (
-    loaded && (
-      <main className="projects">
-        <div className="projects-header">
-          <h3>Projects</h3>
-        </div>
-        <ul className="projects-list">
-        </ul>
-      </main>
-    )
+    <div id="content-projects">
+      <Projectlist />
+    </div>
   );
 }
