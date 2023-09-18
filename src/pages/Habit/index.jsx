@@ -1,18 +1,18 @@
 import React from 'react';
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import useTitle from '../../hooks/useTitle';
-import { useGetProjectsQuery } from '../../state/services/project';
+import { useGetHabitsQuery } from '../../state/services/habit';
 import { useGetHeatmapsQuery } from '../../state/services/heatmap';
 import Header from './Header';
 import Navigation from './Navigation';
 import Overview from './Overview';
 
-export default function Project() {
-  useTitle('Project | Neohabit');
+export default function Habit() {
+  useTitle('Habit | Neohabit');
 
   return (
     <Routes>
-      <Route element={<ProjectLayout />}>
+      <Route element={<HabitLayout />}>
         <Route index element={<Navigate to="overview" />} />
         <Route path="overview" element={<Overview />} />
         <Route path="heatmap" element={<Overview />} />
@@ -24,15 +24,15 @@ export default function Project() {
   );
 }
 
-function ProjectLayout() {
-  const projects = useGetProjectsQuery();
+function HabitLayout() {
+  const habits = useGetHabitsQuery();
   const heatmaps = useGetHeatmapsQuery();
 
-  return projects.isFetching || heatmaps.isLoading || heatmaps.isFetching ? (
+  return habits.isFetching || heatmaps.isLoading || heatmaps.isFetching ? (
     <div className="loader" />
   ) : (
-    <div id="content-project">
-      <Header projects={projects.data} />
+    <div id="content-habit">
+      <Header habits={habits.data} />
       <Navigation />
       <Outlet />
     </div>

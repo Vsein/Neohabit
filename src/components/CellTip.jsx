@@ -44,8 +44,7 @@ function changeCellOffset(e, tipContent, actions, override = false) {
   if (cellTip.classList.contains('fixated') && !override) return 0;
   const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
   const parent =
-    document.querySelector('.habit') ||
-    document.querySelector('.project-heatmap-container') ||
+    document.querySelector('.habit-heatmap-container') ||
     document.querySelector('.overview-container');
   const rect = cell.getBoundingClientRect();
   const rectParent = parent.getBoundingClientRect();

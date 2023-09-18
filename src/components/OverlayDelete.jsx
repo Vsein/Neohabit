@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import ProjectTag from './ProjectTag';
+import HabitTag from './HabitTag';
 import { useDeleteSelfMutation } from '../state/services/settings';
 import { close } from '../state/features/deleteOverlay/deleteOverlaySlice';
 // import bin from '../icons/trash-can-outline.svg';

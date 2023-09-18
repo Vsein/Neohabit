@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Editor from './Editor';
 import Navigation from './Navigation';
 import { useGetFiltersQuery } from '../../state/services/todolist';
-import { useGetProjectsQuery } from '../../state/services/project';
+import { useGetHabitsQuery } from '../../state/services/habit';
 import useTitle from '../../hooks/useTitle';
 
 export default function ToDoList() {
@@ -13,7 +13,7 @@ export default function ToDoList() {
     <Routes>
       <Route element={<ToDoListLayout />}>
         <Route index element={<Navigate to="all" />} />
-        <Route path=":list/:projectID" element={<Editor />} />
+        <Route path=":list/:habitID" element={<Editor />} />
         <Route path=":list" element={<Editor />} />
       </Route>
     </Routes>
@@ -21,14 +21,14 @@ export default function ToDoList() {
 }
 
 function ToDoListLayout() {
-  const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const filters = useGetFiltersQuery();
 
-  return filters.isFetching || projects.isFetching ? (
+  return filters.isFetching || habits.isFetching ? (
     <div className="loader" />
   ) : (
     <main className="tasklists">
-      <Navigation projects={projects.data} filters={filters.data} />
+      <Navigation habits={habits.data} filters={filters.data} />
       <Outlet />
     </main>
   );

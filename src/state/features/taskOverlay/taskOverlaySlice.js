@@ -6,7 +6,7 @@ export const taskOverlaySlice = createSlice({
     isNew: true,
     isActive: false,
     taskID: '',
-    projectID: '',
+    habitID: '',
   },
   reducers: {
     changeTo: (state, action) => ({
@@ -14,7 +14,7 @@ export const taskOverlaySlice = createSlice({
       isNew: false,
       isActive: true,
       taskID: action.payload.taskID,
-      projectID: action.payload.projectID,
+      habitID: action.payload.habitID,
     }),
     close: (state) => ({
       ...state,

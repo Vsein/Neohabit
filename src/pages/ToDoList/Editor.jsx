@@ -1,13 +1,13 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useGetTasksQuery } from '../../state/services/todolist';
-import { useGetProjectsQuery } from '../../state/services/project';
+import { useGetHabitsQuery } from '../../state/services/habit';
 import Tasklist from '../../components/Tasklist';
 
 export default function Editor() {
   const tasks = useGetTasksQuery();
-  const projects = useGetProjectsQuery();
-  const { list, projectID } = useParams();
+  const habits = useGetHabitsQuery();
+  const { list, habitID } = useParams();
 
   const delinkify = (str) =>
     str
@@ -18,14 +18,14 @@ export default function Editor() {
 
   const delist = delinkify(list);
 
-  return tasks.isFetching || projects.isFetching ? (
+  return tasks.isFetching || habits.isFetching ? (
     <> </>
   ) : (
     <div className="tasklist">
       <Tasklist
-        name={list !== 'project' ? delist : tasks.data[0]?.project.name}
+        name={list !== 'habit' ? delist : tasks.data[0]?.habit.name}
         tasks={tasks.data}
-        projectID={projectID}
+        habitID={habitID}
         list={list}
       />
     </div>

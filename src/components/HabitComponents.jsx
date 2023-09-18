@@ -10,24 +10,24 @@ import {
   mdiCheckboxMarked,
   mdiViewGridPlusOutline,
 } from '@mdi/js';
-import { useDeleteProjectMutation } from '../state/services/project';
+import { useDeleteHabitMutation } from '../state/services/habit';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 
-export default function ProjectControls({ project, heatmap, header }) {
-  const [deleteProject] = useDeleteProjectMutation();
+export default function HabitControls({ habit, heatmap, header }) {
+  const [deleteHabit] = useDeleteHabitMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
   const dispatch = useDispatch();
-  const deleteChosenProject = () => {
-    deleteProject(project._id);
+  const deleteChosenHabit = () => {
+    deleteHabit(habit._id);
   };
-  const setStopwatchProject = () => {
+  const setStopwatchHabit = () => {
     updateStopwatch({
       values: {
-        project,
+        habit,
       },
     });
   };
@@ -45,53 +45,53 @@ export default function ProjectControls({ project, heatmap, header }) {
     const rect = cell.getBoundingClientRect();
     cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
     cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
-    cellAddDropdown.style.borderColor = project.color;
+    cellAddDropdown.style.borderColor = habit.color;
   };
 
   return (
-    <div className={`project-controls ${header ? 'header' : ''}`} style={{ '--color': project.color }}>
+    <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
       <button
-        className="overview-project-button"
+        className="overview-habit-button"
         onClick={(e) => openCellAddDropdown(e, false)}
         title="Add N copmleted actions on X day"
       >
         <Icon path={mdiPlusBox} />
       </button>
       <button
-        className="overview-project-button"
+        className="overview-habit-button"
         onClick={addCell}
         title="Add 1 completed action today"
       >
         <Icon path={mdiCheckboxMarked} />
       </button>
       <button
-        className="overview-project-button"
-        onClick={setStopwatchProject}
-        title="Start stopwatch of this project"
+        className="overview-habit-button"
+        onClick={setStopwatchHabit}
+        title="Start stopwatch of this habit"
       >
         <Icon path={mdiTimer} />
       </button>
       <button
-        className="overview-project-button"
+        className="overview-habit-button"
         onClick={(e) => openCellAddDropdown(e, true)}
         title="Add a new target"
       >
         <Icon path={mdiViewGridPlusOutline} />
       </button>
       <Link
-        className="overview-project-button"
+        className="overview-habit-button"
         onClick={() => {
-          dispatch(changeTo(project._id));
+          dispatch(changeTo(habit._id));
           dispatch(open());
         }}
-        title="Edit project"
+        title="Edit habit"
       >
         <Icon path={mdiPencil} />
       </Link>
       <button
-        className="overview-project-button"
-        onClick={deleteChosenProject}
-        title="Delete project"
+        className="overview-habit-button"
+        onClick={deleteChosenHabit}
+        title="Delete habit"
       >
         <Icon path={mdiDelete} />
       </button>

@@ -118,14 +118,14 @@ export default function Stopwatch() {
           className="progressbar-progress"
           style={{
             width: `${(currentDuration / baseDuration) * 100}vw`,
-            backgroundColor: stopwatch.data?.project?.color,
+            backgroundColor: stopwatch.data?.habit?.color,
           }}
         ></div>
         <h3 className="progressbar-progress-countdown time">{clockify(currentDuration)}</h3>
         <h3 className="progressbar-progress-countdown time-left">{clockify(baseDuration)}</h3>
       </div>
       <div className="progressbar-controls">
-        <h3>{stopwatch.data?.project?.name}</h3>
+        <h3>{stopwatch.data?.habit?.name}</h3>
         <button
           className="logo-section sidebar-toggle-container centering right stopwatch-icon"
           onClick={resetStopwatch}

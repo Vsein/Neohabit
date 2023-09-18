@@ -44,7 +44,7 @@ export const stopwatchApi = api.injectEndpoints({
         );
         dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            const Heatmap = draft.find((heatmap) => heatmap.project._id == values.project._id);
+            const Heatmap = draft.find((heatmap) => heatmap.habit._id == values.habit._id);
             if (Heatmap) {
               Heatmap.data.push(res.data);
               Heatmap.data.sort((a, b) => a.date - b.date);

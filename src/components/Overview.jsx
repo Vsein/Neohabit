@@ -16,24 +16,24 @@ import {
   mdiPlus,
 } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
-import { useGetProjectsQuery } from '../state/services/project';
+import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import {
   useGetSettingsQuery,
   useChangeOverviewOrientationMutation,
 } from '../state/services/settings';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
-import ProjectControls from './ProjectComponents';
+import HabitControls from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
   const [loaded] = useLoaded();
-  const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
@@ -56,7 +56,7 @@ export default function Overview() {
   };
   useKeyPress(['a'], openOverlay);
 
-  if (!loaded || projects.isFetching || heatmaps.isFetching) {
+  if (!loaded || habits.isFetching || heatmaps.isFetching) {
     return (
       <div className="overview-loader cetering">
         <div className="loader" />
@@ -68,7 +68,7 @@ export default function Overview() {
     <div
       className="overview-centering"
       style={{
-        '--projects': projects.data.length,
+        '--habits': habits.data.length,
         '--length': differenceInDays(dateEnd, dateStart) + 1,
         '--vertical': vertical * 1,
         // '--multiplier': settings.data.cell_height_multiplier,
@@ -133,14 +133,14 @@ export default function Overview() {
               <Icon path={mdiCalendarStart} className="icon small centering" />
             </button>
           </div>
-          <div className="overview-projects">
-            {projects.data.map((project, i) => (
-              <OverviewProject
+          <div className="overview-habits">
+            {habits.data.map((habit, i) => (
+              <OverviewHabit
                 key={i}
-                project={project}
+                habit={habit}
                 dateStart={dateStart}
                 dateEnd={dateEnd}
-                heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id === project._id)}
+                heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
                 vertical={vertical}
               />
             ))}
@@ -157,38 +157,38 @@ export default function Overview() {
         </div>
       </div>
       <button
-        className={`overview-project-add ${vertical ? 'vertical' : ''}`}
+        className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
         onClick={openOverlay}
-        title="Add project [A]"
+        title="Add a new habit [A]"
       >
         <Icon className="icon small" path={mdiPlus} />
-        <p>Add project</p>
+        <p>Add a new habit</p>
       </button>
     </div>
   );
 }
 
-function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
+function OverviewHabit({ dateStart, dateEnd, habit, heatmap, vertical }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
-    <div className="overview-project">
+    <div className="overview-habit">
       <NavLink
-        className="overview-project-name"
-        to={`../project/${linkify(project._id)}`}
-        title={project.name}
+        className="overview-habit-name"
+        to={`../habit/${linkify(habit._id)}`}
+        title={habit.name}
       >
-        {project.name}
+        {habit.name}
       </NavLink>
       <Heatmap
         heatmap={heatmap}
-        project={project}
+        habit={habit}
         dateStart={dateStart}
         dateEnd={dateEnd}
         vertical={vertical}
         isOverview={true}
       />
-      <ProjectControls project={project} heatmap={heatmap} />
+      <HabitControls habit={habit} heatmap={heatmap} />
     </div>
   );
 }

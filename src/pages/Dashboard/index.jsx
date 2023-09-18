@@ -39,15 +39,15 @@ export default function Dashboard() {
       </div>
 
       <div className="main">
-        <div className="dashboard-projects">
-          <h3>Your projects</h3>
-          <div className="dashboard-projects-grid">
-            <ProjectCard />
-            <ProjectCard />
-            <ProjectCard />
-            <ProjectCard />
-            <ProjectCard />
-            <ProjectCard />
+        <div className="dashboard-habits">
+          <h3>Your habits</h3>
+          <div className="dashboard-habits-grid">
+            <HabitCard />
+            <HabitCard />
+            <HabitCard />
+            <HabitCard />
+            <HabitCard />
+            <HabitCard />
           </div>
         </div>
 
@@ -79,7 +79,7 @@ export default function Dashboard() {
   );
 }
 
-function ProjectCard() {
+function HabitCard() {
   return (
     <a className="card" tabIndex="0">
       <div className="card-text">

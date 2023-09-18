@@ -4,27 +4,27 @@ import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
-import ProjectTag from './ProjectTag';
+import HabitTag from './HabitTag';
 import {
-  useGetProjectsQuery,
-  useCreateProjectMutation,
-  useUpdateProjectMutation,
-} from '../state/services/project';
-import { close } from '../state/features/projectOverlay/projectOverlaySlice';
+  useGetHabitsQuery,
+  useCreateHabitMutation,
+  useUpdateHabitMutation,
+} from '../state/services/habit';
+import { close } from '../state/features/habitOverlay/habitOverlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 // import bin from '../icons/trash-can-outline.svg';
 
-export default function OverlayProject() {
+export default function OverlayHabit() {
   const dispatch = useDispatch();
-  const { isActive, projectID } = useSelector((state) => state.projectOverlay);
-  const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
-  const project = projects.find((projecto) => projecto._id == projectID) ?? {
+  const { isActive, habitID } = useSelector((state) => state.habitOverlay);
+  const { data: habits, isFetching, isLoading } = useGetHabitsQuery();
+  const habit = habits.find((habito) => habito._id == habitID) ?? {
     name: '',
     color: '#aabbcc',
     description: '',
   };
-  const [createProject] = useCreateProjectMutation();
-  const [updateProject] = useUpdateProjectMutation();
+  const [createHabit] = useCreateHabitMutation();
+  const [updateHabit] = useUpdateHabitMutation();
 
   const closeOverlay = (e) => {
     e.stopPropagation();
@@ -34,16 +34,16 @@ export default function OverlayProject() {
   useKeyPress(['c'], closeOverlay);
 
   const onSubmit = async (values) => {
-    if (project.name == '') {
-      await createProject(values);
+    if (habit.name == '') {
+      await createHabit(values);
     } else {
-      await updateProject({ projectID, values });
+      await updateHabit({ habitID, values });
     }
     dispatch(close());
   };
 
   if (isLoading || isFetching) return <div>Loading...</div>;
-  if (!project) return <div>Missing project!</div>;
+  if (!habit) return <div>Missing habit!</div>;
 
   return (
     <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
@@ -52,10 +52,10 @@ export default function OverlayProject() {
       ) : (
         <Form
           initialValues={{
-            name: project?.name,
-            description: project?.description,
-            color: project?.color,
-            elimination: project?.elimination,
+            name: habit?.name,
+            description: habit?.description,
+            color: habit?.color,
+            elimination: habit?.elimination,
           }}
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -69,7 +69,7 @@ export default function OverlayProject() {
             >
               <div className="modal-header">
                 <div className="tag">
-                  <ProjectTag project={project} />
+                  <HabitTag habit={habit} />
                 </div>
                 <button
                   className="close-modal-button icon"
@@ -84,7 +84,7 @@ export default function OverlayProject() {
                 <Field
                   name="name"
                   component="textarea"
-                  placeholder="Change project name"
+                  placeholder="Change habit name"
                   rows="1"
                   className="form-task-name"
                   required
@@ -141,7 +141,7 @@ export default function OverlayProject() {
                   type="submit"
                   disabled={submitting || pristine}
                 >
-                  {project ? 'Save' : 'Add project'}
+                  {habit ? 'Save' : 'Add habit'}
                 </button>
               </div>
             </form>

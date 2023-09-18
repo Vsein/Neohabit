@@ -5,8 +5,8 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Overview from './pages/Overview';
-import Habits from './pages/Habits';
-import Project from './pages/Project';
+import Projects from './pages/Projects';
+import Habit from './pages/Habit';
 import Logout from './pages/Logout';
 import NotFound from './pages/404';
 import Landing from './pages/Landing';
@@ -14,12 +14,12 @@ import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
 import Stopwatch from './components/Stopwatch';
 import Sidebar from './components/Sidebar';
-import OverlayProject from './components/OverlayProject';
+import OverlayHabit from './components/OverlayHabit';
 import OverlayTask from './components/OverlayTask';
 import OverlayDelete from './components/OverlayDelete';
 import CellTip from './components/CellTip';
 import CellAdd from './state/features/cellAdd/CellAdd';
-import { useGetProjectsQuery } from './state/services/project';
+import { useGetHabitsQuery } from './state/services/habit';
 import { useGetTasksQuery } from './state/services/todolist';
 import { useGetStopwatchQuery } from './state/services/stopwatch';
 import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
@@ -49,8 +49,8 @@ const App = () => {
         <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
           <Route path="/dashboard/" element={<Overview />} />
           <Route path="/todo/*" element={<ToDoList />} />
-          <Route path="/habits/*" element={<Habits />} />
-          <Route path="/project/:projectID/*" element={<Project />} />
+          <Route path="/projects/*" element={<Projects />} />
+          <Route path="/habit/:habitID/*" element={<Habit />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
@@ -80,7 +80,7 @@ const PrivateRoutes = (params) => {
 
   useKeyPress(['Tab'], toggleSidebar);
 
-  const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const tasks = useGetTasksQuery();
 
   if (
@@ -106,11 +106,11 @@ const PrivateRoutes = (params) => {
       </div>
       <Stopwatch />
       <OverlayDelete />
-      {projects.isFetching || projects.isLoading || tasks.isFetching || tasks.isLoading ? (
+      {habits.isFetching || habits.isLoading || tasks.isFetching || tasks.isLoading ? (
         <> </>
       ) : (
         <>
-          <OverlayProject />
+          <OverlayHabit />
           <OverlayTask />
         </>
       )}

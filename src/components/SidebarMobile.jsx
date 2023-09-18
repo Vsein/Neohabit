@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 
 export default function SidebarMobile(props) {
-  const { filters, projects } = props;
+  const { filters, habits } = props;
 
   return (
     <aside className="sidebar-mobile">
@@ -12,7 +12,7 @@ export default function SidebarMobile(props) {
           <FilterMobile filter={filter} key={`filter-${i}`} />
         ))}
       </ul>
-      <ul className="projects-mobile"></ul>
+      <ul className="habits-mobile"></ul>
     </aside>
   );
 }

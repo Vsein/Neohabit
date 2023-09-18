@@ -1,39 +1,39 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useGetProjectsQuery, useDeleteProjectMutation } from '../../state/services/project';
-import { changeTo, open } from '../../state/features/projectOverlay/projectOverlaySlice';
+import { useGetHabitsQuery, useDeleteHabitMutation } from '../../state/services/habit';
+import { changeTo, open } from '../../state/features/habitOverlay/habitOverlaySlice';
 
 export default function Header() {
-  const { projectID } = useParams();
-  const project =
-    useGetProjectsQuery().data.find((projecto) => projecto._id == projectID) ??
-    useGetProjectsQuery().data.find((projecto) => projecto.name == 'Default');
-  const [deleteProject] = useDeleteProjectMutation();
+  const { habitID } = useParams();
+  const habit =
+    useGetHabitsQuery().data.find((habito) => habito._id == habitID) ??
+    useGetHabitsQuery().data.find((habito) => habito.name == 'Default');
+  const [deleteHabit] = useDeleteHabitMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const deleteThisProject = (e) => {
-    deleteProject(projectID);
+  const deleteThisHabit = (e) => {
+    deleteHabit(habitID);
     navigate('...');
     navigate('/dashboard');
   };
 
   return (
-    <div className="projectpage-header">
+    <div className="habitpage-header">
       <Link
         onClick={() => {
-          dispatch(changeTo(projectID));
+          dispatch(changeTo(habitID));
           dispatch(open());
         }}
       >
-        <Skill color={project.color} name={project.name} />
+        <Skill color={habit.color} name={habit.name} />
       </Link>
       <div className="welcome">
         <p className="hello">Hello there,</p>
         <p className="username">Serene Coder (&#64;Vsein)</p>
       </div>
-      <button className="dashboard-btn" id="new" onClick={deleteThisProject}>
+      <button className="dashboard-btn" id="new" onClick={deleteThisHabit}>
         Delete
       </button>
       <button className="dashboard-btn" id="upload">

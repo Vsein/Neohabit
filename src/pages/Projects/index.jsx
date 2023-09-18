@@ -2,17 +2,17 @@ import React from 'react';
 import useTitle from '../../hooks/useTitle';
 import useLoaded from '../../hooks/useLoaded';
 
-export default function Habits() {
-  useTitle('Habits | Neohabit');
+export default function Projects() {
+  useTitle('Projects | Neohabit');
   const [loaded] = useLoaded();
 
   return (
     loaded && (
-      <main className="habits">
-        <div className="habits-header">
-          <h3>Habits</h3>
+      <main className="projects">
+        <div className="projects-header">
+          <h3>Projects</h3>
         </div>
-        <ul className="habits-list">
+        <ul className="projects-list">
         </ul>
       </main>
     )

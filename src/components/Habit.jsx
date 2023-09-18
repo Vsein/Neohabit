@@ -7,16 +7,16 @@ import {
   endOfWeek,
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
-import ProjectControls from './ProjectComponents';
+import HabitControls from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
-export default function Project({ heatmap, project }) {
+export default function Habit({ heatmap, habit }) {
   const [loaded] = useLoaded();
   const settings = useGetSettingsQuery();
   const vertical = true;
@@ -43,7 +43,7 @@ export default function Project({ heatmap, project }) {
   const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 
   return (
-    <div className="overview-centering" style={{ '--projects': 7 }}>
+    <div className="overview-centering" style={{ '--habits': 7 }}>
       <div
         className={`overview-header ${datePeriodLength < 14 ? 'small' : ''}`}
         style={{ '--length': diffWeeks - 21 }}
@@ -55,10 +55,10 @@ export default function Project({ heatmap, project }) {
           dateEnd={dateEnd}
           setDateEnd={setDateEnd}
         />
-        <ProjectControls project={project} heatmap={heatmap} header={true} />
+        <HabitControls habit={habit} heatmap={heatmap} header={true} />
       </div>
       <div
-        className={`project-heatmap-container ${vertical ? 'vertical' : ''}`}
+        className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}
         style={{
           '--multiplier': 1,
           '--cell-height': '11px',
@@ -68,13 +68,13 @@ export default function Project({ heatmap, project }) {
           '--vertical': vertical * 1,
         }}
       >
-        <div className={`project-heatmap ${vertical ? 'vertical' : ''}`}>
+        <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>
           <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
           <HeatmapMonthsWeekly dateStart={dateStart} dateEnd={dateEnd} />
           <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
           <Heatmap
             heatmap={heatmap}
-            project={project}
+            habit={habit}
             dateStart={dateStart}
             dateEnd={dateEnd}
             vertical={vertical}

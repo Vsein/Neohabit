@@ -13,20 +13,20 @@ import {
   mdiPlus,
 } from '@mdi/js';
 import { useGetFiltersQuery } from '../state/services/todolist';
-import { useGetProjectsQuery } from '../state/services/project';
-import ProjectTag from './ProjectTag';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import { useGetHabitsQuery } from '../state/services/habit';
+import HabitTag from './HabitTag';
+import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Sidebar(props) {
-  const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const filters = useGetFiltersQuery();
   const dispatch = useDispatch();
   const { hidden } = props;
-  const [projectsCollapsed, setProjectsCollapsed] = useState(false);
+  const [habitsCollapsed, setHabitsCollapsed] = useState(false);
 
-  const toggleProjectsCollapsed = () => {
-    setProjectsCollapsed(!projectsCollapsed);
+  const toggleHabitsCollapsed = () => {
+    setHabitsCollapsed(!habitsCollapsed);
   };
 
   const openOverlay = () => {
@@ -56,9 +56,9 @@ export default function Sidebar(props) {
         />
         <NavigationSection
           path={mdiTrendingUp}
-          title="Habits"
+          title="Projects"
           status="raw"
-          to="/habits"
+          to="/projects"
           raw="true"
           num="3"
         />
@@ -67,28 +67,28 @@ export default function Sidebar(props) {
         <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
       </ul>
       <hr />
-      <ul className="projects">
-        <li className="projects-header">
-          <button className="centering" onClick={toggleProjectsCollapsed}>
+      <ul className="habits">
+        <li className="habits-header">
+          <button className="centering" onClick={toggleHabitsCollapsed}>
             <Icon
-              className={`icon projects-arrow ${projectsCollapsed ? '' : 'active'}`}
+              className={`icon habits-arrow ${habitsCollapsed ? '' : 'active'}`}
               path={mdiChevronDown}
             />
           </button>
-          <p>Projects</p>
-          <button className="centering add" onClick={openOverlay} title="Add project [A]">
+          <p>Habits</p>
+          <button className="centering add" onClick={openOverlay} title="Add habit [A]">
             <Icon path={mdiPlus} className="icon" />
           </button>
         </li>
-        <ul className={`projects-container ${projectsCollapsed ? '' : 'active'}`}>
-          {projects.isFetching ? (
-            <div className="projects-loader">
+        <ul className={`habits-container ${habitsCollapsed ? '' : 'active'}`}>
+          {habits.isFetching ? (
+            <div className="habits-loader">
               <div className="loader" />
             </div>
           ) : (
-            projects.data.map((project, i) => (
-              <li key={`project-${i}`}>
-                <Project project={project} />
+            habits.data.map((habit, i) => (
+              <li key={`habit-${i}`}>
+                <Habit habit={habit} />
               </li>
             ))
           )}
@@ -124,21 +124,21 @@ function NavigationSection(props) {
   );
 }
 
-function Project(props) {
-  const { project } = props;
+function Habit(props) {
+  const { habit } = props;
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
     <NavLink
-      className={({ isActive }) => (isActive ? 'project active' : 'project')}
-      to={`project/${linkify(project._id)}`}
+      className={({ isActive }) => (isActive ? 'habit active' : 'habit')}
+      to={`habit/${linkify(habit._id)}`}
       style={{
-        backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
+        backgroundColor: ({ isActive }) => (isActive ? `${habit.color}33` : ''),
       }}
-      title={project.name}
+      title={habit.name}
     >
-      <ProjectTag project={project} />
+      <HabitTag habit={habit} />
     </NavLink>
   );
 }
