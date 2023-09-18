@@ -58,7 +58,7 @@ export default function Overview() {
 
   if (!loaded || habits.isFetching || heatmaps.isFetching) {
     return (
-      <div className="overview-loader cetering">
+      <div className="overview-loader centering">
         <div className="loader" />
       </div>
     );
