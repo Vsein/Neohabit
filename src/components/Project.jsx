@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from '@mdi/react';
 import {
   mdiMenuLeft,
@@ -31,8 +31,10 @@ import { YearPicker, DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import HabitControls from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
+import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
 export default function Project({ project }) {
+  const { theme } = useSelector((state) => state.theme);
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
   const vertical = false;
@@ -52,9 +54,15 @@ export default function Project({ project }) {
     dispatch(open());
     dispatch(changeTo(''));
   };
+  const colorShade = mixColors(
+    theme === 'light' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 },
+    hexToRgb(project.color),
+    theme === 'light' ? 0.7 : 0.5,
+  );
 
   return (
-    !heatmaps.isFetching && !habits.isFetching && (
+    !heatmaps.isFetching &&
+    !habits.isFetching && (
       <div
         className="overview-centering"
         style={{
@@ -65,6 +73,8 @@ export default function Project({ project }) {
           '--multiplier': 1,
           '--cell-height': '15px',
           '--cell-width': '15px',
+          '--signature-color': colorShade,
+          '--bright-signature-color': colorShade,
         }}
       >
         <div
@@ -130,25 +140,27 @@ export default function Project({ project }) {
               </button>
             </div>
             <div className="overview-habits">
-              {project.habits.map((habit, i) => habit?._id ? (
-                <OverviewHabit
-                  key={i}
-                  habit={habit}
-                  dateStart={dateStart}
-                  dateEnd={dateEnd}
-                  heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
-                  vertical={vertical}
-                />
-              ) : (
-                <OverviewHabit
-                  key={i}
-                  habit={habits.data.find((habito) => habito._id === habit)}
-                  dateStart={dateStart}
-                  dateEnd={dateEnd}
-                  heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
-                  vertical={vertical}
-                />
-              ))}
+              {project.habits.map((habit, i) =>
+                habit?._id ? (
+                  <OverviewHabit
+                    key={i}
+                    habit={habit}
+                    dateStart={dateStart}
+                    dateEnd={dateEnd}
+                    heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
+                    vertical={vertical}
+                  />
+                ) : (
+                  <OverviewHabit
+                    key={i}
+                    habit={habits.data.find((habito) => habito._id === habit)}
+                    dateStart={dateStart}
+                    dateEnd={dateEnd}
+                    heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
+                    vertical={vertical}
+                  />
+                ),
+              )}
             </div>
             {vertical && (
               <button
