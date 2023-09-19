@@ -78,7 +78,7 @@ export default function Project({ project }) {
             datePeriodLength < 14 ? 'small' : ''
           }`}
         >
-          <h3 style={{color: colorShade}}>{project?.name}</h3>
+          <h3 style={{ color: colorShade }}>{project?.name}</h3>
           <DatePeriodPicker
             dateStart={dateStart}
             setDateStart={setDateStart}
@@ -136,27 +136,30 @@ export default function Project({ project }) {
               </button>
             </div>
             <div className="overview-habits">
-              {project.habits.map((habit, i) =>
-                habit?._id ? (
-                  <OverviewHabit
-                    key={i}
-                    habit={habit}
-                    dateStart={dateStart}
-                    dateEnd={dateEnd}
-                    heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
-                    vertical={vertical}
-                  />
-                ) : (
-                  <OverviewHabit
-                    key={i}
-                    habit={habits.data.find((habito) => habito._id === habit)}
-                    dateStart={dateStart}
-                    dateEnd={dateEnd}
-                    heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
-                    vertical={vertical}
-                  />
-                ),
-              )}
+              {project.habits &&
+                project.habits.map((habit, i) =>
+                  habit?._id ? (
+                    <OverviewHabit
+                      key={i}
+                      habit={habit}
+                      dateStart={dateStart}
+                      dateEnd={dateEnd}
+                      heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
+                      vertical={vertical}
+                    />
+                  ) : (
+                    habits.data.find((habito) => habito._id === habit) && (
+                      <OverviewHabit
+                        key={i}
+                        habit={habits.data.find((habito) => habito._id === habit)}
+                        dateStart={dateStart}
+                        dateEnd={dateEnd}
+                        heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
+                        vertical={vertical}
+                      />
+                    )
+                  ),
+                )}
             </div>
             {vertical && (
               <button

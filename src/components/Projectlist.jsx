@@ -35,9 +35,11 @@ export default function Overview() {
     name: 'Default',
     color: '#8a8a8a',
     habits: habits.data.filter((habit) => {
-      const found = projects.data.find((project) =>
-        project.habits.find((projectHabitID) => habit._id === projectHabitID),
-      );
+      const found =
+        projects.data &&
+        projects.data.find((project) =>
+          project.habits.find((projectHabitID) => habit._id === projectHabitID),
+        );
       return found === -1 || found === undefined;
     }),
   };
@@ -45,11 +47,11 @@ export default function Overview() {
 
   return (
     <div className="contentlist">
-      {projects.data.map((project, i) => (
+      {projects.data && projects.data.map((project, i) => (
         <Project key={i} project={project} />
       ))}
       <Project project={defaultProject} />
-      <div className="overview-centering" style={{'--length': 46}}>
+      <div className="overview-centering" style={{ '--length': 46 }}>
         <button
           className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
           onClick={openOverlay}
