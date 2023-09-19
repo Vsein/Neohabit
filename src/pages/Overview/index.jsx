@@ -8,7 +8,9 @@ export default function Dashboard() {
   return (
     <div id="content-overview">
       <div className="overview-controls"></div>
-      <Overview />
+      <div className="contentlist">
+        <Overview />
+      </div>
     </div>
   );
 }

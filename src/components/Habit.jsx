@@ -1,11 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  addHours,
-  differenceInWeeks,
-  startOfWeek,
-  endOfWeek,
-} from 'date-fns';
+import { addHours, differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
@@ -43,11 +38,8 @@ export default function Habit({ heatmap, habit }) {
   const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 
   return (
-    <div className="overview-centering" style={{ '--habits': 7 }}>
-      <div
-        className={`overview-header ${datePeriodLength < 14 ? 'small' : ''}`}
-        style={{ '--length': diffWeeks - 21 }}
-      >
+    <div className="overview-centering" style={{ '--habits': 7, '--length': diffWeeks - 21 }}>
+      <div className={`overview-header ${datePeriodLength < 14 ? 'small' : ''}`}>
         <h3>Heatmap</h3>
         <DatePeriodPicker
           dateStart={dateStart}

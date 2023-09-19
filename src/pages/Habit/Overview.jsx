@@ -18,9 +18,11 @@ export default function HabitOverview() {
   return tasks.isFetching || habits.isFetching || heatmaps.isFetching ? (
     <> </>
   ) : (
-    <Habit
-      heatmap={heatmap}
-      habit={habit}
-    />
+    <div className="contentlist">
+      <Habit
+        heatmap={heatmap}
+        habit={habit}
+      />
+    </div>
   );
 }

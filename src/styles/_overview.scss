@@ -4,6 +4,16 @@ $cell-height: 11px;
 $cell-width: 11px;
 $cell-margin: 2px;
 
+.contentlist {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  height: min-content;
+  width: 100%;
+  gap: 30px;
+  padding: 30px;
+}
+
 .overview-controls {
   background-color: var(--main-background-color);
   display: flex;
@@ -17,9 +27,6 @@ $cell-margin: 2px;
   direction: rtl;
   position: relative;
   overflow-y: hidden;
-  background-color: var(--main-background-color);
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
   padding-right: 5px;
   height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 10px));
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
@@ -35,8 +42,11 @@ $cell-margin: 2px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 30px;
-  gap: 5px;
+  gap: 2px;
+  background-color: var(--main-background-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
 }
 
 .overview-loader {
@@ -213,8 +223,8 @@ $cell-margin: 2px;
 
 .overview-habit-add {
   background-color: var(--secondary-background-color);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-top: 1px solid var(--border-color);
+  border-radius: 0px 0px 10px 10px;
   display: grid;
   grid-template-columns: 30px 1fr 30px;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
@@ -229,8 +239,8 @@ $cell-margin: 2px;
 
 .overview-header {
   background-color: var(--main-background-color);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 10px 10px 0px 0px;
   display: grid;
   padding-inline: 5px;
   grid-template-areas: 'name date settings';

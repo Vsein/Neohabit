@@ -44,7 +44,7 @@ export default function Overview() {
   console.log(defaultProject);
 
   return (
-    <div>
+    <div className="contentlist">
       {projects.data.map((project, i) => (
         <Project key={i} project={project} />
       ))}
