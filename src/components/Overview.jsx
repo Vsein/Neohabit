@@ -28,7 +28,7 @@ import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
-import HabitControls from './HabitComponents';
+import { HabitControls, HabitAddButton } from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
@@ -48,13 +48,6 @@ export default function Overview() {
   ] = useDatePeriod(datePeriodLength - 1);
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
-
-  const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo(''));
-  };
-  useKeyPress(['a'], openOverlay);
 
   if (!loaded || habits.isFetching || heatmaps.isFetching) {
     return (
@@ -156,14 +149,7 @@ export default function Overview() {
           )}
         </div>
       </div>
-      <button
-        className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
-        onClick={openOverlay}
-        title="Add a new habit [A]"
-      >
-        <Icon className="icon small" path={mdiPlus} />
-        <p>Add a new habit</p>
-      </button>
+      <HabitAddButton vertical={vertical} />
     </div>
   );
 }

@@ -14,6 +14,7 @@ import {
   mdiCalendarRefresh,
   mdiCog,
   mdiPlus,
+  mdiPencil,
 } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
@@ -29,7 +30,7 @@ import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
-import HabitControls from './HabitComponents';
+import { HabitControls, HabitAddButton } from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
@@ -49,11 +50,6 @@ export default function Project({ project }) {
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
 
-  const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo(''));
-  };
   const colorShade = mixColors(
     theme === 'light' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 },
     hexToRgb(project.color),
@@ -173,14 +169,7 @@ export default function Project({ project }) {
             )}
           </div>
         </div>
-        <button
-          className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
-          onClick={openOverlay}
-          title="Add a new habit [A]"
-        >
-          <Icon className="icon small" path={mdiPlus} />
-          <p>Add a new habit</p>
-        </button>
+        <HabitAddButton vertical={vertical} />
       </div>
     )
   );

@@ -9,14 +9,16 @@ import {
   mdiTimer,
   mdiCheckboxMarked,
   mdiViewGridPlusOutline,
+  mdiPlus,
 } from '@mdi/js';
 import { useDeleteHabitMutation } from '../state/services/habit';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
+import useKeyPress from '../hooks/useKeyPress';
 
-export default function HabitControls({ habit, heatmap, header }) {
+function HabitControls({ habit, heatmap, header }) {
   const [deleteHabit] = useDeleteHabitMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
@@ -88,13 +90,31 @@ export default function HabitControls({ habit, heatmap, header }) {
       >
         <Icon path={mdiPencil} />
       </Link>
-      <button
-        className="overview-habit-button"
-        onClick={deleteChosenHabit}
-        title="Delete habit"
-      >
+      <button className="overview-habit-button" onClick={deleteChosenHabit} title="Delete habit">
         <Icon path={mdiDelete} />
       </button>
     </div>
   );
 }
+
+function HabitAddButton({ vertical }) {
+  const dispatch = useDispatch();
+  const openOverlay = () => {
+    dispatch(open());
+    dispatch(changeTo(''));
+  };
+  useKeyPress(['a'], openOverlay);
+
+  return (
+    <button
+      className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
+      onClick={openOverlay}
+      title="Add a new habit [A]"
+    >
+      <Icon className="icon small" path={mdiPlus} />
+      <p>Add a new habit</p>
+    </button>
+  );
+}
+
+export { HabitControls, HabitAddButton };

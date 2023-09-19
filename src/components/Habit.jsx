@@ -8,7 +8,7 @@ import useDatePeriod from '../hooks/useDatePeriod';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
-import HabitControls from './HabitComponents';
+import { HabitControls } from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Habit({ heatmap, habit }) {
