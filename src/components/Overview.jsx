@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
   mdiMenuLeft,
@@ -13,7 +12,6 @@ import {
   mdiCalendarStart,
   mdiCalendarRefresh,
   mdiCog,
-  mdiPlus,
 } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
@@ -22,13 +20,11 @@ import {
   useGetSettingsQuery,
   useChangeOverviewOrientationMutation,
 } from '../state/services/settings';
-import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
-import Heatmap from './Heatmap';
-import { HabitControls, HabitAddButton } from './HabitComponents';
+import { HabitOverview, HabitAddButton } from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
@@ -84,7 +80,7 @@ export default function Overview() {
           subPeriod={subPeriod}
           addPeriod={addPeriod}
         />
-        <OverviewSettings vertical={vertical} />
+        <OverviewControls vertical={vertical} />
       </div>
       <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
         <div className={`overview ${vertical ? 'vertical' : ''}`}>
@@ -128,7 +124,7 @@ export default function Overview() {
           </div>
           <div className="overview-habits">
             {habits.data.map((habit, i) => (
-              <OverviewHabit
+              <HabitOverview
                 key={i}
                 habit={habit}
                 dateStart={dateStart}
@@ -154,32 +150,7 @@ export default function Overview() {
   );
 }
 
-function OverviewHabit({ dateStart, dateEnd, habit, heatmap, vertical }) {
-  const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
-
-  return (
-    <div className="overview-habit">
-      <NavLink
-        className="overview-habit-name"
-        to={`../habit/${linkify(habit._id)}`}
-        title={habit.name}
-      >
-        {habit.name}
-      </NavLink>
-      <Heatmap
-        heatmap={heatmap}
-        habit={habit}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-        vertical={vertical}
-        isOverview={true}
-      />
-      <HabitControls habit={habit} heatmap={heatmap} />
-    </div>
-  );
-}
-
-function OverviewSettings({ vertical }) {
+function OverviewControls({ vertical }) {
   const [changeOverview] = useChangeOverviewOrientationMutation();
 
   return (

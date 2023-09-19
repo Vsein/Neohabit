@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
@@ -17,6 +17,7 @@ import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import useKeyPress from '../hooks/useKeyPress';
+import Heatmap from './Heatmap';
 
 function HabitControls({ habit, heatmap, header }) {
   const [deleteHabit] = useDeleteHabitMutation();
@@ -97,6 +98,31 @@ function HabitControls({ habit, heatmap, header }) {
   );
 }
 
+function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical }) {
+  const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
+
+  return (
+    <div className="overview-habit">
+      <NavLink
+        className="overview-habit-name"
+        to={`../habit/${linkify(habit._id)}`}
+        title={habit.name}
+      >
+        {habit.name}
+      </NavLink>
+      <Heatmap
+        heatmap={heatmap}
+        habit={habit}
+        dateStart={dateStart}
+        dateEnd={dateEnd}
+        vertical={vertical}
+        isOverview={true}
+      />
+      <HabitControls habit={habit} heatmap={heatmap} />
+    </div>
+  );
+}
+
 function HabitAddButton({ vertical }) {
   const dispatch = useDispatch();
   const openOverlay = () => {
@@ -117,4 +143,4 @@ function HabitAddButton({ vertical }) {
   );
 }
 
-export { HabitControls, HabitAddButton };
+export { HabitControls, HabitOverview, HabitAddButton };

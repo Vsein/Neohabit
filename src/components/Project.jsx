@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from '@mdi/react';
 import {
@@ -7,30 +6,19 @@ import {
   mdiMenuRight,
   mdiMenuUp,
   mdiMenuDown,
-  mdiCalendarText,
-  mdiCalendarWeekend,
   mdiCalendarEnd,
   mdiCalendarStart,
   mdiCalendarRefresh,
-  mdiCog,
-  mdiPlus,
   mdiPencil,
 } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import {
-  useGetSettingsQuery,
-  useChangeOverviewOrientationMutation,
-} from '../state/services/settings';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
-import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
-import Heatmap from './Heatmap';
-import { HabitControls, HabitAddButton } from './HabitComponents';
+import { HabitOverview, HabitAddButton } from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
@@ -87,7 +75,7 @@ export default function Project({ project }) {
             subPeriod={subPeriod}
             addPeriod={addPeriod}
           />
-          <OverviewSettings projectID={project?._id} />
+          <ProjectControls projectID={project?._id} />
         </div>
         <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
           <div className={`overview ${vertical ? 'vertical' : ''}`}>
@@ -139,7 +127,7 @@ export default function Project({ project }) {
               {project.habits &&
                 project.habits.map((habit, i) =>
                   habit?._id ? (
-                    <OverviewHabit
+                    <HabitOverview
                       key={i}
                       habit={habit}
                       dateStart={dateStart}
@@ -149,7 +137,7 @@ export default function Project({ project }) {
                     />
                   ) : (
                     habits.data.find((habito) => habito._id === habit) && (
-                      <OverviewHabit
+                      <HabitOverview
                         key={i}
                         habit={habits.data.find((habito) => habito._id === habit)}
                         dateStart={dateStart}
@@ -178,32 +166,7 @@ export default function Project({ project }) {
   );
 }
 
-function OverviewHabit({ dateStart, dateEnd, habit, heatmap, vertical }) {
-  const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
-
-  return (
-    <div className="overview-habit">
-      <NavLink
-        className="overview-habit-name"
-        to={`../habit/${linkify(habit._id)}`}
-        title={habit.name}
-      >
-        {habit.name}
-      </NavLink>
-      <Heatmap
-        heatmap={heatmap}
-        habit={habit}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-        vertical={vertical}
-        isOverview={true}
-      />
-      <HabitControls habit={habit} heatmap={heatmap} />
-    </div>
-  );
-}
-
-function OverviewSettings({ projectID }) {
+function ProjectControls({ projectID }) {
   const dispatch = useDispatch();
   const openOverlay = () => {
     dispatch(open());
