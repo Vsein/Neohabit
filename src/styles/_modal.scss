@@ -112,18 +112,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--button-bg-color);
   padding-inline: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   gap: 10px;
-  transition: background-color 0.3s;
+  transition: background-color 0.1s;
+  cursor: pointer;
 
   &:hover {
-    background-color: var(--button-bg-lighter-color);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   &.active {
-    background-color: var(--transparent-bg-color);
+    background-color: var(--button-bg-lighter-color);
   }
 }
 

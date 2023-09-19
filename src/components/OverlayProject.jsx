@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Field } from 'react-final-form';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
@@ -29,6 +29,10 @@ export default function OverlayProject() {
   const [createProject] = useCreateProjectMutation();
   const [updateProject] = useUpdateProjectMutation();
 
+  useEffect(() => {
+    setProjectHabitList(project.habits);
+  }, [projectID]);
+
   const closeOverlay = (e) => {
     e.stopPropagation();
     dispatch(close());
@@ -40,7 +44,7 @@ export default function OverlayProject() {
     if (project.name == '') {
       await createProject({ ...values, habits: projectHabitList });
     } else {
-      await updateProject({ projectID, values });
+      await updateProject({ projectID, values: { ...values, habits: projectHabitList } });
     }
     setProjectHabitList([]);
     dispatch(close());
@@ -160,7 +164,7 @@ export default function OverlayProject() {
                   className="form-button"
                   id="submit-form-button"
                   type="submit"
-                  disabled={submitting || pristine}
+                  disabled={submitting}
                 >
                   {project ? 'Save' : 'Add project'}
                 </button>

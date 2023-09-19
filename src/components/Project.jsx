@@ -24,7 +24,7 @@ import {
   useGetSettingsQuery,
   useChangeOverviewOrientationMutation,
 } from '../state/services/settings';
-import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
+import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -78,7 +78,7 @@ export default function Project({ project }) {
             datePeriodLength < 14 ? 'small' : ''
           }`}
         >
-          <h3>{project?.name}</h3>
+          <h3 style={{color: colorShade}}>{project?.name}</h3>
           <DatePeriodPicker
             dateStart={dateStart}
             setDateStart={setDateStart}
@@ -87,7 +87,7 @@ export default function Project({ project }) {
             subPeriod={subPeriod}
             addPeriod={addPeriod}
           />
-          <OverviewSettings vertical={vertical} />
+          <OverviewSettings projectID={project?._id} />
         </div>
         <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
           <div className={`overview ${vertical ? 'vertical' : ''}`}>
@@ -200,32 +200,22 @@ function OverviewHabit({ dateStart, dateEnd, habit, heatmap, vertical }) {
   );
 }
 
-function OverviewSettings({ vertical }) {
-  const [changeOverview] = useChangeOverviewOrientationMutation();
+function OverviewSettings({ projectID }) {
+  const dispatch = useDispatch();
+  const openOverlay = () => {
+    dispatch(open());
+    dispatch(changeTo(projectID));
+  };
 
   return (
     <div className="overview-settings">
       <button
-        className={`overview-open-settings ${vertical ? '' : 'active'}`}
-        onClick={() => changeOverview(false)}
+        className="overview-open-settings active"
+        onClick={openOverlay}
         title="Change to horizontal orientation"
       >
-        <Icon path={mdiCalendarText} className="icon small centering" />
+        <Icon path={mdiPencil} className="icon small centering" />
       </button>
-      <button
-        className={`overview-open-settings ${vertical ? 'active' : ''}`}
-        onClick={() => changeOverview(true)}
-        title="Change to vertical orientation"
-      >
-        <Icon path={mdiCalendarWeekend} className="icon small centering" />
-      </button>
-      <NavLink
-        className="overview-open-settings"
-        to="/settings#overview"
-        title="Open overview settings"
-      >
-        <Icon path={mdiCog} className="icon small centering" />
-      </NavLink>
     </div>
   );
 }
