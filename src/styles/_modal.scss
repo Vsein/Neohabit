@@ -95,6 +95,38 @@
   cursor: pointer;
 }
 
+.form-split {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+.form-habits {
+  padding: 5px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.form-chooser {
+  height: min-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--button-bg-color);
+  padding-inline: 10px 15px;
+  border-radius: 10px;
+  gap: 10px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: var(--button-bg-lighter-color);
+  }
+
+  &.active {
+    background-color: var(--transparent-bg-color);
+  }
+}
+
 #cancel-form-button {
   margin-left: auto;
   color: var(--support-color);

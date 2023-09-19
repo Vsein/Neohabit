@@ -5,6 +5,7 @@ import authApi from './services/auth';
 import habitOverlayReducer from './features/habitOverlay/habitOverlaySlice';
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
 import deleteOverlayReducer from './features/deleteOverlay/deleteOverlaySlice';
+import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
 import cellTipReducer from './features/cellTip/cellTipSlice';
 import themeReducer, { changeTheme } from './features/theme/themeSlice';
@@ -15,6 +16,7 @@ const combinedReducer = combineReducers({
   habitOverlay: habitOverlayReducer,
   taskOverlay: taskOverlayReducer,
   deleteOverlay: deleteOverlayReducer,
+  projectOverlay: projectOverlayReducer,
   cellAdd: cellAddReducer,
   cellTip: cellTipReducer,
   theme: themeReducer,

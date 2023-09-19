@@ -16,11 +16,13 @@ import Stopwatch from './components/Stopwatch';
 import Sidebar from './components/Sidebar';
 import OverlayHabit from './components/OverlayHabit';
 import OverlayTask from './components/OverlayTask';
+import OverlayProject from './components/OverlayProject';
 import OverlayDelete from './components/OverlayDelete';
 import CellTip from './components/CellTip';
 import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetHabitsQuery } from './state/services/habit';
 import { useGetTasksQuery } from './state/services/todolist';
+import { useGetProjectsQuery } from './state/services/project';
 import { useGetStopwatchQuery } from './state/services/stopwatch';
 import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
 // import SidebarMobile from './components/SidebarMobile';
@@ -82,6 +84,7 @@ const PrivateRoutes = (params) => {
 
   const habits = useGetHabitsQuery();
   const tasks = useGetTasksQuery();
+  const projects = useGetProjectsQuery();
 
   if (
     settings.isFetching ||
@@ -106,12 +109,19 @@ const PrivateRoutes = (params) => {
       </div>
       <Stopwatch />
       <OverlayDelete />
-      {habits.isFetching || habits.isLoading || tasks.isFetching || tasks.isLoading ? (
+      {habits.isFetching ||
+      habits.isLoading ||
+      tasks.isFetching ||
+      tasks.isLoading ||
+      projects.isFetching ||
+      projects.isLoading
+        ? (
         <> </>
       ) : (
         <>
           <OverlayHabit />
           <OverlayTask />
+          <OverlayProject />
         </>
       )}
     </>
