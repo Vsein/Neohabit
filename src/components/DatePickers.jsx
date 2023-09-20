@@ -1,7 +1,13 @@
 import React from 'react';
 import Icon from '@mdi/react';
 import { formatISO, startOfDay, getYear } from 'date-fns';
-import { mdiMenuLeft, mdiMenuRight } from '@mdi/js';
+import {
+  mdiMenuLeft,
+  mdiMenuRight,
+  mdiCalendarEnd,
+  mdiCalendarStart,
+  mdiCalendarRefresh,
+} from '@mdi/js';
 
 function YearPicker({ subYear, addYear, dateStart }) {
   return (
@@ -49,4 +55,48 @@ function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPer
   );
 }
 
-export { YearPicker, DatePeriodPicker };
+function DatePeriodControls({
+  vertical,
+  subYear,
+  addYear,
+  dateStart,
+  addMonth,
+  setToPast,
+  reset,
+  setToFuture,
+}) {
+  return (
+    <div className="overview-topbar-right">
+      {vertical ? (
+        <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
+      ) : (
+        <button className="centering" onClick={addMonth} title="Move month to the right [L]">
+          <Icon path={mdiMenuRight} className="icon" />
+        </button>
+      )}
+      <button
+        className="overview-period-end"
+        onClick={setToPast}
+        title="Set today as the period end"
+      >
+        <Icon path={mdiCalendarEnd} className="icon small centering" />
+      </button>
+      <button
+        className="overview-period-start"
+        onClick={reset}
+        title="Reset date period to preferred defaults"
+      >
+        <Icon path={mdiCalendarRefresh} className="icon small centering" />
+      </button>
+      <button
+        className="overview-period-start"
+        onClick={setToFuture}
+        title="Set today as the period start"
+      >
+        <Icon path={mdiCalendarStart} className="icon small centering" />
+      </button>
+    </div>
+  );
+}
+
+export { YearPicker, DatePeriodPicker, DatePeriodControls };

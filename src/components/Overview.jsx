@@ -3,14 +3,10 @@ import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
   mdiMenuLeft,
-  mdiMenuRight,
   mdiMenuUp,
   mdiMenuDown,
   mdiCalendarText,
   mdiCalendarWeekend,
-  mdiCalendarEnd,
-  mdiCalendarStart,
-  mdiCalendarRefresh,
   mdiCog,
 } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
@@ -23,7 +19,7 @@ import {
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, DatePeriodPicker } from './DatePickers';
+import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
@@ -92,36 +88,16 @@ export default function Overview() {
           </div>
           <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
           <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-          <div className="overview-topbar-right">
-            {vertical ? (
-              <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
-            ) : (
-              <button className="centering" onClick={addMonth} title="Move month to the right [L]">
-                <Icon path={mdiMenuRight} className="icon" />
-              </button>
-            )}
-            <button
-              className="overview-period-end"
-              onClick={setToPast}
-              title="Set today as the period end"
-            >
-              <Icon path={mdiCalendarEnd} className="icon small centering" />
-            </button>
-            <button
-              className="overview-period-start"
-              onClick={reset}
-              title="Reset date period to preferred defaults"
-            >
-              <Icon path={mdiCalendarRefresh} className="icon small centering" />
-            </button>
-            <button
-              className="overview-period-start"
-              onClick={setToFuture}
-              title="Set today as the period start"
-            >
-              <Icon path={mdiCalendarStart} className="icon small centering" />
-            </button>
-          </div>
+          <DatePeriodControls
+            vertical={vertical}
+            dateStart={dateStart}
+            subYear={subYear}
+            addYear={addYear}
+            addMonth={addMonth}
+            setToPast={setToPast}
+            reset={reset}
+            setToFuture={setToFuture}
+          />
           <div className="overview-habits">
             {habits.data.map((habit, i) => (
               <HabitOverview

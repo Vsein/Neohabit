@@ -1,23 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from '@mdi/react';
-import {
-  mdiMenuLeft,
-  mdiMenuRight,
-  mdiMenuUp,
-  mdiMenuDown,
-  mdiCalendarEnd,
-  mdiCalendarStart,
-  mdiCalendarRefresh,
-  mdiPencil,
-} from '@mdi/js';
+import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, DatePeriodPicker } from './DatePickers';
+import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
@@ -89,40 +80,16 @@ export default function Project({ project }) {
             </div>
             <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
             <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-            <div className="overview-topbar-right">
-              {vertical ? (
-                <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
-              ) : (
-                <button
-                  className="centering"
-                  onClick={addMonth}
-                  title="Move month to the right [L]"
-                >
-                  <Icon path={mdiMenuRight} className="icon" />
-                </button>
-              )}
-              <button
-                className="overview-period-end"
-                onClick={setToPast}
-                title="Set today as the period end"
-              >
-                <Icon path={mdiCalendarEnd} className="icon small centering" />
-              </button>
-              <button
-                className="overview-period-start"
-                onClick={reset}
-                title="Reset date period to preferred defaults"
-              >
-                <Icon path={mdiCalendarRefresh} className="icon small centering" />
-              </button>
-              <button
-                className="overview-period-start"
-                onClick={setToFuture}
-                title="Set today as the period start"
-              >
-                <Icon path={mdiCalendarStart} className="icon small centering" />
-              </button>
-            </div>
+            <DatePeriodControls
+              vertical={vertical}
+              dateStart={dateStart}
+              subYear={subYear}
+              addYear={addYear}
+              addMonth={addMonth}
+              setToPast={setToPast}
+              reset={reset}
+              setToFuture={setToFuture}
+            />
             <div className="overview-habits">
               {project.habits &&
                 project.habits.map((habit, i) =>
