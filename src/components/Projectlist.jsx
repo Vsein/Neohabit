@@ -29,11 +29,10 @@ export default function Overview() {
       </div>
     );
   }
-  console.log(projects.data);
 
   const defaultProject = {
     name: 'Default',
-    color: '#8a8a8a',
+    color: '#eeeeee',
     habits: habits.data.filter((habit) => {
       const found =
         projects.data &&
@@ -42,8 +41,8 @@ export default function Overview() {
         );
       return found === -1 || found === undefined;
     }),
+    _id: 'Default',
   };
-  console.log(defaultProject);
 
   return (
     <div className="contentlist">

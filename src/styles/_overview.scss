@@ -278,6 +278,10 @@ $cell-margin: 2px;
     &:hover {
       opacity: 0.5;
     }
+
+    &[disabled] {
+      opacity: 1;
+    }
   }
 }
 

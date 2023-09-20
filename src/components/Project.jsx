@@ -33,7 +33,7 @@ export default function Project({ project }) {
   const colorShade = mixColors(
     theme === 'light' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 },
     hexToRgb(project.color),
-    theme === 'light' ? 0.7 : 0.5,
+    theme === 'light' ? 0.8 : 0.6,
   );
 
   return (
@@ -146,7 +146,7 @@ function ProjectControls({ projectID }) {
     deleteProject(projectID);
   };
 
-  return (
+  return projectID !== 'Default' && (
     <div className="overview-settings">
       <button
         className="overview-open-settings active"
