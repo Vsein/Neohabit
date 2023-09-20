@@ -38,7 +38,18 @@ export default function Habit({ heatmap, habit }) {
   const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 
   return (
-    <div className="overview-centering" style={{ '--habits': 7, '--length': diffWeeks - 21 }}>
+    <div
+      className="overview-centering"
+      style={{
+        '--habits': 7,
+        '--length': diffWeeks - 21,
+        '--multiplier': 1,
+        '--cell-height': '11px',
+        '--cell-width': '11px',
+        '--weeks': diffWeeks - 1,
+        '--vertical': vertical * 1,
+      }}
+    >
       <div className={`overview-header ${datePeriodLength < 14 ? 'small' : ''}`}>
         <h3>Heatmap</h3>
         <DatePeriodPicker
@@ -49,17 +60,7 @@ export default function Habit({ heatmap, habit }) {
         />
         <HabitControls habit={habit} heatmap={heatmap} header={true} />
       </div>
-      <div
-        className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}
-        style={{
-          '--multiplier': 1,
-          '--cell-height': '11px',
-          '--cell-width': '11px',
-          '--length': diffWeeks,
-          '--weeks': diffWeeks - 1,
-          '--vertical': vertical * 1,
-        }}
-      >
+      <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
         <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>
           <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
           <HeatmapMonthsWeekly dateStart={dateStart} dateEnd={dateEnd} />
