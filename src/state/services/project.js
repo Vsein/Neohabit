@@ -1,5 +1,4 @@
 import api from './api';
-import { heatmapApi } from './heatmap';
 
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -39,6 +38,20 @@ export const projectApi = api.injectEndpoints({
               project.description = values.description;
               project.habits = values.habits;
             }
+          }),
+        );
+      },
+    }),
+    deleteProject: builder.mutation({
+      query: (projectID) => ({
+        url: `project/${projectID}`,
+        method: 'DELETE',
+      }),
+      onQueryStarted(projectID, { dispatch }) {
+        const patchResult = dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            const index = draft.findIndex((project) => project._id === projectID);
+            draft.splice(index, 1);
           }),
         );
       },

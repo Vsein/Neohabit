@@ -274,6 +274,10 @@ $cell-margin: 2px;
 
   .overview-open-settings.active {
     color: var(--bright-signature-color);
+
+    &:hover {
+      opacity: 0.5;
+    }
   }
 }
 

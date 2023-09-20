@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from '@mdi/react';
-import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil } from '@mdi/js';
+import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
+import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -140,14 +141,26 @@ function ProjectControls({ projectID }) {
     dispatch(changeTo(projectID));
   };
 
+  const [deleteProject] = useDeleteProjectMutation();
+  const deleteChosenProject = () => {
+    deleteProject(projectID);
+  };
+
   return (
     <div className="overview-settings">
       <button
         className="overview-open-settings active"
         onClick={openOverlay}
-        title="Change to horizontal orientation"
+        title="Edit the project"
       >
         <Icon path={mdiPencil} className="icon small centering" />
+      </button>
+      <button
+        className="overview-open-settings active"
+        onClick={deleteChosenProject}
+        title="Delete the project"
+      >
+        <Icon path={mdiDelete} className="icon small centering" />
       </button>
     </div>
   );
