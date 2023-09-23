@@ -41,7 +41,7 @@ export default function Overview() {
         );
       return found === -1 || found === undefined;
     }),
-    _id: 'Default',
+    _id: '',
   };
 
   return (

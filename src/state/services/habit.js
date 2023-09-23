@@ -1,5 +1,6 @@
 import api from './api';
 import { heatmapApi } from './heatmap';
+import { projectApi } from './project';
 
 export const habitApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -29,6 +30,14 @@ export const habitApi = api.injectEndpoints({
         dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
             draft.push(res.data.heatmap);
+          }),
+        );
+        dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            const project = draft.find((projecto) => projecto._id === values.projectID);
+            if (project) {
+              project.habits = [ ...project.habits, res.data.habit._id ];
+            }
           }),
         );
       },

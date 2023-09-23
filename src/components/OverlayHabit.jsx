@@ -16,7 +16,7 @@ import useKeyPress from '../hooks/useKeyPress';
 
 export default function OverlayHabit() {
   const dispatch = useDispatch();
-  const { isActive, habitID } = useSelector((state) => state.habitOverlay);
+  const { isActive, habitID, projectID } = useSelector((state) => state.habitOverlay);
   const { data: habits, isFetching, isLoading } = useGetHabitsQuery();
   const habit = habits.find((habito) => habito._id == habitID) ?? {
     name: '',
@@ -35,7 +35,7 @@ export default function OverlayHabit() {
 
   const onSubmit = async (values) => {
     if (habit.name == '') {
-      await createHabit(values);
+      await createHabit({ ...values, projectID });
     } else {
       await updateHabit({ habitID, values });
     }

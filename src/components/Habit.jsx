@@ -1,8 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { addHours, differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
-import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
@@ -27,13 +25,6 @@ export default function Habit({ heatmap, habit }) {
 
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
-
-  const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo(''));
-  };
-  useKeyPress(['a'], openOverlay);
 
   const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 

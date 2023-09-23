@@ -23,7 +23,7 @@ export default function Header() {
     <div className="habitpage-header">
       <Link
         onClick={() => {
-          dispatch(changeTo(habitID));
+          dispatch(changeTo({ habitID, projectID: '' }));
           dispatch(open());
         }}
       >

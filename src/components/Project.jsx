@@ -128,7 +128,7 @@ export default function Project({ project }) {
             )}
           </div>
         </div>
-        <HabitAddButton vertical={vertical} />
+        <HabitAddButton vertical={vertical} projectID={project._id} />
       </div>
     )
   );
@@ -146,7 +146,7 @@ function ProjectControls({ projectID }) {
     deleteProject(projectID);
   };
 
-  return projectID !== 'Default' && (
+  return projectID !== '' && (
     <div className="overview-settings">
       <button
         className="overview-open-settings active"

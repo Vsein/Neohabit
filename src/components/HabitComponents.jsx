@@ -84,7 +84,7 @@ function HabitControls({ habit, heatmap, header }) {
       <Link
         className="overview-habit-button"
         onClick={() => {
-          dispatch(changeTo(habit._id));
+          dispatch(changeTo({ habitID: habit._id, projectID: '' }));
           dispatch(open());
         }}
         title="Edit habit"
@@ -123,11 +123,11 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical }) {
   );
 }
 
-function HabitAddButton({ vertical }) {
+function HabitAddButton({ vertical, projectID = '' }) {
   const dispatch = useDispatch();
   const openOverlay = () => {
     dispatch(open());
-    dispatch(changeTo(''));
+    dispatch(changeTo({ habitID: '', projectID }));
   };
   useKeyPress(['a'], openOverlay);
 

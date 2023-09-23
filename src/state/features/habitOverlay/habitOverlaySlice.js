@@ -6,13 +6,15 @@ export const habitOverlaySlice = createSlice({
     isNew: true,
     isActive: false,
     habitID: '',
+    projectID: '',
   },
   reducers: {
     changeTo: (state, action) => ({
       ...state,
       isNew: false,
       isActive: true,
-      habitID: action.payload,
+      habitID: action.payload.habitID,
+      projectID: action.payload.projectID,
     }),
     close: (state) => ({
       ...state,

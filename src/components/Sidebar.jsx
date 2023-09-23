@@ -31,7 +31,7 @@ export default function Sidebar(props) {
 
   const openOverlay = () => {
     dispatch(open());
-    dispatch(changeTo(''));
+    dispatch(changeTo({ habitID: '', projectID: '' }));
   };
 
   useKeyPress(['a'], openOverlay);
