@@ -4,6 +4,16 @@ $cell-height: 11px;
 $cell-width: 11px;
 $cell-margin: 2px;
 
+.contentlist {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  height: min-content;
+  width: 100%;
+  gap: 30px;
+  padding: 30px;
+}
+
 .overview-controls {
   background-color: var(--main-background-color);
   display: flex;
@@ -17,16 +27,13 @@ $cell-margin: 2px;
   direction: rtl;
   position: relative;
   overflow-y: hidden;
-  background-color: var(--main-background-color);
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
   padding-right: 5px;
-  height: max(200px, calc(30px + 19px * var(--projects) * var(--multiplier) + 10px));
+  height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 10px));
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
 
   &.vertical {
     height: calc(var(--length) * 19px + 360px);
-    width: min(calc(50px + (17px + 2px) * var(--projects) * var(--multiplier) + 10px), 100%);
+    width: min(calc(50px + (17px + 2px) * var(--habits) * var(--multiplier) + 10px), 100%);
   }
 }
 
@@ -35,8 +42,11 @@ $cell-margin: 2px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 30px;
-  gap: 5px;
+  gap: 2px;
+  background-color: var(--main-background-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
 }
 
 .overview-loader {
@@ -52,7 +62,7 @@ $cell-margin: 2px;
   grid-template-areas:
     'topbar-left months   topbar-right'
     'topbar-left days     topbar-right'
-    'projects    projects projects';
+    'habits    habits habits';
   grid-template-rows: $cell-height 15px min-content;
   grid-template-columns: 200px calc(var(--length) * 19px) 115px;
   row-gap: 4px;
@@ -60,9 +70,9 @@ $cell-margin: 2px;
   &.vertical {
     grid-template-areas:
       'topbar-right topbar-right topbar-right'
-      'topbar-left  topbar-left  projects'
-      'months       days         projects'
-      'move-right   move-right   projects';
+      'topbar-left  topbar-left  habits'
+      'months       days         habits'
+      'move-right   move-right   habits';
     grid-template-rows: 30px 200px calc(var(--length) * 19px) 115px;
     grid-template-columns: 25px 15px min-content;
     gap: 3px;
@@ -90,13 +100,13 @@ $cell-margin: 2px;
       width: min-content;
     }
 
-    & > .overview-projects {
+    & > .overview-habits {
       writing-mode: vertical-lr;
       overflow: hidden;
       padding-left: 5px;
       padding-top: 3px;
 
-      & .overview-project {
+      & .overview-habit {
         &-cells {
           width: var(--cell-width);
           height: min-content;
@@ -139,13 +149,13 @@ $cell-margin: 2px;
     }
   }
 
-  .overview-projects {
-    grid-area: projects;
+  .overview-habits {
+    grid-area: habits;
     display: grid;
     grid-template-rows: 17px;
     row-gap: 2px;
 
-    .overview-project {
+    .overview-habit {
       display: grid;
       grid-template-columns: 200px calc(var(--length) * 19px) 90px;
       font-size: 15px;
@@ -211,10 +221,10 @@ $cell-margin: 2px;
   }
 }
 
-.overview-project-add {
+.overview-habit-add {
   background-color: var(--secondary-background-color);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-top: 1px solid var(--border-color);
+  border-radius: 0px 0px 10px 10px;
   display: grid;
   grid-template-columns: 30px 1fr 30px;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
@@ -223,14 +233,14 @@ $cell-margin: 2px;
   cursor: pointer;
 
   &.vertical {
-    width: min(calc(50px + (17px + 2px) * var(--projects) + 10px), 100%);
+    width: min(calc(50px + (17px + 2px) * var(--habits) + 10px), 100%);
   }
 }
 
 .overview-header {
   background-color: var(--main-background-color);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 10px 10px 0px 0px;
   display: grid;
   padding-inline: 5px;
   grid-template-areas: 'name date settings';
@@ -241,7 +251,7 @@ $cell-margin: 2px;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
 
   &.vertical {
-    width: min(calc(50px + (17px + 2px) * var(--projects) + 10px), 100%);
+    width: min(calc(50px + (17px + 2px) * var(--habits) + 10px), 100%);
     @include overview-header-small;
   }
 
@@ -264,11 +274,19 @@ $cell-margin: 2px;
 
   .overview-open-settings.active {
     color: var(--bright-signature-color);
+
+    &:hover {
+      opacity: 0.5;
+    }
+
+    &[disabled] {
+      opacity: 1;
+    }
   }
 }
 
 
-.overview-project-cells {
+.overview-habit-cells {
   height: var(--cell-height);
   display: flex;
   align-self: center;

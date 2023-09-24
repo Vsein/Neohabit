@@ -25,7 +25,7 @@ export default function DataPointForm({ onSubmit }) {
                 name="date"
                 component="input"
                 type="date"
-                placeholder="Change project name"
+                placeholder="Change habit name"
                 max="<?= date('Y-m-d'); ?>"
                 rows="1"
                 className="habit-form-input"

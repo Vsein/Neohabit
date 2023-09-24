@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
-import ProjectTag from '../../components/ProjectTag';
+import HabitTag from '../../components/HabitTag';
 
 export default function Navigation(props) {
-  const { filters, projects } = props;
+  const { filters, habits } = props;
 
   return (
     <nav className="tasklists-navigation">
@@ -15,10 +15,10 @@ export default function Navigation(props) {
           </li>
         ))}
       </ul>
-      <ul className="projects">
-        {projects.map((project, i) => (
-          <li key={`project-${i}`}>
-            <Project project={project} />
+      <ul className="habits">
+        {habits.map((habit, i) => (
+          <li key={`habit-${i}`}>
+            <Habit habit={habit} />
           </li>
         ))}
       </ul>
@@ -26,20 +26,20 @@ export default function Navigation(props) {
   );
 }
 
-function Project(props) {
-  const { project } = props;
+function Habit(props) {
+  const { habit } = props;
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
     <NavLink
-      className={({ isActive }) => (isActive ? 'project active' : 'project')}
-      to={`project/${linkify(project._id)}`}
+      className={({ isActive }) => (isActive ? 'habit active' : 'habit')}
+      to={`habit/${linkify(habit._id)}`}
       style={{
-        backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
+        backgroundColor: ({ isActive }) => (isActive ? `${habit.color}33` : ''),
       }}
     >
-      <ProjectTag project={project} />
+      <HabitTag habit={habit} />
     </NavLink>
   );
 }

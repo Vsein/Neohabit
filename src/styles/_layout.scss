@@ -55,7 +55,7 @@
       padding-bottom: 90px;
     }
 
-    .projects-container {
+    .habits-container {
       visibility: hidden;
     }
   }
@@ -109,12 +109,12 @@
       }
 
       & .filters,
-      & .projects,
-      & .projects-container {
+      & .habits,
+      & .habits-container {
         visibility: hidden;
       }
 
-      & .projects-arrow {
+      & .habits-arrow {
         opacity: 0;
       }
     }

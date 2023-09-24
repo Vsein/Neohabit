@@ -51,7 +51,7 @@ export default function Landing() {
         <section className="landing-features">
           <div className="landing-features-container">
             <h3 className="landing-features-text">Features you won&apos;t find anywhere else</h3>
-            {/* Skill trees, projects, heatmaps */}
+            {/* Skill trees, habits, heatmaps */}
           </div>
         </section>
         <section className="landing-about">

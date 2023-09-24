@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
-import ProjectTag from '../../components/ProjectTag';
+import HabitTag from '../../components/HabitTag';
 
 export default function Navigation(props) {
   return (

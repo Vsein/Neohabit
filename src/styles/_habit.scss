@@ -1,4 +1,4 @@
-#content-project {
+#content-habit {
   height: 100%;
   display: grid;
   grid-template: 125px min-content 1fr / 5fr;
@@ -9,7 +9,7 @@
   }
 }
 
-.projectpage-header {
+.habitpage-header {
   background-color: var(--main-background-color);
   display: flex;
   align-items: center;
@@ -17,7 +17,7 @@
   gap: 24px;
 }
 
-.project-overview {
+.habit-overview {
   padding: 18px 36px 36px;
   width: min(980px, 100%);
   margin-inline: auto;

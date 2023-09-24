@@ -15,7 +15,7 @@ import usePaletteGenerator from '../hooks/usePaletteGenerator';
 export default function Heatmap({
   dateStart,
   dateEnd,
-  project,
+  habit,
   heatmap,
   vertical = false,
   isOverview,
@@ -44,11 +44,11 @@ export default function Heatmap({
     current.value = 0;
   };
 
-  const palette = usePaletteGenerator(project.color);
-  const dateCreation = startOfDay(new Date(project?.date_of_creation ?? dateStart));
+  const palette = usePaletteGenerator(habit.color);
+  const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
 
   return (
-    <div className={`overview-project-cells ${isOverview ? '' : 'weekly'}`}>
+    <div className={`overview-habit-cells ${isOverview ? '' : 'weekly'}`}>
       {dataSorted &&
         dataSorted.map((point, index) => {
           const date = startOfDay(new Date(point.date));
@@ -104,7 +104,7 @@ export default function Heatmap({
                     color={palette[0]}
                     value={0}
                     vertical={vertical}
-                    elimination={project?.elimination}
+                    elimination={habit?.elimination}
                     isOverview={isOverview}
                   />
                 )}
@@ -113,11 +113,11 @@ export default function Heatmap({
                     heatmapID={heatmap?._id}
                     dateStart={date}
                     dateEnd={endOfDay(date)}
-                    color={project.color}
+                    color={habit.color}
                     value={point.value}
                     basePeriod={24}
                     vertical={vertical}
-                    elimination={project?.elimination}
+                    elimination={habit?.elimination}
                     isOverview={isOverview}
                   />
                 )}
@@ -161,11 +161,11 @@ export default function Heatmap({
                 ]),
                 1,
               )}
-              color={Index || !previous.value ? palette[0] : project.color}
+              color={Index || !previous.value ? palette[0] : habit.color}
               value={Index ? 0 : previous.value}
               basePeriod={24}
               vertical={vertical}
-              elimination={project?.elimination}
+              elimination={habit?.elimination}
               targetValue={previousTarget.value}
               isOverview={isOverview}
             />

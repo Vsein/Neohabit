@@ -1,30 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Field } from 'react-final-form';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
-import ProjectTag from './ProjectTag';
+import HabitTag from './HabitTag';
 import {
   useGetProjectsQuery,
   useCreateProjectMutation,
   useUpdateProjectMutation,
 } from '../state/services/project';
+import { useGetHabitsQuery } from '../state/services/habit';
 import { close } from '../state/features/projectOverlay/projectOverlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
-// import bin from '../icons/trash-can-outline.svg';
 
 export default function OverlayProject() {
   const dispatch = useDispatch();
   const { isActive, projectID } = useSelector((state) => state.projectOverlay);
   const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const project = projects.find((projecto) => projecto._id == projectID) ?? {
     name: '',
     color: '#aabbcc',
     description: '',
+    habits: [],
   };
+  const [projectHabitList, setProjectHabitList] = useState(project.habits);
   const [createProject] = useCreateProjectMutation();
   const [updateProject] = useUpdateProjectMutation();
+
+  useEffect(() => {
+    setProjectHabitList(project.habits);
+  }, [projectID]);
 
   const closeOverlay = (e) => {
     e.stopPropagation();
@@ -35,15 +42,22 @@ export default function OverlayProject() {
 
   const onSubmit = async (values) => {
     if (project.name == '') {
-      await createProject(values);
+      await createProject({ ...values, habits: projectHabitList });
     } else {
-      await updateProject({ projectID, values });
+      await updateProject({ projectID, values: { ...values, habits: projectHabitList } });
     }
+    setProjectHabitList([]);
     dispatch(close());
   };
 
   if (isLoading || isFetching) return <div>Loading...</div>;
   if (!project) return <div>Missing project!</div>;
+
+  const isOneOfHabits = (habitID) => {
+    const res = projectHabitList.find((projectHabitID) => projectHabitID === habitID);
+    if (res === undefined) return false;
+    return res !== -1;
+  };
 
   return (
     <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
@@ -55,7 +69,6 @@ export default function OverlayProject() {
             name: project?.name,
             description: project?.description,
             color: project?.color,
-            elimination: project?.elimination,
           }}
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -69,7 +82,7 @@ export default function OverlayProject() {
             >
               <div className="modal-header">
                 <div className="tag">
-                  <ProjectTag project={project} />
+                  <HabitTag habit={project} />
                 </div>
                 <button
                   className="close-modal-button icon"
@@ -96,33 +109,45 @@ export default function OverlayProject() {
                   rows="1"
                   className="form-task-description"
                 />
-                <Field name="color">
-                  {({ input }) => (
-                    <div className="form-task-name" style={{ color: input.value }}>
-                      <HexColorPicker
-                        color={input.value}
-                        onChange={(coloro) => {
-                          input.onChange(coloro);
+                <div className="form-split">
+                  <div className="form-habits">
+                    {habits.data.map((habit, i) => (
+                      <div
+                        className={`form-chooser ${isOneOfHabits(habit._id) ? 'active' : ''}`}
+                        key={i}
+                        onClick={() => {
+                          if (!isOneOfHabits(habit._id)) {
+                            setProjectHabitList([...projectHabitList, habit._id]);
+                          } else {
+                            setProjectHabitList(
+                              projectHabitList.filter((habitID) => habitID !== habit._id),
+                            );
+                          }
                         }}
-                      />
-                      <HexColorInput
-                        color={input.value}
-                        onChange={(coloro) => {
-                          input.onChange(coloro);
-                        }}
-                        prefixed
-                      />
-                    </div>
-                  )}
-                </Field>
-                <div className="form-task-description">
-                  <Field
-                    name="elimination"
-                    component="input"
-                    type="checkbox"
-                    className="checkbox"
-                  />
-                  <label>Use elimination</label>
+                      >
+                        <HabitTag habit={habit} />
+                      </div>
+                    ))}
+                  </div>
+                  <Field name="color">
+                    {({ input }) => (
+                      <div className="form-task-name" style={{ color: input.value }}>
+                        <HexColorPicker
+                          color={input.value}
+                          onChange={(coloro) => {
+                            input.onChange(coloro);
+                          }}
+                        />
+                        <HexColorInput
+                          color={input.value}
+                          onChange={(coloro) => {
+                            input.onChange(coloro);
+                          }}
+                          prefixed
+                        />
+                      </div>
+                    )}
+                  </Field>
                 </div>
               </div>
               <div className="modal-buttons">
@@ -139,7 +164,7 @@ export default function OverlayProject() {
                   className="form-button"
                   id="submit-form-button"
                   type="submit"
-                  disabled={submitting || pristine}
+                  disabled={submitting}
                 >
                   {project ? 'Save' : 'Add project'}
                 </button>

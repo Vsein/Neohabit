@@ -3,25 +3,25 @@ import { Form, Field } from 'react-final-form';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import ProjectTag from './ProjectTag';
+import HabitTag from './HabitTag';
 import {
   useGetTasksQuery,
   useUpdateTaskMutation,
   useCreateTaskMutation,
 } from '../state/services/todolist';
-import { useGetProjectsQuery } from '../state/services/project';
+import { useGetHabitsQuery } from '../state/services/habit';
 import { close } from '../state/features/taskOverlay/taskOverlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 // import bin from '../icons/trash-can-outline.svg';
 
 export default function Overlay() {
   const dispatch = useDispatch();
-  const { isActive, taskID, projectID } = useSelector((state) => state.taskOverlay);
+  const { isActive, taskID, habitID } = useSelector((state) => state.taskOverlay);
   const task = useGetTasksQuery().data.find((task1) => task1._id == taskID);
-  const { data: projects, isFetching, isLoading } = useGetProjectsQuery();
-  const project =
-    projects.find((projecto) => projecto._id == projectID) ??
-    projects.find((projecto) => projecto.name == 'Default');
+  const { data: habits, isFetching, isLoading } = useGetHabitsQuery();
+  const habit =
+    habits.find((habito) => habito._id == habitID) ??
+    habits.find((habito) => habito.name == 'Default');
   const [updateTask] = useUpdateTaskMutation();
   const [createTask] = useCreateTaskMutation();
 
@@ -42,10 +42,10 @@ export default function Overlay() {
   };
 
   if (isLoading || isFetching) return <div>Loading...</div>;
-  if (!project) {
+  if (!habit) {
     return (
       <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
-        Missing project!
+        Missing habit!
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default function Overlay() {
             completed: task?.completed ?? false,
             name: task?.name ?? '',
             description: task?.description ?? '',
-            projectID: task?.project._id ?? project._id,
+            habitID: task?.habit._id ?? habit._id,
           }}
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -74,7 +74,7 @@ export default function Overlay() {
             >
               <div className="modal-header">
                 <div className="tag">
-                  <ProjectTag project={task ? task.project : project} />
+                  <HabitTag habit={task ? task.habit : habit} />
                 </div>
                 <button className="close-modal-button icon" onClick={close}>
                   <Icon path={mdiClose} />

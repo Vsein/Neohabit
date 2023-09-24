@@ -1,39 +1,31 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
   mdiMenuLeft,
-  mdiMenuRight,
   mdiMenuUp,
   mdiMenuDown,
   mdiCalendarText,
   mdiCalendarWeekend,
-  mdiCalendarEnd,
-  mdiCalendarStart,
-  mdiCalendarRefresh,
   mdiCog,
-  mdiPlus,
 } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
-import { useGetProjectsQuery } from '../state/services/project';
+import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import {
   useGetSettingsQuery,
   useChangeOverviewOrientationMutation,
 } from '../state/services/settings';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, DatePeriodPicker } from './DatePickers';
-import Heatmap from './Heatmap';
-import ProjectControls from './ProjectComponents';
+import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
+import { HabitOverview, HabitAddButton } from './HabitComponents';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
   const [loaded] = useLoaded();
-  const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
@@ -49,16 +41,9 @@ export default function Overview() {
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
 
-  const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo(''));
-  };
-  useKeyPress(['a'], openOverlay);
-
-  if (!loaded || projects.isFetching || heatmaps.isFetching) {
+  if (!loaded || habits.isFetching || heatmaps.isFetching) {
     return (
-      <div className="overview-loader cetering">
+      <div className="overview-loader centering">
         <div className="loader" />
       </div>
     );
@@ -68,7 +53,7 @@ export default function Overview() {
     <div
       className="overview-centering"
       style={{
-        '--projects': projects.data.length,
+        '--habits': habits.data.length,
         '--length': differenceInDays(dateEnd, dateStart) + 1,
         '--vertical': vertical * 1,
         // '--multiplier': settings.data.cell_height_multiplier,
@@ -91,7 +76,7 @@ export default function Overview() {
           subPeriod={subPeriod}
           addPeriod={addPeriod}
         />
-        <OverviewSettings vertical={vertical} />
+        <OverviewControls vertical={vertical} />
       </div>
       <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
         <div className={`overview ${vertical ? 'vertical' : ''}`}>
@@ -103,44 +88,24 @@ export default function Overview() {
           </div>
           <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
           <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-          <div className="overview-topbar-right">
-            {vertical ? (
-              <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
-            ) : (
-              <button className="centering" onClick={addMonth} title="Move month to the right [L]">
-                <Icon path={mdiMenuRight} className="icon" />
-              </button>
-            )}
-            <button
-              className="overview-period-end"
-              onClick={setToPast}
-              title="Set today as the period end"
-            >
-              <Icon path={mdiCalendarEnd} className="icon small centering" />
-            </button>
-            <button
-              className="overview-period-start"
-              onClick={reset}
-              title="Reset date period to preferred defaults"
-            >
-              <Icon path={mdiCalendarRefresh} className="icon small centering" />
-            </button>
-            <button
-              className="overview-period-start"
-              onClick={setToFuture}
-              title="Set today as the period start"
-            >
-              <Icon path={mdiCalendarStart} className="icon small centering" />
-            </button>
-          </div>
-          <div className="overview-projects">
-            {projects.data.map((project, i) => (
-              <OverviewProject
+          <DatePeriodControls
+            vertical={vertical}
+            dateStart={dateStart}
+            subYear={subYear}
+            addYear={addYear}
+            addMonth={addMonth}
+            setToPast={setToPast}
+            reset={reset}
+            setToFuture={setToFuture}
+          />
+          <div className="overview-habits">
+            {habits.data.map((habit, i) => (
+              <HabitOverview
                 key={i}
-                project={project}
+                habit={habit}
                 dateStart={dateStart}
                 dateEnd={dateEnd}
-                heatmap={heatmaps.data.find((heatmapo) => heatmapo.project._id === project._id)}
+                heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
                 vertical={vertical}
               />
             ))}
@@ -156,44 +121,12 @@ export default function Overview() {
           )}
         </div>
       </div>
-      <button
-        className={`overview-project-add ${vertical ? 'vertical' : ''}`}
-        onClick={openOverlay}
-        title="Add project [A]"
-      >
-        <Icon className="icon small" path={mdiPlus} />
-        <p>Add project</p>
-      </button>
+      <HabitAddButton vertical={vertical} />
     </div>
   );
 }
 
-function OverviewProject({ dateStart, dateEnd, project, heatmap, vertical }) {
-  const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
-
-  return (
-    <div className="overview-project">
-      <NavLink
-        className="overview-project-name"
-        to={`../project/${linkify(project._id)}`}
-        title={project.name}
-      >
-        {project.name}
-      </NavLink>
-      <Heatmap
-        heatmap={heatmap}
-        project={project}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-        vertical={vertical}
-        isOverview={true}
-      />
-      <ProjectControls project={project} heatmap={heatmap} />
-    </div>
-  );
-}
-
-function OverviewSettings({ vertical }) {
+function OverviewControls({ vertical }) {
   const [changeOverview] = useChangeOverviewOrientationMutation();
 
   return (

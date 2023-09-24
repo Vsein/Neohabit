@@ -7,7 +7,7 @@ import { useUpdateTaskMutation, useDeleteTaskMutation } from '../state/services/
 import { changeTo, open } from '../state/features/taskOverlay/taskOverlaySlice';
 
 export default function Task(props) {
-  const { task, project } = props;
+  const { task, habit } = props;
   const dispatch = useDispatch();
   const [completed, setCompleted] = useState(task.completed);
   const [deleteTask, { isLoading }] = useDeleteTaskMutation();
@@ -28,11 +28,11 @@ export default function Task(props) {
   };
 
   const bg = completed
-    ? `radial-gradient(${project?.color} 30%, ${project?.color}33 40%)`
-    : `${project?.color}33`;
+    ? `radial-gradient(${habit?.color} 30%, ${habit?.color}33 40%)`
+    : `${habit?.color}33`;
 
   const openOverlay = (e) => {
-    dispatch(changeTo({ taskID: task._id, projectID: project?._id }));
+    dispatch(changeTo({ taskID: task._id, habitID: habit?._id }));
     dispatch(open());
   };
 
@@ -40,7 +40,7 @@ export default function Task(props) {
     <div className="task" onClick={openOverlay}>
       <button
         className="checkbox"
-        style={{ borderColor: project?.color, background: bg }}
+        style={{ borderColor: habit?.color, background: bg }}
         onClick={completeTask}
       ></button>
       <button tabIndex="0" className="task-name">
