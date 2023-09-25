@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered, mdiFullscreen } from '@mdi/js';
 import {
@@ -6,6 +7,7 @@ import {
   useUpdateStopwatchMutation,
   useFinishStopwatchMutation,
 } from '../state/services/stopwatch';
+import { open } from '../state/features/stopwatchFullscreen/stopwatchFullscreenSlice';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Stopwatch() {
@@ -13,6 +15,11 @@ export default function Stopwatch() {
   const [isPaused, setIsPaused] = useState(stopwatch.data.is_paused);
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [finishStopwatch] = useFinishStopwatchMutation();
+
+  const dispatch = useDispatch();
+  const openFullscreenStopwatch = () => {
+    dispatch(open());
+  };
 
   const calcCurrentDuration = () => {
     if (!stopwatch.data.is_initiated) {
@@ -110,9 +117,6 @@ export default function Stopwatch() {
       return () => clearInterval(timerInterval);
     }
   });
-
-  const openFullscreenStopwatch = () => {
-  };
 
   return (
     <footer className="stopwatch">
