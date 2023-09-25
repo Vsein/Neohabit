@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Icon from '@mdi/react';
-import { mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered } from '@mdi/js';
+import { mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered, mdiFullscreen } from '@mdi/js';
 import {
   useGetStopwatchQuery,
   useUpdateStopwatchMutation,
@@ -111,6 +111,9 @@ export default function Stopwatch() {
     }
   });
 
+  const openFullscreenStopwatch = () => {
+  };
+
   return (
     <footer className="stopwatch">
       <div className="progressbar">
@@ -125,9 +128,8 @@ export default function Stopwatch() {
         <h3 className="progressbar-progress-countdown time-left">{clockify(baseDuration)}</h3>
       </div>
       <div className="progressbar-controls">
-        <h3>{stopwatch.data?.habit?.name}</h3>
         <button
-          className="logo-section sidebar-toggle-container centering right stopwatch-icon"
+          className="logo-section sidebar-toggle-container centering stopwatch-icon"
           onClick={resetStopwatch}
           title="Reset [R]"
         >
@@ -146,6 +148,14 @@ export default function Stopwatch() {
           title="Finish [F]"
         >
           <Icon path={mdiFlagCheckered} className="icon medium sidebar-toggle" />
+        </button>
+        <h3 className="progressbar-text">{stopwatch.data?.habit?.name}</h3>
+        <button
+          className="logo-section sidebar-toggle-container centering right stopwatch-icon"
+          onClick={openFullscreenStopwatch}
+          title="Fullscreen [F]"
+        >
+          <Icon path={mdiFullscreen} className="icon medium sidebar-toggle" />
         </button>
       </div>
     </footer>
