@@ -15,8 +15,12 @@ export default function StopwatchFullscreen() {
   useKeyPress(['c'], closeOverlay);
 
   return (
-    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
-      <div className="modal modal-active" onClick={(e) => e.stopPropagation()}></div>
+    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onMouseDown={closeOverlay}>
+      <div
+        className="modal modal-active"
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+      ></div>
     </div>
   );
 }
