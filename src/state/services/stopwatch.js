@@ -1,4 +1,4 @@
-import { isSameDay } from 'date-fns';
+import { isSameDay, startOfDay } from 'date-fns';
 import api from './api';
 import { heatmapApi } from './heatmap';
 
@@ -15,9 +15,8 @@ export const stopwatchApi = api.injectEndpoints({
         body: values,
         method: 'PUT',
       }),
-      async onQueryStarted({ values }, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        const patchResult = dispatch(
+      async onQueryStarted({ values }, { dispatch }) {
+        dispatch(
           stopwatchApi.util.updateQueryData('getStopwatch', undefined, (draft) => {
             Object.assign(draft, values);
           }),
@@ -30,9 +29,8 @@ export const stopwatchApi = api.injectEndpoints({
         body: values,
         method: 'POST',
       }),
-      async onQueryStarted({ values }, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        const patchResult = dispatch(
+      async onQueryStarted({ values }, { dispatch }) {
+        dispatch(
           stopwatchApi.util.updateQueryData('getStopwatch', undefined, (draft) => {
             const resettedValues = {
               is_paused: true,
@@ -47,16 +45,17 @@ export const stopwatchApi = api.injectEndpoints({
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
             const Heatmap = draft.find((heatmap) => heatmap.habit._id == values.habit._id);
             const index = Heatmap.data.findIndex(
-              (point) => isSameDay(new Date(point.date), new Date(res.data.date)) && !point.is_target,
+              (point) =>
+                isSameDay(new Date(point.date), new Date(values.start_time)) && !point.is_target,
             );
             if (index !== -1) {
               Heatmap.data = Heatmap.data.map((point) =>
-                isSameDay(new Date(point.date), new Date(res.data.date)) && !point.is_target
-                  ? { ...point, value: +point.value + +res.data.value }
+                isSameDay(new Date(point.date), new Date(values.start_time)) && !point.is_target
+                  ? { ...point, value: +point.value + +1 }
                   : point,
               );
             } else {
-              Heatmap.data.push(res.data);
+              Heatmap.data.push({ date: startOfDay(new Date(values.start_time)), value: 1 });
             }
             Heatmap.data.sort((a, b) => a.date - b.date);
           }),
