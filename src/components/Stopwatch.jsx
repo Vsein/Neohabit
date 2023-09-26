@@ -39,7 +39,11 @@ export default function Stopwatch() {
           onClick={resetStopwatch}
           title="Reset [R]"
         >
-          <Icon path={mdiRestart} className="icon medium sidebar-toggle" />
+          <Icon
+            path={mdiRestart}
+            style={{ marginTop: '3px' }}
+            className="icon medium sidebar-toggle"
+          />
         </button>
         <button
           className="logo-section sidebar-toggle-container centering stopwatch-icon"
@@ -56,9 +60,14 @@ export default function Stopwatch() {
           onClick={finishCountdown}
           title="Finish [F]"
         >
-          <Icon path={mdiFlagCheckered} className="icon medium sidebar-toggle" />
+          <Icon
+            path={mdiFlagCheckered}
+            style={{ marginTop: '-1px' }}
+            className="icon medium sidebar-toggle"
+          />
         </button>
-        <h3 className="progressbar-text">{stopwatch.data?.habit?.name}</h3>
+        <h3 className="progressbar-text"
+        >{stopwatch.data?.habit?.name}</h3>
         <button
           className="logo-section sidebar-toggle-container centering right stopwatch-icon"
           onClick={openFullscreenStopwatch}
