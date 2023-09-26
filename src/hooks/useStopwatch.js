@@ -103,6 +103,8 @@ export default function useStopwatch() {
       // Clear interval if the component is unmounted
       return () => clearInterval(timerInterval);
     }
+    const recalc = calcCurrentDuration();
+    setCurrentDuration(recalc);
   });
 
   return [
