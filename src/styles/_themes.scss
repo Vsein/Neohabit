@@ -1,4 +1,5 @@
 :root.light {
+  color-scheme: light;
   --signature-color: #144e12;
   --bright-signature-color: #43d64e;
   --signature-color-transparent: #144e1233;
@@ -30,6 +31,7 @@
 }
 
 :root {
+  color-scheme: dark;
   --signature-color: #00c4cd;
   --bright-signature-color: #00c4cd;
   --signature-color-transparent: #00c4cd33;

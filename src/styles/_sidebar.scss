@@ -1,6 +1,8 @@
 @import 'dropdown';
+@import 'scrollbar';
 
 .sidebar {
+  @include scrollbar;
   grid-area: sidebar;
   // background-color: #fafafa;
   background-color: var(--main-background-color);
