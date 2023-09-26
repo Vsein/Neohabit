@@ -60,7 +60,7 @@ export default function OverlayProject() {
   };
 
   return (
-    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
+    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onMouseDown={closeOverlay}>
       {isLoading || isFetching ? (
         <> </>
       ) : (
@@ -79,6 +79,7 @@ export default function OverlayProject() {
               }}
               className="modal modal-active"
               onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
             >
               <div className="modal-header">
                 <div className="tag">

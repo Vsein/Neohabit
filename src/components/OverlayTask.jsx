@@ -44,14 +44,14 @@ export default function Overlay() {
   if (isLoading || isFetching) return <div>Loading...</div>;
   if (!habit) {
     return (
-      <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
+      <div className={isActive ? 'overlay overlay-active' : 'overlay'} onMouseDown={closeOverlay}>
         Missing habit!
       </div>
     );
   }
 
   return (
-    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onClick={closeOverlay}>
+    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onMouseDown={closeOverlay}>
       {isLoading || isFetching ? (
         <> </>
       ) : (
@@ -71,6 +71,7 @@ export default function Overlay() {
               }}
               className="modal modal-active"
               onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
             >
               <div className="modal-header">
                 <div className="tag">

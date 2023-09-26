@@ -6,6 +6,7 @@ import habitOverlayReducer from './features/habitOverlay/habitOverlaySlice';
 import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
 import deleteOverlayReducer from './features/deleteOverlay/deleteOverlaySlice';
 import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
+import stopwatchFullscreenReducer from './features/stopwatchFullscreen/stopwatchFullscreenSlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
 import cellTipReducer from './features/cellTip/cellTipSlice';
 import themeReducer, { changeTheme } from './features/theme/themeSlice';
@@ -17,6 +18,7 @@ const combinedReducer = combineReducers({
   taskOverlay: taskOverlayReducer,
   deleteOverlay: deleteOverlayReducer,
   projectOverlay: projectOverlayReducer,
+  stopwatchFullscreen: stopwatchFullscreenReducer,
   cellAdd: cellAddReducer,
   cellTip: cellTipReducer,
   theme: themeReducer,

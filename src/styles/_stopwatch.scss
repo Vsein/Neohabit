@@ -49,12 +49,11 @@
   display: flex;
   align-items: center;
   height: 50px;
-  padding-left: 15px;
-  padding-right: 5px;
+  padding-inline: 10px;
 }
 
-.right {
-  margin-left: auto;
+.progressbar-text {
+  padding-left: 15px;
 }
 
 .stopwatch-icon {
@@ -62,4 +61,30 @@
   transition:
     all 0.3s ease-out,
     color 0s;
+}
+
+.progressbar-circle {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--main-background-color) 95%, transparent 96% 100%),
+    conic-gradient(var(--color) var(--progress), var(--progressbar-bg-color) 0);
+
+  &-countdown {
+    color: var(--contrast-color);
+    width: 130px;
+
+    &.goal {
+      font-size: 15px;
+      width: min-content;
+    }
+  }
+
+  &-projectname {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 310px;
+    text-align: center;
+  }
 }

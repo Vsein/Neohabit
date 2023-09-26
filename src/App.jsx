@@ -13,6 +13,7 @@ import Landing from './pages/Landing';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
 import Stopwatch from './components/Stopwatch';
+import StopwatchFullscreen from './components/StopwatchFullscreen';
 import Sidebar from './components/Sidebar';
 import OverlayHabit from './components/OverlayHabit';
 import OverlayTask from './components/OverlayTask';
@@ -108,6 +109,7 @@ const PrivateRoutes = (params) => {
         {/* <SidebarMobile /> */}
       </div>
       <Stopwatch />
+      <StopwatchFullscreen />
       <OverlayDelete />
       {habits.isFetching ||
       habits.isLoading ||
