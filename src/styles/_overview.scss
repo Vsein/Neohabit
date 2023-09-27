@@ -1,4 +1,5 @@
 @import 'layout';
+@import 'scrollbar';
 
 $cell-height: 11px;
 $cell-width: 11px;
@@ -23,6 +24,7 @@ $cell-margin: 2px;
 }
 
 .overview-container {
+  @include scrollbar;
   --negate-margin-block: calc(2 - 2 * var(--vertical));
   direction: rtl;
   position: relative;

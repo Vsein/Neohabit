@@ -1,3 +1,5 @@
+@import 'scrollbar';
+
 .tasklists {
   grid-area: main;
   position: relative;
@@ -5,11 +7,12 @@
   background-color: var(--support-background-color);
 
   &-navigation {
+    @include scrollbar;
     background-color: iherit;
     display: flex;
     align-items: center;
     height: 50px;
-    overflow: scroll;
+    overflow-y: hidden;
     background-color: var(--main-background-color);
   }
 }

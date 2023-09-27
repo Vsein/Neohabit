@@ -1,3 +1,4 @@
+@import 'scrollbar';
 $cell-height: 11px;
 $cell-width: 11px;
 $cell-margin: 2px;
@@ -85,6 +86,7 @@ $cell-weekdays-width: 33px;
 }
 
 .habit-heatmap-container {
+  @include scrollbar;
   --negate-margin-block: 0px;
   direction: rtl;
   position: relative;
