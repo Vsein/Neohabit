@@ -261,8 +261,10 @@ $cell-margin: 2px;
 
   & > h3 {
     grid-area: name;
-    width: min-content;
     margin: auto;
+    line-height: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
