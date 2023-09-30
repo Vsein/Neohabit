@@ -43,6 +43,7 @@
       opacity 0s,
       color 0s;
     transform: rotate(-90deg);
+    cursor: pointer;
 
     &.active {
       transform: none;

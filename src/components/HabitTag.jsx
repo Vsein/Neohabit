@@ -7,7 +7,7 @@ export default function HabitTag(props) {
       <div className="centering">
         <div className="habit-circle" style={{ backgroundColor: habit.color }}></div>
       </div>
-      {habit.name === 'Neohabit' ? <p className="neohabit" /> : <p>{habit.name}</p>}
+      <p>{habit.name}</p>
     </>
   );
 }

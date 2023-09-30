@@ -13,28 +13,45 @@ import {
   mdiPlus,
 } from '@mdi/js';
 import { useGetFiltersQuery } from '../state/services/todolist';
+import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHabitsQuery } from '../state/services/habit';
 import HabitTag from './HabitTag';
-import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
+import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Sidebar(props) {
+  const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
   const filters = useGetFiltersQuery();
   const dispatch = useDispatch();
   const { hidden } = props;
-  const [habitsCollapsed, setHabitsCollapsed] = useState(false);
+  const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
-  const toggleHabitsCollapsed = () => {
-    setHabitsCollapsed(!habitsCollapsed);
+  const toggleProjectsCollapsed = () => {
+    setProjectsCollapsed(!projectsCollapsed);
   };
 
   const openOverlay = () => {
     dispatch(open());
-    dispatch(changeTo({ habitID: '', projectID: '' }));
+    dispatch(changeTo({ projectID: '', projectID: '' }));
   };
 
   useKeyPress(['a'], openOverlay);
+
+
+  const defaultProject = {
+    name: 'Default',
+    color: '#eeeeee',
+    habits: habits.data.filter((habit) => {
+      const found =
+        projects.data &&
+        projects.data.find((project) =>
+          project.habits.find((projectHabitID) => habit._id === projectHabitID),
+        );
+      return found === -1 || found === undefined;
+    }),
+    _id: '',
+  };
 
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
@@ -69,28 +86,33 @@ export default function Sidebar(props) {
       <hr />
       <ul className="habits">
         <li className="habits-header">
-          <button className="centering" onClick={toggleHabitsCollapsed}>
+          <button className="centering" onClick={toggleProjectsCollapsed}>
             <Icon
-              className={`icon habits-arrow ${habitsCollapsed ? '' : 'active'}`}
+              className={`icon habits-arrow ${projectsCollapsed ? '' : 'active'}`}
               path={mdiChevronDown}
             />
           </button>
-          <p>Habits</p>
-          <button className="centering add" onClick={openOverlay} title="Add habit [A]">
+          <p>Projects</p>
+          <button className="centering add" onClick={openOverlay} title="Add project [A]">
             <Icon path={mdiPlus} className="icon" />
           </button>
         </li>
-        <ul className={`habits-container ${habitsCollapsed ? '' : 'active'}`}>
-          {habits.isFetching ? (
+        <ul className={`habits-container ${projectsCollapsed ? '' : 'active'}`}>
+          {projects.isFetching || habits.isFetching ? (
             <div className="habits-loader">
               <div className="loader" />
             </div>
           ) : (
-            habits.data.map((habit, i) => (
-              <li key={`habit-${i}`}>
-                <Habit habit={habit} />
+            <>
+              {projects.data.map((project, i) => (
+              <li key={`project-${i}`}>
+                <Project project={project} />
               </li>
-            ))
+            ))}
+              {/* <li> */}
+              {/*   <Project project={defaultProject} /> */}
+              {/* </li> */}
+            </>
           )}
         </ul>
       </ul>
@@ -124,21 +146,21 @@ function NavigationSection(props) {
   );
 }
 
-function Habit(props) {
-  const { habit } = props;
+function Project(props) {
+  const { project } = props;
 
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
     <NavLink
       className={({ isActive }) => (isActive ? 'habit active' : 'habit')}
-      to={`habit/${linkify(habit._id)}`}
+      to={`project/${linkify(project._id)}`}
       style={{
-        backgroundColor: ({ isActive }) => (isActive ? `${habit.color}33` : ''),
+        backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
       }}
-      title={habit.name}
+      title={project.name}
     >
-      <HabitTag habit={habit} />
+      <HabitTag habit={project} />
     </NavLink>
   );
 }
