@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding: 15px;
+  padding: 10px;
   // transition: 1.5s;
   white-space: nowrap;
   overflow-y: scroll;
@@ -57,11 +57,11 @@
     border-radius: 5px;
     padding-inline: 5px;
     outline: none;
+    cursor: pointer;
 
     &.active,
     &:hover {
       background-color: rgba(0, 0, 0, 0.3);
-      cursor: pointer;
     }
   }
 
@@ -84,16 +84,12 @@
   align-content: center;
   line-height: 12px;
   gap: 10px;
-  border-radius: 3px;
-  transition: background-color 0.3s;
+  border-radius: 5px;
+  cursor: pointer;
 
-  &.active {
-    background-color: var(--signature-color-transparent);
-  }
-
+  &.active,
   &:hover {
-    cursor: pointer;
-    background-color: #0000001a;
+    background-color: rgba(0, 0, 0, 0.3);
   }
 }
 

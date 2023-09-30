@@ -53,17 +53,11 @@
     border-radius: 7px;
     position: relative;
     overflow: hidden;
-    transition:
-      all 0.3s ease-out,
-      color 0s;
+    cursor: pointer;
 
-    &.active {
-      background-color: #00000022;
-    }
-
+    &.active,
     &:hover {
-      cursor: pointer;
-      background-color: #0000001a;
+      background-color: rgba(0, 0, 0, 0.3);
     }
   }
 
