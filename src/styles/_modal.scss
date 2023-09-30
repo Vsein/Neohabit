@@ -19,6 +19,12 @@
   &-active {
     display: block;
   }
+
+  &.overlay-sidebar {
+    background-color: #00000050;
+    backdrop-filter: blur(0px);
+    z-index: 1;
+  }
 }
 
 .modal {

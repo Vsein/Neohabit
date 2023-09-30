@@ -19,12 +19,11 @@ import HabitTag from './HabitTag';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 
-export default function Sidebar(props) {
+export default function Sidebar({ hidden, toggleSidebar }) {
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
   const filters = useGetFiltersQuery();
   const dispatch = useDispatch();
-  const { hidden } = props;
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
   const toggleProjectsCollapsed = () => {
@@ -37,7 +36,6 @@ export default function Sidebar(props) {
   };
 
   useKeyPress(['a'], openOverlay);
-
 
   const defaultProject = {
     name: 'Default',
@@ -54,69 +52,75 @@ export default function Sidebar(props) {
   };
 
   return (
-    <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
-      <ul className="navigation">
-        <NavigationSection
-          path={mdiHome}
-          title={hidden ? 'Home' : 'Dashboard'}
-          status="raw"
-          to="/dashboard"
-          raw="true"
-          num="1"
-        />
-        <NavigationSection
-          path={mdiFamilyTree}
-          title={hidden ? 'Skills' : 'Skill trees'}
-          status="soon"
-          to="/skill-trees"
-          num="2"
-        />
-        <NavigationSection
-          path={mdiTrendingUp}
-          title="Projects"
-          status="raw"
-          to="/projects"
-          raw="true"
-          num="3"
-        />
-        <NavigationSection path={mdiCheckboxMultipleMarked} title="To-do" to="/todo" num="4" />
-        <NavigationSection path={mdiPost} title="Blog" status="soon" to="/blog" num="5" />
-        <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
-      </ul>
-      <hr />
-      <ul className="habits">
-        <li className="habits-header">
-          <button className="centering" onClick={toggleProjectsCollapsed}>
-            <Icon
-              className={`icon habits-arrow ${projectsCollapsed ? '' : 'active'}`}
-              path={mdiChevronDown}
-            />
-          </button>
-          <p>Projects</p>
-          <button className="centering add" onClick={openOverlay} title="Add project [A]">
-            <Icon path={mdiPlus} className="icon" />
-          </button>
-        </li>
-        <ul className={`habits-container ${projectsCollapsed ? '' : 'active'}`}>
-          {projects.isFetching || habits.isFetching ? (
-            <div className="habits-loader">
-              <div className="loader" />
-            </div>
-          ) : (
-            <>
-              {projects.data.map((project, i) => (
-              <li key={`project-${i}`}>
-                <Project project={project} />
-              </li>
-            ))}
-              {/* <li> */}
-              {/*   <Project project={defaultProject} /> */}
-              {/* </li> */}
-            </>
-          )}
+    <>
+      <div
+        className={hidden ? 'overlay' : 'overlay overlay-active overlay-sidebar'}
+        onMouseDown={toggleSidebar}
+      />
+      <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
+        <ul className="navigation">
+          <NavigationSection
+            path={mdiHome}
+            title={hidden ? 'Home' : 'Dashboard'}
+            status="raw"
+            to="/dashboard"
+            raw="true"
+            num="1"
+          />
+          <NavigationSection
+            path={mdiFamilyTree}
+            title={hidden ? 'Skills' : 'Skill trees'}
+            status="soon"
+            to="/skill-trees"
+            num="2"
+          />
+          <NavigationSection
+            path={mdiTrendingUp}
+            title="Projects"
+            status="raw"
+            to="/projects"
+            raw="true"
+            num="3"
+          />
+          <NavigationSection path={mdiCheckboxMultipleMarked} title="To-do" to="/todo" num="4" />
+          <NavigationSection path={mdiPost} title="Blog" status="soon" to="/blog" num="5" />
+          <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
         </ul>
-      </ul>
-    </aside>
+        <hr />
+        <ul className="habits">
+          <li className="habits-header">
+            <button className="centering" onClick={toggleProjectsCollapsed}>
+              <Icon
+                className={`icon habits-arrow ${projectsCollapsed ? '' : 'active'}`}
+                path={mdiChevronDown}
+              />
+            </button>
+            <p>Projects</p>
+            <button className="centering add" onClick={openOverlay} title="Add project [A]">
+              <Icon path={mdiPlus} className="icon" />
+            </button>
+          </li>
+          <ul className={`habits-container ${projectsCollapsed ? '' : 'active'}`}>
+            {projects.isFetching || habits.isFetching ? (
+              <div className="habits-loader">
+                <div className="loader" />
+              </div>
+            ) : (
+              <>
+                {projects.data.map((project, i) => (
+                  <li key={`project-${i}`}>
+                    <Project project={project} />
+                  </li>
+                ))}
+                {/* <li> */}
+                {/*   <Project project={defaultProject} /> */}
+                {/* </li> */}
+              </>
+            )}
+          </ul>
+        </ul>
+      </aside>
+    </>
   );
 }
 

@@ -104,7 +104,7 @@ const PrivateRoutes = (params) => {
     <>
       <div id="content">
         <MainMenu toggleSidebar={toggleSidebar} />
-        <Sidebar hidden={sidebarHidden} />
+        <Sidebar hidden={sidebarHidden} toggleSidebar={toggleSidebar}/>
         <Outlet />
         <CellTip />
         <CellAdd />

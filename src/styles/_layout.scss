@@ -24,7 +24,7 @@
     'menu    menu'
     'sidebar main';
   grid-template-rows: 60px 1fr;
-  grid-template-columns: min-content 1fr;
+  grid-template-columns: 80px 1fr;
   // background-color: #efefef;
   @media (max-width: 550px) {
     .sidebar {
