@@ -52,7 +52,7 @@ export default function Overview() {
       <Project project={defaultProject} />
       <div className="overview-centering" style={{ '--length': 46 }}>
         <button
-          className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
+          className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
           onClick={openOverlay}
           title="Add a new habit [A]"
         >
