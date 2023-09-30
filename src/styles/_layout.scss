@@ -11,7 +11,7 @@
   grid-template-rows: 30px;
   grid-template-areas:
     'name settings'
-    'date date';
+    'date settings';
   gap: 3px;
   padding-bottom: 5px;
 }
@@ -63,10 +63,6 @@
   @media (max-width: 750px) {
     .overview-header {
       @include overview-header-small;
-    }
-
-    .overview-centering {
-      margin: 10px;
     }
   }
 
