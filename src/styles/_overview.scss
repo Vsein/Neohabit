@@ -234,6 +234,11 @@ $cell-margin: 2px;
   align-items: center;
   cursor: pointer;
 
+  &.standalone {
+    border: none;
+    border-radius: 10px;
+  }
+
   &.vertical {
     width: min(calc(50px + (17px + 2px) * var(--habits) + 10px), 100%);
   }

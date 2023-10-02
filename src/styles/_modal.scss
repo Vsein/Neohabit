@@ -19,6 +19,12 @@
   &-active {
     display: block;
   }
+
+  &.overlay-sidebar {
+    background-color: #00000050;
+    backdrop-filter: blur(0px);
+    z-index: 1;
+  }
 }
 
 .modal {
@@ -113,7 +119,7 @@
   justify-content: center;
   align-items: center;
   padding-inline: 10px 15px;
-  background-color: rgba(0, 0, 0, 0.3);
+    background-color: var(--chooser-bg-color);
   border-radius: 10px;
   gap: 10px;
   transition: background-color 0.1s;
@@ -124,7 +130,7 @@
   }
 
   &.active {
-    background-color: var(--button-bg-lighter-color);
+    background-color: var(--transparent-bg-color);
   }
 }
 

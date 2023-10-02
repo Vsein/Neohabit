@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Overview from './pages/Overview';
 import Projects from './pages/Projects';
 import Habit from './pages/Habit';
+import Project from './pages/Project';
 import Logout from './pages/Logout';
 import NotFound from './pages/404';
 import Landing from './pages/Landing';
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/projects/*" element={<Projects />} />
           <Route path="/habit/:habitID/*" element={<Habit />} />
+          <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
@@ -102,7 +104,7 @@ const PrivateRoutes = (params) => {
     <>
       <div id="content">
         <MainMenu toggleSidebar={toggleSidebar} />
-        <Sidebar hidden={sidebarHidden} />
+        <Sidebar hidden={sidebarHidden} toggleSidebar={toggleSidebar}/>
         <Outlet />
         <CellTip />
         <CellAdd />

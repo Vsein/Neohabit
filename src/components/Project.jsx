@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
@@ -58,7 +59,9 @@ export default function Project({ project }) {
             datePeriodLength < 14 ? 'small' : ''
           }`}
         >
-          <h3 style={{ color: colorShade }}>{project?.name}</h3>
+          <NavLink to={`../project/${project?._id}`} title={project.name}>
+            <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+          </NavLink>
           <DatePeriodPicker
             dateStart={dateStart}
             setDateStart={setDateStart}
@@ -146,22 +149,24 @@ function ProjectControls({ projectID }) {
     deleteProject(projectID);
   };
 
-  return projectID !== '' && (
-    <div className="overview-settings">
-      <button
-        className="overview-open-settings active"
-        onClick={openOverlay}
-        title="Edit the project"
-      >
-        <Icon path={mdiPencil} className="icon small centering" />
-      </button>
-      <button
-        className="overview-open-settings active"
-        onClick={deleteChosenProject}
-        title="Delete the project"
-      >
-        <Icon path={mdiDelete} className="icon small centering" />
-      </button>
-    </div>
+  return (
+    projectID !== 'default' && (
+      <div className="overview-settings">
+        <button
+          className="overview-open-settings active"
+          onClick={openOverlay}
+          title="Edit the project"
+        >
+          <Icon path={mdiPencil} className="icon small centering" />
+        </button>
+        <button
+          className="overview-open-settings active"
+          onClick={deleteChosenProject}
+          title="Delete the project"
+        >
+          <Icon path={mdiDelete} className="icon small centering" />
+        </button>
+      </div>
+    )
   );
 }

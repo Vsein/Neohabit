@@ -11,7 +11,7 @@
   grid-template-rows: 30px;
   grid-template-areas:
     'name settings'
-    'date date';
+    'date settings';
   gap: 3px;
   padding-bottom: 5px;
 }
@@ -24,7 +24,7 @@
     'menu    menu'
     'sidebar main';
   grid-template-rows: 60px 1fr;
-  grid-template-columns: min-content 1fr;
+  grid-template-columns: 80px 1fr;
   // background-color: #efefef;
   @media (max-width: 550px) {
     .sidebar {
@@ -55,7 +55,8 @@
       padding-bottom: 90px;
     }
 
-    .habits-container {
+    .sidebar-projects-container,
+    .sidebar-habits-container {
       visibility: hidden;
     }
   }
@@ -63,10 +64,6 @@
   @media (max-width: 750px) {
     .overview-header {
       @include overview-header-small;
-    }
-
-    .overview-centering {
-      margin: 10px;
     }
   }
 
@@ -109,12 +106,16 @@
       }
 
       & .filters,
-      & .habits,
-      & .habits-container {
+      & .sidebar-projects,
+      & .sidebar-projects-container,
+      & .sidebar-habits,
+      & .sidebar-habits-container {
         visibility: hidden;
+        display: none;
       }
 
-      & .habits-arrow {
+      & .sidebar-projects-arrow,
+      & .sidebar-habits-arrow {
         opacity: 0;
       }
     }

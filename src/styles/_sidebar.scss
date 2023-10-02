@@ -9,27 +9,28 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding: 15px;
+  padding: 10px;
   // transition: 1.5s;
   white-space: nowrap;
   overflow-y: scroll;
   overflow-x: hidden;
+  z-index: 1;
 
   & p {
     line-height: 20px;
   }
 }
 
-.habits,
 .filters {
-  align-items: center;
   display: flex;
+  height: 100%;
   align-items: center;
-  height: 50px;
 }
 
-.habits-header {
+.sidebar-projects-header,
+.sidebar-habits-header {
   width: 100%;
+  height: 35px;
   display: flex;
   flex-direction: row;
   gap: 5px;
@@ -57,11 +58,11 @@
     border-radius: 5px;
     padding-inline: 5px;
     outline: none;
+    cursor: pointer;
 
     &.active,
     &:hover {
-      background-color: rgba(0, 0, 0, 0.3);
-      cursor: pointer;
+      background-color: var(--transparent-bg-color);
     }
   }
 
@@ -84,17 +85,18 @@
   align-content: center;
   line-height: 12px;
   gap: 10px;
-  border-radius: 3px;
-  transition: background-color 0.3s;
+  border-radius: 5px;
+  cursor: pointer;
 
-  &.active {
-    background-color: var(--signature-color-transparent);
-  }
-
+  &.active,
   &:hover {
-    cursor: pointer;
-    background-color: #0000001a;
+    background-color: var(--transparent-bg-color);
   }
+}
+
+.sidebar-project {
+  @include sidebar-item;
+  padding-left: 10px;
 }
 
 .filter {
@@ -109,6 +111,15 @@
 .habit {
   @include sidebar-item;
   padding-inline: 9px;
+  height: 30px;
+  margin-left: 13px;
+  margin-block: 3px;
+  gap: 20px;
+
+  &.active,
+  &:hover {
+    background-color: var(--transparent-bg-color);
+  }
 }
 
 .tag {
@@ -122,9 +133,31 @@
   }
 }
 
-.habits {
+.sidebar-projects {
   @include dropdown;
   @include dropdown-arrow;
+  @include dropdown-collapse;
+
+  &-container.active {
+    gap: 5px;
+    top: 40px;
+  }
+}
+
+.sidebar-habits {
+  @include dropdown;
+  @include dropdown-arrow;
+  @include dropdown-collapse;
+  padding: 2px;
+
+  &-header {
+    gap: 5px;
+    padding-left: 15px;
+  }
+
+  &-container.active {
+    top: 40px;
+  }
 }
 
 .sidebar-mobile {
@@ -160,7 +193,7 @@
 
   &:hover,
   &.active {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: var(--transparent-bg-color);
     cursor: pointer;
   }
 }
