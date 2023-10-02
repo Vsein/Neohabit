@@ -21,12 +21,9 @@
   }
 }
 
-.habits,
-.filters,
-.sidebar-projects,
-.sidebar-habits {
-  align-items: center;
+.filters {
   display: flex;
+  height: 100%;
   align-items: center;
 }
 
@@ -114,10 +111,14 @@
 .habit {
   @include sidebar-item;
   padding-inline: 9px;
+  height: 30px;
+  margin-left: 13px;
+  margin-block: 3px;
+  gap: 20px;
 
   &.active,
   &:hover {
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -135,6 +136,7 @@
 .sidebar-projects {
   @include dropdown;
   @include dropdown-arrow;
+  @include dropdown-collapse;
 
   &-container.active {
     gap: 5px;
@@ -145,10 +147,16 @@
 .sidebar-habits {
   @include dropdown;
   @include dropdown-arrow;
+  @include dropdown-collapse;
+  padding: 2px;
 
   &-header {
-    gap: 3px;
+    gap: 5px;
     padding-left: 15px;
+  }
+
+  &-container.active {
+    top: 40px;
   }
 }
 

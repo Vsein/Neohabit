@@ -97,9 +97,7 @@ export default function Sidebar({ hidden, toggleSidebar }) {
                 {projects.data.map((project, i) => (
                   <Project key={`project-${i}`} project={project} />
                 ))}
-                <li>
-                  <Project project={defaultProject} />
-                </li>
+                <Project project={defaultProject} />
               </>
             )}
           </ul>
@@ -149,9 +147,13 @@ function Project({ project }) {
       <li className="sidebar-habits-header">
         <button className="centering" onClick={toggleHabitsCollapsed}>
           <Icon
-            className={`icon sidebar-habits-arrow ${habitsCollapsed ? '' : 'active'}`}
+            className={`icon small habit-circle sidebar-habits-arrow ${
+              habitsCollapsed ? '' : 'active'
+            }`}
             path={mdiChevronDown}
-          style={{ color: project.color }}
+            style={{
+              backgroundColor: project.color,
+            }}
           />
         </button>
         <NavLink
@@ -170,25 +172,32 @@ function Project({ project }) {
       </li>
       <ul className={`sidebar-habits-container ${habitsCollapsed ? '' : 'active'}`}>
         {project.habits &&
-            project.habits.map((habit, i) =>
-              habit?._id ? (
-                <li>
-                <HabitTag
-                  key={i}
-                  habit={habit}
-                />
-                </li>
-              ) : (
-                habits.data.find((habito) => habito._id === habit) && (
-                  <li>
-                  <HabitTag
-                    key={i}
-                    habit={habits.data.find((habito) => habito._id === habit)}
-                  />
-                  </li>
-                )
-              ),
-            )}
+          project.habits.map((habit, i) =>
+            habit?._id ? (
+              <NavLink
+                className="habit"
+                to={`habit/${linkify(habit._id)}`}
+                style={{
+                  backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
+                }}
+                title={habit.name}
+              >
+                <HabitTag key={i} habit={habit} />
+              </NavLink>
+            ) : (
+              habits.data.find((habito) => habito._id === habit) && (
+                <NavLink
+                  className="habit"
+                  to={`habit/${linkify(habit)}`}
+                  style={{
+                    backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
+                  }}
+                >
+                  <HabitTag key={i} habit={habits.data.find((habito) => habito._id === habit)} />
+                </NavLink>
+              )
+            ),
+          )}
       </ul>
     </ul>
   );

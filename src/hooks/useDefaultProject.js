@@ -7,7 +7,7 @@ export default function useStopwatch() {
 
   const defaultProject = {
     name: 'Default',
-    color: '#eeeeee',
+    color: '#8a8a8a',
     habits: habits.data.filter((habit) => {
       const found =
         projects.data &&
