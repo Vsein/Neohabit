@@ -57,7 +57,7 @@
 
     &.active,
     &:hover {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: var(--transparent-bg-color);
     }
   }
 
@@ -78,7 +78,7 @@
 
   &:hover,
   &.active {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--transparent-bg-color);
     cursor: pointer;
   }
 
