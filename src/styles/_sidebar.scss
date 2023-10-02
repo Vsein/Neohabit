@@ -111,10 +111,12 @@
 .habit {
   @include sidebar-item;
   padding-inline: 9px;
-  height: 30px;
+  height: 35px;
   margin-left: 13px;
   margin-block: 3px;
   gap: 20px;
+  width: 207px;
+  overflow: hidden;
 
   &.active,
   &:hover {
