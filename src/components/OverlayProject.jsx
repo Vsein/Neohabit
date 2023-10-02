@@ -31,7 +31,7 @@ export default function OverlayProject() {
 
   useEffect(() => {
     setProjectHabitList(project.habits);
-  }, [projectID]);
+  }, [projectID, isActive]);
 
   const closeOverlay = (e) => {
     e.stopPropagation();
