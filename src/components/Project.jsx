@@ -146,22 +146,24 @@ function ProjectControls({ projectID }) {
     deleteProject(projectID);
   };
 
-  return projectID !== '' && (
-    <div className="overview-settings">
-      <button
-        className="overview-open-settings active"
-        onClick={openOverlay}
-        title="Edit the project"
-      >
-        <Icon path={mdiPencil} className="icon small centering" />
-      </button>
-      <button
-        className="overview-open-settings active"
-        onClick={deleteChosenProject}
-        title="Delete the project"
-      >
-        <Icon path={mdiDelete} className="icon small centering" />
-      </button>
-    </div>
+  return (
+    projectID !== 'default' && (
+      <div className="overview-settings">
+        <button
+          className="overview-open-settings active"
+          onClick={openOverlay}
+          title="Edit the project"
+        >
+          <Icon path={mdiPencil} className="icon small centering" />
+        </button>
+        <button
+          className="overview-open-settings active"
+          onClick={deleteChosenProject}
+          title="Delete the project"
+        >
+          <Icon path={mdiDelete} className="icon small centering" />
+        </button>
+      </div>
+    )
   );
 }

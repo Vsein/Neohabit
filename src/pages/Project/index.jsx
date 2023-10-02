@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import useTitle from '../../hooks/useTitle';
+import useDefaultProject from '../../hooks/useDefaultProject';
 import { useGetHabitsQuery } from '../../state/services/habit';
 import { useGetProjectsQuery } from '../../state/services/project';
 import Project from '../../components/Project';
@@ -23,19 +24,7 @@ function ProjectPageLayout() {
   const habits = useGetHabitsQuery();
   const { projectID } = useParams();
 
-  const defaultProject = {
-    name: 'Default',
-    color: '#eeeeee',
-    habits: habits.data.filter((habit) => {
-      const found =
-        projects.data &&
-        projects.data.find((project) =>
-          project.habits.find((projectHabitID) => habit._id === projectHabitID),
-        );
-      return found === -1 || found === undefined;
-    }),
-    _id: '',
-  };
+  const [defaultProject] = useDefaultProject();
 
   return projects.isFetching || habits.isFetching ? (
     <div className="loader" />

@@ -12,17 +12,16 @@ import {
   mdiChevronDown,
   mdiPlus,
 } from '@mdi/js';
-import { useGetFiltersQuery } from '../state/services/todolist';
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHabitsQuery } from '../state/services/habit';
 import HabitTag from './HabitTag';
 import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
+import useDefaultProject from '../hooks/useDefaultProject';
 
 export default function Sidebar({ hidden, toggleSidebar }) {
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
-  const filters = useGetFiltersQuery();
   const dispatch = useDispatch();
   const [projectsCollapsed, setProjectsCollapsed] = useState(false);
 
@@ -32,24 +31,12 @@ export default function Sidebar({ hidden, toggleSidebar }) {
 
   const openOverlay = () => {
     dispatch(open());
-    dispatch(changeTo({ projectID: '', projectID: '' }));
+    dispatch(changeTo({ projectID: '', habitID: '' }));
   };
 
   useKeyPress(['a'], openOverlay);
 
-  const defaultProject = {
-    name: 'Default',
-    color: '#eeeeee',
-    habits: habits.data.filter((habit) => {
-      const found =
-        projects.data &&
-        projects.data.find((project) =>
-          project.habits.find((projectHabitID) => habit._id === projectHabitID),
-        );
-      return found === -1 || found === undefined;
-    }),
-    _id: '',
-  };
+  const [defaultProject] = useDefaultProject();
 
   return (
     <>
@@ -112,9 +99,9 @@ export default function Sidebar({ hidden, toggleSidebar }) {
                     <Project project={project} />
                   </li>
                 ))}
-                {/* <li> */}
-                {/*   <Project project={defaultProject} /> */}
-                {/* </li> */}
+                <li>
+                  <Project project={defaultProject} />
+                </li>
               </>
             )}
           </ul>

@@ -9,6 +9,7 @@ import { changeTo, open } from '../state/features/projectOverlay/projectOverlayS
 import useLoaded from '../hooks/useLoaded';
 import Project from './Project';
 import useKeyPress from '../hooks/useKeyPress';
+import useDefaultProject from '../hooks/useDefaultProject';
 
 export default function Overview() {
   const [loaded] = useLoaded();
@@ -22,6 +23,8 @@ export default function Overview() {
     dispatch(changeTo(''));
   };
 
+  const [defaultProject] = useDefaultProject();
+
   if (!loaded || projects.isFetching || habits.isFetching) {
     return (
       <div className="overview-loader centering">
@@ -29,20 +32,6 @@ export default function Overview() {
       </div>
     );
   }
-
-  const defaultProject = {
-    name: 'Default',
-    color: '#eeeeee',
-    habits: habits.data.filter((habit) => {
-      const found =
-        projects.data &&
-        projects.data.find((project) =>
-          project.habits.find((projectHabitID) => habit._id === projectHabitID),
-        );
-      return found === -1 || found === undefined;
-    }),
-    _id: '',
-  };
 
   return (
     <div className="contentlist">
