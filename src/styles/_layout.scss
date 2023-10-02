@@ -55,7 +55,7 @@
       padding-bottom: 90px;
     }
 
-    .habits-container {
+    .sidebar-projects-container {
       visibility: hidden;
     }
   }
@@ -105,12 +105,13 @@
       }
 
       & .filters,
-      & .habits,
-      & .habits-container {
+      & .sidebar-projects,
+      & .sidebar-projects-container {
         visibility: hidden;
       }
 
-      & .habits-arrow {
+      & .sidebar-projects-arrow,
+      & .sidebar-habits-arrow {
         opacity: 0;
       }
     }

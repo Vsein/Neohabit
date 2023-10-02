@@ -74,11 +74,11 @@ export default function Sidebar({ hidden, toggleSidebar }) {
           <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
         </ul>
         <hr />
-        <ul className="habits">
-          <li className="habits-header">
+        <ul className="sidebar-projects">
+          <li className="sidebar-projects-header">
             <button className="centering" onClick={toggleProjectsCollapsed}>
               <Icon
-                className={`icon habits-arrow ${projectsCollapsed ? '' : 'active'}`}
+                className={`icon sidebar-projects-arrow ${projectsCollapsed ? '' : 'active'}`}
                 path={mdiChevronDown}
               />
             </button>
@@ -87,17 +87,15 @@ export default function Sidebar({ hidden, toggleSidebar }) {
               <Icon path={mdiPlus} className="icon" />
             </button>
           </li>
-          <ul className={`habits-container ${projectsCollapsed ? '' : 'active'}`}>
+          <ul className={`sidebar-projects-container ${projectsCollapsed ? '' : 'active'}`}>
             {projects.isFetching || habits.isFetching ? (
-              <div className="habits-loader">
+              <div className="sidebar-projects-loader">
                 <div className="loader" />
               </div>
             ) : (
               <>
                 {projects.data.map((project, i) => (
-                  <li key={`project-${i}`}>
-                    <Project project={project} />
-                  </li>
+                  <Project key={`project-${i}`} project={project} />
                 ))}
                 <li>
                   <Project project={defaultProject} />
@@ -137,21 +135,61 @@ function NavigationSection(props) {
   );
 }
 
-function Project(props) {
-  const { project } = props;
-
+function Project({ project }) {
+  const habits = useGetHabitsQuery();
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
+  const [habitsCollapsed, setHabitsCollapsed] = useState(true);
+
+  const toggleHabitsCollapsed = () => {
+    setHabitsCollapsed(!habitsCollapsed);
+  };
 
   return (
-    <NavLink
-      className={({ isActive }) => (isActive ? 'habit active' : 'habit')}
-      to={`project/${linkify(project._id)}`}
-      style={{
-        backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
-      }}
-      title={project.name}
-    >
-      <HabitTag habit={project} />
-    </NavLink>
+    <ul className="sidebar-habits">
+      <li className="sidebar-habits-header">
+        <button className="centering" onClick={toggleHabitsCollapsed}>
+          <Icon
+            className={`icon sidebar-habits-arrow ${habitsCollapsed ? '' : 'active'}`}
+            path={mdiChevronDown}
+          style={{ color: project.color }}
+          />
+        </button>
+        <NavLink
+          className={({ isActive }) => (isActive ? 'sidebar-project active' : 'sidebar-project')}
+          to={`project/${linkify(project._id)}`}
+          style={{
+            backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
+          }}
+          title={project.name}
+        >
+          <p>{project.name}</p>
+        </NavLink>
+        {/* <button className="centering add" onClick={openOverlay} title="Add project [A]"> */}
+        {/*   <Icon path={mdiPlus} className="icon" /> */}
+        {/* </button> */}
+      </li>
+      <ul className={`sidebar-habits-container ${habitsCollapsed ? '' : 'active'}`}>
+        {project.habits &&
+            project.habits.map((habit, i) =>
+              habit?._id ? (
+                <li>
+                <HabitTag
+                  key={i}
+                  habit={habit}
+                />
+                </li>
+              ) : (
+                habits.data.find((habito) => habito._id === habit) && (
+                  <li>
+                  <HabitTag
+                    key={i}
+                    habit={habits.data.find((habito) => habito._id === habit)}
+                  />
+                  </li>
+                )
+              ),
+            )}
+      </ul>
+    </ul>
   );
 }

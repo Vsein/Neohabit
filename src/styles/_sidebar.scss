@@ -22,15 +22,18 @@
 }
 
 .habits,
-.filters {
+.filters,
+.sidebar-projects,
+.sidebar-habits {
   align-items: center;
   display: flex;
   align-items: center;
-  height: 50px;
 }
 
-.habits-header {
+.sidebar-projects-header,
+.sidebar-habits-header {
   width: 100%;
+  height: 35px;
   display: flex;
   flex-direction: row;
   gap: 5px;
@@ -94,6 +97,11 @@
   }
 }
 
+.sidebar-project {
+  @include sidebar-item;
+  padding-left: 10px;
+}
+
 .filter {
   @include sidebar-item;
   padding-inline: 15px;
@@ -106,6 +114,11 @@
 .habit {
   @include sidebar-item;
   padding-inline: 9px;
+
+  &.active,
+  &:hover {
+    background-color: transparent;
+  }
 }
 
 .tag {
@@ -119,9 +132,24 @@
   }
 }
 
-.habits {
+.sidebar-projects {
   @include dropdown;
   @include dropdown-arrow;
+
+  &-container.active {
+    gap: 5px;
+    top: 40px;
+  }
+}
+
+.sidebar-habits {
+  @include dropdown;
+  @include dropdown-arrow;
+
+  &-header {
+    gap: 3px;
+    padding-left: 15px;
+  }
 }
 
 .sidebar-mobile {
