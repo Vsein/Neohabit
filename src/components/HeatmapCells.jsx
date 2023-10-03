@@ -13,7 +13,7 @@ import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
-function Cell({ color, tipContent, value, length, vertical = true, numeric }) {
+function Cell({ color, tipContent, value, length, vertical = true, numeric, targetValue = 1 }) {
   const dispatch = useDispatch();
   const style = {
     [value ? 'backgroundColor' : '']: color,
@@ -39,7 +39,12 @@ function Cell({ color, tipContent, value, length, vertical = true, numeric }) {
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      {numeric && value ? (<p className="cell-numeric">{value}</p> ): <></>}
+      {numeric && value ? <p className="cell-numeric">{value}</p> : <></>}
+      {numeric && targetValue > 1 && !value ? (
+        <p className="cell-numeric target">{targetValue}</p>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
@@ -57,7 +62,7 @@ function CellFractured({
   const style = {
     '--color': color,
     gap: '2px',
-    [value ? 'boxShadow': '']: 'none',
+    [value ? 'boxShadow' : '']: 'none',
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
@@ -155,7 +160,7 @@ function CellPeriod({
     actions: value,
   };
   if (isSameWeek(dateStart, dateEnd) || isOverview) {
-    return (value <= 1 || value === undefined) && targetValue === 1 || numeric ? (
+    return ((value <= 1 || value === undefined) && targetValue === 1) || numeric ? (
       <Cell
         color={color}
         tipContent={tipContent}
@@ -163,6 +168,7 @@ function CellPeriod({
         length={diffDays}
         vertical={vertical}
         numeric={numeric}
+        targetValue={targetValue}
       />
     ) : (
       <CellFractured
