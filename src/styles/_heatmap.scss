@@ -61,7 +61,7 @@ $cell-weekdays-width: 33px;
     100%,
     calc(
       var(--weeks) * 15px - 2px + 15px +
-        (#{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1)) * 2.5
+        (var(--cell-height) * var(--multiplier) + 2px * 2 * (var(--multiplier) - 1)) * 2.5
     )
   );
   direction: rtl;
@@ -69,8 +69,8 @@ $cell-weekdays-width: 33px;
   grid-template-areas:
     'months   .'
     'cells     weekdays';
-  grid-template-rows: $cell-height calc(
-      (#{$cell-height} + #{$cell-margin} * 2) * 7 * var(--multiplier)
+  grid-template-rows: var(--cell-height) calc(
+      (var(--cell-height) + 2px * 2) * 7 * var(--multiplier)
     );
   grid-template-columns: calc(var(--weeks) * 15px - 2px) min-content;
   row-gap: 5px;
@@ -94,9 +94,8 @@ $cell-weekdays-width: 33px;
   background-color: var(--main-background-color);
   border-radius: 0 0 10px 10px;
   padding-right: 5px;
-  height: calc(20px + 15px * 7 * var(--multiplier));
-  width: min(100%, calc(var(--weeks) * 15px + 125px));
-
+  height: calc(25px + (var(--cell-height) + 4px) * 7 * var(--multiplier));
+  width: min(100%, calc(var(--weeks) * (var(--cell-height) + 4px) + 125px));
 }
 
 .habit-heatmap {
@@ -107,7 +106,7 @@ $cell-weekdays-width: 33px;
   grid-template-areas:
     '.        months'
     'weekdays cells';
-  grid-template-rows: $cell-height calc(15px * 7 * var(--multiplier));
-  grid-template-columns: min-content calc(var(--weeks) * 15px - 2px);
+  grid-template-rows: var(--cell-height) calc((var(--cell-height) + 4px) * 7 * var(--multiplier));
+  grid-template-columns: min-content calc(var(--weeks) * (var(--cell-height) + 4px) - 2px);
   row-gap: 4px;
 }

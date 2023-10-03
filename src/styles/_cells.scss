@@ -66,9 +66,9 @@ $cell-margin: 2px;
 .cell-numeric {
   padding-block: 2px;
   line-height: 100%;
-  font-size: 11px;
+  font-size: calc(var(--cell-height) - 4px);
   text-align: center;
-  height: 15px;
+  height: var(--cell-height);
   width: 100%;
   font-weight: 600;
   vertical-align: middle;
@@ -106,7 +106,7 @@ $cell-margin: 2px;
       var(--cell-height) * var(--height) * var(--multiplier) + 4px *
         calc(var(--height) * var(--multiplier) - 1)
     );
-    width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
+    width: calc((var(--cell-width) + 5px) * var(--width) + 2px * calc(var(--width) - 1));
     border-radius: 1px;
     position: absolute;
     visibility: visible;
@@ -117,14 +117,14 @@ $cell-margin: 2px;
   &-before {
     @include shaped-cell;
     border-right: none;
-    left: -15px;
+    left: calc(-1 * var(--cell-height) - 4px);
     bottom: 0px;
   }
 
   &-after {
     @include shaped-cell;
     border-left: none;
-    right: -15px;
+    right: calc(-1 * var(--cell-height) - 4px);
     top: 0px;
   }
 
@@ -145,13 +145,13 @@ $cell-margin: 2px;
     border-right: none;
 
     & .cell-period-before {
-      width: 11px;
-      left: -12px;
+      width: var(--cell-height);
+      left: calc(-1 * var(--cell-height) - 1px);
     }
 
     & .cell-period-after {
-      width: 11px;
-      right: -12px;
+      width: var(--cell-height);
+      right: calc(-1 * var(--cell-height) - 1px);
     }
   }
 
