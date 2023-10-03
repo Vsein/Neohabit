@@ -194,7 +194,7 @@ function CellPeriod({
   }
 
   const trueColor =
-    numeric && elimination && value > targetValue
+    (value > 1 || numeric) && elimination && value > targetValue
       ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
       : color;
 
