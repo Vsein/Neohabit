@@ -71,7 +71,7 @@ export const habitApi = api.injectEndpoints({
               habit.color = values.color;
               habit.description = values.description;
               habit.completed = values.completed;
-              habit.elminiation = values.elimination;
+              habit.elimination = values.elimination;
               habit.numeric = values.numeric;
             }
           }),
