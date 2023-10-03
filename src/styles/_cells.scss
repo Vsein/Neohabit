@@ -64,7 +64,7 @@ $cell-margin: 2px;
 }
 
 .cell-numeric {
-  padding-block: 2px;
+  padding-block: 3px;
   line-height: 100%;
   font-size: calc(var(--cell-height) - 4px);
   text-align: center;
@@ -110,7 +110,6 @@ $cell-margin: 2px;
     border-radius: 1px;
     position: absolute;
     visibility: visible;
-    display: block;
     background-color: inherit;
   }
 

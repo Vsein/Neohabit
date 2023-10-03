@@ -53,6 +53,12 @@ function generatePalette(base, goal) {
   return palette;
 }
 
+function getNumericTextColor(color) {
+  return contrast(hexToRgb(color), hexToRgb('#efefef')) > contrast(hexToRgb(color), hexToRgb('#242424'))
+      ? '#efefef'
+      : '#242424';
+}
+
 export default function usePaletteGenerator(color) {
   const { themeRgb } = useSelector((state) => ({
     themeRgb: state.theme.colorRgb,
@@ -64,4 +70,4 @@ export default function usePaletteGenerator(color) {
   return palette;
 }
 
-export { mixColors, hexToRgb, contrast };
+export { mixColors, hexToRgb, contrast, getNumericTextColor };
