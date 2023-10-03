@@ -13,10 +13,23 @@ import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
 import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
-function Cell({ color, tipContent, value, length, vertical = true, numeric, targetValue = 1 }) {
+function Cell({
+  color,
+  tipContent,
+  value,
+  length,
+  vertical = true,
+  numeric,
+  targetValue = 1,
+  elimination,
+}) {
+  const trueColor =
+    numeric && elimination && value > targetValue
+      ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
+      : color;
   const dispatch = useDispatch();
   const style = {
-    [value ? 'backgroundColor' : '']: color,
+    [value ? 'backgroundColor' : '']: trueColor,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
@@ -165,6 +178,7 @@ function CellPeriod({
         vertical={vertical}
         numeric={numeric}
         targetValue={targetValue}
+        elimination={elimination}
       />
     ) : (
       <CellFractured
@@ -179,11 +193,16 @@ function CellPeriod({
     );
   }
 
+  const trueColor =
+    numeric && elimination && value > targetValue
+      ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
+      : color;
+
   let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    [value ? 'backgroundColor' : '']: color,
+    [value ? 'backgroundColor' : '']: trueColor,
     '--height': 7,
     '--width': width,
   };
@@ -230,7 +249,7 @@ function CellPeriod({
         />
         <div className="cell-period-before centering" style={styleBefore}>
           <CellNumericText
-            numeric={!width && value > 1 || numeric}
+            numeric={(!width && value > 1) || numeric}
             color={color}
             value={value}
             targetValue={targetValue}
@@ -238,7 +257,7 @@ function CellPeriod({
         </div>
         <div className="cell-period-after centering" style={styleAfter}>
           <CellNumericText
-            numeric={!width && value > 1 || numeric}
+            numeric={(!width && value > 1) || numeric}
             color={color}
             value={value}
             targetValue={targetValue}
