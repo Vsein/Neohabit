@@ -11,7 +11,7 @@ import {
 } from 'date-fns';
 import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
-import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
+import { mixColors, hexToRgb, contrast } from '../hooks/usePaletteGenerator';
 
 function Cell({ color, tipContent, value, length, vertical = true, numeric, targetValue = 1 }) {
   const dispatch = useDispatch();
@@ -20,6 +20,10 @@ function Cell({ color, tipContent, value, length, vertical = true, numeric, targ
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
+  const getNumericTextColor = () =>
+    contrast(hexToRgb(color), hexToRgb('#efefef')) > contrast(hexToRgb(color), hexToRgb('#242424'))
+      ? '#efefef'
+      : '#242424';
 
   return (
     <div
@@ -39,7 +43,13 @@ function Cell({ color, tipContent, value, length, vertical = true, numeric, targ
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      {numeric && value ? <p className="cell-numeric">{value}</p> : <></>}
+      {numeric && value ? (
+        <p className="cell-numeric" style={{ color: getNumericTextColor() }}>
+          {value}
+        </p>
+      ) : (
+        <></>
+      )}
       {numeric && targetValue > 1 && !value ? (
         <p className="cell-numeric target">{targetValue}</p>
       ) : (
