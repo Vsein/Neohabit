@@ -13,7 +13,7 @@ export default function Habit() {
   return (
     <Routes>
       <Route element={<HabitLayout />}>
-        <Route index element={<Navigate to="overview" />} />
+        <Route index element={<Overview />} />
         <Route path="overview" element={<Overview />} />
         <Route path="heatmap" element={<Overview />} />
         <Route path="skill-tree" element={<Overview />} />

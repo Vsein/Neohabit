@@ -21,6 +21,7 @@ $cell-margin: 2px;
   position: relative;
   background-color: var(--blank-cell-color);
   box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
+  border: 1px solid transparent;
 
   &.dotted {
     background: repeating-conic-gradient(var(--color) 0% 27%, transparent 0% 100%) 50% / 3px 3px;
@@ -28,6 +29,15 @@ $cell-margin: 2px;
 
   &:hover {
     border: 1px solid var(--cell-border-color);
+
+    & .cell-numeric {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    & .cell-numeric.target {
+      color: var(--text-color);
+      opacity: 0.7;
+    }
   }
 
   &.fractured {
@@ -50,6 +60,23 @@ $cell-margin: 2px;
         border: 1px solid var(--cell-border-color);
       }
     }
+  }
+}
+
+.cell-numeric {
+  padding-block: 3px;
+  line-height: 100%;
+  font-size: calc(var(--cell-height) - 4px);
+  text-align: center;
+  height: var(--cell-height);
+  width: 100%;
+  font-weight: 600;
+  vertical-align: middle;
+  color: var(--blank-cell-color);
+
+  &.target {
+    color: var(--text-color);
+    opacity: 0.3;
   }
 }
 
@@ -79,25 +106,24 @@ $cell-margin: 2px;
       var(--cell-height) * var(--height) * var(--multiplier) + 4px *
         calc(var(--height) * var(--multiplier) - 1)
     );
-    width: calc(16px * var(--width) + 2px * calc(var(--width) - 1));
+    width: calc((var(--cell-width) + 5px) * var(--width) + 2px * calc(var(--width) - 1));
     border-radius: 1px;
     position: absolute;
     visibility: visible;
-    display: block;
     background-color: inherit;
   }
 
   &-before {
     @include shaped-cell;
     border-right: none;
-    left: -15px;
+    left: calc(-1 * var(--cell-height) - 4px);
     bottom: 0px;
   }
 
   &-after {
     @include shaped-cell;
     border-left: none;
-    right: -15px;
+    right: calc(-1 * var(--cell-height) - 4px);
     top: 0px;
   }
 
@@ -118,13 +144,13 @@ $cell-margin: 2px;
     border-right: none;
 
     & .cell-period-before {
-      width: 11px;
-      left: -12px;
+      width: var(--cell-height);
+      left: calc(-1 * var(--cell-height) - 1px);
     }
 
     & .cell-period-after {
-      width: 11px;
-      right: -12px;
+      width: var(--cell-height);
+      right: calc(-1 * var(--cell-height) - 1px);
     }
   }
 

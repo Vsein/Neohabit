@@ -11,6 +11,9 @@ export default function CellAdd() {
   const { heatmapID, isTarget, isActive } = useSelector((state) => state.cellAdd);
   const closeDropdown = () => {
     dispatch(close());
+    const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+    cellAddDropdown.style.top = '0px';
+    cellAddDropdown.style.left = '0px';
   };
   useEffect(() => {
     document.addEventListener('click', closeDropdown);

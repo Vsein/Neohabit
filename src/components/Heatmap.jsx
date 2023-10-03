@@ -105,6 +105,7 @@ export default function Heatmap({
                     value={0}
                     vertical={vertical}
                     elimination={habit?.elimination}
+                    numeric={habit?.numeric}
                     isOverview={isOverview}
                   />
                 )}
@@ -118,6 +119,7 @@ export default function Heatmap({
                     basePeriod={24}
                     vertical={vertical}
                     elimination={habit?.elimination}
+                    numeric={habit?.numeric}
                     isOverview={isOverview}
                   />
                 )}
@@ -166,6 +168,7 @@ export default function Heatmap({
               basePeriod={24}
               vertical={vertical}
               elimination={habit?.elimination}
+              numeric={habit?.numeric}
               targetValue={previousTarget.value}
               isOverview={isOverview}
             />
