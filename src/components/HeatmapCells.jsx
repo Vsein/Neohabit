@@ -13,7 +13,7 @@ import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
-function Cell({ color, tipContent, value, length, vertical = true }) {
+function Cell({ color, tipContent, value, length, vertical = true, numeric }) {
   const dispatch = useDispatch();
   const style = {
     [value ? 'backgroundColor' : '']: color,
@@ -38,7 +38,9 @@ function Cell({ color, tipContent, value, length, vertical = true }) {
         fixateCellTip(e);
         changeCellOffset(e, tipContent, value, true);
       }}
-    />
+    >
+      {numeric && value ? (<p className="cell-numeric">{value}</p> ): <></>}
+    </div>
   );
 }
 
@@ -140,6 +142,7 @@ function CellPeriod({
   targetValue = 1,
   targetStart = undefined,
   elimination,
+  numeric,
   isOverview = false,
 }) {
   const dispatch = useDispatch();
@@ -152,13 +155,14 @@ function CellPeriod({
     actions: value,
   };
   if (isSameWeek(dateStart, dateEnd) || isOverview) {
-    return (value <= 1 || value === undefined) && targetValue === 1 ? (
+    return (value <= 1 || value === undefined) && targetValue === 1 || numeric ? (
       <Cell
         color={color}
         tipContent={tipContent}
         value={value}
         length={diffDays}
         vertical={vertical}
+        numeric={numeric}
       />
     ) : (
       <CellFractured

@@ -56,6 +56,7 @@ export default function OverlayHabit() {
             description: habit?.description,
             color: habit?.color,
             elimination: habit?.elimination,
+            numeric: habit?.numeric,
           }}
           onSubmit={onSubmit}
           render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -124,6 +125,15 @@ export default function OverlayHabit() {
                     className="checkbox"
                   />
                   <label>Use elimination</label>
+                </div>
+                <div className="form-task-description">
+                  <Field
+                    name="numeric"
+                    component="input"
+                    type="checkbox"
+                    className="checkbox"
+                  />
+                  <label>Use numeric</label>
                 </div>
               </div>
               <div className="modal-buttons">

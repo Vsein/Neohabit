@@ -72,6 +72,7 @@ export const habitApi = api.injectEndpoints({
               habit.description = values.description;
               habit.completed = values.completed;
               habit.elminiation = values.elimination;
+              habit.numeric = values.numeric;
             }
           }),
         );
