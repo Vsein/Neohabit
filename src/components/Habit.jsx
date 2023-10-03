@@ -20,7 +20,7 @@ export default function Habit({ heatmap, habit }) {
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset },
+    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
   ] = useDatePeriod(364);
 
   useKeyPress(['h'], subMonth);
@@ -48,6 +48,8 @@ export default function Habit({ heatmap, habit }) {
           setDateStart={setDateStart}
           dateEnd={dateEnd}
           setDateEnd={setDateEnd}
+          addPeriod={addPeriod}
+          subPeriod={subPeriod}
         />
         <HabitControls habit={habit} heatmap={heatmap} header={true} />
       </div>
