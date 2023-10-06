@@ -33,11 +33,11 @@ export default function Habit({ heatmap, habit }) {
       className="overview-centering"
       style={{
         '--habits': 7,
-        '--length': diffWeeks - 12,
+        '--length': diffWeeks - 11,
         '--multiplier': 1,
         '--cell-height': '15px',
         '--cell-width': '15px',
-        '--weeks': diffWeeks - 1,
+        '--weeks': diffWeeks,
         '--vertical': vertical * 1,
       }}
     >
