@@ -48,7 +48,7 @@ function HabitControls({ habit, heatmap, header }) {
     const rect = cell.getBoundingClientRect();
     cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
     cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
-    cellAddDropdown.style.borderColor = habit.color;
+    cellAddDropdown.style.setProperty('--border-color', habit.color);
   };
 
   return (

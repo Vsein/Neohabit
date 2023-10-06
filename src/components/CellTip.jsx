@@ -35,20 +35,28 @@ function formatPeriod(isPeriod, dateStart, dateEnd = undefined) {
 }
 
 function setCellTipActions(actions) {
-  const cellTip = document.querySelector('.cell-tip');
-  cellTip.firstChild.firstChild.textContent = `Actions: ${actions}`;
+  document.querySelector('#cell-tip-actions-counter').value = actions;
+}
+
+function getParentCell(cell) {
+  if (cell.classList.contains('cell-fraction') || cell.classList.contains('cell-numeric')) {
+    return cell.parentElement.parentElement.matches('.cell-period')
+      ? cell.parentElement.parentElement
+      : cell.parentElement;
+  }
+  return cell.parentElement.matches('.cell-period') ? cell.parentElement : cell;
 }
 
 function changeCellOffset(e, tipContent, actions, override = false) {
   const cellTip = document.querySelector('.cell-tip');
   if (cellTip.classList.contains('fixated') && !override) return 0;
-  const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
+  const cell = getParentCell(e.target);
   const parent =
     document.querySelector('.habit-heatmap-container') ||
     document.querySelector('.overview-container');
   const rect = cell.getBoundingClientRect();
   const rectParent = parent.getBoundingClientRect();
-  cellTip.firstChild.firstChild.textContent = `Actions: ${actions}`;
+  setCellTipActions(actions);
   const period = formatPeriod(tipContent.isPeriod, tipContent.dateStart, tipContent.dateEnd);
   cellTip.firstChild.nextSibling.textContent = `Period: ${period}`;
   const tipWidth = cellTip.getBoundingClientRect().width;
@@ -106,7 +114,7 @@ export default function CellTip() {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="cell-tip-actions">
-        <p className="cell-tip-actions-text"></p>
+        <p className="cell-tip-actions-text">Actions:</p>
         <div className="cell-tip-actions-controls">
           <button
             className="centering"
@@ -122,6 +130,22 @@ export default function CellTip() {
           >
             <Icon path={mdiPlusBox} className="icon tiny" />
           </button>
+          <input
+            id="cell-tip-actions-counter"
+            size="1"
+            onMouseLeave={(e) => e.target.blur()}
+            onBlur={(e) => {
+              updateHeatmap({
+                heatmapID,
+                values: {
+                  date: formatISO(dateStart, { representation: 'date' }),
+                  value: +e.target.value - actions,
+                },
+              });
+              setCellTipActions(+e.target.value);
+              dispatch(changeCellActions({ actions: +e.target.value }));
+            }}
+          ></input>
           <button
             className="centering"
             title="Delete 1 completed action in this period"
@@ -142,6 +166,7 @@ export default function CellTip() {
           <button
             className="centering"
             title="Delete all actions in this period"
+            style={{ marginLeft: '3px' }}
             onClick={() => {
               deleteCellPeriod({
                 heatmapID,

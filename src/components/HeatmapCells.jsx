@@ -249,7 +249,7 @@ function CellPeriod({
         />
         <div className="cell-period-before centering" style={styleBefore}>
           <CellNumericText
-            numeric={(!width && value > 1) || numeric}
+            numeric={!width && diffDays <= 7 && (value > 1 || numeric)}
             color={color}
             value={value}
             targetValue={targetValue}
@@ -257,7 +257,7 @@ function CellPeriod({
         </div>
         <div className="cell-period-after centering" style={styleAfter}>
           <CellNumericText
-            numeric={(!width && value > 1) || numeric}
+            numeric={!width && diffDays <= 7 && (value > 1 || numeric)}
             color={color}
             value={value}
             targetValue={targetValue}
@@ -265,12 +265,19 @@ function CellPeriod({
         </div>
         {diffDays > 7 && !width && (
           <div
-            className="cell-period-connector"
+            className="cell-period-connector centering"
             style={{
               '--height': afterHeight - (7 - beforeHeight),
               '--offset-top': 7 - beforeHeight,
             }}
-          />
+          >
+            <CellNumericText
+              numeric={!width && (value > 1 || numeric)}
+              color={color}
+              value={value}
+              targetValue={targetValue}
+            />
+          </div>
         )}
       </div>
       {afterHeight ? <CellDummy length={afterHeight} /> : <> </>}
