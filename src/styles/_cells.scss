@@ -210,10 +210,23 @@ $cell-margin: 2px;
     pointer-events: none;
   }
 
+  #cell-tip-actions-counter {
+    text-align: center;
+    display: grid;
+    width: min-content;
+    background-color: #777;
+    border-radius: 3px;
+    line-height: 14px;
+
+    &:focus {
+      background-color: #3c3c3c;
+    }
+  }
+
   &-actions {
     display: grid;
     grid-template-columns: min-content 1fr;
-    gap: 10px;
+    gap: 5px;
     align-items: center;
 
     &-controls {
