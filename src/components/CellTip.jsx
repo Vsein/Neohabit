@@ -39,10 +39,19 @@ function setCellTipActions(actions) {
   cellTip.firstChild.firstChild.textContent = `Actions: ${actions}`;
 }
 
+function getParentCell(cell) {
+  if (cell.classList.contains('cell-fraction') || cell.classList.contains('cell-numeric')) {
+    return cell.parentElement.parentElement.matches('.cell-period')
+      ? cell.parentElement.parentElement
+      : cell.parentElement;
+  }
+  return cell.parentElement.matches('.cell-period') ? cell.parentElement : cell;
+}
+
 function changeCellOffset(e, tipContent, actions, override = false) {
   const cellTip = document.querySelector('.cell-tip');
   if (cellTip.classList.contains('fixated') && !override) return 0;
-  const cell = e.target.classList.contains('cell-fraction') ? e.target.parentElement : e.target;
+  const cell = getParentCell(e.target);
   const parent =
     document.querySelector('.habit-heatmap-container') ||
     document.querySelector('.overview-container');
