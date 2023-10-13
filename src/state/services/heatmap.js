@@ -14,8 +14,7 @@ export const heatmapApi = api.injectEndpoints({
         body: values,
         method: 'PUT',
       }),
-      async onQueryStarted({ heatmapID, values }, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
+      async onQueryStarted({ heatmapID, values }, { dispatch }) {
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
             const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
@@ -51,8 +50,7 @@ export const heatmapApi = api.injectEndpoints({
         body: values,
         method: 'POST',
       }),
-      async onQueryStarted({ heatmapID, values }, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
+      async onQueryStarted({ heatmapID, values }, { dispatch }) {
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
             const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
@@ -81,8 +79,7 @@ export const heatmapApi = api.injectEndpoints({
         body: values,
         method: 'DELETE',
       }),
-      async onQueryStarted({ heatmapID, values }, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
+      async onQueryStarted({ heatmapID, values }, { dispatch }) {
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
             const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
