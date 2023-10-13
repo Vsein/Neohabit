@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { formatISO } from 'date-fns';
 import {
   useGetStopwatchQuery,
   useUpdateStopwatchMutation,
@@ -86,7 +87,12 @@ export default function useStopwatch() {
   useKeyPress(['r'], resetStopwatch);
 
   const finishCountdown = () => {
-    finishStopwatch({ values: { ...stopwatch.data } });
+    finishStopwatch({
+      values: {
+        ...stopwatch.data,
+        start_time: formatISO(new Date(stopwatch.data.start_time), { representation: 'date' }),
+      },
+    });
     setCurrentDuration(0);
     document.title = '0:00:00 | Neohabit';
   };
