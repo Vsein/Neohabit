@@ -18,11 +18,6 @@ export default function OverlayHabit() {
   const dispatch = useDispatch();
   const { isActive, habitID, projectID } = useSelector((state) => state.habitOverlay);
   const { data: habits, isFetching, isLoading } = useGetHabitsQuery();
-  const habit = habits.find((habito) => habito._id == habitID) ?? {
-    name: '',
-    color: '#aabbcc',
-    description: '',
-  };
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
 
@@ -33,8 +28,16 @@ export default function OverlayHabit() {
 
   useKeyPress(['c'], closeOverlay);
 
+  if (isLoading) return <></>;
+
+  const habit = habits.find((habito) => habito._id === habitID) ?? {
+    name: '',
+    color: '#aabbcc',
+    description: '',
+  };
+
   const onSubmit = async (values) => {
-    if (habit.name == '') {
+    if (habit.name === '') {
       await createHabit({ ...values, projectID });
     } else {
       await updateHabit({ habitID, values });
@@ -42,7 +45,7 @@ export default function OverlayHabit() {
     dispatch(close());
   };
 
-  if (isLoading || isFetching) return <div>Loading...</div>;
+
   if (!habit) return <div>Missing habit!</div>;
 
   return (

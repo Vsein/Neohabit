@@ -9,6 +9,14 @@ import useStopwatch from '../hooks/useStopwatch';
 export default function Stopwatch() {
   const stopwatch = useGetStopwatchQuery();
 
+  return (
+    <footer className="stopwatch">{stopwatch.isLoading ? <></> : <StopwatchContents />}</footer>
+  );
+}
+
+function StopwatchContents() {
+  const stopwatch = useGetStopwatchQuery();
+
   const dispatch = useDispatch();
   const openFullscreenStopwatch = () => {
     dispatch(open());
@@ -21,7 +29,7 @@ export default function Stopwatch() {
   ] = useStopwatch();
 
   return (
-    <footer className="stopwatch">
+    <>
       <div className="progressbar">
         <div
           className="progressbar-progress"
@@ -66,8 +74,7 @@ export default function Stopwatch() {
             className="icon medium sidebar-toggle"
           />
         </button>
-        <h3 className="progressbar-text"
-        >{stopwatch.data?.habit?.name}</h3>
+        <h3 className="progressbar-text">{stopwatch.data?.habit?.name}</h3>
         <button
           className="logo-section sidebar-toggle-container centering right stopwatch-icon"
           onClick={openFullscreenStopwatch}
@@ -76,6 +83,6 @@ export default function Stopwatch() {
           <Icon path={mdiFullscreen} className="icon medium sidebar-toggle" />
         </button>
       </div>
-    </footer>
+    </>
   );
 }

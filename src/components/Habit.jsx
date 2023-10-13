@@ -1,6 +1,6 @@
 import React from 'react';
 import { addHours, differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
-import { useGetSettingsQuery } from '../state/services/settings';
+// import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { YearPicker, DatePeriodPicker } from './DatePickers';
@@ -11,7 +11,7 @@ import useKeyPress from '../hooks/useKeyPress';
 
 export default function Habit({ heatmap, habit }) {
   const [loaded] = useLoaded();
-  const settings = useGetSettingsQuery();
+  // const settings = useGetSettingsQuery();
   const vertical = true;
 
   const datePeriodLength = 365;

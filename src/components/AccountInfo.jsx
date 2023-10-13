@@ -5,15 +5,13 @@ import { useGetSelfQuery } from '../state/services/settings';
 export default function AccountInfo() {
   const self = useGetSelfQuery();
 
-  return (
+  return self.isLoading ? (
+    <></>
+  ) : (
     <div className="account-info">
       <img src={pfp} alt="profile pic" className="pfp small" />
       <p>{`@${self.data.username}`}</p>
-      {self.isLoading || self.isFetching ? (
-        <></>
-      ) : (
-        <p className="account-username">{self.data.email}</p>
-      )}
+      <p className="account-username">{self.data.email}</p>
     </div>
   );
 }

@@ -75,6 +75,11 @@ function MenuSection(props) {
 function ThemeToggle() {
   const [changeTheme] = useChangeThemeMutation();
   const settings = useGetSettingsQuery();
+
+  if (settings.isLoading) {
+    return <></>;
+  }
+
   const theme = settings.data.prefer_dark ? 'dark' : 'light';
 
   return (
