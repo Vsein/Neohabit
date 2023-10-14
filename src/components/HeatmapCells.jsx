@@ -52,7 +52,13 @@ function Cell({
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      <CellNumericText numeric={numeric} color={color} value={value} targetValue={targetValue} />
+      <CellNumericText
+        small={vertical || length === 1}
+        numeric={numeric}
+        color={color}
+        value={value}
+        targetValue={targetValue}
+      />
     </div>
   );
 }
@@ -249,6 +255,7 @@ function CellPeriod({
         />
         <div className="cell-period-before centering" style={styleBefore}>
           <CellNumericText
+            small={true}
             numeric={!width && diffDays <= 7 && (value > 1 || numeric)}
             color={color}
             value={value}
@@ -257,6 +264,7 @@ function CellPeriod({
         </div>
         <div className="cell-period-after centering" style={styleAfter}>
           <CellNumericText
+            small={true}
             numeric={!width && diffDays <= 7 && (value > 1 || numeric)}
             color={color}
             value={value}
@@ -285,11 +293,22 @@ function CellPeriod({
   );
 }
 
-function CellNumericText({ numeric, color, value, targetValue }) {
+function CellNumericText({ small = false, numeric, color, value, targetValue }) {
   return numeric ? (
     <>
       {value ? (
-        <p className="cell-numeric" style={{ color: getNumericTextColor(color) }}>
+        <p
+          className="cell-numeric"
+          style={{
+            color: getNumericTextColor(color),
+            ...(small &&
+              value >= 100 && {
+                fontSize: '9px',
+                paddingBlock: '4px',
+                marginLeft: '-1px',
+              }),
+          }}
+        >
           {value}
         </p>
       ) : (
