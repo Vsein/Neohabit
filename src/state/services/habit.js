@@ -48,10 +48,16 @@ export const habitApi = api.injectEndpoints({
         method: 'DELETE',
       }),
       onQueryStarted(habitID, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
+        dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
             const index = draft.findIndex((habit) => habit._id == habitID);
             draft.splice(index, 1);
+          }),
+        );
+        dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            const Project = draft.find((project) => project.habits.includes(habitID));
+            Project.habits = Project.habits.filter((ID) => ID !== habitID);
           }),
         );
       },
