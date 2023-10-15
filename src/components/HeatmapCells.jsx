@@ -29,15 +29,16 @@ function Cell({
       : color;
   const dispatch = useDispatch();
   const style = {
-    [value ? 'backgroundColor' : '']: trueColor,
+    [value ? '--blank-cell-color' : '']: trueColor,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
-    ...(value >= 100 && { '--cell-shadow-color': trueColor }),
   };
 
   return (
     <div
-      className="cell centering"
+      className={`cell centering ${
+        value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
+      }`}
       style={style}
       onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
       onMouseLeave={hideTip}
@@ -295,6 +296,20 @@ function CellPeriod({
 }
 
 function CellNumericText({ small = false, numeric, color, value, targetValue }) {
+  const getHundredStyle = (displayedValue) =>
+    small &&
+    displayedValue >= 100 && {
+      paddingBlock: '4px',
+      fontSize: '10px',
+      ...((displayedValue + '').indexOf('1') === -1
+        ? {
+            marginLeft: '-1.75px',
+            letterSpacing: '-0.75px',
+          }
+        : (displayedValue + '').indexOf('1') === (displayedValue + '').lastIndexOf('1') && {
+            marginLeft: '-1px',
+          }),
+    };
   return numeric ? (
     <>
       {value ? (
@@ -302,19 +317,7 @@ function CellNumericText({ small = false, numeric, color, value, targetValue }) 
           className="cell-numeric"
           style={{
             color: getNumericTextColor(color),
-            ...(small &&
-              value >= 100 && {
-                paddingBlock: '4px',
-                fontSize: '10px',
-                ...((value + '').indexOf('1') === -1
-                  ? {
-                      marginLeft: '-1.75px',
-                      letterSpacing: '-0.75px',
-                    }
-                  : (value + '').indexOf('1') === (value + '').lastIndexOf('1') && {
-                      marginLeft: '-1px',
-                    }),
-              }),
+            ...getHundredStyle(value),
           }}
         >
           {value}
@@ -322,7 +325,18 @@ function CellNumericText({ small = false, numeric, color, value, targetValue }) 
       ) : (
         <></>
       )}
-      {targetValue > 1 && !value ? <p className="cell-numeric target">{targetValue}</p> : <></>}
+      {targetValue > 1 && !value ? (
+        <p
+          className="cell-numeric target"
+          style={{
+            ...getHundredStyle(targetValue),
+          }}
+        >
+          {targetValue}
+        </p>
+      ) : (
+        <></>
+      )}
     </>
   ) : (
     <></>

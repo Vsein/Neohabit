@@ -27,6 +27,20 @@ $cell-margin: 2px;
     background: repeating-conic-gradient(var(--color) 0% 27%, transparent 0% 100%) 50% / 3px 3px;
   }
 
+  &.hundred {
+    box-shadow:
+      0px 0px 0px 1px var(--blank-cell-color),
+      0 0 0 2px var(--cell-shadow-color);
+
+    &:hover {
+      box-shadow:
+        0px 0px 0px 1px var(--cell-border-color),
+        0px 0px 0px 1px var(--blank-cell-color),
+        0 0 0 2px var(--cell-shadow-color);
+      border-color: transparent;
+    }
+  }
+
   &:hover {
     border: 1px solid var(--cell-border-color);
 
