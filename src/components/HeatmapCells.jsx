@@ -32,6 +32,7 @@ function Cell({
     [value ? 'backgroundColor' : '']: trueColor,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
+    ...(value >= 100 && { '--cell-shadow-color': trueColor }),
   };
 
   return (
@@ -303,9 +304,16 @@ function CellNumericText({ small = false, numeric, color, value, targetValue }) 
             color: getNumericTextColor(color),
             ...(small &&
               value >= 100 && {
-                fontSize: '9px',
                 paddingBlock: '4px',
-                marginLeft: '-1px',
+                fontSize: '10px',
+                ...((value + '').indexOf('1') === -1
+                  ? {
+                      marginLeft: '-1.75px',
+                      letterSpacing: '-0.75px',
+                    }
+                  : (value + '').indexOf('1') === (value + '').lastIndexOf('1') && {
+                      marginLeft: '-1px',
+                    }),
               }),
           }}
         >
