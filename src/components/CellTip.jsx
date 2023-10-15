@@ -118,17 +118,20 @@ export default function CellTip() {
         <div className="cell-tip-actions-controls">
           <button
             className="centering"
-            title="Add 1 completed action in this period"
+            title="Delete 1 completed action in this period"
             onClick={() => {
-              updateHeatmap({
+              decreaseCellPeriod({
                 heatmapID,
-                values: { date: formatISO(dateStart, { representation: 'date' }), value: 1 },
+                values: {
+                  dateStart: formatISO(dateStart, { representation: 'date' }),
+                  dateEnd: formatISO(dateEnd, { representation: 'date' }),
+                },
               });
-              setCellTipActions(actions + 1);
-              dispatch(changeCellActions({ actions: actions + 1 }));
+              setCellTipActions(Math.max(actions - 1, 0));
+              dispatch(changeCellActions({ actions: Math.max(actions - 1, 0) }));
             }}
           >
-            <Icon path={mdiPlusBox} className="icon tiny" />
+            <Icon path={mdiMinusBox} className="icon tiny" />
           </button>
           <input
             id="cell-tip-actions-counter"
@@ -148,20 +151,17 @@ export default function CellTip() {
           ></input>
           <button
             className="centering"
-            title="Delete 1 completed action in this period"
+            title="Add 1 completed action in this period"
             onClick={() => {
-              decreaseCellPeriod({
+              updateHeatmap({
                 heatmapID,
-                values: {
-                  dateStart: formatISO(dateStart, { representation: 'date' }),
-                  dateEnd: formatISO(dateEnd, { representation: 'date' }),
-                },
+                values: { date: formatISO(dateStart, { representation: 'date' }), value: 1 },
               });
-              setCellTipActions(Math.max(actions - 1, 0));
-              dispatch(changeCellActions({ actions: Math.max(actions - 1, 0) }));
+              setCellTipActions(actions + 1);
+              dispatch(changeCellActions({ actions: actions + 1 }));
             }}
           >
-            <Icon path={mdiMinusBox} className="icon tiny" />
+            <Icon path={mdiPlusBox} className="icon tiny" />
           </button>
           <button
             className="centering"

@@ -41,7 +41,7 @@ export default function Overview() {
   useKeyPress(['h'], subMonth);
   useKeyPress(['l'], addMonth);
 
-  if (!loaded || habits.isFetching || heatmaps.isFetching) {
+  if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
     return (
       <div className="overview-loader centering">
         <div className="loader" />

@@ -17,11 +17,8 @@ import useKeyPress from '../hooks/useKeyPress';
 export default function Overlay() {
   const dispatch = useDispatch();
   const { isActive, taskID, habitID } = useSelector((state) => state.taskOverlay);
-  const task = useGetTasksQuery().data.find((task1) => task1._id == taskID);
-  const { data: habits, isFetching, isLoading } = useGetHabitsQuery();
-  const habit =
-    habits.find((habito) => habito._id == habitID) ??
-    habits.find((habito) => habito.name == 'Default');
+  const habits = useGetHabitsQuery();
+  const tasks = useGetTasksQuery();
   const [updateTask] = useUpdateTaskMutation();
   const [createTask] = useCreateTaskMutation();
 
@@ -32,6 +29,10 @@ export default function Overlay() {
 
   useKeyPress(['c'], closeOverlay);
 
+  if (habits.isLoading || tasks.isLoading) return <></>;
+
+  const task = tasks.data.find((task1) => task1._id === taskID);
+
   const onSubmit = async (values) => {
     if (task) {
       await updateTask({ taskID, values });
@@ -41,7 +42,10 @@ export default function Overlay() {
     dispatch(close());
   };
 
-  if (isLoading || isFetching) return <div>Loading...</div>;
+  const habit =
+    habits.data.find((habito) => habito._id === habitID) ??
+    habits.data.find((habito) => habito.name === 'Default');
+
   if (!habit) {
     return (
       <div className={isActive ? 'overlay overlay-active' : 'overlay'} onMouseDown={closeOverlay}>

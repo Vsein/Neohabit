@@ -5,6 +5,10 @@ export default function useStopwatch() {
   const habits = useGetHabitsQuery();
   const projects = useGetProjectsQuery();
 
+  if (habits.isFetching || projects.isFetching) {
+    return [ null ];
+  }
+
   const defaultProject = {
     name: 'Default',
     color: '#8a8a8a',

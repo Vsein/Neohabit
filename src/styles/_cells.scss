@@ -69,7 +69,7 @@ $cell-margin: 2px;
   font-size: calc(var(--cell-height) - 4px);
   text-align: center;
   height: var(--cell-height);
-  width: 100%;
+  width: min-content;
   font-weight: 600;
   vertical-align: middle;
   color: var(--blank-cell-color);

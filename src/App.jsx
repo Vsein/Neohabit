@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'rea
 import ToDoList from './pages/ToDoList';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+// import Dashboard from './pages/Dashboard';
 import Overview from './pages/Overview';
 import Projects from './pages/Projects';
 import Habit from './pages/Habit';
@@ -22,11 +22,7 @@ import OverlayProject from './components/OverlayProject';
 import OverlayDelete from './components/OverlayDelete';
 import CellTip from './components/CellTip';
 import CellAdd from './state/features/cellAdd/CellAdd';
-import { useGetHabitsQuery } from './state/services/habit';
-import { useGetTasksQuery } from './state/services/todolist';
-import { useGetProjectsQuery } from './state/services/project';
 import { useGetStopwatchQuery } from './state/services/stopwatch';
-import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
@@ -68,8 +64,6 @@ const App = () => {
 const PrivateRoutes = (params) => {
   const { loggedIn, changeAuth } = params;
   const location = useLocation();
-  const settings = useGetSettingsQuery();
-  const userInfo = useGetSelfQuery();
   const stopwatch = useGetStopwatchQuery();
 
   useEffect(() => {
@@ -85,49 +79,22 @@ const PrivateRoutes = (params) => {
 
   useKeyPress(['Tab'], toggleSidebar);
 
-  const habits = useGetHabitsQuery();
-  const tasks = useGetTasksQuery();
-  const projects = useGetProjectsQuery();
-
-  if (
-    settings.isFetching ||
-    settings.isLoading ||
-    userInfo.isFetching ||
-    userInfo.isLoading ||
-    stopwatch.isFetching ||
-    stopwatch.isLoading
-  ) {
-    return null; // or loading indicator/spinner/etc
-  }
-
   return loggedIn ? (
     <>
       <div id="content">
         <MainMenu toggleSidebar={toggleSidebar} />
-        <Sidebar hidden={sidebarHidden} toggleSidebar={toggleSidebar}/>
+        <Sidebar hidden={sidebarHidden} toggleSidebar={toggleSidebar} />
         <Outlet />
         <CellTip />
         <CellAdd />
         {/* <SidebarMobile /> */}
       </div>
       <Stopwatch />
-      <StopwatchFullscreen />
+      {stopwatch.isLoading ? <></> : <StopwatchFullscreen />}
       <OverlayDelete />
-      {habits.isFetching ||
-      habits.isLoading ||
-      tasks.isFetching ||
-      tasks.isLoading ||
-      projects.isFetching ||
-      projects.isLoading
-        ? (
-        <> </>
-      ) : (
-        <>
-          <OverlayHabit />
-          <OverlayTask />
-          <OverlayProject />
-        </>
-      )}
+      <OverlayHabit />
+      <OverlayTask />
+      <OverlayProject />
     </>
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />

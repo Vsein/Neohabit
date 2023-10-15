@@ -20,6 +20,10 @@ export default function StopwatchFullscreen() {
 
   useKeyPress(['c'], closeOverlay);
 
+  if (stopwatch.isLoading) {
+    return <></>;
+  }
+
   const [
     currentDuration,
     baseDuration,

@@ -32,6 +32,7 @@ function Cell({
     [value ? 'backgroundColor' : '']: trueColor,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
+    ...(value >= 100 && { '--cell-shadow-color': trueColor }),
   };
 
   return (
@@ -52,7 +53,13 @@ function Cell({
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      <CellNumericText numeric={numeric} color={color} value={value} targetValue={targetValue} />
+      <CellNumericText
+        small={vertical || length === 1}
+        numeric={numeric}
+        color={color}
+        value={value}
+        targetValue={targetValue}
+      />
     </div>
   );
 }
@@ -249,6 +256,7 @@ function CellPeriod({
         />
         <div className="cell-period-before centering" style={styleBefore}>
           <CellNumericText
+            small={true}
             numeric={!width && diffDays <= 7 && (value > 1 || numeric)}
             color={color}
             value={value}
@@ -257,6 +265,7 @@ function CellPeriod({
         </div>
         <div className="cell-period-after centering" style={styleAfter}>
           <CellNumericText
+            small={true}
             numeric={!width && diffDays <= 7 && (value > 1 || numeric)}
             color={color}
             value={value}
@@ -285,11 +294,29 @@ function CellPeriod({
   );
 }
 
-function CellNumericText({ numeric, color, value, targetValue }) {
+function CellNumericText({ small = false, numeric, color, value, targetValue }) {
   return numeric ? (
     <>
       {value ? (
-        <p className="cell-numeric" style={{ color: getNumericTextColor(color) }}>
+        <p
+          className="cell-numeric"
+          style={{
+            color: getNumericTextColor(color),
+            ...(small &&
+              value >= 100 && {
+                paddingBlock: '4px',
+                fontSize: '10px',
+                ...((value + '').indexOf('1') === -1
+                  ? {
+                      marginLeft: '-1.75px',
+                      letterSpacing: '-0.75px',
+                    }
+                  : (value + '').indexOf('1') === (value + '').lastIndexOf('1') && {
+                      marginLeft: '-1px',
+                    }),
+              }),
+          }}
+        >
           {value}
         </p>
       ) : (

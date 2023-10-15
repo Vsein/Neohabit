@@ -55,7 +55,7 @@ export const stopwatchApi = api.injectEndpoints({
                   : point,
               );
             } else {
-              Heatmap.data.push({ date: startOfDay(new Date(values.start_time)), value: 1 });
+              Heatmap.data.push({ date: values.start_time, value: 1 });
             }
             Heatmap.data.sort((a, b) => a.date - b.date);
           }),
