@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { useUpdateTaskMutation, useDeleteTaskMutation } from '../state/services/todolist';
-import { changeTo, open } from '../state/features/taskOverlay/taskOverlaySlice';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 
 export default function Task(props) {
   const { task, habit } = props;
@@ -32,8 +32,7 @@ export default function Task(props) {
     : `${habit?.color}33`;
 
   const openOverlay = (e) => {
-    dispatch(changeTo({ taskID: task._id, habitID: habit?._id }));
-    dispatch(open());
+    dispatch(changeTo({ taskID: task._id, habitID: habit?._id, type: 'task' }));
   };
 
   return (

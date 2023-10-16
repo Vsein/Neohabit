@@ -17,10 +17,7 @@ import MainMenu from './components/MainMenu';
 import Stopwatch from './components/Stopwatch';
 import StopwatchFullscreen from './components/StopwatchFullscreen';
 import Sidebar from './components/Sidebar';
-import OverlayHabit from './components/OverlayHabit';
-import OverlayTask from './components/OverlayTask';
-import OverlayProject from './components/OverlayProject';
-import OverlayDelete from './components/OverlayDelete';
+import Overlay from './components/Overlay';
 import CellTip from './components/CellTip';
 import CellAdd from './state/features/cellAdd/CellAdd';
 import { useGetStopwatchQuery } from './state/services/stopwatch';
@@ -93,10 +90,7 @@ const PrivateRoutes = (params) => {
       </div>
       <Stopwatch />
       {stopwatch.isLoading ? <></> : <StopwatchFullscreen />}
-      <OverlayDelete />
-      <OverlayHabit />
-      <OverlayTask />
-      <OverlayProject />
+      <Overlay />
     </>
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />

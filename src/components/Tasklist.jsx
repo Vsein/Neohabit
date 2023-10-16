@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import Task from './Task';
-import { changeTo } from '../state/features/taskOverlay/taskOverlaySlice';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 
 export default function Tasklist(params) {
@@ -19,7 +19,7 @@ export default function Tasklist(params) {
   };
 
   const addTask = (e) => {
-    dispatch(changeTo({ taskID: '', habitID }));
+    dispatch(changeTo({ taskID: '', habitID, type: 'task' }));
   };
 
   useKeyPress(['t'], addTask);

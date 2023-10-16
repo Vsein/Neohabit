@@ -5,7 +5,7 @@ import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery } from '../state/services/project';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import Project from './Project';
 import useKeyPress from '../hooks/useKeyPress';
@@ -19,8 +19,7 @@ export default function Overview() {
 
   const dispatch = useDispatch();
   const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo(''));
+    dispatch(changeTo({ projectID: '', type: 'project' }));
   };
 
   const [defaultProject] = useDefaultProject();

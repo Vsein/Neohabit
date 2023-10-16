@@ -1,18 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const projectOverlaySlice = createSlice({
-  name: 'projectOverlay',
+export const overlaySlice = createSlice({
+  name: 'overlay',
   initialState: {
-    isNew: true,
+    type: '',
     isActive: false,
+    taskID: '',
+    habitID: '',
     projectID: '',
   },
   reducers: {
     changeTo: (state, action) => ({
       ...state,
-      isNew: false,
       isActive: true,
-      projectID: action.payload,
+      type: action.payload.type,
+      taskID: action.payload?.taskID || '',
+      habitID: action.payload?.habitID || '',
+      projectID: action.payload?.projectID || '',
     }),
     close: (state) => ({
       ...state,
@@ -26,6 +30,6 @@ export const projectOverlaySlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeTo, close, open } = projectOverlaySlice.actions;
+export const { changeTo, close, open } = overlaySlice.actions;
 
-export default projectOverlaySlice.reducer;
+export default overlaySlice.reducer;

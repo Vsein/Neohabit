@@ -14,7 +14,7 @@ import {
 import { useDeleteHabitMutation } from '../state/services/habit';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
-import { changeTo, open } from '../state/features/habitOverlay/habitOverlaySlice';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import useKeyPress from '../hooks/useKeyPress';
 import Heatmap from './Heatmap';
@@ -84,8 +84,7 @@ function HabitControls({ habit, heatmap, header }) {
       <Link
         className="overview-habit-button"
         onClick={() => {
-          dispatch(changeTo({ habitID: habit._id, projectID: '' }));
-          dispatch(open());
+          dispatch(changeTo({ habitID: habit._id, projectID: '', type: 'habit' }));
         }}
         title="Edit habit"
       >
@@ -126,8 +125,7 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical }) {
 function HabitAddButton({ vertical, projectID = '' }) {
   const dispatch = useDispatch();
   const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo({ habitID: '', projectID }));
+    dispatch(changeTo({ habitID: '', projectID, type: 'habit' }));
   };
   useKeyPress(['a'], openOverlay);
 

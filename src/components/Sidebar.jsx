@@ -15,7 +15,7 @@ import {
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHabitsQuery } from '../state/services/habit';
 import HabitTag from './HabitTag';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';
 
@@ -30,8 +30,7 @@ export default function Sidebar({ hidden, toggleSidebar }) {
   };
 
   const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo({ projectID: '', habitID: '' }));
+    dispatch(changeTo({ projectID: '', habitID: '', type: 'project' }));
   };
 
   useKeyPress(['a'], openOverlay);

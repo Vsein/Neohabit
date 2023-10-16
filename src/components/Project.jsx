@@ -7,7 +7,7 @@ import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useDeleteProjectMutation } from '../state/services/project';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
@@ -140,8 +140,7 @@ export default function Project({ project }) {
 function ProjectControls({ projectID }) {
   const dispatch = useDispatch();
   const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo(projectID));
+    dispatch(changeTo({ projectID, type: 'project' }));
   };
 
   const [deleteProject] = useDeleteProjectMutation();
