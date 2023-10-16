@@ -58,7 +58,7 @@ export default function Sidebar({ hidden, toggleSidebar }) {
             path={mdiFamilyTree}
             title={hidden ? 'Skills' : 'Skill trees'}
             status="soon"
-            to="/skill-trees"
+            to="/skills"
             num="2"
           />
           <NavigationSection

@@ -6,6 +6,7 @@ import Login from './pages/Login';
 // import Dashboard from './pages/Dashboard';
 import Overview from './pages/Overview';
 import Projects from './pages/Projects';
+import Skilltrees from './pages/Skilltrees';
 import Habit from './pages/Habit';
 import Project from './pages/Project';
 import Logout from './pages/Logout';
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/dashboard/" element={<Overview />} />
           <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/projects/*" element={<Projects />} />
+          <Route path="/skills/*" element={<Projects />} />
           <Route path="/habit/:habitID/*" element={<Habit />} />
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
