@@ -6,6 +6,7 @@ import HabitModal from './HabitModal';
 import TaskModal from './TaskModal';
 import ProjectModal from './ProjectModal';
 import AccountDeleteModal from './AccountDeleteModal';
+import StopwatchModal from './StopwatchModal';
 
 export default function Overlay() {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ export default function Overlay() {
         <></>
       )}
       {type === 'deleteAccount' ? <AccountDeleteModal closeOverlay={closeOverlay} /> : <></>}
+      {type === 'stopwatch' ? <StopwatchModal closeOverlay={closeOverlay} /> : <></>}
     </div>
   );
 }

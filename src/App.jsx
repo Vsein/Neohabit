@@ -15,12 +15,10 @@ import Landing from './pages/Landing';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
 import Stopwatch from './components/Stopwatch';
-import StopwatchFullscreen from './components/StopwatchFullscreen';
 import Sidebar from './components/Sidebar';
 import Overlay from './components/Overlay';
 import CellTip from './components/CellTip';
 import CellAdd from './state/features/cellAdd/CellAdd';
-import { useGetStopwatchQuery } from './state/services/stopwatch';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
@@ -63,7 +61,6 @@ const App = () => {
 const PrivateRoutes = (params) => {
   const { loggedIn, changeAuth } = params;
   const location = useLocation();
-  const stopwatch = useGetStopwatchQuery();
 
   useEffect(() => {
     changeAuth(hasJWT());
@@ -89,7 +86,6 @@ const PrivateRoutes = (params) => {
         {/* <SidebarMobile /> */}
       </div>
       <Stopwatch />
-      {stopwatch.isLoading ? <></> : <StopwatchFullscreen />}
       <Overlay />
     </>
   ) : (
