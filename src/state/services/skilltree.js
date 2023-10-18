@@ -24,7 +24,7 @@ export const skilltreeApi = api.injectEndpoints({
     }),
     deleteSkilltree: builder.mutation({
       query: (skilltreeID) => ({
-        url: `habit/${skilltreeID}`,
+        url: `skilltree/${skilltreeID}`,
         method: 'DELETE',
       }),
       onQueryStarted(skilltreeID, { dispatch }) {

@@ -4,6 +4,7 @@ import Icon from '@mdi/react';
 import { mdiPause, mdiPlus, mdiFlagCheckered, mdiPencil, mdiDelete } from '@mdi/js';
 
 export default function SkillNode({ skill, color }) {
+  const isDisabled = skill.parent_node === '';
   return (
     <div className="skill-node in-progress" style={{'--shadow-box-color': color}}>
       <h3>{skill.name}</h3>
@@ -11,12 +12,14 @@ export default function SkillNode({ skill, color }) {
         <button
           className="overview-open-settings active"
           title="Pause the skill acquirmenet"
+          disabled={isDisabled}
         >
           <Icon path={mdiPause} className="icon smaller centering" />
         </button>
         <button
           className="overview-open-settings active"
           title="Finish the skill"
+          disabled={isDisabled}
         >
           <Icon path={mdiFlagCheckered} className="icon smaller centering" />
         </button>
@@ -29,6 +32,7 @@ export default function SkillNode({ skill, color }) {
         <button
           className="overview-open-settings active"
           title="Delete the skill"
+          disabled={isDisabled}
         >
           <Icon path={mdiDelete} className="icon smaller centering" />
         </button>
