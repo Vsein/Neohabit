@@ -68,6 +68,41 @@
   &.completed {
     box-shadow: 0 0 5px 3px var(--shadow-box-color);
   }
+
+  &:hover {
+    .skill-node-controls-right,
+    .skill-node-controls-bottom {
+      display: flex;
+    }
+  }
+}
+
+.skill-node-controls-bottom {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  padding: 8px;
+  display: none;
+  gap: 5px;
+  width: 100%;
+  justify-content: center;
+  z-index: 1;
+
+  & > button {
+    width: min-content;
+  }
+}
+
+.skill-node-controls-right {
+  position: absolute;
+  top: 0px;
+  right: -30px;
+  padding: 8px;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 1;
 }
 
 .skills {
