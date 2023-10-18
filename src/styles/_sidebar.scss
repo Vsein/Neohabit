@@ -14,7 +14,7 @@
   white-space: nowrap;
   overflow-y: scroll;
   overflow-x: hidden;
-  z-index: 1;
+  z-index: 2;
 
   & p {
     line-height: 20px;
@@ -173,7 +173,7 @@
   background-color: silver;
   box-shadow: 0 0 3px 1px grey;
   scroll-margin-top: 3rem;
-  z-index: 1;
+  z-index: 2;
 }
 
 .filters-mobile {
