@@ -6,6 +6,7 @@ import { mdiPencil, mdiDelete } from '@mdi/js';
 import { useDeleteSkilltreeMutation } from '../state/services/skilltree';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
+import SkillNode from './SkillNode';
 
 export default function Skilltree({ skilltree }) {
   const { theme } = useSelector((state) => state.theme);
@@ -18,10 +19,12 @@ export default function Skilltree({ skilltree }) {
     theme === 'light' ? 0.8 : 0.6,
   );
 
+  console.log(skilltree);
+
   return <div
     className="overview-centering"
     style={{
-      '--habits': 20,
+      '--habits': 10,
       '--length': 46,
       '--vertical': vertical * 1,
       // '--multiplier': settings.data.cell_height_multiplier,
@@ -42,10 +45,8 @@ export default function Skilltree({ skilltree }) {
       </NavLink>
       <SkilltreeControls skilltreeID={skilltree?._id} />
     </div>
-    <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
-      <div className={`overview ${vertical ? 'vertical' : ''}`}>
-
-      </div>
+    <div className={`skills ${vertical ? 'vertical' : ''}`}>
+      <SkillNode skill={skilltree.skills[0]} color={skilltree.color}/>
     </div>
   </div>;
 }
