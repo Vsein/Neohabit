@@ -15,7 +15,7 @@ import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGen
 
 export default function SkillNode({ skill, color }) {
   return (
-    <div className="skill-node" style={{'--shadow-box-color': color}}>
+    <div className="skill-node in-progress" style={{'--shadow-box-color': color}}>
       <h3>{skill.name}</h3>
     </div>
   );

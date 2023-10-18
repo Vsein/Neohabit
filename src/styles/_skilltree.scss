@@ -1,3 +1,18 @@
+@property --a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes animate {
+  0% {
+    --a: 0deg;
+  }
+  100% {
+    --a: 360deg;
+  }
+}
+
 .skill-node {
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -6,7 +21,53 @@
   display: grid;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 5px 3px var(--shadow-box-color);
+  position: relative;
+  text-align: center;
+
+  & > h3 {
+    z-index: 1;
+  }
+
+  &.in-progress {
+    border: none;
+    height: 108px;
+    width: 208px;
+    margin-left: -4px;
+    margin-right: -4px;
+    padding: 4px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-conic-gradient(
+        from var(--a),
+        var(--shadow-box-color) 0%,
+        var(--shadow-box-color) 5%,
+        transparent 5%,
+        transparent 20%,
+        var(--shadow-box-color) 50%
+      );
+      filter: blur(2px);
+      animation: animate 6s linear infinite;
+      animation-delay: -4s;
+      border-radius: 10px;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background: var(--main-background-color);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+  }
+
+  &.completed {
+    box-shadow: 0 0 5px 3px var(--shadow-box-color);
+  }
 }
 
 .skills {
