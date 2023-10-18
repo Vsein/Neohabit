@@ -5,12 +5,15 @@ import useKeyPress from '../hooks/useKeyPress';
 import HabitModal from './HabitModal';
 import TaskModal from './TaskModal';
 import ProjectModal from './ProjectModal';
+import SkilltreeModal from './SkilltreeModal';
 import AccountDeleteModal from './AccountDeleteModal';
 import StopwatchModal from './StopwatchModal';
 
 export default function Overlay() {
   const dispatch = useDispatch();
-  const { type, isActive, taskID, habitID, projectID } = useSelector((state) => state.overlay);
+  const { type, isActive, taskID, habitID, projectID, skilltreeID } = useSelector(
+    (state) => state.overlay,
+  );
 
   const closeOverlay = (e) => {
     e.stopPropagation();
@@ -33,6 +36,11 @@ export default function Overlay() {
       )}
       {type === 'project' ? (
         <ProjectModal isActive={isActive} projectID={projectID} closeOverlay={closeOverlay} />
+      ) : (
+        <></>
+      )}
+      {type === 'skilltree' ? (
+        <SkilltreeModal skilltreeID={skilltreeID} closeOverlay={closeOverlay} />
       ) : (
         <></>
       )}

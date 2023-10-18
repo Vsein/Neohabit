@@ -8,6 +8,7 @@ export const overlaySlice = createSlice({
     taskID: '',
     habitID: '',
     projectID: '',
+    skilltreeID: '',
   },
   reducers: {
     changeTo: (state, action) => ({
@@ -17,6 +18,7 @@ export const overlaySlice = createSlice({
       taskID: action.payload?.taskID || '',
       habitID: action.payload?.habitID || '',
       projectID: action.payload?.projectID || '',
+      skilltreeID: action.payload?.skilltreeID || '',
     }),
     close: (state) => ({
       ...state,
