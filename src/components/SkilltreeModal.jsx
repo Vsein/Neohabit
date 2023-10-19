@@ -5,13 +5,14 @@ import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
-import { useGetSkilltreesQuery, useCreateSkilltreeMutation } from '../state/services/skilltree';
+import { useGetSkilltreesQuery, useCreateSkilltreeMutation, useUpdateSkilltreeMutation } from '../state/services/skilltree';
 import { close } from '../state/features/overlay/overlaySlice';
 
 export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
   const dispatch = useDispatch();
   const skilltrees = useGetSkilltreesQuery();
   const [createSkilltree] = useCreateSkilltreeMutation();
+  const [updateSkilltree] = useUpdateSkilltreeMutation();
 
   if (skilltrees.isLoading) return <></>;
 
@@ -21,7 +22,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
     if (!skilltree) {
       await createSkilltree(values);
     } else {
-      // await updateProject({ projectID, values: { ...values, habits: projectHabitList } });
+      await updateSkilltree({ skilltreeID, values });
     }
     dispatch(close());
   };
@@ -45,8 +46,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
           onMouseDown={(e) => e.stopPropagation()}
         >
           <div className="modal-header">
-            <div className="tag">
-            </div>
+            <div className="tag"></div>
             <button className="close-modal-button icon" onClick={close}>
               <Icon path={mdiClose} />
             </button>
@@ -60,13 +60,17 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
               className="form-task-name"
               required
             />
-            <Field
-              name="description"
-              component="textarea"
-              placeholder="Change description"
-              rows="1"
-              className="form-task-description"
-            />
+            {skilltree ? (
+              <></>
+            ) : (
+              <Field
+                name="description"
+                component="textarea"
+                placeholder="Change description"
+                rows="1"
+                className="form-task-description"
+              />
+            )}
             <Field name="color">
               {({ input }) => (
                 <div className="form-task-name" style={{ color: input.value }}>
@@ -97,7 +101,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
               type="submit"
               disabled={submitting || pristine}
             >
-              {skilltree ? 'Save' : 'Add task'}
+              {skilltree ? 'Save' : 'Add skilltree'}
             </button>
           </div>
         </form>
