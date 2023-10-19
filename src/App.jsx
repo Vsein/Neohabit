@@ -18,7 +18,7 @@ import Stopwatch from './components/Stopwatch';
 import Sidebar from './components/Sidebar';
 import Overlay from './components/Overlay';
 import CellTip from './components/CellTip';
-import CellAdd from './state/features/cellAdd/CellAdd';
+import CellAdd from './components/CellAdd';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';

@@ -103,6 +103,10 @@
   justify-content: center;
   flex-direction: column;
   z-index: 1;
+
+  &.offseted {
+    top: -10px;
+  }
 }
 
 .skills {
@@ -114,6 +118,8 @@
   padding: 20px;
 }
 
-.overview-open-settings:disabled {
-  opacity: 0.4;
+.overview-open-settings {
+  &:disabled {
+    opacity: 0.4;
+  }
 }

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import DataPointForm from '../../../components/DataPointForm';
-import TargetPointForm from '../../../components/TargetPointForm';
-import { useUpdateHeatmapMutation } from '../../services/heatmap';
-import { close } from './cellAddSlice';
+import CellDataPointForm from './CellDataPointForm';
+import CellTargetPointForm from './CellTargetPointForm';
+import { useUpdateHeatmapMutation } from '../state/services/heatmap';
+import { close } from '../state/features/cellAdd/cellAddSlice';
 
 export default function CellAdd() {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ export default function CellAdd() {
       onClick={(e) => e.stopPropagation()}
     >
       <h3>Add new target</h3>
-      <TargetPointForm onSubmit={onSubmit} />
+      <CellTargetPointForm onSubmit={onSubmit} />
     </div>
   ) : (
     <div
@@ -40,7 +40,7 @@ export default function CellAdd() {
       onClick={(e) => e.stopPropagation()}
     >
       <h3>Add completed actions</h3>
-      <DataPointForm onSubmit={onSubmit} />
+      <CellDataPointForm onSubmit={onSubmit} />
     </div>
   );
 }
