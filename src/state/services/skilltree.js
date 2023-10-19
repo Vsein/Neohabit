@@ -40,6 +40,25 @@ export const skilltreeApi = api.injectEndpoints({
         );
       },
     }),
+    addSkill: builder.mutation({
+      query: ({ skilltreeID, skillparentID, values }) => ({
+        url: `skilltree/${skilltreeID}/${skillparentID}`,
+        body: values,
+        method: 'POST',
+      }),
+      async onQueryStarted({ skilltreeID, skillparentID, values }, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        const patchResult = dispatch(
+          skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
+            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
+            if (skilltree) {
+              const { skills } = skilltree;
+              skills.push(res.data);
+            }
+          }),
+        );
+      },
+    }),
     deleteSkilltree: builder.mutation({
       query: (skilltreeID) => ({
         url: `skilltree/${skilltreeID}`,
@@ -61,5 +80,6 @@ export const {
   useGetSkilltreesQuery,
   useCreateSkilltreeMutation,
   useUpdateSkilltreeMutation,
+  useAddSkillMutation,
   useDeleteSkilltreeMutation,
 } = skilltreeApi;

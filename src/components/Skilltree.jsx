@@ -46,7 +46,9 @@ export default function Skilltree({ skilltree }) {
       <SkilltreeControls skilltreeID={skilltree?._id} />
     </div>
     <div className={`skills ${vertical ? 'vertical' : ''}`}>
-      <SkillNode skill={skilltree.skills[0]} color={skilltree.color}/>
+      {skilltree.skills.map((skill, index) => (
+        <SkillNode key={`skill-${index}`} skilltreeID={skilltree?._id} skill={skill} color={skilltree.color}/>
+      ))}
     </div>
   </div>;
 }
