@@ -8,6 +8,7 @@ import HabitTag from './HabitTag';
 import {
   useGetSkilltreesQuery,
   useAddSkillMutation,
+  useEditSkillMutation,
 } from '../state/services/skilltree';
 import { close } from '../state/features/overlay/overlaySlice';
 
@@ -15,6 +16,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
   const dispatch = useDispatch();
   const skilltrees = useGetSkilltreesQuery();
   const [addSkill] = useAddSkillMutation();
+  const [editSkill] = useEditSkillMutation();
 
   if (skilltrees.isLoading) return <></>;
 
@@ -25,6 +27,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
     if (!skillID) {
       await addSkill({ skilltreeID, skillparentID, values });
     } else {
+      await editSkill({ skilltreeID, skillID, values });
     }
     dispatch(close());
   };
