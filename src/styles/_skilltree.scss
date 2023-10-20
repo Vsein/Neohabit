@@ -33,6 +33,7 @@
   position: relative;
   overflow-y: hidden;
   padding-right: 5px;
+  padding-top: 3px;
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
   height: max(50px, calc(30px + 140px * var(--height) - 10px));
 }
@@ -51,8 +52,9 @@
   position: relative;
   text-align: center;
 
-  & > h3 {
+  & > h4 {
     z-index: 1;
+    margin-inline: 4px;
   }
 
   &.in-progress {

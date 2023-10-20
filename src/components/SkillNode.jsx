@@ -63,7 +63,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
 
   return (
     <div className={`skill-node ${skill.status}`} style={{ '--shadow-box-color': color }}>
-      <h3>{skill.name}</h3>
+      <h4>{skill.name}</h4>
       {skill.parent_skill ? <div className="skill-node-edge-to" /> : <></>}
       {skill.children.length ? (
         <div

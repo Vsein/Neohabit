@@ -49,14 +49,15 @@ export default function Sidebar({ hidden, toggleSidebar }) {
             path={mdiHome}
             title={hidden ? 'Home' : 'Dashboard'}
             status="raw"
-            to="/dashboard"
             raw="true"
+            to="/dashboard"
             num="1"
           />
           <NavigationSection
             path={mdiFamilyTree}
             title={hidden ? 'Skills' : 'Skill trees'}
-            status="soon"
+            status="raw"
+            raw="true"
             to="/skills"
             num="2"
           />
@@ -64,8 +65,8 @@ export default function Sidebar({ hidden, toggleSidebar }) {
             path={mdiTrendingUp}
             title="Projects"
             status="raw"
-            to="/projects"
             raw="true"
+            to="/projects"
             num="3"
           />
           <NavigationSection path={mdiCheckboxMultipleMarked} title="To-do" to="/todo" num="4" />
