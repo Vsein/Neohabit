@@ -65,7 +65,16 @@ export default function Skilltree({ skilltree }) {
         }`}
       >
         <NavLink to={`../skilltree/${skilltree?._id}`} title={skilltree.name}>
-          <h3 style={{ color: colorShade, textAlign: 'center' }}>{skilltree?.name}</h3>
+          <h3
+            style={{
+              color: colorShade,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+              marginLeft: '5px',
+            }}
+          >
+            {skilltree?.name}
+          </h3>
         </NavLink>
         <SkilltreeControls skilltreeID={skilltree?._id} />
       </div>
