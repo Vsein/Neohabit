@@ -93,7 +93,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
           <Icon path={mdiDelete} className="icon smaller centering" />
         </button>
       </div>
-      <div className={`skill-node-controls-right ${false ? 'offseted' : ''}`}>
+      <div className={`skill-node-controls-right ${skill.children ? 'offseted' : ''}`}>
         <button
           className="overview-open-settings active"
           title="Add a child skill"

@@ -26,11 +26,13 @@
 }
 
 .skill-node {
+  margin: 20px;
   background-color: var(--main-background-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   height: 100px;
   width: 200px;
+  align-self: center;
   display: grid;
   justify-content: center;
   align-items: center;
@@ -45,8 +47,7 @@
     border: none;
     height: 108px;
     width: 208px;
-    margin-left: -4px;
-    margin-right: -4px;
+    margin-inline: 16px;
     padding: 4px;
 
     &::before {
@@ -90,6 +91,12 @@
   }
 }
 
+.skill-segment {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+}
+
 .skill-node-controls-bottom {
   position: absolute;
   bottom: -30px;
@@ -118,7 +125,7 @@
   z-index: 1;
 
   &.offseted {
-    top: -10px;
+    top: 20px;
   }
 }
 
@@ -126,10 +133,9 @@
   display: grid;
   justify-content: start;
   align-items: center;
-  height: max(50px, calc(30px + 130px * var(--height) + 10px));
+  height: max(50px, calc(30px + 140px * var(--height) - 20px));
   width: calc(var(--width) * 250px);
   // width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
-  padding: 20px;
 }
 
 .overview-open-settings {

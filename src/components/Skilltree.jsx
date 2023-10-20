@@ -7,6 +7,7 @@ import { useDeleteSkilltreeMutation } from '../state/services/skilltree';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 import SkillNode from './SkillNode';
+import SkillSegment from './SkillSegment';
 
 function processSkilltree(skilltreeProvided) {
   const skilltree = { ...skilltreeProvided };
@@ -69,14 +70,11 @@ export default function Skilltree({ skilltree }) {
         <SkilltreeControls skilltreeID={skilltree?._id} />
       </div>
       <div className={`skills ${vertical ? 'vertical' : ''}`}>
-        {skilltree.skills.map((skill, index) => (
-          <SkillNode
-            key={`skill-${index}`}
-            skilltreeID={skilltree?._id}
-            skill={skill}
-            color={skilltree.color}
-          />
-        ))}
+        <SkillSegment
+          skilltreeID={skilltree?._id}
+          skill={processedSkills}
+          color={skilltree.color}
+        />
       </div>
     </div>
   );
