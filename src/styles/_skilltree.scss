@@ -13,6 +13,18 @@
   }
 }
 
+.skilltree-centering {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 2px;
+  background-color: var(--main-background-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+}
+
 .skill-node {
   background-color: var(--main-background-color);
   border: 1px solid var(--border-color);
@@ -114,8 +126,9 @@
   display: grid;
   justify-content: start;
   align-items: center;
-  height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 10px));
-  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+  height: max(50px, calc(30px + 130px * var(--height) + 10px));
+  width: calc(var(--width) * 250px);
+  // width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
   padding: 20px;
 }
 
