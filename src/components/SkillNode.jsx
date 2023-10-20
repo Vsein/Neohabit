@@ -47,6 +47,19 @@ export default function SkillNode({ skilltreeID, skill, color }) {
   return (
     <div className={`skill-node ${skill.status}`} style={{ '--shadow-box-color': color }}>
       <h3>{skill.name}</h3>
+      {skill.parent_skill ? <div className="skill-node-edge-to" /> : <></>}
+      {skill.children.length ? (
+        <div
+          className="skill-node-edge-from"
+          style={{
+            '--height': skill.height,
+            '--offset-top': skill.children[0].height / 2,
+            '--offset-bottom': skill.children[skill.children.length - 1].height / 2,
+          }}
+        />
+      ) : (
+        <></>
+      )}
       <div className="skill-node-controls-bottom">
         {skill.status === 'in-progress' ? (
           <button
@@ -93,7 +106,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
           <Icon path={mdiDelete} className="icon smaller centering" />
         </button>
       </div>
-      <div className={`skill-node-controls-right ${skill.children ? 'offseted' : ''}`}>
+      <div className={`skill-node-controls-right ${skill.children.length ? 'offseted' : ''}`}>
         <button
           className="overview-open-settings active"
           title="Add a child skill"

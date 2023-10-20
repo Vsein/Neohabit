@@ -77,6 +77,14 @@
       border-radius: 10px;
       border: 1px solid var(--border-color);
     }
+
+    .skill-node-edge-to {
+      left: -16px;
+    }
+
+    .skill-node-edge-from {
+      right: -16px;
+    }
   }
 
   &.completed {
@@ -110,6 +118,34 @@
 
   & > button {
     width: min-content;
+  }
+}
+
+.skill-node-edge-to {
+  position: absolute;
+  width: 21px;
+  height: 1px;
+  background-color: var(--border-color);
+  left: -21px;
+}
+
+.skill-node-edge-from {
+  position: absolute;
+  width: 21px;
+  height: 1px;
+  background-color: var(--border-color);
+  right: -21px;
+  overflow: visible;
+
+  &::after {
+    position: absolute;
+    content: '';
+    height: calc((var(--height) - var(--offset-top) - var(--offset-bottom)) * 140px);
+    width: 1px;
+    top: calc((var(--height) - 1) * 70px * -1);
+    top: calc((var(--height) / 2 - var(--offset-top)) * 140px * -1) ;
+    right: 0px;
+    background-color: var(--border-color);
   }
 }
 
