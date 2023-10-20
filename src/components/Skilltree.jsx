@@ -20,6 +20,7 @@ function processSkilltree(skilltreeProvided) {
     skills[i].width =
       (skills[i].children.reduce((cur, skill) => Math.max(cur, skill.width), 0) || 0) + 1;
     skills[i].height = skills[i].children.reduce((cur, skill) => cur + skill.height, 0) || 1;
+    skills[i].children.reverse();
     if (skills[i].parent_skill) {
       skills[vertices.get(skills[i].parent_skill)].children.push(skills[i]);
     }
@@ -49,7 +50,7 @@ export default function Skilltree({ skilltree }) {
         '--habits': 10,
         '--height': processedSkills.height,
         '--width': processedSkills.width,
-        '--length': 46,
+        '--length': 47,
         '--vertical': vertical * 1,
         // '--multiplier': settings.data.cell_height_multiplier,
         '--multiplier': 1,
@@ -78,12 +79,14 @@ export default function Skilltree({ skilltree }) {
         </NavLink>
         <SkilltreeControls skilltreeID={skilltree?._id} />
       </div>
-      <div className={`skills ${vertical ? 'vertical' : ''}`}>
-        <SkillSegment
-          skilltreeID={skilltree?._id}
-          skill={processedSkills}
-          color={skilltree.color}
-        />
+      <div className="skilltree-container">
+        <div className={`skills ${vertical ? 'vertical' : ''}`}>
+          <SkillSegment
+            skilltreeID={skilltree?._id}
+            skill={processedSkills}
+            color={skilltree.color}
+          />
+        </div>
       </div>
     </div>
   );
