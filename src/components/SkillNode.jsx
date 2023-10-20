@@ -11,13 +11,14 @@ import {
   mdiDelete,
 } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import { useEditSkillMutation } from '../state/services/skilltree';
+import { useEditSkillMutation, useDeleteSkillsMutation } from '../state/services/skilltree';
 
 export default function SkillNode({ skilltreeID, skill, color }) {
   const dispatch = useDispatch();
   const isDisabled = skill.is_root;
   const isCompleted = skill.status === 'completed';
   const [editSkill] = useEditSkillMutation();
+  const [deleteSkills] = useDeleteSkillsMutation();
   // const hasChildren = !!skill.ski.length;
 
   const openAddSkillMenu = () => {
@@ -42,6 +43,22 @@ export default function SkillNode({ skilltreeID, skill, color }) {
       skillID: skill._id,
       values: { status: skill.status === 'completed' ? 'in-progress' : 'completed' },
     });
+  };
+
+  const getAllChildrenIDs = (skilly) => {
+    const ids = [skilly._id];
+    if (skilly.children) {
+      skilly.children.forEach((skillo) => {
+        const childrenIDs = getAllChildrenIDs(skillo);
+        ids.push(...childrenIDs);
+      });
+    }
+    return ids;
+  };
+
+  const deleteAllChildrenSkills = () => {
+    const ids = getAllChildrenIDs(skill);
+    deleteSkills({ skilltreeID, values: { ids } });
   };
 
   return (
@@ -102,6 +119,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
           className="overview-open-settings active"
           title="Delete the skill"
           disabled={isDisabled}
+          onClick={deleteAllChildrenSkills}
         >
           <Icon path={mdiDelete} className="icon smaller centering" />
         </button>
