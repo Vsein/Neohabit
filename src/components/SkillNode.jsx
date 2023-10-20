@@ -110,6 +110,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
         <button
           className="overview-open-settings active"
           title="Add a child skill"
+          style={{ backgroundColor: 'var(--main-background-color)' }}
           onClick={openAddSkillMenu}
         >
           <Icon path={mdiPlus} className="icon smaller centering" />

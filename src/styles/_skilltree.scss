@@ -34,7 +34,7 @@
   overflow-y: hidden;
   padding-right: 5px;
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
-  height: max(50px, calc(30px + 140px * var(--height) - 20px));
+  height: max(50px, calc(30px + 140px * var(--height) - 10px));
 }
 
 .skill-node {
@@ -59,8 +59,21 @@
     border: none;
     height: 108px;
     width: 208px;
-    margin-inline: 16px;
+    margin: 16px;
     padding: 4px;
+
+    .skill-node-controls-bottom {
+      bottom: -30px;
+      margin: 0px;
+    }
+
+    .skill-node-controls-right {
+      right: -30px;
+
+      &.offseted {
+        right: -33px;
+      }
+    }
 
     &::before {
       content: '';
@@ -117,37 +130,53 @@
   height: fit-content;
 }
 
-.skill-node-controls-bottom {
+.skill-node-controls-bottom,
+.skill-node-controls-right {
   position: absolute;
-  bottom: -30px;
-  left: 0;
-  padding: 8px;
   display: none;
-  gap: 5px;
-  width: 100%;
-  justify-content: center;
   z-index: 1;
+  padding: 8px;
+  justify-content: center;
+}
+
+.skill-node-controls-bottom {
+  bottom: -35px;
+  left: 0;
+  gap: 5px;
+  width: 208px;
+  margin-left: -5px;
 
   & > button {
     width: min-content;
   }
 }
 
-.skill-node-edge-to {
-  position: absolute;
-  width: 21px;
-  height: 1px;
-  background-color: var(--border-color);
-  left: -21px;
+.skill-node-controls-right {
+  top: 0px;
+  right: -35px;
+  height: 100%;
+  flex-direction: column;
+  z-index: 1;
+
+  &.offseted {
+    right: -38px;
+  }
 }
 
+.skill-node-edge-to,
 .skill-node-edge-from {
   position: absolute;
   width: 21px;
   height: 1px;
   background-color: var(--border-color);
+}
+
+.skill-node-edge-to {
+  left: -21px;
+}
+
+.skill-node-edge-from {
   right: -21px;
-  overflow: visible;
 
   &::after {
     position: absolute;
@@ -161,22 +190,6 @@
   }
 }
 
-.skill-node-controls-right {
-  position: absolute;
-  top: 0px;
-  right: -30px;
-  padding: 8px;
-  height: 100%;
-  display: none;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 1;
-
-  &.offseted {
-    top: 20px;
-  }
-}
-
 .skills {
   position: absolute;
   display: grid;
@@ -184,7 +197,6 @@
   align-items: center;
   height: max(50px, calc(30px + 140px * var(--height) - 20px));
   width: calc(var(--width) * 240px);
-  // width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
 }
 
 .overview-open-settings {

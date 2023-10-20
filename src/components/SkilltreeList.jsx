@@ -27,8 +27,6 @@ export default function SkilltreeList() {
     );
   }
 
-  console.log(skilltrees.data);
-
   return (
     <div className="contentlist">
       {skilltrees.data && skilltrees.data.map((skilltree, i) => (

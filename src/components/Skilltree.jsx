@@ -41,8 +41,6 @@ export default function Skilltree({ skilltree }) {
 
   const processedSkills = processSkilltree(skilltree);
 
-  console.log(skilltree);
-
   return (
     <div
       className="skilltree-centering"
