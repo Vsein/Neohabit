@@ -16,6 +16,7 @@
 }
 
 .skilltree-centering {
+  --skill-node-margin: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -35,11 +36,12 @@
   padding-right: 5px;
   padding-top: 3px;
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
-  height: max(50px, calc(30px + 140px * var(--height) - 10px));
+  height: max(50px, calc(30px + (100px + 2 * var(--skill-node-margin)) * var(--height) - 10px));
 }
 
 .skill-node {
   margin: 20px;
+  margin-block: var(--skill-node-margin);
   background-color: var(--main-background-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
@@ -62,10 +64,11 @@
     height: 108px;
     width: 208px;
     margin: 16px;
+    margin-block: calc(var(--skill-node-margin) - 4px);
     padding: 4px;
 
     .skill-node-controls-bottom {
-      bottom: -30px;
+      bottom: -14px;
       margin: 0px;
     }
 
@@ -124,6 +127,11 @@
       display: flex;
     }
   }
+
+  .overview-open-settings {
+    background-color: var(--main-background-color);
+    border-radius: 50%;
+  }
 }
 
 .skill-segment {
@@ -142,7 +150,7 @@
 }
 
 .skill-node-controls-bottom {
-  bottom: -35px;
+  bottom: -19px;
   left: 0;
   gap: 5px;
   width: 208px;
@@ -174,7 +182,7 @@
 }
 
 .skill-node-edge-to {
-  left: -21px;
+  left: -22px;
 }
 
 .skill-node-edge-from {
@@ -183,10 +191,9 @@
   &::after {
     position: absolute;
     content: '';
-    height: calc((var(--height) - var(--offset-top) - var(--offset-bottom)) * 140px + 1px);
+    height: calc((var(--height) - var(--offset-top) - var(--offset-bottom)) * (100px + var(--skill-node-margin) * 2) + 1px);
     width: 1px;
-    top: calc((var(--height) - 1) * 70px * -1);
-    top: calc((var(--height) / 2 - var(--offset-top)) * 140px * -1) ;
+    top: calc((var(--height) / 2 - var(--offset-top)) * (100px + var(--skill-node-margin) * 2) * -1);
     right: 0px;
     background-color: var(--border-color);
   }
@@ -197,7 +204,7 @@
   display: grid;
   justify-content: start;
   align-items: center;
-  height: max(50px, calc(30px + 140px * var(--height) - 20px));
+  height: max(50px, calc(30px + (100px + var(--skill-node-margin) * 2) * var(--height) - 20px));
   width: calc(var(--width) * 240px);
 }
 
