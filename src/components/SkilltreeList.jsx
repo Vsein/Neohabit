@@ -32,7 +32,7 @@ export default function SkilltreeList() {
       {skilltrees.data && skilltrees.data.map((skilltree, i) => (
         <Skilltree key={i} skilltree={skilltree} />
       ))}
-      <div className="overview-centering" style={{ '--length': 46 }}>
+      <div className="overview-centering" style={{ '--length': 47 }}>
         <button
           className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
           onClick={openOverlay}

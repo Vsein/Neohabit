@@ -16,7 +16,8 @@
 }
 
 .skilltree-centering {
-  --skill-node-margin: 10px;
+  --skill-node-margin: 5px;
+  --skill-node-height: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,7 +37,7 @@
   padding-right: 5px;
   padding-top: 3px;
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
-  height: max(50px, calc(30px + (100px + 2 * var(--skill-node-margin)) * var(--height) - 10px));
+  height: max(50px, calc(30px + (var(--skill-node-height) + 2 * var(--skill-node-margin)) * var(--height) - 10px));
 }
 
 .skill-node {
@@ -45,7 +46,8 @@
   background-color: var(--main-background-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  height: 100px;
+  height: var(--skill-node-height);
+  font-size: 15px;
   width: 200px;
   align-self: center;
   display: grid;
@@ -56,12 +58,12 @@
 
   & > h4 {
     z-index: 1;
-    margin-inline: 4px;
+    margin-inline: 6px;
   }
 
   &.in-progress {
     border: none;
-    height: 108px;
+    height: calc(var(--skill-node-height) + 8px);
     width: 208px;
     margin: 16px;
     margin-block: calc(var(--skill-node-margin) - 4px);
@@ -191,9 +193,9 @@
   &::after {
     position: absolute;
     content: '';
-    height: calc((var(--height) - var(--offset-top) - var(--offset-bottom)) * (100px + var(--skill-node-margin) * 2) + 1px);
+    height: calc((var(--height) - var(--offset-top) - var(--offset-bottom)) * (var(--skill-node-height) + var(--skill-node-margin) * 2) + 1px);
     width: 1px;
-    top: calc((var(--height) / 2 - var(--offset-top)) * (100px + var(--skill-node-margin) * 2) * -1);
+    top: calc((var(--height) / 2 - var(--offset-top)) * (var(--skill-node-height) + var(--skill-node-margin) * 2) * -1);
     right: 0px;
     background-color: var(--border-color);
   }
@@ -204,7 +206,7 @@
   display: grid;
   justify-content: start;
   align-items: center;
-  height: max(50px, calc(30px + (100px + var(--skill-node-margin) * 2) * var(--height) - 20px));
+  height: max(50px, calc(30px + (var(--skill-node-height) + var(--skill-node-margin) * 2) * var(--height) - 20px));
   width: calc(var(--width) * 240px);
 }
 
