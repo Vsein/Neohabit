@@ -47,7 +47,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
         >
           <div className="modal-header">
             <div className="tag"></div>
-            <button className="close-modal-button icon" onClick={close}>
+            <button className="close-modal-button icon" onClick={closeOverlay}>
               <Icon path={mdiClose} />
             </button>
           </div>

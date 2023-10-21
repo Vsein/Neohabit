@@ -53,7 +53,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
             <div className="tag">
               <HabitTag habit={skilltree} />
             </div>
-            <button className="close-modal-button icon" onClick={close}>
+            <button className="close-modal-button icon" onClick={closeOverlay}>
               <Icon path={mdiClose} />
             </button>
           </div>
