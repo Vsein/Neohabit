@@ -15,7 +15,7 @@ import {
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHabitsQuery } from '../state/services/habit';
 import HabitTag from './HabitTag';
-import { changeTo, open } from '../state/features/projectOverlay/projectOverlaySlice';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';
 
@@ -30,8 +30,7 @@ export default function Sidebar({ hidden, toggleSidebar }) {
   };
 
   const openOverlay = () => {
-    dispatch(open());
-    dispatch(changeTo({ projectID: '', habitID: '' }));
+    dispatch(changeTo({ projectID: '', habitID: '', type: 'project' }));
   };
 
   useKeyPress(['a'], openOverlay);
@@ -50,23 +49,24 @@ export default function Sidebar({ hidden, toggleSidebar }) {
             path={mdiHome}
             title={hidden ? 'Home' : 'Dashboard'}
             status="raw"
-            to="/dashboard"
             raw="true"
+            to="/dashboard"
             num="1"
           />
           <NavigationSection
             path={mdiFamilyTree}
             title={hidden ? 'Skills' : 'Skill trees'}
-            status="soon"
-            to="/skill-trees"
+            status="raw"
+            raw="true"
+            to="/skills"
             num="2"
           />
           <NavigationSection
             path={mdiTrendingUp}
             title="Projects"
             status="raw"
-            to="/projects"
             raw="true"
+            to="/projects"
             num="3"
           />
           <NavigationSection path={mdiCheckboxMultipleMarked} title="To-do" to="/todo" num="4" />

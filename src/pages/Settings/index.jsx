@@ -14,7 +14,7 @@ import {
   useChangeOverviewDurationMutation,
   useChangeOverviewOffsetMutation,
 } from '../../state/services/settings';
-import { open } from '../../state/features/deleteOverlay/deleteOverlaySlice';
+import { changeTo } from '../../state/features/overlay/overlaySlice';
 
 export default function Settings() {
   useTitle('Settings | Neohabit');
@@ -261,7 +261,7 @@ function HeatmapHeightOption() {
 function DeleteAccountOption() {
   const dispatch = useDispatch();
   const openOverlay = () => {
-    dispatch(open());
+    dispatch(changeTo({ type: 'deleteAccount' }));
   };
 
   return (

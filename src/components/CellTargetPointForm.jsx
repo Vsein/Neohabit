@@ -3,7 +3,7 @@ import { Form, Field } from 'react-final-form';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 
-export default function TagetPointForm({ onSubmit }) {
+export default function CellTagetPointForm({ onSubmit }) {
   return (
     <Form
       initialValues={{

@@ -3,7 +3,7 @@ import { Form, Field } from 'react-final-form';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 
-export default function DataPointForm({ onSubmit }) {
+export default function CellDataPointForm({ onSubmit }) {
   return (
     <Form
       initialValues={{

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered, mdiFullscreen } from '@mdi/js';
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
-import { open } from '../state/features/stopwatchFullscreen/stopwatchFullscreenSlice';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 import useStopwatch from '../hooks/useStopwatch';
 
 export default function Stopwatch() {
@@ -19,7 +19,7 @@ function StopwatchContents() {
 
   const dispatch = useDispatch();
   const openFullscreenStopwatch = () => {
-    dispatch(open());
+    dispatch(changeTo({ type: 'stopwatch' }));
   };
 
   const [

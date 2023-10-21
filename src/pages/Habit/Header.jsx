@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useGetHabitsQuery, useDeleteHabitMutation } from '../../state/services/habit';
-import { changeTo, open } from '../../state/features/habitOverlay/habitOverlaySlice';
+import { changeTo } from '../../state/features/overlay/overlaySlice';
 
 export default function Header() {
   const { habitID } = useParams();
@@ -23,8 +23,7 @@ export default function Header() {
     <div className="habitpage-header">
       <Link
         onClick={() => {
-          dispatch(changeTo({ habitID, projectID: '' }));
-          dispatch(open());
+          dispatch(changeTo({ habitID, projectID: '', type: 'habit' }));
         }}
       >
         <Skill color={habit.color} name={habit.name} />

@@ -2,11 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import api from './services/api';
 import authApi from './services/auth';
-import habitOverlayReducer from './features/habitOverlay/habitOverlaySlice';
-import taskOverlayReducer from './features/taskOverlay/taskOverlaySlice';
-import deleteOverlayReducer from './features/deleteOverlay/deleteOverlaySlice';
-import projectOverlayReducer from './features/projectOverlay/projectOverlaySlice';
-import stopwatchFullscreenReducer from './features/stopwatchFullscreen/stopwatchFullscreenSlice';
+import overlayReducer from './features/overlay/overlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
 import cellTipReducer from './features/cellTip/cellTipSlice';
 import themeReducer, { changeTheme } from './features/theme/themeSlice';
@@ -14,11 +10,7 @@ import themeReducer, { changeTheme } from './features/theme/themeSlice';
 const combinedReducer = combineReducers({
   [api.reducerPath]: api.reducer,
   [authApi.reducerPath]: authApi.reducer,
-  habitOverlay: habitOverlayReducer,
-  taskOverlay: taskOverlayReducer,
-  deleteOverlay: deleteOverlayReducer,
-  projectOverlay: projectOverlayReducer,
-  stopwatchFullscreen: stopwatchFullscreenReducer,
+  overlay: overlayReducer,
   cellAdd: cellAddReducer,
   cellTip: cellTipReducer,
   theme: themeReducer,

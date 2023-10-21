@@ -6,6 +6,7 @@ import Login from './pages/Login';
 // import Dashboard from './pages/Dashboard';
 import Overview from './pages/Overview';
 import Projects from './pages/Projects';
+import Skilltrees from './pages/Skilltrees';
 import Habit from './pages/Habit';
 import Project from './pages/Project';
 import Logout from './pages/Logout';
@@ -14,15 +15,10 @@ import Landing from './pages/Landing';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
 import Stopwatch from './components/Stopwatch';
-import StopwatchFullscreen from './components/StopwatchFullscreen';
 import Sidebar from './components/Sidebar';
-import OverlayHabit from './components/OverlayHabit';
-import OverlayTask from './components/OverlayTask';
-import OverlayProject from './components/OverlayProject';
-import OverlayDelete from './components/OverlayDelete';
+import Overlay from './components/Overlay';
 import CellTip from './components/CellTip';
-import CellAdd from './state/features/cellAdd/CellAdd';
-import { useGetStopwatchQuery } from './state/services/stopwatch';
+import CellAdd from './components/CellAdd';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
@@ -50,6 +46,7 @@ const App = () => {
           <Route path="/dashboard/" element={<Overview />} />
           <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/projects/*" element={<Projects />} />
+          <Route path="/skills/*" element={<Skilltrees />} />
           <Route path="/habit/:habitID/*" element={<Habit />} />
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
@@ -64,7 +61,6 @@ const App = () => {
 const PrivateRoutes = (params) => {
   const { loggedIn, changeAuth } = params;
   const location = useLocation();
-  const stopwatch = useGetStopwatchQuery();
 
   useEffect(() => {
     changeAuth(hasJWT());
@@ -90,11 +86,7 @@ const PrivateRoutes = (params) => {
         {/* <SidebarMobile /> */}
       </div>
       <Stopwatch />
-      {stopwatch.isLoading ? <></> : <StopwatchFullscreen />}
-      <OverlayDelete />
-      <OverlayHabit />
-      <OverlayTask />
-      <OverlayProject />
+      <Overlay />
     </>
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />

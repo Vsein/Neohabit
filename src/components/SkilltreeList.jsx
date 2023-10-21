@@ -3,28 +3,23 @@ import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
-import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetProjectsQuery } from '../state/services/project';
+import { useGetSkilltreesQuery } from '../state/services/skilltree';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useLoaded from '../hooks/useLoaded';
-import Project from './Project';
+import Skilltree from './Skilltree';
 import useKeyPress from '../hooks/useKeyPress';
-import useDefaultProject from '../hooks/useDefaultProject';
 
-export default function Overview() {
+export default function SkilltreeList() {
   const [loaded] = useLoaded();
-  const projects = useGetProjectsQuery();
-  const habits = useGetHabitsQuery();
+  const skilltrees = useGetSkilltreesQuery();
   const vertical = false;
 
   const dispatch = useDispatch();
   const openOverlay = () => {
-    dispatch(changeTo({ projectID: '', type: 'project' }));
+    dispatch(changeTo({ projectID: '', skilltreeID: '', type: 'skilltree' }));
   };
 
-  const [defaultProject] = useDefaultProject();
-
-  if (!loaded || projects.isFetching || habits.isFetching) {
+  if (!loaded || skilltrees.isFetching) {
     return (
       <div className="overview-loader centering">
         <div className="loader" />
@@ -34,18 +29,17 @@ export default function Overview() {
 
   return (
     <div className="contentlist">
-      {projects.data && projects.data.map((project, i) => (
-        <Project key={i} project={project} />
+      {skilltrees.data && skilltrees.data.map((skilltree, i) => (
+        <Skilltree key={i} skilltree={skilltree} />
       ))}
-      <Project project={defaultProject} />
-      <div className="overview-centering" style={{ '--length': 46 }}>
+      <div className="overview-centering" style={{ '--length': 47 }}>
         <button
           className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
           onClick={openOverlay}
-          title="Add a new habit [A]"
+          title="Add a new skilltree [A]"
         >
           <Icon className="icon small" path={mdiPlus} />
-          <p>Add a new project</p>
+          <p>Add a new skilltree</p>
         </button>
       </div>
     </div>

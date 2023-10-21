@@ -1,0 +1,217 @@
+@import 'scrollbar';
+
+@property --a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes animate {
+  0% {
+    --a: 0deg;
+  }
+  100% {
+    --a: 360deg;
+  }
+}
+
+.skilltree-centering {
+  --skill-node-margin: 5px;
+  --skill-node-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 2px;
+  background-color: var(--main-background-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+}
+
+.skilltree-container {
+  @include scrollbar;
+  --negate-margin-block: calc(2 - 2 * var(--vertical));
+  position: relative;
+  overflow-y: hidden;
+  padding-right: 5px;
+  padding-top: 3px;
+  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+  height: max(50px, calc(30px + (var(--skill-node-height) + 2 * var(--skill-node-margin)) * var(--height) - 10px));
+}
+
+.skill-node {
+  margin: 20px;
+  margin-block: var(--skill-node-margin);
+  background-color: var(--main-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  height: var(--skill-node-height);
+  font-size: 15px;
+  width: 200px;
+  align-self: center;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+
+  & > h4 {
+    z-index: 1;
+    margin-inline: 6px;
+  }
+
+  &.in-progress {
+    border: none;
+    height: calc(var(--skill-node-height) + 8px);
+    width: 208px;
+    margin: 16px;
+    margin-block: calc(var(--skill-node-margin) - 4px);
+    padding: 4px;
+
+    .skill-node-controls-bottom {
+      bottom: -14px;
+      margin: 0px;
+    }
+
+    .skill-node-controls-right {
+      right: -30px;
+
+      &.offseted {
+        right: -33px;
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-conic-gradient(
+        from var(--a),
+        var(--shadow-box-color) 0%,
+        var(--shadow-box-color) 5%,
+        transparent 5%,
+        transparent 20%,
+        var(--shadow-box-color) 50%
+      );
+      filter: blur(2px);
+      animation: animate 6s linear infinite;
+      animation-delay: -4s;
+      border-radius: 10px;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background: var(--main-background-color);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .skill-node-edge-to {
+      left: -16px;
+    }
+
+    .skill-node-edge-from {
+      right: -16px;
+    }
+  }
+
+  &.completed {
+    box-shadow: 0 0 5px 3px var(--shadow-box-color);
+  }
+
+  &:hover {
+    .skill-node-controls-right,
+    .skill-node-controls-bottom {
+      display: flex;
+    }
+  }
+
+  .overview-open-settings {
+    background-color: var(--main-background-color);
+    border-radius: 50%;
+  }
+}
+
+.skill-segment {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+}
+
+.skill-node-controls-bottom,
+.skill-node-controls-right {
+  position: absolute;
+  display: none;
+  z-index: 1;
+  padding: 8px;
+  justify-content: center;
+}
+
+.skill-node-controls-bottom {
+  bottom: -19px;
+  left: 0;
+  gap: 5px;
+  width: 208px;
+  margin-left: -5px;
+
+  & > button {
+    width: min-content;
+  }
+}
+
+.skill-node-controls-right {
+  top: 0px;
+  right: -35px;
+  height: 100%;
+  flex-direction: column;
+  z-index: 1;
+
+  &.offseted {
+    right: -38px;
+  }
+}
+
+.skill-node-edge-to,
+.skill-node-edge-from {
+  position: absolute;
+  width: 21px;
+  height: 1px;
+  background-color: var(--border-color);
+}
+
+.skill-node-edge-to {
+  left: -22px;
+}
+
+.skill-node-edge-from {
+  right: -21px;
+
+  &::after {
+    position: absolute;
+    content: '';
+    height: calc((var(--height) - var(--offset-top) - var(--offset-bottom)) * (var(--skill-node-height) + var(--skill-node-margin) * 2) + 1px);
+    width: 1px;
+    top: calc((var(--height) / 2 - var(--offset-top)) * (var(--skill-node-height) + var(--skill-node-margin) * 2) * -1);
+    right: 0px;
+    background-color: var(--border-color);
+  }
+}
+
+.skills {
+  position: absolute;
+  display: grid;
+  justify-content: start;
+  align-items: center;
+  height: max(50px, calc(30px + (var(--skill-node-height) + var(--skill-node-margin) * 2) * var(--height) - 20px));
+  width: calc(var(--width) * 240px);
+}
+
+.overview-open-settings {
+  &:disabled {
+    opacity: 0.4;
+  }
+}
