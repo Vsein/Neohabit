@@ -353,8 +353,8 @@ function CellDummy({ length, vertical = true }) {
 
 function CellPeriodDummy({ dateStart, dateEnd, color, basePeriod = 24 }) {
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
-  let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
-  width += dateStart.getTime() === startOfWeek(dateStart).getTime();
+  let width = differenceInCalendarWeeks(dateEnd, dateStart);
+  width -= dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
     backgroundColor: 'transparent',
