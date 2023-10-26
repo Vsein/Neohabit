@@ -38,6 +38,20 @@
   width: min(800px, 100%);
   align-items: center;
   margin-block: 5px;
+
+  &.theme .true {
+    background-color: #2d3333;
+    color: #bbb;
+  }
+
+  &.theme .false {
+    background-color: white;
+    color: black;
+  }
+
+  &.delete-account .settings-btn {
+    background-color: red;
+  }
 }
 
 .settings-chooser {
@@ -55,20 +69,6 @@
   &.active {
     border: 2px solid var(--signature-color);
     background-color: var(--calm-signature-color);
-  }
-
-  &.dark {
-    background-color: #2d3333;
-    color: #bbb;
-  }
-
-  &.light {
-    background-color: white;
-    color: black;
-  }
-
-  &.delete {
-    background-color: red;
   }
 }
 
