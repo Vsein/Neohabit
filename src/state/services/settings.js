@@ -25,99 +25,20 @@ export const settingsApi = api.injectEndpoints({
         method: 'DELETE',
       }),
     }),
-    changeTheme: builder.mutation({
-      query: (preferDark) => ({
-        url: 'settings/theme',
-        body: { preferDark },
+    updateSettings: builder.mutation({
+      query: ({ values }) => ({
+        url: 'settings',
+        body: values,
         method: 'PUT',
       }),
-      async onQueryStarted(preferDark, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        const newTheme = preferDark ? 'dark' : 'light';
-        changeTheme(newTheme);
-        dispatch(changeTo(newTheme));
+      async onQueryStarted({ values }, { dispatch }) {
+        if (values.prefer_dark !== undefined) {
+          const newTheme = values.prefer_dark ? 'dark' : 'light';
+          changeTheme(newTheme);
+        }
         dispatch(
           settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
-            draft.prefer_dark = preferDark;
-          }),
-        );
-      },
-    }),
-    changeCellHeight: builder.mutation({
-      query: (cellHeight) => ({
-        url: 'settings/cell_height',
-        body: { cellHeight },
-        method: 'PUT',
-      }),
-      async onQueryStarted(cellHeight, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        console.log(cellHeight);
-        dispatch(
-          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
-            draft.cell_height_multiplier = cellHeight;
-          }),
-        );
-      },
-    }),
-    changeOverviewOrientation: builder.mutation({
-      query: (overviewVertical) => ({
-        url: 'settings/overview_orientation',
-        body: { overviewVertical },
-        method: 'PUT',
-      }),
-      async onQueryStarted(overviewVertical, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        console.log(overviewVertical);
-        dispatch(
-          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
-            draft.overview_vertical = overviewVertical;
-          }),
-        );
-      },
-    }),
-    changeOverviewFirstDay: builder.mutation({
-      query: (overviewCurrentIsFirst) => ({
-        url: 'settings/overview_orientation',
-        body: { overviewCurrentIsFirst },
-        method: 'PUT',
-      }),
-      async onQueryStarted(overviewCurrentIsFirst, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        console.log(overviewCurrentIsFirst);
-        dispatch(
-          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
-            draft.overview_current_is_first = overviewCurrentIsFirst;
-          }),
-        );
-      },
-    }),
-    changeOverviewDuration: builder.mutation({
-      query: (overviewDuration) => ({
-        url: 'settings/overview_duration',
-        body: { overviewDuration },
-        method: 'PUT',
-      }),
-      async onQueryStarted(overviewDuration, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        console.log(overviewDuration);
-        dispatch(
-          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
-            draft.overview_duration = overviewDuration;
-          }),
-        );
-      },
-    }),
-    changeOverviewOffset: builder.mutation({
-      query: (overviewOffset) => ({
-        url: 'settings/overview_offset',
-        body: { overviewOffset },
-        method: 'PUT',
-      }),
-      async onQueryStarted(overviewOffset, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        dispatch(
-          settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {
-            draft.overview_offset = +overviewOffset;
+            Object.assign(draft, values);
           }),
         );
       },
@@ -129,10 +50,5 @@ export const {
   useGetSettingsQuery,
   useGetSelfQuery,
   useDeleteSelfMutation,
-  useChangeThemeMutation,
-  useChangeCellHeightMutation,
-  useChangeOverviewOrientationMutation,
-  useChangeOverviewFirstDayMutation,
-  useChangeOverviewDurationMutation,
-  useChangeOverviewOffsetMutation,
+  useUpdateSettingsMutation,
 } = settingsApi;

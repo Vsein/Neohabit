@@ -12,10 +12,7 @@ import {
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import {
-  useGetSettingsQuery,
-  useChangeOverviewOrientationMutation,
-} from '../state/services/settings';
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -127,20 +124,20 @@ export default function Overview() {
 }
 
 function OverviewControls({ vertical }) {
-  const [changeOverview] = useChangeOverviewOrientationMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
 
   return (
     <div className="overview-settings">
       <button
         className={`overview-open-settings ${vertical ? '' : 'active'}`}
-        onClick={() => changeOverview(false)}
+        onClick={() => updateSettings({ values: { overview_vertical: false } })}
         title="Change to horizontal orientation"
       >
         <Icon path={mdiCalendarText} className="icon small centering" />
       </button>
       <button
         className={`overview-open-settings ${vertical ? 'active' : ''}`}
-        onClick={() => changeOverview(true)}
+        onClick={() => updateSettings({ values: { overview_vertical: true } })}
         title="Change to vertical orientation"
       >
         <Icon path={mdiCalendarWeekend} className="icon small centering" />

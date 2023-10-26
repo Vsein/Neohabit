@@ -1,18 +1,19 @@
 @import 'dropdown';
 
-.settingsc-container {
+.settings-container {
   grid-area: main;
   display: grid;
   grid-auto-flow: row;
-  grid-template-rows: 100px 1fr;
+  grid-template-rows: min-content 1fr;
+  justify-items: center;
   height: 100%;
-  width: 300px;
+  padding: 0px;
 }
 
 .settings-bar {
   background-color: var(--main-background-color);
   width: 100%;
-  display: grid;
+  display: flex;
   grid-auto-flow: column;
   justify-content: left;
 }
@@ -26,24 +27,46 @@
 .settings {
   padding: 20px;
   padding-inline: 35px;
+  display: grid;
+  width: min(850px, 100%);
 }
 
 .settings-option {
   color: var(--support-text-color);
   display: flex;
   justify-content: space-between;
-  width: min(700px, 100%);
+  width: min(850px, 100%);
   align-items: center;
   margin-block: 5px;
+
+  &.theme .true {
+    background-color: #2d3333;
+    color: #bbb;
+  }
+
+  &.theme .false {
+    background-color: white;
+    color: black;
+  }
+
+  &.delete-account .settings-btn {
+    background-color: red;
+  }
+}
+
+.settings-name {
+  width: min(500px, 100%);
 }
 
 .settings-chooser {
   display: flex;
-  gap: 10px;
+  gap: 5px;
+  width: 310px;
 }
 
 .settings-btn {
-  width: max-content;
+  width: 100%;
+  height: min-content;
   padding: 8px 30px;
   border: 2px solid transparent;
   background-color: var(--calm-signature-color);
@@ -52,20 +75,6 @@
   &.active {
     border: 2px solid var(--signature-color);
     background-color: var(--calm-signature-color);
-  }
-
-  &.dark {
-    background-color: #2d3333;
-    color: #bbb;
-  }
-
-  &.light {
-    background-color: white;
-    color: black;
-  }
-
-  &.delete {
-    background-color: red;
   }
 }
 
