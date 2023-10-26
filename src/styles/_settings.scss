@@ -28,14 +28,14 @@
   padding: 20px;
   padding-inline: 35px;
   display: grid;
-  width: min(800px, 100%);
+  width: min(850px, 100%);
 }
 
 .settings-option {
   color: var(--support-text-color);
   display: flex;
   justify-content: space-between;
-  width: min(800px, 100%);
+  width: min(850px, 100%);
   align-items: center;
   margin-block: 5px;
 
@@ -54,13 +54,19 @@
   }
 }
 
+.settings-name {
+  width: min(500px, 100%);
+}
+
 .settings-chooser {
   display: flex;
-  gap: 10px;
+  gap: 5px;
+  width: 310px;
 }
 
 .settings-btn {
-  width: max-content;
+  width: 100%;
+  height: min-content;
   padding: 8px 30px;
   border: 2px solid transparent;
   background-color: var(--calm-signature-color);
