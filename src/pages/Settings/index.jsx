@@ -15,7 +15,7 @@ export default function Settings() {
   return (
     <main className="settings-container">
       <div className="settings-bar">
-        <Link className="settings-type" to="#general">
+        <Link className="settings-type right" to="#general">
           General
         </Link>
         <Link className="settings-type" to="#overview">
@@ -24,7 +24,7 @@ export default function Settings() {
         <Link className="settings-type" to="#heatmaps">
           Heatmaps
         </Link>
-        <Link className="settings-type" to="#account">
+        <Link className="settings-type left" to="#account">
           Account
         </Link>
       </div>

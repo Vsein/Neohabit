@@ -1,18 +1,19 @@
 @import 'dropdown';
 
-.settingsc-container {
+.settings-container {
   grid-area: main;
   display: grid;
   grid-auto-flow: row;
-  grid-template-rows: 100px 1fr;
+  grid-template-rows: min-content 1fr;
+  justify-items: center;
   height: 100%;
-  width: 300px;
+  padding: 0px;
 }
 
 .settings-bar {
   background-color: var(--main-background-color);
   width: 100%;
-  display: grid;
+  display: flex;
   grid-auto-flow: column;
   justify-content: left;
 }
@@ -26,13 +27,15 @@
 .settings {
   padding: 20px;
   padding-inline: 35px;
+  display: grid;
+  width: min(800px, 100%);
 }
 
 .settings-option {
   color: var(--support-text-color);
   display: flex;
   justify-content: space-between;
-  width: min(700px, 100%);
+  width: min(800px, 100%);
   align-items: center;
   margin-block: 5px;
 }
