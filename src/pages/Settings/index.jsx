@@ -5,15 +5,7 @@ import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import useTitle from '../../hooks/useTitle';
 import useAnchor from '../../hooks/useAnchor';
-import {
-  useGetSettingsQuery,
-  useChangeThemeMutation,
-  useChangeCellHeightMutation,
-  useChangeOverviewOrientationMutation,
-  useChangeOverviewFirstDayMutation,
-  useChangeOverviewDurationMutation,
-  useChangeOverviewOffsetMutation,
-} from '../../state/services/settings';
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '../../state/services/settings';
 import { changeTo } from '../../state/features/overlay/overlaySlice';
 
 export default function Settings() {
@@ -82,7 +74,7 @@ function SettingsSection({ name, elements }) {
 }
 
 function ThemeOption() {
-  const [changeTheme] = useChangeThemeMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
   const settings = useGetSettingsQuery();
   const theme = settings.data.prefer_dark ? 'dark' : 'light';
 
@@ -94,13 +86,13 @@ function ThemeOption() {
       <div className="settings-chooser">
         <button
           className={`dashboard-btn settings-btn dark ${theme === 'dark' ? 'active' : ''}`}
-          onClick={() => changeTheme(true)}
+          onClick={() => updateSettings({ values: { prefer_dark: true } })}
         >
           Dark
         </button>
         <button
           className={`dashboard-btn settings-btn light ${theme === 'light' ? 'active' : ''}`}
-          onClick={() => changeTheme(false)}
+          onClick={() => updateSettings({ values: { prefer_dark: false } })}
         >
           Light
         </button>
@@ -110,7 +102,7 @@ function ThemeOption() {
 }
 
 function OverviewOrientationOption() {
-  const [changeOverview] = useChangeOverviewOrientationMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
   const settings = useGetSettingsQuery();
   const state = settings.data.overview_vertical;
 
@@ -122,13 +114,13 @@ function OverviewOrientationOption() {
       <div className="settings-chooser">
         <button
           className={`dashboard-btn settings-btn ${state ? '' : 'active'}`}
-          onClick={() => changeOverview(false)}
+          onClick={() => updateSettings({ values: { overview_vertical: false } })}
         >
           Horizontal
         </button>
         <button
           className={`dashboard-btn settings-btn ${state ? 'active' : ''}`}
-          onClick={() => changeOverview(true)}
+          onClick={() => updateSettings({ values: { overview_vertical: true } })}
         >
           Vertical
         </button>
@@ -138,7 +130,7 @@ function OverviewOrientationOption() {
 }
 
 function OverviewFirstDayOption() {
-  const [changeFirstDay] = useChangeOverviewFirstDayMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
   const settings = useGetSettingsQuery();
   const state = settings.data.overview_current_is_first;
 
@@ -150,13 +142,13 @@ function OverviewFirstDayOption() {
       <div className="settings-chooser">
         <button
           className={`dashboard-btn settings-btn ${state ? 'active' : ''}`}
-          onClick={() => changeFirstDay(true)}
+          onClick={() => updateSettings({ values: { overview_current_is_first: true } })}
         >
           Period start
         </button>
         <button
           className={`dashboard-btn settings-btn ${state ? '' : 'active'}`}
-          onClick={() => changeFirstDay(false)}
+          onClick={() => updateSettings({ values: { overview_current_is_first: false } })}
         >
           Period end
         </button>
@@ -166,7 +158,7 @@ function OverviewFirstDayOption() {
 }
 
 function OverviewDurationOption() {
-  const [changeOverviewDuration] = useChangeOverviewDurationMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
   const settings = useGetSettingsQuery();
   const overviewDuration = settings.data?.overview_duration ?? 32;
   const [overviewDurationInput, setOverviewDurationInput] = useState(overviewDuration);
@@ -187,7 +179,7 @@ function OverviewDurationOption() {
         />
         <button
           className="settings-input settings-save-btn dashboard-btn"
-          onClick={() => changeOverviewDuration(overviewDurationInput)}
+          onClick={() => updateSettings({ values: { overview_duration: +overviewDurationInput } })}
         >
           Save
         </button>
@@ -197,7 +189,7 @@ function OverviewDurationOption() {
 }
 
 function OverviewOffsetOption() {
-  const [changeOverviewOffset] = useChangeOverviewOffsetMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
   const settings = useGetSettingsQuery();
   const overviewOffset = settings.data?.overview_offset ?? 0;
   const [overviewOffsetInput, setOverviewOffsetInput] = useState(overviewOffset);
@@ -218,7 +210,7 @@ function OverviewOffsetOption() {
         />
         <button
           className="settings-input settings-save-btn dashboard-btn"
-          onClick={() => changeOverviewOffset(overviewOffsetInput)}
+          onClick={() => updateSettings({ values: { overview_offset: +overviewOffsetInput } })}
         >
           Save
         </button>
@@ -228,7 +220,7 @@ function OverviewOffsetOption() {
 }
 
 function HeatmapHeightOption() {
-  const [changeCellHeight] = useChangeCellHeightMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
   const settings = useGetSettingsQuery();
   const cellHeight = settings.data.cell_height_multiplier;
   const [cellHeightInput, setCellHeightInput] = useState(cellHeight);
@@ -249,7 +241,7 @@ function HeatmapHeightOption() {
         />
         <button
           className="settings-input settings-save-btn dashboard-btn"
-          onClick={() => changeCellHeight(cellHeightInput)}
+          onClick={() => updateSettings({ values: { cell_height_multiplier: +cellHeightInput } })}
         >
           Save
         </button>
