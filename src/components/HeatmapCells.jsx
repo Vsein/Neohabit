@@ -147,7 +147,7 @@ function CellFractured({
     >
       {!dotted &&
         [...Array(+fractions)].map((point, index) => (
-          <div key={point} className="cell-fraction" style={getStyle(index)} />
+          <div key={index} className="cell-fraction" style={getStyle(index)} />
         ))}
     </div>
   );

@@ -53,7 +53,7 @@ export default function Heatmap({
         dataSorted.map((point, index) => {
           const date = startOfDay(new Date(point.date));
           if (compareDesc(dateEnd, date) === 1) {
-            return <> </>;
+            return <React.Fragment key={index}> </React.Fragment>;
           }
           if (compareDesc(date, dateStart) === 1) {
             if (point?.is_target) {
@@ -69,7 +69,7 @@ export default function Heatmap({
                 current.value = point.value;
               }
             }
-            return <> </>;
+            return <React.Fragment key={index}> </React.Fragment>;
           }
           let gap;
           if (index === 0 && compareDesc(dateStart, date) === 1) {
@@ -85,10 +85,10 @@ export default function Heatmap({
               current.date = addDays(date, 1);
             }
             return (
-              <>
+              <React.Fragment key={index}>
                 {gap > 0 &&
                   (isOverview ? (
-                    <CellDummy key={index} length={gap} vertical={vertical} />
+                    <CellDummy length={gap} vertical={vertical} />
                   ) : (
                     <CellPeriodDummy
                       dateStart={addDays(dateNowTmp, -gap)}
@@ -123,7 +123,7 @@ export default function Heatmap({
                     isOverview={isOverview}
                   />
                 )}
-              </>
+              </React.Fragment>
             );
           }
           const periodsToStart = Math.floor(
@@ -144,35 +144,42 @@ export default function Heatmap({
             setNewTarget(point, date);
           } else if (diffInPeriods === 0) {
             current.value += point.value;
-            return <> </>;
+            return <React.Fragment key={index}> </React.Fragment>;
           } else {
             current.date = addDays(current.date, diffInPeriods * target.period);
             current.value = point.value;
           }
-          return Array.from(new Array(diffInPeriods)).map((_, Index) => (
-            <CellPeriod
-              heatmapID={heatmap?._id}
-              key={Index}
-              targetStart={addDays(previous.date, Index * previousTarget.period)}
-              dateStart={max([addDays(previous.date, Index * previousTarget.period), dateStart])}
-              dateEnd={subMilliseconds(
-                min([
-                  addDays(previous.date, (Index + 1) * previousTarget.period),
-                  addDays(dateEnd, 1),
-                  current.date,
-                ]),
-                1,
-              )}
-              color={Index || !previous.value ? palette[0] : habit.color}
-              value={Index ? 0 : previous.value}
-              basePeriod={24}
-              vertical={vertical}
-              elimination={habit?.elimination}
-              numeric={habit?.numeric}
-              targetValue={previousTarget.value}
-              isOverview={isOverview}
-            />
-          ));
+          return (
+            <React.Fragment key={index}>
+              {Array.from(new Array(diffInPeriods)).map((_, Index) => (
+                <CellPeriod
+                  heatmapID={heatmap?._id}
+                  key={Index}
+                  targetStart={addDays(previous.date, Index * previousTarget.period)}
+                  dateStart={max([
+                    addDays(previous.date, Index * previousTarget.period),
+                    dateStart,
+                  ])}
+                  dateEnd={subMilliseconds(
+                    min([
+                      addDays(previous.date, (Index + 1) * previousTarget.period),
+                      addDays(dateEnd, 1),
+                      current.date,
+                    ]),
+                    1,
+                  )}
+                  color={Index || !previous.value ? palette[0] : habit.color}
+                  value={Index ? 0 : previous.value}
+                  basePeriod={24}
+                  vertical={vertical}
+                  elimination={habit?.elimination}
+                  numeric={habit?.numeric}
+                  targetValue={previousTarget.value}
+                  isOverview={isOverview}
+                />
+              ))}
+            </React.Fragment>
+          );
         })}
     </div>
   );

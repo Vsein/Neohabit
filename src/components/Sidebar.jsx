@@ -175,6 +175,7 @@ function Project({ project }) {
           project.habits.map((habit, i) =>
             habit?._id ? (
               <NavLink
+                key={i}
                 className="habit"
                 to={`habit/${linkify(habit._id)}`}
                 style={{
@@ -187,6 +188,7 @@ function Project({ project }) {
             ) : (
               habits.data.find((habito) => habito._id === habit) && (
                 <NavLink
+                  key={i}
                   className="habit"
                   to={`habit/${linkify(habit)}`}
                   style={{
