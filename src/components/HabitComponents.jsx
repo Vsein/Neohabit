@@ -16,7 +16,6 @@ import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
-import useKeyPress from '../hooks/useKeyPress';
 import Heatmap from './Heatmap';
 
 function HabitControls({ habit, heatmap, header }) {
@@ -127,7 +126,6 @@ function HabitAddButton({ vertical, projectID = '' }) {
   const openOverlay = () => {
     dispatch(changeTo({ habitID: '', projectID, type: 'habit' }));
   };
-  useKeyPress(['a'], openOverlay);
 
   return (
     <button

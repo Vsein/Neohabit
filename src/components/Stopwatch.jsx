@@ -5,6 +5,7 @@ import { mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered, mdiFullscreen } from '
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useStopwatch from '../hooks/useStopwatch';
+import useKeyPress from '../hooks/useKeyPress';
 
 export default function Stopwatch() {
   const stopwatch = useGetStopwatchQuery();
@@ -21,6 +22,7 @@ function StopwatchContents() {
   const openFullscreenStopwatch = () => {
     dispatch(changeTo({ type: 'stopwatch' }));
   };
+  useKeyPress(['f'], openFullscreenStopwatch);
 
   const [
     currentDuration,
@@ -56,7 +58,7 @@ function StopwatchContents() {
         <button
           className="logo-section sidebar-toggle-container centering stopwatch-icon"
           onClick={togglePause}
-          title={stopwatch.data.is_paused ? 'Play [P]' : 'Pause [P]'}
+          title={stopwatch.data.is_paused ? 'Play [p]' : 'Pause [p]'}
         >
           <Icon
             path={stopwatch.data.is_paused ? mdiPlay : mdiPause}
@@ -78,7 +80,7 @@ function StopwatchContents() {
         <button
           className="logo-section sidebar-toggle-container centering right stopwatch-icon"
           onClick={openFullscreenStopwatch}
-          title="Fullscreen [F]"
+          title="Fullscreen [f]"
         >
           <Icon path={mdiFullscreen} className="icon medium sidebar-toggle" />
         </button>

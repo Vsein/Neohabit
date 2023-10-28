@@ -11,6 +11,7 @@ import {
   differenceInDays,
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
+import useKeyPress from './useKeyPress';
 
 export default function useDatePeriod(periodDuration) {
   const settings = useGetSettingsQuery();
@@ -82,6 +83,12 @@ export default function useDatePeriod(periodDuration) {
     setDateStart(getStart());
     setDateEnd(getEnd());
   };
+
+  useKeyPress(['r'], reset);
+  useKeyPress(['H'], subMonth);
+  useKeyPress(['L'], addMonth);
+  useKeyPress(['h'], subPeriod);
+  useKeyPress(['l'], addPeriod);
 
   return [
     dateEnd,

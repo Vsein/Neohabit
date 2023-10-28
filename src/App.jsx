@@ -75,7 +75,7 @@ const PrivateRoutes = (params) => {
     setSidebarHidden(!sidebarHidden);
   };
 
-  useKeyPress(['Tab'], toggleSidebar);
+  useKeyPress(['s'], toggleSidebar);
 
   if (settings.isLoading) return <></>;
 

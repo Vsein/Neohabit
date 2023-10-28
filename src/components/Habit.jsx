@@ -7,7 +7,6 @@ import { YearPicker, DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
-import useKeyPress from '../hooks/useKeyPress';
 
 export default function Habit({ heatmap, habit }) {
   const [loaded] = useLoaded();
@@ -22,9 +21,6 @@ export default function Habit({ heatmap, habit }) {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
   ] = useDatePeriod(364);
-
-  useKeyPress(['h'], subMonth);
-  useKeyPress(['l'], addMonth);
 
   const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 

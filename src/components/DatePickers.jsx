@@ -26,7 +26,7 @@ function YearPicker({ subYear, addYear, dateStart }) {
 function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPeriod, subPeriod }) {
   return (
     <div className="dates-container">
-      <button className="centering" onClick={subPeriod}>
+      <button className="centering" onClick={subPeriod} title="Move period to the left [h]">
         <Icon path={mdiMenuLeft} className="icon" />
       </button>
       <div className="dates-period">
@@ -48,7 +48,7 @@ function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPer
           onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
         />
       </div>
-      <button className="centering left" onClick={addPeriod}>
+      <button className="centering left" onClick={addPeriod} title="Move period to the right [l]">
         <Icon path={mdiMenuRight} className="icon" />
       </button>
     </div>
@@ -84,7 +84,7 @@ function DatePeriodControls({
       <button
         className="overview-period-start"
         onClick={reset}
-        title="Reset date period to preferred defaults"
+        title="Reset date period to preferred defaults [r]"
       >
         <Icon path={mdiCalendarRefresh} className="icon small centering" />
       </button>

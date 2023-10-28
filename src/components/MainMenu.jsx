@@ -24,7 +24,7 @@ export default function MainMenu(props) {
       <button
         className="logo-section left sidebar-toggle-container"
         onClick={toggleSidebar}
-        title="Toggle sidebar [Tab]"
+        title="Toggle sidebar [s]"
       >
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
       </button>

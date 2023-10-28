@@ -12,7 +12,6 @@ import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
-import useKeyPress from '../hooks/useKeyPress';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
 export default function Project({ project }) {
@@ -28,8 +27,6 @@ export default function Project({ project }) {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength - 1);
-  useKeyPress(['h'], subMonth);
-  useKeyPress(['l'], addMonth);
 
   const colorShade = mixColors(
     theme === 'light' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 },

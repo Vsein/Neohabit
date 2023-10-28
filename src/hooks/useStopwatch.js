@@ -69,8 +69,6 @@ export default function useStopwatch() {
     }
   };
 
-  useKeyPress(['p'], togglePause);
-
   const resetStopwatch = () => {
     updateStopwatch({
       values: {
@@ -84,8 +82,6 @@ export default function useStopwatch() {
     document.title = '0:00:00 | Neohabit';
   };
 
-  useKeyPress(['r'], resetStopwatch);
-
   const finishCountdown = () => {
     finishStopwatch({
       values: {
@@ -96,8 +92,6 @@ export default function useStopwatch() {
     setCurrentDuration(0);
     document.title = '0:00:00 | Neohabit';
   };
-
-  useKeyPress(['f'], finishCountdown);
 
   useEffect(() => {
     if (!stopwatch.data.is_paused) {
@@ -112,6 +106,10 @@ export default function useStopwatch() {
     const recalc = calcCurrentDuration();
     setCurrentDuration(recalc);
   });
+
+  useKeyPress(['p'], togglePause);
+  useKeyPress(['R'], resetStopwatch);
+  useKeyPress(['F'], finishCountdown);
 
   return [
     currentDuration,

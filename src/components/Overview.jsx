@@ -18,7 +18,6 @@ import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
-import useKeyPress from '../hooks/useKeyPress';
 
 export default function Overview() {
   const [loaded] = useLoaded();
@@ -35,8 +34,6 @@ export default function Overview() {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength - 1);
-  useKeyPress(['h'], subMonth);
-  useKeyPress(['l'], addMonth);
 
   if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
     return (
