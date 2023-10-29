@@ -169,6 +169,9 @@ function CellPeriod({
 }) {
   const dispatch = useDispatch();
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
+  if (diffDays < 1) {
+    return <></>;
+  }
   const tipContent = {
     heatmapID,
     isPeriod: diffDays > 1,

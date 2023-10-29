@@ -23,7 +23,7 @@ export default function Heatmap({
   const data = heatmap?.data;
   let dataSorted;
   if (data) {
-    dataSorted = [...data, { date: endOfDay(dateEnd), value: undefined, isLast: 1 }];
+    dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
     dataSorted.sort((a, b) => {
       const res = compareDesc(new Date(b.date), new Date(a.date));
       if (res === 0) {
@@ -43,6 +43,7 @@ export default function Heatmap({
     current.date = date;
     current.value = 0;
   };
+  let passed = false;
 
   const palette = usePaletteGenerator(habit.color);
   const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
@@ -52,7 +53,7 @@ export default function Heatmap({
       {dataSorted &&
         dataSorted.map((point, index) => {
           const date = startOfDay(new Date(point.date));
-          if (compareDesc(dateEnd, date) === 1) {
+          if (compareDesc(dateEnd, date) === 1 && !passed) {
             return <React.Fragment key={index}> </React.Fragment>;
           }
           if (compareDesc(date, dateStart) === 1) {
@@ -135,8 +136,28 @@ export default function Heatmap({
           }
           const previous = { ...current };
           const previousTarget = { ...target };
-          let diffInPeriods =
-            Math.floor(differenceInDays(date, current.date) / target.period) + (point?.isLast || 0);
+          let diffInPeriods = Math.floor(differenceInDays(date, current.date) / target.period);
+          if (passed && index === dataSorted.length - 1) {
+            passed = false;
+            diffInPeriods = 1;
+            if (compareDesc(date, addDays(current.date, target.period)) === 1) {
+              previous.value += point.value;
+            }
+          }
+          if (passed && compareDesc(addDays(current.date, target.period), date) === 1) {
+            passed = false;
+            diffInPeriods = 1;
+          }
+          if (passed && diffInPeriods) {
+            passed = false;
+          }
+          if (point?.isLast) {
+            if (index === dataSorted.length - 1) {
+              diffInPeriods += 1;
+            } else {
+              passed = true;
+            }
+          }
           if (point?.is_target) {
             if (differenceInDays(date, current.date) % target.period) {
               diffInPeriods += 1;
