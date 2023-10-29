@@ -55,35 +55,35 @@ export default function StopwatchModal({ closeOverlay }) {
           <h1 className="progressbar-circle-countdown">{clockify(currentDuration)}</h1>
           <div className="progressbar-controls">
             <button
-              className="logo-section sidebar-toggle-container centering stopwatch-icon"
+              className="logo-section centering stopwatch-icon"
               onClick={resetStopwatch}
               title="Reset [R]"
             >
               <Icon
                 path={mdiRestart}
                 style={{ marginTop: '3px' }}
-                className="icon medium sidebar-toggle"
+                className="icon medium"
               />
             </button>
             <button
-              className="logo-section sidebar-toggle-container centering stopwatch-icon"
+              className="logo-section centering stopwatch-icon"
               onClick={togglePause}
               title={stopwatch.data.is_paused ? 'Play [P]' : 'Pause [P]'}
             >
               <Icon
                 path={stopwatch.data.is_paused ? mdiPlay : mdiPause}
-                className="icon big sidebar-toggle"
+                className="icon big"
               />
             </button>
             <button
-              className="logo-section sidebar-toggle-container centering stopwatch-icon"
+              className="logo-section centering stopwatch-icon"
               onClick={finishCountdown}
               title="Finish [F]"
             >
               <Icon
                 path={mdiFlagCheckered}
                 style={{ marginTop: '-1px' }}
-                className="icon medium sidebar-toggle"
+                className="icon medium"
               />
             </button>
           </div>
