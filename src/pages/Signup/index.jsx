@@ -14,15 +14,15 @@ export default function Signup() {
   useTitle('Signup | Neohabit');
 
   return (
-    <div id="content-signup">
+    <div id="content-auth">
       <AuthSidebar />
-      <div className="registration-container">
+      <main className="registration-container">
         <AuthIntro />
         <SignupForm />
         <p className="login-ref">
           Already have an account? <NavLink to="/login">Log in</NavLink>
         </p>
-      </div>
+      </main>
     </div>
   );
 }

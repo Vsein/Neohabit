@@ -54,10 +54,8 @@
       grid-template-columns: 0px 1fr 45px 45px;
     }
 
-    .editor {
-      padding: 18px 9px;
-      padding-bottom: 90px;
-    }
+    // padding: 18px 9px;
+    // padding-bottom: 90px;
 
     .sidebar-projects-container,
     .sidebar-habits-container {
@@ -72,9 +70,7 @@
   }
 
   @media (min-width: 550px) {
-    .editor {
-      padding: 18px;
-    }
+    // padding: 18px;
 
     .sidebar {
       width: 250px;
@@ -126,8 +122,6 @@
   }
 
   @media (min-width: 700px) {
-    .editor {
-      padding: 18px 36px 36px;
-    }
+    // padding: 18px 36px 36px;
   }
 }

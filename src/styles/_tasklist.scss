@@ -35,7 +35,7 @@
   }
 }
 
-@mixin editor-list-item {
+@mixin task-list-item {
   background-color: var(--main-background-color);
   padding-inline: 10px;
   display: grid;
@@ -49,18 +49,9 @@
 }
 
 .task {
-  @include editor-list-item;
-
-  &-name {
-    text-align: left;
-  }
+  @include task-list-item;
 }
 
 .add-task-btn {
-  @include editor-list-item;
-  text-align: left;
-}
-
-.add-task-icon {
-  transform: scale(1.3);
+  @include task-list-item;
 }

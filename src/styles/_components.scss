@@ -135,7 +135,8 @@ input[type='checkbox']:checked.checkbox {
   & > a {
     color: var(--signature-color);
     text-decoration: none;
-    width: min-content;
+    width: 100%;
+    text-align: center;
     white-space: nowrap;
   }
 }
