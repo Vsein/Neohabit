@@ -3,6 +3,7 @@
   opacity: 0;
   position: relative;
   visibility: hidden;
+  display: none;
   padding: 15px 0;
 }
 
@@ -27,6 +28,9 @@
   grid-template-columns: 80px 1fr;
   // background-color: #efefef;
   @media (max-width: 550px) {
+    grid-template-areas:
+    'menu    menu'
+    'main main';
     .sidebar {
       @include sidebar-hidden;
 

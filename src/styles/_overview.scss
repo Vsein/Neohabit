@@ -5,6 +5,11 @@ $cell-height: 11px;
 $cell-width: 11px;
 $cell-margin: 2px;
 
+#content-overview,
+#content-projects {
+  grid-area: main;
+}
+
 .contentlist {
   display: grid;
   justify-items: center;
