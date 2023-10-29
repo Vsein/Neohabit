@@ -59,7 +59,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
             <div className="tag">
               <HabitTag habit={task ? task.habit : habit} />
             </div>
-            <button className="close-modal-button icon" onClick={closeOverlay}>
+            <button className="icon small" onClick={closeOverlay}>
               <Icon path={mdiClose} />
             </button>
           </div>

@@ -18,7 +18,7 @@ export default function Dashboard() {
       {/* <div className="dashboard-header"> */}
       {/*   <Icon path={mdiMagnify} alt="search" id="search-img" className="icon" /> */}
       {/*   <input type="search" className="searchbar" /> */}
-      {/*   <Icon path={mdiBell} alt="bell" className="icon notifications"/> */}
+      {/*   <Icon path={mdiBell} alt="bell" className="icon right"/> */}
       {/* </div> */}
 
       <div className="controls">
@@ -27,7 +27,7 @@ export default function Dashboard() {
           <p className="hello">Hello there,</p>
           <p className="username">Serene Coder (&#64;Vsein)</p>
         </div>
-        <button className="dashboard-btn" id="new">
+        <button className="dashboard-btn right" id="new">
           New
         </button>
         <button className="dashboard-btn" id="upload">

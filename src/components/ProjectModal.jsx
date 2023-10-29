@@ -84,7 +84,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               <HabitTag habit={project} />
             </div>
             <button
-              className="close-modal-button icon"
+              className="icon small"
               onClick={closeOverlay}
               type="button"
               title="Close [C]"

@@ -27,7 +27,7 @@ export default function AccountDeleteModal({ closeOverlay }) {
     >
       <div className="modal-header">
         <h2>Are you sure you want to delete your account?</h2>
-        <button className="close-modal-button icon" onClick={closeOverlay}>
+        <button className="icon small" onClick={closeOverlay}>
           <Icon path={mdiClose} />
         </button>
       </div>

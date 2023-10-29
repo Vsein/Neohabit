@@ -83,7 +83,7 @@ export default function Sidebar({ hidden, toggleSidebar }) {
               />
             </button>
             <p>Projects</p>
-            <button className="centering add" onClick={openOverlay} title="Add project [A]">
+            <button className="centering right" onClick={openOverlay} title="Add project [A]">
               <Icon path={mdiPlus} className="icon" />
             </button>
           </li>

@@ -102,7 +102,7 @@ function SkilltreeControls({ skilltreeID }) {
   };
 
   return (
-    <div className="overview-settings">
+    <div className="overview-settings right">
       <button
         className="overview-open-settings active"
         onClick={openOverlay}

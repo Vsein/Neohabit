@@ -75,21 +75,21 @@ function DatePeriodControls({
         </button>
       )}
       <button
-        className="overview-period-end"
+        className="overview-period-button right"
         onClick={setToPast}
         title="Set today as the period end"
       >
         <Icon path={mdiCalendarEnd} className="icon small centering" />
       </button>
       <button
-        className="overview-period-start"
+        className="overview-period-button"
         onClick={reset}
         title="Reset date period to preferred defaults [r]"
       >
         <Icon path={mdiCalendarRefresh} className="icon small centering" />
       </button>
       <button
-        className="overview-period-start"
+        className="overview-period-button"
         onClick={setToFuture}
         title="Set today as the period start"
       >

@@ -29,7 +29,7 @@ export default function StopwatchModal({ closeOverlay }) {
           <HabitTag habit={stopwatch.data?.habit} />
         </div>
         <button
-          className="close-modal-button icon"
+          className="icon small"
           onClick={closeOverlay}
           type="button"
           title="Close [C]"

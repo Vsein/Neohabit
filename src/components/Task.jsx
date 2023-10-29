@@ -46,7 +46,7 @@ export default function Task(props) {
         {task.name}
       </button>
       <button className="centering" onClick={deleteThisTask}>
-        <Icon path={mdiClose} className="delete-task-btn icon" />
+        <Icon path={mdiClose} className="icon small" />
       </button>
     </div>
   );

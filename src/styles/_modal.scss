@@ -1,10 +1,3 @@
-.delete-task-btn,
-.close-modal-button {
-  margin-left: auto;
-  height: 25px;
-  width: 25px;
-}
-
 .overlay {
   position: fixed;
   top: 0;
@@ -95,9 +88,6 @@
   border-radius: 7px;
   font-weight: bold;
   height: auto;
-}
-
-.form-button:hover {
   cursor: pointer;
 }
 
@@ -135,7 +125,6 @@
 }
 
 #cancel-form-button {
-  margin-left: auto;
   color: var(--support-color);
   background-color: var(--button-bg-color);
 }
