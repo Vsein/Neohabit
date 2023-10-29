@@ -163,6 +163,7 @@ function CellPeriod({
   vertical = true,
   targetValue = 1,
   targetStart = undefined,
+  targetEnd = undefined,
   elimination,
   numeric,
   isOverview = false,
@@ -174,9 +175,9 @@ function CellPeriod({
   }
   const tipContent = {
     heatmapID,
-    isPeriod: diffDays > 1,
+    isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
     dateStart: targetStart || dateStart,
-    dateEnd,
+    dateEnd: targetEnd || dateEnd,
     actions: value,
   };
   if (isSameWeek(dateStart, dateEnd) || isOverview) {

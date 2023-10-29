@@ -177,6 +177,7 @@ export default function Heatmap({
                   heatmapID={heatmap?._id}
                   key={Index}
                   targetStart={addDays(previous.date, Index * previousTarget.period)}
+                  targetEnd={subMilliseconds(addDays(previous.date, (Index + 1) * previousTarget.period), 1)}
                   dateStart={max([
                     addDays(previous.date, Index * previousTarget.period),
                     dateStart,
