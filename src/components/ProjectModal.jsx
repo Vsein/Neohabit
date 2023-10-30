@@ -3,9 +3,8 @@ import { Form, Field } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
-import { ModalButtons } from './ModalComponents';
+import { ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetProjectsQuery,
   useCreateProjectMutation,
@@ -124,25 +123,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                   </div>
                 ))}
               </div>
-              <Field name="color">
-                {({ input }) => (
-                  <div className="form-task-name" style={{ color: input.value }}>
-                    <HexColorPicker
-                      color={input.value}
-                      onChange={(coloro) => {
-                        input.onChange(coloro);
-                      }}
-                    />
-                    <HexColorInput
-                      color={input.value}
-                      onChange={(coloro) => {
-                        input.onChange(coloro);
-                      }}
-                      prefixed
-                    />
-                  </div>
-                )}
-              </Field>
+              <ColorPicker />
             </div>
           </div>
           <ModalButtons disabled={submitting} isNew={!projectID} type="project" />

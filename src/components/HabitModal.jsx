@@ -3,9 +3,8 @@ import { Form, Field } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
-import { ModalButtons } from './ModalComponents';
+import { ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetHabitsQuery,
   useCreateHabitMutation,
@@ -84,25 +83,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               rows="1"
               className="form-task-description"
             />
-            <Field name="color">
-              {({ input }) => (
-                <div className="form-task-name" style={{ color: input.value }}>
-                  <HexColorPicker
-                    color={input.value}
-                    onChange={(coloro) => {
-                      input.onChange(coloro);
-                    }}
-                  />
-                  <HexColorInput
-                    color={input.value}
-                    onChange={(coloro) => {
-                      input.onChange(coloro);
-                    }}
-                    prefixed
-                  />
-                </div>
-              )}
-            </Field>
+            <ColorPicker />
             <div className="form-task-description">
               <Field name="elimination" component="input" type="checkbox" className="checkbox" />
               <label>Use elimination</label>
