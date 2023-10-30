@@ -27,13 +27,13 @@ export default function Dashboard() {
           <p className="hello">Hello there,</p>
           <p className="username">Serene Coder (&#64;Vsein)</p>
         </div>
-        <button className="dashboard-btn right" id="new">
+        <button className="button-default right" id="new">
           New
         </button>
-        <button className="dashboard-btn" id="upload">
+        <button className="button-default" id="upload">
           Upload
         </button>
-        <button className="dashboard-btn" id="share-variant-outline">
+        <button className="button-default" id="share-variant-outline">
           Share
         </button>
       </div>

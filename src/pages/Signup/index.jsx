@@ -49,7 +49,7 @@ function SignupForm() {
         <EmailField />
         <PasswordField type="define" />
         <PasswordField type="confirm" />
-        <button type="submit" className="create-acc-btn">
+        <button type="submit" className="button-default stretch big">
           Create Account
         </button>
       </div>

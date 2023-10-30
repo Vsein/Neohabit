@@ -80,17 +80,6 @@
   gap: 6px;
 }
 
-.form-button {
-  font-size: 80%;
-  color: var(--button-text-color);
-  background-color: var(--signature-color);
-  padding: 10px 0px;
-  border-radius: 7px;
-  font-weight: bold;
-  height: auto;
-  cursor: pointer;
-}
-
 .form-split {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -122,9 +111,4 @@
   &.active {
     background-color: var(--transparent-bg-color);
   }
-}
-
-#cancel-form-button {
-  color: var(--support-color);
-  background-color: var(--button-bg-color);
 }

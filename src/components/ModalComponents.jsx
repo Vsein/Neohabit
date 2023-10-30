@@ -13,14 +13,14 @@ function ModalButtons({ disabled, isNew, type }) {
     <div className="modal-buttons">
       <button
         type="button"
-        className="form-button cancel"
+        className="button-default stretch cancel"
         onClick={closeOverlay}
         title="Cancel [c]"
       >
         Cancel
       </button>
       <button
-        className="form-button"
+        className="button-default stretch border"
         type="submit"
         disabled={disabled}
       >

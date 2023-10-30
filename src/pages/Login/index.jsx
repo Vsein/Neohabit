@@ -39,7 +39,7 @@ function LoginForm() {
       <div className="registration-fields">
         <EmailField />
         <PasswordField type="define" />
-        <button type="submit" className="create-acc-btn">
+        <button type="submit" className="button-default stretch big">
           Log in
         </button>
       </div>

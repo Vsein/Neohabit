@@ -32,13 +32,13 @@ export default function Header() {
         <p className="hello">Hello there,</p>
         <p className="username">Serene Coder (&#64;Vsein)</p>
       </div>
-      <button className="dashboard-btn right" id="new" onClick={deleteThisHabit}>
+      <button className="button-default right" id="new" onClick={deleteThisHabit}>
         Delete
       </button>
-      <button className="dashboard-btn" id="upload">
+      <button className="button-default" id="upload">
         Upload
       </button>
-      <button className="dashboard-btn" id="share-variant-outline">
+      <button className="button-default" id="share-variant-outline">
         Share
       </button>
     </div>
