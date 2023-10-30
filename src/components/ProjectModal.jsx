@@ -5,6 +5,7 @@ import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
+import { ModalButtons } from './ModalComponents';
 import {
   useGetProjectsQuery,
   useCreateProjectMutation,
@@ -83,12 +84,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
             <div className="tag">
               <HabitTag habit={project} />
             </div>
-            <button
-              className="icon small"
-              onClick={closeOverlay}
-              type="button"
-              title="Close [C]"
-            >
+            <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
               <Icon path={mdiClose} />
             </button>
           </div>
@@ -149,25 +145,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               </Field>
             </div>
           </div>
-          <div className="modal-buttons">
-            <button
-              type="button"
-              className="form-button"
-              id="cancel-form-button"
-              onClick={closeOverlay}
-              title="Cancel [C]"
-            >
-              Cancel
-            </button>
-            <button
-              className="form-button"
-              id="submit-form-button"
-              type="submit"
-              disabled={submitting}
-            >
-              {project ? 'Save' : 'Add project'}
-            </button>
-          </div>
+          <ModalButtons disabled={submitting} isNew={!projectID} type="project" />
         </form>
       )}
     />

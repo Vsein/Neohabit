@@ -5,6 +5,7 @@ import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
+import { ModalButtons } from './ModalComponents';
 import {
   useGetHabitsQuery,
   useCreateHabitMutation,
@@ -63,12 +64,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             <div className="tag">
               <HabitTag habit={habit} />
             </div>
-            <button
-              className="icon small"
-              onClick={closeOverlay}
-              type="button"
-              title="Close [C]"
-            >
+            <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
               <Icon path={mdiClose} />
             </button>
           </div>
@@ -116,25 +112,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               <label>Use numeric</label>
             </div>
           </div>
-          <div className="modal-buttons">
-            <button
-              type="button"
-              className="form-button"
-              id="cancel-form-button"
-              onClick={closeOverlay}
-              title="Cancel [C]"
-            >
-              Cancel
-            </button>
-            <button
-              className="form-button"
-              id="submit-form-button"
-              type="submit"
-              disabled={submitting || pristine}
-            >
-              {habit ? 'Save' : 'Add habit'}
-            </button>
-          </div>
+          <ModalButtons disabled={submitting || pristine} isNew={!habitID} type="habit" />
         </form>
       )}
     />

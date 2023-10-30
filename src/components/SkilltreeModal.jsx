@@ -5,7 +5,12 @@ import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
-import { useGetSkilltreesQuery, useCreateSkilltreeMutation, useUpdateSkilltreeMutation } from '../state/services/skilltree';
+import { ModalButtons } from './ModalComponents';
+import {
+  useGetSkilltreesQuery,
+  useCreateSkilltreeMutation,
+  useUpdateSkilltreeMutation,
+} from '../state/services/skilltree';
 import { close } from '../state/features/overlay/overlaySlice';
 
 export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
@@ -91,19 +96,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
               )}
             </Field>
           </div>
-          <div className="modal-buttons">
-            <button className="form-button" id="cancel-form-button" onClick={closeOverlay}>
-              Cancel
-            </button>
-            <button
-              className="form-button"
-              id="submit-form-button"
-              type="submit"
-              disabled={submitting || pristine}
-            >
-              {skilltree ? 'Save' : 'Add skilltree'}
-            </button>
-          </div>
+          <ModalButtons disabled={submitting || pristine} isNew={!skilltreeID} type="skilltree" />
         </form>
       )}
     />
