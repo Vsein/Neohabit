@@ -14,7 +14,7 @@
   white-space: nowrap;
   overflow-y: scroll;
   overflow-x: hidden;
-  z-index: 2;
+  z-index: 3;
 
   & p {
     line-height: 20px;
@@ -36,10 +36,6 @@
   gap: 5px;
   justify-content: space-between;
   align-items: center;
-
-  & .add {
-    margin-left: auto;
-  }
 }
 
 .navigation {

@@ -1,8 +1,4 @@
 @import 'scrollbar';
-$cell-height: 11px;
-$cell-width: 11px;
-$cell-margin: 2px;
-$cell-weekdays-width: 33px;
 
 .habit {
   &-button {
@@ -22,10 +18,6 @@ $cell-weekdays-width: 33px;
       width: 320px;
       flex-wrap: wrap;
       gap: 3px;
-
-      & > button {
-        margin-left: auto;
-      }
 
       & > span {
         white-space: pre;

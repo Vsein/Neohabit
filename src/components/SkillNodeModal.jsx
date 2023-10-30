@@ -3,8 +3,8 @@ import { Form, Field } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
+import { ModalButtons } from './ModalComponents';
 import {
   useGetSkilltreesQuery,
   useAddSkillMutation,
@@ -53,7 +53,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
             <div className="tag">
               <HabitTag habit={skilltree} />
             </div>
-            <button className="close-modal-button icon" onClick={closeOverlay}>
+            <button className="icon small" onClick={closeOverlay}>
               <Icon path={mdiClose} />
             </button>
           </div>
@@ -74,19 +74,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
               className="form-task-description"
             />
           </div>
-          <div className="modal-buttons">
-            <button className="form-button" id="cancel-form-button" onClick={closeOverlay}>
-              Cancel
-            </button>
-            <button
-              className="form-button"
-              id="submit-form-button"
-              type="submit"
-              disabled={submitting || pristine}
-            >
-              {skillID ? 'Save' : 'Add skill'}
-            </button>
-          </div>
+          <ModalButtons disabled={submitting || pristine} isNew={!skillID} type="skill" />
         </form>
       )}
     />

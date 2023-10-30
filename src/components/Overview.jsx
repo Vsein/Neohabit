@@ -124,7 +124,7 @@ function OverviewControls({ vertical }) {
   const [updateSettings] = useUpdateSettingsMutation();
 
   return (
-    <div className="overview-settings">
+    <div className="overview-settings right">
       <button
         className={`overview-open-settings ${vertical ? '' : 'active'}`}
         onClick={() => updateSettings({ values: { overview_vertical: false } })}

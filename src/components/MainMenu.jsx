@@ -32,7 +32,7 @@ export default function MainMenu(props) {
       {/* <Icon path={mdiApps} className="icon" /> */}
       {/* </button> */}
       <button className="logo-section">
-        <Icon path={mdiBell} alt="bell" className="icon notifications" />
+        <Icon path={mdiBell} alt="bell" className="icon right" />
       </button>
       <button
         className={`logo-section right menu-toggle ${menuOpened ? 'active' : ''}`}

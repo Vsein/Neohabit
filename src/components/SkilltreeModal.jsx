@@ -3,9 +3,13 @@ import { Form, Field } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
-import { useGetSkilltreesQuery, useCreateSkilltreeMutation, useUpdateSkilltreeMutation } from '../state/services/skilltree';
+import { ModalButtons, ColorPicker } from './ModalComponents';
+import {
+  useGetSkilltreesQuery,
+  useCreateSkilltreeMutation,
+  useUpdateSkilltreeMutation,
+} from '../state/services/skilltree';
 import { close } from '../state/features/overlay/overlaySlice';
 
 export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
@@ -47,7 +51,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
         >
           <div className="modal-header">
             <div className="tag"></div>
-            <button className="close-modal-button icon" onClick={closeOverlay}>
+            <button className="icon small" onClick={closeOverlay}>
               <Icon path={mdiClose} />
             </button>
           </div>
@@ -71,39 +75,9 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
                 className="form-task-description"
               />
             )}
-            <Field name="color">
-              {({ input }) => (
-                <div className="form-task-name" style={{ color: input.value }}>
-                  <HexColorPicker
-                    color={input.value}
-                    onChange={(coloro) => {
-                      input.onChange(coloro);
-                    }}
-                  />
-                  <HexColorInput
-                    color={input.value}
-                    onChange={(coloro) => {
-                      input.onChange(coloro);
-                    }}
-                    prefixed
-                  />
-                </div>
-              )}
-            </Field>
+            <ColorPicker />
           </div>
-          <div className="modal-buttons">
-            <button className="form-button" id="cancel-form-button" onClick={closeOverlay}>
-              Cancel
-            </button>
-            <button
-              className="form-button"
-              id="submit-form-button"
-              type="submit"
-              disabled={submitting || pristine}
-            >
-              {skilltree ? 'Save' : 'Add skilltree'}
-            </button>
-          </div>
+          <ModalButtons disabled={submitting || pristine} isNew={!skilltreeID} type="skilltree" />
         </form>
       )}
     />

@@ -83,12 +83,18 @@ const PrivateRoutes = (params) => {
     <>
       <div id="content">
         <MainMenu toggleSidebar={toggleSidebar} />
-        <Sidebar hidden={sidebarHidden} toggleSidebar={toggleSidebar} />
-        <Outlet />
-        <CellTip />
-        <CellAdd />
+        <Sidebar hidden={sidebarHidden} />
+        <main>
+          <Outlet />
+        </main>
         {/* <SidebarMobile /> */}
       </div>
+      <div
+        className={sidebarHidden ? 'overlay' : 'overlay overlay-active overlay-sidebar'}
+        onMouseDown={toggleSidebar}
+      />
+      <CellTip />
+      <CellAdd />
       <Stopwatch />
       <Overlay />
     </>

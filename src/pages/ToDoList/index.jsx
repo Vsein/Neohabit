@@ -27,9 +27,9 @@ function ToDoListLayout() {
   return filters.isFetching || habits.isFetching ? (
     <div className="loader" />
   ) : (
-    <main className="tasklists">
+    <div className="page-tasklists">
       <Navigation habits={habits.data} filters={filters.data} />
       <Outlet />
-    </main>
+    </div>
   );
 }

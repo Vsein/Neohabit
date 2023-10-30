@@ -14,11 +14,11 @@ export default function Dashboard() {
   useTitle('Dashboard | Neohabit');
 
   return (
-    <div id="content-dashboard">
+    <div className="page-dashboard">
       {/* <div className="dashboard-header"> */}
       {/*   <Icon path={mdiMagnify} alt="search" id="search-img" className="icon" /> */}
       {/*   <input type="search" className="searchbar" /> */}
-      {/*   <Icon path={mdiBell} alt="bell" className="icon notifications"/> */}
+      {/*   <Icon path={mdiBell} alt="bell" className="icon right"/> */}
       {/* </div> */}
 
       <div className="controls">
@@ -27,18 +27,18 @@ export default function Dashboard() {
           <p className="hello">Hello there,</p>
           <p className="username">Serene Coder (&#64;Vsein)</p>
         </div>
-        <button className="dashboard-btn" id="new">
+        <button className="button-default right" id="new">
           New
         </button>
-        <button className="dashboard-btn" id="upload">
+        <button className="button-default" id="upload">
           Upload
         </button>
-        <button className="dashboard-btn" id="share-variant-outline">
+        <button className="button-default" id="share-variant-outline">
           Share
         </button>
       </div>
 
-      <div className="main">
+      <div className="dashboard-main">
         <div className="dashboard-habits">
           <h3>Your habits</h3>
           <div className="dashboard-habits-grid">

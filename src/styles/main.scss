@@ -1,3 +1,4 @@
+@use 'auth';
 @use 'base';
 @use 'layout';
 @use 'components';
@@ -6,10 +7,8 @@
 @use 'tasklist';
 @use 'modal';
 @use 'dropdown';
-@use 'login';
 @use 'dashboard';
 @use 'heatmap';
-@use 'logo';
 @use 'landing';
 @use 'loader';
 @use 'habit';

@@ -1,11 +1,6 @@
-#content-dashboard {
-  height: 100%;
+.page-dashboard {
   display: grid;
   grid-template: 100px 1fr / 5fr;
-
-  & > div {
-    align-self: stretch;
-  }
 }
 
 .dashboard-header,
@@ -27,10 +22,6 @@
   padding: 5px;
 }
 
-.notifications {
-  margin-left: auto;
-}
-
 .welcome {
   display: flex;
   align-items: start;
@@ -47,24 +38,7 @@
   font-weight: 600;
 }
 
-.dashboard-btn {
-  width: min-content;
-  font-size: 80%;
-  padding: 5px;
-  color: #f9faf8;
-  background-color: var(--signature-color);
-  padding: 10px 32px;
-  border-radius: 7px;
-  font-weight: bold;
-  height: auto;
-  cursor: pointer;
-}
-
-#new {
-  margin-left: auto;
-}
-
-.main {
+.dashboard-main {
   background-color: var(--support-background-color);
   display: grid;
   grid-template-columns: 2.5fr 1.5fr;

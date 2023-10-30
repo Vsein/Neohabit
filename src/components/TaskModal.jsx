@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import HabitTag from './HabitTag';
+import { ModalButtons } from './ModalComponents';
 import {
   useGetTasksQuery,
   useUpdateTaskMutation,
@@ -59,7 +60,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
             <div className="tag">
               <HabitTag habit={task ? task.habit : habit} />
             </div>
-            <button className="close-modal-button icon" onClick={closeOverlay}>
+            <button className="icon small" onClick={closeOverlay}>
               <Icon path={mdiClose} />
             </button>
           </div>
@@ -83,19 +84,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
               />
             </label>
           </div>
-          <div className="modal-buttons">
-            <button className="form-button" id="cancel-form-button" onClick={closeOverlay}>
-              Cancel
-            </button>
-            <button
-              className="form-button"
-              id="submit-form-button"
-              type="submit"
-              disabled={submitting || pristine}
-            >
-              {task ? 'Save' : 'Add task'}
-            </button>
-          </div>
+          <ModalButtons disabled={submitting || pristine} isNew={!taskID} type="task" />
         </form>
       )}
     />

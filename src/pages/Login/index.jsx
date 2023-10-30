@@ -8,15 +8,15 @@ export default function Login() {
   useTitle('Login | Neohabit');
 
   return (
-    <div id="content-signup">
+    <div id="content-auth">
       <AuthSidebar />
-      <div className="registration-container">
+      <main className="registration-container">
         <AuthIntro />
         <LoginForm />
         <p className="login-ref">
           Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink>
         </p>
-      </div>
+      </main>
     </div>
   );
 }
@@ -39,7 +39,7 @@ function LoginForm() {
       <div className="registration-fields">
         <EmailField />
         <PasswordField type="define" />
-        <button type="submit" className="create-acc-btn">
+        <button type="submit" className="button-default stretch big">
           Log in
         </button>
       </div>

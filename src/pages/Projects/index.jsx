@@ -6,8 +6,6 @@ export default function ProjectsPage() {
   useTitle('Projects | Neohabit');
 
   return (
-    <div id="content-projects">
-      <Projectlist />
-    </div>
+    <Projectlist />
   );
 }

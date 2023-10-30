@@ -3,8 +3,8 @@ import { Form, Field } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
+import { ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetProjectsQuery,
   useCreateProjectMutation,
@@ -83,12 +83,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
             <div className="tag">
               <HabitTag habit={project} />
             </div>
-            <button
-              className="close-modal-button icon"
-              onClick={closeOverlay}
-              type="button"
-              title="Close [C]"
-            >
+            <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
               <Icon path={mdiClose} />
             </button>
           </div>
@@ -128,46 +123,10 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                   </div>
                 ))}
               </div>
-              <Field name="color">
-                {({ input }) => (
-                  <div className="form-task-name" style={{ color: input.value }}>
-                    <HexColorPicker
-                      color={input.value}
-                      onChange={(coloro) => {
-                        input.onChange(coloro);
-                      }}
-                    />
-                    <HexColorInput
-                      color={input.value}
-                      onChange={(coloro) => {
-                        input.onChange(coloro);
-                      }}
-                      prefixed
-                    />
-                  </div>
-                )}
-              </Field>
+              <ColorPicker />
             </div>
           </div>
-          <div className="modal-buttons">
-            <button
-              type="button"
-              className="form-button"
-              id="cancel-form-button"
-              onClick={closeOverlay}
-              title="Cancel [C]"
-            >
-              Cancel
-            </button>
-            <button
-              className="form-button"
-              id="submit-form-button"
-              type="submit"
-              disabled={submitting}
-            >
-              {project ? 'Save' : 'Add project'}
-            </button>
-          </div>
+          <ModalButtons disabled={submitting} isNew={!projectID} type="project" />
         </form>
       )}
     />

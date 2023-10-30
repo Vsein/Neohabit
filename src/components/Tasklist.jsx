@@ -38,8 +38,8 @@ export default function Tasklist(params) {
             </li>
           ))}
         <button className="add-task-btn" onClick={addTask} title="Add task [T]">
-          <Icon className="add-task-icon" path={mdiPlus} />
-          <p>Add task</p>
+          <Icon className="icon small" path={mdiPlus} />
+          <p className="left">Add task</p>
         </button>
       </ul>
       <Outlet />

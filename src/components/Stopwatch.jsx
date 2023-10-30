@@ -45,44 +45,44 @@ function StopwatchContents() {
       </div>
       <div className="progressbar-controls">
         <button
-          className="logo-section sidebar-toggle-container centering stopwatch-icon"
+          className="logo-section centering stopwatch-icon"
           onClick={resetStopwatch}
           title="Reset [R]"
         >
           <Icon
             path={mdiRestart}
             style={{ marginTop: '3px' }}
-            className="icon medium sidebar-toggle"
+            className="icon medium"
           />
         </button>
         <button
-          className="logo-section sidebar-toggle-container centering stopwatch-icon"
+          className="logo-section centering stopwatch-icon"
           onClick={togglePause}
           title={stopwatch.data.is_paused ? 'Play [p]' : 'Pause [p]'}
         >
           <Icon
             path={stopwatch.data.is_paused ? mdiPlay : mdiPause}
-            className="icon big sidebar-toggle"
+            className="icon big"
           />
         </button>
         <button
-          className="logo-section sidebar-toggle-container centering stopwatch-icon"
+          className="logo-section centering stopwatch-icon"
           onClick={finishCountdown}
           title="Finish [F]"
         >
           <Icon
             path={mdiFlagCheckered}
             style={{ marginTop: '-1px' }}
-            className="icon medium sidebar-toggle"
+            className="icon medium"
           />
         </button>
         <h3 className="progressbar-text">{stopwatch.data?.habit?.name}</h3>
         <button
-          className="logo-section sidebar-toggle-container centering right stopwatch-icon"
+          className="logo-section centering right stopwatch-icon"
           onClick={openFullscreenStopwatch}
           title="Fullscreen [f]"
         >
-          <Icon path={mdiFullscreen} className="icon medium sidebar-toggle" />
+          <Icon path={mdiFullscreen} className="icon medium" />
         </button>
       </div>
     </>

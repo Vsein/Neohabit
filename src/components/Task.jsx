@@ -41,12 +41,12 @@ export default function Task(props) {
         className="checkbox"
         style={{ borderColor: habit?.color, background: bg }}
         onClick={completeTask}
-      ></button>
-      <button tabIndex="0" className="task-name">
+      />
+      <p tabIndex="0" className="task-name">
         {task.name}
-      </button>
+      </p>
       <button className="centering" onClick={deleteThisTask}>
-        <Icon path={mdiClose} className="delete-task-btn icon" />
+        <Icon path={mdiClose} className="icon small" />
       </button>
     </div>
   );

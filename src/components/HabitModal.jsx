@@ -3,8 +3,8 @@ import { Form, Field } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { HexColorPicker, HexColorInput } from 'react-colorful';
 import HabitTag from './HabitTag';
+import { ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetHabitsQuery,
   useCreateHabitMutation,
@@ -63,12 +63,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             <div className="tag">
               <HabitTag habit={habit} />
             </div>
-            <button
-              className="close-modal-button icon"
-              onClick={closeOverlay}
-              type="button"
-              title="Close [C]"
-            >
+            <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
               <Icon path={mdiClose} />
             </button>
           </div>
@@ -88,25 +83,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               rows="1"
               className="form-task-description"
             />
-            <Field name="color">
-              {({ input }) => (
-                <div className="form-task-name" style={{ color: input.value }}>
-                  <HexColorPicker
-                    color={input.value}
-                    onChange={(coloro) => {
-                      input.onChange(coloro);
-                    }}
-                  />
-                  <HexColorInput
-                    color={input.value}
-                    onChange={(coloro) => {
-                      input.onChange(coloro);
-                    }}
-                    prefixed
-                  />
-                </div>
-              )}
-            </Field>
+            <ColorPicker />
             <div className="form-task-description">
               <Field name="elimination" component="input" type="checkbox" className="checkbox" />
               <label>Use elimination</label>
@@ -116,25 +93,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               <label>Use numeric</label>
             </div>
           </div>
-          <div className="modal-buttons">
-            <button
-              type="button"
-              className="form-button"
-              id="cancel-form-button"
-              onClick={closeOverlay}
-              title="Cancel [C]"
-            >
-              Cancel
-            </button>
-            <button
-              className="form-button"
-              id="submit-form-button"
-              type="submit"
-              disabled={submitting || pristine}
-            >
-              {habit ? 'Save' : 'Add habit'}
-            </button>
-          </div>
+          <ModalButtons disabled={submitting || pristine} isNew={!habitID} type="habit" />
         </form>
       )}
     />

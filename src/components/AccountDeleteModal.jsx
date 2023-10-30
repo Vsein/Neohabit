@@ -27,16 +27,20 @@ export default function AccountDeleteModal({ closeOverlay }) {
     >
       <div className="modal-header">
         <h2>Are you sure you want to delete your account?</h2>
-        <button className="close-modal-button icon" onClick={closeOverlay}>
+        <button className="icon small" onClick={closeOverlay}>
           <Icon path={mdiClose} />
         </button>
       </div>
       <h3 className="modal-footnote">This action is irreversible</h3>
       <div className="modal-buttons">
-        <button className="form-button" onClick={closeOverlay} id="cancel-form-button">
+        <button className="button-default cancel" onClick={closeOverlay}>
           Cancel
         </button>
-        <button className="form-button delete" onClick={deleteAccount}>
+        <button
+          className="button-default"
+          style={{ backgroundColor: 'red' }}
+          onClick={deleteAccount}
+        >
           Delete
         </button>
       </div>

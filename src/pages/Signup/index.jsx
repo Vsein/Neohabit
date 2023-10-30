@@ -14,15 +14,15 @@ export default function Signup() {
   useTitle('Signup | Neohabit');
 
   return (
-    <div id="content-signup">
+    <div id="content-auth">
       <AuthSidebar />
-      <div className="registration-container">
+      <main className="registration-container">
         <AuthIntro />
         <SignupForm />
         <p className="login-ref">
           Already have an account? <NavLink to="/login">Log in</NavLink>
         </p>
-      </div>
+      </main>
     </div>
   );
 }
@@ -49,7 +49,7 @@ function SignupForm() {
         <EmailField />
         <PasswordField type="define" />
         <PasswordField type="confirm" />
-        <button type="submit" className="create-acc-btn">
+        <button type="submit" className="button-default stretch big">
           Create Account
         </button>
       </div>

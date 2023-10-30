@@ -1,13 +1,10 @@
 @import 'dropdown';
 
-.settings-container {
-  grid-area: main;
+.page-settings {
   display: grid;
   grid-auto-flow: row;
   grid-template-rows: min-content 1fr;
   justify-items: center;
-  height: 100%;
-  padding: 0px;
 }
 
 .settings-bar {
@@ -50,7 +47,7 @@
     color: black;
   }
 
-  &.delete-account .settings-btn {
+  &.delete-account .button-default {
     background-color: red;
   }
 }
@@ -63,20 +60,6 @@
   display: flex;
   gap: 5px;
   width: 310px;
-}
-
-.settings-btn {
-  width: 100%;
-  height: min-content;
-  padding: 8px 30px;
-  border: 2px solid transparent;
-  background-color: var(--calm-signature-color);
-  color: var(--text-color);
-
-  &.active {
-    border: 2px solid var(--signature-color);
-    background-color: var(--calm-signature-color);
-  }
 }
 
 .settings-section {
@@ -95,19 +78,6 @@
   }
 }
 
-.settings-input {
-  color: var(--text-color);
-  font-size: 80%;
-  border: 2px solid var(--border-color);
-  background-color: var(--main-background-color);
-  border-radius: 7px;
-  padding: 8px 10px;
-}
-
-.settings-save-btn {
-  padding-inline: 30px;
-}
-
 .modal-settings {
   width: 400px;
   min-height: 100px;
@@ -118,8 +88,4 @@
 .modal-footnote {
   color: var(--support-text-color);
   line-height: 1em;
-}
-
-.form-button.delete {
-  background-color: red;
 }

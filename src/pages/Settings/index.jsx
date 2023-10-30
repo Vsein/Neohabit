@@ -20,7 +20,7 @@ export default function Settings() {
   };
 
   return (
-    <main className="settings-container">
+    <div className="page-settings">
       <div className="settings-bar">
         <Link className="settings-type right" to="#general">
           General
@@ -116,7 +116,7 @@ export default function Settings() {
           }
         />
       </div>
-    </main>
+    </div>
   );
 }
 
@@ -155,7 +155,7 @@ function SettingsButtonOption({ name, cssName, update, choices, curState = undef
         {choices.map((choice, index) => (
           <button
             key={index}
-            className={`dashboard-btn settings-btn ${choice.state} ${
+            className={`button-default calm stretch ${choice.state} ${
               choice.state === curState ? 'active' : ''
             }`}
             onClick={() => update(choice.state)}
@@ -178,7 +178,7 @@ function SettingsNumberOption({ name, curState, update, min, max }) {
       </div>
       <div className="settings-chooser">
         <input
-          className="settings-input settings-btn"
+          className="button-default button-default-input muted stretch"
           type="number"
           min={min}
           max={max}
@@ -186,7 +186,7 @@ function SettingsNumberOption({ name, curState, update, min, max }) {
           onChange={(e) => setInputState(e.target.value)}
         />
         <button
-          className="settings-input settings-save-btn dashboard-btn"
+          className="button-default muted"
           onClick={() => update(inputState)}
         >
           Save
