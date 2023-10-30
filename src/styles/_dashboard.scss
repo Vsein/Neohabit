@@ -1,12 +1,6 @@
-#content-dashboard {
-  grid-area: main;
-  height: 100%;
+.page-dashboard {
   display: grid;
   grid-template: 100px 1fr / 5fr;
-
-  & > div {
-    align-self: stretch;
-  }
 }
 
 .dashboard-header,
@@ -56,7 +50,7 @@
   cursor: pointer;
 }
 
-.main {
+.dashboard-main {
   background-color: var(--support-background-color);
   display: grid;
   grid-template-columns: 2.5fr 1.5fr;

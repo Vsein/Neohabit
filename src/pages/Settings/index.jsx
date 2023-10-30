@@ -20,7 +20,7 @@ export default function Settings() {
   };
 
   return (
-    <main className="settings-container">
+    <div className="page-settings">
       <div className="settings-bar">
         <Link className="settings-type right" to="#general">
           General
@@ -116,7 +116,7 @@ export default function Settings() {
           }
         />
       </div>
-    </main>
+    </div>
   );
 }
 

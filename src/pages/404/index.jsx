@@ -7,16 +7,14 @@ export default function NotFound() {
   const navigate = useNavigate();
 
   return (
-    <main id="content-projects">
-      <div className="contentlist">
-        <div className="contentlist-header">
-          <h3>Error: 404</h3>
-        </div>
-        <p className="back-ref">
-          There doesn&apos;t seem to be anything...
-          <Link onClick={() => navigate(-1)}>Go back</Link>
-        </p>
+    <div className="contentlist">
+      <div className="contentlist-header">
+        <h3>Error: 404</h3>
       </div>
-    </main>
+      <p className="back-ref">
+        There doesn&apos;t seem to be anything...
+        <Link onClick={() => navigate(-1)}>Go back</Link>
+      </p>
+    </div>
   );
 }

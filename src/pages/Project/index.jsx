@@ -29,12 +29,10 @@ function ProjectPageLayout() {
   return projects.isFetching || habits.isFetching ? (
     <div className="loader" />
   ) : (
-    <div id="content-habit">
-      <div className="contentlist">
-        <Project
-          project={projects.data.find((projecto) => projecto._id === projectID) || defaultProject}
-        />
-      </div>
+    <div className="contentlist">
+      <Project
+        project={projects.data.find((projecto) => projecto._id === projectID) || defaultProject}
+      />
     </div>
   );
 }

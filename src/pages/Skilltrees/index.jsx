@@ -6,8 +6,6 @@ export default function SkillsPage() {
   useTitle('Skilltrees | Neohabit');
 
   return (
-    <div id="content-projects">
-      <SkilltreeList />
-    </div>
+    <SkilltreeList />
   );
 }

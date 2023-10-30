@@ -124,4 +124,8 @@
   @media (min-width: 700px) {
     // padding: 18px 36px 36px;
   }
+
+  main {
+    grid-area: main;
+  }
 }

@@ -1,13 +1,6 @@
-#content-habit {
-  grid-area: main;
-  height: 100%;
+.page-habit {
   display: grid;
   grid-template: 125px min-content 1fr / 5fr;
-  background-color: var(--support-background-color);
-
-  & > div {
-    align-self: stretch;
-  }
 }
 
 .habitpage-header {

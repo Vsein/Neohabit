@@ -14,7 +14,7 @@ export default function Dashboard() {
   useTitle('Dashboard | Neohabit');
 
   return (
-    <div id="content-dashboard">
+    <div className="page-dashboard">
       {/* <div className="dashboard-header"> */}
       {/*   <Icon path={mdiMagnify} alt="search" id="search-img" className="icon" /> */}
       {/*   <input type="search" className="searchbar" /> */}
@@ -38,7 +38,7 @@ export default function Dashboard() {
         </button>
       </div>
 
-      <div className="main">
+      <div className="dashboard-main">
         <div className="dashboard-habits">
           <h3>Your habits</h3>
           <div className="dashboard-habits-grid">
