@@ -47,7 +47,8 @@ export const habitApi = api.injectEndpoints({
         url: `habit/${habitID}`,
         method: 'DELETE',
       }),
-      onQueryStarted(habitID, { dispatch, queryFulfilled }) {
+      async onQueryStarted(habitID, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
         dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
             const index = draft.findIndex((habit) => habit._id == habitID);
