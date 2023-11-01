@@ -43,7 +43,13 @@ function Cell({
       onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
       onMouseLeave={hideTip}
       onClick={(e) => {
-        dispatch(changeCellPeriodTo({ ...tipContent }));
+        dispatch(
+          changeCellPeriodTo({
+            ...tipContent,
+            dateStart: getTime(tipContent.dateStart),
+            dateEnd: getTime(tipContent.dateEnd),
+          }),
+        );
         fixateCellTip(e);
         changeCellOffset(e, tipContent, value, true);
       }}
@@ -128,7 +134,13 @@ function CellFractured({
       onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
       onMouseLeave={hideTip}
       onClick={(e) => {
-        dispatch(changeCellPeriodTo({ ...tipContent }));
+        dispatch(
+          changeCellPeriodTo({
+            ...tipContent,
+            dateStart: getTime(tipContent.dateStart),
+            dateEnd: getTime(tipContent.dateEnd),
+          }),
+        );
         fixateCellTip(e);
         changeCellOffset(e, tipContent, value, true);
       }}
@@ -230,7 +242,13 @@ function CellPeriod({
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
         onMouseLeave={hideTip}
         onClick={(e) => {
-          dispatch(changeCellPeriodTo({ ...tipContent }));
+          dispatch(
+            changeCellPeriodTo({
+              ...tipContent,
+              dateStart: getTime(tipContent.dateStart),
+              dateEnd: getTime(tipContent.dateEnd),
+            }),
+          );
           fixateCellTip(e);
           changeCellOffset(e, tipContent, value, true);
         }}
