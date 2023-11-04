@@ -25,7 +25,7 @@
   padding: 20px;
   padding-inline: 35px;
   display: grid;
-  width: min(850px, 100%);
+  width: min(900px, 100%);
   align-content: start;
 }
 
@@ -33,7 +33,7 @@
   color: var(--support-text-color);
   display: flex;
   justify-content: space-between;
-  width: min(850px, 100%);
+  width: min(900px, 100%);
   align-items: center;
   margin-block: 5px;
 
@@ -59,7 +59,7 @@
 .settings-chooser {
   display: flex;
   gap: 5px;
-  width: 310px;
+  width: 350px;
 }
 
 .settings-section {

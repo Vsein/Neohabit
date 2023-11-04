@@ -15,17 +15,21 @@ import useKeyPress from './useKeyPress';
 
 export default function useDatePeriod(periodDuration) {
   const settings = useGetSettingsQuery();
-  const state = settings.data.overview_current_is_first;
+  const state = settings.data.overview_current_day;
   const offset = settings.data.overview_offset ?? 0;
 
   const getStart = () => {
     const curDate = startOfDay(new Date());
-    return state ? addDays(curDate, -offset) : addDays(curDate, -periodDuration + offset);
+    if (state === 'start') return addDays(curDate, -offset);
+    if (state === 'end') return addDays(curDate, -periodDuration + offset);
+    return addDays(curDate, -Math.floor(periodDuration / 2) + offset - 1);
   };
 
   const getEnd = () => {
     const curDate = startOfDay(new Date());
-    return state ? addDays(curDate, periodDuration - offset) : addDays(curDate, offset);
+    if (state === 'start') return addDays(curDate, periodDuration - offset);
+    if (state === 'end') return addDays(curDate, offset);
+    return addDays(curDate, Math.floor(periodDuration / 2) + offset);
   };
 
   const [dateStart, setDateStart] = useState(getStart());
