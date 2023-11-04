@@ -212,6 +212,6 @@
 
 .overview-open-settings {
   &:disabled {
-    opacity: 0.4;
+    color: var(--text-color-transparent);
   }
 }
