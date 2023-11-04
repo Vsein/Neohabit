@@ -123,6 +123,28 @@
     box-shadow: 0 0 5px 3px var(--shadow-box-color);
   }
 
+  &.disregarded {
+    &::before, &::after {
+      content: "";
+      position: absolute;
+      background: var(--shadow-box-color);
+      width: 105%;
+      height: 5px;
+      margin-inline: auto;
+      left: -5px;
+      right: 0;
+      filter: blur(2px);
+    }
+
+    &::before {
+      transform: rotate(200deg);
+    }
+
+    &::after {
+      transform: rotate(160deg);
+    }
+  }
+
   &:hover {
     .skill-node-controls-right,
     .skill-node-controls-bottom {

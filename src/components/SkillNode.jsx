@@ -9,6 +9,7 @@ import {
   mdiFlagCheckered,
   mdiPencil,
   mdiDelete,
+  mdiCancel,
 } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useEditSkillMutation, useDeleteSkillsMutation } from '../state/services/skilltree';
@@ -17,6 +18,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
   const dispatch = useDispatch();
   const isDisabled = skill.is_root;
   const isCompleted = skill.status === 'completed';
+  const isDisregarded = skill.status === 'disregarded';
   const [editSkill] = useEditSkillMutation();
   const [deleteSkills] = useDeleteSkillsMutation();
   // const hasChildren = !!skill.ski.length;
@@ -41,8 +43,12 @@ export default function SkillNode({ skilltreeID, skill, color }) {
     editSkill({
       skilltreeID,
       skillID: skill._id,
-      values: { status: skill.status === 'completed' ? 'in-progress' : 'completed' },
+      values: { status: isCompleted || isDisregarded ? 'idle' : 'completed' },
     });
+  };
+
+  const disregardSkill = () => {
+    editSkill({ skilltreeID, skillID: skill._id, values: { status: 'disregarded' } });
   };
 
   const getAllChildrenIDs = (skilly) => {
@@ -82,7 +88,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
           <button
             className="overview-open-settings active"
             title="Pause the skill acquiremenet"
-            disabled={isDisabled || isCompleted}
+            disabled={isDisabled}
             onClick={pauseSkillAcquirement}
           >
             <Icon path={mdiPause} className="icon smaller centering" />
@@ -91,7 +97,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
           <button
             className="overview-open-settings active"
             title="Start the skill acquiremenet"
-            disabled={isDisabled || isCompleted}
+            disabled={isDisabled}
             onClick={startSkillAcquirement}
           >
             <Icon path={mdiPlay} className="icon smaller centering" />
@@ -99,14 +105,22 @@ export default function SkillNode({ skilltreeID, skill, color }) {
         )}
         <button
           className="overview-open-settings active"
-          title={isCompleted ? 'Restart the skill' : 'Finish the skill'}
+          title={isCompleted || isDisregarded ? 'Restart the skill' : 'Finish the skill'}
           disabled={isDisabled}
           onClick={finishSkillAcquirement}
         >
           <Icon
-            path={isCompleted ? mdiRestart : mdiFlagCheckered}
+            path={isCompleted || isDisregarded ? mdiRestart : mdiFlagCheckered}
             className="icon smaller centering"
           />
+        </button>
+        <button
+          className="overview-open-settings active"
+          title={'Disregard the skill'}
+          disabled={isDisabled || isDisregarded}
+          onClick={disregardSkill}
+        >
+          <Icon path={mdiCancel} style={{ padding: '2px' }} className="icon smaller centering" />
         </button>
         <button
           className="overview-open-settings active right"
