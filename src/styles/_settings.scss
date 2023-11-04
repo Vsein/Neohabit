@@ -22,10 +22,10 @@
 }
 
 .settings {
-  padding: 20px;
-  padding-inline: 35px;
+  padding: 30px;
+  padding-block: 20px;
   display: grid;
-  width: min(900px, 100%);
+  width: min(850px, 100%);
   align-content: start;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .settings-name {
-  width: min(500px, 100%);
+  width: 450px;
 }
 
 .settings-chooser {

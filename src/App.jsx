@@ -19,7 +19,7 @@ import Sidebar from './components/Sidebar';
 import Overlay from './components/Overlay';
 import CellTip from './components/CellTip';
 import CellAdd from './components/CellAdd';
-import { useGetSettingsQuery } from './state/services/settings';
+import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
 // import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
@@ -63,6 +63,7 @@ const PrivateRoutes = (params) => {
   const { loggedIn, changeAuth } = params;
   const location = useLocation();
   const settings = useGetSettingsQuery();
+  const self = useGetSelfQuery();
 
   useEffect(() => {
     changeAuth(hasJWT());
@@ -77,7 +78,7 @@ const PrivateRoutes = (params) => {
 
   useKeyPress(['s'], toggleSidebar);
 
-  if (settings.isLoading) return <></>;
+  if (settings.isLoading || self.isLoading) return <></>;
 
   return loggedIn ? (
     <>

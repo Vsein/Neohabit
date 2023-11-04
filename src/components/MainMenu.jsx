@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import Icon from '@mdi/react';
 import {
   mdiCog,
@@ -47,7 +47,16 @@ export default function MainMenu(props) {
       >
         <AccountInfo />
         <hr />
-        <MenuSection path={mdiAccount} title="Profile" to="/profile" />
+        <li>
+          <Link
+            className="menu-section"
+            tabIndex="0"
+            to="/settings#profile"
+          >
+            <Icon path={mdiAccount} className="icon" />
+            <p className="link">Profile</p>
+          </Link>
+        </li>
         <ThemeToggle />
         <MenuSection path={mdiCog} title="Settings" to="/settings" />
         <MenuSection path={mdiLogoutVariant} title="Log out" to="/logout" />

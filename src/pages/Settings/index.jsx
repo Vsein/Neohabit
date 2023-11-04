@@ -5,7 +5,11 @@ import Icon from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import useTitle from '../../hooks/useTitle';
 import useAnchor from '../../hooks/useAnchor';
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '../../state/services/settings';
+import {
+  useGetSettingsQuery,
+  useGetSelfQuery,
+  useUpdateSettingsMutation,
+} from '../../state/services/settings';
 import { changeTo } from '../../state/features/overlay/overlaySlice';
 
 export default function Settings() {
@@ -13,6 +17,7 @@ export default function Settings() {
   useAnchor();
   const [updateSettings] = useUpdateSettingsMutation();
   const settings = useGetSettingsQuery();
+  const self = useGetSelfQuery();
 
   const dispatch = useDispatch();
   const openAccountDeletionOverlay = () => {
@@ -22,7 +27,10 @@ export default function Settings() {
   return (
     <div className="page-settings">
       <div className="settings-bar">
-        <Link className="settings-type right" to="#general">
+        <Link className="settings-type right" to="#profile">
+          Profile
+        </Link>
+        <Link className="settings-type" to="#general">
           General
         </Link>
         <Link className="settings-type" to="#overview">
@@ -31,11 +39,39 @@ export default function Settings() {
         <Link className="settings-type" to="#heatmaps">
           Heatmaps
         </Link>
-        <Link className="settings-type left" to="#account">
-          Account
+        <Link className="settings-type left" to="#danger-zone">
+          Danger
         </Link>
       </div>
       <div className="settings">
+        <SettingsSection
+          name="profile"
+          elements={
+            <>
+              <div className="settings-option">
+                <div className="settings-name">
+                  <h3>Username:</h3>
+                </div>
+                <div className="settings-chooser">
+                  <p>{self.data.username}</p>
+                </div>
+              </div>
+              <div className="settings-option">
+                <div className="settings-name">
+                  <h3>Email:</h3>
+                </div>
+                <div className="settings-chooser">
+                  <p>{self.data.email}</p>
+                </div>
+              </div>
+              <div className="settings-option">
+                <div className="settings-name">
+                  <h3>Change password</h3>
+                </div>
+              </div>
+            </>
+          }
+        />
         <SettingsSection
           name="general"
           elements={
@@ -106,7 +142,7 @@ export default function Settings() {
           }
         />
         <SettingsSection
-          name="account"
+          name="Danger zone"
           elements={
             <SettingsButtonOption
               name="Delete account"
@@ -186,10 +222,7 @@ function SettingsNumberOption({ name, curState, update, min, max }) {
           value={inputState}
           onChange={(e) => setInputState(e.target.value)}
         />
-        <button
-          className="button-default muted"
-          onClick={() => update(inputState)}
-        >
+        <button className="button-default muted" onClick={() => update(inputState)}>
           Save
         </button>
       </div>
