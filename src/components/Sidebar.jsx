@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import {
-  mdiHome,
   mdiFamilyTree,
   mdiTrendingUp,
   mdiCheckboxMultipleMarked,
@@ -11,6 +10,7 @@ import {
   mdiCog,
   mdiChevronDown,
   mdiPlus,
+  mdiViewDashboard,
 } from '@mdi/js';
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHabitsQuery } from '../state/services/habit';
@@ -40,31 +40,15 @@ export default function Sidebar({ hidden }) {
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
       <ul className="navigation">
-        <NavigationSection
-          path={mdiHome}
-          title={hidden ? 'Home' : 'Dashboard'}
-          status="raw"
-          raw="true"
-          to="/dashboard"
-          num="1"
-        />
+        <NavigationSection path={mdiTrendingUp} title="Projects" to="/projects" num="1" />
         <NavigationSection
           path={mdiFamilyTree}
           title={hidden ? 'Skills' : 'Skill trees'}
-          status="raw"
-          raw="true"
           to="/skills"
           num="2"
         />
-        <NavigationSection
-          path={mdiTrendingUp}
-          title="Projects"
-          status="raw"
-          raw="true"
-          to="/projects"
-          num="3"
-        />
-        <NavigationSection path={mdiCheckboxMultipleMarked} title="To-do" to="/todo" num="4" />
+        <NavigationSection path={mdiCheckboxMultipleMarked} title="To-do" to="/todo" num="3" />
+        <NavigationSection path={mdiViewDashboard} title={'Overview'} to="/overview" num="4" />
         <NavigationSection path={mdiPost} title="Blog" status="soon" to="/blog" num="5" />
         <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
       </ul>

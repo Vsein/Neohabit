@@ -44,10 +44,10 @@ const App = () => {
           <Route path="/login/" element={<Login />} />
         </Route>
         <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
-          <Route path="/dashboard/" element={<Overview />} />
-          <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/projects/*" element={<Projects />} />
           <Route path="/skills/*" element={<Skilltrees />} />
+          <Route path="/todo/*" element={<ToDoList />} />
+          <Route path="/overview/" element={<Overview />} />
           <Route path="/habit/:habitID/*" element={<Habit />} />
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
@@ -112,7 +112,7 @@ const AuthRoutes = (params) => {
     changeAuth(hasJWT());
   }, [location.pathname]);
 
-  return loggedIn ? <Navigate to="/dashboard" replace state={{ from: location }} /> : <Outlet />;
+  return loggedIn ? <Navigate to="/projects" replace state={{ from: location }} /> : <Outlet />;
 };
 
 export default App;

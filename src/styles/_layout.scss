@@ -25,7 +25,7 @@
     'menu    menu'
     'sidebar main';
   grid-template-rows: 60px 1fr;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 85px 1fr;
   // background-color: #efefef;
   @media (max-width: 550px) {
     grid-template-areas:
@@ -78,7 +78,7 @@
 
     .sidebar-hidden {
       // width: 75px;
-      width: 80px;
+      width: 85px;
       padding: 5px;
       overflow: hidden;
       // @include sidebar-hidden;
