@@ -1,9 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Field } from 'react-final-form';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
 import { close } from '../state/features/overlay/overlaySlice';
-
+import Field from './FieldWrapper';
 
 function ModalButtons({ disabled, isNew, type }) {
   const dispatch = useDispatch();

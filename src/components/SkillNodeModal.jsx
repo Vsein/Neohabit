@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Field } from 'react-final-form';
+import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
+import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
 import { ModalButtons } from './ModalComponents';
 import {

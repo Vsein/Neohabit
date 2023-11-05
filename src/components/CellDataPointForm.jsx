@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Field } from 'react-final-form';
+import { Form } from 'react-final-form';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
+import Field from './FieldWrapper';
 
 export default function CellDataPointForm({ onSubmit }) {
   return (
