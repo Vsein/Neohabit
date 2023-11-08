@@ -34,9 +34,10 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
     dispatch(close());
   };
 
-  const habit =
-    habits.data.find((habito) => habito._id === habitID) ??
-    habits.data.find((habito) => habito.name === 'Default');
+  const habit = habits.data.find((habito) => habito._id === habitID) ?? {
+    name: 'Default',
+    color: '#8a8a8a',
+  };
 
   return (
     <Form
@@ -44,7 +45,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
         completed: task?.completed ?? false,
         name: task?.name ?? '',
         description: task?.description ?? '',
-        habitID: task?.habit._id ?? habit._id,
+        habitID: task?.habit?._id ?? habit?._id,
       }}
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -59,7 +60,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
         >
           <div className="modal-header">
             <div className="tag">
-              <HabitTag habit={task ? task.habit : habit} />
+              <HabitTag habit={task?.habit || habit} />
             </div>
             <button className="icon small" onClick={closeOverlay}>
               <Icon path={mdiClose} />
