@@ -82,6 +82,11 @@
       }
     }
 
+    .skill-node-info {
+      top: 94px;
+      margin-left: 5px;
+    }
+
     &::before {
       content: '';
       position: absolute;
@@ -147,7 +152,8 @@
 
   &:hover {
     .skill-node-controls-right,
-    .skill-node-controls-bottom {
+    .skill-node-controls-bottom,
+    .skill-node-info {
       display: flex;
     }
   }
@@ -165,7 +171,8 @@
 }
 
 .skill-node-controls-bottom,
-.skill-node-controls-right {
+.skill-node-controls-right,
+.skill-node-info {
   position: absolute;
   display: none;
   z-index: 1;
@@ -183,6 +190,21 @@
   & > button {
     width: min-content;
   }
+}
+
+.skill-node-info {
+  padding: 10px 5px;
+  pointer-events: none;
+  top: 89px;
+  left: -28px;
+  gap: 5px;
+  width: 250px;
+  height: min-content;
+  margin: 0px;
+  background-color: var(--secondary-background-color);
+  z-index: 2;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
 }
 
 .skill-node-controls-right {

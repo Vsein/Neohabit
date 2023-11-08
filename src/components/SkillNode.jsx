@@ -83,6 +83,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
       ) : (
         <></>
       )}
+      {skill?.description ? <div className="skill-node-info">{skill.description}</div> : <></>}
       <div className="skill-node-controls-bottom">
         {skill.status === 'in-progress' ? (
           <button
