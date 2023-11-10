@@ -18,9 +18,7 @@ export default function Editor() {
 
   const delist = delinkify(list);
 
-  return tasks.isFetching || habits.isFetching ? (
-    <> </>
-  ) : (
+  return (
     <div className="tasklist">
       <Tasklist
         name={list !== 'habit' ? delist : tasks.data[0]?.habit.name}
