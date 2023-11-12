@@ -42,9 +42,9 @@ function Navigation() {
         <li>
           <Filter filter={{ name: 'All', image: mdiSquareSmall }} />
         </li>
-        <li>
-          <Filter filter={{ name: 'Grouped', image: mdiFormatListGroup }} />
-        </li>
+        {/* <li> */}
+        {/*   <Filter filter={{ name: 'Grouped', image: mdiFormatListGroup }} /> */}
+        {/* </li> */}
       </ul>
     </nav>
   );
