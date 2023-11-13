@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatISO } from 'date-fns';
 import { Form } from 'react-final-form';
 import Icon from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
@@ -8,7 +9,7 @@ export default function CellDataPointForm({ onSubmit }) {
   return (
     <Form
       initialValues={{
-        date: undefined,
+        date: formatISO(new Date(), { representation: 'date' }),
         value: 1,
       }}
       onSubmit={onSubmit}
