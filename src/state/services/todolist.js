@@ -2,11 +2,6 @@ import api from './api';
 
 export const todolistApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getFilters: builder.query({
-      query: () => ({
-        url: 'filters',
-      }),
-    }),
     getTasks: builder.query({
       query: () => ({
         url: 'tasks',
@@ -67,7 +62,6 @@ export const todolistApi = api.injectEndpoints({
 });
 
 export const {
-  useGetFiltersQuery,
   useGetTasksQuery,
   useCreateTaskMutation,
   useUpdateTaskMutation,

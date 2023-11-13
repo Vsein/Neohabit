@@ -98,6 +98,7 @@
 .filter {
   @include sidebar-item;
   padding-inline: 15px;
+  border-radius: 0;
 
   &.active.important {
     background-color: #ffd70033;
