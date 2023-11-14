@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "vite build --watch",
     "start": "vite serve --open",
-    "build": "vite build",
+    "build": "vite build --emptyOutDir",
     "lint": "eslint --ext .js,.jsx src/ --fix",
     "prettier": "prettier . --write"
   },
