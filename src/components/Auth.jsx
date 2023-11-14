@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 
 function AuthSidebar() {
@@ -54,8 +54,7 @@ function EmailField() {
   );
 }
 
-function PasswordField(props) {
-  const { type } = props;
+function PasswordField({ type }) {
   const [passwordHidden, setPasswordHidden] = useState(true);
   const togglePasswordVisibility = () => setPasswordHidden(!passwordHidden);
 

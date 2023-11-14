@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import {
   mdiDelete,
   mdiPencil,

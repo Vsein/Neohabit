@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiClose, mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered } from '@mdi/js';
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
 import useStopwatch from '../hooks/useStopwatch';

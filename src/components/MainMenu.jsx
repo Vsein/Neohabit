@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import {
   mdiCog,
   mdiMenu,

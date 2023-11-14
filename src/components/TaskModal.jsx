@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
 import HabitTag from './HabitTag';

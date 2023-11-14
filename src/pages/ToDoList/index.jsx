@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate, Outlet, NavLink } from 'react-router-dom';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiSquareSmall, mdiFormatListGroup } from '@mdi/js';
 import Editor from './Editor';
 import useTitle from '../../hooks/useTitle';

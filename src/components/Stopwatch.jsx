@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered, mdiFullscreen } from '@mdi/js';
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
 import { changeTo } from '../state/features/overlay/overlaySlice';

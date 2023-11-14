@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { differenceInDays, formatISO } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiPlusBox, mdiMinusBox, mdiDelete } from '@mdi/js';
 import {
   useDeleteCellPeriodMutation,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import {
   mdiFamilyTree,
   mdiTrendingUp,

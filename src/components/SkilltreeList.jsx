@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useGetSkilltreesQuery } from '../state/services/skilltree';
 import { changeTo } from '../state/features/overlay/overlaySlice';

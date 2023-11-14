@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { useUpdateTaskMutation, useDeleteTaskMutation } from '../state/services/todolist';
 import { changeTo } from '../state/features/overlay/overlaySlice';

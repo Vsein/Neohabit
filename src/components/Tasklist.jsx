@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import Task from './Task';
 import { changeTo } from '../state/features/overlay/overlaySlice';

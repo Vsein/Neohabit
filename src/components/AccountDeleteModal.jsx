@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { useDeleteSelfMutation } from '../state/services/settings';
 import { close } from '../state/features/overlay/overlaySlice';

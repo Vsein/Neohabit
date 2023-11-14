@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
 import useTitle from '../../hooks/useTitle';
 import useAnchor from '../../hooks/useAnchor';

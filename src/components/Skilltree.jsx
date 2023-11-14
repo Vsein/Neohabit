@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
 import { useDeleteSkilltreeMutation } from '../state/services/skilltree';
 import { changeTo } from '../state/features/overlay/overlaySlice';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery } from '../state/services/project';

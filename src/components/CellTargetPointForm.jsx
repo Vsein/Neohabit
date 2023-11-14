@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatISO } from 'date-fns';
 import { Form } from 'react-final-form';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import Field from './FieldWrapper';
 
