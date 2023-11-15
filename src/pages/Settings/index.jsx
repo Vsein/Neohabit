@@ -65,7 +65,7 @@ export default function Settings() {
                 </div>
               </div>
               <div className="settings-option">
-                <div className="settings-name">
+                <div className="settings-name" style={{ opacity: 0.5 }}>
                   <h3>Change password</h3>
                 </div>
               </div>
@@ -192,7 +192,7 @@ function SettingsButtonOption({ name, cssName, update, choices, curState = undef
         {choices.map((choice, index) => (
           <button
             key={index}
-            className={`button-default calm stretch ${choice.state} ${
+            className={`button-default muted stretch ${choice.state} ${
               choice.state === curState ? 'active' : ''
             }`}
             onClick={() => update(choice.state)}

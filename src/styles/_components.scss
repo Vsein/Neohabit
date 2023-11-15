@@ -200,11 +200,18 @@ input[type='checkbox']:checked.checkbox {
     border-radius: 10px;
   }
 
+  &.muted {
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    background-color: var(--main-background-color);
+  }
+
   &.calm {
     background-color: var(--calm-signature-color);
   }
 
   &.active {
+    background-color: var(--calm-signature-color);
     border: 2px solid var(--signature-color);
   }
 
@@ -215,12 +222,6 @@ input[type='checkbox']:checked.checkbox {
   &.cancel {
     color: var(--support-color);
     background-color: var(--button-bg-color);
-  }
-
-  &.muted {
-    color: var(--text-color);
-    border: 2px solid var(--border-color);
-    background-color: var(--main-background-color);
   }
 
   &-input {
