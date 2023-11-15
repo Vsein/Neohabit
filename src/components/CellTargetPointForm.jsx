@@ -69,7 +69,7 @@ export default function CellTagetPointForm({ onSubmit }) {
             </label>
           </div>
           <span>day(s)</span>
-          <button className="habit-button right" type="submit" disabled={submitting || pristine}>
+          <button className="habit-button right" type="submit" disabled={submitting}>
             <Icon path={mdiPlus} className="icon small" />
           </button>
         </form>
