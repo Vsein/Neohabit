@@ -71,7 +71,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
               name="description"
               component="textarea"
               placeholder="Change description"
-              rows="10"
+              rows="17"
               className="form-task-description"
             />
           </div>

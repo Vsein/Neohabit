@@ -1,3 +1,5 @@
+@import 'scrollbar';
+
 .overlay {
   position: fixed;
   top: 0;
@@ -30,6 +32,7 @@
   z-index: 3;
   width: min(800px, 100vw - 3em);
   min-height: 600px;
+  max-height: 650px;
   border-radius: 8px;
   background-color: var(--support-background-color);
   padding: 1em;
@@ -47,7 +50,9 @@
   }
 
   &-details {
-    height: 100%;
+    @include scrollbar;
+    height: 500px;
+    overflow-y: scroll;
     width: 100%;
     background-color: var(--main-background-color);
     padding: 10px;

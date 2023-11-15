@@ -65,6 +65,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
               className="form-task-name"
               required
             />
+            <ColorPicker />
             {skilltree ? (
               <></>
             ) : (
@@ -72,11 +73,10 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
                 name="description"
                 component="textarea"
                 placeholder="Change description"
-                rows="1"
+                rows="7"
                 className="form-task-description"
               />
             )}
-            <ColorPicker />
           </div>
           <ModalButtons disabled={submitting || pristine} isNew={!skilltreeID} type="skilltree" />
         </form>

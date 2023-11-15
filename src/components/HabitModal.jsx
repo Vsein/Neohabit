@@ -77,13 +77,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               className="form-task-name"
               required
             />
-            <Field
-              name="description"
-              component="textarea"
-              placeholder="Change description"
-              rows="1"
-              className="form-task-description"
-            />
             <ColorPicker />
             <div className="form-task-description">
               <Field name="elimination" component="input" type="checkbox" className="checkbox" />
@@ -93,6 +86,13 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               <Field name="numeric" component="input" type="checkbox" className="checkbox" />
               <label>Use numeric</label>
             </div>
+            <Field
+              name="description"
+              component="textarea"
+              placeholder="Change description"
+              rows="5"
+              className="form-task-description"
+            />
           </div>
           <ModalButtons disabled={submitting || pristine} isNew={!habitID} type="habit" />
         </form>
