@@ -2,12 +2,19 @@ import React, { useEffect } from 'react';
 import { differenceInDays, formatISO } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
-import { mdiPlusBox, mdiMinusBox, mdiDelete } from '@mdi/js';
+import {
+  mdiPlusBox,
+  mdiMinusBox,
+  mdiDelete,
+  mdiCheckboxBlankOutline,
+  mdiInformation,
+} from '@mdi/js';
 import {
   useDeleteCellPeriodMutation,
   useDecreaseCellPeriodMutation,
   useUpdateHeatmapMutation,
 } from '../state/services/heatmap';
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
 
 function formatDate(date) {
@@ -71,7 +78,9 @@ function changeCellOffset(e, tipContent, actions, override = false) {
     offset = (tipWidth / 4) * 3;
   }
   cellTip.classList.remove('hidden');
-  cellTip.style.top = `${window.pageYOffset + rect.y - 51}px`;
+  cellTip.style.top = `${
+    window.pageYOffset + rect.y - 51 - 42 * !cellTip.classList.contains('hint-hidden')
+  }px`;
   cellTip.style.left = `${rect.x + rect.width / 2 - offset + 15}px`;
   return 0;
 }
@@ -106,10 +115,13 @@ export default function CellTip() {
   const [deleteCellPeriod] = useDeleteCellPeriodMutation();
   const [decreaseCellPeriod] = useDecreaseCellPeriodMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
+  const settings = useGetSettingsQuery();
+  const hintHidden = settings.data.hide_cell_hint;
+  const [updateSettings] = useUpdateSettingsMutation();
 
   return (
     <div
-      className="cell-tip hidden"
+      className={`cell-tip hidden ${hintHidden ? 'hint-hidden' : ''}`}
       onMouseLeave={unfixateAndHideCellTip}
       onClick={(e) => e.stopPropagation()}
     >
@@ -185,6 +197,26 @@ export default function CellTip() {
         </div>
       </div>
       <p className="cell-tip-period"></p>
+      {!hintHidden && (
+        <>
+          <hr />
+          <div className="cell-tip-i">
+            <Icon path={mdiInformation} className="icon tiny" />
+            <div>
+              <p className="cell-tip-period">Click on the cell to access this window</p>
+              <div className="cell-tip-i-hide">
+                <button
+                  className="centering"
+                  onClick={() => updateSettings({ values: { hide_cell_hint: true } })}
+                >
+                  <Icon path={mdiCheckboxBlankOutline} className="icon smol" />
+                </button>
+                <p>Don&apos;t show again</p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

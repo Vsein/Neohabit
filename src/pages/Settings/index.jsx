@@ -75,16 +75,28 @@ export default function Settings() {
         <SettingsSection
           name="general"
           elements={
-            <SettingsButtonOption
-              name="Preferred theme"
-              cssName="theme"
-              curState={settings.data.prefer_dark}
-              update={(state) => updateSettings({ values: { prefer_dark: state } })}
-              choices={[
-                { name: 'Dark', state: true },
-                { name: 'Light', state: false },
-              ]}
-            />
+            <>
+              <SettingsButtonOption
+                name="Preferred theme"
+                cssName="theme"
+                curState={settings.data.prefer_dark}
+                update={(state) => updateSettings({ values: { prefer_dark: state } })}
+                choices={[
+                  { name: 'Dark', state: true },
+                  { name: 'Light', state: false },
+                ]}
+              />
+              <SettingsButtonOption
+                name="Hide hints on cells"
+                cssName="cell_hints"
+                curState={settings.data.hide_cell_hint}
+                update={(state) => updateSettings({ values: { hide_cell_hint: state } })}
+                choices={[
+                  { name: 'On', state: true },
+                  { name: 'Off', state: false },
+                ]}
+              />
+            </>
           }
         />
         <SettingsSection

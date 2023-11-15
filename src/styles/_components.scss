@@ -42,6 +42,11 @@
     width: 16px;
   }
 
+  &.smol {
+    height: 15px;
+    width: 15px;
+  }
+
   &:hover {
     cursor: pointer;
   }
