@@ -44,6 +44,7 @@ const App = () => {
           <Route path="/login/" element={<Login />} />
         </Route>
         <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
+          <Route path="*" element={<NotFound />} />
           <Route path="/projects/*" element={<Projects />} />
           <Route path="/skills/*" element={<Skilltrees />} />
           <Route path="/todo/*" element={<ToDoList />} />
@@ -52,7 +53,6 @@ const App = () => {
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
