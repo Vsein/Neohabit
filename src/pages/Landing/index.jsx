@@ -11,9 +11,9 @@ export default function Landing() {
         <div className="landing-header">
           <h1 className="neohabit" />
           <ul className="landing-header-links">
-            <li>
-              <NavLink to="/contact">Contact</NavLink>
-            </li>
+            {/* <li> */}
+            {/*   <NavLink to="/contact">Contact</NavLink> */}
+            {/* </li> */}
             <li>
               <NavLink to="/signup">Sign up</NavLink>
             </li>
@@ -38,7 +38,7 @@ export default function Landing() {
               in.
             </p>
             <p>
-              The people who have never ever learned that what the&apos;ve been doing for years is
+              The people who have never ever learned that what they&apos;ve been doing for years is
               somehow wrong, might be better off than people who obsess with having a bad habit.
             </p>
             <br />
@@ -61,7 +61,7 @@ export default function Landing() {
       </main>
       <footer className="landing-footer-container">
         <div className="landing-footer">
-          <h3> Copyright @ 2022</h3>
+          <h3> Copyright @ 2023</h3>
         </div>
       </footer>
     </div>
