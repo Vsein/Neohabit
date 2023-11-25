@@ -28,6 +28,7 @@
   grid-template-columns: 85px 1fr;
   // background-color: #efefef;
   @media (max-width: 550px) {
+    min-height: calc(100vh - 120px);
     grid-template-areas:
     'menu    menu'
     'main main';

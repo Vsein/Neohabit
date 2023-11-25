@@ -9,6 +9,10 @@
   z-index: 3;
   height: 60px;
   width: 100%;
+
+  @media (max-width: 550px) {
+      bottom: 60px;
+  }
 }
 
 .progressbar {

@@ -160,17 +160,20 @@
 }
 
 .sidebar-mobile {
-  height: 70px;
-  position: fixed;
-  visibility: hidden;
+  position: sticky;
+  display: none;
   bottom: 0;
-  margin: 10px;
-  width: calc(100% - 20px);
-  border-radius: 35px;
-  background-color: silver;
+  height: 60px;
+  width: 100%;
+  background-color: var(--main-background-color);
   box-shadow: 0 0 3px 1px grey;
+  border-top: 1px solid var(--border-color);
   scroll-margin-top: 3rem;
   z-index: 2;
+
+  @media (max-width: 550px) {
+    display: block;
+  }
 }
 
 .filters-mobile {
@@ -178,17 +181,23 @@
   flex-direction: row;
   height: 100%;
   width: 100%;
-  padding: 10px 20px;
   justify-content: space-between;
   align-items: center;
 }
 
 .filter-mobile {
-  border-radius: 50%;
-  height: 50px;
-  width: 50px;
-  padding: 10px;
+  // border-radius: 50%;
+  height: 100%;
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.3s ease-out;
+
+  & p {
+    font-size: 15px;
+  }
 
   &:hover,
   &.active {

@@ -20,7 +20,7 @@ import Overlay from './components/Overlay';
 import CellTip from './components/CellTip';
 import CellAdd from './components/CellAdd';
 import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
-// import SidebarMobile from './components/SidebarMobile';
+import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
 
@@ -88,7 +88,6 @@ const PrivateRoutes = (params) => {
         <main>
           <Outlet />
         </main>
-        {/* <SidebarMobile /> */}
       </div>
       <div
         className={sidebarHidden ? 'overlay' : 'overlay overlay-active overlay-sidebar'}
@@ -97,6 +96,7 @@ const PrivateRoutes = (params) => {
       <CellTip />
       <CellAdd />
       <Stopwatch />
+      <SidebarMobile />
       <Overlay />
     </>
   ) : (

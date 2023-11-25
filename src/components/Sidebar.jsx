@@ -48,7 +48,7 @@ export default function Sidebar({ hidden }) {
           num="2"
         />
         <NavigationSection path={mdiCheckboxMultipleMarked} title="To-do" to="/todo" num="3" />
-        <NavigationSection path={mdiViewDashboard} title={'Overview'} to="/overview" num="4" />
+        <NavigationSection path={mdiViewDashboard} title="Overview" to="/overview" num="4" />
         <NavigationSection path={mdiPost} title="Blog" status="soon" to="/blog" num="5" />
         <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
       </ul>
