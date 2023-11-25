@@ -69,7 +69,9 @@ export const heatmapApi = api.injectEndpoints({
                   : point,
               );
             } else if (zeroPoints.length) {
-              Heatmap.data = Heatmap.data.filter((point) => !(point._id === zeroPoints[0]._id));
+              Heatmap.data = Heatmap.data.filter(
+                (point) => !(point._id === zeroPoints[0]._id) || point.is_target,
+              );
             }
           }),
         );
