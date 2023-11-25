@@ -5,6 +5,7 @@ import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery } from '../state/services/project';
+import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import Project from './Project';
@@ -15,6 +16,7 @@ export default function Overview() {
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
+  const settings = useGetSettingsQuery();
   const vertical = false;
 
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ export default function Overview() {
 
   const [defaultProject] = useDefaultProject();
 
-  if (!loaded || projects.isFetching || habits.isFetching) {
+  if (!loaded || projects.isFetching || habits.isFetching || settings.isFetching) {
     return (
       <div className="overview-loader centering">
         <div className="loader" />
@@ -38,7 +40,7 @@ export default function Overview() {
         <Project key={i} project={project} />
       ))}
       <Project project={defaultProject} />
-      <div className="overview-centering" style={{ '--length': 46 }}>
+      <div className="overview-centering" style={{ '--length': settings.data?.overview_duration ?? 32 }}>
         <button
           className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
           onClick={openOverlay}

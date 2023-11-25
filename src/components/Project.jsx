@@ -6,6 +6,7 @@ import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
+import { useGetSettingsQuery } from '../state/services/settings';
 import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
@@ -18,8 +19,10 @@ export default function Project({ project }) {
   const { theme } = useSelector((state) => state.theme);
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
+  const settings = useGetSettingsQuery();
   const vertical = false;
-  const datePeriodLength = 46;
+
+  const datePeriodLength = settings.data?.overview_duration ?? 32;
   const [
     dateEnd,
     setDateEnd,
@@ -36,7 +39,8 @@ export default function Project({ project }) {
 
   return (
     !heatmaps.isFetching &&
-    !habits.isFetching && (
+    !habits.isFetching &&
+    !settings.isFetching && (
       <div
         className="overview-centering"
         style={{

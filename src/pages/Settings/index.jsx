@@ -100,6 +100,45 @@ export default function Settings() {
           }
         />
         <SettingsSection
+          name="heatmaps"
+          elements={
+            <>
+              {/* <SettingsNumberOption */}
+              {/*   name="Heatmap height" */}
+              {/*   curState={settings.data.cell_height_multiplier} */}
+              {/*   update={(state) => updateSettings({ values: { cell_height_multiplier: +state } })} */}
+              {/*   min="1" */}
+              {/*   max="4" */}
+              {/* /> */}
+              <SettingsNumberOption
+                name="Default heatmap period duration"
+                curState={settings.data?.overview_duration ?? 32}
+                update={(state) => updateSettings({ values: { overview_duration: +state } })}
+                min="1"
+                max="365"
+              />
+              <SettingsNumberOption
+                name="Offset from the period start/period end"
+                curState={settings.data?.overview_offset ?? 0}
+                update={(state) => updateSettings({ values: { overview_offset: +state } })}
+                min="-365"
+                max="365"
+              />
+              <SettingsButtonOption
+                name="Use current day as..."
+                cssName="first-day"
+                curState={settings.data.overview_current_day}
+                update={(state) => updateSettings({ values: { overview_current_day: state } })}
+                choices={[
+                  { name: 'Period start', state: 'start' },
+                  { name: 'Period middle', state: 'middle' },
+                  { name: 'Period end', state: 'end' },
+                ]}
+              />
+            </>
+          }
+        />
+        <SettingsSection
           name="overview"
           elements={
             <>
@@ -113,44 +152,7 @@ export default function Settings() {
                   { name: 'Vertical', state: true },
                 ]}
               />
-              <SettingsButtonOption
-                name="Use current day as..."
-                cssName="first-day"
-                curState={settings.data.overview_current_day}
-                update={(state) => updateSettings({ values: { overview_current_day: state } })}
-                choices={[
-                  { name: 'Period start', state: 'start' },
-                  { name: 'Period middle', state: 'middle' },
-                  { name: 'Period end', state: 'end' },
-                ]}
-              />
-              <SettingsNumberOption
-                name="Offset from the period start/period end"
-                curState={settings.data?.overview_offset ?? 0}
-                update={(state) => updateSettings({ values: { overview_offset: +state } })}
-                min="-365"
-                max="365"
-              />
-              <SettingsNumberOption
-                name="Default overview period duration"
-                curState={settings.data?.overview_duration ?? 32}
-                update={(state) => updateSettings({ values: { overview_duration: +state } })}
-                min="1"
-                max="365"
-              />
             </>
-          }
-        />
-        <SettingsSection
-          name="heatmaps"
-          elements={
-            <SettingsNumberOption
-              name="Heatmap height"
-              curState={settings.data.cell_height_multiplier}
-              update={(state) => updateSettings({ values: { cell_height_multiplier: +state } })}
-              min="1"
-              max="4"
-            />
           }
         />
         <SettingsSection
