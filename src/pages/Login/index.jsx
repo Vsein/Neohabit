@@ -30,7 +30,7 @@ function LoginForm() {
     const formData = new FormData(document.forms.loginForm);
     const data = Object.fromEntries(formData.entries());
     const isSuccessful = await sendLoginRequest(data);
-    if (isSuccessful) navigate('/dashboard');
+    if (isSuccessful) navigate('/projects');
   };
 
   return (

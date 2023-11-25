@@ -38,7 +38,7 @@ function SignupForm() {
     const data = Object.fromEntries(formData.entries());
     const isSuccessful = await sendSignupRequest(data);
     await sendLoginRequest(data);
-    if (isSuccessful) navigate('/dashboard');
+    if (isSuccessful) navigate('/projects');
   };
 
   return (

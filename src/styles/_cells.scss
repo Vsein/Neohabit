@@ -220,6 +220,7 @@ $cell-margin: 2px;
   gap: 4px;
 
   &.hidden {
+    top: -50px;
     visibility: hidden;
     pointer-events: none;
   }
