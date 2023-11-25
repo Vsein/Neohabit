@@ -64,7 +64,9 @@ export const heatmapApi = api.injectEndpoints({
             const points = zeroPoints.filter((point) => point.value > 1);
             if (points.length) {
               Heatmap.data = Heatmap.data.map((point) =>
-                point._id === points[0]._id ? { ...point, value: +point.value - 1 } : point,
+                point._id === points[0]._id && !point.is_target
+                  ? { ...point, value: +point.value - 1 }
+                  : point,
               );
             } else if (zeroPoints.length) {
               Heatmap.data = Heatmap.data.filter((point) => !(point._id === zeroPoints[0]._id));
