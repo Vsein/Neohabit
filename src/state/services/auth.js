@@ -8,7 +8,10 @@ export const hasJWT = () => {
 const authApi = createApi({
   reducerPath: 'auth',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:9000/',
+    baseUrl:
+      process.env.REACT_APP_STAGE === 'dev'
+        ? 'http://localhost:9000/'
+        : 'https://neohabit.app/api',
   }),
   endpoints: (builder) => ({
     login: builder.mutation({
