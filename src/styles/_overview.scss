@@ -251,7 +251,7 @@ $cell-margin: 2px;
   align-items: center;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
 
-  @media (max-width: 750px) {
+  @media (max-width: 800px) {
     @include overview-header-small;
   }
 

@@ -44,18 +44,24 @@
   justify-content: center;
   align-items: center;
   margin: auto;
+
 }
 
 .dates-period {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  column-gap: 10px;
   justify-content: center;
   align-items: center;
   padding-inline: 10px;
   box-shadow: 0px 0px 4px 2px var(--signature-color);
   border-radius: 6px;
   height: 20px;
+
+  @media (max-width: 600px) {
+    flex-wrap: wrap;
+    height: min-content;
+  }
 
   &-picker {
     width: 115px;
