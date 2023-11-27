@@ -44,7 +44,6 @@
   justify-content: center;
   align-items: center;
   margin: auto;
-
 }
 
 .dates-period {
@@ -58,15 +57,25 @@
   border-radius: 6px;
   height: 20px;
 
-  @media (max-width: 600px) {
-    flex-wrap: wrap;
-    height: min-content;
-  }
-
   &-picker {
     width: 115px;
     font-size: 15px;
     cursor: pointer;
+  }
+
+  @media (max-width: 450px) {
+    flex-wrap: wrap;
+    height: min-content;
+
+    &-picker {
+      width: 85px;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+      }
+    }
   }
 }
 
