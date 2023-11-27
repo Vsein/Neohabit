@@ -27,11 +27,7 @@ export default function Overview() {
   const [defaultProject] = useDefaultProject();
 
   if (!loaded || projects.isFetching || habits.isFetching || settings.isFetching) {
-    return (
-      <div className="overview-loader centering">
-        <div className="loader" />
-      </div>
-    );
+    return <div className="loader" />;
   }
 
   return (

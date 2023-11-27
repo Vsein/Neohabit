@@ -20,11 +20,7 @@ export default function SkilltreeList() {
   };
 
   if (!loaded || skilltrees.isFetching) {
-    return (
-      <div className="overview-loader centering">
-        <div className="loader" />
-      </div>
-    );
+    return <div className="loader" />;
   }
 
   return (

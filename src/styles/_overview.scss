@@ -65,11 +65,6 @@ $cell-margin: 2px;
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
 }
 
-.overview-loader {
-  height: 250px;
-  width: 100%;
-}
-
 .overview {
   direction: ltr;
   --multiplier: 1;

@@ -36,11 +36,7 @@ export default function Overview() {
   ] = useDatePeriod(datePeriodLength - 1);
 
   if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
-    return (
-      <div className="overview-loader centering">
-        <div className="loader" />
-      </div>
-    );
+    return <div className="loader" />;
   }
 
   return (
