@@ -1,12 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
 import { useDeleteSkilltreeMutation } from '../state/services/skilltree';
+import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
-import SkillNode from './SkillNode';
 import SkillSegment from './SkillSegment';
 
 function processSkilltree(skilltreeProvided) {
@@ -29,15 +29,16 @@ function processSkilltree(skilltreeProvided) {
 }
 
 export default function Skilltree({ skilltree }) {
-  const { theme } = useSelector((state) => state.theme);
+  const settings = useGetSettingsQuery();
   const vertical = false;
   const datePeriodLength = 46;
 
-  const colorShade = mixColors(
-    theme === 'light' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 },
-    hexToRgb(skilltree.color),
-    theme === 'light' ? 0.8 : 0.6,
-  );
+  if (settings.isFetching) return <></>;
+
+  const colorShade =
+    !settings.data?.prefer_dark
+      ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(skilltree.color), 0.8)
+      : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(skilltree.color), 0.6);
 
   const processedSkills = processSkilltree(skilltree);
 

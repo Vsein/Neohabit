@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useGetSettingsQuery } from '../state/services/settings';
 
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -29,9 +29,7 @@ const GAMMA = 2.4;
 function luminance(r, g, b) {
   const a = [r, g, b].map((v) => {
     v /= 255;
-    return v <= 0.03928
-      ? v / 12.92
-      : ((v + 0.055) / 1.055) ** GAMMA
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** GAMMA;
   });
   return a[0] * RED + a[1] * GREEN + a[2] * BLUE;
 }
@@ -54,15 +52,17 @@ function generatePalette(base, goal) {
 }
 
 function getNumericTextColor(color) {
-  return contrast(hexToRgb(color), hexToRgb('#efefef')) > contrast(hexToRgb(color), hexToRgb('#242424'))
-      ? '#efefef'
-      : '#242424';
+  return contrast(hexToRgb(color), hexToRgb('#efefef')) >
+    contrast(hexToRgb(color), hexToRgb('#242424'))
+    ? '#efefef'
+    : '#242424';
 }
 
 export default function usePaletteGenerator(color) {
-  const { themeRgb } = useSelector((state) => ({
-    themeRgb: state.theme.colorRgb,
-  }));
+  const settings = useGetSettingsQuery();
+  const themeRgb = settings.data?.prefer_dark
+    ? { r: 36, g: 36, b: 36 }
+    : { r: 239, g: 239, b: 239 };
 
   const colorRgb = hexToRgb(color);
   const palette = generatePalette(themeRgb, colorRgb);

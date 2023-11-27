@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
@@ -16,7 +16,6 @@ import { HabitOverview, HabitAddButton } from './HabitComponents';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
 export default function Project({ project }) {
-  const { theme } = useSelector((state) => state.theme);
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
@@ -31,11 +30,10 @@ export default function Project({ project }) {
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength - 1);
 
-  const colorShade = mixColors(
-    theme === 'light' ? { r: 0, g: 0, b: 0 } : { r: 255, g: 255, b: 255 },
-    hexToRgb(project.color),
-    theme === 'light' ? 0.8 : 0.6,
-  );
+  const colorShade =
+    !settings.data?.prefer_dark
+      ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
+      : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(project.color), 0.6);
 
   return (
     !heatmaps.isFetching &&

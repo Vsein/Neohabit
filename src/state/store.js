@@ -5,7 +5,6 @@ import authApi from './services/auth';
 import overlayReducer from './features/overlay/overlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
 import cellTipReducer from './features/cellTip/cellTipSlice';
-import themeReducer, { changeTheme } from './features/theme/themeSlice';
 
 const combinedReducer = combineReducers({
   [api.reducerPath]: api.reducer,
@@ -13,7 +12,6 @@ const combinedReducer = combineReducers({
   overlay: overlayReducer,
   cellAdd: cellAddReducer,
   cellTip: cellTipReducer,
-  theme: themeReducer,
 });
 
 const rootReducer = (state, action) => {
