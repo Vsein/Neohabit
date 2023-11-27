@@ -26,6 +26,14 @@
     gap: 5px;
     padding-bottom: 5px;
   }
+
+  @media (max-width: 1000px) {
+    padding: 15px;
+  }
+
+  @media (max-width: 550px) {
+    padding: 10px;
+  }
 }
 
 @mixin task-list-item {

@@ -1,5 +1,15 @@
-@import 'layout';
 @import 'scrollbar';
+
+@mixin overview-header-small {
+  grid-template-columns: 1fr min-content;
+  grid-template-rows: 30px;
+  grid-template-areas:
+    'name settings'
+    'date settings';
+  gap: 3px;
+  padding-bottom: 5px;
+}
+
 
 $cell-height: 11px;
 $cell-width: 11px;
@@ -13,6 +23,10 @@ $cell-margin: 2px;
   width: 100%;
   gap: 15px;
   padding: 30px;
+
+  @media (max-width: 1000px) {
+    padding: 15px;
+  }
 }
 
 .overview-controls {
@@ -241,6 +255,16 @@ $cell-margin: 2px;
   justify-content: space-between;
   align-items: center;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
+
+  @media (max-width: 750px) {
+    @include overview-header-small;
+  }
+
+  @media (max-width: 450px) {
+    grid-template-areas:
+    'name settings'
+    'date date';
+  }
 
   &.vertical {
     width: min(calc(50px + (17px + 2px) * var(--habits) + 10px), 100%);

@@ -27,7 +27,7 @@ export default function Settings() {
   return (
     <div className="page-settings">
       <div className="settings-bar">
-        <Link className="settings-type right" to="#profile">
+        <Link className="settings-type" to="#profile">
           Profile
         </Link>
         <Link className="settings-type" to="#general">
@@ -39,7 +39,7 @@ export default function Settings() {
         <Link className="settings-type" to="#heatmaps">
           Heatmaps
         </Link>
-        <Link className="settings-type left" to="#danger-zone">
+        <Link className="settings-type" to="#danger-zone">
           Danger
         </Link>
       </div>
@@ -48,26 +48,22 @@ export default function Settings() {
           name="profile"
           elements={
             <>
-              <div className="settings-option">
-                <div className="settings-name">
-                  <h3>Username:</h3>
-                </div>
+              <div className="settings-option simple">
+                <h3 className="settings-name">Username:</h3>
                 <div className="settings-chooser">
                   <p>{self.data.username}</p>
                 </div>
               </div>
-              <div className="settings-option">
-                <div className="settings-name">
-                  <h3>Email:</h3>
-                </div>
+              <div className="settings-option simple">
+                <h3 className="settings-name">Email:</h3>
                 <div className="settings-chooser">
                   <p>{self.data.email}</p>
                 </div>
               </div>
-              <div className="settings-option">
-                <div className="settings-name" style={{ opacity: 0.5 }}>
-                  <h3>Change password</h3>
-                </div>
+              <div className="settings-option simple">
+                <h3 className="settings-name" style={{ opacity: 0.5 }}>
+                  Change password
+                </h3>
               </div>
             </>
           }
@@ -157,6 +153,7 @@ export default function Settings() {
         />
         <SettingsSection
           name="Danger zone"
+          id="danger-zone"
           elements={
             <SettingsButtonOption
               name="Delete account"
@@ -171,7 +168,7 @@ export default function Settings() {
   );
 }
 
-function SettingsSection({ name, elements }) {
+function SettingsSection({ name, id = '', elements }) {
   const [settingCollapsed, setSettingCollapsed] = useState(false);
 
   const toggleSettingCollapsed = () => {
@@ -180,7 +177,7 @@ function SettingsSection({ name, elements }) {
 
   return (
     <div className="settings-section">
-      <div id={name} className="settings-section-header">
+      <div id={id || name} className="settings-section-header">
         <button className="centering" onClick={toggleSettingCollapsed}>
           <Icon
             className={`icon big settings-section-arrow ${settingCollapsed ? '' : 'active'}`}
@@ -199,9 +196,7 @@ function SettingsSection({ name, elements }) {
 function SettingsButtonOption({ name, cssName, update, choices, curState = undefined }) {
   return (
     <div className={`settings-option ${cssName}`}>
-      <div className="settings-name">
-        <h3>{name}</h3>
-      </div>
+      <h3 className="settings-name">{name}</h3>
       <div className="settings-chooser">
         {choices.map((choice, index) => (
           <button
@@ -224,9 +219,7 @@ function SettingsNumberOption({ name, curState, update, min, max }) {
 
   return (
     <div className="settings-option">
-      <div className="settings-name">
-        <h3>{name}</h3>
-      </div>
+      <h3 className="settings-name">{name}</h3>
       <div className="settings-chooser">
         <input
           className="button-default button-default-input muted stretch"

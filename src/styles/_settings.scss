@@ -10,32 +10,52 @@
 .settings-bar {
   background-color: var(--main-background-color);
   width: 100%;
-  display: flex;
+  display: grid;
+  justify-items: center;
+  text-align: center;
   grid-auto-flow: column;
-  justify-content: left;
+  justify-content: center;
+
+  @media (max-width: 700px) {
+    grid-auto-flow: unset;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .settings-type {
   padding: 15px;
   padding-inline: 20px;
   width: min-content;
+
+  @media (max-width: 700px) {
+    padding: 10px;
+  }
 }
 
 .settings {
   padding: 30px;
   padding-block: 20px;
   display: grid;
-  width: min(850px, 100%);
+  width: min(900px, 100%);
   align-content: start;
+
+  @media (max-width: 1000px) {
+    padding: 15px;
+  }
 }
 
 .settings-option {
   color: var(--support-text-color);
-  display: flex;
-  justify-content: space-between;
-  width: min(900px, 100%);
+  display: grid;
+  grid-template-areas: 'name chooser';
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1.2fr 1fr;
   align-items: center;
+  align-content: center;
+  justify-content: center;
   margin-block: 5px;
+  row-gap: 5px;
+  column-gap: 15px;
 
   &.theme .true {
     background-color: #2d3333;
@@ -50,16 +70,44 @@
   &.delete-account .button-default {
     background-color: red;
   }
+
+  @media (max-width: 1000px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: 0.85fr 1fr;
+  }
+
+  @media (max-width: 800px) {
+    grid-template-areas:
+      'name'
+      'chooser';
+    grid-template-columns: 1fr;
+    &.simple {
+      grid-template-areas: 'name chooser';
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
 }
 
 .settings-name {
-  width: 450px;
+  grid-area: name;
+  align-self: top;
 }
 
 .settings-chooser {
+  grid-area: chooser;
+  flex: 1 0 0;
   display: flex;
   gap: 5px;
-  width: 350px;
+  align-items: stretch;
+  height: 100%;
+
+  & .button-default {
+    height: 100%;
+  }
 }
 
 .settings-section {

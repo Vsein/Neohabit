@@ -7,16 +7,6 @@
   padding: 15px 0;
 }
 
-@mixin overview-header-small {
-  grid-template-columns: 1fr min-content;
-  grid-template-rows: 30px;
-  grid-template-areas:
-    'name settings'
-    'date settings';
-  gap: 3px;
-  padding-bottom: 5px;
-}
-
 #content {
   min-height: calc(100vh - 60px);
   width: 100%;
@@ -61,12 +51,6 @@
     .sidebar-projects-container,
     .sidebar-habits-container {
       visibility: hidden;
-    }
-  }
-
-  @media (max-width: 750px) {
-    .overview-header {
-      @include overview-header-small;
     }
   }
 
