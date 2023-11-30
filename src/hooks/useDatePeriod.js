@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   startOfDay,
   isFirstDayOfMonth,
@@ -12,9 +12,11 @@ import {
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
+import useWindowDimensions from './useWindowDimensions';
 
 export default function useDatePeriod(periodDuration) {
   const settings = useGetSettingsQuery();
+  const { width } = useWindowDimensions();
   const state = settings.data.overview_current_day;
   const offset = settings.data.overview_offset ?? 0;
 
@@ -93,6 +95,10 @@ export default function useDatePeriod(periodDuration) {
   useKeyPress(['L'], addMonth);
   useKeyPress(['h'], subPeriod);
   useKeyPress(['l'], addPeriod);
+
+  useEffect(() => {
+    reset();
+  }, [width]);
 
   return [
     dateEnd,

@@ -10,6 +10,7 @@ import { useGetSettingsQuery } from '../state/services/settings';
 import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
@@ -20,9 +21,7 @@ export default function Project({ project }) {
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
-
-  const width =
-    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  const { width } = useWindowDimensions();
 
   let adaptiveDatePeriodLength;
   if (width < 550) {
@@ -31,10 +30,10 @@ export default function Project({ project }) {
     adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 60) / 17);
   }
 
-  const datePeriodLength = Math.min(
-    adaptiveDatePeriodLength,
-    settings.data?.overview_duration ?? 32,
-  );
+  const datePeriodLength =
+    settings.data?.overview_adaptive ?? true
+      ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
+      : settings.data?.overview_duration ?? 32;
   const [
     dateEnd,
     setDateEnd,
