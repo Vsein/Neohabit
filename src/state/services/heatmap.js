@@ -1,5 +1,6 @@
 import { isSameDay, compareDesc, startOfDay, endOfDay } from 'date-fns';
 import api from './api';
+import newId from '../../hooks/newId';
 
 export const heatmapApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -37,7 +38,7 @@ export const heatmapApi = api.injectEndpoints({
                   : point,
               );
             } else {
-              Heatmap.data.push({ ...values, value: +values.value });
+              Heatmap.data.push({ ...values, value: +values.value, _id: newId() });
             }
             Heatmap.data.sort((a, b) => a.date - b.date);
           }),
