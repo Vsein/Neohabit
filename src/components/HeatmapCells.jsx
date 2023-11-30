@@ -77,7 +77,8 @@ function CellFractured({
   const dispatch = useDispatch();
   const style = {
     '--color': color,
-    gap: '2px',
+    columnGap: '2px',
+    rowGap: '2px',
     [value ? 'boxShadow' : '']: 'none',
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
@@ -100,15 +101,18 @@ function CellFractured({
   } else if (fractions <= 9) {
     fractionHeight = 1 / 3;
     fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
-    style.gap = '1px';
+    style.columnGap = '1px';
+    style.rowGap = '1px';
   } else if (fractions <= 12) {
     fractionHeight = 1 / 3;
     fractionWidth = 1 / 5;
-    style.gap = '1px';
+    style.columnGap = '1px';
+    style.rowGap = '1px';
   } else if (fractions <= 16) {
     fractionHeight = 1 / 5;
     fractionWidth = 1 / 5;
-    style.gap = '1px';
+    style.columnGap = '1px';
+    style.rowGap = '1px';
   } else {
     dotted = true;
   }
