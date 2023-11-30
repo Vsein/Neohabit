@@ -28,7 +28,7 @@ export default function Project({ project }) {
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
-  ] = useDatePeriod(datePeriodLength - 1);
+  ] = useDatePeriod(datePeriodLength);
 
   const colorShade =
     !settings.data?.prefer_dark

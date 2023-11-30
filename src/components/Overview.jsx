@@ -33,7 +33,7 @@ export default function Overview() {
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
-  ] = useDatePeriod(datePeriodLength - 1);
+  ] = useDatePeriod(datePeriodLength);
 
   if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
     return <div className="loader" />;

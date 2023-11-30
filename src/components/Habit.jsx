@@ -20,7 +20,7 @@ export default function Habit({ heatmap, habit }) {
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
-  ] = useDatePeriod(364);
+  ] = useDatePeriod(datePeriodLength);
 
   const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
 

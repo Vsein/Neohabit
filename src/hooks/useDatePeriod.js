@@ -22,14 +22,14 @@ export default function useDatePeriod(periodDuration) {
     const curDate = startOfDay(new Date());
     if (state === 'start') return addDays(curDate, -offset);
     if (state === 'end') return addDays(curDate, -periodDuration + offset);
-    return addDays(curDate, -Math.floor(periodDuration / 2) + offset - 1);
+    return addDays(curDate, -Math.floor(periodDuration / 2) + offset);
   };
 
   const getEnd = () => {
     const curDate = startOfDay(new Date());
     if (state === 'start') return addDays(curDate, periodDuration - offset);
     if (state === 'end') return addDays(curDate, offset);
-    return addDays(curDate, Math.floor(periodDuration / 2) + offset);
+    return addDays(curDate, Math.floor(periodDuration / 2) + offset - 1 + periodDuration % 2);
   };
 
   const [dateStart, setDateStart] = useState(getStart());
