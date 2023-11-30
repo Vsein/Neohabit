@@ -21,13 +21,13 @@ export default function useDatePeriod(periodDuration) {
   const getStart = () => {
     const curDate = startOfDay(new Date());
     if (state === 'start') return addDays(curDate, -offset);
-    if (state === 'end') return addDays(curDate, -periodDuration + offset);
+    if (state === 'end') return addDays(curDate, -periodDuration + offset + 1);
     return addDays(curDate, -Math.floor(periodDuration / 2) + offset);
   };
 
   const getEnd = () => {
     const curDate = startOfDay(new Date());
-    if (state === 'start') return addDays(curDate, periodDuration - offset);
+    if (state === 'start') return addDays(curDate, periodDuration - offset - 1);
     if (state === 'end') return addDays(curDate, offset);
     return addDays(curDate, Math.floor(periodDuration / 2) + offset - 1 + periodDuration % 2);
   };
