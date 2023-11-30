@@ -67,21 +67,24 @@ function changeCellOffset(e, tipContent, actions, override = false) {
   const period = formatPeriod(tipContent.isPeriod, tipContent.dateStart, tipContent.dateEnd);
   cellTip.firstChild.nextSibling.textContent = `Period: ${period}`;
   const tipWidth = cellTip.getBoundingClientRect().width;
-  let offset = tipWidth / 2 + 15;
-  if (rect.x - 50 < rectParent.x || rect.x - 50 < 36) {
-    offset = tipWidth / 4;
-  } else if (rect.x - 100 < rectParent.x || rect.x - 100 < 36) {
-    offset = tipWidth / 2;
-  } else if (rect.x + 50 > rectParent.x + rectParent.width) {
-    offset = tipWidth;
-  } else if (rect.x + 100 > rectParent.x + rectParent.width) {
-    offset = (tipWidth / 4) * 3;
+  let offset;
+  for (let i = 0; i < 5; i++) {
+    const leftBorder = rect.x + rect.width / 2 - (tipWidth / 4) * i;
+    const rightBorder = leftBorder + tipWidth;
+    if (!(leftBorder < rectParent.x || rightBorder > rectParent.x + rectParent.width)) {
+      offset = (tipWidth / 4) * i - 15 * (i === 4);
+      if (i === 2) break;
+    }
   }
   cellTip.classList.remove('hidden');
   cellTip.style.top = `${
     window.pageYOffset + rect.y - 51 - 42 * !cellTip.classList.contains('hint-hidden')
   }px`;
-  cellTip.style.left = `${rect.x + rect.width / 2 - offset + 15}px`;
+  if (offset === undefined) { // if (rectParent.width - tipWidth < 100) {
+    cellTip.style.left = `${rectParent.x + rectParent.width / 2 - tipWidth / 2}px`;
+  } else {
+    cellTip.style.left = `${rect.x + rect.width / 2 - offset}px`;
+  }
   return 0;
 }
 
