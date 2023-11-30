@@ -1,16 +1,5 @@
 @import 'scrollbar';
 
-@mixin overview-header-small {
-  grid-template-columns: 1fr min-content;
-  grid-template-rows: 30px;
-  grid-template-areas:
-    'name settings'
-    'date settings';
-  gap: 3px;
-  padding-bottom: 5px;
-}
-
-
 $cell-height: 11px;
 $cell-width: 11px;
 $cell-margin: 2px;
@@ -251,6 +240,16 @@ $cell-margin: 2px;
   }
 }
 
+@mixin overview-header-small {
+  grid-template-columns: 1fr min-content;
+  grid-template-rows: 30px;
+  grid-template-areas:
+    'name settings'
+    'date settings';
+  gap: 3px;
+  padding-bottom: 5px;
+}
+
 .overview-header {
   background-color: var(--main-background-color);
   border-bottom: 1px solid var(--border-color);
@@ -268,7 +267,7 @@ $cell-margin: 2px;
     @include overview-header-small;
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 550px) {
     grid-template-areas:
     'name settings'
     'date date';
@@ -281,6 +280,9 @@ $cell-margin: 2px;
 
   &.small {
     @include overview-header-small;
+    grid-template-areas:
+    'name settings'
+    'date date';
   }
 
   & > h3 {
