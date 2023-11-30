@@ -37,13 +37,38 @@ $cell-margin: 2px;
   gap: 24px;
 }
 
+.overview-centering {
+  --habit-name-width: 200px;
+  --habit-controls-width: 115px;
+  --overview-padding-right: 5px;
+  --overview-topbar-left-padding: 35px;
+
+  &.mobile {
+    --habit-name-width: 130px;
+    --habit-controls-width: 20px;
+    --overview-padding-right: calc((var(--habit-name-width) + var(--length) * 19px + var(--habit-controls-width)) / 2);
+    --overview-padding-right: 3px;
+    --overview-topbar-left-padding: 0px;
+  }
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  background-color: var(--main-background-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  width: min(calc(var(--length) * 19px) + var(--habit-name-width) + var(--habit-controls-width) + 10px, 100%);
+}
+
 .overview-container {
   @include scrollbar;
   --negate-margin-block: calc(2 - 2 * var(--vertical));
   direction: rtl;
   position: relative;
   overflow-y: hidden;
-  padding-right: 5px;
+  padding-right: var(--overview-padding-right);
   height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 10px));
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
 
@@ -53,21 +78,8 @@ $cell-margin: 2px;
   }
 }
 
-.overview-centering {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
-  background-color: var(--main-background-color);
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
-}
-
 .overview {
   direction: ltr;
-  --multiplier: 1;
   position: absolute;
   display: grid;
   grid-template-areas:
@@ -75,7 +87,7 @@ $cell-margin: 2px;
     'topbar-left days     topbar-right'
     'habits    habits habits';
   grid-template-rows: $cell-height 15px min-content;
-  grid-template-columns: 200px calc(var(--length) * 19px) 115px;
+  grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(--habit-controls-width);
   row-gap: 4px;
 
   &.vertical {
@@ -168,7 +180,7 @@ $cell-margin: 2px;
 
     .overview-habit {
       display: grid;
-      grid-template-columns: 200px calc(var(--length) * 19px) 90px;
+      grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(--habit-controls-width);
       font-size: 15px;
 
       &-name {
@@ -194,7 +206,8 @@ $cell-margin: 2px;
 
   &-topbar-left {
     display: flex;
-    padding-left: 35px;
+    padding-left: var(--overview-topbar-left-padding);
+    overflow: hidden;
     grid-area: topbar-left;
     justify-content: space-around;
   }

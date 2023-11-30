@@ -18,7 +18,7 @@ import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import Heatmap from './Heatmap';
 
-function HabitControls({ habit, heatmap, header }) {
+function HabitControls({ habit, heatmap, header, mobile }) {
   const [deleteHabit] = useDeleteHabitMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
@@ -50,7 +50,17 @@ function HabitControls({ habit, heatmap, header }) {
     cellAddDropdown.style.setProperty('--border-color', habit.color);
   };
 
-  return (
+  return mobile ? (
+    <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
+      <button
+        className="overview-habit-button"
+        onClick={(e) => openCellAddDropdown(e, false)}
+        title="Add N copmleted actions on X day"
+      >
+        <Icon path={mdiPlusBox} />
+      </button>
+    </div>
+  ) : (
     <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
       <button
         className="overview-habit-button"
@@ -96,7 +106,7 @@ function HabitControls({ habit, heatmap, header }) {
   );
 }
 
-function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical }) {
+function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
@@ -116,7 +126,7 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical }) {
         vertical={vertical}
         isOverview={true}
       />
-      <HabitControls habit={habit} heatmap={heatmap} />
+      <HabitControls habit={habit} heatmap={heatmap} mobile={mobile} />
     </div>
   );
 }

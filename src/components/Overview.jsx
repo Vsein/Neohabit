@@ -26,7 +26,20 @@ export default function Overview() {
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
 
-  const datePeriodLength = settings.data?.overview_duration ?? 32;
+  const width =
+    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+  let adaptiveDatePeriodLength;
+  if (width < 550) {
+    adaptiveDatePeriodLength = Math.floor((width - 30 - 130 - 20 - 28) / 17);
+  } else {
+    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 60) / 17);
+  }
+
+  const datePeriodLength = Math.min(
+    adaptiveDatePeriodLength,
+    settings.data?.overview_duration ?? 32,
+  );
   const [
     dateEnd,
     setDateEnd,
@@ -34,6 +47,7 @@ export default function Overview() {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength);
+  const mobile = datePeriodLength <= 14;
 
   if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
     return <div className="loader" />;
@@ -41,7 +55,7 @@ export default function Overview() {
 
   return (
     <div
-      className="overview-centering"
+      className={`overview-centering ${mobile ? 'mobile' : ''}`}
       style={{
         '--habits': habits.data.length,
         '--length': differenceInDays(dateEnd, dateStart) + 1,
@@ -97,6 +111,7 @@ export default function Overview() {
                 dateEnd={dateEnd}
                 heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
                 vertical={vertical}
+                mobile={mobile}
               />
             ))}
           </div>
