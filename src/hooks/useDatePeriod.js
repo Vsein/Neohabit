@@ -17,7 +17,7 @@ import useWindowDimensions from './useWindowDimensions';
 function getAdaptivePeriodLength(width) {
   let adaptiveDatePeriodLength;
   if (width < 550) {
-    adaptiveDatePeriodLength = Math.floor((width - 30 - 130 - 20 - 20) / 19);
+    adaptiveDatePeriodLength = Math.floor((width - 30 - 130 - 20 - 5) / 19);
   } else if (width < 850) {
     adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 130 - 20 - 5) / 19);
   } else if (width < 1000) {
