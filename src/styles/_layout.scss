@@ -18,10 +18,11 @@
   grid-template-columns: 85px 1fr;
   // background-color: #efefef;
   @media (max-width: 550px) {
-    min-height: calc(100dvh - 120px);
+    min-height: calc(100dvh - 100px);
     grid-template-areas:
     'menu    menu'
     'main main';
+    grid-template-rows: 50px 1fr;
     .sidebar {
       @include sidebar-hidden;
 

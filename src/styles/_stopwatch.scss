@@ -11,7 +11,8 @@
   width: 100%;
 
   @media (max-width: 550px) {
-      bottom: 60px;
+      bottom: 50px;
+      height: 50px;
   }
 }
 
@@ -54,6 +55,25 @@
   align-items: center;
   height: 50px;
   padding-inline: 10px;
+
+  @media (max-width: 550px) {
+    height: 40px;
+    padding-inline: 5px;
+
+    & .logo-section {
+      height: 35px;
+
+      & .icon.medium {
+        height: 30px;
+        width: 30px;
+      }
+
+      & .icon.big {
+        height: 35px;
+        width: 35px;
+      }
+    }
+  }
 }
 
 .progressbar-text {
