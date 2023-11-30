@@ -268,7 +268,7 @@ $cell-margin: 2px;
     @include overview-header-small;
   }
 
-  @media (max-width: 450px) {
+  @media (max-width: 500px) {
     grid-template-areas:
     'name settings'
     'date date';

@@ -9,7 +9,7 @@ import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import useDatePeriod from '../hooks/useDatePeriod';
+import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
@@ -22,13 +22,7 @@ export default function Project({ project }) {
   const settings = useGetSettingsQuery();
   const vertical = false;
   const { width } = useWindowDimensions();
-
-  let adaptiveDatePeriodLength;
-  if (width < 550) {
-    adaptiveDatePeriodLength = Math.floor((width - 30 - 130 - 20 - 28) / 17);
-  } else {
-    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 60) / 17);
-  }
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
 
   const datePeriodLength =
     settings.data?.overview_adaptive ?? true
@@ -41,7 +35,6 @@ export default function Project({ project }) {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength);
-  const mobile = datePeriodLength <= 14;
 
   const colorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)

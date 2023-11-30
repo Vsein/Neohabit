@@ -14,7 +14,7 @@ import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
-import useDatePeriod from '../hooks/useDatePeriod';
+import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
@@ -27,13 +27,7 @@ export default function Overview() {
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
   const { width } = useWindowDimensions();
-
-  let adaptiveDatePeriodLength;
-  if (width < 550) {
-    adaptiveDatePeriodLength = Math.floor((width - 30 - 130 - 20 - 28) / 17);
-  } else {
-    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 60) / 17);
-  }
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
 
   const datePeriodLength =
     settings.data?.overview_adaptive ?? true
@@ -46,7 +40,6 @@ export default function Overview() {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength);
-  const mobile = datePeriodLength <= 14;
 
   if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
     return <div className="loader" />;
