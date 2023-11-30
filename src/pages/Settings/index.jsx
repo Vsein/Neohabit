@@ -113,6 +113,15 @@ export default function Settings() {
                 min="1"
                 max="365"
               />
+              <SettingsButtonOption
+                name="Behavior when whole period doesn't fit"
+                curState={settings.data.overview_adaptive ?? true}
+                update={(state) => updateSettings({ values: { overview_adaptive: state } })}
+                choices={[
+                  { name: 'Adaptive', state: true },
+                  { name: 'Rigid', state: false },
+                ]}
+              />
               <SettingsNumberOption
                 name="Offset from the period start/period end"
                 curState={settings.data?.overview_offset ?? 0}
@@ -123,7 +132,7 @@ export default function Settings() {
               <SettingsButtonOption
                 name="Use current day as..."
                 cssName="first-day"
-                curState={settings.data.overview_current_day}
+                curState={settings.data.overview_current_day ?? 'middle'}
                 update={(state) => updateSettings({ values: { overview_current_day: state } })}
                 choices={[
                   { name: 'Period start', state: 'start' },
