@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   startOfDay,
   isFirstDayOfMonth,
@@ -12,24 +12,40 @@ import {
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
+import useWindowDimensions from './useWindowDimensions';
+
+function getAdaptivePeriodLength(width) {
+  let adaptiveDatePeriodLength;
+  if (width < 550) {
+    adaptiveDatePeriodLength = Math.floor((width - 30 - 130 - 20 - 5) / 19);
+  } else if (width < 850) {
+    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 130 - 20 - 5) / 19);
+  } else if (width < 1000) {
+    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 10) / 19);
+  } else {
+    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 30) / 19);
+  }
+  return { adaptiveDatePeriodLength, mobile: width < 850 };
+}
 
 export default function useDatePeriod(periodDuration) {
   const settings = useGetSettingsQuery();
+  const { width } = useWindowDimensions();
   const state = settings.data.overview_current_day;
   const offset = settings.data.overview_offset ?? 0;
 
   const getStart = () => {
     const curDate = startOfDay(new Date());
     if (state === 'start') return addDays(curDate, -offset);
-    if (state === 'end') return addDays(curDate, -periodDuration + offset);
-    return addDays(curDate, -Math.floor(periodDuration / 2) + offset - 1);
+    if (state === 'end') return addDays(curDate, -periodDuration + offset + 1);
+    return addDays(curDate, -Math.floor(periodDuration / 2) + offset);
   };
 
   const getEnd = () => {
     const curDate = startOfDay(new Date());
-    if (state === 'start') return addDays(curDate, periodDuration - offset);
+    if (state === 'start') return addDays(curDate, periodDuration - offset - 1);
     if (state === 'end') return addDays(curDate, offset);
-    return addDays(curDate, Math.floor(periodDuration / 2) + offset);
+    return addDays(curDate, Math.floor(periodDuration / 2) + offset - 1 + periodDuration % 2);
   };
 
   const [dateStart, setDateStart] = useState(getStart());
@@ -94,6 +110,10 @@ export default function useDatePeriod(periodDuration) {
   useKeyPress(['h'], subPeriod);
   useKeyPress(['l'], addPeriod);
 
+  useEffect(() => {
+    reset();
+  }, [width]);
+
   return [
     dateEnd,
     setDateEnd,
@@ -102,3 +122,5 @@ export default function useDatePeriod(periodDuration) {
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ];
 }
+
+export { getAdaptivePeriodLength };

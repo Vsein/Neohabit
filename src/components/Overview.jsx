@@ -14,7 +14,8 @@ import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
-import useDatePeriod from '../hooks/useDatePeriod';
+import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
@@ -25,15 +26,20 @@ export default function Overview() {
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
+  const { width } = useWindowDimensions();
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
 
-  const datePeriodLength = settings.data?.overview_duration ?? 32;
+  const datePeriodLength =
+    settings.data?.overview_adaptive ?? true
+      ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
+      : settings.data?.overview_duration ?? 32;
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
-  ] = useDatePeriod(datePeriodLength - 1);
+  ] = useDatePeriod(datePeriodLength);
 
   if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
     return <div className="loader" />;
@@ -41,7 +47,7 @@ export default function Overview() {
 
   return (
     <div
-      className="overview-centering"
+      className={`overview-centering ${mobile ? 'mobile' : ''}`}
       style={{
         '--habits': habits.data.length,
         '--length': differenceInDays(dateEnd, dateStart) + 1,
@@ -97,6 +103,7 @@ export default function Overview() {
                 dateEnd={dateEnd}
                 heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
                 vertical={vertical}
+                mobile={mobile}
               />
             ))}
           </div>

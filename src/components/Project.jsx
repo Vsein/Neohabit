@@ -9,7 +9,8 @@ import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import useDatePeriod from '../hooks/useDatePeriod';
+import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
@@ -20,27 +21,31 @@ export default function Project({ project }) {
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
+  const { width } = useWindowDimensions();
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
 
-  const datePeriodLength = settings.data?.overview_duration ?? 32;
+  const datePeriodLength =
+    settings.data?.overview_adaptive ?? true
+      ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
+      : settings.data?.overview_duration ?? 32;
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
-  ] = useDatePeriod(datePeriodLength - 1);
+  ] = useDatePeriod(datePeriodLength);
 
-  const colorShade =
-    !settings.data?.prefer_dark
-      ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
-      : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(project.color), 0.6);
+  const colorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
+    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(project.color), 0.6);
 
   return (
     !heatmaps.isFetching &&
     !habits.isFetching &&
     !settings.isFetching && (
       <div
-        className="overview-centering"
+        className={`overview-centering ${mobile ? 'mobile' : ''}`}
         style={{
           '--habits': project.habits.length,
           '--length': differenceInDays(dateEnd, dateStart) + 1,
@@ -104,6 +109,7 @@ export default function Project({ project }) {
                       dateEnd={dateEnd}
                       heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
                       vertical={vertical}
+                      mobile={mobile}
                     />
                   ) : (
                     habits.data.find((habito) => habito._id === habit) && (
@@ -114,6 +120,7 @@ export default function Project({ project }) {
                         dateEnd={dateEnd}
                         heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
                         vertical={vertical}
+                        mobile={mobile}
                       />
                     )
                   ),
