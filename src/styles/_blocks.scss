@@ -68,13 +68,8 @@
     height: min-content;
 
     &-picker {
-      width: 85px;
-
-      &::-webkit-inner-spin-button,
-      &::-webkit-calendar-picker-indicator {
-        display: none;
-        -webkit-appearance: none;
-      }
+      width: 110px;
+      padding: 0;
     }
   }
 }
