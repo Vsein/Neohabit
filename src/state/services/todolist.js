@@ -6,7 +6,6 @@ export const todolistApi = api.injectEndpoints({
       query: () => ({
         url: 'tasks',
       }),
-      providesTags: ['Task'],
     }),
     createTask: builder.mutation({
       query: (values) => ({
