@@ -278,6 +278,7 @@ $cell-margin: 2px;
   @media (max-width: 550px) {
     grid-template-areas:
     'name settings';
+    padding-bottom: 0px;
   }
 
   &.vertical {
@@ -289,12 +290,14 @@ $cell-margin: 2px;
     @include overview-header-small;
     grid-template-areas:
     'name settings';
+    padding-bottom: 0px;
   }
 
   &.singular {
     grid-template-areas:
     'name settings'
-    'date date'
+    'date date';
+    padding-bottom: 5px;
   }
 
   & > h3 {
