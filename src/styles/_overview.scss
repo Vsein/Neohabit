@@ -11,10 +11,15 @@ $cell-margin: 2px;
   height: min-content;
   width: 100%;
   gap: 15px;
-  padding: 30px;
+  padding: 20px;
 
   @media (max-width: 1000px) {
     padding: 15px;
+  }
+
+  @media (max-width: 550px) {
+    padding: 5px;
+    gap: 10px;
   }
 }
 
@@ -41,7 +46,7 @@ $cell-margin: 2px;
   --overview-topbar-left-padding: 35px;
 
   &.mobile {
-    --habit-name-width: 130px;
+    --habit-name-width: 110px;
     --habit-controls-width: 20px;
     --overview-padding-right: calc((var(--habit-name-width) + var(--length) * 19px + var(--habit-controls-width)) / 2);
     --overview-padding-right: 3px;
@@ -186,6 +191,11 @@ $cell-margin: 2px;
         overflow: hidden;
         white-space: nowrap;
         padding-left: 5px;
+
+        @media (max-width: 850px) {
+          font-size: 13px;
+          padding-left: 2px;
+        }
       }
 
       &-button {
@@ -207,6 +217,10 @@ $cell-margin: 2px;
     overflow: hidden;
     grid-area: topbar-left;
     justify-content: space-around;
+
+    @media (max-width: 550px) {
+      padding-left: 2px;
+    }
   }
 
   &-topbar-right {
@@ -219,6 +233,14 @@ $cell-margin: 2px;
     display: flex;
     flex-direction: row;
     width: 100%;
+    align-items: center;
+
+    @media (max-width: 850px) {
+      font-size: 0.8rem;
+      & .icon {
+        margin-inline: -5px;
+      }
+    }
   }
 
   &-period-button {
@@ -255,7 +277,6 @@ $cell-margin: 2px;
     'name settings'
     'date settings';
   gap: 3px;
-  padding-bottom: 5px;
 }
 
 .overview-header {
@@ -278,7 +299,13 @@ $cell-margin: 2px;
   @media (max-width: 550px) {
     grid-template-areas:
     'name settings';
-    padding-bottom: 0px;
+
+    &.singular {
+      grid-template-areas:
+      'name settings'
+      'date date';
+      padding-bottom: 5px;
+    }
   }
 
   &.vertical {
@@ -290,14 +317,13 @@ $cell-margin: 2px;
     @include overview-header-small;
     grid-template-areas:
     'name settings';
-    padding-bottom: 0px;
-  }
 
-  &.singular {
-    grid-template-areas:
-    'name settings'
-    'date date';
-    padding-bottom: 5px;
+    &.singular {
+      grid-template-areas:
+      'name settings'
+      'date date';
+      padding-bottom: 5px;
+    }
   }
 
   & > h3 {

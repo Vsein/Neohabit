@@ -66,8 +66,8 @@ export default function Project({
       >
         <div
           className={`overview-header ${vertical ? 'vertical' : ''} ${
-            datePeriodLength < 14 ? 'small' : ''
-          } ${singular && datePeriodLength < 14 ? 'singular' : ''}`}
+            mobile ? 'small' : ''
+          } ${singular ? 'singular' : ''}`}
         >
           <NavLink to={`../project/${project?._id}`} title={project.name}>
             <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>

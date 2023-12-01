@@ -10,9 +10,13 @@
   height: 60px;
   width: 100%;
 
+  @media (max-width: 800px) {
+    height: 50px;
+  }
+
   @media (max-width: 550px) {
-      bottom: 50px;
-      height: 50px;
+    bottom: 50px;
+    height: 50px;
   }
 }
 
@@ -56,7 +60,7 @@
   height: 50px;
   padding-inline: 10px;
 
-  @media (max-width: 550px) {
+  @media (max-width: 800px) {
     height: 40px;
     padding-inline: 5px;
 

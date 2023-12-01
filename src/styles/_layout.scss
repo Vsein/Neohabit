@@ -9,8 +9,8 @@
 
 #content {
   min-height: calc(100vh - 60px);
-  @supports(height: 100dvh) {
-    min-height: calc(100dvh - 60px);
+  @supports(min-height: 100svh) {
+    min-height: calc(100svh - 60px);
   }
   width: 100%;
   display: grid;
@@ -20,10 +20,18 @@
   grid-template-rows: 60px 1fr;
   grid-template-columns: 85px 1fr;
   // background-color: #efefef;
+
+  @media (max-width: 800px) {
+  min-height: calc(100vh - 50px);
+    @supports(min-height: 100svh) {
+      min-height: calc(100svh - 50px);
+    }
+  }
+
   @media (max-width: 550px) {
     min-height: calc(100vh - 100px);
-    @supports(height: 100dvh) {
-      min-height: calc(100dvh - 100px);
+    @supports(min-height: 100svh) {
+      min-height: calc(100svh - 100px);
     }
     grid-template-areas:
     'menu    menu'

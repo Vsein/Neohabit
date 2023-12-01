@@ -60,8 +60,8 @@ export default function Overview() {
     >
       <div
         className={`overview-header ${vertical ? 'vertical' : ''} ${
-          datePeriodLength < 14 ? 'small singular' : ''
-        }`}
+          mobile ? 'small' : ''
+        } singular`}
       >
         <h3>Overview</h3>
         <DatePeriodPicker
