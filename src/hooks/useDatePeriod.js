@@ -28,7 +28,7 @@ function getAdaptivePeriodLength(width) {
   return { adaptiveDatePeriodLength, mobile: width < 850 };
 }
 
-export default function useDatePeriod(periodDuration) {
+export default function useDatePeriod(periodDuration, global=false) {
   const settings = useGetSettingsQuery();
   const { width } = useWindowDimensions();
   const state = settings.data.overview_current_day;
@@ -104,11 +104,13 @@ export default function useDatePeriod(periodDuration) {
     setDateEnd(getEnd());
   };
 
-  useKeyPress(['r'], reset);
-  useKeyPress(['H'], subMonth);
-  useKeyPress(['L'], addMonth);
-  useKeyPress(['h'], subPeriod);
-  useKeyPress(['l'], addPeriod);
+  if (!global) {
+    useKeyPress(['r'], reset);
+    useKeyPress(['H'], subMonth);
+    useKeyPress(['L'], addMonth);
+    useKeyPress(['h'], subPeriod);
+    useKeyPress(['l'], addPeriod);
+  }
 
   useEffect(() => {
     reset();

@@ -18,6 +18,14 @@ $cell-margin: 2px;
   }
 }
 
+.contentlist-controls {
+  display: grid;
+  justify-content: center;
+  background-color: var(--main-background-color);
+  width: 100%;
+  height: 50px;
+}
+
 .overview-controls {
   background-color: var(--main-background-color);
   display: flex;
@@ -269,8 +277,7 @@ $cell-margin: 2px;
 
   @media (max-width: 550px) {
     grid-template-areas:
-    'name settings'
-    'date date';
+    'name settings';
   }
 
   &.vertical {
@@ -281,8 +288,7 @@ $cell-margin: 2px;
   &.small {
     @include overview-header-small;
     grid-template-areas:
-    'name settings'
-    'date date';
+    'name settings';
   }
 
   & > h3 {
