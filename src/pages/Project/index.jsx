@@ -45,6 +45,7 @@ function ProjectPageLayout() {
         project={projects.data.find((projecto) => projecto._id === projectID) || defaultProject}
         datePeriodLength={datePeriodLength}
         mobile={mobile}
+        singular={true}
       />
     </div>
   );

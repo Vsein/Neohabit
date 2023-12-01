@@ -291,6 +291,12 @@ $cell-margin: 2px;
     'name settings';
   }
 
+  &.singular {
+    grid-template-areas:
+    'name settings'
+    'date date'
+  }
+
   & > h3 {
     grid-area: name;
     margin: auto;

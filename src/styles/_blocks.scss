@@ -44,6 +44,11 @@
   justify-content: center;
   align-items: center;
   margin: auto;
+
+  @media (max-width: 380px) {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
 }
 
 .dates-period {

@@ -19,8 +19,9 @@ export default function Project({
   project,
   datePeriodLength,
   mobile,
-  globalDateStart=null,
-  globalDateEnd=null,
+  singular = false,
+  globalDateStart = null,
+  globalDateEnd = null,
 }) {
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
@@ -66,12 +67,12 @@ export default function Project({
         <div
           className={`overview-header ${vertical ? 'vertical' : ''} ${
             datePeriodLength < 14 ? 'small' : ''
-          }`}
+          } ${singular && datePeriodLength < 14 ? 'singular' : ''}`}
         >
           <NavLink to={`../project/${project?._id}`} title={project.name}>
             <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
           </NavLink>
-          {!mobile && (
+          {(!mobile || singular) && (
             <DatePeriodPicker
               dateStart={dateStart}
               setDateStart={setDateStart}
