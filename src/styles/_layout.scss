@@ -8,7 +8,10 @@
 }
 
 #content {
-  min-height: calc(100dvh - 60px);
+  min-height: calc(100vh - 60px);
+  @supports(height: 100dvh) {
+    min-height: calc(100dvh - 60px);
+  }
   width: 100%;
   display: grid;
   grid-template-areas:
@@ -18,7 +21,10 @@
   grid-template-columns: 85px 1fr;
   // background-color: #efefef;
   @media (max-width: 550px) {
-    min-height: calc(100dvh - 100px);
+    min-height: calc(100vh - 100px);
+    @supports(height: 100dvh) {
+      min-height: calc(100dvh - 100px);
+    }
     grid-template-areas:
     'menu    menu'
     'main main';
