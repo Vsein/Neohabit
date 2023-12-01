@@ -4,6 +4,9 @@ import useTitle from '../../hooks/useTitle';
 import useDefaultProject from '../../hooks/useDefaultProject';
 import { useGetHabitsQuery } from '../../state/services/habit';
 import { useGetProjectsQuery } from '../../state/services/project';
+import { useGetSettingsQuery } from '../../state/services/settings';
+import { getAdaptivePeriodLength } from '../../hooks/useDatePeriod';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 import Project from '../../components/Project';
 
 export default function ProjectPage() {
@@ -22,7 +25,15 @@ export default function ProjectPage() {
 function ProjectPageLayout() {
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
+  const settings = useGetSettingsQuery();
   const { projectID } = useParams();
+
+  const { width } = useWindowDimensions();
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
+  const datePeriodLength =
+    settings.data?.overview_adaptive ?? true
+      ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
+      : settings.data?.overview_duration ?? 32;
 
   const [defaultProject] = useDefaultProject();
 
@@ -32,6 +43,9 @@ function ProjectPageLayout() {
     <div className="contentlist">
       <Project
         project={projects.data.find((projecto) => projecto._id === projectID) || defaultProject}
+        datePeriodLength={datePeriodLength}
+        mobile={mobile}
+        singular={true}
       />
     </div>
   );

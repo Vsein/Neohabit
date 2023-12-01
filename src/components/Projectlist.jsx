@@ -7,12 +7,15 @@ import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
+import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 import useLoaded from '../hooks/useLoaded';
-import Project from './Project';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';
+import Project from './Project';
+import { DatePeriodPicker } from './DatePickers';
 
-export default function Overview() {
+export default function Projectlist() {
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
@@ -26,26 +29,70 @@ export default function Overview() {
 
   const [defaultProject] = useDefaultProject();
 
+  const { width } = useWindowDimensions();
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
+  const datePeriodLength =
+    settings.data?.overview_adaptive ?? true
+      ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
+      : settings.data?.overview_duration ?? 32;
+
+  const [
+    dateEnd,
+    setDateEnd,
+    dateStart,
+    setDateStart,
+    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
+  ] = useDatePeriod(datePeriodLength, true);
+
   if (!loaded || projects.isFetching || habits.isFetching || settings.isFetching) {
     return <div className="loader" />;
   }
 
   return (
-    <div className="contentlist">
-      {projects.data && projects.data.map((project, i) => (
-        <Project key={i} project={project} />
-      ))}
-      <Project project={defaultProject} />
-      <div className="overview-centering" style={{ '--length': settings.data?.overview_duration ?? 32 }}>
-        <button
-          className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
-          onClick={openOverlay}
-          title="Add a new habit [A]"
-        >
-          <Icon className="icon small" path={mdiPlus} />
-          <p>Add a new project</p>
-        </button>
+    <>
+      <div className="contentlist-controls centering">
+        <DatePeriodPicker
+          dateStart={dateStart}
+          setDateStart={setDateStart}
+          dateEnd={dateEnd}
+          setDateEnd={setDateEnd}
+          subPeriod={subPeriod}
+          addPeriod={addPeriod}
+        />
       </div>
-    </div>
+      <div className="contentlist">
+        {projects.data &&
+          projects.data.map((project, i) => (
+            <Project
+              key={i}
+              project={project}
+              datePeriodLength={datePeriodLength}
+              mobile={mobile}
+              globalDateStart={dateStart}
+              globalDateEnd={dateEnd}
+            />
+          ))}
+        <Project
+          project={defaultProject}
+          datePeriodLength={datePeriodLength}
+          mobile={mobile}
+          globalDateStart={dateStart}
+          globalDateEnd={dateEnd}
+        />
+        <div
+          className="overview-centering"
+          style={{ '--length': settings.data?.overview_duration ?? 32 }}
+        >
+          <button
+            className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
+            onClick={openOverlay}
+            title="Add a new habit [A]"
+          >
+            <Icon className="icon small" path={mdiPlus} />
+            <p>Add a new project</p>
+          </button>
+        </div>
+      </div>
+    </>
   );
 }

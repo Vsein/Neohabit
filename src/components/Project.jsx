@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
@@ -9,25 +9,24 @@ import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
-import useWindowDimensions from '../hooks/useWindowDimensions';
+import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
-export default function Project({ project }) {
+export default function Project({
+  project,
+  datePeriodLength,
+  mobile,
+  singular = false,
+  globalDateStart = null,
+  globalDateEnd = null,
+}) {
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
-  const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
-
-  const datePeriodLength =
-    settings.data?.overview_adaptive ?? true
-      ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
-      : settings.data?.overview_duration ?? 32;
   const [
     dateEnd,
     setDateEnd,
@@ -35,6 +34,13 @@ export default function Project({ project }) {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength);
+
+  useEffect(() => {
+    if (globalDateStart && globalDateEnd) {
+      setDateStart(globalDateStart);
+      setDateEnd(globalDateEnd);
+    }
+  }, [globalDateStart, globalDateEnd]);
 
   const colorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
@@ -60,20 +66,22 @@ export default function Project({ project }) {
       >
         <div
           className={`overview-header ${vertical ? 'vertical' : ''} ${
-            datePeriodLength < 14 ? 'small' : ''
-          }`}
+            mobile ? 'small' : ''
+          } ${singular ? 'singular' : ''}`}
         >
           <NavLink to={`../project/${project?._id}`} title={project.name}>
             <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
           </NavLink>
-          <DatePeriodPicker
-            dateStart={dateStart}
-            setDateStart={setDateStart}
-            dateEnd={dateEnd}
-            setDateEnd={setDateEnd}
-            subPeriod={subPeriod}
-            addPeriod={addPeriod}
-          />
+          {(!mobile || singular) && (
+            <DatePeriodPicker
+              dateStart={dateStart}
+              setDateStart={setDateStart}
+              dateEnd={dateEnd}
+              setDateEnd={setDateEnd}
+              subPeriod={subPeriod}
+              addPeriod={addPeriod}
+            />
+          )}
           <ProjectControls projectID={project?._id} />
         </div>
         <div className={`overview-container ${vertical ? 'vertical' : ''}`}>

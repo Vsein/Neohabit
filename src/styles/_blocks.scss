@@ -44,6 +44,11 @@
   justify-content: center;
   align-items: center;
   margin: auto;
+
+  @media (max-width: 380px) {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
 }
 
 .dates-period {
@@ -68,13 +73,8 @@
     height: min-content;
 
     &-picker {
-      width: 85px;
-
-      &::-webkit-inner-spin-button,
-      &::-webkit-calendar-picker-indicator {
-        display: none;
-        -webkit-appearance: none;
-      }
+      width: 115px;
+      padding: 0;
     }
   }
 }

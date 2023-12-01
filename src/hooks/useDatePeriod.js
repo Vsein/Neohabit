@@ -17,18 +17,18 @@ import useWindowDimensions from './useWindowDimensions';
 function getAdaptivePeriodLength(width) {
   let adaptiveDatePeriodLength;
   if (width < 550) {
-    adaptiveDatePeriodLength = Math.floor((width - 30 - 130 - 20 - 5) / 19);
+    adaptiveDatePeriodLength = Math.floor((width - 10 - 110 - 20 - 5) / 19);
   } else if (width < 850) {
-    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 130 - 20 - 5) / 19);
+    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 110 - 20 - 5) / 19);
   } else if (width < 1000) {
     adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 10) / 19);
   } else {
-    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 30) / 19);
+    adaptiveDatePeriodLength = Math.floor((width - 85 - 40 - 200 - 115) / 19);
   }
   return { adaptiveDatePeriodLength, mobile: width < 850 };
 }
 
-export default function useDatePeriod(periodDuration) {
+export default function useDatePeriod(periodDuration, global=false) {
   const settings = useGetSettingsQuery();
   const { width } = useWindowDimensions();
   const state = settings.data.overview_current_day;
@@ -104,11 +104,13 @@ export default function useDatePeriod(periodDuration) {
     setDateEnd(getEnd());
   };
 
-  useKeyPress(['r'], reset);
-  useKeyPress(['H'], subMonth);
-  useKeyPress(['L'], addMonth);
-  useKeyPress(['h'], subPeriod);
-  useKeyPress(['l'], addPeriod);
+  if (!global) {
+    useKeyPress(['r'], reset);
+    useKeyPress(['H'], subMonth);
+    useKeyPress(['L'], addMonth);
+    useKeyPress(['h'], subPeriod);
+    useKeyPress(['l'], addPeriod);
+  }
 
   useEffect(() => {
     reset();
