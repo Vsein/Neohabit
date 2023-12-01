@@ -9,8 +9,7 @@ import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
-import useWindowDimensions from '../hooks/useWindowDimensions';
+import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
@@ -20,8 +19,8 @@ export default function Project({
   project,
   datePeriodLength,
   mobile,
-  globalDateStart,
-  globalDateEnd,
+  globalDateStart=null,
+  globalDateEnd=null,
 }) {
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
@@ -36,8 +35,10 @@ export default function Project({
   ] = useDatePeriod(datePeriodLength);
 
   useEffect(() => {
-    setDateStart(globalDateStart);
-    setDateEnd(globalDateEnd);
+    if (globalDateStart && globalDateEnd) {
+      setDateStart(globalDateStart);
+      setDateEnd(globalDateEnd);
+    }
   }, [globalDateStart, globalDateEnd]);
 
   const colorShade = !settings.data?.prefer_dark

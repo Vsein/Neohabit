@@ -21,8 +21,6 @@ export default function Projectlist() {
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
-  const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
 
   const dispatch = useDispatch();
   const openOverlay = () => {
@@ -31,6 +29,8 @@ export default function Projectlist() {
 
   const [defaultProject] = useDefaultProject();
 
+  const { width } = useWindowDimensions();
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
   const datePeriodLength =
     settings.data?.overview_adaptive ?? true
       ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
