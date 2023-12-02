@@ -29,6 +29,10 @@ $cell-margin: 2px;
   background-color: var(--main-background-color);
   width: 100%;
   height: 50px;
+
+  @media (max-width: 320px) {
+    height: 70px;
+  }
 }
 
 .overview-controls {

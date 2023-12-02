@@ -38,6 +38,15 @@
   padding: 1em;
   transform: translate(-50%, -50%) scale(0);
 
+  @media (max-width: 550px) {
+    width: calc(100% - 16px);
+    padding: 0.4em;
+
+    & .button-default {
+      padding: 8px 5px;
+    }
+  }
+
   &-active {
     transform: translate(-50%, -50%) scale(1);
   }
@@ -57,6 +66,10 @@
     background-color: var(--main-background-color);
     padding: 10px;
     border-radius: 10px;
+
+    @media (max-width: 550px) {
+      padding: 5px;
+    }
   }
 
   &-description {
