@@ -106,13 +106,6 @@ export default function Settings() {
               {/*   min="1" */}
               {/*   max="4" */}
               {/* /> */}
-              <SettingsNumberOption
-                name="Default heatmap period duration"
-                curState={settings.data?.overview_duration ?? 32}
-                update={(state) => updateSettings({ values: { overview_duration: +state } })}
-                min="1"
-                max="365"
-              />
               <SettingsButtonOption
                 name="Behavior when whole period doesn't fit"
                 curState={settings.data.overview_adaptive ?? true}
@@ -122,6 +115,34 @@ export default function Settings() {
                   { name: 'Rigid', state: false },
                 ]}
               />
+              {settings.data.overview_adaptive ? (
+                <SettingsButtonOption
+                  name="Limit the adaptive period duration?"
+                  curState={settings.data.overview_apply_limit ?? true}
+                  update={(state) => updateSettings({ values: { overview_apply_limit: state } })}
+                  choices={[
+                    { name: 'On', state: true },
+                    { name: 'Off', state: false },
+                  ]}
+                />
+              ) : (
+                <SettingsNumberOption
+                  name="Heatmap period duration"
+                  curState={settings.data?.overview_duration ?? 32}
+                  update={(state) => updateSettings({ values: { overview_duration: +state } })}
+                  min="1"
+                  max="365"
+                />
+              )}
+              {settings.data.overview_adaptive && settings.data?.overview_apply_limit && (
+                <SettingsNumberOption
+                  name="Period duration limit"
+                  curState={settings.data?.overview_duration_limit ?? 32}
+                  update={(state) => updateSettings({ values: { overview_duration_limit: +state } })}
+                  min="1"
+                  max="365"
+                />
+              )}
               <SettingsNumberOption
                 name="Offset from the period start/period end"
                 curState={settings.data?.overview_offset ?? 0}

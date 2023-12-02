@@ -5,7 +5,7 @@ import useDefaultProject from '../../hooks/useDefaultProject';
 import { useGetHabitsQuery } from '../../state/services/habit';
 import { useGetProjectsQuery } from '../../state/services/project';
 import { useGetSettingsQuery } from '../../state/services/settings';
-import { getAdaptivePeriodLength } from '../../hooks/useDatePeriod';
+import useDatePeriod, { getAdaptivePeriodLength } from '../../hooks/useDatePeriod';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import Project from '../../components/Project';
 
@@ -32,8 +32,21 @@ function ProjectPageLayout() {
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
   const datePeriodLength =
     settings.data?.overview_adaptive ?? true
-      ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
+      ? Math.min(
+          adaptiveDatePeriodLength,
+          settings.data?.overview_apply_limit ?? true
+            ? settings.data?.overview_duration_limit ?? 32
+            : Infinity,
+        )
       : settings.data?.overview_duration ?? 32;
+
+  const [
+    dateEnd,
+    setDateEnd,
+    dateStart,
+    setDateStart,
+    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
+  ] = useDatePeriod(datePeriodLength, true);
 
   const [defaultProject] = useDefaultProject();
 
@@ -46,6 +59,8 @@ function ProjectPageLayout() {
         datePeriodLength={datePeriodLength}
         mobile={mobile}
         singular={true}
+        globalDateStart={dateStart}
+        globalDateEnd={dateEnd}
       />
     </div>
   );

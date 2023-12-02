@@ -31,7 +31,12 @@ export default function Overview() {
 
   const datePeriodLength =
     settings.data?.overview_adaptive ?? true
-      ? Math.min(adaptiveDatePeriodLength, settings.data?.overview_duration ?? 32)
+      ? Math.min(
+          adaptiveDatePeriodLength,
+          settings.data?.overview_apply_limit ?? true
+            ? settings.data?.overview_duration_limit ?? 32
+            : Infinity,
+        )
       : settings.data?.overview_duration ?? 32;
   const [
     dateEnd,
