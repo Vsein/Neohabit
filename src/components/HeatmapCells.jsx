@@ -218,7 +218,7 @@ function CellPeriod({
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    [value ? 'backgroundColor' : '']: trueColor,
+    [value ? '--blank-cell-color' : '']: trueColor,
     '--height': 7,
     '--width': width,
   };
@@ -365,8 +365,9 @@ function CellPeriodDummy({ dateStart, dateEnd, color, basePeriod = 24 }) {
   width -= dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    backgroundColor: 'transparent',
+    '--blank-cell-color': 'transparent',
     '--cell-border-color': 'transparent',
+    '--cell-shadow-color': 'transparent',
     '--height': 7,
     '--width': width,
   };

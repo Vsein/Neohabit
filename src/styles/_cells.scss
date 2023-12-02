@@ -109,6 +109,7 @@ $cell-margin: 2px;
   );
   width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
   border: 1px solid transparent;
+  box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
   margin: $cell-margin;
   border-radius: 1px;
   position: relative;
@@ -125,6 +126,7 @@ $cell-margin: 2px;
     position: absolute;
     visibility: visible;
     background-color: inherit;
+    box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
   }
 
   &-before {
@@ -152,10 +154,34 @@ $cell-margin: 2px;
     );
   }
 
+  &.wide {
+    & .cell-period-before:after {
+      display: block;
+      background-color: var(--blank-cell-color);
+      width: 2px;
+      height: calc(100% + 1px);
+      content: " ";
+      position: absolute;
+      top: -1px;
+      right: -1px;
+    }
+    & .cell-period-after:after {
+      display: block;
+      background-color: var(--blank-cell-color);
+      width: 2px;
+      height: calc(100% + 1px);
+      content: " ";
+      position: absolute;
+      top: 0px;
+      left: -1px;
+    }
+  }
+
   &.whole {
     margin-inline: 0px;
     border-left: none;
     border-right: none;
+    box-shadow: none;
 
     & .cell-period-before {
       width: var(--cell-height);
@@ -174,11 +200,21 @@ $cell-margin: 2px;
     & > .cell-period-before {
       border: 1px solid var(--cell-border-color);
       border-right: none;
+      box-shadow: none;
+
+      &:after {
+        display: none;
+      }
     }
 
     & > .cell-period-after {
       border: 1px solid var(--cell-border-color);
       border-left: none;
+      box-shadow: none;
+
+      &:after {
+        display: none;
+      }
     }
   }
 
