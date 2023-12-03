@@ -1,5 +1,5 @@
 import React from 'react';
-import { addHours, differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
+import { differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
 // import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod from '../hooks/useDatePeriod';
@@ -22,7 +22,7 @@ export default function Habit({ heatmap, habit }) {
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
   ] = useDatePeriod(datePeriodLength);
 
-  const diffWeeks = differenceInWeeks(addHours(endOfWeek(dateEnd), 1), startOfWeek(dateStart));
+  const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
   return (
     <div
