@@ -3,6 +3,8 @@ import {
   startOfDay,
   isFirstDayOfMonth,
   startOfMonth,
+  startOfWeek,
+  endOfWeek,
   subMonths,
   addMonths,
   subYears,
@@ -16,23 +18,31 @@ import useWindowDimensions from './useWindowDimensions';
 
 function getAdaptivePeriodLength(width, habit = false) {
   let minus = 0;
-  if (habit) {
-    return { adaptiveDatePeriodLength: Math.floor((width - 85 * (width >= 550) - 40 - 10) / 19), mobile: width < 850 };
-  }
   if (width < 550) {
-    minus += 10 + 110 + 20 + 5;
-  } else if (width < 850) {
-    minus += 85 + 30 + 110 + 20 + 5;
+    minus += 10;
   } else if (width < 1000) {
-    minus += 85 + 30 + 200 + 115 + 10;
+    minus += 30 + 85; // padding + sidebar
   } else {
-    minus += 85 + 40 + 200 + 115;
+    minus += 40 + 85; // padding + sidebar
+  }
+  if (habit) {
+    return {
+      adaptiveDatePeriodLength: Math.floor((width - minus - 40 - 10) / 19),
+      mobile: width < 850,
+    };
+  }
+  if (width < 850) {
+    minus += 110 + 20 + 5;
+  } else if (width < 1000) {
+    minus += 200 + 115 + 10;
+  } else {
+    minus += 200 + 115;
   }
   const adaptiveDatePeriodLength = Math.floor((width - minus) / 19);
   return { adaptiveDatePeriodLength, mobile: width < 850 };
 }
 
-export default function useDatePeriod(periodDuration, global = false) {
+export default function useDatePeriod(periodDuration, global = false, weekly = false) {
   const settings = useGetSettingsQuery();
   const { width } = useWindowDimensions();
   const state = settings.data.overview_current_day;
@@ -40,6 +50,12 @@ export default function useDatePeriod(periodDuration, global = false) {
 
   const getStart = () => {
     const curDate = startOfDay(new Date());
+    if (weekly) {
+      if (state === 'start') return startOfWeek(addDays(curDate, -offset));
+      if (state === 'end')
+        return startOfWeek(addDays(curDate, (-periodDuration + 1) * 7 + offset + 1));
+      return startOfWeek(addDays(curDate, -Math.floor(periodDuration / 2) * 7 + offset));
+    }
     if (state === 'start') return addDays(curDate, -offset);
     if (state === 'end') return addDays(curDate, -periodDuration + offset + 1);
     return addDays(curDate, -Math.floor(periodDuration / 2) + offset);
@@ -47,6 +63,19 @@ export default function useDatePeriod(periodDuration, global = false) {
 
   const getEnd = () => {
     const curDate = startOfDay(new Date());
+    if (weekly) {
+      if (state === 'start')
+        return startOfDay(endOfWeek(addDays(curDate, periodDuration * 7 - offset - 1)));
+      if (state === 'end') return startOfDay(endOfWeek(addDays(curDate, offset)));
+      return startOfDay(
+        endOfWeek(
+          addDays(
+            curDate,
+            Math.floor(periodDuration / 2 - 1) * 7 + offset - 1 + (periodDuration % 2) * 7,
+          ),
+        ),
+      );
+    }
     if (state === 'start') return addDays(curDate, periodDuration - offset - 1);
     if (state === 'end') return addDays(curDate, offset);
     return addDays(curDate, Math.floor(periodDuration / 2) + offset - 1 + (periodDuration % 2));

@@ -18,14 +18,14 @@ export default function Habit({ heatmap, habit }) {
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
 
-  const datePeriodLength = Math.min(adaptiveDatePeriodLength * 7, 365);
+  const datePeriodLength = adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
-  ] = useDatePeriod(datePeriodLength);
+  ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365);
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
@@ -48,11 +48,7 @@ export default function Habit({ heatmap, habit }) {
         '--bright-signature-color': colorShade,
       }}
     >
-      <div
-        className={`overview-header ${
-          mobile ? 'small' : ''
-        } singular habit-mode`}
-      >
+      <div className={`overview-header ${mobile ? 'small' : ''} singular habit-mode`}>
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
         <DatePeriodPicker
           dateStart={dateStart}
