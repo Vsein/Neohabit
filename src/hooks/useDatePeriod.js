@@ -14,21 +14,25 @@ import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
 import useWindowDimensions from './useWindowDimensions';
 
-function getAdaptivePeriodLength(width) {
-  let adaptiveDatePeriodLength;
-  if (width < 550) {
-    adaptiveDatePeriodLength = Math.floor((width - 10 - 110 - 20 - 5) / 19);
-  } else if (width < 850) {
-    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 110 - 20 - 5) / 19);
-  } else if (width < 1000) {
-    adaptiveDatePeriodLength = Math.floor((width - 85 - 30 - 200 - 115 - 10) / 19);
-  } else {
-    adaptiveDatePeriodLength = Math.floor((width - 85 - 40 - 200 - 115) / 19);
+function getAdaptivePeriodLength(width, habit = false) {
+  let minus = 0;
+  if (habit) {
+    return { adaptiveDatePeriodLength: Math.floor((width - 85 * (width >= 550) - 40 - 10) / 19), mobile: width < 850 };
   }
+  if (width < 550) {
+    minus += 10 + 110 + 20 + 5;
+  } else if (width < 850) {
+    minus += 85 + 30 + 110 + 20 + 5;
+  } else if (width < 1000) {
+    minus += 85 + 30 + 200 + 115 + 10;
+  } else {
+    minus += 85 + 40 + 200 + 115;
+  }
+  const adaptiveDatePeriodLength = Math.floor((width - minus) / 19);
   return { adaptiveDatePeriodLength, mobile: width < 850 };
 }
 
-export default function useDatePeriod(periodDuration, global=false) {
+export default function useDatePeriod(periodDuration, global = false) {
   const settings = useGetSettingsQuery();
   const { width } = useWindowDimensions();
   const state = settings.data.overview_current_day;
@@ -45,7 +49,7 @@ export default function useDatePeriod(periodDuration, global=false) {
     const curDate = startOfDay(new Date());
     if (state === 'start') return addDays(curDate, periodDuration - offset - 1);
     if (state === 'end') return addDays(curDate, offset);
-    return addDays(curDate, Math.floor(periodDuration / 2) + offset - 1 + periodDuration % 2);
+    return addDays(curDate, Math.floor(periodDuration / 2) + offset - 1 + (periodDuration % 2));
   };
 
   const [dateStart, setDateStart] = useState(getStart());

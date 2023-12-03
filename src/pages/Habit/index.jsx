@@ -31,10 +31,10 @@ function HabitLayout() {
   return habits.isFetching || heatmaps.isLoading || heatmaps.isFetching ? (
     <div className="loader" />
   ) : (
-    <div className="page-habit">
-      <Header habits={habits.data} />
-      <Navigation />
-      <Outlet />
-    </div>
+    <Outlet />
+    // {/* <div className="page-habit"> */}
+    //   {/* <Header habits={habits.data} /> */}
+    //   {/* <Navigation /> */}
+    // // </div>
   );
 }

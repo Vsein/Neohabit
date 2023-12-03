@@ -328,6 +328,15 @@ $cell-margin: 2px;
       'date date';
       padding-bottom: 5px;
     }
+
+    &.habit-mode {
+      grid-template-areas:
+      'name'
+      'settings'
+      'date';
+      padding-bottom: 5px;
+      justify-items: center;
+    }
   }
 
   & > h3 {

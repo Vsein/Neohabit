@@ -67,7 +67,7 @@
   padding-right: 5px;
   border-radius: 0 0 10px 10px;
   height: calc(25px + (var(--cell-height) + 4px) * 7 * var(--multiplier));
-  width: min(100%, calc(var(--weeks) * (var(--cell-height) + 4px) + 125px));
+  width: min(100%, calc(var(--weeks) * (var(--cell-height) + 4px) + 60px));
 }
 
 .habit-heatmap {
@@ -78,6 +78,6 @@
     '.        months'
     'weekdays cells';
   grid-template-rows: var(--cell-height) calc((var(--cell-height) + 4px) * 7 * var(--multiplier));
-  grid-template-columns: min-content calc(var(--weeks) * (var(--cell-height) + 4px) - 2px);
+  grid-template-columns: 40px calc(var(--weeks) * (var(--cell-height) + 4px) - 2px);
   row-gap: 4px;
 }
