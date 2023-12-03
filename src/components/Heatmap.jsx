@@ -84,7 +84,6 @@ export default function Heatmap({
           if (!firstPassed && vertical) {
             const hiddenDateStart = max([addDays(current.date, -gap || 0), dateStart]);
             firstVerticalDummy = differenceInDays(hiddenDateStart, startOfWeek(hiddenDateStart));
-            firstPassed = true;
           }
           if (target.period === undefined) {
             const dateNowTmp = current.date;
@@ -93,6 +92,7 @@ export default function Heatmap({
             } else {
               current.date = addDays(date, 1);
             }
+            firstPassed = true;
             return (
               <React.Fragment key={index}>
                 {!!firstVerticalDummy && (
@@ -182,6 +182,7 @@ export default function Heatmap({
             current.date = addDays(current.date, diffInPeriods * target.period);
             current.value = point.value;
           }
+          firstPassed = true;
           return (
             <React.Fragment key={index}>
               {!!firstVerticalDummy && (
