@@ -9,19 +9,20 @@ $cell-margin: 2px;
   margin: $cell-margin;
 }
 
-.cell {
-  height: calc(
-    var(--cell-height) * var(--height) * var(--multiplier) + 4px *
-      calc(var(--height) * var(--multiplier) - 1)
-  );
-  width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
-  margin: $cell-margin;
-  margin-block: calc(2px - var(--negate-margin-block));
-  border-radius: 1px;
+@mixin cell-common {
   position: relative;
-  background-color: var(--blank-cell-color);
-  box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
   border: 1px solid transparent;
+  border-radius: 1px;
+  box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
+  height: calc(var(--height) * var(--multiplier) * (var(--cell-height) + 4px) - 4px);
+  width: calc(var(--width) * (var(--cell-width) + 4px) - 4px);
+  margin: $cell-margin;
+  background-color: var(--blank-cell-color);
+}
+
+.cell {
+  @include cell-common;
+  margin-block: calc(2px - var(--negate-margin-block));
 
   &.dotted {
     background: repeating-conic-gradient(var(--color) 0% 27%, transparent 0% 100%) 50% / 3px 3px;
@@ -103,17 +104,7 @@ $cell-margin: 2px;
 }
 
 .cell-period {
-  height: calc(
-    var(--cell-height) * var(--height) * var(--multiplier) + 4px *
-      calc(var(--height) * var(--multiplier) - 1)
-  );
-  width: calc(var(--cell-width) * var(--width) + 4px * calc(var(--width) - 1));
-  border: 1px solid transparent;
-  box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
-  margin: $cell-margin;
-  border-radius: 1px;
-  position: relative;
-  background-color: var(--blank-cell-color);
+  @include cell-common;
 
   @mixin shaped-cell {
     margin: -1px;
