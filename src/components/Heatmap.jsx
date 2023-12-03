@@ -5,6 +5,7 @@ import {
   compareDesc,
   startOfDay,
   endOfDay,
+  startOfWeek,
   min,
   max,
   subMilliseconds,
@@ -44,6 +45,7 @@ export default function Heatmap({
     current.value = 0;
   };
   let passed = false;
+  let firstPassed = false;
 
   const palette = usePaletteGenerator(habit.color);
   const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
@@ -78,6 +80,12 @@ export default function Heatmap({
             gap = Math.max(differenceInDays(dateOfFirstEntry, dateStart), 0);
             current.date = dateOfFirstEntry;
           }
+          let firstVerticalDummy;
+          if (!firstPassed && vertical) {
+            const hiddenDateStart = max([addDays(current.date, -gap || 0), dateStart]);
+            firstVerticalDummy = differenceInDays(hiddenDateStart, startOfWeek(hiddenDateStart));
+            firstPassed = true;
+          }
           if (target.period === undefined) {
             const dateNowTmp = current.date;
             if (point?.is_target) {
@@ -87,6 +95,9 @@ export default function Heatmap({
             }
             return (
               <React.Fragment key={index}>
+                {!!firstVerticalDummy && (
+                  <CellDummy length={firstVerticalDummy} vertical={vertical} />
+                )}
                 {gap > 0 &&
                   (isOverview ? (
                     <CellDummy length={gap} vertical={vertical} />
@@ -173,12 +184,18 @@ export default function Heatmap({
           }
           return (
             <React.Fragment key={index}>
+              {!!firstVerticalDummy && (
+                <CellDummy length={firstVerticalDummy} vertical={vertical} />
+              )}
               {Array.from(new Array(diffInPeriods)).map((_, Index) => (
                 <CellPeriod
                   heatmapID={heatmap?._id}
                   key={Index}
                   targetStart={addDays(previous.date, Index * previousTarget.period)}
-                  targetEnd={subMilliseconds(addDays(previous.date, (Index + 1) * previousTarget.period), 1)}
+                  targetEnd={subMilliseconds(
+                    addDays(previous.date, (Index + 1) * previousTarget.period),
+                    1,
+                  )}
                   dateStart={max([
                     addDays(previous.date, Index * previousTarget.period),
                     dateStart,
