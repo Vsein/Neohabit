@@ -129,6 +129,15 @@ $cell-margin: 2px;
     box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
   }
 
+  @mixin shadow-fix {
+    display: block;
+    background-color: var(--blank-cell-color);
+    width: 2px;
+    height: calc(100% + 1px);
+    content: ' ';
+    position: absolute;
+  }
+
   &-before {
     @include shaped-cell;
     border-right: none;
@@ -152,26 +161,32 @@ $cell-margin: 2px;
       var(--cell-height) * var(--offset-top) * var(--multiplier) + 4px *
         calc(var(--offset-top) * var(--multiplier))
     );
+
+    &:hover {
+      box-shadow: none;
+    }
+
+    &:after {
+      @include shadow-fix;
+      top: -1px;
+      right: -1px;
+    }
+
+    &:before {
+      @include shadow-fix;
+      top: 0px;
+      left: -1px;
+    }
   }
 
   &.wide {
     & .cell-period-before:after {
-      display: block;
-      background-color: var(--blank-cell-color);
-      width: 2px;
-      height: calc(100% + 1px);
-      content: " ";
-      position: absolute;
+      @include shadow-fix;
       top: -1px;
       right: -1px;
     }
     & .cell-period-after:after {
-      display: block;
-      background-color: var(--blank-cell-color);
-      width: 2px;
-      height: calc(100% + 1px);
-      content: " ";
-      position: absolute;
+      @include shadow-fix;
       top: 0px;
       left: -1px;
     }
@@ -233,6 +248,12 @@ $cell-margin: 2px;
     & > .cell-period-connector {
       border-top: 1px solid var(--cell-border-color);
       border-bottom: 1px solid var(--cell-border-color);
+      box-shadow: none;
+
+      &:after,
+      &:before {
+        display: none;
+      }
     }
   }
 }
