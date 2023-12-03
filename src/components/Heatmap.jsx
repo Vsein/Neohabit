@@ -9,7 +9,7 @@ import {
   max,
   subMilliseconds,
 } from 'date-fns';
-import { CellPeriod, CellDummy, CellPeriodDummy } from './HeatmapCells';
+import { CellPeriod, CellDummy } from './HeatmapCells';
 import usePaletteGenerator from '../hooks/usePaletteGenerator';
 
 export default function Heatmap({
@@ -91,9 +91,10 @@ export default function Heatmap({
                   (isOverview ? (
                     <CellDummy length={gap} vertical={vertical} />
                   ) : (
-                    <CellPeriodDummy
+                    <CellPeriod
                       dateStart={addDays(dateNowTmp, -gap)}
                       dateEnd={subMilliseconds(dateNowTmp, 1)}
+                      dummy
                     />
                   ))}
                 {(differenceInDays(date, dateNowTmp) > 0 ||
