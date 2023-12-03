@@ -1,3 +1,5 @@
+@import 'scrollbar';
+
 .page-habit {
   display: grid;
   grid-template: 125px min-content 1fr / 5fr;
@@ -11,8 +13,71 @@
   gap: 24px;
 }
 
-.habit-overview {
-  padding: 18px 36px 36px;
-  width: min(980px, 100%);
-  margin-inline: auto;
+.habit {
+  &-button {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-form {
+    display: flex;
+    align-items: center;
+    width: min-content;
+    gap: 8px;
+
+    &.target {
+      width: 320px;
+      flex-wrap: wrap;
+      gap: 3px;
+
+      & > span {
+        white-space: pre;
+      }
+    }
+
+    & > div,
+    & > button {
+      border: 1px solid var(--important-border-color);
+      border-radius: 10px;
+      padding: 0px;
+    }
+
+    &-input {
+      height: 24px;
+      padding: 3px;
+      font-size: 12px;
+      line-height: 12px;
+    }
+
+    &-counter {
+      width: 50px;
+    }
+  }
+}
+
+.habit-heatmap-container {
+  @include scrollbar;
+  --negate-margin-block: 0px;
+  position: relative;
+  direction: rtl;
+  overflow-y: hidden;
+  padding-right: 5px;
+  border-radius: 0 0 10px 10px;
+  height: calc(25px + (var(--cell-height) + 4px) * 7 * var(--multiplier));
+  width: min(100%, calc(var(--weeks) * (var(--cell-height) + 4px) + 125px));
+}
+
+.habit-heatmap {
+  direction: ltr;
+  position: absolute;
+  display: grid;
+  grid-template-areas:
+    '.        months'
+    'weekdays cells';
+  grid-template-rows: var(--cell-height) calc((var(--cell-height) + 4px) * 7 * var(--multiplier));
+  grid-template-columns: min-content calc(var(--weeks) * (var(--cell-height) + 4px) - 2px);
+  row-gap: 4px;
 }

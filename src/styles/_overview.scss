@@ -71,8 +71,8 @@ $cell-margin: 2px;
 .overview-container {
   @include scrollbar;
   --negate-margin-block: calc(2 - 2 * var(--vertical));
-  direction: rtl;
   position: relative;
+  direction: rtl;
   overflow-y: hidden;
   padding-right: var(--overview-padding-right);
   height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 5px));
