@@ -13,7 +13,7 @@ import {
 function MonthWeekly({ dateStart, index }) {
   const date = addWeeks(dateStart, index);
   const monthName = date.toLocaleString('en-US', { month: 'short' });
-  if (getWeekOfMonth(date) === 2 || (index === 0 && getWeekOfMonth(date) <= 3)) {
+  if (getWeekOfMonth(date) === 2 && index !== 1 || (index === 0 && getWeekOfMonth(date) <= 3)) {
     return <div className="heatmap-months-month active">{monthName}</div>;
   }
   return <div className="heatmap-months-month">{monthName}</div>;
