@@ -116,4 +116,20 @@
     width: 310px;
     text-align: center;
   }
+
+  @media (max-width: 400px) {
+    width: 250px;
+    height: 250px;
+
+    &-projectname {
+      width: 150px;
+      font-size: 1.05em;
+    }
+
+    &-countdown {
+      width: 120px;
+      font-size: 1.9em;
+    }
+  }
+
 }
