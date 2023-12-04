@@ -310,7 +310,7 @@ function CellNumericText({ small = false, color, value, targetValue }) {
       fontSize: '10px',
       [without1 ? 'marginLeft' : '']: '-1.75px',
       [without1 ? 'letterSpacing' : '']: '-0.75px',
-      [single1 ? 'marginleft' : '']: '-1px',
+      [single1 ? 'marginLeft' : '']: '-1px',
     };
   };
 
