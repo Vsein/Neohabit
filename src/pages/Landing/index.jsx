@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import useTitle from '../../hooks/useTitle';
 
 export default function Landing() {
-  useTitle('About | Neohabit');
+  useTitle('Neohabit | A progressive-overload focused habit-tracker');
 
   return (
     <div id="content-landing">
@@ -44,7 +44,7 @@ export default function Landing() {
             <br />
             <p>
               We aim to make your life easier by incorporating progressive overload into
-              habit-building, so that you can have a better relationships with yourself!
+              habit-building, so that you can have a better relationship with yourself!
             </p>
           </div>
         </section>
