@@ -76,7 +76,7 @@ export default function Sidebar({ hidden }) {
               {projects.data.map((project, i) => (
                 <Project key={`project-${i}`} project={project} />
               ))}
-              <Project project={defaultProject} />
+              {defaultProject.habits.length ? <Project project={defaultProject} /> : <></>}
             </>
           )}
         </ul>

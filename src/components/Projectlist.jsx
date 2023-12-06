@@ -97,13 +97,17 @@ export default function Projectlist() {
               globalDateEnd={dateEnd}
             />
           ))}
-        <Project
-          project={defaultProject}
-          datePeriodLength={datePeriodLength}
-          mobile={mobile}
-          globalDateStart={dateStart}
-          globalDateEnd={dateEnd}
-        />
+        {defaultProject.habits.length ? (
+          <Project
+            project={defaultProject}
+            datePeriodLength={datePeriodLength}
+            mobile={mobile}
+            globalDateStart={dateStart}
+            globalDateEnd={dateEnd}
+          />
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
