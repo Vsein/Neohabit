@@ -5,8 +5,8 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       process.env.REACT_APP_STAGE === 'dev'
-        ? 'http://localhost:9000/api/'
-        : 'https://neohabit.app/api/api',
+        ? 'http://localhost:9000/private/'
+        : 'https://neohabit.app/api/private',
     prepareHeaders: (headers, { getState }) => {
       const token = localStorage.getItem('token');
       if (token) {
