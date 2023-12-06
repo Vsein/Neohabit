@@ -74,7 +74,7 @@ function PasswordField({ type }) {
           // onChange="onChange()"
           autoComplete="new-password"
         />
-        <button className="icon-password" onClick={togglePasswordVisibility}>
+        <button className="icon-password" type="button" onClick={togglePasswordVisibility}>
           <Icon path={passwordHidden ? mdiEye : mdiEyeOff} />
         </button>
       </div>
