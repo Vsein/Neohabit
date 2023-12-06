@@ -13,7 +13,7 @@ import useLoaded from '../hooks/useLoaded';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';
 import Project from './Project';
-import { DatePeriodPicker } from './DatePickers';
+import { DatePeriodPicker, DatePeriodControls } from './DatePickers';
 
 export default function Projectlist() {
   const [loaded] = useLoaded();
@@ -55,7 +55,16 @@ export default function Projectlist() {
 
   return (
     <>
-      <div className="contentlist-controls centering">
+      <div className="contentlist-controls">
+        <div className="overview-centering" style={{ width: 'max-content' }}>
+          <button
+            className={`overview-habit-add standalone topbar ${vertical ? 'vertical' : ''}`}
+            onClick={openOverlay}
+            title="Add a new habit [A]"
+          >
+            <p>New project</p>
+          </button>
+        </div>
         <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}
@@ -63,6 +72,17 @@ export default function Projectlist() {
           setDateEnd={setDateEnd}
           subPeriod={subPeriod}
           addPeriod={addPeriod}
+        />
+        <DatePeriodControls
+          isHeatmap={false}
+          vertical={vertical}
+          dateStart={dateStart}
+          subYear={subYear}
+          addYear={addYear}
+          addMonth={addMonth}
+          setToPast={setToPast}
+          reset={reset}
+          setToFuture={setToFuture}
         />
       </div>
       <div className="contentlist">
@@ -84,19 +104,6 @@ export default function Projectlist() {
           globalDateStart={dateStart}
           globalDateEnd={dateEnd}
         />
-        <div
-          className="overview-centering"
-          style={{ '--length': settings.data?.overview_duration ?? 32 }}
-        >
-          <button
-            className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
-            onClick={openOverlay}
-            title="Add a new habit [A]"
-          >
-            <Icon className="icon small" path={mdiPlus} />
-            <p>Add a new project</p>
-          </button>
-        </div>
       </div>
     </>
   );

@@ -56,6 +56,7 @@ function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPer
 }
 
 function DatePeriodControls({
+  isHeatmap = true,
   vertical,
   subYear,
   addYear,
@@ -67,9 +68,10 @@ function DatePeriodControls({
 }) {
   return (
     <div className="overview-topbar-right">
-      {vertical ? (
+      {isHeatmap && vertical && (
         <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
-      ) : (
+      )}
+      {isHeatmap && !vertical && (
         <button className="centering" onClick={addMonth} title="Move month to the right [L]">
           <Icon path={mdiMenuRight} className="icon" />
         </button>

@@ -220,6 +220,10 @@ input[type='checkbox']:checked.checkbox {
     border: 2px solid var(--signature-color);
   }
 
+  &.nowrap {
+    white-space: nowrap;
+  }
+
   &.stretch {
     width: 100%;
   }
