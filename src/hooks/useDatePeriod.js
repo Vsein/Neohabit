@@ -89,13 +89,13 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
       isFirstDayOfMonth(dateStart) ? subMonths(dateStart, 1) : dateStart,
     );
     setDateStart(tmpStart);
-    setDateEnd(addDays(tmpStart, periodDuration));
+    setDateEnd(addDays(tmpStart, periodDuration - 1));
   };
 
   const addMonth = () => {
     const tmpStart = startOfMonth(addMonths(dateStart, 1));
     setDateStart(tmpStart);
-    setDateEnd(addDays(tmpStart, periodDuration));
+    setDateEnd(addDays(tmpStart, periodDuration - 1));
   };
 
   const subYear = () => {
@@ -123,13 +123,13 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
   const setToPast = () => {
     const tmpStart = startOfDay(new Date());
     setDateEnd(addDays(tmpStart, offset));
-    setDateStart(addDays(tmpStart, -periodDuration + offset));
+    setDateStart(addDays(tmpStart, -periodDuration + offset + 1));
   };
 
   const setToFuture = () => {
     const tmpStart = startOfDay(new Date());
     setDateStart(addDays(tmpStart, -offset));
-    setDateEnd(addDays(tmpStart, periodDuration - offset));
+    setDateEnd(addDays(tmpStart, periodDuration - offset - 1));
   };
 
   const reset = () => {
