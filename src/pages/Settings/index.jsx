@@ -165,6 +165,23 @@ export default function Settings() {
           }
         />
         <SettingsSection
+          name="stopwatch"
+          elements={
+            <>
+              <SettingsButtonOption
+                name="Show stopwatch time in the page title"
+                cssName="orientation"
+                curState={settings.data.stopwatch_title ?? true}
+                update={(state) => updateSettings({ values: { stopwatch_title: state } })}
+                choices={[
+                  { name: 'On', state: true },
+                  { name: 'Off', state: false },
+                ]}
+              />
+            </>
+          }
+        />
+        <SettingsSection
           name="overview"
           elements={
             <>

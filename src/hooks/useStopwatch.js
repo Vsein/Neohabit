@@ -5,9 +5,11 @@ import {
   useUpdateStopwatchMutation,
   useFinishStopwatchMutation,
 } from '../state/services/stopwatch';
+import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
 
 export default function useStopwatch() {
+  const settings = useGetSettingsQuery();
   const stopwatch = useGetStopwatchQuery();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [finishStopwatch] = useFinishStopwatchMutation();
@@ -79,7 +81,9 @@ export default function useStopwatch() {
       },
     });
     setCurrentDuration(0);
-    document.title = '0:00:00 | Neohabit';
+    if (settings.data?.stopwatch_title ?? true) {
+      document.title = '0:00:00 | Neohabit';
+    }
   };
 
   const finishCountdown = () => {
@@ -90,7 +94,9 @@ export default function useStopwatch() {
       },
     });
     setCurrentDuration(0);
-    document.title = '0:00:00 | Neohabit';
+    if (settings.data?.stopwatch_title ?? true) {
+      document.title = '0:00:00 | Neohabit';
+    }
   };
 
   useEffect(() => {
@@ -98,7 +104,9 @@ export default function useStopwatch() {
       let timerInterval = setInterval(() => {
         const recalc = calcCurrentDuration();
         setCurrentDuration(recalc);
-        document.title = `${clockify(recalc)} | Neohabit`;
+        if (settings.data?.stopwatch_title ?? true) {
+          document.title = `${clockify(recalc)} | Neohabit`;
+        }
       }, 1000);
       // Clear interval if the component is unmounted
       return () => clearInterval(timerInterval);
