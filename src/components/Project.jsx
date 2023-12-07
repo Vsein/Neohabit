@@ -60,8 +60,8 @@ export default function Project({
           '--multiplier': 1,
           '--cell-height': '15px',
           '--cell-width': '15px',
-          '--signature-color': colorShade,
-          '--bright-signature-color': colorShade,
+          [project.color !== '#8a8a8a' ? '--signature-color' : '']: colorShade,
+          [project.color !== '#8a8a8a' ? '--bright-signature-color' : '']: colorShade,
         }}
       >
         <div
