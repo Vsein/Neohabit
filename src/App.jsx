@@ -11,6 +11,7 @@ import Habit from './pages/Habit';
 import Project from './pages/Project';
 import Logout from './pages/Logout';
 import NotFound from './pages/404';
+import Exceeded from './pages/429';
 import Landing from './pages/Landing';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
@@ -20,6 +21,7 @@ import Overlay from './components/Overlay';
 import CellTip from './components/CellTip';
 import CellAdd from './components/CellAdd';
 import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
+import { useGetStopwatchQuery } from './state/services/stopwatch';
 import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
@@ -64,6 +66,7 @@ const PrivateRoutes = (params) => {
   const location = useLocation();
   const settings = useGetSettingsQuery();
   const self = useGetSelfQuery();
+  const stopwatch = useGetStopwatchQuery();
 
   useEffect(() => {
     changeAuth(hasJWT());
@@ -77,8 +80,16 @@ const PrivateRoutes = (params) => {
   };
 
   useKeyPress(['s'], toggleSidebar);
+  console.log(settings);
 
-  if (settings.isLoading || self.isLoading) return <></>;
+  if (settings?.error || self?.error || stopwatch?.error) {
+    console.log('not passed error test');
+    return <Exceeded />;
+  }
+
+  if (settings.isLoading || self.isLoading || stopwatch.isLoading) return <></>;
+
+  console.log('passed error test');
 
   return loggedIn ? (
     <>
