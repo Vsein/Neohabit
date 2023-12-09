@@ -3,6 +3,20 @@ import { Icon } from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 import Field from './FieldWrapper';
 
+const required = (value) => (value ? undefined : 'Required');
+const bounds = (min, max) => (value) =>
+  value.length >= min && value.length <= max ? undefined : `Must have ${min}-${max} symbols`;
+const composeValidators =
+  (...validators) =>
+  (value) =>
+    validators.reduce((error, validator) => error || validator(value), undefined);
+const onlyLatinAndNumbers = (value) => {
+  if (/^[a-z]*$/i.test(value)) return undefined;
+  if (/^[0-9]*$/.test(value)) return 'Add at least one letter';
+  if (/^[a-zA-Z0-9]*$/i.test(value)) return undefined;
+  return 'Only latin and numbers';
+};
+
 function UsernameField() {
   return (
     <Field
@@ -12,6 +26,7 @@ function UsernameField() {
       minLength="4"
       pattern="[a-zA-Z0-9]{3,20}"
       title="Your name should only contain latin characters and numbers!"
+      validate={composeValidators(required, bounds(4, 20), onlyLatinAndNumbers)}
     >
       {({ input, meta }) => (
         <div>
@@ -26,9 +41,15 @@ function UsernameField() {
   );
 }
 
-function EmailField() {
+function EmailField({ signup = false }) {
+  const simpleEmailValidation = (value) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? undefined : 'Please enter valid email';
+
   return (
-    <Field name="email" required>
+    <Field
+      name="email"
+      validate={signup ? composeValidators(required, simpleEmailValidation) : required}
+    >
       {({ input, meta }) => (
         <div>
           <label htmlFor="email">
@@ -52,6 +73,7 @@ function PasswordField({ type }) {
       required
       minLength="8"
       maxLength="30"
+      validate={composeValidators(required, bounds(8, 30))}
       // onChange="onChange()"
       autoComplete="new-password"
     >

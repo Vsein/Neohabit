@@ -62,7 +62,7 @@ function SignupForm() {
           <h2>Register:</h2>
           <div className="registration-fields">
             <UsernameField />
-            <EmailField />
+            <EmailField signup={true} />
             <PasswordField type="define" />
             <PasswordField type="confirm" />
             <button type="submit" className="button-default stretch big" disabled={submitting}>

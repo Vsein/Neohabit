@@ -58,8 +58,10 @@
   padding: 1em 2em;
 
   & > a {
+    width: min-content;
     color: var(--signature-color);
     text-decoration: none;
+    white-space: nowrap;
   }
 }
 
