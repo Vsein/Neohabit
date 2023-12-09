@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useLocation,
+  NavLink,
+} from 'react-router-dom';
 import ToDoList from './pages/ToDoList';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -119,7 +127,40 @@ const AuthRoutes = (params) => {
     changeAuth(hasJWT());
   }, [location.pathname]);
 
-  return loggedIn ? <Navigate to="/projects" replace state={{ from: location }} /> : <Outlet />;
+  return loggedIn ? (
+    <Navigate to="/projects" replace state={{ from: location }} />
+  ) : (
+    <div id="content-auth">
+      <div className="sidebar-auth">
+        <h1 className="sidebar-auth-header">
+          <div className="neohabit" />
+        </h1>
+      </div>
+      <main className="registration-container">
+        <section className="auth-intro">
+          <p className="paragraph">
+            Are you struggling to find a good accountability partner? With this app, you&apos;ll
+            learn how to be your own accountability partner. As well as develop real skills, and not
+            get entrapped by some statistics which only stump your growth.
+          </p>
+          <p className="paragraph">
+            You know what to do, my friend. <span className="neohabit" /> will just help you realize
+            it.
+          </p>
+        </section>
+        <Outlet />
+        {location.pathname === '/login' ? (
+          <p className="login-ref">
+            Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink>
+          </p>
+        ) : (
+          <p className="login-ref">
+            Already have an account? <NavLink to="/login">Log in</NavLink>
+          </p>
+        )}
+      </main>
+    </div>
+  );
 };
 
 export default App;

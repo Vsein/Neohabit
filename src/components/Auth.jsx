@@ -2,31 +2,6 @@ import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 
-function AuthSidebar() {
-  return (
-    <div className="sidebar-auth">
-      <h1 className="sidebar-auth-header">
-        <div className="neohabit" />
-      </h1>
-    </div>
-  );
-}
-
-function AuthIntro() {
-  return (
-    <section className="auth-intro">
-      <p className="paragraph">
-        Are you struggling to find a good accountability partner? With this app, you&apos;ll learn
-        how to be your own accountability partner. As well as develop real skills, and not get
-        entrapped by some statistics which only stump your growth.
-      </p>
-      <p className="paragraph">
-        You know what to do, my friend. <span className="neohabit" /> will just help you realize it.
-      </p>
-    </section>
-  );
-}
-
 function UsernameField() {
   return (
     <div>
@@ -82,4 +57,4 @@ function PasswordField({ type }) {
   );
 }
 
-export { AuthSidebar, AuthIntro, UsernameField, EmailField, PasswordField };
+export { UsernameField, EmailField, PasswordField };

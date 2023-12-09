@@ -1,24 +1,13 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { AuthSidebar, AuthIntro, EmailField, PasswordField } from '../../components/Auth';
+import { EmailField, PasswordField } from '../../components/Auth';
 import { useLoginMutation } from '../../state/services/auth';
 import useTitle from '../../hooks/useTitle';
 
 export default function Login() {
   useTitle('Login | Neohabit');
 
-  return (
-    <div id="content-auth">
-      <AuthSidebar />
-      <main className="registration-container">
-        <AuthIntro />
-        <LoginForm />
-        <p className="login-ref">
-          Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink>
-        </p>
-      </main>
-    </div>
-  );
+  return <LoginForm />;
 }
 
 function LoginForm() {
