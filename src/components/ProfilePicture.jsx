@@ -1,11 +1,20 @@
 import React from 'react';
-import pfp from '../assets/pfp.jpg';
+import MiniLogoDark from '../logos/neohabit-mini-logo-dark2.png';
+import MiniLogo from '../logos/neohabit-mini-logo.png';
+import { useGetSettingsQuery } from '../state/services/settings';
 
-export default function PFP(props) {
-  const { type } = props;
-  return (
+export default function PFP({ type }) {
+  const settings = useGetSettingsQuery();
+
+  return settings.isLoading ? (
+    <></>
+  ) : (
     <a tabIndex="0" className="centering">
-      <img src={pfp} alt="profile pic" className={`pfp ${type}`} />
+      <img
+        src={settings.data.prefer_dark ? MiniLogoDark : MiniLogo}
+        alt="profile pic"
+        className={`pfp ${type}`}
+      />
     </a>
   );
 }
