@@ -16,8 +16,7 @@ function SignupForm() {
   const [sendSignupRequest] = useSignupMutation();
   const [sendLoginRequest] = useLoginMutation();
 
-  const signup = async (e) => {
-    e.preventDefault();
+  const signup = async () => {
     const formData = new FormData(document.forms.signupForm);
     const data = Object.fromEntries(formData.entries());
     const isSuccessful = await sendSignupRequest(data);
@@ -28,25 +27,27 @@ function SignupForm() {
   return (
     <Form
       initialValues={{
-        name: habit?.name,
-        description: habit?.description,
-        color: habit?.color,
-        elimination: habit?.elimination,
-        numeric: habit?.numeric,
+        username: '',
+        email: '',
+        password: '',
+        password_confirm: '',
       }}
       onSubmit={signup}
       validate={(values) => {
         const errors = {};
         if (!values.username) {
-          errors.name = 'Required';
+          errors.username = 'Required';
+        }
+        if (!values.email) {
+          errors.email = 'Required';
         }
         if (!values.password) {
           errors.password = 'Required';
         }
-        if (!values.confirm) {
-          errors.confirm = 'Required';
-        } else if (values.confirm !== values.password) {
-          errors.confirm = 'Must match';
+        if (!values.password_confirm) {
+          errors.password_confirm = 'Required';
+        } else if (values.password_confirm !== values.password) {
+          errors.password_confirm = 'Must match';
         }
         return errors;
       }}
@@ -64,7 +65,7 @@ function SignupForm() {
             <EmailField />
             <PasswordField type="define" />
             <PasswordField type="confirm" />
-            <button type="submit" className="button-default stretch big">
+            <button type="submit" className="button-default stretch big" disabled={submitting}>
               Create Account
             </button>
           </div>

@@ -1,31 +1,44 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
+import Field from './FieldWrapper';
 
 function UsernameField() {
   return (
-    <div>
-      <label htmlFor="name">Username</label>
-      <input
-        className="registration-field"
-        type="text"
-        id="name"
-        name="username"
-        required
-        minLength="3"
-        pattern="[a-zA-Z0-9]{3,20}"
-        title="Your name should only contain latin characters and numbers!"
-      />
-    </div>
+    <Field
+      name="username"
+      id="name"
+      required
+      minLength="4"
+      pattern="[a-zA-Z0-9]{3,20}"
+      title="Your name should only contain latin characters and numbers!"
+    >
+      {({ input, meta }) => (
+        <div>
+          <label htmlFor="name">
+            Username
+            {meta.error && meta.touched && <span className="registration-error">{meta.error}</span>}
+          </label>
+          <input {...input} className="registration-field" type="text" />
+        </div>
+      )}
+    </Field>
   );
 }
 
 function EmailField() {
   return (
-    <div>
-      <label htmlFor="email">E-mail</label>
-      <input className="registration-field" type="email" name="email" required />
-    </div>
+    <Field name="email" required>
+      {({ input, meta }) => (
+        <div>
+          <label htmlFor="email">
+            E-mail
+            {meta.error && meta.touched && <span className="registration-error">{meta.error}</span>}
+          </label>
+          <input {...input} className="registration-field" type="email" />
+        </div>
+      )}
+    </Field>
   );
 }
 
@@ -34,26 +47,33 @@ function PasswordField({ type }) {
   const togglePasswordVisibility = () => setPasswordHidden(!passwordHidden);
 
   return (
-    <div>
-      <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'}>
-        {type === 'confirm' ? 'Confirm Password' : 'Password'}
-      </label>
-      <div className="registration-field-container">
-        <input
-          className="registration-field"
-          type={passwordHidden ? 'password' : 'test'}
-          name={type === 'confirm' ? 'password_confirm' : 'password'}
-          required
-          minLength="8"
-          maxLength="30"
-          // onChange="onChange()"
-          autoComplete="new-password"
-        />
-        <button className="icon-password" type="button" onClick={togglePasswordVisibility}>
-          <Icon path={passwordHidden ? mdiEye : mdiEyeOff} />
-        </button>
-      </div>
-    </div>
+    <Field
+      name={type === 'confirm' ? 'password_confirm' : 'password'}
+      required
+      minLength="8"
+      maxLength="30"
+      // onChange="onChange()"
+      autoComplete="new-password"
+    >
+      {({ input, meta }) => (
+        <div>
+          <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'}>
+            {type === 'confirm' ? 'Confirm Password' : 'Password'}
+            {meta.error && meta.touched && <span className="registration-error">{meta.error}</span>}
+          </label>
+          <div className="registration-field-container">
+            <input
+              {...input}
+              className="registration-field"
+              type={passwordHidden ? 'password' : 'test'}
+            />
+            <button className="icon-password" type="button" onClick={togglePasswordVisibility}>
+              <Icon path={passwordHidden ? mdiEye : mdiEyeOff} />
+            </button>
+          </div>
+        </div>
+      )}
+    </Field>
   );
 }
 
