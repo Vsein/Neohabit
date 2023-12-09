@@ -11,7 +11,7 @@ import Habit from './pages/Habit';
 import Project from './pages/Project';
 import Logout from './pages/Logout';
 import NotFound from './pages/404';
-import Exceeded from './pages/429';
+import FetchError from './pages/FetchError';
 import Landing from './pages/Landing';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
@@ -80,16 +80,12 @@ const PrivateRoutes = (params) => {
   };
 
   useKeyPress(['s'], toggleSidebar);
-  console.log(settings);
 
   if (settings?.error || self?.error || stopwatch?.error) {
-    console.log('not passed error test');
-    return <Exceeded />;
+    return <FetchError />;
   }
 
   if (settings.isLoading || self.isLoading || stopwatch.isLoading) return <></>;
-
-  console.log('passed error test');
 
   return loggedIn ? (
     <>
