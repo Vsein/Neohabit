@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { EmailField, PasswordField } from '../../components/Auth';
-import { useLoginMutation } from '../../state/services/auth';
-import useTitle from '../../hooks/useTitle';
+import { EmailField, PasswordField } from '../components/Auth';
+import { useLoginMutation } from '../state/services/auth';
+import useTitle from '../hooks/useTitle';
 
 export default function Login() {
   useTitle('Login | Neohabit');
