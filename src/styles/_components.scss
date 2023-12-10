@@ -149,6 +149,7 @@ input[type='checkbox']:checked.checkbox {
 .pfp {
   border-radius: 50%;
   cursor: pointer;
+  content: var(--mini-logo);
 
   &.small {
     height: 50px;
