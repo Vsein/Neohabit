@@ -15,10 +15,13 @@ function LoginForm() {
   const navigate = useNavigate();
   const [sendLoginRequest] = useLoginMutation();
 
-  const login = async () => {
+  const login = async (values) => {
     const formData = new FormData(document.forms.loginForm);
     const data = Object.fromEntries(formData.entries());
     const isSuccessful = await sendLoginRequest(data);
+    if (isSuccessful?.error) {
+      return { password: 'Wrong password!' };
+    }
     if (isSuccessful) navigate('/projects');
   };
 
@@ -39,7 +42,7 @@ function LoginForm() {
         }
         return errors;
       }}
-      render={({ handleSubmit, form, submitting, pristine, values }) => (
+      render={({ submitError, handleSubmit, form, submitting, pristine, values }) => (
         <form
           className="registration"
           id="loginForm"
@@ -48,6 +51,7 @@ function LoginForm() {
           }}
         >
           <h2>Enter:</h2>
+          {submitError && <div className="error">{submitError}</div>}
           <div className="registration-fields">
             <EmailField />
             <PasswordField type="define" />
