@@ -21,8 +21,12 @@ const authApi = createApi({
         method: 'POST',
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
-        localStorage.setItem('token', res.data.token);
+        try {
+          const res = await queryFulfilled;
+          localStorage.setItem('token', res.data.token);
+        } catch (err) {
+          console.log('Login failed');
+        }
       },
     }),
     signup: builder.mutation({

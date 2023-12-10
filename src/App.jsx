@@ -89,13 +89,15 @@ const PrivateRoutes = (params) => {
 
   useKeyPress(['s'], toggleSidebar);
 
+  if (!loggedIn) return <Navigate to="/login" replace state={{ from: location }} />;
+
   if (settings?.error || self?.error || stopwatch?.error) {
     return <FetchError />;
   }
 
   if (settings.isLoading || self.isLoading || stopwatch.isLoading) return <></>;
 
-  return loggedIn ? (
+  return (
     <>
       <div id="content">
         <MainMenu toggleSidebar={toggleSidebar} />
@@ -114,8 +116,6 @@ const PrivateRoutes = (params) => {
       <SidebarMobile />
       <Overlay />
     </>
-  ) : (
-    <Navigate to="/login" replace state={{ from: location }} />
   );
 };
 

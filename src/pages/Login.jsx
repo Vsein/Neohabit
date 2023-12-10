@@ -18,11 +18,17 @@ function LoginForm() {
   const login = async (values) => {
     const formData = new FormData(document.forms.loginForm);
     const data = Object.fromEntries(formData.entries());
-    const isSuccessful = await sendLoginRequest(data);
-    if (isSuccessful?.error) {
-      return { password: 'Wrong password!' };
+    const res = await sendLoginRequest(data);
+    if (res?.error) {
+      if (res?.error?.data?.error === 'Wrong password') {
+        return { password: 'Wrong password!' };
+      }
+      if (res?.error?.data?.error === 'User not found') {
+        return { email: 'User not found' };
+      }
+      return { email: 'Login failed' };
     }
-    if (isSuccessful) navigate('/projects');
+    if (res) navigate('/projects');
   };
 
   return (
@@ -51,7 +57,6 @@ function LoginForm() {
           }}
         >
           <h2>Enter:</h2>
-          {submitError && <div className="error">{submitError}</div>}
           <div className="registration-fields">
             <EmailField />
             <PasswordField type="define" />

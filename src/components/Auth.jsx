@@ -54,7 +54,7 @@ function EmailField({ signup = false }) {
         <div>
           <label htmlFor="email">
             E-mail
-            {meta.error && meta.touched && (
+            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
               <span className="registration-error">{meta.error || meta.submitError}</span>
             )}
           </label>
@@ -83,7 +83,7 @@ function PasswordField({ type }) {
         <div>
           <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'}>
             {type === 'confirm' ? 'Confirm Password' : 'Password'}
-            {(meta.error || meta.submitError) && meta.touched && (
+            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
               <span className="registration-error">{meta.error || meta.submitError}</span>
             )}
           </label>
