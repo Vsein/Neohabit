@@ -1,11 +1,11 @@
 import React from 'react';
-import { Routes, Route, Navigate, Outlet, NavLink } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet, NavLink, useParams } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiSquareSmall, mdiFormatListGroup } from '@mdi/js';
-import Editor from './Editor';
-import useTitle from '../../hooks/useTitle';
-import { useGetTasksQuery } from '../../state/services/todolist';
-import { useGetHabitsQuery } from '../../state/services/habit';
+import useTitle from '../hooks/useTitle';
+import { useGetTasksQuery } from '../state/services/todolist';
+import { useGetHabitsQuery } from '../state/services/habit';
+import Tasklist from '../components/Tasklist';
 
 export default function ToDoList() {
   useTitle('To-do list | Neohabit');
@@ -63,5 +63,31 @@ function Filter(props) {
       <Icon path={filter.image} height="20px" width="20px" />
       <p>{filter.name}</p>
     </NavLink>
+  );
+}
+
+function Editor() {
+  const tasks = useGetTasksQuery();
+  const habits = useGetHabitsQuery();
+  const { list, habitID } = useParams();
+
+  const delinkify = (str) =>
+    str
+      .toLowerCase()
+      .split('-')
+      .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+      .join(' ');
+
+  const delist = delinkify(list);
+
+  return (
+    <div className="tasklist">
+      <Tasklist
+        name={list !== 'habit' ? delist : tasks.data[0]?.habit.name}
+        tasks={tasks.data}
+        habitID={habitID}
+        list={list}
+      />
+    </div>
   );
 }

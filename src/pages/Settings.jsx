@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiChevronDown } from '@mdi/js';
-import useTitle from '../../hooks/useTitle';
-import useAnchor from '../../hooks/useAnchor';
+import useTitle from '../hooks/useTitle';
+import useAnchor from '../hooks/useAnchor';
 import {
   useGetSettingsQuery,
   useGetSelfQuery,
   useUpdateSettingsMutation,
-} from '../../state/services/settings';
-import { changeTo } from '../../state/features/overlay/overlaySlice';
+} from '../state/services/settings';
+import { changeTo } from '../state/features/overlay/overlaySlice';
 
 export default function Settings() {
   useTitle('Settings | Neohabit');

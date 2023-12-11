@@ -7,8 +7,8 @@ import {
   mdiEyeOutline,
   mdiShareVariantOutline,
 } from '@mdi/js';
-import PFP from '../../components/ProfilePicture';
-import useTitle from '../../hooks/useTitle';
+import PFP from '../components/ProfilePicture';
+import useTitle from '../hooks/useTitle';
 
 export default function Dashboard() {
   useTitle('Dashboard | Neohabit');

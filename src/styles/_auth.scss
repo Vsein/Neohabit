@@ -58,8 +58,10 @@
   padding: 1em 2em;
 
   & > a {
+    width: min-content;
     color: var(--signature-color);
     text-decoration: none;
+    white-space: nowrap;
   }
 }
 
@@ -98,6 +100,11 @@
     flex-direction: row;
     align-items: center;
   }
+}
+
+.registration-error {
+  color: var(--form-error-color);
+  margin: 15px;
 }
 
 .icon-password {

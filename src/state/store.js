@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import api from './services/api';
 import authApi from './services/auth';
+import rtkQueryErrorLogger from './services/errorHandler';
 import overlayReducer from './features/overlay/overlaySlice';
 import cellAddReducer from './features/cellAdd/cellAddSlice';
 import cellTipReducer from './features/cellTip/cellTipSlice';
@@ -28,7 +29,7 @@ const store = configureStore({
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat([api.middleware, authApi.middleware]),
+    getDefaultMiddleware({ serializableCheck: false }).concat([rtkQueryErrorLogger, api.middleware, authApi.middleware]),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

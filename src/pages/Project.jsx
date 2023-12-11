@@ -1,13 +1,13 @@
 import React from 'react';
 import { useParams, Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import useTitle from '../../hooks/useTitle';
-import useDefaultProject from '../../hooks/useDefaultProject';
-import { useGetHabitsQuery } from '../../state/services/habit';
-import { useGetProjectsQuery } from '../../state/services/project';
-import { useGetSettingsQuery } from '../../state/services/settings';
-import useDatePeriod, { getAdaptivePeriodLength } from '../../hooks/useDatePeriod';
-import useWindowDimensions from '../../hooks/useWindowDimensions';
-import Project from '../../components/Project';
+import useTitle from '../hooks/useTitle';
+import useDefaultProject from '../hooks/useDefaultProject';
+import { useGetHabitsQuery } from '../state/services/habit';
+import { useGetProjectsQuery } from '../state/services/project';
+import { useGetSettingsQuery } from '../state/services/settings';
+import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
+import useWindowDimensions from '../hooks/useWindowDimensions';
+import Project from '../components/Project';
 
 export default function ProjectPage() {
   useTitle('Habit | Neohabit');

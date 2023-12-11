@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import useTitle from '../../hooks/useTitle';
+import useTitle from '../hooks/useTitle';
 
 export default function Landing() {
   useTitle('Neohabit | A progressive-overload focused habit-tracker');

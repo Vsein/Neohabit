@@ -1,56 +1,69 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
+import Field from './FieldWrapper';
 
-function AuthSidebar() {
-  return (
-    <div className="sidebar-auth">
-      <h1 className="sidebar-auth-header">
-        <div className="neohabit" />
-      </h1>
-    </div>
-  );
-}
-
-function AuthIntro() {
-  return (
-    <section className="auth-intro">
-      <p className="paragraph">
-        Are you struggling to find a good accountability partner? With this app, you&apos;ll learn
-        how to be your own accountability partner. As well as develop real skills, and not get
-        entrapped by some statistics which only stump your growth.
-      </p>
-      <p className="paragraph">
-        You know what to do, my friend. <span className="neohabit" /> will just help you realize it.
-      </p>
-    </section>
-  );
-}
+const required = (value) => (value ? undefined : 'Required');
+const bounds = (min, max) => (value) =>
+  value.length >= min && value.length <= max ? undefined : `Must have ${min}-${max} symbols`;
+const composeValidators =
+  (...validators) =>
+  (value) =>
+    validators.reduce((error, validator) => error || validator(value), undefined);
+const onlyLatinAndNumbers = (value) => {
+  if (/^[a-z]*$/i.test(value)) return undefined;
+  if (/^[0-9]*$/.test(value)) return 'Add at least one letter';
+  if (/^[a-zA-Z0-9]*$/i.test(value)) return undefined;
+  return 'Only latin and numbers';
+};
 
 function UsernameField() {
   return (
-    <div>
-      <label htmlFor="name">Username</label>
-      <input
-        className="registration-field"
-        type="text"
-        id="name"
-        name="username"
-        required
-        minLength="3"
-        pattern="[a-zA-Z0-9]{3,20}"
-        title="Your name should only contain latin characters and numbers!"
-      />
-    </div>
+    <Field
+      name="username"
+      id="name"
+      required
+      minLength="4"
+      pattern="[a-zA-Z0-9]{3,20}"
+      title="Your name should only contain latin characters and numbers!"
+      validate={composeValidators(required, bounds(4, 20), onlyLatinAndNumbers)}
+    >
+      {({ input, meta }) => (
+        <div>
+          <label htmlFor="name">
+            Username
+            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
+              <span className="registration-error">{meta.error || meta.submitError}</span>
+            )}
+          </label>
+          <input {...input} className="registration-field" type="text" />
+        </div>
+      )}
+    </Field>
   );
 }
 
-function EmailField() {
+function EmailField({ signup = false }) {
+  const simpleEmailValidation = (value) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? undefined : 'Please enter valid email';
+
   return (
-    <div>
-      <label htmlFor="email">E-mail</label>
-      <input className="registration-field" type="email" name="email" required />
-    </div>
+    <Field
+      name="email"
+      validate={signup ? composeValidators(required, simpleEmailValidation) : required}
+    >
+      {({ input, meta }) => (
+        <div>
+          <label htmlFor="email">
+            E-mail
+            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
+              <span className="registration-error">{meta.error || meta.submitError}</span>
+            )}
+          </label>
+          <input {...input} className="registration-field" type="email" />
+        </div>
+      )}
+    </Field>
   );
 }
 
@@ -59,27 +72,37 @@ function PasswordField({ type }) {
   const togglePasswordVisibility = () => setPasswordHidden(!passwordHidden);
 
   return (
-    <div>
-      <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'}>
-        {type === 'confirm' ? 'Confirm Password' : 'Password'}
-      </label>
-      <div className="registration-field-container">
-        <input
-          className="registration-field"
-          type={passwordHidden ? 'password' : 'test'}
-          name={type === 'confirm' ? 'password_confirm' : 'password'}
-          required
-          minLength="8"
-          maxLength="30"
-          // onChange="onChange()"
-          autoComplete="new-password"
-        />
-        <button className="icon-password" type="button" onClick={togglePasswordVisibility}>
-          <Icon path={passwordHidden ? mdiEye : mdiEyeOff} />
-        </button>
-      </div>
-    </div>
+    <Field
+      name={type === 'confirm' ? 'password_confirm' : 'password'}
+      required
+      minLength="8"
+      maxLength="30"
+      validate={composeValidators(required, bounds(8, 30))}
+      // onChange="onChange()"
+      autoComplete="new-password"
+    >
+      {({ input, meta }) => (
+        <div>
+          <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'}>
+            {type === 'confirm' ? 'Confirm Password' : 'Password'}
+            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
+              <span className="registration-error">{meta.error || meta.submitError}</span>
+            )}
+          </label>
+          <div className="registration-field-container">
+            <input
+              {...input}
+              className="registration-field"
+              type={passwordHidden ? 'password' : 'test'}
+            />
+            <button className="icon-password" type="button" onClick={togglePasswordVisibility}>
+              <Icon path={passwordHidden ? mdiEye : mdiEyeOff} />
+            </button>
+          </div>
+        </div>
+      )}
+    </Field>
   );
 }
 
-export { AuthSidebar, AuthIntro, UsernameField, EmailField, PasswordField };
+export { UsernameField, EmailField, PasswordField };
