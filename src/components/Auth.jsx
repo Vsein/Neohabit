@@ -32,7 +32,9 @@ function UsernameField() {
         <div>
           <label htmlFor="name">
             Username
-            {meta.error && meta.touched && <span className="registration-error">{meta.error}</span>}
+            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
+              <span className="registration-error">{meta.error || meta.submitError}</span>
+            )}
           </label>
           <input {...input} className="registration-field" type="text" />
         </div>

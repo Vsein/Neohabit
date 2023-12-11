@@ -19,9 +19,18 @@ function SignupForm() {
   const signup = async () => {
     const formData = new FormData(document.forms.signupForm);
     const data = Object.fromEntries(formData.entries());
-    const isSuccessful = await sendSignupRequest(data);
+    const res = await sendSignupRequest(data);
+    if (res?.error) {
+      if (res?.error?.data?.error === 'Username already exists') {
+        return { username: 'Username already exists' };
+      }
+      if (res?.error?.data?.error === 'Email is already registered') {
+        return { email: 'Email is already registered' };
+      }
+      return { email: 'Signup failed' };
+    }
     await sendLoginRequest(data);
-    if (isSuccessful) navigate('/projects');
+    if (res) navigate('/projects');
   };
 
   return (
