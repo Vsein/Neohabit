@@ -122,9 +122,9 @@ function CellFractured({
   fractionWidth += (length - 1) * (2 / 15);
 
   const getStyle = (index) => ({
-    [vertical ? '--width' : '--height']: fractionHeight,
-    [vertical ? '--height' : '--width']: fractionWidth,
-    [fractions <= 2 && vertical ? 'height' : '']: '100%',
+    [vertical && length > 1 ? '--width' : '--height']: fractionHeight,
+    [vertical && length > 1 ? '--height' : '--width']: fractionWidth,
+    [vertical && length > 1 && fractions <= 2 ? 'height' : '']: '100%',
     margin: 0,
     [index < value ? 'backgroundColor' : '']:
       index >= targetValue && elimination
