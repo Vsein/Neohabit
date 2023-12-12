@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
-import { formatISO, startOfDay, getYear } from 'date-fns';
+import { getYear } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import {
   mdiMenuLeft,
