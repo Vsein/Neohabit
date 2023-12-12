@@ -18,7 +18,7 @@ import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import Heatmap from './Heatmap';
 
-function HabitControls({ habit, heatmap, header, mobile }) {
+function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
   const [deleteHabit] = useDeleteHabitMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
@@ -93,7 +93,7 @@ function HabitControls({ habit, heatmap, header, mobile }) {
       <Link
         className="overview-habit-button"
         onClick={() => {
-          dispatch(changeTo({ habitID: habit._id, projectID: '', type: 'habit' }));
+          dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }));
         }}
         title="Edit habit"
       >
@@ -106,7 +106,7 @@ function HabitControls({ habit, heatmap, header, mobile }) {
   );
 }
 
-function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile }) {
+function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile, projectID = '' }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
@@ -126,7 +126,7 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile })
         vertical={vertical}
         isOverview={true}
       />
-      <HabitControls habit={habit} heatmap={heatmap} mobile={mobile} />
+      <HabitControls habit={habit} heatmap={heatmap} mobile={mobile} projectID={projectID} />
     </div>
   );
 }

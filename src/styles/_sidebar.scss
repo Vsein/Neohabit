@@ -126,11 +126,35 @@
   padding-inline: 10px 15px;
   background-color: var(--button-bg-color);
   border-radius: 10px;
+  width: min-content;
+  height: 25px;
 
   &:hover {
     background-color: var(--button-bg-lighter-color);
   }
+
+  & p {
+    white-space: nowrap;
+  }
 }
+
+.tag-wrapper {
+  @include sidebar-item;
+  cursor: default;
+  flex-wrap: wrap;
+  height: min-content;
+
+  & > .tag-wrapper {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    width: min-content;
+  }
+
+  &:hover {
+    background-color: inherit;
+  }
+}
+
 
 .sidebar-projects {
   @include dropdown;

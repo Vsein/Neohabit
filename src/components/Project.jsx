@@ -118,6 +118,7 @@ export default function Project({
                       heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
                       vertical={vertical}
                       mobile={mobile}
+                      projectID={project._id}
                     />
                   ) : (
                     habits.data.find((habito) => habito._id === habit) && (
@@ -129,6 +130,7 @@ export default function Project({
                         heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
                         vertical={vertical}
                         mobile={mobile}
+                        projectID={project._id}
                       />
                     )
                   ),

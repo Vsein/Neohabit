@@ -6,6 +6,7 @@ import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
 import { ModalButtons, ColorPicker } from './ModalComponents';
+import { useGetProjectsQuery } from '../state/services/project';
 import {
   useGetHabitsQuery,
   useCreateHabitMutation,
@@ -15,13 +16,21 @@ import { close } from '../state/features/overlay/overlaySlice';
 
 export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const dispatch = useDispatch();
-  const { data: habits, isFetching, isLoading } = useGetHabitsQuery();
+  const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
 
-  if (isLoading) return <></>;
+  if (habits.isLoading || projects.isLoading) return <></>;
 
-  const habit = habits.find((habito) => habito._id === habitID) ?? {
+  const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
+    name: 'Default',
+    color: '#aabbcc',
+    description: '',
+    habits: [],
+  };
+
+  const habit = habits.data.find((habito) => habito._id === habitID) ?? {
     name: '',
     color: '#aabbcc',
     description: '',
@@ -36,9 +45,9 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
     dispatch(close());
   };
 
-  if (!habit) return <div>Missing habit!</div>;
+  if (!habitID && !project) return <div>Missing habit!</div>;
 
-  return isLoading || isFetching ? (
+  return habits.isFetching || projects.isFetching ? (
     <> </>
   ) : (
     <Form
@@ -61,8 +70,26 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
           onMouseDown={(e) => e.stopPropagation()}
         >
           <div className="modal-header">
-            <div className="tag">
-              <HabitTag habit={habit} />
+            <div className="tag-wrapper">
+              {projectID && (
+                <div className="tag-wrapper">
+                  Project:
+                  <div className="tag">
+                    <HabitTag habit={project} />
+                  </div>
+                  &gt;
+                </div>
+              )}
+              {habitID ? (
+                <div className="tag-wrapper">
+                  Habit:
+                  <div className="tag">
+                    <HabitTag habit={habit} />
+                  </div>
+                </div>
+              ) : (
+                <div className="tag-wrapper">New habit</div>
+              )}
             </div>
             <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
               <Icon path={mdiClose} />

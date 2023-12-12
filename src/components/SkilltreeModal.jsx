@@ -51,7 +51,18 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
           onMouseDown={(e) => e.stopPropagation()}
         >
           <div className="modal-header">
-            <div className="tag"></div>
+            {skilltree ? (
+              <div className="tag-wrapper">
+                Skilltree:
+                <div className="tag">
+                  <HabitTag habit={skilltree} />
+                </div>
+              </div>
+            ) : (
+              <div className="tag-wrapper">
+                New skilltree
+              </div>
+            )}
             <button className="icon small" onClick={closeOverlay}>
               <Icon path={mdiClose} />
             </button>

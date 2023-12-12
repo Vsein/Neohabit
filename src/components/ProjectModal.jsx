@@ -81,9 +81,18 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
           onMouseDown={(e) => e.stopPropagation()}
         >
           <div className="modal-header">
-            <div className="tag">
-              <HabitTag habit={project} />
-            </div>
+            {projectID ? (
+              <div className="tag-wrapper">
+                Project:
+                <div className="tag">
+                  <HabitTag habit={project} />
+                </div>
+              </div>
+            ) : (
+              <div className="tag-wrapper">
+                New project
+              </div>
+            )}
             <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
               <Icon path={mdiClose} />
             </button>
