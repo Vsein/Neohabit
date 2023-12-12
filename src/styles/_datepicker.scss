@@ -10,13 +10,23 @@
   outline: none;
 }
 
-.react-datepicker-popper[data-placement^=bottom] .react-datepicker__triangle {
-  margin-top: -7px;
+.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle {
+  margin-top: -9px;
+}
+
+.react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle {
+  margin-bottom: -9px;
 }
 
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before,
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::after {
   border-bottom-color: var(--datepicker-triangle-color);
+  filter: blur(1px);
+}
+
+.react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle::before,
+.react-datepicker-popper[data-placement^='top'] .react-datepicker__triangle::after {
+  border-top-color: var(--datepicker-triangle-color);
   filter: blur(1px);
 }
 
