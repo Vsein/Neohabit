@@ -22,6 +22,8 @@ export default function Overlay() {
 
   useKeyPress(['c'], closeOverlay);
 
+  if (!isActive) return <></>;
+
   return (
     <div className={isActive ? 'overlay overlay-active' : 'overlay'} onMouseDown={closeOverlay}>
       {type === 'habit' ? (
