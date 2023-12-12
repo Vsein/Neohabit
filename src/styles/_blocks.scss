@@ -68,6 +68,12 @@
     cursor: pointer;
   }
 
+  & input {
+    width: 115px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
   @media (max-width: 450px) {
     flex-wrap: wrap;
     height: min-content;

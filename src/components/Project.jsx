@@ -62,6 +62,7 @@ export default function Project({
           '--cell-width': '15px',
           [project.color !== '#8a8a8a' ? '--signature-color' : '']: colorShade,
           [project.color !== '#8a8a8a' ? '--bright-signature-color' : '']: colorShade,
+          [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,
         }}
       >
         <div

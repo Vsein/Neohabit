@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
 import { formatISO, startOfDay, getYear } from 'date-fns';
+import DatePicker from 'react-datepicker';
 import {
   mdiMenuLeft,
   mdiMenuRight,
@@ -8,6 +9,8 @@ import {
   mdiCalendarStart,
   mdiCalendarRefresh,
 } from '@mdi/js';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../styles/_datepicker.scss';
 
 function YearPicker({ subYear, addYear, dateStart }) {
   return (
@@ -24,19 +27,28 @@ function YearPicker({ subYear, addYear, dateStart }) {
 }
 
 function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPeriod, subPeriod }) {
+  const Calendar = ({ className, children }) => (
+    <div style={{ background: '#216ba5', color: '#fff' }}>
+      <div className={className}>
+        <div style={{ background: '#f0f0f0' }}>What is your favorite day?</div>
+        <div style={{ position: 'relative' }}>{children}</div>
+      </div>
+    </div>
+  );
   return (
     <div className="dates-container">
       <button className="centering" onClick={subPeriod} title="Move period to the left [h]">
         <Icon path={mdiMenuLeft} className="icon" />
       </button>
       <div className="dates-period">
-        <input
-          type="date"
-          value={formatISO(dateStart, { representation: 'date' })}
-          max="<?= date('Y-m-d'); ?>"
-          rows="1"
-          className="dates-period-picker"
-          onChange={(e) => setDateStart(startOfDay(new Date(e.target.value)))}
+        <DatePicker
+          // showIcon
+          wrapperClassName="dates-period-picker"
+          popperClassName="popper"
+          selected={dateStart}
+          onChange={(date) => setDateStart(date)}
+          enableTabLoop={false}
+          // calendarContainer={Calendar}
         />
         -
         <input
