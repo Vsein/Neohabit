@@ -17,7 +17,7 @@ import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
+import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 
 export default function Overview() {
@@ -89,15 +89,12 @@ export default function Overview() {
           </div>
           <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
           <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-          <DatePeriodControls
+          <OverviewTopbarRight
             vertical={vertical}
             dateStart={dateStart}
             subYear={subYear}
             addYear={addYear}
             addMonth={addMonth}
-            setToPast={setToPast}
-            reset={reset}
-            setToFuture={setToFuture}
           />
           <div className="overview-habits">
             {habits.data.map((habit, i) => (

@@ -11,7 +11,7 @@ import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
+import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
@@ -81,6 +81,9 @@ export default function Project({
               setDateEnd={setDateEnd}
               subPeriod={subPeriod}
               addPeriod={addPeriod}
+              setToPast={setToPast}
+              reset={reset}
+              setToFuture={setToFuture}
             />
           )}
           <ProjectControls projectID={project?._id} />
@@ -97,15 +100,12 @@ export default function Project({
             </div>
             <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
             <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-            <DatePeriodControls
+            <OverviewTopbarRight
               vertical={vertical}
               dateStart={dateStart}
               subYear={subYear}
               addYear={addYear}
               addMonth={addMonth}
-              setToPast={setToPast}
-              reset={reset}
-              setToFuture={setToFuture}
             />
             <div className="overview-habits">
               {project.habits &&

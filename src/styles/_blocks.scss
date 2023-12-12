@@ -86,6 +86,14 @@
   }
 }
 
+.dates-period-footer {
+  padding-top: 5px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
 .habit-controls {
   width: min-content;
   display: grid;

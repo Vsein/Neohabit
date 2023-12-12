@@ -27,15 +27,17 @@ function YearPicker({ subYear, addYear, dateStart }) {
   );
 }
 
-function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPeriod, subPeriod }) {
-  const Calendar = ({ className, children }) => (
-    <div style={{ background: '#216ba5', color: '#fff' }}>
-      <div className={className}>
-        <div style={{ background: '#f0f0f0' }}>What is your favorite day?</div>
-        <div style={{ position: 'relative' }}>{children}</div>
-      </div>
-    </div>
-  );
+function DatePeriodPicker({
+  setDateStart,
+  dateStart,
+  setDateEnd,
+  dateEnd,
+  addPeriod,
+  subPeriod,
+  setToPast,
+  reset,
+  setToFuture,
+}) {
   return (
     <div className="dates-container">
       <button className="centering" onClick={subPeriod} title="Move period to the left [h]">
@@ -59,7 +61,9 @@ function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPer
               style={{ width: '18px', height: '18px' }}
             />
           }
-        />
+        >
+          <DatePeriodControls setToPast={setToPast} reset={reset} setToFuture={setToFuture} />
+        </DatePicker>
         -
         <DatePicker
           showIcon
@@ -78,7 +82,9 @@ function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPer
               style={{ width: '18px', height: '18px' }}
             />
           }
-        />
+        >
+          <DatePeriodControls setToPast={setToPast} reset={reset} setToFuture={setToFuture} />
+        </DatePicker>
       </div>
       <button className="centering left" onClick={addPeriod} title="Move period to the right [l]">
         <Icon path={mdiMenuRight} className="icon" />
@@ -87,16 +93,13 @@ function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPer
   );
 }
 
-function DatePeriodControls({
+function OverviewTopbarRight({
   isHeatmap = true,
   vertical,
+  dateStart,
   subYear,
   addYear,
-  dateStart,
   addMonth,
-  setToPast,
-  reset,
-  setToFuture,
 }) {
   return (
     <div className="overview-topbar-right">
@@ -108,8 +111,15 @@ function DatePeriodControls({
           <Icon path={mdiMenuRight} className="icon" />
         </button>
       )}
+    </div>
+  );
+}
+
+function DatePeriodControls({ setToPast, reset, setToFuture }) {
+  return (
+    <div className="dates-period-footer">
       <button
-        className="overview-period-button right"
+        className="overview-period-button"
         onClick={setToPast}
         title="Set today as the period end"
       >
@@ -133,4 +143,4 @@ function DatePeriodControls({
   );
 }
 
-export { YearPicker, DatePeriodPicker, DatePeriodControls };
+export { YearPicker, DatePeriodPicker, DatePeriodControls, OverviewTopbarRight };
