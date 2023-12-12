@@ -64,7 +64,7 @@ function DatePeriodPicker({
         >
           <DatePeriodControls setToPast={setToPast} reset={reset} setToFuture={setToFuture} />
         </DatePicker>
-        -
+        <span style={{marginLeft: '0px', marginRight: '10px' }}>-</span>
         <DatePicker
           showIcon
           wrapperClassName="dates-period-picker"
