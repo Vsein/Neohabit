@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import {
   mdiMenuLeft,
   mdiMenuRight,
+  mdiCalendarBlank,
   mdiCalendarEnd,
   mdiCalendarStart,
   mdiCalendarRefresh,
@@ -42,22 +43,41 @@ function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPer
       </button>
       <div className="dates-period">
         <DatePicker
-          // showIcon
+          showIcon
           wrapperClassName="dates-period-picker"
           popperClassName="popper"
+          selectsStart
           selected={dateStart}
+          startDate={dateStart}
+          endDate={dateEnd}
           onChange={(date) => setDateStart(date)}
           enableTabLoop={false}
-          // calendarContainer={Calendar}
+          icon={
+            <Icon
+              path={mdiCalendarBlank}
+              className="icon centering"
+              style={{ width: '18px', height: '18px' }}
+            />
+          }
         />
         -
-        <input
-          type="date"
-          value={formatISO(dateEnd, { representation: 'date' })}
-          max="<?= date('Y-m-d'); ?>"
-          rows="1"
-          className="dates-period-picker"
-          onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
+        <DatePicker
+          showIcon
+          wrapperClassName="dates-period-picker"
+          popperClassName="popper"
+          selectsEnd
+          selected={dateEnd}
+          startDate={dateStart}
+          endDate={dateEnd}
+          onChange={(date) => setDateEnd(date)}
+          enableTabLoop={false}
+          icon={
+            <Icon
+              path={mdiCalendarBlank}
+              className="icon centering"
+              style={{ width: '18px', height: '18px' }}
+            />
+          }
         />
       </div>
       <button className="centering left" onClick={addPeriod} title="Move period to the right [l]">

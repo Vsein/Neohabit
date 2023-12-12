@@ -54,10 +54,10 @@
 .dates-period {
   display: flex;
   flex-direction: row;
-  column-gap: 10px;
+  column-gap: 5px;
   justify-content: center;
   align-items: center;
-  padding-inline: 10px;
+  padding-inline: 8px;
   box-shadow: 0px 0px 4px 2px var(--signature-color);
   border-radius: 6px;
   height: 23px;
@@ -69,9 +69,10 @@
   }
 
   & input {
-    width: 115px;
+    width: 110px;
     font-size: 15px;
     cursor: pointer;
+    padding: 0px 0px 0px 25px;
   }
 
   @media (max-width: 450px) {
