@@ -61,7 +61,7 @@ function generatePalette(base, goal) {
 }
 
 function getNumericTextColor(color) {
-  if (contrast(hexToRgb(color), hexToRgb('#efefef')) > 1.8) {
+  if (contrast(hexToRgb(color), hexToRgb('#efefef')) > 1.95) {
     return '#efefef';
   }
   return contrast(hexToRgb(color), hexToRgb('#efefef')) >
