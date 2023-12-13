@@ -46,6 +46,7 @@ export default function Habit({ heatmap, habit }) {
         '--vertical': vertical * 1,
         '--signature-color': colorShade,
         '--bright-signature-color': colorShade,
+        '--calm-signature-color': `${colorShade}55`,
       }}
     >
       <div className={`overview-header ${mobile ? 'small' : ''} singular habit-mode`}>
