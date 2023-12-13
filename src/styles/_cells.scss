@@ -45,13 +45,9 @@ $cell-margin: 2px;
   &:hover {
     border: 1px solid var(--cell-border-color);
 
-    & .cell-numeric {
-      color: rgba(0, 0, 0, 0.5);
-    }
-
     & .cell-numeric.target {
       color: var(--text-color);
-      opacity: 0.7;
+      opacity: 1;
     }
   }
 
@@ -91,7 +87,7 @@ $cell-margin: 2px;
 
   &.target {
     color: var(--text-color);
-    opacity: 0.3;
+    opacity: 0.5;
   }
 }
 
