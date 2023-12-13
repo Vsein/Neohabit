@@ -11,13 +11,22 @@ function hexToRgb(hex) {
     : null;
 }
 
+function componentToHex(c) {
+  const hex = c.toString(16);
+  return hex.length === 1 ? '0' + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
 function mixColors(base, goal, alpha) {
   const rgb = {
     r: Math.round(base.r + (goal.r - base.r) * alpha),
     g: Math.round(base.g + (goal.g - base.g) * alpha),
     b: Math.round(base.b + (goal.b - base.b) * alpha),
   };
-  return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+  return rgbToHex(rgb.r, rgb.g, rgb.b);
 }
 
 const RED = 0.2126;
@@ -52,10 +61,13 @@ function generatePalette(base, goal) {
 }
 
 function getNumericTextColor(color) {
+  if (contrast(hexToRgb(color), hexToRgb('#efefef')) > 1.95) {
+    return '#efefef';
+  }
   return contrast(hexToRgb(color), hexToRgb('#efefef')) >
-    contrast(hexToRgb(color), hexToRgb('#242424'))
+    contrast(hexToRgb(color), hexToRgb('#000000'))
     ? '#efefef'
-    : '#242424';
+    : '#000000';
 }
 
 export default function usePaletteGenerator(color) {

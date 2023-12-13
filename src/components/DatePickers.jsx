@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Icon } from '@mdi/react';
-import { formatISO, startOfDay, getYear } from 'date-fns';
+import { getYear, compareDesc, differenceInDays, addDays } from 'date-fns';
+import DatePicker from 'react-datepicker';
 import {
   mdiMenuLeft,
   mdiMenuRight,
+  mdiCalendarBlank,
   mdiCalendarEnd,
   mdiCalendarStart,
   mdiCalendarRefresh,
 } from '@mdi/js';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../styles/_datepicker.scss';
 
 function YearPicker({ subYear, addYear, dateStart }) {
   return (
@@ -23,30 +27,110 @@ function YearPicker({ subYear, addYear, dateStart }) {
   );
 }
 
-function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPeriod, subPeriod }) {
+function DatePeriodPicker({
+  setDateStart,
+  dateStart,
+  setDateEnd,
+  dateEnd,
+  addPeriod,
+  subPeriod,
+  setToPast,
+  reset,
+  setToFuture,
+}) {
+  const startRef = useRef();
+  const endRef = useRef();
+
+  const close = () => {
+    startRef.current.setOpen(false);
+    endRef.current.setOpen(false);
+  };
+
+  const handleSetDateStart = (date) => {
+    if (compareDesc(dateEnd, date) === 1) {
+      const period = differenceInDays(dateEnd, dateStart);
+      setDateEnd(addDays(date, period));
+      setDateStart(date);
+    } else {
+      setDateStart(date);
+    }
+  };
+
+  const handleSetDateEnd = (date) => {
+    if (compareDesc(date, dateStart) === 1) {
+      const period = differenceInDays(dateEnd, dateStart);
+      setDateStart(addDays(date, -period));
+      setDateEnd(date);
+    } else {
+      setDateEnd(date);
+    }
+  };
+
   return (
     <div className="dates-container">
       <button className="centering" onClick={subPeriod} title="Move period to the left [h]">
         <Icon path={mdiMenuLeft} className="icon" />
       </button>
       <div className="dates-period">
-        <input
-          type="date"
-          value={formatISO(dateStart, { representation: 'date' })}
-          max="<?= date('Y-m-d'); ?>"
-          rows="1"
-          className="dates-period-picker"
-          onChange={(e) => setDateStart(startOfDay(new Date(e.target.value)))}
-        />
-        -
-        <input
-          type="date"
-          value={formatISO(dateEnd, { representation: 'date' })}
-          max="<?= date('Y-m-d'); ?>"
-          rows="1"
-          className="dates-period-picker"
-          onChange={(e) => setDateEnd(startOfDay(new Date(e.target.value)))}
-        />
+        <DatePicker
+          ref={startRef}
+          showIcon
+          wrapperClassName="dates-period-picker"
+          popperClassName="popper"
+          selectsStart
+          selected={dateStart}
+          startDate={dateStart}
+          endDate={dateEnd}
+          onChange={(date) => handleSetDateStart(date)}
+          onFocus={(e) => {
+            e.target.readOnly = true;
+          }}
+          enableTabLoop={false}
+          icon={
+            <Icon
+              path={mdiCalendarBlank}
+              className="icon centering"
+              style={{ width: '18px', height: '18px' }}
+            />
+          }
+        >
+          <DatePeriodControls
+            setToPast={setToPast}
+            reset={reset}
+            setToFuture={setToFuture}
+            onClick={close}
+          />
+        </DatePicker>
+        <span style={{ marginLeft: '0px', marginRight: '10px' }}>-</span>
+        <DatePicker
+          ref={endRef}
+          showIcon
+          wrapperClassName="dates-period-picker"
+          popperClassName="popper"
+          selectsEnd
+          selected={dateEnd}
+          startDate={dateStart}
+          endDate={dateEnd}
+          onChange={(date) => handleSetDateEnd(date)}
+          onFocus={(e) => {
+            e.target.readOnly = true;
+          }}
+          enableTabLoop={false}
+          icon={
+            <Icon
+              path={mdiCalendarBlank}
+              className="icon centering"
+              style={{ width: '18px', height: '18px' }}
+            />
+          }
+        >
+          <DatePeriodControls
+            setToPast={setToPast}
+            reset={reset}
+            setToFuture={setToFuture}
+            onClick={close}
+          />
+        </DatePicker>
       </div>
       <button className="centering left" onClick={addPeriod} title="Move period to the right [l]">
         <Icon path={mdiMenuRight} className="icon" />
@@ -55,16 +139,13 @@ function DatePeriodPicker({ setDateStart, dateStart, setDateEnd, dateEnd, addPer
   );
 }
 
-function DatePeriodControls({
+function OverviewTopbarRight({
   isHeatmap = true,
   vertical,
+  dateStart,
   subYear,
   addYear,
-  dateStart,
   addMonth,
-  setToPast,
-  reset,
-  setToFuture,
 }) {
   return (
     <div className="overview-topbar-right">
@@ -76,8 +157,15 @@ function DatePeriodControls({
           <Icon path={mdiMenuRight} className="icon" />
         </button>
       )}
+    </div>
+  );
+}
+
+function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
+  return (
+    <div className="dates-period-footer" onClick={onClick}>
       <button
-        className="overview-period-button right"
+        className="overview-period-button"
         onClick={setToPast}
         title="Set today as the period end"
       >
@@ -101,4 +189,4 @@ function DatePeriodControls({
   );
 }
 
-export { YearPicker, DatePeriodPicker, DatePeriodControls };
+export { YearPicker, DatePeriodPicker, DatePeriodControls, OverviewTopbarRight };

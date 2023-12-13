@@ -11,9 +11,9 @@ import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, DatePeriodPicker, DatePeriodControls } from './DatePickers';
+import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
-import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
+import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function Project({
   project,
@@ -45,6 +45,9 @@ export default function Project({
   const colorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
     : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(project.color), 0.6);
+  const calmColorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
+    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
 
   return (
     !heatmaps.isFetching &&
@@ -60,8 +63,11 @@ export default function Project({
           '--multiplier': 1,
           '--cell-height': '15px',
           '--cell-width': '15px',
+          '--datepicker-text-color': getNumericTextColor(colorShade),
+          '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
           [project.color !== '#8a8a8a' ? '--signature-color' : '']: colorShade,
           [project.color !== '#8a8a8a' ? '--bright-signature-color' : '']: colorShade,
+          [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,
         }}
       >
         <div
@@ -80,6 +86,9 @@ export default function Project({
               setDateEnd={setDateEnd}
               subPeriod={subPeriod}
               addPeriod={addPeriod}
+              setToPast={setToPast}
+              reset={reset}
+              setToFuture={setToFuture}
             />
           )}
           <ProjectControls projectID={project?._id} />
@@ -96,15 +105,12 @@ export default function Project({
             </div>
             <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
             <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-            <DatePeriodControls
+            <OverviewTopbarRight
               vertical={vertical}
               dateStart={dateStart}
               subYear={subYear}
               addYear={addYear}
               addMonth={addMonth}
-              setToPast={setToPast}
-              reset={reset}
-              setToFuture={setToFuture}
             />
             <div className="overview-habits">
               {project.habits &&

@@ -316,13 +316,7 @@ function CellNumericText({ small = false, color, value, targetValue }) {
 
   if (value) {
     return (
-      <p
-        className="cell-numeric"
-        style={{
-          color: getNumericTextColor(color),
-          ...getHundredStyle(value),
-        }}
-      >
+      <p className="cell-numeric" style={getHundredStyle(value)}>
         {value}
       </p>
     );

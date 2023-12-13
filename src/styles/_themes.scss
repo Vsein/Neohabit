@@ -3,7 +3,7 @@
   --signature-color: #144e12;
   --bright-signature-color: #43d64e;
   --signature-color-transparent: #144e1233;
-  --calm-signature-color: #43d64e;
+  --calm-signature-color: #A8ECAD;
   --form-error-color: #D41A00;
   --support-color: black;
   --main-background-color: white;
@@ -34,6 +34,8 @@
   --border-color: #bbb;
   --important-border-color: #888;
   --progressbar-bg-color: #ccc;
+  --datepicker-triangle-color: #bbb;
+  --datepicker-text-color: white;
 }
 
 :root {
@@ -72,4 +74,6 @@
   --border-color: #666;
   --important-border-color: #777;
   --progressbar-bg-color: #454545;
+  --datepicker-triangle-color: #888;
+  --datepicker-text-color: black;
 }

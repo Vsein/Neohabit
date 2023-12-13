@@ -8,7 +8,7 @@ import { YearPicker, DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
-import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
+import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function Habit({ heatmap, habit }) {
   const [loaded] = useLoaded();
@@ -32,6 +32,9 @@ export default function Habit({ heatmap, habit }) {
   const colorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(habit.color), 0.8)
     : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(habit.color), 0.6);
+  const calmColorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
+    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
 
   return (
     <div
@@ -46,6 +49,9 @@ export default function Habit({ heatmap, habit }) {
         '--vertical': vertical * 1,
         '--signature-color': colorShade,
         '--bright-signature-color': colorShade,
+        '--calm-signature-color': `${colorShade}55`,
+        '--datepicker-text-color': getNumericTextColor(colorShade),
+        '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
       }}
     >
       <div className={`overview-header ${mobile ? 'small' : ''} singular habit-mode`}>
