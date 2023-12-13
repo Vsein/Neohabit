@@ -82,6 +82,9 @@ function DatePeriodPicker({
           startDate={dateStart}
           endDate={dateEnd}
           onChange={(date) => handleSetDateStart(date)}
+          onFocus={(e) => {
+            e.target.readOnly = true;
+          }}
           enableTabLoop={false}
           icon={
             <Icon
@@ -109,6 +112,9 @@ function DatePeriodPicker({
           startDate={dateStart}
           endDate={dateEnd}
           onChange={(date) => handleSetDateEnd(date)}
+          onFocus={(e) => {
+            e.target.readOnly = true;
+          }}
           enableTabLoop={false}
           icon={
             <Icon
