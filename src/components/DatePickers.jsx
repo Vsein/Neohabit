@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Icon } from '@mdi/react';
 import { getYear, compareDesc, differenceInDays, addDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
@@ -38,6 +38,14 @@ function DatePeriodPicker({
   reset,
   setToFuture,
 }) {
+  const startRef = useRef();
+  const endRef = useRef();
+
+  const close = () => {
+    startRef.current.setOpen(false);
+    endRef.current.setOpen(false);
+  };
+
   const handleSetDateStart = (date) => {
     if (compareDesc(dateEnd, date) === 1) {
       const period = differenceInDays(dateEnd, dateStart);
@@ -65,6 +73,7 @@ function DatePeriodPicker({
       </button>
       <div className="dates-period">
         <DatePicker
+          ref={startRef}
           showIcon
           wrapperClassName="dates-period-picker"
           popperClassName="popper"
@@ -82,10 +91,16 @@ function DatePeriodPicker({
             />
           }
         >
-          <DatePeriodControls setToPast={setToPast} reset={reset} setToFuture={setToFuture} />
+          <DatePeriodControls
+            setToPast={setToPast}
+            reset={reset}
+            setToFuture={setToFuture}
+            onClick={close}
+          />
         </DatePicker>
         <span style={{ marginLeft: '0px', marginRight: '10px' }}>-</span>
         <DatePicker
+          ref={endRef}
           showIcon
           wrapperClassName="dates-period-picker"
           popperClassName="popper"
@@ -103,7 +118,12 @@ function DatePeriodPicker({
             />
           }
         >
-          <DatePeriodControls setToPast={setToPast} reset={reset} setToFuture={setToFuture} />
+          <DatePeriodControls
+            setToPast={setToPast}
+            reset={reset}
+            setToFuture={setToFuture}
+            onClick={close}
+          />
         </DatePicker>
       </div>
       <button className="centering left" onClick={addPeriod} title="Move period to the right [l]">
@@ -135,9 +155,9 @@ function OverviewTopbarRight({
   );
 }
 
-function DatePeriodControls({ setToPast, reset, setToFuture }) {
+function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
   return (
-    <div className="dates-period-footer">
+    <div className="dates-period-footer" onClick={onClick}>
       <button
         className="overview-period-button"
         onClick={setToPast}
