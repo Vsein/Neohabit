@@ -61,10 +61,13 @@ function generatePalette(base, goal) {
 }
 
 function getNumericTextColor(color) {
+  if (contrast(hexToRgb(color), hexToRgb('#efefef')) > 1.8) {
+    return '#efefef';
+  }
   return contrast(hexToRgb(color), hexToRgb('#efefef')) >
-    contrast(hexToRgb(color), hexToRgb('#242424'))
+    contrast(hexToRgb(color), hexToRgb('#000000'))
     ? '#efefef'
-    : '#242424';
+    : '#000000';
 }
 
 export default function usePaletteGenerator(color) {
