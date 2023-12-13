@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
-import { getYear } from 'date-fns';
+import { getYear, compareDesc, differenceInDays, addDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import {
   mdiMenuLeft,
@@ -38,6 +38,26 @@ function DatePeriodPicker({
   reset,
   setToFuture,
 }) {
+  const handleSetDateStart = (date) => {
+    if (compareDesc(dateEnd, date) === 1) {
+      const period = differenceInDays(dateEnd, dateStart);
+      setDateEnd(addDays(date, period));
+      setDateStart(date);
+    } else {
+      setDateStart(date);
+    }
+  };
+
+  const handleSetDateEnd = (date) => {
+    if (compareDesc(date, dateStart) === 1) {
+      const period = differenceInDays(dateEnd, dateStart);
+      setDateStart(addDays(date, -period));
+      setDateEnd(date);
+    } else {
+      setDateEnd(date);
+    }
+  };
+
   return (
     <div className="dates-container">
       <button className="centering" onClick={subPeriod} title="Move period to the left [h]">
@@ -52,7 +72,7 @@ function DatePeriodPicker({
           selected={dateStart}
           startDate={dateStart}
           endDate={dateEnd}
-          onChange={(date) => setDateStart(date)}
+          onChange={(date) => handleSetDateStart(date)}
           enableTabLoop={false}
           icon={
             <Icon
@@ -64,7 +84,7 @@ function DatePeriodPicker({
         >
           <DatePeriodControls setToPast={setToPast} reset={reset} setToFuture={setToFuture} />
         </DatePicker>
-        <span style={{marginLeft: '0px', marginRight: '10px' }}>-</span>
+        <span style={{ marginLeft: '0px', marginRight: '10px' }}>-</span>
         <DatePicker
           showIcon
           wrapperClassName="dates-period-picker"
@@ -73,7 +93,7 @@ function DatePeriodPicker({
           selected={dateEnd}
           startDate={dateStart}
           endDate={dateEnd}
-          onChange={(date) => setDateEnd(date)}
+          onChange={(date) => handleSetDateEnd(date)}
           enableTabLoop={false}
           icon={
             <Icon
