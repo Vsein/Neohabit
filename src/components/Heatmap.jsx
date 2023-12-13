@@ -11,7 +11,7 @@ import {
   subMilliseconds,
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
-import usePaletteGenerator from '../hooks/usePaletteGenerator';
+import usePaletteGenerator, { getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function Heatmap({
   dateStart,
@@ -51,7 +51,10 @@ export default function Heatmap({
   const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
 
   return (
-    <div className={`overview-habit-cells ${isOverview ? '' : 'weekly'}`}>
+    <div
+      className={`overview-habit-cells ${isOverview ? '' : 'weekly'}`}
+      style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
+    >
       {dataSorted &&
         dataSorted.map((point, index) => {
           const date = startOfDay(new Date(point.date));

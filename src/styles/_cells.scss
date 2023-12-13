@@ -83,7 +83,7 @@ $cell-margin: 2px;
   width: min-content;
   font-weight: 600;
   vertical-align: middle;
-  color: var(--blank-cell-color);
+  color: var(--numeric-text-color);
 
   &.target {
     color: var(--text-color);
