@@ -5,7 +5,7 @@ import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
-import { ModalButtons } from './ModalComponents';
+import { NameField, DescriptionField, ModalButtons } from './ModalComponents';
 import {
   useGetTasksQuery,
   useUpdateTaskMutation,
@@ -67,24 +67,8 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
             </button>
           </div>
           <div className="modal-details">
-            <label htmlFor="task-name">
-              <Field
-                name="name"
-                component="textarea"
-                placeholder="Change task name"
-                rows="1"
-                className="form-task-name"
-              />
-            </label>
-            <label htmlFor="task-description">
-              <Field
-                name="description"
-                component="textarea"
-                placeholder="Change description"
-                rows="1"
-                className="form-task-description"
-              />
-            </label>
+            <NameField type="task" />
+            <DescriptionField rows="1" />
           </div>
           <ModalButtons disabled={submitting || pristine} isNew={!taskID} type="task" />
         </form>

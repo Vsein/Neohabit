@@ -5,7 +5,7 @@ import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
-import { ModalButtons, ColorPicker } from './ModalComponents';
+import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import { useGetProjectsQuery } from '../state/services/project';
 import {
   useGetHabitsQuery,
@@ -96,14 +96,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             </button>
           </div>
           <div className="modal-details">
-            <Field
-              name="name"
-              component="textarea"
-              placeholder="Change habit name"
-              rows="1"
-              className="form-task-name"
-              required
-            />
+            <NameField type="habit" />
             <ColorPicker />
             <div className="form-task-description">
               <Field name="elimination" component="input" type="checkbox" className="checkbox" />
@@ -113,13 +106,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               <Field name="numeric" component="input" type="checkbox" className="checkbox" />
               <label>Use numeric</label>
             </div>
-            <Field
-              name="description"
-              component="textarea"
-              placeholder="Change description"
-              rows="5"
-              className="form-task-description"
-            />
+            <DescriptionField rows="5" />
           </div>
           <ModalButtons disabled={submitting || pristine} isNew={!habitID} type="habit" />
         </form>

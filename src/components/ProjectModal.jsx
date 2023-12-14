@@ -3,9 +3,8 @@ import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
-import { ModalButtons, ColorPicker } from './ModalComponents';
+import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetProjectsQuery,
   useCreateProjectMutation,
@@ -98,21 +97,8 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
             </button>
           </div>
           <div className="modal-details">
-            <Field
-              name="name"
-              component="textarea"
-              placeholder="Change project name"
-              rows="1"
-              className="form-task-name"
-              required
-            />
-            <Field
-              name="description"
-              component="textarea"
-              placeholder="Change description"
-              rows="1"
-              className="form-task-description"
-            />
+            <NameField type="project" />
+            <DescriptionField rows="1" />
             <div className="form-split">
               <div className="form-habits">
                 {habits.data.map((habit, i) => (

@@ -4,6 +4,31 @@ import { HexColorPicker, HexColorInput } from 'react-colorful';
 import { close } from '../state/features/overlay/overlaySlice';
 import Field from './FieldWrapper';
 
+function NameField({ type }) {
+  return (
+    <Field
+      name="name"
+      component="textarea"
+      placeholder={`Change ${type} name`}
+      rows="1"
+      className="form-task-name"
+      required
+    />
+  );
+}
+
+function DescriptionField({ rows }) {
+  return (
+    <Field
+      name="description"
+      component="textarea"
+      placeholder="Change description"
+      rows={rows}
+      className="form-task-description"
+    />
+  );
+}
+
 function ModalButtons({ disabled, isNew, type }) {
   const dispatch = useDispatch();
   const closeOverlay = (e) => {
@@ -52,4 +77,4 @@ function ColorPicker() {
   );
 }
 
-export { ModalButtons, ColorPicker };
+export { NameField, DescriptionField, ModalButtons, ColorPicker };

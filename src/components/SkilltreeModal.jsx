@@ -3,9 +3,8 @@ import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
-import { ModalButtons, ColorPicker } from './ModalComponents';
+import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetSkilltreesQuery,
   useCreateSkilltreeMutation,
@@ -68,25 +67,12 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
             </button>
           </div>
           <div className="modal-details">
-            <Field
-              name="name"
-              component="textarea"
-              placeholder="Change skilltree name"
-              rows="1"
-              className="form-task-name"
-              required
-            />
+            <NameField type="skilltree" />
             <ColorPicker />
             {skilltree ? (
               <></>
             ) : (
-              <Field
-                name="description"
-                component="textarea"
-                placeholder="Change description"
-                rows="7"
-                className="form-task-description"
-              />
+              <DescriptionField rows="7" />
             )}
           </div>
           <ModalButtons disabled={submitting || pristine} isNew={!skilltreeID} type="skilltree" />
