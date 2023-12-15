@@ -29,7 +29,7 @@ function DescriptionField({ rows }) {
         <div className="form-task-description">
           <textarea {...input} type="text" placeholder="Change description" rows={rows} />
           <p
-            className={`form-field-length ${input?.value?.length > 150 ? 'error' : ''}`}
+            className={`form-field-length ${input?.value?.length > 3000 ? 'error' : ''}`}
           >{`${input?.value?.length ?? 0}/3000`}</p>
         </div>
       )}
