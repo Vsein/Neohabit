@@ -84,9 +84,28 @@
   }
 }
 
+.form-field-length {
+  display: none;
+  position: absolute;
+  right: 5px;
+  font-size: 0.8em;
+  bottom: -10px;
+
+  &.error {
+    display: block;
+    color: var(--form-error-color);
+  }
+}
+
 .form-task-name {
   padding: 5px 10px;
   height: min-content;
+  white-space: nowrap;
+  position: relative;
+
+  & > input:focus ~ .form-field-length {
+    display: block;
+  }
 }
 
 .form-task-description {
@@ -96,6 +115,11 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  position: relative;
+
+  & > textarea:focus ~ .form-field-length {
+    display: block;
+  }
 }
 
 .form-split {
@@ -116,7 +140,7 @@
   justify-content: center;
   align-items: center;
   padding-inline: 10px 15px;
-    background-color: var(--chooser-bg-color);
+  background-color: var(--chooser-bg-color);
   border-radius: 10px;
   gap: 10px;
   transition: background-color 0.1s;

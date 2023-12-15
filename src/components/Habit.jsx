@@ -63,6 +63,9 @@ export default function Habit({ heatmap, habit }) {
           setDateEnd={setDateEnd}
           addPeriod={addPeriod}
           subPeriod={subPeriod}
+          setToPast={setToPast}
+          reset={reset}
+          setToFuture={setToFuture}
         />
         <HabitControls habit={habit} heatmap={heatmap} header={true} />
       </div>

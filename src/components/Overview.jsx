@@ -76,6 +76,9 @@ export default function Overview() {
           setDateEnd={setDateEnd}
           subPeriod={subPeriod}
           addPeriod={addPeriod}
+          setToPast={setToPast}
+          reset={reset}
+          setToFuture={setToFuture}
         />
         <OverviewControls vertical={vertical} />
       </div>

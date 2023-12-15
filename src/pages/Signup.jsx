@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-final-form';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { UsernameField, EmailField, PasswordField } from '../components/Auth';
+import { UsernameField, EmailField, PasswordField } from '../components/AuthFields';
 import { useSignupMutation, useLoginMutation } from '../state/services/auth';
 import useTitle from '../hooks/useTitle';
 

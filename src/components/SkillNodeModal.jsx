@@ -3,9 +3,8 @@ import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
-import { ModalButtons } from './ModalComponents';
+import { NameField, DescriptionField, ModalButtons } from './ModalComponents';
 import {
   useGetSkilltreesQuery,
   useAddSkillMutation,
@@ -44,7 +43,6 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
         <form
           onSubmit={async (e) => {
             await handleSubmit(e);
-            form.reset();
           }}
           className="modal modal-active"
           onClick={(e) => e.stopPropagation()}
@@ -62,23 +60,10 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
             </button>
           </div>
           <div className="modal-details">
-            <Field
-              name="name"
-              component="textarea"
-              placeholder="Change skill name"
-              rows="1"
-              className="form-task-name"
-              required
-            />
-            <Field
-              name="description"
-              component="textarea"
-              placeholder="Change description"
-              rows="17"
-              className="form-task-description"
-            />
+            <NameField type="skill" />
+            <DescriptionField rows="17" />
           </div>
-          <ModalButtons disabled={submitting || pristine} isNew={!skillID} type="skill" />
+          <ModalButtons disabled={submitting} isNew={!skillID} type="skill" />
         </form>
       )}
     />
