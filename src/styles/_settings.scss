@@ -148,10 +148,10 @@
 }
 
 .modal-settings {
-  width: 400px;
+  width: min(400px, 100% - 1em);
   min-height: 100px;
-  height: 200px;
-  grid-template-rows: 1fr 1fr;
+  height: min-content;
+  gap: 15px;
 }
 
 .modal-footnote {
