@@ -11,7 +11,7 @@ import {
 } from 'date-fns';
 import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
-import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
 function Cell({
   color,
@@ -251,7 +251,9 @@ function CellPeriod({
   return (
     <>
       <div
-        className={`cell-period centering ${width ? 'wide' : 'whole'}`}
+        className={`cell-period centering ${width ? 'wide' : 'hollow'} ${
+          value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
+        } `}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
         onMouseLeave={hideTip}
@@ -299,7 +301,7 @@ function CellPeriod({
   );
 }
 
-function CellNumericText({ small = false, color, value, targetValue }) {
+function CellNumericText({ small = false, value, targetValue }) {
   const getHundredStyle = (displayedValue) => {
     if (!small || displayedValue < 100) return {};
     const stringValue = displayedValue.toString();
