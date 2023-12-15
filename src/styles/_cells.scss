@@ -177,6 +177,30 @@ $cell-margin: 2px;
       top: 0px;
       left: -1px;
     }
+
+    &:hover:not(.hundred) {
+      border: 1px solid var(--cell-border-color);
+
+      & > .cell-period-before {
+        border: 1px solid var(--cell-border-color);
+        border-right: none;
+        box-shadow: none;
+
+        &:after {
+          display: none;
+        }
+      }
+
+      & > .cell-period-after {
+        border: 1px solid var(--cell-border-color);
+        border-left: none;
+        box-shadow: none;
+
+        &:after {
+          display: none;
+        }
+      }
+    }
   }
 
   &.hollow {
@@ -194,52 +218,28 @@ $cell-margin: 2px;
       width: var(--cell-height);
       right: calc(-1 * var(--cell-height) - 1px);
     }
-  }
 
-  &.wide:hover:not(.hundred) {
-    border: 1px solid var(--cell-border-color);
-
-    & > .cell-period-before {
-      border: 1px solid var(--cell-border-color);
-      border-right: none;
-      box-shadow: none;
-
-      &:after {
-        display: none;
-      }
-    }
-
-    & > .cell-period-after {
-      border: 1px solid var(--cell-border-color);
-      border-left: none;
-      box-shadow: none;
-
-      &:after {
-        display: none;
-      }
-    }
-  }
-
-  &.hollow:hover:not(.hundred) {
-    border-top: 1px solid var(--cell-border-color);
-    border-bottom: 1px solid var(--cell-border-color);
-
-    & > .cell-period-before {
-      border: 1px solid var(--cell-border-color);
-    }
-
-    & > .cell-period-after {
-      border: 1px solid var(--cell-border-color);
-    }
-
-    & > .cell-period-connector {
+    &:hover:not(.hundred) {
       border-top: 1px solid var(--cell-border-color);
       border-bottom: 1px solid var(--cell-border-color);
-      box-shadow: none;
 
-      &:after,
-      &:before {
-        display: none;
+      & > .cell-period-before {
+        border: 1px solid var(--cell-border-color);
+      }
+
+      & > .cell-period-after {
+        border: 1px solid var(--cell-border-color);
+      }
+
+      & > .cell-period-connector {
+        border-top: 1px solid var(--cell-border-color);
+        border-bottom: 1px solid var(--cell-border-color);
+        box-shadow: none;
+
+        &:after,
+        &:before {
+          display: none;
+        }
       }
     }
   }
@@ -251,14 +251,6 @@ $cell-margin: 2px;
       box-shadow:
         0px 0px 0px 1px var(--blank-cell-color),
         0 0 0 2px var(--cell-shadow-color);
-    }
-
-    &:hover:is(.wide) {
-      box-shadow:
-        0px 0px 0px 1px var(--cell-border-color),
-        0px 0px 0px 1px var(--blank-cell-color),
-        0 0 0 2px var(--cell-shadow-color);
-      border-color: transparent;
     }
 
     & .cell-period-before:after {
@@ -273,23 +265,42 @@ $cell-margin: 2px;
       top: -1px;
       left: -2px;
     }
-    &:hover .cell-period-before,
-    &:hover .cell-period-after {
+
+    &:hover:is(.wide) {
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
-        0px 0px 0px 1px var(--blank-cell-color);
+        0px 0px 0px 1px var(--blank-cell-color),
+        0 0 0 2px var(--cell-shadow-color);
       border-color: transparent;
+
+      & .cell-period-before,
+      & .cell-period-after {
+        box-shadow:
+          0px 0px 0px 1px var(--cell-border-color),
+          0px 0px 0px 1px var(--blank-cell-color);
+        border-color: transparent;
+      }
+      & .cell-period-before:after {
+        @include shadow-fix;
+        top: -1px;
+        right: -1px;
+      }
+      & .cell-period-after:after {
+        @include shadow-fix;
+        top: 0px;
+        left: -1px;
+      }
     }
 
-    &:hover .cell-period-before:after {
-      @include shadow-fix;
-      top: -1px;
-      right: -1px;
-    }
-    &:hover .cell-period-after:after {
-      @include shadow-fix;
-      top: 0px;
-      left: -1px;
+    &:hover:is(.hollow) {
+      & .cell-period-before,
+      & .cell-period-after {
+        box-shadow:
+        0px 0px 0px 1px var(--cell-border-color),
+        0px 0px 0px 1px var(--blank-cell-color),
+        0 0 0 2px var(--cell-shadow-color);
+        border-color: transparent;
+      }
     }
   }
 }
