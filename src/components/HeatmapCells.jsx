@@ -187,7 +187,7 @@ function CellPeriod({
     actions: value,
   };
   if (isSameWeek(dateStart, dateEnd) || isOverview) {
-    return value === undefined || value > 16 || value <= 1 && targetValue === 1 || targetValue > 16 || numeric ? (
+    return numeric || value > 16 || value <= 1 && targetValue === 1 || targetValue > 16 ? (
       <Cell
         color={color}
         tipContent={tipContent}
@@ -303,7 +303,6 @@ function CellPeriod({
 }
 
 function CellNumericText({ wide = false, small = false, value, targetValue }) {
-  console.log(value, targetValue);
   const getHundredStyle = (displayedValue) => {
     if (!small || displayedValue < 100) return {};
     const stringValue = displayedValue.toString();
