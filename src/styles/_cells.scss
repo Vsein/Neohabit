@@ -84,6 +84,7 @@ $cell-margin: 2px;
   font-weight: 600;
   vertical-align: middle;
   color: var(--numeric-text-color);
+  z-index: 1;
 
   &.target {
     color: var(--text-color);
@@ -137,6 +138,14 @@ $cell-margin: 2px;
     border-left: none;
     right: calc(-1 * var(--cell-height) - 4px);
     top: 0px;
+  }
+
+  &.hundred .cell-period-connector .cell-numeric {
+    margin-left: -5px;
+  }
+
+  & .cell-period-connector .cell-numeric {
+    margin-left: -3px;
   }
 
   &-connector {

@@ -270,7 +270,7 @@ function CellPeriod({
         }}
       >
         {(value > 1 || numeric) && !!width && (
-          <CellNumericText color={color} value={value} targetValue={targetValue} />
+          <CellNumericText wide={true} small={width <= 1} color={color} value={value} targetValue={targetValue} />
         )}
         <div className="cell-period-before centering" style={styleBefore}>
           {!width && diffDays <= 7 && (value > 1 || numeric) && (
@@ -301,7 +301,7 @@ function CellPeriod({
   );
 }
 
-function CellNumericText({ small = false, value, targetValue }) {
+function CellNumericText({ wide = false, small = false, value, targetValue }) {
   const getHundredStyle = (displayedValue) => {
     if (!small || displayedValue < 100) return {};
     const stringValue = displayedValue.toString();
@@ -313,6 +313,7 @@ function CellNumericText({ small = false, value, targetValue }) {
       [without1 ? 'marginLeft' : '']: '-1.75px',
       [without1 ? 'letterSpacing' : '']: '-0.75px',
       [single1 ? 'marginLeft' : '']: '-1px',
+      [wide ? 'marginLeft' : '']: '-1.75px',
     };
   };
 
