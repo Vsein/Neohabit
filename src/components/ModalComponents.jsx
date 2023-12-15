@@ -5,7 +5,7 @@ import { close } from '../state/features/overlay/overlaySlice';
 import Field from './FieldWrapper';
 
 const bounds = (min, max) => (value) =>
-  value.length >= min && value.length <= max ? undefined : `Must have ${min}-${max} symbols`;
+  value?.length >= min && value?.length <= max ? undefined : `Must have ${min}-${max} symbols`;
 
 function NameField({ type }) {
   return (
@@ -14,8 +14,8 @@ function NameField({ type }) {
         <div className="form-task-name">
           <input {...input} type="text" placeholder={`Change ${type} name`} />
           <p
-            className={`form-field-length ${input.value.length > 150 ? 'error' : ''}`}
-          >{`${input.value.length}/150`}</p>
+            className={`form-field-length ${input?.value?.length > 150 ? 'error' : ''}`}
+          >{`${input?.value?.length ?? 0}/150`}</p>
         </div>
       )}
     </Field>
@@ -29,8 +29,8 @@ function DescriptionField({ rows }) {
         <div className="form-task-description">
           <textarea {...input} type="text" placeholder="Change description" rows={rows} />
           <p
-            className={`form-field-length ${input.value.length > 150 ? 'error' : ''}`}
-          >{`${input.value.length}/3000`}</p>
+            className={`form-field-length ${input?.value?.length > 150 ? 'error' : ''}`}
+          >{`${input?.value?.length ?? 0}/3000`}</p>
         </div>
       )}
     </Field>
