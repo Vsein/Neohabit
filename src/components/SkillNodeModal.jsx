@@ -43,7 +43,6 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
         <form
           onSubmit={async (e) => {
             await handleSubmit(e);
-            form.reset();
           }}
           className="modal modal-active"
           onClick={(e) => e.stopPropagation()}
@@ -64,7 +63,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
             <NameField type="skill" />
             <DescriptionField rows="17" />
           </div>
-          <ModalButtons disabled={submitting || pristine} isNew={!skillID} type="skill" />
+          <ModalButtons disabled={submitting} isNew={!skillID} type="skill" />
         </form>
       )}
     />

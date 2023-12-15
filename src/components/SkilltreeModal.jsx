@@ -43,7 +43,6 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
         <form
           onSubmit={async (e) => {
             await handleSubmit(e);
-            form.reset();
           }}
           className="modal modal-active"
           onClick={(e) => e.stopPropagation()}
@@ -75,7 +74,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
               <DescriptionField rows="7" />
             )}
           </div>
-          <ModalButtons disabled={submitting || pristine} isNew={!skilltreeID} type="skilltree" />
+          <ModalButtons disabled={submitting} isNew={!skilltreeID} type="skilltree" />
         </form>
       )}
     />

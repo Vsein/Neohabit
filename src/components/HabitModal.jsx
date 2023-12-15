@@ -63,7 +63,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
         <form
           onSubmit={async (e) => {
             await handleSubmit(e);
-            form.reset();
           }}
           className="modal modal-active"
           onClick={(e) => e.stopPropagation()}
@@ -108,7 +107,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             </div>
             <DescriptionField rows="5" />
           </div>
-          <ModalButtons disabled={submitting || pristine} isNew={!habitID} type="habit" />
+          <ModalButtons disabled={submitting} isNew={!habitID} type="habit" />
         </form>
       )}
     />

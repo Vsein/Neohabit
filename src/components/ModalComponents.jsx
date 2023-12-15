@@ -4,28 +4,36 @@ import { HexColorPicker, HexColorInput } from 'react-colorful';
 import { close } from '../state/features/overlay/overlaySlice';
 import Field from './FieldWrapper';
 
+const bounds = (min, max) => (value) =>
+  value.length >= min && value.length <= max ? undefined : `Must have ${min}-${max} symbols`;
+
 function NameField({ type }) {
   return (
-    <Field
-      name="name"
-      component="textarea"
-      placeholder={`Change ${type} name`}
-      rows="1"
-      className="form-task-name"
-      required
-    />
+    <Field name="name" validate={bounds(0, 150)}>
+      {({ input, meta }) => (
+        <div className="form-task-name">
+          <input {...input} type="text" placeholder={`Change ${type} name`} />
+          <p
+            className={`form-field-length ${input.value.length > 150 ? 'error' : ''}`}
+          >{`${input.value.length}/150`}</p>
+        </div>
+      )}
+    </Field>
   );
 }
 
 function DescriptionField({ rows }) {
   return (
-    <Field
-      name="description"
-      component="textarea"
-      placeholder="Change description"
-      rows={rows}
-      className="form-task-description"
-    />
+    <Field name="description" validate={bounds(0, 3000)}>
+      {({ input, meta }) => (
+        <div className="form-task-description">
+          <textarea {...input} type="text" placeholder="Change description" rows={rows} />
+          <p
+            className={`form-field-length ${input.value.length > 150 ? 'error' : ''}`}
+          >{`${input.value.length}/3000`}</p>
+        </div>
+      )}
+    </Field>
   );
 }
 

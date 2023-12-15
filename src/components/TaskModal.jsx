@@ -52,7 +52,6 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
         <form
           onSubmit={async (e) => {
             await handleSubmit(e);
-            form.reset();
           }}
           className="modal modal-active"
           onClick={(e) => e.stopPropagation()}
@@ -70,7 +69,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
             <NameField type="task" />
             <DescriptionField rows="1" />
           </div>
-          <ModalButtons disabled={submitting || pristine} isNew={!taskID} type="task" />
+          <ModalButtons disabled={submitting} isNew={!taskID} type="task" />
         </form>
       )}
     />

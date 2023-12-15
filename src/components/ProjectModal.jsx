@@ -73,7 +73,6 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
         <form
           onSubmit={async (e) => {
             await handleSubmit(e);
-            form.reset();
           }}
           className="modal modal-active"
           onClick={(e) => e.stopPropagation()}
