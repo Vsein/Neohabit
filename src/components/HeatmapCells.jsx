@@ -187,14 +187,14 @@ function CellPeriod({
     actions: value,
   };
   if (isSameWeek(dateStart, dateEnd) || isOverview) {
-    return ((value <= 1 || value === undefined) && targetValue === 1) || numeric ? (
+    return value === undefined || value > 16 || value <= 1 && targetValue === 1 || targetValue > 16 || numeric ? (
       <Cell
         color={color}
         tipContent={tipContent}
         value={value}
         length={diffDays}
         vertical={vertical}
-        numeric={numeric}
+        numeric={numeric || value > 16 || value === 0 && targetValue > 16}
         targetValue={targetValue}
         elimination={elimination}
       />
@@ -247,6 +247,7 @@ function CellPeriod({
     '--width': 1,
     visibility: afterHeight !== 0 ? 'visible' : 'hidden',
   };
+  const displayNumeric = value > 1 || value === 0 && targetValue > 16 || numeric;
 
   return (
     <>
@@ -269,16 +270,16 @@ function CellPeriod({
           changeCellOffset(e, tipContent, value, true);
         }}
       >
-        {(value > 1 || numeric) && !!width && (
+        {displayNumeric && !!width && (
           <CellNumericText wide={true} small={width <= 1} color={color} value={value} targetValue={targetValue} />
         )}
         <div className="cell-period-before centering" style={styleBefore}>
-          {!width && diffDays <= 7 && (value > 1 || numeric) && (
+          {!width && diffDays <= 7 && displayNumeric && (
             <CellNumericText small={true} color={color} value={value} targetValue={targetValue} />
           )}
         </div>
         <div className="cell-period-after centering" style={styleAfter}>
-          {!width && diffDays <= 7 && (value > 1 || numeric) && (
+          {!width && diffDays <= 7 && displayNumeric && (
             <CellNumericText small={true} color={color} value={value} targetValue={targetValue} />
           )}
         </div>
@@ -290,7 +291,7 @@ function CellPeriod({
               '--offset-top': 7 - beforeHeight,
             }}
           >
-            {!width && (value > 1 || numeric) && (
+            {!width && displayNumeric && (
               <CellNumericText color={color} value={value} targetValue={targetValue} />
             )}
           </div>
@@ -302,6 +303,7 @@ function CellPeriod({
 }
 
 function CellNumericText({ wide = false, small = false, value, targetValue }) {
+  console.log(value, targetValue);
   const getHundredStyle = (displayedValue) => {
     if (!small || displayedValue < 100) return {};
     const stringValue = displayedValue.toString();
