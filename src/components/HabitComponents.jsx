@@ -54,10 +54,10 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
     <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
       <button
         className="overview-habit-button"
-        onClick={(e) => openCellAddDropdown(e, false)}
-        title="Add N copmleted actions on X day"
+        onClick={addCell}
+        title="Add 1 completed action today"
       >
-        <Icon path={mdiCheckboxMultipleMarked} />
+        <Icon path={mdiCheckboxMarked} />
       </button>
     </div>
   ) : (
