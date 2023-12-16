@@ -78,67 +78,61 @@ function CellFractured({
   const dispatch = useDispatch();
   const style = {
     '--color': color,
-    columnGap: '2px',
-    rowGap: '2px',
     [value ? 'boxShadow' : '']: 'none',
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
+    [vertical ? '--total-width' : '--total-height']: 1,
+    [vertical ? '--total-height' : '--total-width']: length,
   };
 
   const fractions = Math.max(value, targetValue);
   let dotted = false;
-  let fractionHeight;
-  let fractionWidth = 2;
-  if (fractions <= 2) {
-    fractionHeight = 1 / 2;
+  let heightFractions = 1;
+  let widthFractions = 1;
+  if (fractions === 2) {
+    heightFractions = 2;
   } else if (fractions <= 4) {
-    fractionHeight = 1 / 2;
-    fractionWidth = length > 1 ? 1 / 1.9 : 1 / 2;
-    style.columnGap = length > 1 ? '1px' : '1px';
+    heightFractions = 2;
+    widthFractions = 2;
+    style['--gap-decrement-column'] = 1;
   } else if (fractions <= 6) {
-    fractionHeight = 1 / 2;
-    fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
-    style.columnGap = length > 1 ? '2px' : '1px';
+    heightFractions = 2;
+    widthFractions = 3;
+    style['--gap-decrement-column'] = length > 1 ? 0 : 1;
   } else if (fractions <= 9) {
-    fractionHeight = 1 / 3;
-    fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
-    style.columnGap = '1px';
-    style.rowGap = '1px';
+    heightFractions = 3;
+    widthFractions = 3;
+    style['--gap-decrement-column'] = 1;
+    style['--gap-decrement-row'] = 1;
   } else if (fractions <= 12) {
-    fractionHeight = 1 / 3;
-    fractionWidth = 1 / 5;
-    style.columnGap = '1px';
-    style.rowGap = '1px';
+    heightFractions = 3;
+    widthFractions = 4;
+    style['--gap-decrement-column'] = 1;
+    style['--gap-decrement-row'] = 1;
   } else if (fractions <= 16) {
-    fractionHeight = 1 / 5;
-    fractionWidth = 1 / 5;
-    style.columnGap = '1px';
-    style.rowGap = '1px';
+    heightFractions = 4;
+    widthFractions = 4;
+    style['--gap-decrement-column'] = 1;
+    style['--gap-decrement-row'] = 1;
   } else {
     dotted = true;
   }
 
-  fractionWidth *= length;
-  fractionWidth += (length - 1) * (2 / 15);
-
-  const getStyle = (index) => ({
-    [vertical && length > 1 ? '--width' : '--height']: fractionHeight,
-    [vertical && length > 1 ? '--height' : '--width']: fractionWidth,
+  const fractionStyle = {
+    [vertical && length > 1 ? '--width-fractions' : '--height-fractions']: heightFractions,
+    [vertical && length > 1 ? '--height-fractions' : '--width-fractions']: widthFractions,
     [vertical && length > 1 && fractions <= 2 ? 'height' : '']: '100%',
     margin: 0,
-    [index < value ? 'backgroundColor' : '']:
-      index >= targetValue && elimination
-        ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
-        : color,
-  });
+  };
 
   return (
     <div
       className={`cell ${dotted ? 'dotted' : 'fractured'}`}
       style={style}
-      onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
-      onMouseLeave={hideTip}
+      onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
+      onMouseLeave={(e) => tipContent && hideTip()}
       onClick={(e) => {
+        if (!tipContent) return;
         dispatch(
           changeCellPeriodTo({
             ...tipContent,
@@ -152,7 +146,17 @@ function CellFractured({
     >
       {!dotted &&
         [...Array(+fractions)].map((point, index) => (
-          <div key={index} className="cell-fraction" style={getStyle(index)} />
+          <div
+            key={index}
+            className="cell-fraction"
+            style={{
+              ...fractionStyle,
+              [index < value ? 'backgroundColor' : '']:
+                index >= targetValue && elimination
+                  ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
+                  : color,
+            }}
+          />
         ))}
     </div>
   );
