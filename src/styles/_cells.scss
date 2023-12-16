@@ -90,11 +90,11 @@ $cell-margin: 2px;
 }
 
 .cell-numeric {
-  padding-block: 3px;
-  line-height: 100%;
-  font-size: calc(var(--cell-height) - 4px);
+  --font-size-minus: 0px;
+  padding-top: 1px;
+  font-size: calc(var(--cell-height) - max(var(--font-size-minus), var(--cell-height) - 30px) - 4px);
   text-align: center;
-  height: var(--cell-height);
+  height: min-content;
   width: min-content;
   font-weight: 600;
   vertical-align: middle;

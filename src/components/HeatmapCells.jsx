@@ -313,8 +313,8 @@ function CellNumericText({ wide = false, small = false, value, targetValue }) {
     const without1 = stringValue.indexOf('1') === -1;
     const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
     return {
-      paddingBlock: '4px',
-      fontSize: '10px',
+      paddingTop: '2px',
+      '--font-size-minus': '1px',
       [without1 ? 'marginLeft' : '']: '-1.75px',
       [without1 ? 'letterSpacing' : '']: '-0.75px',
       [single1 ? 'marginLeft' : '']: '-1px',
