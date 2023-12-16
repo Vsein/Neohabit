@@ -231,17 +231,6 @@ $cell-margin: 2px;
           padding-left: 2px;
         }
       }
-
-      &-button {
-        height: 17px;
-        width: 17px;
-        outline: none;
-        cursor: pointer;
-
-        &:hover {
-          color: var(--color);
-        }
-      }
     }
   }
 
