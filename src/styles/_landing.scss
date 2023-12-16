@@ -135,6 +135,14 @@ $cell-weekdays-width: 33px;
   }
 }
 
+.landing-cell-container {
+  display: flex;
+  height: 50px;
+  width: 50px;
+  --cell-height: 45px;
+  --cell-width: 45px;
+}
+
 .landing-footer {
   &-container {
     display: flex;

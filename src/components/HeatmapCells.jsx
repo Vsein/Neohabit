@@ -15,7 +15,7 @@ import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
 function Cell({
   color,
-  tipContent,
+  tipContent = undefined,
   value,
   length,
   vertical = true,
@@ -40,9 +40,10 @@ function Cell({
         value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
       }`}
       style={style}
-      onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
-      onMouseLeave={hideTip}
+      onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
+      onMouseLeave={(e) => tipContent && hideTip()}
       onClick={(e) => {
+        if (!tipContent) return;
         dispatch(
           changeCellPeriodTo({
             ...tipContent,
@@ -68,7 +69,7 @@ function Cell({
 
 function CellFractured({
   color,
-  tipContent,
+  tipContent = undefined,
   value,
   targetValue,
   length,
@@ -183,22 +184,22 @@ function CellPeriod({
   if (diffDays < 1) {
     return <></>;
   }
-  const tipContent = {
+  const tipContent = heatmapID ? {
     heatmapID,
     isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
     dateStart: targetStart || dateStart,
     dateEnd: targetEnd || dateEnd,
     actions: value,
-  };
+  } : undefined;
   if (isSameWeek(dateStart, dateEnd) || isOverview) {
-    return numeric || value > 16 || value <= 1 && targetValue === 1 || targetValue > 16 ? (
+    return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (
       <Cell
         color={color}
         tipContent={tipContent}
         value={value}
         length={diffDays}
         vertical={vertical}
-        numeric={numeric || value > 16 || value === 0 && targetValue > 16}
+        numeric={numeric || value > 16 || (value === 0 && targetValue > 16)}
         targetValue={targetValue}
         elimination={elimination}
       />
@@ -251,7 +252,7 @@ function CellPeriod({
     '--width': 1,
     visibility: afterHeight !== 0 ? 'visible' : 'hidden',
   };
-  const displayNumeric = value > 1 || value === 0 && targetValue > 16 || numeric;
+  const displayNumeric = value > 1 || (value === 0 && targetValue > 16) || numeric;
 
   return (
     <>
@@ -275,7 +276,13 @@ function CellPeriod({
         }}
       >
         {displayNumeric && !!width && (
-          <CellNumericText wide={true} small={width <= 1} color={color} value={value} targetValue={targetValue} />
+          <CellNumericText
+            wide={true}
+            small={width <= 1}
+            color={color}
+            value={value}
+            targetValue={targetValue}
+          />
         )}
         <div className="cell-period-before centering" style={styleBefore}>
           {!width && diffDays <= 7 && displayNumeric && (

@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
+import { CellPeriod } from '../components/HeatmapCells';
+import { startOfDay, endOfDay } from 'date-fns';
 
 export default function Landing() {
   useTitle('Neohabit | A progressive-overload focused habit-tracker');
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      if (value >= 102) {
+        setValue(0);
+        return;
+      }
+      if (value >= 18 && value < 100) {
+        setValue(100);
+        return;
+      }
+      setValue(value + 1);
+    }, 1000);
+    return () => clearInterval(timerInterval);
+  });
 
   return (
     <div id="content-landing">
@@ -51,6 +69,47 @@ export default function Landing() {
         <section className="landing-features">
           <div className="landing-features-container">
             <h3 className="landing-features-text">Features you won&apos;t find anywhere else</h3>
+            <div className="landing-cell-container">
+              <CellPeriod
+                color="#d700ff"
+                value={value}
+                dateStart={startOfDay(new Date())}
+                dateEnd={endOfDay(new Date())}
+                dummy={true}
+              />
+            </div>
+            <div className="landing-cell-container">
+              <CellPeriod
+                color="#d700ff"
+                value={value}
+                dateStart={startOfDay(new Date())}
+                dateEnd={endOfDay(new Date())}
+                dummy={true}
+                numeric={true}
+              />
+            </div>
+            <div className="landing-cell-container">
+              <CellPeriod
+                color="#d700ff"
+                value={value}
+                targetValue={16}
+                dateStart={startOfDay(new Date())}
+                dateEnd={endOfDay(new Date())}
+                dummy={true}
+                numeric={true}
+              />
+            </div>
+            <div className="landing-cell-container">
+              <CellPeriod
+                color="#d700ff"
+                value={value}
+                targetValue={16}
+                dateStart={startOfDay(new Date())}
+                dateEnd={endOfDay(new Date())}
+                dummy={true}
+                numeric={false}
+              />
+            </div>
             {/* Skill trees, habits, heatmaps */}
           </div>
         </section>
