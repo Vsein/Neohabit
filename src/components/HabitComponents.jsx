@@ -5,9 +5,9 @@ import { Icon } from '@mdi/react';
 import {
   mdiDelete,
   mdiPencil,
-  mdiPlusBox,
   mdiTimer,
   mdiCheckboxMarked,
+  mdiCheckboxMultipleMarked,
   mdiViewGridPlusOutline,
   mdiPlus,
 } from '@mdi/js';
@@ -57,18 +57,11 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         onClick={(e) => openCellAddDropdown(e, false)}
         title="Add N copmleted actions on X day"
       >
-        <Icon path={mdiPlusBox} />
+        <Icon path={mdiCheckboxMultipleMarked} />
       </button>
     </div>
   ) : (
     <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
-      <button
-        className="overview-habit-button"
-        onClick={(e) => openCellAddDropdown(e, false)}
-        title="Add N copmleted actions on X day"
-      >
-        <Icon path={mdiPlusBox} />
-      </button>
       <button
         className="overview-habit-button"
         onClick={addCell}
@@ -78,10 +71,10 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
       </button>
       <button
         className="overview-habit-button"
-        onClick={setStopwatchHabit}
-        title="Start stopwatch of this habit"
+        onClick={(e) => openCellAddDropdown(e, false)}
+        title="Add N copmleted actions on X day"
       >
-        <Icon path={mdiTimer} />
+        <Icon path={mdiCheckboxMultipleMarked} />
       </button>
       <button
         className="overview-habit-button"
@@ -89,6 +82,13 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         title="Add a new target"
       >
         <Icon path={mdiViewGridPlusOutline} />
+      </button>
+      <button
+        className="overview-habit-button"
+        onClick={setStopwatchHabit}
+        title="Start stopwatch of this habit"
+      >
+        <Icon path={mdiTimer} />
       </button>
       <Link
         className="overview-habit-button"
