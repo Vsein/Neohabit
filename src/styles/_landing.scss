@@ -171,6 +171,31 @@ $cell-weekdays-width: 33px;
   }
 }
 
+.landing-projects {
+  background-color: var(--border-color);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: min(100%, 1300px);
+  height: min(calc(100% - 20px), 700px);
+  justify-content: center;
+  gap: 4px;
+  margin: 10px;
+}
+
+.landing-project {
+  background-color: var(--main-background-color);
+  flex: 1 0 0;
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  justify-content: center;
+  align-items: center;
+
+  &-title {
+    text-align: center;
+  }
+}
+
 .landing-cell-container {
   --total-width: 1;
   display: flex;

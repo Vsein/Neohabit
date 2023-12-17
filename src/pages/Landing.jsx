@@ -3,6 +3,12 @@ import { NavLink } from 'react-router-dom';
 import { startOfDay, endOfDay, addDays } from 'date-fns';
 import useTitle from '../hooks/useTitle';
 import { CellPeriod } from '../components/HeatmapCells';
+import ExerciseProject from '../assets/project-exercise2.png';
+import DevelopmentProject from '../assets/project-development2.png';
+import NihongoProject from '../assets/project-nihongo2.png';
+import SocialProject from '../assets/project-social2.png';
+import CleaningProject from '../assets/project-cleaning.png';
+import MedsProject from '../assets/project-medication.png';
 
 export default function Landing() {
   useTitle('Neohabit | A progressive-overload focused habit-tracker');
@@ -282,15 +288,54 @@ export default function Landing() {
                   ),
               )}
             </div>
+            {/* <p style={{ marginBottom: '20px' }}> */}
             <p>
               This way, instead of trying to do the new habit every single day from the start, you
               start slow. In this example, it starts from an interval of 4 days. And as you get more
               comfortable, you can start challenging yourself more.
             </p>
+            {/* <p> */}
+            {/*   And even that is not the end of it. Imagine that you have a habit which you've already built, but you */}
+            {/* </p> */}
           </div>
         </section>
-        <section className="landing-about">
+        <section className="landing-about" style={{ flexDirection: 'column',
+  height: 'min(800px, 125vh)'
+          }}>
+          <h2 className="landing-about-text-header" style={{ marginBlock: '20px' }}>
+            Various ideas of habits you may set
+          </h2>
           {/* Learn more about how it works, the blog or something */}
+          <div className="landing-projects">
+            <div className="landing-project">
+              <h2 className="landing-project-title">Learn languages</h2>
+              <img alt="Nihongo project" src={NihongoProject} style={{ borderRadius: '10px' }} />
+            </div>
+            <div className="landing-project">
+              <h2 className="landing-project-title">Stay in shape</h2>
+              <img alt="Exercise project" src={ExerciseProject} style={{ borderRadius: '10px' }} />
+            </div>
+            <div className="landing-project">
+              <h2 className="landing-project-title">Adjust your work-life balance</h2>
+              <img
+                alt="Development project"
+                src={DevelopmentProject}
+                style={{ borderRadius: '10px' }}
+              />
+            </div>
+            <div className="landing-project">
+              <h2 className="landing-project-title">Remind yourself to reach out</h2>
+              <img alt="Social project" src={SocialProject} style={{ borderRadius: '10px' }} />
+            </div>
+            <div className="landing-project">
+              <h2 className="landing-project-title">Clean up your house in your free time</h2>
+              <img alt="Social project" src={CleaningProject} style={{ borderRadius: '10px' }} />
+            </div>
+            <div className="landing-project">
+              <h2 className="landing-project-title">Never forget whether you took meds</h2>
+              <img alt="Meds project" src={MedsProject} style={{ borderRadius: '10px' }} />
+            </div>
+          </div>
         </section>
         <section className="landing-lastcall">{/* Some things about billing */}</section>
       </main>
