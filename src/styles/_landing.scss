@@ -116,31 +116,70 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-features {
-  height: 105vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  &-content {
+    min-height: 105vh;
+    height: min-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   &-container {
     background-color: var(--main-background-color);
-    padding-inline: 30px;
+    padding-inline: 40px;
     height: 500px;
-    width: 900px;
+    width: min(1100px, 100% - 3em);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 50px;
   }
 
-  &-text {
+  &-title {
     text-align: center;
     padding: 20px;
     font-size: 2rem;
   }
 }
 
+.landing-features {
+  display: flex;
+  align-self: stretch;
+  justify-content: space-between;
+  align-items: center;
+  justify-self: center;
+  height: 100%;
+  gap: 10px;
+}
+
+.landing-feature {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  border: 3px solid var(--border-color);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  &-container {
+    height: 300px;
+    width: 250px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
 .landing-cell-container {
+  --total-width: 1;
   display: flex;
   height: 50px;
-  width: 50px;
+  width: calc(50px * var(--total-width) + (var(--total-width) - 1));
   --cell-height: 45px;
   --cell-width: 45px;
+  overflow: hidden;
+  margin: 15px;
 }
 
 .landing-footer {

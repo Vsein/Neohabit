@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { startOfDay, endOfDay, addDays } from 'date-fns';
 import useTitle from '../hooks/useTitle';
 import { CellPeriod } from '../components/HeatmapCells';
-import { startOfDay, endOfDay } from 'date-fns';
 
 export default function Landing() {
   useTitle('Neohabit | A progressive-overload focused habit-tracker');
@@ -10,14 +10,18 @@ export default function Landing() {
 
   useEffect(() => {
     const timerInterval = setInterval(() => {
-      if (value >= 102) {
+      if (value >= 16) {
         setValue(0);
-        return;
+        return 0;
       }
-      if (value >= 18 && value < 100) {
-        setValue(100);
-        return;
-      }
+      // if (value >= 102) {
+      //   setValue(0);
+      //   return;
+      // }
+      // if (value >= 18 && value < 100) {
+      //   setValue(100);
+      //   return;
+      // }
       setValue(value + 1);
     }, 1000);
     return () => clearInterval(timerInterval);
@@ -66,49 +70,121 @@ export default function Landing() {
             </p>
           </div>
         </section>
-        <section className="landing-features">
+        <section className="landing-features-content">
           <div className="landing-features-container">
-            <h3 className="landing-features-text">Features you won&apos;t find anywhere else</h3>
-            <div className="landing-cell-container">
-              <CellPeriod
-                color="#d700ff"
-                value={value}
-                dateStart={startOfDay(new Date())}
-                dateEnd={endOfDay(new Date())}
-                dummy={true}
-              />
-            </div>
-            <div className="landing-cell-container">
-              <CellPeriod
-                color="#d700ff"
-                value={value}
-                dateStart={startOfDay(new Date())}
-                dateEnd={endOfDay(new Date())}
-                dummy={true}
-                numeric={true}
-              />
-            </div>
-            <div className="landing-cell-container">
-              <CellPeriod
-                color="#d700ff"
-                value={value}
-                targetValue={16}
-                dateStart={startOfDay(new Date())}
-                dateEnd={endOfDay(new Date())}
-                dummy={true}
-                numeric={true}
-              />
-            </div>
-            <div className="landing-cell-container">
-              <CellPeriod
-                color="#d700ff"
-                value={value}
-                targetValue={16}
-                dateStart={startOfDay(new Date())}
-                dateEnd={endOfDay(new Date())}
-                dummy={true}
-                numeric={false}
-              />
+            <h3 className="landing-features-title">Features you won&apos;t find anywhere else</h3>
+            <div className="landing-features">
+              <div className="landing-feature-container">
+                <div className="landing-feature centering">
+                  <div className="landing-cell-container">
+                    <CellPeriod
+                      color="#d700ff"
+                      value={value}
+                      dateStart={startOfDay(new Date())}
+                      dateEnd={endOfDay(new Date())}
+                      dummy={true}
+                    />
+                  </div>
+                </div>
+                <p>Intuitive design for habits which happen more than once a day</p>
+              </div>
+              <div className="landing-feature-container">
+                <div className="landing-feature centering">
+                  <div className="landing-cell-container">
+                    <CellPeriod
+                      color="#d700ff"
+                      value={value % 3}
+                      targetValue={2}
+                      dateStart={startOfDay(new Date())}
+                      dateEnd={endOfDay(new Date())}
+                      dummy={true}
+                      numeric={false}
+                    />
+                  </div>
+                  <div className="landing-cell-container">
+                    <CellPeriod
+                      color="#d700ff"
+                      value={value % 5}
+                      targetValue={4}
+                      dateStart={startOfDay(new Date())}
+                      dateEnd={endOfDay(new Date())}
+                      dummy={true}
+                      numeric={false}
+                    />
+                  </div>
+                  <div className="landing-cell-container">
+                    <CellPeriod
+                      color="#d700ff"
+                      value={value % 10}
+                      targetValue={9}
+                      dateStart={startOfDay(new Date())}
+                      dateEnd={endOfDay(new Date())}
+                      dummy={true}
+                      numeric={false}
+                    />
+                  </div>
+                  <div className="landing-cell-container">
+                    <CellPeriod
+                      color="#d700ff"
+                      value={value}
+                      targetValue={16}
+                      dateStart={startOfDay(new Date())}
+                      dateEnd={endOfDay(new Date())}
+                      dummy={true}
+                      numeric={false}
+                    />
+                  </div>
+                </div>
+                <p>Set daily goals and work your way up toward them</p>
+              </div>
+              <div className="landing-feature-container">
+                <div className="landing-feature centering">
+                  <div className="landing-cell-container">
+                    <CellPeriod
+                      color="#d700ff"
+                      value={value}
+                      targetValue={16}
+                      dateStart={startOfDay(new Date())}
+                      dateEnd={endOfDay(new Date())}
+                      dummy={true}
+                      numeric={true}
+                    />
+                  </div>
+                </div>
+                <p>
+                  Track any numeric values, i.e. workout reps, hours of sleep, or even test scores
+                </p>
+              </div>
+              <div className="landing-feature-container">
+                <div className="landing-feature centering">
+                  <div className="landing-cell-container" style={{'--total-width': 3}}>
+                    <CellPeriod
+                      color="#d700ff"
+                      value={value}
+                      targetValue={16}
+                      dateStart={startOfDay(new Date())}
+                      dateEnd={endOfDay(addDays(new Date(), 2))}
+                      dummy={true}
+                      numeric={true}
+                      vertical={false}
+                    />
+                  </div>
+                  <div className="landing-cell-container" style={{'--total-width': 3}}>
+                    <CellPeriod
+                      color="#d700ff"
+                      value={value % 3}
+                      targetValue={2}
+                      dateStart={startOfDay(new Date())}
+                      dateEnd={endOfDay(addDays(new Date(), 2))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  </div>
+                </div>
+                <p>
+                  Set date periods for habits (weekly, monthly, once in X days)
+                </p>
+              </div>
             </div>
             {/* Skill trees, habits, heatmaps */}
           </div>
