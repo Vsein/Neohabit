@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { startOfDay, endOfDay, addDays } from 'date-fns';
+import { Icon } from '@mdi/react';
+import { mdiCalendar, mdiTimerOutline } from '@mdi/js';
 import useTitle from '../hooks/useTitle';
 import { CellPeriod } from '../components/HeatmapCells';
 import ExerciseProject from '../assets/project-exercise2.png';
@@ -290,10 +292,9 @@ export default function Landing() {
             </div>
             {/* <p style={{ marginBottom: '20px' }}> */}
             <p>
-              This way, instead of trying to do the new habit every single day
-              from the start, you start slow. In this example, it sets the
-              first goal as once in 4 days. And as you get more comfortable,
-              you can start challenging yourself more.
+              This way, instead of trying to do the new habit every single day from the start, you
+              start slow. In this example, it sets the first goal as once in 4 days. And as you get
+              more comfortable, you can start challenging yourself more.
               {/* Or you can use the opposite process for an equal challenge of eliminating bad habits. */}
             </p>
             {/* <p> */}
@@ -338,6 +339,54 @@ export default function Landing() {
               <h2 className="landing-project-title">Never forget whether you took meds</h2>
               <img alt="Meds project" src={MedsProject} style={{ borderRadius: '10px' }} />
             </div>
+          </div>
+        </section>
+        <section className="landing-features-content">
+          <div className="landing-features-container" style={{ height: '80%', marginTop: '80px' }}>
+            {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
+            <h3 className="landing-features-title">
+              How does it compare with other forms of tools?
+            </h3>
+            <div className="landing-features-section">
+              <div className="centering" style={{ height: '100%', marginLeft: '10px' }}>
+                <Icon className="icon damn" path={mdiCalendar} />
+              </div>
+              <p style={{ marginBottom: '20px' }}>
+                If you take calendars, they are very rigid. Most of the people don't really need to
+                set the exact time for making something. And if they do, they end up putting
+                themselves in very tough boundaries, from which it's hard to escape. Calendars are
+                good for appointments, meetings, and things you know to be fixed. In all the other
+                cases, it's better to allow yourself some breathing room both for the order of
+                habits, and for the sudden desire to read, study, or go for a run.
+              </p>
+            </div>
+            <div className="landing-features-section">
+              <div className="centering" style={{ height: '100%', marginLeft: '10px' }}>
+                <Icon className="icon damn" path={mdiTimerOutline} />
+              </div>
+              <p style={{ marginBottom: '20px' }}>
+                Then you have time-trackers. Those things are good to use for a couple of days. If
+                you use it as your primary productivity tool, you're doomed to either start
+                optimizing your time (and all the fun of random things with it), or to think that
+                more hours spent on something necessarily equals better results. Time is important,
+                but less important than allowing yourself to rest often and properly. Neohabit has a
+                pomodoro timer built in, and we believe it to be sufficient.
+              </p>
+            </div>
+            <hr />
+            <p style={{ marginTop: '20px' }}>
+              Habit-trackers are a different kind of beast, but they all don't take human nature
+              into consideration. They either focus on streaks, or they rarely have anything apart
+              from daily habits.
+            </p>
+            <p style={{ marginTop: '20px', marginBottom: '-30px' }}>
+              When building habits, it's important to understand that you shouldn't try to bite more
+              than you can chew. Neohabit allows you to track habits of any complexity. Like laundry
+              that you need to do once every two weeks, or reach out to someone when you feel like
+              it once every blue moon. Noone in their right mind would do laundry every day, or
+              think that working once a day for an hour is the most you can do. But for one reason
+              or another habit-trackers miss that completely.
+            </p>
           </div>
         </section>
         <section className="landing-lastcall">{/* Some things about billing */}</section>

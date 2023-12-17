@@ -139,6 +139,11 @@ $cell-weekdays-width: 33px;
     padding: 20px;
     font-size: 2rem;
   }
+
+  &-section {
+    display: flex;
+    gap: 30px;
+  }
 }
 
 .landing-features {

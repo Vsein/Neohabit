@@ -17,6 +17,16 @@
   width: 30px;
   justify-self: center;
 
+  &.damn {
+    height: 120px;
+    width: 120px;
+  }
+
+  &.huge {
+    height: 80px;
+    width: 80px;
+  }
+
   &.big {
     height: 40px;
     width: 40px;
