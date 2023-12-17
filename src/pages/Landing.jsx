@@ -290,20 +290,23 @@ export default function Landing() {
             </div>
             {/* <p style={{ marginBottom: '20px' }}> */}
             <p>
-              This way, instead of trying to do the new habit every single day from the start, you
-              start slow. In this example, it starts from an interval of 4 days. And as you get more
-              comfortable, you can start challenging yourself more.
+              This way, instead of trying to do the new habit every single day
+              from the start, you start slow. In this example, it sets the
+              first goal as once in 4 days. And as you get more comfortable,
+              you can start challenging yourself more.
+              {/* Or you can use the opposite process for an equal challenge of eliminating bad habits. */}
             </p>
             {/* <p> */}
             {/*   And even that is not the end of it. Imagine that you have a habit which you've already built, but you */}
             {/* </p> */}
           </div>
         </section>
-        <section className="landing-about" style={{ flexDirection: 'column',
-  height: 'min(800px, 125vh)'
-          }}>
+        <section
+          className="landing-about"
+          style={{ flexDirection: 'column', height: 'min(800px, 125vh)' }}
+        >
           <h2 className="landing-about-text-header" style={{ marginBlock: '20px' }}>
-            Various ideas of habits you may set
+            Various ideas of habits you may track
           </h2>
           {/* Learn more about how it works, the blog or something */}
           <div className="landing-projects">

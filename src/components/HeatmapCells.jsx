@@ -191,7 +191,7 @@ function CellPeriod({
     dateEnd: targetEnd || dateEnd,
     actions: value,
   } : undefined;
-  if (isSameWeek(dateStart, dateEnd) || isOverview) {
+  if (isSameWeek(dateStart, dateEnd) || isOverview || !vertical) {
     return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (
       <Cell
         color={color}
