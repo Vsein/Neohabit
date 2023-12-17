@@ -7,22 +7,23 @@ import { CellPeriod } from '../components/HeatmapCells';
 export default function Landing() {
   useTitle('Neohabit | A progressive-overload focused habit-tracker');
   const [value, setValue] = useState(0);
+  const [exampleValues, setExampleValues] = useState(
+    [...Array(19)].map((e) => ~~(Math.random() * 2)),
+  );
+  const [exampleValues2, setExampleValues2] = useState(
+    [...Array(10)].map((e) => Math.min(~~(Math.random() * 5), 1)),
+  );
 
   useEffect(() => {
-    const timerInterval = setInterval(() => {
-      if (value >= 16) {
-        setValue(0);
-        return 0;
+    const timerInterval = setTimeout(() => {
+      function onTimeOut() {
+        if (value >= 16) {
+          setValue(0);
+          return 0;
+        }
+        setValue(value + 1);
       }
-      // if (value >= 102) {
-      //   setValue(0);
-      //   return;
-      // }
-      // if (value >= 18 && value < 100) {
-      //   setValue(100);
-      //   return;
-      // }
-      setValue(value + 1);
+      onTimeOut();
     }, 1000);
     return () => clearInterval(timerInterval);
   });
@@ -157,7 +158,7 @@ export default function Landing() {
               </div>
               <div className="landing-feature-container">
                 <div className="landing-feature centering">
-                  <div className="landing-cell-container" style={{'--total-width': 3}}>
+                  <div className="landing-cell-container" style={{ '--total-width': 3 }}>
                     <CellPeriod
                       color="#d700ff"
                       value={value}
@@ -169,7 +170,7 @@ export default function Landing() {
                       vertical={false}
                     />
                   </div>
-                  <div className="landing-cell-container" style={{'--total-width': 3}}>
+                  <div className="landing-cell-container" style={{ '--total-width': 3 }}>
                     <CellPeriod
                       color="#d700ff"
                       value={value % 3}
@@ -181,12 +182,111 @@ export default function Landing() {
                     />
                   </div>
                 </div>
-                <p>
-                  Set date periods for habits (weekly, monthly, once in X days)
-                </p>
+                <p>Set date periods for habits (weekly, monthly, once in X days)</p>
               </div>
             </div>
             {/* Skill trees, habits, heatmaps */}
+          </div>
+        </section>
+        <section className="landing-features-content">
+          <div className="landing-features-container">
+            {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
+            <h3 className="landing-features-title">What those features allow you to do</h3>
+            <p style={{ marginBottom: '20px' }}>
+              While the features above might not seem like a big deal by themselves, they have a
+              numerous amount of applications. Let us show an example.
+            </p>
+            <p>In a regular habit-tracker, you would probably have something like this:</p>
+            <div
+              className="overview-habit-cells"
+              style={{
+                // '--numeric-text-color': getNumericTextColor("#43d64e"),
+                '--cell-height': '30px',
+                '--cell-width': '30px',
+                marginTop: '10px',
+                marginBottom: '30px',
+              }}
+            >
+              {exampleValues.map((exampleValue, Index) => (
+                <CellPeriod
+                  key={`habit-example-${Index}`}
+                  color="#43d64e"
+                  value={exampleValue}
+                  targetValue={1}
+                  dateStart={startOfDay(addDays(new Date(), Index))}
+                  dateEnd={endOfDay(addDays(new Date(), Index))}
+                  dummy={true}
+                  vertical={false}
+                />
+              ))}
+            </div>
+            <p>
+              And while it is enough for tracking some of the habits, it certainly would help to
+              have more control over the habit frequencies:
+            </p>
+            <div
+              className="overview-habit-cells"
+              style={{
+                // '--numeric-text-color': getNumericTextColor(habit.color),
+                '--cell-height': '30px',
+                '--cell-width': '30px',
+                marginTop: '10px',
+                marginBottom: '30px',
+              }}
+            >
+              {exampleValues2.map(
+                (exampleValue, Index) =>
+                  Index < 2 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#43d64e"
+                      value={exampleValue}
+                      targetValue={1}
+                      dateStart={startOfDay(addDays(new Date(), Index * 3))}
+                      dateEnd={endOfDay(addDays(new Date(), (Index + 1) * 3))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+              {exampleValues2.map(
+                (exampleValue, Index) =>
+                  Index >= 2 &&
+                  Index < 5 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#43d64e"
+                      value={exampleValue}
+                      targetValue={1}
+                      dateStart={startOfDay(addDays(new Date(), Index * 1))}
+                      dateEnd={endOfDay(addDays(new Date(), (Index + 1) * 1))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+              {exampleValues2.map(
+                (exampleValue, Index) =>
+                  Index >= 5 &&
+                  Index < 10 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#43d64e"
+                      value={exampleValue}
+                      targetValue={1}
+                      dateStart={startOfDay(addDays(new Date(), Index))}
+                      dateEnd={endOfDay(addDays(new Date(), Index))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+            </div>
+            <p>
+              This way, instead of trying to do the new habit every single day from the start, you
+              start slow. In this example, it starts from an interval of 4 days. And as you get more
+              comfortable, you can start challenging yourself more.
+            </p>
           </div>
         </section>
         <section className="landing-about">
