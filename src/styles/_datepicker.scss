@@ -9,6 +9,10 @@
   outline: none;
 }
 
+.react-datepicker-popper {
+  z-index: 2;
+}
+
 .react-datepicker__input-container .react-datepicker__calendar-icon {
   padding: 3px 1px;
   vertical-align: center;
