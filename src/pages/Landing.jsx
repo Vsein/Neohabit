@@ -376,16 +376,16 @@ export default function Landing() {
             <hr />
             <p style={{ marginTop: '20px' }}>
               Habit-trackers are a different kind of beast, but they all don't take human nature
-              into consideration. They either focus on streaks, or they rarely have anything apart
-              from daily habits.
+              into consideration properly. They either focus on streaks, or they rarely have
+              anything apart from daily habits. When building habits, it's important to understand
+              that you shouldn't try to bite more than you can chew.
             </p>
             <p style={{ marginTop: '20px', marginBottom: '-30px' }}>
-              When building habits, it's important to understand that you shouldn't try to bite more
-              than you can chew. Neohabit allows you to track habits of any complexity. Like laundry
-              that you need to do once every two weeks, or reach out to someone when you feel like
-              it once every blue moon. Noone in their right mind would do laundry every day, or
-              think that working once a day for an hour is the most you can do. But for one reason
-              or another habit-trackers miss that completely.
+              Neohabit allows you to track habits of any complexity. Like laundry that you need to
+              do once every two weeks, or reach out to someone when you feel like it once every blue
+              moon. Noone in their right mind would do laundry every day, or think that working once
+              a day for an hour is the most you can do. But for one reason or another habit-trackers
+              miss that completely.
             </p>
           </div>
         </section>
