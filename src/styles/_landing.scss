@@ -228,5 +228,45 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-lastcall {
+  position: relative;
   height: 100vh;
+  // height: calc(15px * 30);
+  overflow: hidden;
+
+  &-container {
+    // font-size: 3rem;
+    position: absolute;
+    width: min(100%, 700px);
+    z-index: 4;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto 100px;
+    padding: 30px;
+    height: min-content;
+    background-color: rgba(255, 255, 255, 0.8);
+    background-color: var(--main-background-color);
+    // border-radius: 30px;
+    border-radius: 3px;
+  }
+
+  &-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  &-title {
+    // flex: 0 0 70%;
+    font-size: 3rem;
+    white-space: nowrap;
+  }
+}
+
+.landing-contact {
+  display: inline;
+  text-decoration: none;
+  color: var(--signature-color);
 }

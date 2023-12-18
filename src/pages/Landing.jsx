@@ -387,7 +387,29 @@ export default function Landing() {
             </p>
           </div>
         </section>
-        <section className="landing-lastcall">{/* Some things about billing */}</section>
+        <section className="landing-lastcall">
+          <div className="landing-lastcall-container">
+            <div className="landing-lastcall-header">
+              <h1 className="landing-lastcall-title">Create your account</h1>
+              <NavLink to="/signup" style={{ width: '100%' }}>
+                <button className="button-default stretch big">Sign up</button>
+              </NavLink>
+            </div>
+            <p>
+              If you have any suggestions, or wish to support us, feel free to reach out to{' '}
+              <a
+                href="https://t.me/VseinHanma"
+                className="landing-contact"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @VseinHanma
+              </a>{' '}
+              on Telegram. Currently there are no other official contacts! The only real ones are
+              the ones that will be mentioned here or elsewhere on this website in the future.
+            </p>
+          </div>
+        </section>
       </main>
       <footer className="landing-footer-container">
         <div className="landing-footer">
