@@ -82,7 +82,7 @@ export default function Landing() {
         <section className="landing-features-content">
           <div className="landing-features-container">
             <h3 className="landing-features-title">Features you won&apos;t find anywhere else</h3>
-            <div className="landing-features">
+            <div className="landing-features" style={{ marginBlock: 'auto'}}>
               <div className="landing-feature-container">
                 <div className="landing-feature centering">
                   <div className="landing-cell-container">
@@ -206,13 +206,9 @@ export default function Landing() {
             </p>
             <p>In a regular habit-tracker, you would probably have something like this:</p>
             <div
-              className="overview-habit-cells"
+              className="overview-habit-cells landing-cells"
               style={{
                 // '--numeric-text-color': getNumericTextColor("#43d64e"),
-                '--cell-height': '30px',
-                '--cell-width': '30px',
-                marginTop: '10px',
-                marginBottom: '30px',
               }}
             >
               {exampleValues.map((exampleValue, Index) => (
@@ -233,13 +229,9 @@ export default function Landing() {
               have more control over the habit frequencies:
             </p>
             <div
-              className="overview-habit-cells"
+              className="overview-habit-cells landing-cells"
               style={{
                 // '--numeric-text-color': getNumericTextColor(habit.color),
-                '--cell-height': '30px',
-                '--cell-width': '30px',
-                marginTop: '10px',
-                marginBottom: '30px',
               }}
             >
               {exampleValues2.map(
@@ -304,11 +296,11 @@ export default function Landing() {
         </section>
         <section
           className="landing-about"
-          style={{ flexDirection: 'column', height: 'min(800px, 125vh)' }}
+          style={{ flexDirection: 'column' }}
         >
-          <h2 className="landing-about-text-header" style={{ marginBlock: '20px' }}>
+          <h1 className="landing-about-text-header" style={{ marginBlock: '20px' }}>
             Various ideas of habits you may track
-          </h2>
+          </h1>
           {/* Learn more about how it works, the blog or something */}
           <div className="landing-projects">
             <div className="landing-project">
@@ -342,11 +334,11 @@ export default function Landing() {
           </div>
         </section>
         <section className="landing-features-content">
-          <div className="landing-features-container" style={{ height: '80%', marginTop: '80px' }}>
+          <div className="landing-features-container" style={{ marginTop: '80px' }}>
             {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
             <h3 className="landing-features-title">How does it compare with other tools?</h3>
             <div className="landing-features-section">
-              <div className="centering" style={{ height: '100%', marginLeft: '10px' }}>
+              <div className="landing-features-section-image centering">
                 <Icon className="icon damn" path={mdiCalendar} />
               </div>
               <p style={{ marginBottom: '20px' }}>
@@ -359,7 +351,7 @@ export default function Landing() {
               </p>
             </div>
             <div className="landing-features-section">
-              <div className="centering" style={{ height: '100%', marginLeft: '10px' }}>
+              <div className="landing-features-section-image centering">
                 <Icon className="icon damn" path={mdiTimerOutline} />
               </div>
               <p style={{ marginBottom: '20px' }}>
@@ -378,7 +370,7 @@ export default function Landing() {
               building habits, it's important to understand that you shouldn't try to bite more than
               you can chew. And sometimes doing something daily is either too much, or not enough.
             </p>
-            <p style={{ marginTop: '20px', marginBottom: '-30px' }}>
+            <p style={{ marginTop: '20px' }}>
               Neohabit allows you to track habits of any complexity. Like laundry that you need to
               do once every two weeks, or reach out to someone when you feel like it once in a blue
               moon. Noone in their right mind would do laundry every day, or think that working once
