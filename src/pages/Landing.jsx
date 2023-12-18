@@ -53,7 +53,7 @@ export default function Landing() {
       </header>
       <main className="landing">
         <section className="landing-intro">
-          <h1 className="landing-intro-text">Your self-improvement app which actually helps</h1>
+          <h1 className="landing-intro-text">A fresh new look at habit-tracking</h1>
         </section>
         <section className="landing-about">
           <div className="landing-about-text">
@@ -344,20 +344,18 @@ export default function Landing() {
         <section className="landing-features-content">
           <div className="landing-features-container" style={{ height: '80%', marginTop: '80px' }}>
             {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
-            <h3 className="landing-features-title">
-              How does it compare with other forms of tools?
-            </h3>
+            <h3 className="landing-features-title">How does it compare with other tools?</h3>
             <div className="landing-features-section">
               <div className="centering" style={{ height: '100%', marginLeft: '10px' }}>
                 <Icon className="icon damn" path={mdiCalendar} />
               </div>
               <p style={{ marginBottom: '20px' }}>
-                If you take calendars, they are very rigid. Most of the people don't really need to
-                set the exact time for making something. And if they do, they end up putting
-                themselves in very tough boundaries, from which it's hard to escape. Calendars are
-                good for appointments, meetings, and things you know to be fixed. In all the other
-                cases, it's better to allow yourself some breathing room both for the order of
-                habits, and for the sudden desire to read, study, or go for a run.
+                If you take calendars, they are very rigid. Most people don't really need to set the
+                exact time for making something. And if they do, they end up putting themselves in
+                very tough boundaries, from which it's hard to escape. Calendars are good for
+                appointments, meetings, and things you know to be fixed. In all the other cases,
+                it's better to allow yourself some breathing room both for the order of habits, and
+                for the sudden desire to read, study, or go for a run.
               </p>
             </div>
             <div className="landing-features-section">
@@ -365,27 +363,27 @@ export default function Landing() {
                 <Icon className="icon damn" path={mdiTimerOutline} />
               </div>
               <p style={{ marginBottom: '20px' }}>
-                Then you have time-trackers. Those things are good to use for a couple of days. If
-                you use it as your primary productivity tool, you're doomed to either start
-                optimizing your time (and all the fun of random things with it), or to think that
-                more hours spent on something necessarily equals better results. Time is important,
-                but less important than allowing yourself to rest often and properly. Neohabit has a
-                pomodoro timer built in, and we believe it to be sufficient.
+                Then you have time-trackers. They are good to use for a couple of days. But if you
+                use it as your primary productivity tool, you're doomed to either start optimizing
+                your time (and all the fun of random things with it), or to think that more hours
+                spent on something necessarily equals better results. Time is important, but less
+                important than allowing yourself to rest often and properly. Neohabit has a pomodoro
+                timer built in, and we believe it to be sufficient.
               </p>
             </div>
             <hr />
             <p style={{ marginTop: '20px' }}>
               Habit-trackers are a different kind of beast, but they all don't take human nature
-              into consideration properly. They either focus on streaks, or they rarely have
-              anything apart from daily habits. When building habits, it's important to understand
-              that you shouldn't try to bite more than you can chew.
+              into consideration properly. They rarely have anything apart from daily habits. When
+              building habits, it's important to understand that you shouldn't try to bite more than
+              you can chew. And sometimes doing something daily is either too much, or not enough.
             </p>
             <p style={{ marginTop: '20px', marginBottom: '-30px' }}>
               Neohabit allows you to track habits of any complexity. Like laundry that you need to
-              do once every two weeks, or reach out to someone when you feel like it once every blue
+              do once every two weeks, or reach out to someone when you feel like it once in a blue
               moon. Noone in their right mind would do laundry every day, or think that working once
-              a day for an hour is the most you can do. But for one reason or another habit-trackers
-              miss that completely.
+              a day for an hour is the most you can do. But for one reason or another most
+              habit-trackers miss that completely.
             </p>
           </div>
         </section>
