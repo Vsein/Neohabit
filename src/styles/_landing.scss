@@ -50,12 +50,14 @@ $cell-weekdays-width: 33px;
   position: relative;
   height: calc(100vh - 75px);
   // height: calc(15px * 30);
+  width: 100vw;
   overflow: hidden;
 
   &-text {
     font-size: 3rem;
     position: absolute;
-    width: min(100%, 700px);
+    width: auto;
+    max-width: 700px;
     z-index: 4;
     top: 0;
     bottom: 0;
@@ -66,6 +68,45 @@ $cell-weekdays-width: 33px;
     background-color: var(--main-background-color);
     // border-radius: 30px;
     border-radius: 3px;
+
+    @media (max-width: 700px) {
+      margin: auto 10px;
+      left: 0;
+      right: 0;
+      padding: 20px;
+    }
+  }
+}
+
+.landing-cells {
+  --cell-height: 30px;
+  --cell-width: 30px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+
+  @media (max-width: 800px) {
+    --cell-height: 25px;
+    --cell-width: 25px;
+  }
+
+  @media (max-width: 600px) {
+    --cell-height: 20px;
+    --cell-width: 20px;
+  }
+
+  @media (max-width: 500px) {
+    --cell-height: 15px;
+    --cell-width: 15px;
+  }
+
+  @media (max-width: 400px) {
+    --cell-height: 12px;
+    --cell-width: 12px;
+  }
+
+  @media (max-width: 320px) {
+    --cell-height: 8px;
+    --cell-width: 8px;
   }
 }
 
@@ -93,7 +134,8 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-about {
-  height: 105vh;
+  height: auto;
+  min-height: 105vh;
   background-color: var(--main-background-color);
   display: flex;
   align-items: center;
@@ -105,6 +147,7 @@ $cell-weekdays-width: 33px;
 
     &-header {
       text-align: center;
+      font-size: 2rem;
     }
 
     & p {
@@ -116,23 +159,135 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-features {
-  height: 105vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  &-content {
+    min-height: 105vh;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+
+    @media (max-width: 700px) {
+      margin: 30px 10px;
+    }
+  }
 
   &-container {
     background-color: var(--main-background-color);
-    padding-inline: 30px;
-    height: 500px;
-    width: 900px;
+    padding-inline: 40px;
+    height: auto;
+    min-height: 500px;
+    width: auto;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+    border-radius: 3px;
+
+    @media (max-width: 700px) {
+      padding: 10px;
+    }
   }
 
-  &-text {
+  &-title {
     text-align: center;
     padding: 20px;
     font-size: 2rem;
+    margin-top: 10px;
   }
+
+  &-section {
+    // display: flex;
+    gap: 30px;
+  }
+
+  &-section-image {
+    height: 100%;
+    margin: 0 30px 10px 10px;
+    float: left;
+  }
+}
+
+.landing-features {
+  display: flex;
+  align-self: stretch;
+  justify-content: space-around;
+  align-items: center;
+  justify-self: center;
+  flex-wrap: wrap;
+  height: 100%;
+  // gap: 10px;
+  row-gap: 20px;
+}
+
+.landing-feature {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  border: 3px solid var(--border-color);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  &-container {
+    height: 300px;
+    width: 250px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.landing-projects {
+  background-color: var(--border-color);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: auto;
+  max-width: 1300px;
+  height: auto;
+  min-height: 700px;
+  justify-content: center;
+  gap: 4px;
+  margin: 10px;
+}
+
+.landing-project {
+  background-color: var(--main-background-color);
+  flex: 1 0 0;
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  justify-content: center;
+  align-items: center;
+  padding-block: 10px;
+
+  & img {
+    @media (max-width: 600px) {
+      width: 100%;
+      min-width: 300px;
+    }
+
+    @media (max-width: 320px) {
+      min-width: 200px;
+    }
+  }
+
+  &-title {
+    text-align: center;
+  }
+}
+
+.landing-cell-container {
+  --total-width: 1;
+  display: flex;
+  height: 50px;
+  width: calc(50px * var(--total-width) + (var(--total-width) - 1));
+  --cell-height: 45px;
+  --cell-width: 45px;
+  overflow: hidden;
+  margin: 15px;
 }
 
 .landing-footer {
@@ -151,5 +306,59 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-lastcall {
+  position: relative;
   height: 100vh;
+  // height: calc(15px * 30);
+  overflow: hidden;
+
+  &-container {
+    // font-size: 3rem;
+    position: absolute;
+    // width: min(100%, 700px);
+    width: auto;
+    max-width: 700px;
+    z-index: 4;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto 100px;
+    padding: 30px;
+    height: min-content;
+    background-color: rgba(255, 255, 255, 0.8);
+    background-color: var(--main-background-color);
+    // border-radius: 30px;
+    border-radius: 3px;
+
+    @media (max-width: 700px) {
+      margin: auto 10px;
+      left: 0;
+      padding: 20px;
+    }
+  }
+
+  &-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  &-title {
+    // flex: 0 0 70%;
+    font-size: 3rem;
+    white-space: nowrap;
+
+    @media (max-width: 550px) {
+    white-space: normal;
+    text-align: center;
+    line-height: 3.5rem;
+    }
+  }
+}
+
+.landing-contact {
+  display: inline;
+  text-decoration: none;
+  color: var(--signature-color);
 }

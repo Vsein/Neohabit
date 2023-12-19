@@ -15,7 +15,7 @@ import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
 function Cell({
   color,
-  tipContent,
+  tipContent = undefined,
   value,
   length,
   vertical = true,
@@ -40,9 +40,10 @@ function Cell({
         value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
       }`}
       style={style}
-      onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
-      onMouseLeave={hideTip}
+      onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
+      onMouseLeave={(e) => tipContent && hideTip()}
       onClick={(e) => {
+        if (!tipContent) return;
         dispatch(
           changeCellPeriodTo({
             ...tipContent,
@@ -68,7 +69,7 @@ function Cell({
 
 function CellFractured({
   color,
-  tipContent,
+  tipContent = undefined,
   value,
   targetValue,
   length,
@@ -78,67 +79,61 @@ function CellFractured({
   const dispatch = useDispatch();
   const style = {
     '--color': color,
-    columnGap: '2px',
-    rowGap: '2px',
     [value ? 'boxShadow' : '']: 'none',
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
+    [vertical ? '--total-width' : '--total-height']: 1,
+    [vertical ? '--total-height' : '--total-width']: length,
   };
 
   const fractions = Math.max(value, targetValue);
   let dotted = false;
-  let fractionHeight;
-  let fractionWidth = 2;
-  if (fractions <= 2) {
-    fractionHeight = 1 / 2;
+  let heightFractions = 1;
+  let widthFractions = 1;
+  if (fractions === 2) {
+    heightFractions = 2;
   } else if (fractions <= 4) {
-    fractionHeight = 1 / 2;
-    fractionWidth = length > 1 ? 1 / 1.9 : 1 / 2;
-    style.columnGap = length > 1 ? '1px' : '1px';
+    heightFractions = 2;
+    widthFractions = 2;
+    style['--gap-decrement-column'] = 1;
   } else if (fractions <= 6) {
-    fractionHeight = 1 / 2;
-    fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
-    style.columnGap = length > 1 ? '2px' : '1px';
+    heightFractions = 2;
+    widthFractions = 3;
+    style['--gap-decrement-column'] = length > 1 ? 0 : 1;
   } else if (fractions <= 9) {
-    fractionHeight = 1 / 3;
-    fractionWidth = length > 1 ? 1 / 3.2 : 1 / 3;
-    style.columnGap = '1px';
-    style.rowGap = '1px';
+    heightFractions = 3;
+    widthFractions = 3;
+    style['--gap-decrement-column'] = 1;
+    style['--gap-decrement-row'] = 1;
   } else if (fractions <= 12) {
-    fractionHeight = 1 / 3;
-    fractionWidth = 1 / 5;
-    style.columnGap = '1px';
-    style.rowGap = '1px';
+    heightFractions = 3;
+    widthFractions = 4;
+    style['--gap-decrement-column'] = 1;
+    style['--gap-decrement-row'] = 1;
   } else if (fractions <= 16) {
-    fractionHeight = 1 / 5;
-    fractionWidth = 1 / 5;
-    style.columnGap = '1px';
-    style.rowGap = '1px';
+    heightFractions = 4;
+    widthFractions = 4;
+    style['--gap-decrement-column'] = 1;
+    style['--gap-decrement-row'] = 1;
   } else {
     dotted = true;
   }
 
-  fractionWidth *= length;
-  fractionWidth += (length - 1) * (2 / 15);
-
-  const getStyle = (index) => ({
-    [vertical && length > 1 ? '--width' : '--height']: fractionHeight,
-    [vertical && length > 1 ? '--height' : '--width']: fractionWidth,
+  const fractionStyle = {
+    [vertical && length > 1 ? '--width-fractions' : '--height-fractions']: heightFractions,
+    [vertical && length > 1 ? '--height-fractions' : '--width-fractions']: widthFractions,
     [vertical && length > 1 && fractions <= 2 ? 'height' : '']: '100%',
     margin: 0,
-    [index < value ? 'backgroundColor' : '']:
-      index >= targetValue && elimination
-        ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
-        : color,
-  });
+  };
 
   return (
     <div
       className={`cell ${dotted ? 'dotted' : 'fractured'}`}
       style={style}
-      onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
-      onMouseLeave={hideTip}
+      onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
+      onMouseLeave={(e) => tipContent && hideTip()}
       onClick={(e) => {
+        if (!tipContent) return;
         dispatch(
           changeCellPeriodTo({
             ...tipContent,
@@ -152,7 +147,17 @@ function CellFractured({
     >
       {!dotted &&
         [...Array(+fractions)].map((point, index) => (
-          <div key={index} className="cell-fraction" style={getStyle(index)} />
+          <div
+            key={index}
+            className="cell-fraction"
+            style={{
+              ...fractionStyle,
+              [index < value ? 'backgroundColor' : '']:
+                index >= targetValue && elimination
+                  ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
+                  : color,
+            }}
+          />
         ))}
     </div>
   );
@@ -179,22 +184,22 @@ function CellPeriod({
   if (diffDays < 1) {
     return <></>;
   }
-  const tipContent = {
+  const tipContent = heatmapID ? {
     heatmapID,
     isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
     dateStart: targetStart || dateStart,
     dateEnd: targetEnd || dateEnd,
     actions: value,
-  };
-  if (isSameWeek(dateStart, dateEnd) || isOverview) {
-    return numeric || value > 16 || value <= 1 && targetValue === 1 || targetValue > 16 ? (
+  } : undefined;
+  if (isSameWeek(dateStart, dateEnd) || isOverview || !vertical) {
+    return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (
       <Cell
         color={color}
         tipContent={tipContent}
         value={value}
         length={diffDays}
         vertical={vertical}
-        numeric={numeric || value > 16 || value === 0 && targetValue > 16}
+        numeric={numeric || value > 16 || (value === 0 && targetValue > 16)}
         targetValue={targetValue}
         elimination={elimination}
       />
@@ -247,7 +252,7 @@ function CellPeriod({
     '--width': 1,
     visibility: afterHeight !== 0 ? 'visible' : 'hidden',
   };
-  const displayNumeric = value > 1 || value === 0 && targetValue > 16 || numeric;
+  const displayNumeric = value > 1 || (value === 0 && targetValue > 16) || numeric;
 
   return (
     <>
@@ -271,7 +276,13 @@ function CellPeriod({
         }}
       >
         {displayNumeric && !!width && (
-          <CellNumericText wide={true} small={width <= 1} color={color} value={value} targetValue={targetValue} />
+          <CellNumericText
+            wide={true}
+            small={width <= 1}
+            color={color}
+            value={value}
+            targetValue={targetValue}
+          />
         )}
         <div className="cell-period-before centering" style={styleBefore}>
           {!width && diffDays <= 7 && displayNumeric && (
@@ -309,8 +320,8 @@ function CellNumericText({ wide = false, small = false, value, targetValue }) {
     const without1 = stringValue.indexOf('1') === -1;
     const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
     return {
-      paddingBlock: '4px',
-      fontSize: '10px',
+      paddingTop: '2px',
+      '--font-size-minus': '1px',
       [without1 ? 'marginLeft' : '']: '-1.75px',
       [without1 ? 'letterSpacing' : '']: '-0.75px',
       [single1 ? 'marginLeft' : '']: '-1px',

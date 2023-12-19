@@ -52,6 +52,11 @@ $cell-margin: 2px;
   }
 
   &.fractured {
+    --shf: 4.9406564584124654e-324;
+    --gap-decrement-column: 0;
+    --gap-decrement-row: 0;
+    --column-gap: calc((var(--cell-height) * (2 - var(--gap-decrement-column)) / 15) * var(--shf) / var(--shf));
+    --row-gap: calc((var(--cell-height) * (2 - var(--gap-decrement-row)) / 15) * var(--shf) / var(--shf));
     background-color: var(--main-background-color);
     display: flex;
     flex-wrap: wrap;
@@ -59,6 +64,8 @@ $cell-margin: 2px;
     border: none;
     // overflow: hidden;
     box-shadow: none;
+    column-gap: var(--column-gap);
+    row-gap: var(--row-gap);
 
     & > * {
       box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
@@ -74,12 +81,20 @@ $cell-margin: 2px;
   }
 }
 
+.cell-fraction {
+  height: calc((var(--total-height) * (var(--cell-height) + 4px) - 4px - var(--row-gap) * (var(--height-fractions) - 1)) / var(--height-fractions));
+  width: calc((var(--total-width) * (var(--cell-width) + 4px) - 4px - var(--column-gap) * (var(--width-fractions) - 1)) / var(--width-fractions));
+  border-radius: 1px;
+  position: relative;
+  background-color: var(--blank-cell-color);
+}
+
 .cell-numeric {
-  padding-block: 3px;
-  line-height: 100%;
-  font-size: calc(var(--cell-height) - 4px);
+  --font-size-minus: 0px;
+  padding-top: 1px;
+  font-size: calc(var(--cell-height) - max(var(--font-size-minus), var(--cell-height) - 30px) - 4px);
   text-align: center;
-  height: var(--cell-height);
+  height: min-content;
   width: min-content;
   font-weight: 600;
   vertical-align: middle;
@@ -90,14 +105,6 @@ $cell-margin: 2px;
     color: var(--text-color);
     opacity: 0.5;
   }
-}
-
-.cell-fraction {
-  height: calc((var(--cell-height) - 2px) * var(--height) * var(--multiplier));
-  width: calc((var(--cell-width) - 2px) * var(--width));
-  border-radius: 1px;
-  position: relative;
-  background-color: var(--blank-cell-color);
 }
 
 .cell-period {
