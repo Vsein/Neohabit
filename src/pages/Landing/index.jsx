@@ -28,14 +28,6 @@ export default function Landing() {
       </header>
       <main className="landing">
         <section className="landing-intro">
-          {/* <Heatmap */}
-          {/*   data={LotsOfRandom()} */}
-          {/*   // colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`} */}
-          {/*   colorFunc={({ alpha }) => `rgba(113, 198, 57, ${alpha})`} */}
-          {/*   // colorFunc={({ alpha }) => `rgba(20, 78, 18, ${alpha})`} */}
-          {/*   dateStart={dateStart} */}
-          {/*   dateEnd={dateEnd} */}
-          {/* /> */}
           <h1 className="landing-intro-text">
             Your self-improvement app which actually helps
           </h1>
@@ -77,6 +69,14 @@ export default function Landing() {
           </div>
         </section>
         <section className="landing-about">
+          <Heatmap
+            data={LotsOfRandom()}
+            // colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
+            colorFunc={({ alpha }) => `rgba(67, 214, 78, ${alpha})`}
+            // colorFunc={({ alpha }) => `rgba(20, 78, 18, ${alpha})`}
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+          />
           {/* Learn more about how it works, the blog or something */}
         </section>
         <section className="landing-lastcall">
