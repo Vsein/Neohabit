@@ -40,6 +40,16 @@
   --multiplier: 1;
 }
 
+:root.light-neon {
+  --signature-color: #00A649;
+  --gradient-color-1: #94FFC3;
+  --gradient-color-2: #5FFF84;
+  --gradient-color-2: #34FF63;
+  --bamboo: url('../assets/neohabit-background-lightish-green.png');
+  // --gradient-color-2: #57dc76;
+  // --gradient-color-2: #10d065;
+}
+
 :root {
   color-scheme: dark;
   --signature-color: #00c4cd;
