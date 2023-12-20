@@ -75,7 +75,7 @@ $cell-weekdays-width: 33px;
   flex-direction: column;
   flex-wrap: wrap;
   height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
-  height: 105vh;
+  height: 100vh;
   width: 100vw;
 
   &-cell {

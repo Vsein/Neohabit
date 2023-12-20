@@ -48,11 +48,13 @@ function LineActiveRandom(
   const dataActive = [];
   let cnt = 0;
   for (let i = 0; i < len; ) {
+    // const curLen = 17;
     const curLen = randomRange(1, Math.min(5, len - i, min));
     dataActive.push(LineActiveStraight(cnt + start, curLen));
     i += curLen;
     cnt++;
   }
+  // console.log(dataActive);
   return dataActive;
 }
 
@@ -166,15 +168,15 @@ function YearDataRandom() {
 
 function LotsOfRandom() {
   let data = [];
-  const len = 7;
+  const len = 51;
 
-  data = data.concat(LineActiveRandom(data.length, 5000));
+  // data = data.concat(LineActiveRandom(data.length, 5000));
 
-//   data = data.concat(LineActiveRandom(data.length, 7 - new Date().getDay()));
-//   for (let i = 1; i < 800; i++) {
-//     data = data.concat(LineActiveRandom(data.length, len));
-//   }
-//   data = data.concat(LineActiveRandom(data.length, new Date().getDay() + 1));
+  // data = data.concat(LineActiveRandom(data.length, len - new Date().getDay()));
+  for (let i = 0; i < 100; i++) {
+    data = data.concat(LineActiveRandom(data.length, len));
+  }
+  // data = data.concat(LineActiveRandom(data.length, new Date().getDay() + 1));
 
   return data;
 }

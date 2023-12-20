@@ -72,7 +72,7 @@ export default function Landing() {
           <Heatmap
             data={LotsOfRandom()}
             // colorFunc={({ alpha }) => `rgba(3, 160, 3, ${alpha})`}
-            colorFunc={({ alpha }) => `rgba(67, 214, 78, ${alpha})`}
+            colorFunc={({ alpha }) => `rgba(109, 215, 40, ${alpha})`}
             // colorFunc={({ alpha }) => `rgba(20, 78, 18, ${alpha})`}
             dateStart={dateStart}
             dateEnd={dateEnd}
