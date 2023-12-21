@@ -8,6 +8,7 @@ import ProjectModal from './ProjectModal';
 import SkilltreeModal from './SkilltreeModal';
 import SkillNodeModal from './SkillNodeModal';
 import AccountDeleteModal from './AccountDeleteModal';
+import HabitDeleteModal from './HabitDeleteModal';
 import StopwatchModal from './StopwatchModal';
 
 export default function Overlay() {
@@ -57,6 +58,7 @@ export default function Overlay() {
         <></>
       )}
       {type === 'deleteAccount' ? <AccountDeleteModal closeOverlay={closeOverlay} /> : <></>}
+      {type === 'deleteHabit' ? <HabitDeleteModal habitID={habitID} closeOverlay={closeOverlay} /> : <></>}
       {type === 'stopwatch' ? <StopwatchModal closeOverlay={closeOverlay} /> : <></>}
     </div>
   );
