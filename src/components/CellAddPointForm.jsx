@@ -5,7 +5,7 @@ import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import Field from './FieldWrapper';
 
-export default function CellDataPointForm({ onSubmit }) {
+export default function CellAddPointForm({ onSubmit }) {
   return (
     <Form
       initialValues={{
@@ -28,7 +28,7 @@ export default function CellDataPointForm({ onSubmit }) {
                 component="input"
                 type="date"
                 placeholder="Change habit name"
-                max="<?= date('Y-m-d'); ?>"
+                // max="<?= date('Y-m-d'); ?>"
                 rows="1"
                 className="habit-form-input"
                 required

@@ -4,8 +4,9 @@ import { Form } from 'react-final-form';
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import Field from './FieldWrapper';
+import { requiredValidator, numberBoundsValidator, composeValidators } from '../utils/validators';
 
-export default function CellTagetPointForm({ onSubmit }) {
+export default function CellAddTargetForm({ onSubmit }) {
   return (
     <Form
       initialValues={{
@@ -19,7 +20,6 @@ export default function CellTagetPointForm({ onSubmit }) {
         <form
           onSubmit={async (e) => {
             await handleSubmit(e);
-            form.reset();
           }}
           className="habit-form target"
         >
@@ -31,7 +31,7 @@ export default function CellTagetPointForm({ onSubmit }) {
                 component="input"
                 type="date"
                 placeholder="Change habit name"
-                max="<?= date('Y-m-d'); ?>"
+                // max="<?= date('Y-m-d'); ?>"
                 rows="1"
                 className="habit-form-input"
                 required
@@ -39,35 +39,37 @@ export default function CellTagetPointForm({ onSubmit }) {
             </label>
           </div>
           <span>, aim to do</span>
-          <div className="habit-form-counter">
-            <label htmlFor="date-name">
-              <Field
-                name="value"
-                component="input"
-                type="number"
-                placeholder="1"
-                max="999"
-                min="0"
-                className="habit-form-input"
-                required
-              />
-            </label>
-          </div>
+          <Field
+            name="value"
+            validate={composeValidators(requiredValidator, numberBoundsValidator(1, 999))}
+          >
+            {({ input, meta }) => (
+              <div
+                className={`habit-form-counter
+${input?.value <= 0 || input?.value >= 1000 ? 'error' : ''}
+                `}
+              >
+                <label htmlFor="date-name"> </label>
+                <input {...input} className="habit-form-input" type="number" placeholder="1" />
+              </div>
+            )}
+          </Field>
           <span> action(s) in </span>
-          <div className="habit-form-counter">
-            <label htmlFor="date-name">
-              <Field
-                name="period"
-                component="input"
-                type="number"
-                placeholder="1"
-                max="999"
-                min="0"
-                className="habit-form-input"
-                required
-              />
-            </label>
-          </div>
+          <Field
+            name="period"
+            validate={composeValidators(requiredValidator, numberBoundsValidator(1, 999))}
+          >
+            {({ input, meta }) => (
+              <div
+                className={`habit-form-counter
+${input?.value <= 0 || input?.value >= 1000 ? 'error' : ''}
+                `}
+              >
+                <label htmlFor="date-name"> </label>
+                <input {...input} className="habit-form-input" type="number" placeholder="1" />
+              </div>
+            )}
+          </Field>
           <span>day(s)</span>
           <button className="habit-button right" type="submit" disabled={submitting}>
             <Icon path={mdiPlus} className="icon small" />
