@@ -7,7 +7,6 @@ import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
-import { useDeleteProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -161,28 +160,20 @@ export default function Project({
 
 function ProjectControls({ projectID }) {
   const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(changeTo({ projectID, type: 'project' }));
-  };
-
-  const [deleteProject] = useDeleteProjectMutation();
-  const deleteChosenProject = () => {
-    deleteProject(projectID);
-  };
 
   return (
     projectID !== 'default' && (
       <div className="overview-settings right">
         <button
           className="overview-open-settings active"
-          onClick={openOverlay}
+          onClick={() => dispatch(changeTo({ projectID, type: 'project' }))}
           title="Edit the project"
         >
           <Icon path={mdiPencil} className="icon small centering" />
         </button>
         <button
           className="overview-open-settings active"
-          onClick={deleteChosenProject}
+          onClick={() => dispatch(changeTo({ projectID, type: 'deleteProject' }))}
           title="Delete the project"
         >
           <Icon path={mdiDelete} className="icon small centering" />
