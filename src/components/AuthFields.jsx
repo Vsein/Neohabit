@@ -2,20 +2,13 @@ import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
 import Field from './FieldWrapper';
-
-const required = (value) => (value ? undefined : 'Required');
-const bounds = (min, max) => (value) =>
-  value.length >= min && value.length <= max ? undefined : `Must have ${min}-${max} symbols`;
-const composeValidators =
-  (...validators) =>
-  (value) =>
-    validators.reduce((error, validator) => error || validator(value), undefined);
-const onlyLatinAndNumbers = (value) => {
-  if (/^[a-z]*$/i.test(value)) return undefined;
-  if (/^[0-9]*$/.test(value)) return 'Add at least one letter';
-  if (/^[a-zA-Z0-9]*$/i.test(value)) return undefined;
-  return 'Only latin and numbers';
-};
+import {
+  requiredValidator,
+  boundsValidator,
+  onlyLatinAndNumbersValidator,
+  simpleEmailValidator,
+  composeValidators,
+} from '../utils/validators';
 
 function UsernameField() {
   return (
@@ -26,13 +19,17 @@ function UsernameField() {
       minLength="4"
       pattern="[a-zA-Z0-9]{3,20}"
       title="Your name should only contain latin characters and numbers!"
-      validate={composeValidators(required, bounds(4, 20), onlyLatinAndNumbers)}
+      validate={composeValidators(
+        requiredValidator,
+        boundsValidator(4, 20),
+        onlyLatinAndNumbersValidator,
+      )}
     >
       {({ input, meta }) => (
         <div>
           <label htmlFor="name">
             Username
-            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
+            {(meta.error || (meta.submitError && !meta.dirtySinceLastSubmit)) && meta.touched && (
               <span className="registration-error">{meta.error || meta.submitError}</span>
             )}
           </label>
@@ -44,19 +41,18 @@ function UsernameField() {
 }
 
 function EmailField({ signup = false }) {
-  const simpleEmailValidation = (value) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? undefined : 'Please enter valid email';
-
   return (
     <Field
       name="email"
-      validate={signup ? composeValidators(required, simpleEmailValidation) : required}
+      validate={
+        signup ? composeValidators(requiredValidator, simpleEmailValidator) : requiredValidator
+      }
     >
       {({ input, meta }) => (
         <div>
           <label htmlFor="email">
             E-mail
-            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
+            {(meta.error || (meta.submitError && !meta.dirtySinceLastSubmit)) && meta.touched && (
               <span className="registration-error">{meta.error || meta.submitError}</span>
             )}
           </label>
@@ -77,7 +73,7 @@ function PasswordField({ type }) {
       required
       minLength="8"
       maxLength="30"
-      validate={composeValidators(required, bounds(8, 30))}
+      validate={composeValidators(requiredValidator, boundsValidator(8, 30))}
       // onChange="onChange()"
       autoComplete="new-password"
     >
@@ -85,7 +81,7 @@ function PasswordField({ type }) {
         <div>
           <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'}>
             {type === 'confirm' ? 'Confirm Password' : 'Password'}
-            {(meta.error || meta.submitError && !meta.dirtySinceLastSubmit) && meta.touched && (
+            {(meta.error || (meta.submitError && !meta.dirtySinceLastSubmit)) && meta.touched && (
               <span className="registration-error">{meta.error || meta.submitError}</span>
             )}
           </label>

@@ -3,19 +3,19 @@ import { useDispatch } from 'react-redux';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
 import { close } from '../state/features/overlay/overlaySlice';
 import Field from './FieldWrapper';
-
-const bounds = (min, max) => (value) =>
-  value?.length >= min && value?.length <= max ? undefined : `Must have ${min}-${max} symbols`;
+import { boundsValidator } from '../utils/validators';
 
 function NameField({ type }) {
+  const maxLength = 150;
+
   return (
-    <Field name="name" validate={bounds(0, 150)}>
+    <Field name="name" validate={boundsValidator(0, maxLength)}>
       {({ input, meta }) => (
         <div className="form-task-name">
           <input {...input} type="text" placeholder={`Change ${type} name`} />
-          <p
-            className={`form-field-length ${input?.value?.length > 150 ? 'error' : ''}`}
-          >{`${input?.value?.length ?? 0}/150`}</p>
+          <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}>{`${
+            input?.value?.length ?? 0
+          }/${maxLength}`}</p>
         </div>
       )}
     </Field>
@@ -23,14 +23,16 @@ function NameField({ type }) {
 }
 
 function DescriptionField({ rows }) {
+  const maxLength = 3000;
+
   return (
-    <Field name="description" validate={bounds(0, 3000)}>
+    <Field name="description" validate={boundsValidator(0, maxLength)}>
       {({ input, meta }) => (
         <div className="form-task-description">
           <textarea {...input} type="text" placeholder="Change description" rows={rows} />
-          <p
-            className={`form-field-length ${input?.value?.length > 3000 ? 'error' : ''}`}
-          >{`${input?.value?.length ?? 0}/3000`}</p>
+          <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}>{`${
+            input?.value?.length ?? 0
+          }/${maxLength}`}</p>
         </div>
       )}
     </Field>

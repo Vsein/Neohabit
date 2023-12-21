@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import CellDataPointForm from './CellDataPointForm';
-import CellTargetPointForm from './CellTargetPointForm';
+import { formatISO } from 'date-fns';
+import { Form } from 'react-final-form';
+import { Icon } from '@mdi/react';
+import { mdiPlus } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { close } from '../state/features/cellAdd/cellAddSlice';
+import { DateField, ActionsField, PeriodField } from './CellAddFields';
 
 export default function CellAdd() {
   const dispatch = useDispatch();
@@ -32,7 +35,7 @@ export default function CellAdd() {
       onClick={(e) => e.stopPropagation()}
     >
       <h3>Add new target</h3>
-      <CellTargetPointForm onSubmit={onSubmit} />
+      <CellAddTargetForm onSubmit={onSubmit} />
     </div>
   ) : (
     <div
@@ -40,7 +43,72 @@ export default function CellAdd() {
       onClick={(e) => e.stopPropagation()}
     >
       <h3>Add completed actions</h3>
-      <CellDataPointForm onSubmit={onSubmit} />
+      <CellAddPointForm onSubmit={onSubmit} />
     </div>
+  );
+}
+
+function CellAddPointForm({ onSubmit }) {
+  return (
+    <Form
+      initialValues={{
+        date: formatISO(new Date(), { representation: 'date' }),
+        value: 1,
+      }}
+      onSubmit={onSubmit}
+      render={({ handleSubmit, invalid, form, submitting, pristine, values }) => (
+        <form
+          onSubmit={async (e) => {
+            if (!invalid) {
+              form.reset();
+            }
+            await handleSubmit(e);
+          }}
+          className="habit-form"
+        >
+          <DateField />
+          <ActionsField />
+          <button className="habit-button" type="submit" disabled={submitting}>
+            <Icon path={mdiPlus} className="icon small" />
+          </button>
+        </form>
+      )}
+    />
+  );
+}
+
+function CellAddTargetForm({ onSubmit }) {
+  return (
+    <Form
+      initialValues={{
+        date: formatISO(new Date(), { representation: 'date' }),
+        value: 1,
+        period: 1,
+        is_target: true,
+      }}
+      onSubmit={onSubmit}
+      render={({ handleSubmit, invalid, form, submitting, pristine, values }) => (
+        <form
+          onSubmit={async (e) => {
+            if (!invalid) {
+              form.reset();
+            }
+            await handleSubmit(e);
+          }}
+          className="habit-form target"
+        >
+          <span>Starting from </span>
+          <DateField />
+          <span>, aim to do</span>
+          <ActionsField />
+          <span> action(s) in </span>
+          <PeriodField />
+          <span>day(s)</span>
+          <button className="habit-button right" type="submit" disabled={submitting}>
+            <Icon path={mdiPlus} className="icon small" />
+          </button>
+        </form>
+      )}
+    />
   );
 }

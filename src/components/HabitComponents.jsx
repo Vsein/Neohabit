@@ -11,7 +11,6 @@ import {
   mdiViewGridPlusOutline,
   mdiPlus,
 } from '@mdi/js';
-import { useDeleteHabitMutation } from '../state/services/habit';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
@@ -19,13 +18,9 @@ import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import Heatmap from './Heatmap';
 
 function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
-  const [deleteHabit] = useDeleteHabitMutation();
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
   const dispatch = useDispatch();
-  const deleteChosenHabit = () => {
-    deleteHabit(habit._id);
-  };
   const setStopwatchHabit = () => {
     updateStopwatch({
       values: {
@@ -92,14 +87,16 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
       </button>
       <Link
         className="overview-habit-button"
-        onClick={() => {
-          dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }));
-        }}
+        onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
         title="Edit habit"
       >
         <Icon path={mdiPencil} />
       </Link>
-      <button className="overview-habit-button" onClick={deleteChosenHabit} title="Delete habit">
+      <button
+        className="overview-habit-button"
+        onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }))}
+        title="Delete habit"
+      >
         <Icon path={mdiDelete} />
       </button>
     </div>
