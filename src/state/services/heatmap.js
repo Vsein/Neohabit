@@ -1,6 +1,6 @@
 import { isSameDay, compareDesc, startOfDay, endOfDay } from 'date-fns';
 import api from './api';
-import newId from '../../hooks/newId';
+import newId from '../../utils/newId';
 
 export const heatmapApi = api.injectEndpoints({
   endpoints: (builder) => ({
