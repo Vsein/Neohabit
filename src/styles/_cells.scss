@@ -52,11 +52,11 @@ $cell-margin: 2px;
   }
 
   &.fractured {
-    --shf: 4.9406564584124654e-324;
+    // --shf: 4.9406564584124654e-324;
     --gap-decrement-column: 0;
     --gap-decrement-row: 0;
-    --column-gap: calc((var(--cell-height) * (2 - var(--gap-decrement-column)) / 15) * var(--shf) / var(--shf));
-    --row-gap: calc((var(--cell-height) * (2 - var(--gap-decrement-row)) / 15) * var(--shf) / var(--shf));
+    --column-gap: calc(var(--cell-height) * (2 - var(--gap-decrement-column)) / 15);
+    --row-gap: calc(var(--cell-height) * (2 - var(--gap-decrement-row)) / 15);
     background-color: var(--main-background-color);
     display: flex;
     flex-wrap: wrap;
