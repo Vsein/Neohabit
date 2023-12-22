@@ -59,10 +59,10 @@ function CellAddPointForm({ onSubmit }) {
       render={({ handleSubmit, invalid, form, submitting, pristine, values }) => (
         <form
           onSubmit={async (e) => {
+            await handleSubmit(e);
             if (!invalid) {
               form.reset();
             }
-            await handleSubmit(e);
           }}
           className="habit-form"
         >
@@ -90,10 +90,10 @@ function CellAddTargetForm({ onSubmit }) {
       render={({ handleSubmit, invalid, form, submitting, pristine, values }) => (
         <form
           onSubmit={async (e) => {
+            await handleSubmit(e);
             if (!invalid) {
               form.reset();
             }
-            await handleSubmit(e);
           }}
           className="habit-form target"
         >
