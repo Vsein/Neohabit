@@ -56,7 +56,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
       </button>
     </div>
   ) : (
-    <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
+    <div className={`habit-controls right ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
       <button
         className="overview-habit-button"
         onClick={addCell}

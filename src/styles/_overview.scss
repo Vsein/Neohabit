@@ -349,6 +349,16 @@ $cell-margin: 2px;
     @include overview-header-small;
   }
 
+
+  &.habit-mode {
+    grid-template-columns: 250px min-content 170px;
+
+    @media (max-width: 950px) {
+      gap: 0px;
+      grid-template-columns: 190px min-content 170px;
+    }
+  }
+
   &.small {
     @include overview-header-small;
     grid-template-areas: 'name settings';
@@ -376,6 +386,17 @@ $cell-margin: 2px;
     line-height: 15px;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  & > input {
+    grid-area: name;
+    margin: auto;
+    line-height: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    font-size: 1.17em;
+    font-weight: bold;
   }
 }
 

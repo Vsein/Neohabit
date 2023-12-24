@@ -74,12 +74,7 @@ export const habitApi = api.injectEndpoints({
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
             const habit = draft.find((habit) => habit._id == habitID);
             if (habit) {
-              habit.name = values.name;
-              habit.color = values.color;
-              habit.description = values.description;
-              habit.completed = values.completed;
-              habit.elimination = values.elimination;
-              habit.numeric = values.numeric;
+              Object.assign(habit, values);
             }
           }),
         );
