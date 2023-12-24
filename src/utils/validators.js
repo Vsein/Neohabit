@@ -1,7 +1,7 @@
 const requiredValidator = (value) => (value ? undefined : 'Required');
 
 const boundsValidator = (min, max) => (value) =>
-  value.length >= min && value.length <= max ? undefined : `Must have ${min}-${max} symbols`;
+  value?.length >= min && value?.length <= max ? undefined : `Must have ${min}-${max} symbols`;
 
 const numberBoundsValidator = (min, max) => (value) =>
   value >= min && value <= max ? undefined : `Must be between ${min}-${max}`;
