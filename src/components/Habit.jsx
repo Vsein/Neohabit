@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { useUpdateHabitMutation } from '../state/services/habit';
@@ -20,6 +20,10 @@ export default function Habit({ heatmap, habit }) {
   const vertical = true;
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
+
+  useEffect(() => {
+    setName(habit?.name);
+  }, [habit]);
 
   const datePeriodLength = adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
   const [
