@@ -51,6 +51,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={addCell}
         title="Add 1 completed action today"
+        type="button"
       >
         <Icon path={mdiCheckboxMarked} />
       </button>
@@ -61,6 +62,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={addCell}
         title="Add 1 completed action today"
+        type="button"
       >
         <Icon path={mdiCheckboxMarked} />
       </button>
@@ -68,6 +70,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={(e) => openCellAddDropdown(e, false)}
         title="Add N copmleted actions on X day"
+        type="button"
       >
         <Icon path={mdiCheckboxMultipleMarked} />
       </button>
@@ -75,6 +78,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={(e) => openCellAddDropdown(e, true)}
         title="Add a new target"
+        type="button"
       >
         <Icon path={mdiViewGridPlusOutline} />
       </button>
@@ -82,6 +86,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={setStopwatchHabit}
         title="Start stopwatch of this habit"
+        type="button"
       >
         <Icon path={mdiTimer} />
       </button>
@@ -96,6 +101,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }))}
         title="Delete habit"
+        type="button"
       >
         <Icon path={mdiDelete} />
       </button>
@@ -139,6 +145,7 @@ function HabitAddButton({ vertical, projectID = '' }) {
       className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
       onClick={openOverlay}
       title="Add a new habit [A]"
+      type="button"
     >
       <Icon className="icon small" path={mdiPlus} />
       <p>Add a new habit</p>
