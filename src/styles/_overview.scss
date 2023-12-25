@@ -349,7 +349,6 @@ $cell-margin: 2px;
     @include overview-header-small;
   }
 
-
   &.habit-mode {
     grid-template-columns: 250px min-content 170px;
 
@@ -358,6 +357,12 @@ $cell-margin: 2px;
       grid-template-columns: 190px min-content 170px;
     }
   }
+
+  &.modal-mode {
+    grid-template-areas: 'date settings';
+    grid-template-columns: 4fr 1fr;
+  }
+
 
   &.small {
     @include overview-header-small;

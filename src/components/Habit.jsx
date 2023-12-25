@@ -11,7 +11,7 @@ import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
 import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
-export default function Habit({ heatmap, habit }) {
+export default function Habit({ heatmap, habit, modal = false }) {
   const [loaded] = useLoaded();
   const [updateHabit] = useUpdateHabitMutation();
   const [name, setName] = useState(habit?.name ?? 'Default');
@@ -25,14 +25,21 @@ export default function Habit({ heatmap, habit }) {
     setName(habit?.name);
   }, [habit]);
 
-  const datePeriodLength = adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
+  const datePeriodLength =
+    adaptiveDatePeriodLength < 53
+      ? modal
+        ? 250
+        : adaptiveDatePeriodLength
+      : modal
+      ? 250
+      : 365;
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
-  ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365);
+  ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365 && !modal);
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
@@ -59,19 +66,26 @@ export default function Habit({ heatmap, habit }) {
         '--calm-signature-color': `${colorShade}55`,
         '--datepicker-text-color': getNumericTextColor(colorShade),
         '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+        margin: 'auto',
       }}
     >
-      <div className={`overview-header ${mobile ? 'small' : ''} singular habit-mode`}>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onBlur={(e) => {
-            if (habit?.name !== name && habit?._id) {
-              updateHabit({ habitID: habit?._id, values: { name } });
-            }
-          }}
-          style={{ color: colorShade, textAlign: 'center' }}
-        />
+      <div
+        className={`overview-header ${mobile ? 'small' : ''} ${
+          modal ? 'modal-mode' : ''
+        } singular habit-mode`}
+      >
+        {!modal && (
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onBlur={(e) => {
+              if (habit?.name !== name && habit?._id) {
+                updateHabit({ habitID: habit?._id, values: { name } });
+              }
+            }}
+            style={{ color: colorShade, textAlign: 'center' }}
+          />
+        )}
         <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}
