@@ -11,6 +11,7 @@ import NihongoProject from '../assets/project-nihongo2.png';
 import SocialProject from '../assets/project-social2.png';
 import CleaningProject from '../assets/project-cleaning.png';
 import MedsProject from '../assets/project-medication.png';
+import MiniLogo from '../logos/neohabit-mini-logo-50x50.png';
 
 export default function Landing() {
   useTitle('Neohabit | A progressive-overload focused habit-tracker');
@@ -40,7 +41,10 @@ export default function Landing() {
     <div id="content-landing">
       <header className="landing-header-container">
         <div className="landing-header">
-          <h1 className="neohabit" />
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', pointerEvents: 'none' }}>
+            <img src={MiniLogo} className="icon bigger"/>
+            <h1 className="neohabit" />
+          </div>
           <ul className="landing-header-links">
             {/* <li> */}
             {/*   <NavLink to="/contact">Contact</NavLink> */}
