@@ -41,9 +41,7 @@ export default function Landing() {
     <div id="content-landing">
       <header className="landing-header-container">
         <div className="landing-header">
-          <div
-            style={{ display: 'flex', gap: '20px', alignItems: 'center', pointerEvents: 'none' }}
-          >
+          <div className="landing-header-logo">
             <img src={MiniLogo} className="icon bigger" />
             <h1 className="neohabit" />
           </div>
