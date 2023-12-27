@@ -73,6 +73,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             className="modal modal-active modal-habit"
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
+            style={{ height: habitID ? '680px' : 'auto' }}
           >
             <div className="modal-header">
               <div className="tag-wrapper">
@@ -100,10 +101,10 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <Icon path={mdiClose} />
               </button>
             </div>
-            <div className="modal-details-block">
+            <div className="modal-details-block" style={{ height: 'min-content'}}>
               <NameField type="habit" />
             </div>
-            <Habit heatmap={heatmap} habit={habit} modal={true} />
+            {habitID && <Habit heatmap={heatmap} habit={habit} modal={true} />}
             <div className="modal-details-habit-wrapper">
               <div className="modal-details-block description-area">
                 <DescriptionField rows="12" />
