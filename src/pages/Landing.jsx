@@ -41,8 +41,10 @@ export default function Landing() {
     <div id="content-landing">
       <header className="landing-header-container">
         <div className="landing-header">
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', pointerEvents: 'none' }}>
-            <img src={MiniLogo} className="icon bigger"/>
+          <div
+            style={{ display: 'flex', gap: '20px', alignItems: 'center', pointerEvents: 'none' }}
+          >
+            <img src={MiniLogo} className="icon bigger" />
             <h1 className="neohabit" />
           </div>
           <ul className="landing-header-links">
@@ -86,7 +88,7 @@ export default function Landing() {
         <section className="landing-features-content">
           <div className="landing-features-container">
             <h3 className="landing-features-title">Features you won&apos;t find anywhere else</h3>
-            <div className="landing-features" style={{ marginBlock: 'auto'}}>
+            <div className="landing-features" style={{ marginBlock: 'auto' }}>
               <div className="landing-feature-container">
                 <div className="landing-feature centering">
                   <div className="landing-cell-container">
@@ -211,9 +213,7 @@ export default function Landing() {
             <p>In a regular habit-tracker, you would probably have something like this:</p>
             <div
               className="overview-habit-cells landing-cells"
-              style={{
-                // '--numeric-text-color': getNumericTextColor("#43d64e"),
-              }}
+              // style={{ '--numeric-text-color': getNumericTextColor('#43d64e') }}
             >
               {exampleValues.map((exampleValue, Index) => (
                 <CellPeriod
@@ -234,9 +234,7 @@ export default function Landing() {
             </p>
             <div
               className="overview-habit-cells landing-cells"
-              style={{
-                // '--numeric-text-color': getNumericTextColor(habit.color),
-              }}
+              // style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
             >
               {exampleValues2.map(
                 (exampleValue, Index) =>
@@ -298,10 +296,7 @@ export default function Landing() {
             {/* </p> */}
           </div>
         </section>
-        <section
-          className="landing-about"
-          style={{ flexDirection: 'column' }}
-        >
+        <section className="landing-about" style={{ flexDirection: 'column' }}>
           <h1 className="landing-about-text-header" style={{ marginBlock: '20px' }}>
             Various ideas of habits you may track
           </h1>
@@ -369,17 +364,19 @@ export default function Landing() {
             </div>
             <hr />
             <p style={{ marginTop: '20px' }}>
-              Habit-trackers are a different kind of beast, but they all don't take human nature
-              into consideration properly. They rarely have anything apart from daily habits. When
-              building habits, it's important to understand that you shouldn't try to bite more than
-              you can chew. And sometimes doing something daily is either too much, or not enough.
+              Habit-trackers are a different kind of beast, but they rarely have anything apart from
+              daily habits. When you do new things, it's important to understand that you shouldn't
+              try to bite more than you can chew. And sometimes doing something daily is either too
+              much, or not enough. We aim to make it easy for you to adjust the load, so that you
+              better understand yourself, and suffer less as a result.
             </p>
             <p style={{ marginTop: '20px' }}>
               Neohabit allows you to track habits of any complexity. Like laundry that you need to
               do once every two weeks, or reach out to someone when you feel like it once in a blue
               moon. Noone in their right mind would do laundry every day, or think that working once
-              a day for an hour is the most you can do. But for one reason or another most
-              habit-trackers miss that completely.
+              a day for an hour is the most you can do. Neohabit will also serve as a convenient
+              overview of previous successes and failures in building new habits. Both can be
+              equally motivating.
             </p>
           </div>
         </section>
@@ -392,7 +389,17 @@ export default function Landing() {
               </NavLink>
             </div>
             <p>
-              If you have any suggestions, or wish to support us, feel free to reach out to{' '}
+              Follow our Telegram channel{' '}
+              <a
+                href="https://t.me/Neohabit_Official"
+                className="landing-contact"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @Neohabit_Official
+              </a>{' '}
+              to know about any updates or upcoming feautres! If you have any suggestions, or wish
+              to support us, feel free to reach out to{' '}
               <a
                 href="https://t.me/VseinHanma"
                 className="landing-contact"
@@ -400,9 +407,7 @@ export default function Landing() {
                 rel="noopener noreferrer"
               >
                 @VseinHanma
-              </a>{' '}
-              on Telegram. Currently there are no other official contacts! The only real ones are
-              the ones that will be mentioned here or elsewhere on this website in the future.
+              </a>
             </p>
           </div>
         </section>
