@@ -17,7 +17,7 @@ import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import Heatmap from './Heatmap';
 
-function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
+function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal = false }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
   const dispatch = useDispatch();
@@ -57,7 +57,10 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
       </button>
     </div>
   ) : (
-    <div className={`habit-controls right ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
+    <div
+      className={`habit-controls right ${header ? 'header' : ''}`}
+      style={{ '--color': habit.color }}
+    >
       <button
         className="overview-habit-button"
         onClick={addCell}
@@ -90,13 +93,15 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
       >
         <Icon path={mdiTimer} />
       </button>
-      <Link
-        className="overview-habit-button"
-        onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
-        title="Edit habit"
-      >
-        <Icon path={mdiPencil} />
-      </Link>
+      {!modal && (
+        <Link
+          className="overview-habit-button"
+          onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
+          title="Edit habit"
+        >
+          <Icon path={mdiPencil} />
+        </Link>
+      )}
       <button
         className="overview-habit-button"
         onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }))}

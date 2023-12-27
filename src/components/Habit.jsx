@@ -97,7 +97,7 @@ export default function Habit({ heatmap, habit, modal = false }) {
           reset={reset}
           setToFuture={setToFuture}
         />
-        <HabitControls habit={habit} heatmap={heatmap} header={true} />
+        <HabitControls habit={habit} heatmap={heatmap} header={true} modal={modal} />
       </div>
       <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
         <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>
