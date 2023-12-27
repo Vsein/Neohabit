@@ -87,37 +87,41 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                 </div>
               </div>
             ) : (
-              <div className="tag-wrapper">
-                New project
-              </div>
+              <div className="tag-wrapper">New project</div>
             )}
             <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
               <Icon path={mdiClose} />
             </button>
           </div>
-          <div className="modal-details">
+          <div className="modal-details-block" style={{ height: 'min-content' }}>
             <NameField type="project" />
-            <DescriptionField rows="1" />
-            <div className="form-split">
-              <div className="form-habits">
-                {habits.data.map((habit, i) => (
-                  <div
-                    className={`form-chooser ${isOneOfHabits(habit._id) ? 'active' : ''}`}
-                    key={i}
-                    onClick={() => {
-                      if (!isOneOfHabits(habit._id)) {
-                        setProjectHabitList([...projectHabitList, habit._id]);
-                      } else {
-                        setProjectHabitList(
-                          projectHabitList.filter((habitID) => habitID !== habit._id),
-                        );
-                      }
-                    }}
-                  >
-                    <HabitTag habit={habit} />
-                  </div>
-                ))}
-              </div>
+          </div>
+          <div className="modal-details-block" style={{ height: '195px', overflowY: 'scroll' }}>
+            <div className="form-habits">
+              {habits.data.map((habit, i) => (
+                <div
+                  className={`form-chooser ${isOneOfHabits(habit._id) ? 'active' : ''}`}
+                  key={i}
+                  onClick={() => {
+                    if (!isOneOfHabits(habit._id)) {
+                      setProjectHabitList([...projectHabitList, habit._id]);
+                    } else {
+                      setProjectHabitList(
+                        projectHabitList.filter((habitID) => habitID !== habit._id),
+                      );
+                    }
+                  }}
+                >
+                  <HabitTag habit={habit} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="modal-details-project-wrapper">
+            <div className="modal-details-block description-area">
+              <DescriptionField rows="9" />
+            </div>
+            <div className="modal-details-block color-area">
               <ColorPicker />
             </div>
           </div>

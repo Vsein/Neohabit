@@ -75,6 +75,7 @@
   &-details-block {
     height: 100%;
     width: 100%;
+    // overflow-y: scroll;
     background-color: var(--main-background-color);
     // padding: 5px;
     border-radius: 10px;
@@ -89,10 +90,6 @@
 
     &.color-area {
       grid-area: color;
-    }
-
-    @media (max-width: 550px) {
-      padding: 5px;
     }
   }
 
@@ -115,6 +112,15 @@
   grid-template-rows: min-content min-content;
   grid-template-areas:
     'description mode'
+    'description color';
+}
+
+.modal-details-project-wrapper {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: min-content;
+  grid-template-areas:
     'description color';
 }
 

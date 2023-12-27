@@ -57,22 +57,28 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
                 </div>
               </div>
             ) : (
-              <div className="tag-wrapper">
-                New skilltree
-              </div>
+              <div className="tag-wrapper">New skilltree</div>
             )}
             <button className="icon small" onClick={closeOverlay}>
               <Icon path={mdiClose} />
             </button>
           </div>
-          <div className="modal-details">
+          <div className="modal-details-block" style={{ height: 'min-content' }}>
             <NameField type="skilltree" />
-            <ColorPicker />
+          </div>
+          <div className="modal-details-project-wrapper">
             {skilltree ? (
-              <></>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <p>You can change the skilltree description from the root skill</p>
+              </div>
             ) : (
-              <DescriptionField rows="7" />
+              <div className="modal-details-block description-area">
+                <DescriptionField rows="9" />
+              </div>
             )}
+            <div className="modal-details-block color-area">
+              <ColorPicker />
+            </div>
           </div>
           <ModalButtons disabled={submitting} isNew={!skilltreeID} type="skilltree" />
         </form>
