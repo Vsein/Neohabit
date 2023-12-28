@@ -11,7 +11,13 @@ import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
 import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
-export default function Habit({ heatmap, habit, modal = false }) {
+export default function Habit({
+  heatmap,
+  habit,
+  modal = false,
+  overridenElimination = undefined,
+  overridenNumeric = undefined,
+}) {
   const [loaded] = useLoaded();
   const [updateHabit] = useUpdateHabitMutation();
   const [name, setName] = useState(habit?.name ?? 'Default');
@@ -26,13 +32,7 @@ export default function Habit({ heatmap, habit, modal = false }) {
   }, [habit]);
 
   const datePeriodLength =
-    adaptiveDatePeriodLength < 53
-      ? modal
-        ? 250
-        : adaptiveDatePeriodLength
-      : modal
-      ? 250
-      : 365;
+    adaptiveDatePeriodLength < 53 ? (modal ? 250 : adaptiveDatePeriodLength) : modal ? 250 : 365;
   const [
     dateEnd,
     setDateEnd,
@@ -111,6 +111,8 @@ export default function Habit({ heatmap, habit, modal = false }) {
             dateEnd={dateEnd}
             vertical={vertical}
             isOverview={false}
+            overridenElimination={overridenElimination}
+            overridenNumeric={overridenNumeric}
           />
         </div>
       </div>

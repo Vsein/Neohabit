@@ -101,10 +101,18 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <Icon path={mdiClose} />
               </button>
             </div>
-            <div className="modal-details-block" style={{ height: 'min-content'}}>
+            <div className="modal-details-block" style={{ height: 'min-content' }}>
               <NameField type="habit" />
             </div>
-            {habitID && <Habit heatmap={heatmap} habit={habit} modal={true} />}
+            {habitID && (
+              <Habit
+                heatmap={heatmap}
+                habit={habit}
+                modal={true}
+                overridenElimination={values.elimination}
+                overridenNumeric={values.numeric}
+              />
+            )}
             <div className="modal-details-habit-wrapper">
               <div className="modal-details-block description-area">
                 <DescriptionField rows="12" />

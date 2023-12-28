@@ -20,6 +20,8 @@ export default function Heatmap({
   heatmap,
   vertical = false,
   isOverview,
+  overridenElimination = undefined,
+  overridenNumeric = undefined,
 }) {
   const data = heatmap?.data;
   let dataSorted;
@@ -49,6 +51,9 @@ export default function Heatmap({
 
   const palette = usePaletteGenerator(habit.color);
   const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
+
+  const elimination = overridenElimination === undefined ? habit?.elimination : overridenElimination;
+  const numeric = overridenNumeric === undefined ? habit?.numeric : overridenNumeric;
 
   return (
     <div
@@ -120,8 +125,8 @@ export default function Heatmap({
                     color={palette[0]}
                     value={0}
                     vertical={vertical}
-                    elimination={habit?.elimination}
-                    numeric={habit?.numeric}
+                    elimination={elimination}
+                    numeric={numeric}
                     isOverview={isOverview}
                   />
                 )}
@@ -134,8 +139,8 @@ export default function Heatmap({
                     value={point.value}
                     basePeriod={24}
                     vertical={vertical}
-                    elimination={habit?.elimination}
-                    numeric={habit?.numeric}
+                    elimination={elimination}
+                    numeric={numeric}
                     isOverview={isOverview}
                   />
                 )}
@@ -216,8 +221,8 @@ export default function Heatmap({
                   value={Index ? 0 : previous.value}
                   basePeriod={24}
                   vertical={vertical}
-                  elimination={habit?.elimination}
-                  numeric={habit?.numeric}
+                  elimination={elimination}
+                  numeric={numeric}
                   targetValue={previousTarget.value}
                   isOverview={isOverview}
                 />
