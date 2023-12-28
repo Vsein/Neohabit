@@ -96,6 +96,7 @@
   border-radius: 50%;
   border: 2px solid var(--signature-color);
   background-color: var(--signature-color-transparent);
+  flex: 1 0 20px;
 }
 
 input[type='checkbox']:checked.checkbox {
@@ -258,4 +259,16 @@ input[type='checkbox']:checked.checkbox {
 .return-button {
   margin-left: 10px;
   margin-right: 0;
+}
+
+.react-colorful {
+  @media (max-width: 700px) {
+    height: 150px !important;
+    width: 150px !important;
+  }
+
+  @media (max-width: 420px) {
+    height: 100px !important;
+    width: 100px !important;
+  }
 }

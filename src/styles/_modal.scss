@@ -90,6 +90,8 @@
 
     &.color-area {
       grid-area: color;
+      display: flex;
+      align-items: center;
     }
   }
 
