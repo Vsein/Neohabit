@@ -361,6 +361,18 @@ $cell-margin: 2px;
   &.modal-mode {
     grid-template-areas: 'date settings';
     grid-template-columns: 4fr 1fr;
+
+    @media (max-width: 950px) {
+      grid-template-areas: 'date settings' !important;
+      grid-template-columns: 2fr 1fr !important;
+    }
+
+    @media (max-width: 600px) {
+      grid-template-areas: 'date'
+      'settings' !important;
+      grid-template-columns: 1fr !important;
+      grid-template-rows: 1fr !important;
+    }
   }
 
 
@@ -385,13 +397,14 @@ $cell-margin: 2px;
     }
   }
 
-  & > div > h3 {
+  & > div > h3, & > h3 {
     // grid-area: name;
     margin: auto;
     line-height: 30px;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-rendering: auto;
+    text-align: center;
     display: inline-block;
     overflow: hidden;
     width: 100%;
