@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
-import { useUpdateHabitMutation } from '../state/services/habit';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
@@ -24,12 +23,6 @@ export default function Habit({
   const vertical = true;
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
-
-  const [updateHabit] = useUpdateHabitMutation();
-  const [name, setName] = useState(habit?.name ?? 'Default');
-  useEffect(() => {
-    setName(habit?.name);
-  }, [habit]);
 
   const datePeriodLength =
     adaptiveDatePeriodLength < 53 ? (modal ? 250 : adaptiveDatePeriodLength) : modal ? 250 : 365;
@@ -77,16 +70,7 @@ export default function Habit({
         {!modal && (
           <div className="overview-header-return-mode">
             <ReturnButton />
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              onBlur={(e) => {
-                if (habit?.name !== name && habit?._id) {
-                  updateHabit({ habitID: habit?._id, values: { name } });
-                }
-              }}
-              style={{ color: colorShade, textAlign: 'center' }}
-            />
+            <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
           </div>
         )}
         <DatePeriodPicker

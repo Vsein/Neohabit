@@ -385,12 +385,16 @@ $cell-margin: 2px;
     }
   }
 
-  & > h3 {
-    grid-area: name;
+  & > div > h3 {
+    // grid-area: name;
     margin: auto;
-    line-height: 15px;
+    line-height: 30px;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-rendering: auto;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
   }
 
   & > div > input {
