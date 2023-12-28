@@ -5,10 +5,10 @@ import { useUpdateHabitMutation } from '../state/services/habit';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
-import { YearPicker, DatePeriodPicker } from './DatePickers';
+import { DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
-import { HabitControls } from './HabitComponents';
+import { HabitControls, ReturnButton } from './HabitComponents';
 import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function Habit({
@@ -75,16 +75,19 @@ export default function Habit({
         } singular habit-mode`}
       >
         {!modal && (
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            onBlur={(e) => {
-              if (habit?.name !== name && habit?._id) {
-                updateHabit({ habitID: habit?._id, values: { name } });
-              }
-            }}
-            style={{ color: colorShade, textAlign: 'center' }}
-          />
+          <div className="overview-header-return-mode">
+            <ReturnButton />
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={(e) => {
+                if (habit?.name !== name && habit?._id) {
+                  updateHabit({ habitID: habit?._id, values: { name } });
+                }
+              }}
+              style={{ color: colorShade, textAlign: 'center' }}
+            />
+          </div>
         )}
         <DatePeriodPicker
           dateStart={dateStart}

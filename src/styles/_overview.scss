@@ -393,8 +393,8 @@ $cell-margin: 2px;
     white-space: nowrap;
   }
 
-  & > input {
-    grid-area: name;
+  & > div > input {
+    // grid-area: name;
     margin: auto;
     line-height: 15px;
     text-overflow: ellipsis;
@@ -413,6 +413,15 @@ $cell-margin: 2px;
     &:hover {
       background: var(--secondary-background-color);
     }
+  }
+
+  &-return-mode {
+    grid-area: name;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
   }
 }
 

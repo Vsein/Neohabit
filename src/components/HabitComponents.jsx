@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import {
@@ -10,6 +10,7 @@ import {
   mdiCheckboxMultipleMarked,
   mdiViewGridPlusOutline,
   mdiPlus,
+  mdiKeyboardReturn,
 } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
@@ -158,4 +159,14 @@ function HabitAddButton({ vertical, projectID = '' }) {
   );
 }
 
-export { HabitControls, HabitOverview, HabitAddButton };
+function ReturnButton() {
+  const navigate = useNavigate();
+
+  return (
+    <Link onClick={() => navigate(-1)} className="left return-button centering">
+      <Icon className="icon small" path={mdiKeyboardReturn} />
+    </Link>
+  );
+}
+
+export { HabitControls, HabitOverview, HabitAddButton, ReturnButton };
