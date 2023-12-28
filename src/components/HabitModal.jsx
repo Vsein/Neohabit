@@ -7,6 +7,7 @@ import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
 import Habit from './Habit';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
+import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useGetProjectsQuery } from '../state/services/project';
 import {
   useGetHabitsQuery,
@@ -23,6 +24,8 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const heatmaps = useGetHeatmapsQuery();
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
+
+  const { width } = useWindowDimensions();
 
   if (habits.isLoading || projects.isLoading || heatmaps.isLoading) return <></>;
 
@@ -73,7 +76,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             className="modal modal-active modal-habit"
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
-            style={{ height: habitID ? '680px' : 'auto' }}
+            style={{ height: width >= 850 && habitID ? '680px' : 'auto' }}
           >
             <div className="modal-header">
               <div className="tag-wrapper">
@@ -104,7 +107,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             <div className="modal-details-block" style={{ height: 'min-content' }}>
               <NameField type="habit" />
             </div>
-            {habitID && (
+            {width >= 850 && habitID && (
               <Habit
                 heatmap={heatmap}
                 habit={habit}

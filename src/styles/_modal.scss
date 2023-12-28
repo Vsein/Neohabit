@@ -86,6 +86,9 @@
 
     &.mode-area {
       grid-area: mode;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     &.color-area {
