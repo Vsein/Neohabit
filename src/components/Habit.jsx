@@ -19,14 +19,14 @@ export default function Habit({
   overridenNumeric = undefined,
 }) {
   const [loaded] = useLoaded();
-  const [updateHabit] = useUpdateHabitMutation();
-  const [name, setName] = useState(habit?.name ?? 'Default');
   const settings = useGetSettingsQuery();
   // const settings = useGetSettingsQuery();
   const vertical = true;
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
 
+  const [updateHabit] = useUpdateHabitMutation();
+  const [name, setName] = useState(habit?.name ?? 'Default');
   useEffect(() => {
     setName(habit?.name);
   }, [habit]);

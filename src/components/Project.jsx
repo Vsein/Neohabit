@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
+import { useUpdateProjectMutation } from '../state/services/project';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
@@ -33,6 +34,12 @@ export default function Project({
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength);
+
+  const [name, setName] = useState(project?.name ?? 'Default');
+  const [updateProject] = useUpdateProjectMutation();
+  useEffect(() => {
+    setName(project?.name);
+  }, [project]);
 
   useEffect(() => {
     if (globalDateStart && globalDateEnd) {
@@ -77,9 +84,16 @@ export default function Project({
           {singular ? (
             <div className="overview-header-return-mode">
               <ReturnButton />
-              <NavLink to={`../project/${project?._id}`} title={project.name} style={{ justifySelf: 'center'}}>
-                <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-              </NavLink>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onBlur={(e) => {
+                  if (project?.name !== name && project?._id) {
+                    updateProject({ projectID: project?._id, values: { name } });
+                  }
+                }}
+                style={{ color: colorShade, textAlign: 'center' }}
+              />
             </div>
           ) : (
             <NavLink to={`../project/${project?._id}`} title={project.name}>

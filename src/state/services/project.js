@@ -33,10 +33,7 @@ export const projectApi = api.injectEndpoints({
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
             const project = draft.find((projecto) => projecto._id == projectID);
             if (project) {
-              project.name = values.name;
-              project.color = values.color;
-              project.description = values.description;
-              project.habits = values.habits;
+              Object.assign(project, values);
             }
           }),
         );
