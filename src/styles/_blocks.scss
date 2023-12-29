@@ -46,8 +46,13 @@
   margin: auto;
 
   @media (max-width: 380px) {
-    margin-left: -10px;
-    margin-right: -10px;
+    & > button:not(.left) {
+      margin-left: -8px;
+    }
+
+    & > button.left {
+      margin-right: -13px;
+    }
   }
 }
 
