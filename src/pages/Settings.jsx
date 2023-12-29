@@ -74,7 +74,10 @@ export default function Settings() {
                 </div>
               </div>
               <div className="settings-option simple">
-                <h3 className="settings-name" style={{ opacity: 0.5 }}>
+                <h3 className="settings-name ribbon ribbon-top"
+                  style={{ opacity: 0.5, position: 'relative', width: 'min-content', whiteSpace: 'nowrap' }}
+                >
+                  <span style={{ borderRadius: '10px 10px 0px 0px'}}>soon</span>
                   Change password
                 </h3>
               </div>
