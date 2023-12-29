@@ -56,12 +56,7 @@ function Cell({
       }}
     >
       {numeric && (
-        <CellNumericText
-          small={vertical || length === 1}
-          color={color}
-          value={value}
-          targetValue={targetValue}
-        />
+        <CellNumericText small={vertical || length === 1} value={value} targetValue={targetValue} />
       )}
     </div>
   );
@@ -99,17 +94,17 @@ function CellFractured({
       }}
     >
       {[...Array(+fractions)].map((point, index) => (
-          <div
-            key={index}
-            className="cell-fraction"
-            style={{
-              [index < value ? 'backgroundColor' : '']:
-                index >= targetValue && elimination
-                  ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
-                  : color,
-            }}
-          />
-        ))}
+        <div
+          key={index}
+          className="cell-fraction"
+          style={{
+            [index < value ? 'backgroundColor' : '']:
+              index >= targetValue && elimination
+                ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
+                : color,
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -135,13 +130,15 @@ function CellPeriod({
   if (diffDays < 1) {
     return <></>;
   }
-  const tipContent = heatmapID ? {
-    heatmapID,
-    isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
-    dateStart: targetStart || dateStart,
-    dateEnd: targetEnd || dateEnd,
-    actions: value,
-  } : undefined;
+  const tipContent = heatmapID
+    ? {
+        heatmapID,
+        isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
+        dateStart: targetStart || dateStart,
+        dateEnd: targetEnd || dateEnd,
+        actions: value,
+      }
+    : undefined;
   if (isSameWeek(dateStart, dateEnd) || isOverview || !vertical) {
     return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (
       <Cell
@@ -227,22 +224,16 @@ function CellPeriod({
         }}
       >
         {displayNumeric && !!width && (
-          <CellNumericText
-            wide={true}
-            small={width <= 1}
-            color={color}
-            value={value}
-            targetValue={targetValue}
-          />
+          <CellNumericText wide={true} small={width <= 1} value={value} targetValue={targetValue} />
         )}
         <div className="cell-period-before centering" style={styleBefore}>
           {!width && diffDays <= 7 && displayNumeric && (
-            <CellNumericText support={true} small={true} color={color} value={value} targetValue={targetValue} />
+            <CellNumericText support={true} small={true} value={value} targetValue={targetValue} />
           )}
         </div>
         <div className="cell-period-after centering" style={styleAfter}>
           {!width && diffDays <= 7 && displayNumeric && (
-            <CellNumericText support={true} small={true} color={color} value={value} targetValue={targetValue} />
+            <CellNumericText support={true} small={true} value={value} targetValue={targetValue} />
           )}
         </div>
         {diffDays > 7 && !width && (
@@ -254,7 +245,7 @@ function CellPeriod({
             }}
           >
             {!width && displayNumeric && (
-              <CellNumericText color={color} value={value} targetValue={targetValue} />
+              <CellNumericText value={value} targetValue={targetValue} />
             )}
           </div>
         )}
