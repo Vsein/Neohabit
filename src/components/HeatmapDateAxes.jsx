@@ -10,9 +10,11 @@ import {
   isLastDayOfMonth,
 } from 'date-fns';
 
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+
 function MonthWeekly({ dateStart, index }) {
   const date = addWeeks(dateStart, index);
-  const monthName = date.toLocaleString('en-US', { month: 'short' });
+  const monthName = monthNames[date.getMonth()];
   if (getWeekOfMonth(date) === 2 && index !== 1 || (index === 0 && getWeekOfMonth(date) <= 3)) {
     return <div className="heatmap-months-month active">{monthName}</div>;
   }
@@ -32,7 +34,7 @@ function HeatmapMonthsWeekly({ dateStart }) {
 
 function MonthDaily({ dateStart, index }) {
   const date = addDays(dateStart, index);
-  const monthName = date.toLocaleString('en-US', { month: 'short' });
+  const monthName = monthNames[date.getMonth()];
   if (getDate(date) === 1 || (index === 0 && !isLastDayOfMonth(date))) {
     return <div className="heatmap-months-month active">{monthName}</div>;
   }
