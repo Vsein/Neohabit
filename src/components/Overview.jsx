@@ -133,23 +133,23 @@ function OverviewControls({ vertical }) {
 
   return (
     <div className="overview-settings right">
-      <button
-        className={`overview-open-settings ${vertical ? '' : 'active'}`}
-        onClick={() => updateSettings({ values: { overview_vertical: false } })}
-        title="Change to horizontal orientation"
-      >
-        <Icon path={mdiCalendarText} className="icon small centering" />
-      </button>
-      <button
-        className={`overview-open-settings ${vertical ? 'active' : ''}`}
-        onClick={() => updateSettings({ values: { overview_vertical: true } })}
-        title="Change to vertical orientation"
-      >
-        <Icon path={mdiCalendarWeekend} className="icon small centering" />
-      </button>
+      {/* <button */}
+      {/*   className={`overview-open-settings ${vertical ? '' : 'active'}`} */}
+      {/*   onClick={() => updateSettings({ values: { overview_vertical: false } })} */}
+      {/*   title="Change to horizontal orientation" */}
+      {/* > */}
+      {/*   <Icon path={mdiCalendarText} className="icon small centering" /> */}
+      {/* </button> */}
+      {/* <button */}
+      {/*   className={`overview-open-settings ${vertical ? 'active' : ''}`} */}
+      {/*   onClick={() => updateSettings({ values: { overview_vertical: true } })} */}
+      {/*   title="Change to vertical orientation" */}
+      {/* > */}
+      {/*   <Icon path={mdiCalendarWeekend} className="icon small centering" /> */}
+      {/* </button> */}
       <NavLink
         className="overview-open-settings"
-        to="/settings#overview"
+        to="/settings#heatmaps"
         title="Open overview settings"
       >
         <Icon path={mdiCog} className="icon small centering" />
