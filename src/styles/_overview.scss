@@ -321,9 +321,9 @@ $cell-margin: 2px;
   border-bottom: 1px solid var(--border-color);
   border-radius: 10px 10px 0px 0px;
   display: grid;
-  padding-inline: 5px;
+  padding-right: 5px;
   grid-template-areas: 'name date settings';
-  grid-template-columns: 180px min-content 115px;
+  grid-template-columns: 185px min-content 115px;
   gap: 20px;
   justify-content: space-between;
   align-items: center;
@@ -349,6 +349,33 @@ $cell-margin: 2px;
     @include overview-header-small;
   }
 
+  &.habit-mode {
+    grid-template-columns: 250px min-content 170px;
+
+    @media (max-width: 950px) {
+      gap: 0px;
+      grid-template-columns: 190px min-content 170px;
+    }
+  }
+
+  &.modal-mode {
+    grid-template-areas: 'date settings';
+    grid-template-columns: 4fr 1fr;
+
+    @media (max-width: 950px) {
+      grid-template-areas: 'date settings' !important;
+      grid-template-columns: 2fr 1fr !important;
+    }
+
+    @media (max-width: 600px) {
+      grid-template-areas: 'date'
+      'settings' !important;
+      grid-template-columns: 1fr !important;
+      grid-template-rows: 1fr !important;
+    }
+  }
+
+
   &.small {
     @include overview-header-small;
     grid-template-areas: 'name settings';
@@ -370,12 +397,48 @@ $cell-margin: 2px;
     }
   }
 
-  & > h3 {
-    grid-area: name;
+  & > div > h3, & > h3 {
+    // grid-area: name;
+    margin: auto;
+    line-height: 30px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-rendering: auto;
+    text-align: center;
+    display: inline-block;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  & > div > input {
+    // grid-area: name;
     margin: auto;
     line-height: 15px;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: block;
+    font-size: 1.17em;
+    font-weight: bold;
+    border-radius: 10px;
+
+    &:focus {
+      background-color: var(--secondary-background-color);
+      // border: 1px solid var(--border-color);
+      box-shadow: 0px 0px 4px 2px var(--signature-color);
+    }
+
+    &:hover {
+      background: var(--secondary-background-color);
+    }
+  }
+
+  &-return-mode {
+    grid-area: name;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
   }
 }
 

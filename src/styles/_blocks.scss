@@ -46,8 +46,13 @@
   margin: auto;
 
   @media (max-width: 380px) {
-    margin-left: -10px;
-    margin-right: -10px;
+    & > button:not(.left) {
+      margin-left: -8px;
+    }
+
+    & > button.left {
+      margin-right: -13px;
+    }
   }
 }
 
@@ -108,7 +113,6 @@
     grid-auto-columns: 23px;
     grid-gap: 4px;
     justify-content: space-around;
-    margin-left: -45px;
 
     @media (max-width: 850px) {
       margin-left: 0;

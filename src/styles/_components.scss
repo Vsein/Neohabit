@@ -27,6 +27,11 @@
     width: 80px;
   }
 
+  &.bigger {
+    height: 50px;
+    width: 50px;
+  }
+
   &.big {
     height: 40px;
     width: 40px;
@@ -91,6 +96,7 @@
   border-radius: 50%;
   border: 2px solid var(--signature-color);
   background-color: var(--signature-color-transparent);
+  flex: 0 0 20px;
 }
 
 input[type='checkbox']:checked.checkbox {
@@ -247,5 +253,22 @@ input[type='checkbox']:checked.checkbox {
   &-input {
     padding-inline: 8px;
     cursor: text;
+  }
+}
+
+.return-button {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.react-colorful {
+  @media (max-width: 700px) {
+    height: 150px !important;
+    width: 150px !important;
+  }
+
+  @media (max-width: 420px) {
+    height: 100px !important;
+    width: 100px !important;
   }
 }

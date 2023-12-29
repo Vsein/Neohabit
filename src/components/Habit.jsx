@@ -4,13 +4,19 @@ import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
-import { YearPicker, DatePeriodPicker } from './DatePickers';
+import { DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
-import { HabitControls } from './HabitComponents';
+import { HabitControls, ReturnButton } from './HabitComponents';
 import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
-export default function Habit({ heatmap, habit }) {
+export default function Habit({
+  heatmap,
+  habit,
+  modal = false,
+  overridenElimination = undefined,
+  overridenNumeric = undefined,
+}) {
   const [loaded] = useLoaded();
   const settings = useGetSettingsQuery();
   // const settings = useGetSettingsQuery();
@@ -18,14 +24,15 @@ export default function Habit({ heatmap, habit }) {
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
 
-  const datePeriodLength = adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
+  const datePeriodLength =
+    adaptiveDatePeriodLength < 53 ? (modal ? 250 : adaptiveDatePeriodLength) : modal ? 250 : 365;
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
-  ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365);
+  ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365 && !modal);
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
@@ -52,10 +59,20 @@ export default function Habit({ heatmap, habit }) {
         '--calm-signature-color': `${colorShade}55`,
         '--datepicker-text-color': getNumericTextColor(colorShade),
         '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+        margin: 'auto',
       }}
     >
-      <div className={`overview-header ${mobile ? 'small' : ''} singular habit-mode`}>
-        <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
+      <div
+        className={`overview-header ${mobile ? 'small' : ''} ${
+          modal ? 'modal-mode' : ''
+        } singular habit-mode`}
+      >
+        {!modal && (
+          <div className="overview-header-return-mode">
+            <ReturnButton />
+            <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
+          </div>
+        )}
         <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}
@@ -67,7 +84,7 @@ export default function Habit({ heatmap, habit }) {
           reset={reset}
           setToFuture={setToFuture}
         />
-        <HabitControls habit={habit} heatmap={heatmap} header={true} />
+        <HabitControls habit={habit} heatmap={heatmap} header={true} modal={modal} />
       </div>
       <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
         <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>
@@ -81,6 +98,8 @@ export default function Habit({ heatmap, habit }) {
             dateEnd={dateEnd}
             vertical={vertical}
             isOverview={false}
+            overridenElimination={overridenElimination}
+            overridenNumeric={overridenNumeric}
           />
         </div>
       </div>

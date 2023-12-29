@@ -24,15 +24,15 @@
 
 .modal {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-auto-rows: auto;
   gap: 10px;
   position: fixed;
   top: 50%;
   left: 50%;
   z-index: 3;
   width: min(800px, 100vw - 3em);
-  min-height: 600px;
-  max-height: 650px;
+  height: auto;
+  // overflow-y: scroll;
   border-radius: 8px;
   background-color: var(--support-background-color);
   padding: 1em;
@@ -72,6 +72,33 @@
     }
   }
 
+  &-details-block {
+    @include scrollbar;
+    height: 100%;
+    width: 100%;
+    // overflow-y: scroll;
+    background-color: var(--main-background-color);
+    // padding: 5px;
+    border-radius: 10px;
+
+    &.description-area {
+      grid-area: description;
+    }
+
+    &.mode-area {
+      grid-area: mode;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    &.color-area {
+      grid-area: color;
+      display: flex;
+      align-items: center;
+    }
+  }
+
   &-description {
     min-height: 300px;
   }
@@ -82,6 +109,25 @@
     gap: 10px;
     height: 40px;
   }
+}
+
+.modal-details-habit-wrapper {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: min-content min-content;
+  grid-template-areas:
+    'description mode'
+    'description color';
+}
+
+.modal-details-project-wrapper {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: min-content;
+  grid-template-areas:
+    'description color';
 }
 
 .form-field-length {

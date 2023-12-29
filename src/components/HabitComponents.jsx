@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import {
@@ -10,6 +10,7 @@ import {
   mdiCheckboxMultipleMarked,
   mdiViewGridPlusOutline,
   mdiPlus,
+  mdiKeyboardReturn,
 } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
@@ -17,7 +18,7 @@ import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import Heatmap from './Heatmap';
 
-function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
+function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal = false }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
   const dispatch = useDispatch();
@@ -51,16 +52,21 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={addCell}
         title="Add 1 completed action today"
+        type="button"
       >
         <Icon path={mdiCheckboxMarked} />
       </button>
     </div>
   ) : (
-    <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
+    <div
+      className={`habit-controls right ${header ? 'header' : ''}`}
+      style={{ '--color': habit.color }}
+    >
       <button
         className="overview-habit-button"
         onClick={addCell}
         title="Add 1 completed action today"
+        type="button"
       >
         <Icon path={mdiCheckboxMarked} />
       </button>
@@ -68,6 +74,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={(e) => openCellAddDropdown(e, false)}
         title="Add N copmleted actions on X day"
+        type="button"
       >
         <Icon path={mdiCheckboxMultipleMarked} />
       </button>
@@ -75,6 +82,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={(e) => openCellAddDropdown(e, true)}
         title="Add a new target"
+        type="button"
       >
         <Icon path={mdiViewGridPlusOutline} />
       </button>
@@ -82,20 +90,24 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '' }) {
         className="overview-habit-button"
         onClick={setStopwatchHabit}
         title="Start stopwatch of this habit"
+        type="button"
       >
         <Icon path={mdiTimer} />
       </button>
-      <Link
-        className="overview-habit-button"
-        onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
-        title="Edit habit"
-      >
-        <Icon path={mdiPencil} />
-      </Link>
+      {!modal && (
+        <Link
+          className="overview-habit-button"
+          onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
+          title="Edit habit"
+        >
+          <Icon path={mdiPencil} />
+        </Link>
+      )}
       <button
         className="overview-habit-button"
         onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }))}
         title="Delete habit"
+        type="button"
       >
         <Icon path={mdiDelete} />
       </button>
@@ -139,6 +151,7 @@ function HabitAddButton({ vertical, projectID = '' }) {
       className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
       onClick={openOverlay}
       title="Add a new habit [A]"
+      type="button"
     >
       <Icon className="icon small" path={mdiPlus} />
       <p>Add a new habit</p>
@@ -146,4 +159,14 @@ function HabitAddButton({ vertical, projectID = '' }) {
   );
 }
 
-export { HabitControls, HabitOverview, HabitAddButton };
+function ReturnButton() {
+  const navigate = useNavigate();
+
+  return (
+    <Link onClick={() => navigate(-1)} className="left return-button centering">
+      <Icon className="icon small" path={mdiKeyboardReturn} />
+    </Link>
+  );
+}
+
+export { HabitControls, HabitOverview, HabitAddButton, ReturnButton };

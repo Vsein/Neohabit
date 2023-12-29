@@ -27,7 +27,7 @@
   @media (max-width: 400px) {
     grid-auto-flow: unset;
     grid-template-columns: 1fr 1fr;
-    height: 150px;
+    height: 130px;
   }
 }
 
@@ -38,6 +38,10 @@
 
   @media (max-width: 700px) {
     padding: 10px;
+  }
+
+  @media (max-width: 400px) {
+    padding: 5px;
   }
 }
 

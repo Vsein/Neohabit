@@ -68,7 +68,12 @@ function DatePeriodPicker({
 
   return (
     <div className="dates-container">
-      <button className="centering" onClick={subPeriod} title="Move period to the left [h]">
+      <button
+        type="button"
+        className="centering"
+        onClick={subPeriod}
+        title="Move period to the left [h]"
+      >
         <Icon path={mdiMenuLeft} className="icon" />
       </button>
       <div className="dates-period">
@@ -132,7 +137,12 @@ function DatePeriodPicker({
           />
         </DatePicker>
       </div>
-      <button className="centering left" onClick={addPeriod} title="Move period to the right [l]">
+      <button
+        type="button"
+        className="centering left"
+        onClick={addPeriod}
+        title="Move period to the right [l]"
+      >
         <Icon path={mdiMenuRight} className="icon" />
       </button>
     </div>
@@ -153,7 +163,12 @@ function OverviewTopbarRight({
         <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
       )}
       {isHeatmap && !vertical && (
-        <button className="centering" onClick={addMonth} title="Move month to the right [L]">
+        <button
+          type="button"
+          className="centering"
+          onClick={addMonth}
+          title="Move month to the right [L]"
+        >
           <Icon path={mdiMenuRight} className="icon" />
         </button>
       )}
@@ -168,6 +183,7 @@ function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
         className="overview-period-button"
         onClick={setToPast}
         title="Set today as the period end"
+        type="button"
       >
         <Icon path={mdiCalendarEnd} className="icon small centering" />
       </button>
@@ -175,6 +191,7 @@ function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
         className="overview-period-button"
         onClick={reset}
         title="Reset date period to preferred defaults [r]"
+        type="button"
       >
         <Icon path={mdiCalendarRefresh} className="icon small centering" />
       </button>
@@ -182,6 +199,7 @@ function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
         className="overview-period-button"
         onClick={setToFuture}
         title="Set today as the period start"
+        type="button"
       >
         <Icon path={mdiCalendarStart} className="icon small centering" />
       </button>

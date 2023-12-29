@@ -59,9 +59,11 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
               <Icon path={mdiClose} />
             </button>
           </div>
-          <div className="modal-details">
+          <div className="modal-details-block" style={{ height: 'min-content'}}>
             <NameField type="skill" />
-            <DescriptionField rows="17" />
+          </div>
+          <div className="modal-details-block">
+            <DescriptionField rows="9" />
           </div>
           <ModalButtons disabled={submitting} isNew={!skillID} type="skill" />
         </form>

@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
-import { useDeleteSkilltreeMutation } from '../state/services/skilltree';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
@@ -35,10 +34,9 @@ export default function Skilltree({ skilltree }) {
 
   if (settings.isFetching) return <></>;
 
-  const colorShade =
-    !settings.data?.prefer_dark
-      ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(skilltree.color), 0.8)
-      : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(skilltree.color), 0.6);
+  const colorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(skilltree.color), 0.8)
+    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(skilltree.color), 0.6);
 
   const processedSkills = processSkilltree(skilltree);
 
@@ -93,27 +91,19 @@ export default function Skilltree({ skilltree }) {
 
 function SkilltreeControls({ skilltreeID }) {
   const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(changeTo({ skilltreeID, type: 'skilltree' }));
-  };
-
-  const [deleteSkilltree] = useDeleteSkilltreeMutation();
-  const deleteChosenSkilltree = () => {
-    deleteSkilltree(skilltreeID);
-  };
 
   return (
     <div className="overview-settings right">
       <button
         className="overview-open-settings active"
-        onClick={openOverlay}
+        onClick={() => dispatch(changeTo({ skilltreeID, type: 'skilltree' }))}
         title="Edit the skilltree"
       >
         <Icon path={mdiPencil} className="icon small centering" />
       </button>
       <button
         className="overview-open-settings active"
-        onClick={deleteChosenSkilltree}
+        onClick={() => dispatch(changeTo({ skilltreeID, type: 'deleteSkilltree' }))}
         title="Delete the skilltree"
       >
         <Icon path={mdiDelete} className="icon small centering" />

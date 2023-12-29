@@ -11,7 +11,7 @@ import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
-import { HabitOverview, HabitAddButton } from './HabitComponents';
+import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
 import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function Project({
@@ -70,13 +70,20 @@ export default function Project({
         }}
       >
         <div
-          className={`overview-header ${vertical ? 'vertical' : ''} ${
-            mobile ? 'small' : ''
-          } ${singular ? 'singular' : ''}`}
+          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${
+            singular ? 'singular' : ''
+          }`}
         >
-          <NavLink to={`../project/${project?._id}`} title={project.name}>
-            <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-          </NavLink>
+          {singular ? (
+            <div className="overview-header-return-mode">
+              <ReturnButton />
+              <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+            </div>
+          ) : (
+            <NavLink to={`../project/${project?._id}`} title={project.name}>
+              <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+            </NavLink>
+          )}
           {(!mobile || singular) && (
             <DatePeriodPicker
               dateStart={dateStart}

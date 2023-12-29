@@ -18,10 +18,25 @@ $cell-weekdays-width: 33px;
 
 .landing-header {
   width: calc(100vw - 2em);
-  padding: 15px;
+  padding: 15px 15px 15px 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 550px) {
+    padding: 5px;
+  }
+
+  &-logo {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    pointer-events: none;
+
+    @media (max-width: 550px) {
+      gap: 15px;
+    }
+  }
 
   &-links {
     color: var(--support-color);
@@ -43,6 +58,16 @@ $cell-weekdays-width: 33px;
       var(--gradient-color-3)
     );
     align-items: center;
+
+    @media (max-width: 550px) {
+      font-size: 15px;
+      height: 60px;
+
+      .icon.bigger {
+        height: 45px;
+        width: 45px;
+      }
+    }
   }
 }
 
@@ -52,6 +77,10 @@ $cell-weekdays-width: 33px;
   // height: calc(15px * 30);
   width: 100vw;
   overflow: hidden;
+
+  @media (max-width: 550px) {
+    height: calc(100vh - 60px);
+  }
 
   &-text {
     font-size: 3rem;
