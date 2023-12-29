@@ -143,6 +143,7 @@
   cursor: default;
   flex-wrap: wrap;
   height: min-content;
+  overflow: hidden;
 
   & > .tag-wrapper {
     flex-wrap: nowrap;

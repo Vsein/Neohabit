@@ -48,6 +48,10 @@ textarea {
   background-color: inherit;
 }
 
+textarea {
+  resize: none;
+}
+
 a {
   text-decoration: none;
   color: inherit;
