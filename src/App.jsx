@@ -17,6 +17,7 @@ import Projects from './pages/Projects';
 import Skilltrees from './pages/Skilltrees';
 import Habit from './pages/Habit';
 import Project from './pages/Project';
+import Blocks from './pages/Blocks';
 import Logout from './pages/Logout';
 import NotFound from './pages/404';
 import FetchError from './pages/FetchError';
@@ -59,6 +60,7 @@ const App = () => {
           <Route path="/skills/*" element={<Skilltrees />} />
           <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/overview/" element={<Overview />} />
+          <Route path="/blocks/*" element={<Blocks />} />
           <Route path="/habit/:habitID/*" element={<Habit />} />
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/logout" element={<Logout />} />

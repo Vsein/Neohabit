@@ -33,11 +33,24 @@ export default function Settings() {
         <Link className="settings-type" to="#general">
           General
         </Link>
-        <Link className="settings-type" to="#overview">
-          Overview
-        </Link>
         <Link className="settings-type" to="#heatmaps">
           Heatmaps
+        </Link>
+        <Link
+          className="settings-type ribbon ribbon-top"
+          style={{ opacity: 0.3, position: 'relative' }}
+          to="#overview"
+        >
+          <span style={{ borderRadius: '10px 10px 0px 0px'}}>soon</span>
+          Overview
+        </Link>
+        <Link
+          className="settings-type ribbon ribbon-top"
+          style={{ opacity: 0.3, position: 'relative' }}
+          to="#overview"
+        >
+          <span style={{ borderRadius: '10px 10px 0px 0px'}}>soon</span>
+          Habits
         </Link>
         <Link className="settings-type" to="#danger-zone">
           Danger
@@ -61,7 +74,10 @@ export default function Settings() {
                 </div>
               </div>
               <div className="settings-option simple">
-                <h3 className="settings-name" style={{ opacity: 0.5 }}>
+                <h3 className="settings-name ribbon ribbon-top"
+                  style={{ opacity: 0.5, position: 'relative', width: 'min-content', whiteSpace: 'nowrap' }}
+                >
+                  <span style={{ borderRadius: '10px 10px 0px 0px'}}>soon</span>
                   Change password
                 </h3>
               </div>
@@ -138,7 +154,9 @@ export default function Settings() {
                 <SettingsNumberOption
                   name="Period duration limit"
                   curState={settings.data?.overview_duration_limit ?? 32}
-                  update={(state) => updateSettings({ values: { overview_duration_limit: +state } })}
+                  update={(state) =>
+                    updateSettings({ values: { overview_duration_limit: +state } })
+                  }
                   min="1"
                   max="365"
                 />
@@ -181,23 +199,23 @@ export default function Settings() {
             </>
           }
         />
-        <SettingsSection
-          name="overview"
-          elements={
-            <>
-              <SettingsButtonOption
-                name="Preferred overview orientation"
-                cssName="orientation"
-                curState={settings.data.overview_vertical}
-                update={(state) => updateSettings({ values: { overview_vertical: state } })}
-                choices={[
-                  { name: 'Horizontal', state: false },
-                  { name: 'Vertical', state: true },
-                ]}
-              />
-            </>
-          }
-        />
+        {/* <SettingsSection */}
+        {/*   name="overview" */}
+        {/*   elements={ */}
+        {/*     <> */}
+        {/*       <SettingsButtonOption */}
+        {/*         name="Preferred overview orientation" */}
+        {/*         cssName="orientation" */}
+        {/*         curState={settings.data.overview_vertical} */}
+        {/*         update={(state) => updateSettings({ values: { overview_vertical: state } })} */}
+        {/*         choices={[ */}
+        {/*           { name: 'Horizontal', state: false }, */}
+        {/*           { name: 'Vertical', state: true }, */}
+        {/*         ]} */}
+        {/*       /> */}
+        {/*     </> */}
+        {/*   } */}
+        {/* /> */}
         <SettingsSection
           name="Danger zone"
           id="danger-zone"
