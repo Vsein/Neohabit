@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { formatISO } from 'date-fns';
 import { Icon } from '@mdi/react';
 import {
   mdiDelete,
@@ -32,7 +33,7 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal =
   const addCell = async () => {
     await updateHeatmap({
       heatmapID: heatmap?._id,
-      values: { value: 1, date: Date.now() },
+      values: { value: 1, date: formatISO(new Date(), { representation: 'date' }) },
     });
   };
   const openCellAddDropdown = (e, isTarget) => {
