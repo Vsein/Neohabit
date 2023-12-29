@@ -67,6 +67,73 @@ $cell-margin: 2px;
     column-gap: var(--column-gap);
     row-gap: var(--row-gap);
 
+    --width: var(--length);
+    --height: 1;
+    --total-width: var(--length);
+    --total-height: 1;
+
+    &.vertical {
+      --width: 1;
+      --height: var(--length);
+      --total-width: 1;
+      --total-height: var(--length);
+    }
+
+    --height-fractions-calc: 1;
+    --width-fractions-calc: 1;
+
+    &.f2 {
+      --height-fractions-calc: 2;
+    }
+
+    &.f3, &.f4 {
+      --height-fractions-calc: 2;
+      --width-fractions-calc: 2;
+      --gap-decrement-column: 1;
+    }
+
+    &.f5, &.f6 {
+      --height-fractions-calc: 2;
+      --width-fractions-calc: 3;
+
+      &:not(.long) {
+        --gap-decrement-column: 1;
+      }
+    }
+
+    &.f7, &.f8, &.f9 {
+      --height-fractions-calc: 3;
+      --width-fractions-calc: 3;
+      --gap-decrement-column: 1;
+      --gap-decrement-row: 1;
+    }
+
+    &.f10, &.f11, &.f12 {
+      --height-fractions-calc: 3;
+      --width-fractions-calc: 4;
+      --gap-decrement-column: 1;
+      --gap-decrement-row: 1;
+    }
+
+    &.f13, &.f14, &.f15, &.f16 {
+      --height-fractions-calc: 4;
+      --width-fractions-calc: 4;
+      --gap-decrement-column: 1;
+      --gap-decrement-row: 1;
+    }
+
+    --height-fractions: var(--height-fractions-calc);
+    --width-fractions: var(--width-fractions-calc);
+
+    &.vertical.long {
+      --height-fractions: var(--width-fractions-calc);
+      --width-fractions: var(--height-fractions-calc);
+    }
+
+    &.vertical.long.f2 > * {
+      height: 100%;
+    }
+
     & > * {
       box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
     }
@@ -82,17 +149,30 @@ $cell-margin: 2px;
 }
 
 .cell-fraction {
-  height: calc((var(--total-height) * (var(--cell-height) + 4px) - 4px - var(--row-gap) * (var(--height-fractions) - 1)) / var(--height-fractions));
-  width: calc((var(--total-width) * (var(--cell-width) + 4px) - 4px - var(--column-gap) * (var(--width-fractions) - 1)) / var(--width-fractions));
+  height: calc(
+    (
+        var(--total-height) * (var(--cell-height) + 4px) - 4px - var(--row-gap) *
+          (var(--height-fractions) - 1)
+      ) / var(--height-fractions)
+  );
+  width: calc(
+    (
+        var(--total-width) * (var(--cell-width) + 4px) - 4px - var(--column-gap) *
+          (var(--width-fractions) - 1)
+      ) / var(--width-fractions)
+  );
   border-radius: 1px;
   position: relative;
   background-color: var(--blank-cell-color);
+  margin: 0;
 }
 
 .cell-numeric {
   --font-size-minus: 0px;
   padding-top: 1px;
-  font-size: calc(var(--cell-height) - max(var(--font-size-minus), var(--cell-height) - 30px) - 4px);
+  font-size: calc(
+    var(--cell-height) - max(var(--font-size-minus), var(--cell-height) - 30px) - 4px
+  );
   text-align: center;
   height: min-content;
   width: min-content;

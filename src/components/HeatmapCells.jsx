@@ -77,59 +77,12 @@ function CellFractured({
   elimination,
 }) {
   const dispatch = useDispatch();
-  const style = {
-    '--color': color,
-    [value ? 'boxShadow' : '']: 'none',
-    [vertical ? '--width' : '--height']: 1,
-    [vertical ? '--height' : '--width']: length,
-    [vertical ? '--total-width' : '--total-height']: 1,
-    [vertical ? '--total-height' : '--total-width']: length,
-  };
-
   const fractions = Math.max(value, targetValue);
-  let dotted = false;
-  let heightFractions = 1;
-  let widthFractions = 1;
-  if (fractions === 2) {
-    heightFractions = 2;
-  } else if (fractions <= 4) {
-    heightFractions = 2;
-    widthFractions = 2;
-    style['--gap-decrement-column'] = 1;
-  } else if (fractions <= 6) {
-    heightFractions = 2;
-    widthFractions = 3;
-    style['--gap-decrement-column'] = length > 1 ? 0 : 1;
-  } else if (fractions <= 9) {
-    heightFractions = 3;
-    widthFractions = 3;
-    style['--gap-decrement-column'] = 1;
-    style['--gap-decrement-row'] = 1;
-  } else if (fractions <= 12) {
-    heightFractions = 3;
-    widthFractions = 4;
-    style['--gap-decrement-column'] = 1;
-    style['--gap-decrement-row'] = 1;
-  } else if (fractions <= 16) {
-    heightFractions = 4;
-    widthFractions = 4;
-    style['--gap-decrement-column'] = 1;
-    style['--gap-decrement-row'] = 1;
-  } else {
-    dotted = true;
-  }
-
-  const fractionStyle = {
-    [vertical && length > 1 ? '--width-fractions' : '--height-fractions']: heightFractions,
-    [vertical && length > 1 ? '--height-fractions' : '--width-fractions']: widthFractions,
-    [vertical && length > 1 && fractions <= 2 ? 'height' : '']: '100%',
-    margin: 0,
-  };
 
   return (
     <div
-      className={`cell ${dotted ? 'dotted' : 'fractured'}`}
-      style={style}
+      className={`cell fractured f${fractions} ${length > 1 ? 'long' : ''} ${vertical ? 'vertical' : ''}`}
+      style={{ '--color': color, '--length': length }}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
       onMouseLeave={(e) => tipContent && hideTip()}
       onClick={(e) => {
@@ -145,13 +98,11 @@ function CellFractured({
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      {!dotted &&
-        [...Array(+fractions)].map((point, index) => (
+      {[...Array(+fractions)].map((point, index) => (
           <div
             key={index}
             className="cell-fraction"
             style={{
-              ...fractionStyle,
               [index < value ? 'backgroundColor' : '']:
                 index >= targetValue && elimination
                   ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
