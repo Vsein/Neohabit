@@ -11,7 +11,7 @@ import {
   subMilliseconds,
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
-import usePaletteGenerator, { getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { getNumericTextColor, mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
 
 export default function Heatmap({
   dateStart,
@@ -49,7 +49,6 @@ export default function Heatmap({
   let passed = false;
   let firstPassed = false;
 
-  const palette = usePaletteGenerator(habit.color);
   const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
 
   const elimination = overridenElimination === undefined ? habit?.elimination : overridenElimination;
@@ -122,7 +121,7 @@ export default function Heatmap({
                     heatmapID={heatmap?._id}
                     dateStart={max([dateNowTmp, dateStart])}
                     dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
-                    color={palette[0]}
+                    color="transparent"
                     value={0}
                     vertical={vertical}
                     elimination={elimination}
@@ -217,7 +216,7 @@ export default function Heatmap({
                     ]),
                     1,
                   )}
-                  color={Index || !previous.value ? palette[0] : habit.color}
+                  color={Index || !previous.value ? 'transparent' : habit.color}
                   value={Index ? 0 : previous.value}
                   basePeriod={24}
                   vertical={vertical}
