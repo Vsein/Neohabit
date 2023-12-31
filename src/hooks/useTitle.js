@@ -9,5 +9,5 @@ export default function useTitle(title) {
         document.title = prevTitle;
       };
     }
-  });
+  }, [title]);
 }
