@@ -8,6 +8,7 @@ import {
   useLocation,
   NavLink,
 } from 'react-router-dom';
+import NeohabitPreview from './logos/preview.png';
 import ToDoList from './pages/ToDoList';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
