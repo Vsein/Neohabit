@@ -96,10 +96,6 @@ const PrivateRoutes = (params) => {
     return <div className="loader" />;
   }
 
-  if (!self.verified) {
-    return <VerificationError />;
-  }
-
   if (!loggedIn) return <Navigate to="/login" replace state={{ from: location }} />;
 
   if (settings?.error || self?.error || stopwatch?.error) {
@@ -108,6 +104,10 @@ const PrivateRoutes = (params) => {
       return <Navigate to="/login" replace state={{ from: location }} />;
     }
     return <FetchError />;
+  }
+
+  if (!self.verified) {
+    return <VerificationError />;
   }
 
   if (settings.isLoading || self.isLoading || stopwatch.isLoading) return <></>;

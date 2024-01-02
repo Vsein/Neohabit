@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 
 export default function FetchError() {
-  useTitle('Error | Neohabit');
+  useTitle('Verification | Neohabit');
   const navigate = useNavigate();
 
   return (
