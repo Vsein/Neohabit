@@ -103,6 +103,10 @@ const PrivateRoutes = (params) => {
   if (!loggedIn) return <Navigate to="/login" replace state={{ from: location }} />;
 
   if (settings?.error || self?.error || stopwatch?.error) {
+    if (settings?.error?.originalStatus === 401) {
+      localStorage.clear();
+      return <Navigate to="/login" replace state={{ from: location }} />;
+    }
     return <FetchError />;
   }
 
