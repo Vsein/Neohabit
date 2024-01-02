@@ -22,6 +22,7 @@ import Blocks from './pages/Blocks';
 import Logout from './pages/Logout';
 import NotFound from './pages/404';
 import FetchError from './pages/FetchError';
+import VerificationError from './pages/VerificationError';
 import Landing from './pages/Landing';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
@@ -44,7 +45,7 @@ const App = () => {
   }, []);
 
   if (loggedIn === undefined) {
-    return null; // or loading indicator/spinner/etc
+    return <div className="loader" />;
   }
 
   return (
@@ -79,18 +80,25 @@ const PrivateRoutes = (params) => {
   const self = useGetSelfQuery();
   const stopwatch = useGetStopwatchQuery();
 
-  useEffect(() => {
-    changeAuth(hasJWT());
-  }, [location.pathname]);
-
   const [sidebarHidden, setSidebarHidden] = useState(true);
-
   const toggleSidebar = () => {
     document.querySelector('.sidebar').scrollTop = 0;
     setSidebarHidden(!sidebarHidden);
   };
 
   useKeyPress(['s'], toggleSidebar);
+
+  useEffect(() => {
+    changeAuth(hasJWT());
+  }, [location.pathname]);
+
+  if (self.isLoading) {
+    return <div className="loader" />;
+  }
+
+  if (!self.verified) {
+    return <VerificationError />;
+  }
 
   if (!loggedIn) return <Navigate to="/login" replace state={{ from: location }} />;
 
