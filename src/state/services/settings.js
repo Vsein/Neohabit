@@ -29,6 +29,17 @@ export const settingsApi = api.injectEndpoints({
       query: ({ token }) => ({
         url: `verification/${token}`,
       }),
+      async onQueryStarted(values, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        console.log(res.data);
+        if (res.data === 'User verified') {
+          dispatch(
+            settingsApi.util.updateQueryData('getSelf', undefined, (draft) => {
+              Object.assign(draft, { verified: true });
+            }),
+          );
+        }
+      },
     }),
     deleteSelf: builder.mutation({
       query: () => ({
