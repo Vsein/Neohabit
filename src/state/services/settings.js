@@ -25,6 +25,11 @@ export const settingsApi = api.injectEndpoints({
         url: 'user/im',
       }),
     }),
+    getVerified: builder.query({
+      query: ({ token }) => ({
+        url: `verification/${token}`,
+      }),
+    }),
     deleteSelf: builder.mutation({
       query: () => ({
         url: 'user/im',
@@ -55,6 +60,7 @@ export const settingsApi = api.injectEndpoints({
 export const {
   useGetSettingsQuery,
   useGetSelfQuery,
+  useGetVerifiedQuery,
   useDeleteSelfMutation,
   useUpdateSettingsMutation,
 } = settingsApi;

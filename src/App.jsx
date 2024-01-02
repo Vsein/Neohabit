@@ -23,6 +23,7 @@ import Logout from './pages/Logout';
 import NotFound from './pages/404';
 import FetchError from './pages/FetchError';
 import VerificationError from './pages/VerificationError';
+import Verification from './pages/Verification';
 import Landing from './pages/Landing';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
@@ -58,6 +59,7 @@ const App = () => {
         </Route>
         <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
           <Route path="*" element={<NotFound />} />
+          <Route path="/verification/:token" element={<Verification />} />
           <Route path="/projects/*" element={<Projects />} />
           <Route path="/skills/*" element={<Skilltrees />} />
           <Route path="/todo/*" element={<ToDoList />} />
@@ -106,7 +108,11 @@ const PrivateRoutes = (params) => {
     return <FetchError />;
   }
 
-  if (!self.verified) {
+  if (!self?.data?.verified) {
+    const path = location.pathname.split("/");
+    if (path[1] === 'verification') {
+      return <Outlet />
+    }
     return <VerificationError />;
   }
 
