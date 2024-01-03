@@ -41,6 +41,12 @@ export const settingsApi = api.injectEndpoints({
         }
       },
     }),
+    requestVerificationEmail: builder.mutation({
+      query: () => ({
+        url: 'verification/resend',
+        method: 'PUT',
+      }),
+    }),
     deleteSelf: builder.mutation({
       query: () => ({
         url: 'user/im',
@@ -72,6 +78,7 @@ export const {
   useGetSettingsQuery,
   useGetSelfQuery,
   useGetVerifiedQuery,
+  useRequestVerificationEmailMutation,
   useDeleteSelfMutation,
   useUpdateSettingsMutation,
 } = settingsApi;

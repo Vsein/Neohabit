@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
+import { useRequestVerificationEmailMutation } from '../state/services/settings';
 
-export default function FetchError() {
+export default function VerificationError() {
   useTitle('Verification | Neohabit');
-  const navigate = useNavigate();
+  const [requestEmail] = useRequestVerificationEmailMutation();
 
   return (
     <div className="contentlist centering">
@@ -19,7 +20,10 @@ export default function FetchError() {
         If you can&apos;t find the email, check your spam folder.
       </p>
       <p className="back-ref" style={{ width: 'min(100%, 800px)' }}>
-        Otherwise, request to resend you the link.
+        Otherwise, request to{' '}
+        <Link onClick={() => requestEmail()} style={{ width: 'auto', display: 'inline-block' }}>
+          resend you the link.
+        </Link>
       </p>
     </div>
   );
