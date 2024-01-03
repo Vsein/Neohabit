@@ -46,6 +46,14 @@ export const settingsApi = api.injectEndpoints({
         url: 'verification/resend',
         method: 'PUT',
       }),
+      async onQueryStarted(values, { dispatch, queryFulfilled }) {
+        const res = await queryFulfilled;
+        dispatch(
+          settingsApi.util.updateQueryData('getSelf', undefined, (draft) => {
+            Object.assign(draft, { registration_time: Date.now() });
+          }),
+        );
+      },
     }),
     deleteSelf: builder.mutation({
       query: () => ({
