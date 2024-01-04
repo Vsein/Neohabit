@@ -294,7 +294,7 @@ export default function Landing() {
             {/* </p> */}
           </div>
         </section>
-        <section className="landing-about" style={{ flexDirection: 'column' }}>
+        <section className="landing-about" style={{ flexDirection: 'column', minHeight: 'auto' }}>
           <h1 className="landing-about-text-header" style={{ marginBlock: '20px' }}>
             Various ideas of habits you may track
           </h1>
