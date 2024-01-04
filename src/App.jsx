@@ -30,6 +30,7 @@ import MainMenu from './components/MainMenu';
 import Stopwatch from './components/Stopwatch';
 import Sidebar from './components/Sidebar';
 import Overlay from './components/Overlay';
+import Onboarding from './components/Onboarding';
 import CellTip from './components/CellTip';
 import CellAdd from './components/CellAdd';
 import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
@@ -109,9 +110,9 @@ const PrivateRoutes = (params) => {
   }
 
   if (!self?.data?.verified) {
-    const path = location.pathname.split("/");
+    const path = location.pathname.split('/');
     if (path[1] === 'verification') {
-      return <Outlet />
+      return <Outlet />;
     }
     return <VerificationError />;
   }
@@ -136,6 +137,7 @@ const PrivateRoutes = (params) => {
       <Stopwatch />
       <SidebarMobile />
       <Overlay />
+      {settings?.data?.hide_onboarding ?? false ? <></> : <Onboarding />}
     </>
   );
 };

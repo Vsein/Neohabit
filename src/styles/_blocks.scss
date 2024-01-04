@@ -98,6 +98,87 @@
   width: 100%;
 }
 
+@keyframes glow {
+  0% {
+    background-color: var(--calm-signature-color);
+  }
+  50% {
+    background-color: var(--main-background-color);
+  }
+  100% {
+    background-color: var(--calm-signature-color);
+  }
+}
+
+.overview-centering.slide-1 {
+  button > .icon {
+    border-radius: 50%;
+    animation: glow 3s linear infinite;
+  }
+  &
+    > .overview-container
+    > .overview
+    > .overview-habits
+    > .overview-habit
+    > .habit-controls
+    > .overview-habit-button {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+.overview-centering.slide-2 {
+  &
+    > .overview-container
+    > .overview
+    > .overview-habits
+    > .overview-habit
+    > .habit-controls
+    > .overview-habit-button:nth-child(n + 2) {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+.overview-centering.slide-3 {
+  &
+    > .overview-container
+    > .overview
+    > .overview-habits
+    > .overview-habit
+    > .habit-controls
+    > .overview-habit-button:not(:nth-child(6n + 2)) {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+.overview-centering.slide-4 {
+  &
+    > .overview-container
+    > .overview
+    > .overview-habits
+    > .overview-habit
+    > .habit-controls
+    > .overview-habit-button:not(:nth-child(6n + 3)) {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+.overview-centering.slide-5 {
+  &
+    > .overview-container
+    > .overview
+    > .overview-habits
+    > .overview-habit
+    > .habit-controls
+    > .overview-habit-button {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
 .habit-controls {
   width: min-content;
   display: grid;

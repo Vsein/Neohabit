@@ -21,6 +21,8 @@ export default function Project({
   singular = false,
   globalDateStart = null,
   globalDateEnd = null,
+  modal = false,
+  onboardingSlide = 0,
 }) {
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
@@ -53,7 +55,7 @@ export default function Project({
     !habits.isFetching &&
     !settings.isFetching && (
       <div
-        className={`overview-centering ${mobile ? 'mobile' : ''}`}
+        className={`overview-centering ${mobile ? 'mobile' : ''} slide-${onboardingSlide}`}
         style={{
           '--habits': project.habits.length,
           '--length': differenceInDays(dateEnd, dateStart) + 1,
@@ -159,7 +161,7 @@ export default function Project({
             )}
           </div>
         </div>
-        <HabitAddButton vertical={vertical} projectID={project._id} />
+        {!modal && <HabitAddButton vertical={vertical} projectID={project._id} />}
       </div>
     )
   );
