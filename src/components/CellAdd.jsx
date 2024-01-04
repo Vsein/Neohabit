@@ -34,7 +34,7 @@ export default function CellAdd() {
       className={`cell-add-dropdown target centering ${isActive ? '' : 'hidden'}`}
       onClick={(e) => e.stopPropagation()}
     >
-      <h3>Add new target</h3>
+      <h3>Add a new target</h3>
       <CellAddTargetForm onSubmit={onSubmit} />
     </div>
   ) : (
