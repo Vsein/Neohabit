@@ -3,19 +3,24 @@ import { useDispatch } from 'react-redux';
 import { HexColorPicker, HexColorInput } from 'react-colorful';
 import { close } from '../state/features/overlay/overlaySlice';
 import Field from './FieldWrapper';
-import { boundsValidator } from '../utils/validators';
+import { requiredValidator, boundsValidator, composeValidators } from '../utils/validators';
 
 function NameField({ type }) {
   const maxLength = 150;
 
   return (
-    <Field name="name" validate={boundsValidator(0, maxLength)}>
+    <Field
+      name="name"
+      validate={composeValidators(requiredValidator, boundsValidator(1, maxLength))}
+    >
       {({ input, meta }) => (
         <div className="form-task-name">
           <input {...input} type="text" placeholder={`Change ${type} name`} />
-          <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}>{`${
-            input?.value?.length ?? 0
-          }/${maxLength}`}</p>
+          <p
+            className={`form-field-length ${
+              input?.value?.length > maxLength || input?.value?.length === 0 ? 'error' : ''
+            }`}
+          >{`${input?.value?.length ?? 0}/${maxLength}`}</p>
         </div>
       )}
     </Field>
