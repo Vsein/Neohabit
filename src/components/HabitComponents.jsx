@@ -19,7 +19,7 @@ import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import Heatmap from './Heatmap';
 
-function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal = false }) {
+function HabitControls({ habit, heatmapID, header, mobile, projectID = '', modal = false }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
   const dispatch = useDispatch();
@@ -32,13 +32,13 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal =
   };
   const addCell = async () => {
     await updateHeatmap({
-      heatmapID: heatmap?._id,
+      heatmapID,
       values: { value: 1, date: formatISO(new Date(), { representation: 'date' }) },
     });
   };
   const openCellAddDropdown = (e, isTarget) => {
     e.stopPropagation();
-    dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isActive: true, isTarget }));
+    dispatch(changeHeatmapTo({ heatmapID, isActive: true, isTarget }));
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
@@ -116,9 +116,17 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal =
   );
 }
 
-function HabitOverview({ dateStart, dateEnd, habit, heatmap, heatmapData, heatmapID, vertical, mobile, projectID = '' }) {
+function HabitOverview({
+  dateStart,
+  dateEnd,
+  habit,
+  heatmapData,
+  heatmapID,
+  vertical,
+  mobile,
+  projectID = '',
+}) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
-  // console.log(heatmap?.data);
 
   return (
     <div className="overview-habit">
@@ -130,7 +138,6 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, heatmapData, heatma
         {habit.name}
       </NavLink>
       <Heatmap
-        heatmap={heatmap}
         heatmapData={heatmapData}
         heatmapID={heatmapID}
         habit={habit}
@@ -139,7 +146,7 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, heatmapData, heatma
         vertical={vertical}
         isOverview={true}
       />
-      <HabitControls habit={habit} heatmap={heatmap} mobile={mobile} projectID={projectID} />
+      <HabitControls habit={habit} heatmapID={heatmapID} mobile={mobile} projectID={projectID} />
     </div>
   );
 }

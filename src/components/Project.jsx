@@ -81,7 +81,6 @@ export default function Project({
           habit={habit}
           dateStart={dateStart}
           dateEnd={dateEnd}
-          heatmap={heatmap}
           heatmapData={dataSorted}
           heatmapID={heatmap?._id}
           vertical={vertical}

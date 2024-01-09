@@ -17,7 +17,6 @@ export default function Heatmap({
   dateStart,
   dateEnd,
   habit,
-  heatmap,
   heatmapData,
   heatmapID,
   vertical = false,
@@ -187,7 +186,7 @@ export default function Heatmap({
               )}
               {Array.from(new Array(diffInPeriods)).map((_, Index) => (
                 <CellPeriod
-                  heatmapID={heatmap?._id}
+                  heatmapID={heatmapID}
                   key={Index}
                   targetStart={addDays(previous.date, Index * previousTarget.period)}
                   targetEnd={subMilliseconds(

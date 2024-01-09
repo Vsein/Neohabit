@@ -1,5 +1,11 @@
 import React from 'react';
-import { differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
+import {
+  differenceInWeeks,
+  startOfWeek,
+  endOfWeek,
+  compareDesc,
+  endOfDay,
+} from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
@@ -35,6 +41,19 @@ export default function Habit({
   ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365 && !modal);
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
+
+  const data = heatmap?.data;
+  let dataSorted;
+  if (data) {
+    dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
+    dataSorted.sort((a, b) => {
+      const res = compareDesc(new Date(b.date), new Date(a.date));
+      if (res === 0) {
+        return -2 * a.is_target + 1;
+      }
+      return res;
+    });
+  }
 
   const colorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(habit.color), 0.8)
@@ -92,7 +111,8 @@ export default function Habit({
           <HeatmapMonthsWeekly dateStart={dateStart} dateEnd={dateEnd} />
           <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
           <Heatmap
-            heatmap={heatmap}
+            heatmapData={dataSorted}
+            heatmapID={heatmap?._id}
             habit={habit}
             dateStart={dateStart}
             dateEnd={dateEnd}
