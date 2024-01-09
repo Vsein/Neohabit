@@ -18,23 +18,13 @@ export default function Heatmap({
   dateEnd,
   habit,
   heatmap,
+  heatmapData,
+  heatmapID,
   vertical = false,
   isOverview,
   overridenElimination = undefined,
   overridenNumeric = undefined,
 }) {
-  const data = heatmap?.data;
-  let dataSorted;
-  if (data) {
-    dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
-    dataSorted.sort((a, b) => {
-      const res = compareDesc(new Date(b.date), new Date(a.date));
-      if (res === 0) {
-        return -2 * a.is_target + 1;
-      }
-      return res;
-    });
-  }
   const current = { date: dateStart, value: 0 };
   // current.date === current Target Period Start if period is defined,
   // otherwise it's the current date
@@ -59,8 +49,8 @@ export default function Heatmap({
       className={`overview-habit-cells ${isOverview ? '' : 'weekly'}`}
       style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
     >
-      {dataSorted &&
-        dataSorted.map((point, index) => {
+      {heatmapData &&
+        heatmapData.map((point, index) => {
           const date = startOfDay(new Date(point.date));
           if (compareDesc(dateEnd, date) === 1 && !passed) {
             return <React.Fragment key={index}> </React.Fragment>;
@@ -118,7 +108,7 @@ export default function Heatmap({
                 {(differenceInDays(date, dateNowTmp) > 0 ||
                   (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
                   <CellPeriod
-                    heatmapID={heatmap?._id}
+                    heatmapID={heatmapID}
                     dateStart={max([dateNowTmp, dateStart])}
                     dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
                     color="transparent"
@@ -131,7 +121,7 @@ export default function Heatmap({
                 )}
                 {!point?.isLast && !point.is_target && (
                   <CellPeriod
-                    heatmapID={heatmap?._id}
+                    heatmapID={heatmapID}
                     dateStart={date}
                     dateEnd={endOfDay(date)}
                     color={habit.color}
@@ -156,7 +146,7 @@ export default function Heatmap({
           const previous = { ...current };
           const previousTarget = { ...target };
           let diffInPeriods = Math.floor(differenceInDays(date, current.date) / target.period);
-          if (passed && index === dataSorted.length - 1) {
+          if (passed && index === heatmapData.length - 1) {
             passed = false;
             diffInPeriods = 1;
             if (compareDesc(date, addDays(current.date, target.period)) === 1) {
@@ -171,7 +161,7 @@ export default function Heatmap({
             passed = false;
           }
           if (point?.isLast) {
-            if (index === dataSorted.length - 1) {
+            if (index === heatmapData.length - 1) {
               diffInPeriods += 1;
             } else {
               passed = true;

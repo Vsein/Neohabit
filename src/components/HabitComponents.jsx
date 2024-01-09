@@ -116,8 +116,9 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal =
   );
 }
 
-function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile, projectID = '' }) {
+function HabitOverview({ dateStart, dateEnd, habit, heatmap, heatmapData, heatmapID, vertical, mobile, projectID = '' }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
+  // console.log(heatmap?.data);
 
   return (
     <div className="overview-habit">
@@ -130,6 +131,8 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile, p
       </NavLink>
       <Heatmap
         heatmap={heatmap}
+        heatmapData={heatmapData}
+        heatmapID={heatmapID}
         habit={habit}
         dateStart={dateStart}
         dateEnd={dateEnd}
