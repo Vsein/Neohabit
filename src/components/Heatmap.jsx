@@ -50,10 +50,10 @@ export default function Heatmap({
       style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
     >
       {heatmapData &&
-        heatmapData.map((point, index) => {
+        heatmapData.flatMap((point, index) => {
           const date = startOfDay(new Date(point.date));
           if (compareDesc(dateEnd, date) === 1 && !passed) {
-            return <React.Fragment key={index}> </React.Fragment>;
+            return [];
           }
           if (compareDesc(date, dateStart) === 1) {
             if (point?.is_target) {
@@ -69,7 +69,7 @@ export default function Heatmap({
                 current.value = point.value;
               }
             }
-            return <React.Fragment key={index}> </React.Fragment>;
+            return [];
           }
           let gap;
           if (index === 0 && compareDesc(dateStart, date) === 1) {
