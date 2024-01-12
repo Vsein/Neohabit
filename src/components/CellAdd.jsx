@@ -25,7 +25,10 @@ export default function CellAdd() {
     };
   });
   const onSubmit = async (values) => {
-    await updateHeatmap({ heatmapID, values });
+    await updateHeatmap({
+      heatmapID,
+      values: { ...values, is_archive: +values.value === 0 && values.is_target },
+    });
     closeDropdown();
   };
 

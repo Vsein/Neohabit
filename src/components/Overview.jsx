@@ -65,7 +65,11 @@ export default function Overview() {
       });
     }
 
-    return new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() ? (
+    return (new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() &&
+      dataSorted.length !== 1) ||
+      (dataSorted.length > 2 &&
+        dataSorted[dataSorted.length - 2].is_archive &&
+        new Date(dataSorted[dataSorted.length - 3].date).getTime() < dateStart.getTime()) ? (
       []
     ) : (
       <HabitOverview

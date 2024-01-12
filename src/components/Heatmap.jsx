@@ -37,6 +37,7 @@ export default function Heatmap({
   };
   let passed = false;
   let firstPassed = false;
+  let archived = false;
 
   const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
 
@@ -70,6 +71,10 @@ export default function Heatmap({
             }
             return [];
           }
+          // if (index === heatmapData.length - 2 && point.is_archive) {
+          //   current.date = dateEnd;
+          //   return [];
+          // }
           let gap;
           if (index === 0 && compareDesc(dateStart, date) === 1) {
             const dateOfFirstEntry = min([dateCreation, date]);
@@ -152,6 +157,10 @@ export default function Heatmap({
               previous.value += point.value;
             }
           }
+          if (index === heatmapData.length - 2 && point.is_archive) {
+            current.date = dateEnd;
+            archived = true;
+          }
           if (passed && compareDesc(addDays(current.date, target.period), date) === 1) {
             passed = false;
             diffInPeriods = 1;
@@ -160,6 +169,10 @@ export default function Heatmap({
             passed = false;
           }
           if (point?.isLast) {
+            if (archived) {
+              diffInPeriods = 1;
+              previousTarget.period = differenceInDays(previous.date, date);
+            }
             if (index === heatmapData.length - 1) {
               diffInPeriods += 1;
             } else {
