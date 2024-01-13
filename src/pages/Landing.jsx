@@ -412,7 +412,7 @@ export default function Landing() {
       </main>
       <footer className="landing-footer-container">
         <div className="landing-footer">
-          <h3> Copyright @ 2023</h3>
+          <h3> Copyright @ 2023 - 2024</h3>
         </div>
       </footer>
     </div>
