@@ -13,6 +13,7 @@ import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGen
 export default function Habit({
   heatmap,
   habit,
+  onboardingSlide = 0,
   modal = false,
   overridenElimination = undefined,
   overridenNumeric = undefined,
@@ -25,7 +26,7 @@ export default function Habit({
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
 
   const datePeriodLength =
-    adaptiveDatePeriodLength < 53 ? (modal ? 250 : adaptiveDatePeriodLength) : modal ? 250 : 365;
+    adaptiveDatePeriodLength < 53 ? (modal ? 250 : adaptiveDatePeriodLength - !!onboardingSlide) : modal ? 250 : 365;
   const [
     dateEnd,
     setDateEnd,
@@ -45,7 +46,7 @@ export default function Habit({
 
   return (
     <div
-      className="overview-centering"
+      className={`overview-centering slide-${onboardingSlide}`}
       style={{
         '--habits': 7,
         '--length': diffWeeks - 14.5,
@@ -67,12 +68,15 @@ export default function Habit({
           modal ? 'modal-mode' : ''
         } singular habit-mode`}
       >
-        {!modal && (
+        {!modal && !onboardingSlide && (
           <div className="overview-header-return-mode">
             <ReturnButton />
             <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
           </div>
         )}
+        {onboardingSlide &&
+          <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
+        }
         <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}

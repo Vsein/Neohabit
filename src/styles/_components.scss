@@ -254,6 +254,18 @@ input[type='checkbox']:checked.checkbox {
     padding-inline: 8px;
     cursor: text;
   }
+
+  &.onboarding {
+    width: 150px;
+
+    @media (max-width: 450px) {
+      width: 100px;
+    }
+
+    @media (max-width: 300px) {
+      width: 75px;
+    }
+  }
 }
 
 .return-button {

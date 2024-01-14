@@ -115,65 +115,35 @@
     border-radius: 50%;
     animation: glow 3s linear infinite;
   }
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button {
+  & .overview-habit-button {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
 .overview-centering.slide-2 {
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button:nth-child(n + 2) {
+  & .overview-habit-button:nth-child(n + 2) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
 .overview-centering.slide-3 {
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button:not(:nth-child(6n + 2)) {
+  & .overview-habit-button:not(:nth-child(6n + 2)) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
 .overview-centering.slide-4 {
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button:not(:nth-child(6n + 3)) {
+  & .overview-habit-button:not(:nth-child(6n + 3)) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
 .overview-centering.slide-5 {
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button {
+  & .overview-habit-button {
     pointer-events: none;
     opacity: 0.3;
   }
