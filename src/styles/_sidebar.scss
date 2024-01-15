@@ -144,6 +144,7 @@
   flex-wrap: wrap;
   height: min-content;
   overflow: hidden;
+  border-radius: 0;
 
   & > .tag-wrapper {
     flex-wrap: nowrap;

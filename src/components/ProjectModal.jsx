@@ -87,7 +87,9 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                 </div>
               </div>
             ) : (
-              <div className="tag-wrapper">New project</div>
+              <div className="tag-wrapper" style={{ height: '100%' }}>
+                New project
+              </div>
             )}
             <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
               <Icon path={mdiClose} />
