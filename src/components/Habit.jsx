@@ -74,7 +74,7 @@ export default function Habit({
             <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
           </div>
         )}
-        {onboardingSlide &&
+        {!!onboardingSlide &&
           <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
         }
         <DatePeriodPicker
