@@ -459,6 +459,10 @@ $cell-margin: 2px;
       opacity: 1;
     }
   }
+
+  @media (max-width: 850px) {
+    gap: 12px;
+  }
 }
 
 .overview-habit-cells {
