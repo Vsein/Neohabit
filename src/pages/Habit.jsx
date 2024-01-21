@@ -52,7 +52,7 @@ function Overview() {
     <> </>
   ) : (
     <div className="contentlist">
-      <Habit heatmap={heatmap} habit={habit} />
+      <Habit heatmap={heatmap} habit={habit} habitPage={true} />
     </div>
   );
 }

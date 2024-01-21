@@ -17,6 +17,7 @@ export default function Habit({
   modal = false,
   overridenElimination = undefined,
   overridenNumeric = undefined,
+  habitPage = false,
 }) {
   const [loaded] = useLoaded();
   const settings = useGetSettingsQuery();
@@ -88,7 +89,7 @@ export default function Habit({
           reset={reset}
           setToFuture={setToFuture}
         />
-        <HabitControls habit={habit} heatmap={heatmap} header={true} modal={modal} />
+        <HabitControls habit={habit} heatmap={heatmap} header={true} modal={modal} habitPage={habitPage} />
       </div>
       <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
         <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>

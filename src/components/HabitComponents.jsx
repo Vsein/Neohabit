@@ -19,9 +19,18 @@ import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import Heatmap from './Heatmap';
 
-function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal = false }) {
+function HabitControls({
+  habit,
+  heatmap,
+  header,
+  mobile,
+  projectID = '',
+  modal = false,
+  habitPage = false,
+}) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const setStopwatchHabit = () => {
     updateStopwatch({
@@ -112,7 +121,12 @@ function HabitControls({ habit, heatmap, header, mobile, projectID = '', modal =
       )}
       <button
         className="overview-habit-button"
-        onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }))}
+        onClick={() => {
+          dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }));
+          if (habitPage) {
+            navigate('/projects');
+          }
+        }}
         title="Delete habit"
         type="button"
       >
