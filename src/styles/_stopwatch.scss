@@ -93,6 +93,13 @@
   transition:
     all 0.3s ease-out,
     color 0s;
+
+  &:disabled,
+  &[disabled] {
+    opacity: 0.2;
+    cursor: default;
+    pointer-events: none;
+  }
 }
 
 .progressbar-circle {

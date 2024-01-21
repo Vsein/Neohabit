@@ -2,13 +2,15 @@ import React from 'react';
 import { Icon } from '@mdi/react';
 import { mdiClose, mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered } from '@mdi/js';
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
+import { useGetHabitsQuery } from '../state/services/habit';
 import useStopwatch from '../hooks/useStopwatch';
 import HabitTag from './HabitTag';
 
 export default function StopwatchModal({ closeOverlay }) {
   const stopwatch = useGetStopwatchQuery();
+  const habits = useGetHabitsQuery();
 
-  if (stopwatch.isLoading) {
+  if (stopwatch.isLoading || habits.isFetching) {
     return <></>;
   }
 
@@ -18,6 +20,11 @@ export default function StopwatchModal({ closeOverlay }) {
     { togglePause, resetStopwatch, finishCountdown, clockify },
   ] = useStopwatch();
 
+  const habit = habits.data.find((habito) => habito._id === stopwatch?.data?.habit?._id) ?? {
+    name: 'No habit',
+    color: '#aabbcc',
+  };
+
   return (
     <div
       className="modal modal-active"
@@ -26,7 +33,7 @@ export default function StopwatchModal({ closeOverlay }) {
     >
       <div className="modal-header">
         <div className="tag">
-          <HabitTag habit={stopwatch.data?.habit} />
+          <HabitTag habit={habit} />
         </div>
         <button
           className="icon small"
@@ -42,15 +49,15 @@ export default function StopwatchModal({ closeOverlay }) {
         <div
           className="progressbar-circle centering"
           style={{
-            '--color': stopwatch.data?.habit?.color,
+            '--color': habit?.color,
             '--progress': `${(currentDuration / baseDuration) * 100}%`,
           }}
         >
           <h3
             className="progressbar-circle-projectname"
-            style={{ color: stopwatch.data?.habit?.color }}
+            style={{ color: habit?.color }}
           >
-            {stopwatch.data?.habit?.name}
+            {habit?.name}
           </h3>
           <h1 className="progressbar-circle-countdown">{clockify(currentDuration)}</h1>
           <div className="progressbar-controls">
@@ -77,8 +84,9 @@ export default function StopwatchModal({ closeOverlay }) {
             </button>
             <button
               className="logo-section centering stopwatch-icon"
-              onClick={finishCountdown}
+              onClick={(e) => habit?._id && finishCountdown(e)}
               title="Finish [F]"
+              disabled={!habit?._id}
             >
               <Icon
                 path={mdiFlagCheckered}
