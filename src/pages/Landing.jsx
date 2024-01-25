@@ -22,6 +22,9 @@ export default function Landing() {
   const [exampleValues2, setExampleValues2] = useState(
     [...Array(10)].map((e) => Math.min(~~(Math.random() * 5), 1)),
   );
+  const [exampleValues3, setExampleValues3] = useState(
+    [...Array(10)].map((e) => ~~(Math.random() * 3)),
+  );
 
   useEffect(() => {
     const timerInterval = setTimeout(() => {
@@ -84,130 +87,9 @@ export default function Landing() {
           </div>
         </section>
         <section className="landing-features-content">
-          <div className="landing-features-container">
-            <h3 className="landing-features-title">Features you won&apos;t find anywhere else</h3>
-            <div className="landing-features" style={{ marginBlock: 'auto' }}>
-              <div className="landing-feature-container">
-                <div className="landing-feature centering">
-                  <div className="landing-cell-container">
-                    <CellPeriod
-                      color="#d700ff"
-                      value={value}
-                      dateStart={startOfDay(new Date())}
-                      dateEnd={endOfDay(new Date())}
-                      dummy={true}
-                    />
-                  </div>
-                </div>
-                <p>Intuitive design for habits which happen more than once a day</p>
-              </div>
-              <div className="landing-feature-container">
-                <div className="landing-feature centering">
-                  <div className="landing-cell-container">
-                    <CellPeriod
-                      color="#d700ff"
-                      value={value % 3}
-                      targetValue={2}
-                      dateStart={startOfDay(new Date())}
-                      dateEnd={endOfDay(new Date())}
-                      dummy={true}
-                      numeric={false}
-                    />
-                  </div>
-                  <div className="landing-cell-container">
-                    <CellPeriod
-                      color="#d700ff"
-                      value={value % 5}
-                      targetValue={4}
-                      dateStart={startOfDay(new Date())}
-                      dateEnd={endOfDay(new Date())}
-                      dummy={true}
-                      numeric={false}
-                    />
-                  </div>
-                  <div className="landing-cell-container">
-                    <CellPeriod
-                      color="#d700ff"
-                      value={value % 10}
-                      targetValue={9}
-                      dateStart={startOfDay(new Date())}
-                      dateEnd={endOfDay(new Date())}
-                      dummy={true}
-                      numeric={false}
-                    />
-                  </div>
-                  <div className="landing-cell-container">
-                    <CellPeriod
-                      color="#d700ff"
-                      value={value}
-                      targetValue={16}
-                      dateStart={startOfDay(new Date())}
-                      dateEnd={endOfDay(new Date())}
-                      dummy={true}
-                      numeric={false}
-                    />
-                  </div>
-                </div>
-                <p>Set daily goals and work your way up toward them</p>
-              </div>
-              <div className="landing-feature-container">
-                <div className="landing-feature centering">
-                  <div className="landing-cell-container">
-                    <CellPeriod
-                      color="#d700ff"
-                      value={value}
-                      targetValue={16}
-                      dateStart={startOfDay(new Date())}
-                      dateEnd={endOfDay(new Date())}
-                      dummy={true}
-                      numeric={true}
-                    />
-                  </div>
-                </div>
-                <p>
-                  Track any numeric values, i.e. workout reps, hours of sleep, or even test scores
-                </p>
-              </div>
-              <div className="landing-feature-container">
-                <div className="landing-feature centering">
-                  <div className="landing-cell-container" style={{ '--total-width': 3 }}>
-                    <CellPeriod
-                      color="#d700ff"
-                      value={value}
-                      targetValue={16}
-                      dateStart={startOfDay(new Date())}
-                      dateEnd={endOfDay(addDays(new Date(), 2))}
-                      dummy={true}
-                      numeric={true}
-                      vertical={false}
-                    />
-                  </div>
-                  <div className="landing-cell-container" style={{ '--total-width': 3 }}>
-                    <CellPeriod
-                      color="#d700ff"
-                      value={value % 3}
-                      targetValue={2}
-                      dateStart={startOfDay(new Date())}
-                      dateEnd={endOfDay(addDays(new Date(), 2))}
-                      dummy={true}
-                      vertical={false}
-                    />
-                  </div>
-                </div>
-                <p>Set date periods for habits (weekly, monthly, once in X days)</p>
-              </div>
-            </div>
-            {/* Skill trees, habits, heatmaps */}
-          </div>
-        </section>
-        <section className="landing-features-content">
-          <div className="landing-features-container">
+          <div className="landing-features-container" style={{ minHeight: 'auto' }}>
             {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
-            <h3 className="landing-features-title">What those features allow you to do</h3>
-            <p style={{ marginBottom: '20px' }}>
-              While the features above might not seem like a big deal by themselves, they have a
-              numerous amount of applications. Let us show an example.
-            </p>
+            <h3 className="landing-features-title">New approach to habit-building</h3>
             <p>In a regular habit-tracker, you would probably have something like this:</p>
             <div
               className="overview-habit-cells landing-cells"
@@ -227,8 +109,8 @@ export default function Landing() {
               ))}
             </div>
             <p>
-              And while it is enough for tracking some of the habits, it certainly would help to
-              have more control over the habit frequencies:
+              Why not start small? For example, once in 4 days at the beginning. And you can change
+              it as you get comfortable:
             </p>
             <div
               className="overview-habit-cells landing-cells"
@@ -282,16 +164,137 @@ export default function Landing() {
                   ),
               )}
             </div>
-            {/* <p style={{ marginBottom: '20px' }}> */}
-            <p>
-              This way, instead of trying to do the new habit every single day from the start, you
-              start slow. In this example, it sets the first goal as once in 4 days. And as you get
-              more comfortable, you can start challenging yourself more.
-              {/* Or you can use the opposite process for an equal challenge of eliminating bad habits. */}
+            <p style={{ marginBottom: '20px' }}>
+              This approach eliminates the burnout which often comes when people start doing
+              anything hard.
             </p>
-            {/* <p> */}
-            {/*   And even that is not the end of it. Imagine that you have a habit which you've already built, but you */}
-            {/* </p> */}
+            <hr />
+            <p style={{ marginTop: '20px' }}>
+              <b>The principle is the great flexibility:</b> The ability to set habits which happen
+              X times in Y days. You can change the X and Y in the middle of the habit. It's not
+              rigid like calendars, this way you won't feel burned out when you don't do something
+              with exactly 3 days gaps, for example. Just in 3 day periods, at any time you want.
+            </p>
+          </div>
+        </section>
+        <section className="landing-features-content">
+          <div className="landing-features-container" style={{ minHeight: 'auto' }}>
+            {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
+            <h3 className="landing-features-title">More ways to use this principle</h3>
+            <p>
+              Doing something once a day (or one hour a day) is rarely all that&apos;s required. So,
+              once 1 hour becomes comfortable, make 2 the new standard:
+            </p>
+            <div
+              className="overview-habit-cells landing-cells"
+              // style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
+            >
+              {exampleValues3.map(
+                (exampleValue, Index) =>
+                  Index < 8 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#25D4B5"
+                      value={Math.min(exampleValue, 1)}
+                      targetValue={1}
+                      dateStart={startOfDay(addDays(new Date(), Index))}
+                      dateEnd={endOfDay(addDays(new Date(), Index))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+              {exampleValues3.map(
+                (exampleValue, Index) =>
+                  Index < 6 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#25D4B5"
+                      value={Math.min(exampleValue + 1, 2)}
+                      targetValue={2}
+                      dateStart={startOfDay(addDays(new Date(), Index))}
+                      dateEnd={endOfDay(addDays(new Date(), Index))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+              {exampleValues3.map(
+                (exampleValue, Index) =>
+                  Index >= 5 &&
+                  Index < 10 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#25D4B5"
+                      value={Math.min(exampleValue + 2, 3)}
+                      targetValue={3}
+                      dateStart={startOfDay(addDays(new Date(), Index))}
+                      dateEnd={endOfDay(addDays(new Date(), Index))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+            </div>
+            <p>
+              The same principle can be used in reverse for dropping addictions:
+            </p>
+            <div
+              className="overview-habit-cells landing-cells"
+              // style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
+            >
+              {exampleValues3.map(
+                (exampleValue, Index) =>
+                  Index >= 5 &&
+                  Index < 10 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#CE0705"
+                      value={Math.min(exampleValue + 2, 3)}
+                      targetValue={3}
+                      dateStart={startOfDay(addDays(new Date(), Index))}
+                      dateEnd={endOfDay(addDays(new Date(), Index))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+              {exampleValues3.map(
+                (exampleValue, Index) =>
+                  Index < 6 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#CE0705"
+                      value={Math.min(exampleValue + 1, 2)}
+                      targetValue={2}
+                      dateStart={startOfDay(addDays(new Date(), Index))}
+                      dateEnd={endOfDay(addDays(new Date(), Index))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+              {exampleValues3.map(
+                (exampleValue, Index) =>
+                  Index < 8 && (
+                    <CellPeriod
+                      key={`habit-example-${Index}`}
+                      color="#CE0705"
+                      value={Math.min(exampleValue, 1)}
+                      targetValue={1}
+                      dateStart={startOfDay(addDays(new Date(), Index))}
+                      dateEnd={endOfDay(addDays(new Date(), Index))}
+                      dummy={true}
+                      vertical={false}
+                    />
+                  ),
+              )}
+            </div>
+            <p>
+              {' '}
+              It can be anything - packs of cigarettes, weed, alcohol, hours wasted on social
+              media...{' '}
+            </p>
           </div>
         </section>
         <section className="landing-about" style={{ flexDirection: 'column', minHeight: 'auto' }}>
@@ -416,5 +419,125 @@ export default function Landing() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function FeaturesSection({ value }) {
+  return (
+    <section className="landing-features-content">
+      <div className="landing-features-container">
+        <h3 className="landing-features-title">Features you won&apos;t find anywhere else</h3>
+        <div className="landing-features" style={{ marginBlock: 'auto' }}>
+          <div className="landing-feature-container">
+            <div className="landing-feature centering">
+              <div className="landing-cell-container">
+                <CellPeriod
+                  color="#d700ff"
+                  value={value}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(new Date())}
+                  dummy={true}
+                />
+              </div>
+            </div>
+            <p>Intuitive design for habits which happen more than once a day</p>
+          </div>
+          <div className="landing-feature-container">
+            <div className="landing-feature centering">
+              <div className="landing-cell-container">
+                <CellPeriod
+                  color="#d700ff"
+                  value={value % 3}
+                  targetValue={2}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(new Date())}
+                  dummy={true}
+                  numeric={false}
+                />
+              </div>
+              <div className="landing-cell-container">
+                <CellPeriod
+                  color="#d700ff"
+                  value={value % 5}
+                  targetValue={4}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(new Date())}
+                  dummy={true}
+                  numeric={false}
+                />
+              </div>
+              <div className="landing-cell-container">
+                <CellPeriod
+                  color="#d700ff"
+                  value={value % 10}
+                  targetValue={9}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(new Date())}
+                  dummy={true}
+                  numeric={false}
+                />
+              </div>
+              <div className="landing-cell-container">
+                <CellPeriod
+                  color="#d700ff"
+                  value={value}
+                  targetValue={16}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(new Date())}
+                  dummy={true}
+                  numeric={false}
+                />
+              </div>
+            </div>
+            <p>Set daily goals and work your way up toward them</p>
+          </div>
+          <div className="landing-feature-container">
+            <div className="landing-feature centering">
+              <div className="landing-cell-container">
+                <CellPeriod
+                  color="#d700ff"
+                  value={value}
+                  targetValue={16}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(new Date())}
+                  dummy={true}
+                  numeric={true}
+                />
+              </div>
+            </div>
+            <p>Track any numeric values, i.e. workout reps, hours of sleep, or even test scores</p>
+          </div>
+          <div className="landing-feature-container">
+            <div className="landing-feature centering">
+              <div className="landing-cell-container" style={{ '--total-width': 3 }}>
+                <CellPeriod
+                  color="#d700ff"
+                  value={value}
+                  targetValue={16}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(addDays(new Date(), 2))}
+                  dummy={true}
+                  numeric={true}
+                  vertical={false}
+                />
+              </div>
+              <div className="landing-cell-container" style={{ '--total-width': 3 }}>
+                <CellPeriod
+                  color="#d700ff"
+                  value={value % 3}
+                  targetValue={2}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(addDays(new Date(), 2))}
+                  dummy={true}
+                  vertical={false}
+                />
+              </div>
+            </div>
+            <p>Set date periods for habits (weekly, monthly, once in X days)</p>
+          </div>
+        </div>
+        {/* Skill trees, habits, heatmaps */}
+      </div>
+    </section>
   );
 }

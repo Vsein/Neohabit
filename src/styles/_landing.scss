@@ -111,8 +111,8 @@ $cell-weekdays-width: 33px;
 .landing-cells {
   --cell-height: 30px;
   --cell-width: 30px;
-  margin-top: 10px;
-  margin-bottom: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 
   @media (max-width: 800px) {
     --cell-height: 25px;
