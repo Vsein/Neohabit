@@ -51,25 +51,29 @@ export default function Landing() {
         <section className="landing-about">
           <div className="landing-about-text">
             <h2 className="landing-about-text-header">The Precursor</h2>
+            {/* <p> */}
+            {/*   Have you noticed that almost every self-improvement app has a system of streaks, in */}
+            {/*   one way or another? */}
+            {/* </p> */}
             <p>
-              Have you noticed that almost every self-improvement app has a system of streaks, in
-              one way or another?
+              In the lifting communitiy, progressive overload is a concept where you try to go
+              slightly further each week, while still remaining comfortable.
             </p>
             <p>
-              We believe that thinking that relapses somehow ruin your progress is not only
-              unhealthy, but can be outright dangerous when it comes to self-improvement. Not
-              because you&apos;re building wrong habits, but just of the mindset you put yourself
-              in.
+              Why won't habit-trackers incorporate that principle for building habits? Why would you
+              focus on streaks and doing something daily from the very start, instead of starting
+              small?
             </p>
             <p>
-              The people who have never ever learned that what they&apos;ve been doing for years is
-              somehow wrong, might be better off than people who obsess with having a bad habit.
+              Why is it so hard to see the correlations between different habits/addictions on those
+              apps, when it should be their main goal?
+            </p>
+            <p>
+              Also, once something like studying/immersing for 1 hour a day becomes a habit, why
+              isn't there a better way to display trying to study more than that?
             </p>
             <br />
-            <p>
-              We aim to make your life easier by incorporating progressive overload into
-              habit-building, so that you can have a better relationship with yourself!
-            </p>
+            <p>All those questions led to the creation of Neohabit.</p>
           </div>
         </section>
         <section className="landing-features-content">
@@ -151,8 +155,8 @@ export default function Landing() {
               )}
             </div>
             <p style={{ marginBottom: '20px' }}>
-              This approach eliminates the burnout which often comes when people start doing
-              anything hard.
+              This approach prevents the burnout which often comes when people start doing something
+              new too fast.
             </p>
             <hr />
             <p style={{ marginTop: '20px' }}>
@@ -222,9 +226,7 @@ export default function Landing() {
                   ),
               )}
             </div>
-            <p>
-              The same principle can be used in reverse for dropping addictions:
-            </p>
+            <p>The same principle can be used in reverse for dropping addictions:</p>
             <div
               className="overview-habit-cells landing-cells"
               // style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
@@ -320,7 +322,10 @@ export default function Landing() {
           </div>
         </section>
         <section className="landing-features-content">
-          <div className="landing-features-container" style={{ marginTop: '80px', paddingBottom: '5px' }}>
+          <div
+            className="landing-features-container"
+            style={{ marginTop: '80px', paddingBottom: '5px' }}
+          >
             {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
             <h3 className="landing-features-title">How does it compare with other tools?</h3>
             <div className="landing-features-section">
@@ -359,7 +364,9 @@ export default function Landing() {
                 <ul>
                   <li className="landing-li">rarely have anything apart from daily habits</li>
                   <li className="landing-li">focus on streaks</li>
-                  <li className="landing-li">can&apos;t incorporate all the info that calendars can</li>
+                  <li className="landing-li">
+                    can&apos;t incorporate all the info that calendars can
+                  </li>
                 </ul>
               </div>
             </div>
@@ -373,7 +380,9 @@ export default function Landing() {
                   <li className="landing-li">allows you to adjust the load</li>
                   <li className="landing-li">serves as a convenient overview</li>
                   <li className="landing-li">is a better replacement for a calendar</li>
-                  <li className="landing-li">doesn&apos;t require a lot of time to set up/maintain</li>
+                  <li className="landing-li">
+                    doesn&apos;t require a lot of time to set up/maintain
+                  </li>
                   <li className="landing-li">can be used as a reminder</li>
                 </ul>
               </div>
