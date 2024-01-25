@@ -108,7 +108,7 @@ export default function Landing() {
                     <CellPeriod
                       key={`habit-example-${Index}`}
                       color="#43d64e"
-                      value={exampleValue}
+                      value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 3))}
                       dateEnd={endOfDay(addDays(new Date(), (Index + 1) * 3))}
@@ -124,7 +124,7 @@ export default function Landing() {
                     <CellPeriod
                       key={`habit-example-${Index}`}
                       color="#43d64e"
-                      value={exampleValue}
+                      value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 1))}
                       dateEnd={endOfDay(addDays(new Date(), (Index + 1) * 1))}
@@ -140,7 +140,7 @@ export default function Landing() {
                     <CellPeriod
                       key={`habit-example-${Index}`}
                       color="#43d64e"
-                      value={exampleValue}
+                      value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
@@ -181,7 +181,7 @@ export default function Landing() {
                     <CellPeriod
                       key={`habit-example-${Index}`}
                       color="#25D4B5"
-                      value={Math.min(exampleValue, 1)}
+                      value={Math.min(exampleValue + 1, 1)}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
@@ -196,7 +196,7 @@ export default function Landing() {
                     <CellPeriod
                       key={`habit-example-${Index}`}
                       color="#25D4B5"
-                      value={Math.min(exampleValue + 1, 2)}
+                      value={Math.min(exampleValue + 2, 2)}
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
