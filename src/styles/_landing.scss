@@ -228,14 +228,14 @@ $cell-weekdays-width: 33px;
   }
 
   &-section {
-    // display: flex;
-    gap: 30px;
+    display: flex;
+    margin-bottom: 20px;
   }
 
   &-section-image {
     height: 100%;
-    margin: 0 30px 10px 10px;
-    float: left;
+    margin: 0 30px 0px 10px;
+    // float: left;
   }
 }
 

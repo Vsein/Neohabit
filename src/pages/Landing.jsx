@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { startOfDay, endOfDay, addDays } from 'date-fns';
 import { Icon } from '@mdi/react';
-import { mdiCalendar, mdiTimerOutline } from '@mdi/js';
+import { mdiCalendar, mdiTimerOutline, mdiCalendarMultiselect } from '@mdi/js';
 import useTitle from '../hooks/useTitle';
 import { CellPeriod } from '../components/HeatmapCells';
 import ExerciseProject from '../assets/project-exercise2.png';
@@ -12,10 +12,10 @@ import SocialProject from '../assets/project-social2.png';
 import CleaningProject from '../assets/project-cleaning.png';
 import MedsProject from '../assets/project-medication.png';
 import MiniLogo from '../logos/neohabit-mini-logo-50x50.png';
+import Logo from '../logos/neohabit-mini-logo.png';
 
 export default function Landing() {
-  useTitle('Neohabit | A progressive-overload focused habit-tracker');
-  const [value, setValue] = useState(0);
+  useTitle('Neohabit | A systemic, gradual habit-tracker');
   const [exampleValues, setExampleValues] = useState(
     [...Array(19)].map((e) => ~~(Math.random() * 2)),
   );
@@ -25,20 +25,6 @@ export default function Landing() {
   const [exampleValues3, setExampleValues3] = useState(
     [...Array(10)].map((e) => ~~(Math.random() * 3)),
   );
-
-  useEffect(() => {
-    const timerInterval = setTimeout(() => {
-      function onTimeOut() {
-        if (value >= 16) {
-          setValue(0);
-          return 0;
-        }
-        setValue(value + 1);
-      }
-      onTimeOut();
-    }, 1000);
-    return () => clearInterval(timerInterval);
-  });
 
   return (
     <div id="content-landing">
@@ -341,44 +327,55 @@ export default function Landing() {
               <div className="landing-features-section-image centering">
                 <Icon className="icon damn" path={mdiCalendar} />
               </div>
-              <p style={{ marginBottom: '20px' }}>
-                If you take calendars, they are very rigid. Most people don't really need to set the
-                exact time for making something. And if they do, they end up putting themselves in
-                very tough boundaries, from which it's hard to escape. Calendars are good for
-                appointments, meetings, and things you know to be fixed. In all the other cases,
-                it's better to allow yourself some breathing room both for the order of habits, and
-                for the sudden desire to read, study, or go for a run.
-              </p>
+              <div>
+                <h4>Calendars:</h4>
+                <ul>
+                  <li style={{ listStyle: 'square inside' }}>very rigid</li>
+                  <li style={{ listStyle: 'square inside' }}>take a lot of time to set up</li>
+                  <li style={{ listStyle: 'square inside' }}>set tough boundaries</li>
+                </ul>
+              </div>
             </div>
             <div className="landing-features-section">
               <div className="landing-features-section-image centering">
                 <Icon className="icon damn" path={mdiTimerOutline} />
               </div>
-              <p style={{ marginBottom: '20px' }}>
-                Then you have time-trackers. They are good to use for a couple of days. But if you
-                use it as your primary productivity tool, you're doomed to either start optimizing
-                your time (and all the fun of random things with it), or to think that more hours
-                spent on something necessarily equals better results. Time is important, but less
-                important than allowing yourself to rest often and properly. Neohabit has a pomodoro
-                timer built in, and we believe it to be sufficient.
-              </p>
+              <div>
+                <h4>Time-trackers:</h4>
+                <ul>
+                  <li style={{ listStyle: 'square inside' }}>lead to over-optimization</li>
+                  <li style={{ listStyle: 'square inside' }}>performative doesn't mean performance</li>
+                </ul>
+              </div>
             </div>
-            <hr />
-            <p style={{ marginTop: '20px' }}>
-              Habit-trackers are a different kind of beast, but they rarely have anything apart from
-              daily habits. When you do new things, it's important to understand that you shouldn't
-              try to bite more than you can chew. And sometimes doing something daily is either too
-              much, or not enough. We aim to make it easy for you to adjust the load, so that you
-              better understand yourself, and suffer less as a result.
-            </p>
-            <p style={{ marginTop: '20px' }}>
-              Neohabit allows you to track habits of any complexity. Like laundry that you need to
-              do once every two weeks, or reach out to someone when you feel like it once in a blue
-              moon. Noone in their right mind would do laundry every day, or think that working once
-              a day for an hour is the most you can do. Neohabit will also serve as a convenient
-              overview of previous successes and failures in building new habits. Both can be
-              equally motivating.
-            </p>
+            <div className="landing-features-section">
+              <div className="landing-features-section-image centering">
+                <Icon className="icon damn" path={mdiCalendarMultiselect} />
+              </div>
+              <div>
+                <h4>Regular habit-trackers:</h4>
+                <ul>
+                  <li style={{ listStyle: 'square inside' }}>rarely have anything apart from daily habits</li>
+                  <li style={{ listStyle: 'square inside' }}>focus on streaks</li>
+                  <li style={{ listStyle: 'square inside' }}>can&apos;t incorporate all the info that calendars can</li>
+                </ul>
+              </div>
+            </div>
+            <div className="landing-features-section">
+              <div className="landing-features-section-image centering">
+                <img src={Logo} className="icon damn" />
+              </div>
+              <div>
+                <h4>Neohabit:</h4>
+                <ul>
+                  <li style={{ listStyle: 'square inside' }}>allows you to adjust the load</li>
+                  <li style={{ listStyle: 'square inside' }}>serves as a convenient overview</li>
+                  <li style={{ listStyle: 'square inside' }}>is a better replacement for a calendar</li>
+                  <li style={{ listStyle: 'square inside' }}>doesn&apos;t requie a lot of time to set up/maintain</li>
+                  <li style={{ listStyle: 'square inside' }}>can be used as a reminder</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
         <section className="landing-lastcall">
@@ -422,7 +419,23 @@ export default function Landing() {
   );
 }
 
-function FeaturesSection({ value }) {
+function FeaturesSection() {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    const timerInterval = setTimeout(() => {
+      function onTimeOut() {
+        if (value >= 16) {
+          setValue(0);
+          return 0;
+        }
+        setValue(value + 1);
+      }
+      onTimeOut();
+    }, 1000);
+    return () => clearInterval(timerInterval);
+  });
+
   return (
     <section className="landing-features-content">
       <div className="landing-features-container">
