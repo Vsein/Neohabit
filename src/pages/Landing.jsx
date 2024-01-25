@@ -320,7 +320,7 @@ export default function Landing() {
           </div>
         </section>
         <section className="landing-features-content">
-          <div className="landing-features-container" style={{ marginTop: '80px' }}>
+          <div className="landing-features-container" style={{ marginTop: '80px', paddingBottom: '5px' }}>
             {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
             <h3 className="landing-features-title">How does it compare with other tools?</h3>
             <div className="landing-features-section">
@@ -330,9 +330,10 @@ export default function Landing() {
               <div>
                 <h4>Calendars:</h4>
                 <ul>
-                  <li style={{ listStyle: 'square inside' }}>very rigid</li>
-                  <li style={{ listStyle: 'square inside' }}>take a lot of time to set up</li>
-                  <li style={{ listStyle: 'square inside' }}>set tough boundaries</li>
+                  {/* <li className="landing-li">are more suited for appointments and meetings</li> */}
+                  <li className="landing-li">are very rigid</li>
+                  <li className="landing-li">require to set a time for every entry</li>
+                  <li className="landing-li">often need rescheduling to work properly</li>
                 </ul>
               </div>
             </div>
@@ -343,8 +344,9 @@ export default function Landing() {
               <div>
                 <h4>Time-trackers:</h4>
                 <ul>
-                  <li style={{ listStyle: 'square inside' }}>lead to over-optimization</li>
-                  <li style={{ listStyle: 'square inside' }}>performative doesn't mean performance</li>
+                  <li className="landing-li">may provide insights on what you waste time on</li>
+                  {/* <li className="landing-li">are good to use in the background</li> */}
+                  <li className="landing-li">usually lead to over-optimization</li>
                 </ul>
               </div>
             </div>
@@ -355,9 +357,9 @@ export default function Landing() {
               <div>
                 <h4>Regular habit-trackers:</h4>
                 <ul>
-                  <li style={{ listStyle: 'square inside' }}>rarely have anything apart from daily habits</li>
-                  <li style={{ listStyle: 'square inside' }}>focus on streaks</li>
-                  <li style={{ listStyle: 'square inside' }}>can&apos;t incorporate all the info that calendars can</li>
+                  <li className="landing-li">rarely have anything apart from daily habits</li>
+                  <li className="landing-li">focus on streaks</li>
+                  <li className="landing-li">can&apos;t incorporate all the info that calendars can</li>
                 </ul>
               </div>
             </div>
@@ -368,11 +370,11 @@ export default function Landing() {
               <div>
                 <h4>Neohabit:</h4>
                 <ul>
-                  <li style={{ listStyle: 'square inside' }}>allows you to adjust the load</li>
-                  <li style={{ listStyle: 'square inside' }}>serves as a convenient overview</li>
-                  <li style={{ listStyle: 'square inside' }}>is a better replacement for a calendar</li>
-                  <li style={{ listStyle: 'square inside' }}>doesn&apos;t requie a lot of time to set up/maintain</li>
-                  <li style={{ listStyle: 'square inside' }}>can be used as a reminder</li>
+                  <li className="landing-li">allows you to adjust the load</li>
+                  <li className="landing-li">serves as a convenient overview</li>
+                  <li className="landing-li">is a better replacement for a calendar</li>
+                  <li className="landing-li">doesn&apos;t require a lot of time to set up/maintain</li>
+                  <li className="landing-li">can be used as a reminder</li>
                 </ul>
               </div>
             </div>

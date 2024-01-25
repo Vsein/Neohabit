@@ -228,14 +228,21 @@ $cell-weekdays-width: 33px;
   }
 
   &-section {
-    display: flex;
     margin-bottom: 20px;
+
+    @media (min-width: 450px) {
+      display: flex;
+    }
   }
 
   &-section-image {
     height: 100%;
     margin: 0 30px 0px 10px;
-    // float: left;
+
+    @media (max-width: 450px) {
+      margin: 0 15px 0 0;
+      float: left;
+    }
   }
 }
 
@@ -393,4 +400,9 @@ $cell-weekdays-width: 33px;
   display: inline;
   text-decoration: none;
   color: var(--signature-color);
+}
+
+.landing-li {
+  list-style: square inside;
+  overflow: auto;
 }
