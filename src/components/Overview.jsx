@@ -123,7 +123,6 @@ export default function Overview() {
           )}
         </div>
       </div>
-      <HabitAddButton vertical={vertical} />
     </div>
   );
 }
@@ -147,6 +146,7 @@ function OverviewControls({ vertical }) {
       {/* > */}
       {/*   <Icon path={mdiCalendarWeekend} className="icon small centering" /> */}
       {/* </button> */}
+      <HabitAddButton />
       <NavLink
         className="overview-open-settings"
         to="/settings#heatmaps"

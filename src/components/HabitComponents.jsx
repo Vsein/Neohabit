@@ -161,21 +161,18 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile, p
   );
 }
 
-function HabitAddButton({ vertical, projectID = '' }) {
+function HabitAddButton({ projectID = '', standalone = false }) {
   const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(changeTo({ habitID: '', projectID, type: 'habit' }));
-  };
 
   return (
     <button
-      className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
-      onClick={openOverlay}
-      title="Add a new habit [A]"
+      className="overview-open-settings active right"
+      style={{ transform: 'scale(1.25)', [standalone ? '' : 'marginRight']: '3px', width: 'min-content' }}
+      onClick={() => dispatch(changeTo({ habitID: '', projectID, type: 'habit' }))}
+      title="Add a new habit"
       type="button"
     >
-      <Icon className="icon small" path={mdiPlus} />
-      <p>Add a new habit</p>
+      <Icon path={mdiPlus} className="icon small centering" />
     </button>
   );
 }

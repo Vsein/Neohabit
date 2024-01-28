@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
+import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete, mdiPlus } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
@@ -99,7 +99,7 @@ export default function Project({
               setToFuture={setToFuture}
             />
           )}
-          <ProjectControls projectID={project?._id} />
+          <ProjectControls projectID={project?._id} mobile={mobile} />
         </div>
         <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
           <div className={`overview ${vertical ? 'vertical' : ''}`}>
@@ -161,33 +161,35 @@ export default function Project({
             )}
           </div>
         </div>
-        {!modal && <HabitAddButton vertical={vertical} projectID={project._id} />}
       </div>
     )
   );
 }
 
-function ProjectControls({ projectID }) {
+function ProjectControls({ projectID, mobile }) {
   const dispatch = useDispatch();
 
   return (
-    projectID !== 'default' && (
-      <div className="overview-settings right">
-        <button
-          className="overview-open-settings active"
-          onClick={() => dispatch(changeTo({ projectID, type: 'project' }))}
-          title="Edit the project"
-        >
-          <Icon path={mdiPencil} className="icon small centering" />
-        </button>
-        <button
-          className="overview-open-settings active"
-          onClick={() => dispatch(changeTo({ projectID, type: 'deleteProject' }))}
-          title="Delete the project"
-        >
-          <Icon path={mdiDelete} className="icon small centering" />
-        </button>
-      </div>
-    )
+    <div className="overview-settings right" style={{ [mobile ? 'width' : '']: '102px' }}>
+      <HabitAddButton projectID={projectID} standalone={projectID === 'default'}/>
+      {projectID !== 'default' && (
+        <>
+          <button
+            className="overview-open-settings active"
+            onClick={() => dispatch(changeTo({ projectID, type: 'project' }))}
+            title="Edit the project"
+          >
+            <Icon path={mdiPencil} className="icon small centering" />
+          </button>
+          <button
+            className="overview-open-settings active"
+            onClick={() => dispatch(changeTo({ projectID, type: 'deleteProject' }))}
+            title="Delete the project"
+          >
+            <Icon path={mdiDelete} className="icon small centering" />
+          </button>
+        </>
+      )}
+    </div>
   );
 }

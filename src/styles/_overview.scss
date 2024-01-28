@@ -18,8 +18,8 @@ $cell-margin: 2px;
   }
 
   @media (max-width: 550px) {
-    padding: 5px;
-    gap: 10px;
+    padding: 7px 0px;
+    gap: 7px;
   }
 }
 
@@ -92,6 +92,10 @@ $cell-margin: 2px;
     calc(var(--length) * 19px) + var(--habit-name-width) + var(--habit-controls-width) + 10px,
     100%
   );
+
+  @media (max-width: 550px) {
+    border-radius: 5px;
+  }
 }
 
 .overview-container {

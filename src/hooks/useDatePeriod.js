@@ -19,7 +19,7 @@ import useWindowDimensions from './useWindowDimensions';
 function getAdaptivePeriodLength(width, habit = false) {
   let minus = 0;
   if (width < 550) {
-    minus += 10;
+    // minus += 10;
   } else if (width < 1000) {
     minus += 30 + 85; // padding + sidebar
   } else {
