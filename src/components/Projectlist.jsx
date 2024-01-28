@@ -95,6 +95,8 @@ export default function Projectlist() {
               mobile={mobile}
               globalDateStart={dateStart}
               globalDateEnd={dateEnd}
+              subPeriod={subPeriod}
+              addPeriod={addPeriod}
             />
           ))}
         {defaultProject.habits.length ? (
@@ -104,6 +106,8 @@ export default function Projectlist() {
             mobile={mobile}
             globalDateStart={dateStart}
             globalDateEnd={dateEnd}
+            subPeriod={subPeriod}
+            addPeriod={addPeriod}
           />
         ) : (
           <></>

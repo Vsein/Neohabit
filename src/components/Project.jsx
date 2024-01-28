@@ -18,6 +18,8 @@ export default function Project({
   project,
   datePeriodLength,
   mobile,
+  addPeriod,
+  subPeriod,
   singular = false,
   globalDateStart = null,
   globalDateEnd = null,
@@ -28,20 +30,6 @@ export default function Project({
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
-  const [
-    dateEnd,
-    setDateEnd,
-    dateStart,
-    setDateStart,
-    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
-  ] = useDatePeriod(datePeriodLength);
-
-  useEffect(() => {
-    if (globalDateStart && globalDateEnd) {
-      setDateStart(globalDateStart);
-      setDateEnd(globalDateEnd);
-    }
-  }, [globalDateStart, globalDateEnd]);
 
   const colorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
@@ -58,7 +46,7 @@ export default function Project({
         className={`overview-centering ${mobile ? 'mobile' : ''} slide-${onboardingSlide}`}
         style={{
           '--habits': project.habits.length,
-          '--length': differenceInDays(dateEnd, dateStart) + 1,
+          '--length': differenceInDays(globalDateEnd, globalDateStart) + 1,
           '--vertical': vertical * 1,
           // '--multiplier': settings.data.cell_height_multiplier,
           '--multiplier': 1,
@@ -88,8 +76,8 @@ export default function Project({
           )}
           {(!mobile || singular) && (
             <>
-              <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
-              <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
+              <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
+              <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
             </>
             // <DatePeriodPicker
             //   dateStart={dateStart}
@@ -115,20 +103,20 @@ export default function Project({
                   {/* )} */}
                   <button
                     className="centering right"
-                    onClick={subMonth}
+                    onClick={subPeriod}
                     title="Move month to the left [H]"
                   >
                     <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
                   </button>
                 </div>
-                <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
-                <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
+                <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
+                <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
                 <OverviewTopbarRight
                   vertical={vertical}
-                  dateStart={dateStart}
-                  subYear={subYear}
-                  addYear={addYear}
-                  addMonth={addMonth}
+                  dateStart={globalDateStart}
+                  // {/* subYear={subYear} */}
+                  // {/* addYear={addYear} */}
+                  addMonth={addPeriod}
                 />
               </>
             )}
@@ -139,8 +127,8 @@ export default function Project({
                     <HabitOverview
                       key={i}
                       habit={habit}
-                      dateStart={dateStart}
-                      dateEnd={dateEnd}
+                      dateStart={globalDateStart}
+                      dateEnd={globalDateEnd}
                       heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
                       vertical={vertical}
                       mobile={mobile}
@@ -151,8 +139,8 @@ export default function Project({
                       <HabitOverview
                         key={i}
                         habit={habits.data.find((habito) => habito._id === habit)}
-                        dateStart={dateStart}
-                        dateEnd={dateEnd}
+                        dateStart={globalDateStart}
+                        dateEnd={globalDateEnd}
                         heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
                         vertical={vertical}
                         mobile={mobile}
@@ -165,7 +153,7 @@ export default function Project({
             {vertical && (
               <button
                 className="overview-period-move-down"
-                onClick={addMonth}
+                onClick={addPeriod}
                 title="Move month to the right [L]"
               >
                 <Icon path={mdiMenuDown} className="icon" />
