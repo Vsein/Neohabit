@@ -105,8 +105,12 @@ $cell-margin: 2px;
   direction: rtl;
   overflow-y: hidden;
   padding-right: var(--overview-padding-right);
-  height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 5px));
+  height: max(23px, calc(19px * var(--habits) * var(--multiplier) + 5px));
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+
+  &.mobile {
+    height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 5px));
+  }
 
   &.vertical {
     height: calc(var(--length) * 19px + 360px);
@@ -119,14 +123,23 @@ $cell-margin: 2px;
   position: absolute;
   display: grid;
   grid-template-areas:
-    'topbar-left months   topbar-right'
-    'topbar-left days     topbar-right'
     'habits    habits habits';
-  grid-template-rows: $cell-height 15px min-content;
+  grid-template-rows: min-content;
   grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(
       --habit-controls-width
     );
   row-gap: 4px;
+
+  &.mobile {
+    grid-template-areas:
+    'topbar-left months   topbar-right'
+    'topbar-left days     topbar-right'
+    'habits    habits habits';
+    grid-template-rows: $cell-height 15px min-content;
+    grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(
+    --habit-controls-width
+    );
+  }
 
   &.vertical {
     grid-template-areas:
@@ -134,7 +147,7 @@ $cell-margin: 2px;
       'topbar-left  topbar-left  habits'
       'months       days         habits'
       'move-right   move-right   habits';
-    grid-template-rows: 30px 200px calc(var(--length) * 19px) 115px;
+    grid-template-rows: 200px calc(var(--length) * 19px) 115px;
     grid-template-columns: 25px 15px min-content;
     gap: 3px;
 
@@ -180,41 +193,12 @@ $cell-margin: 2px;
     }
   }
 
-  .overview-days {
-    display: inline-flex;
-    flex-direction: row;
-    grid-area: days;
-
-    &-day {
-      line-height: 100%;
-      font-size: calc(
-        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1) + 1px
-      );
-      text-align: center;
-      padding-block: 2px;
-      border-radius: 3px;
-      height: 15px;
-      width: 15px;
-      font-weight: 600;
-      margin: $cell-margin;
-      vertical-align: middle;
-
-      &.today {
-        box-shadow: 0px 0px 4px 2px var(--signature-color);
-        border-radius: 3px;
-      }
-
-      &.weekend {
-        color: var(--bright-signature-color);
-      }
-    }
-  }
-
   .overview-habits {
     grid-area: habits;
     display: grid;
     grid-template-rows: 17px;
     row-gap: 2px;
+    padding-top: 3px;
 
     .overview-habit {
       display: grid;
@@ -321,17 +305,30 @@ $cell-margin: 2px;
 }
 
 .overview-header {
+  // position: sticky;
+  // top: 0;
+  // z-index: 2;
   background-color: var(--main-background-color);
   border-bottom: 1px solid var(--border-color);
   border-radius: 10px 10px 0px 0px;
   display: grid;
   padding-right: 5px;
-  grid-template-areas: 'name date settings';
-  grid-template-columns: 185px min-content 115px;
-  gap: 20px;
-  justify-content: space-between;
+  grid-template-areas:
+    'name months settings'
+    'name days settings';
+
+  // 'topbar-left months   topbar-right'
+  // 'topbar-left days     topbar-right'
+  grid-template-columns: 200px min-content 115px;
+  grid-template-rows: 15px 15px;
+  column-gap: 3px;
+  // justify-content: space-between;
   align-items: center;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
+
+  & > a {
+    grid-area: name;
+  }
 
   @media (max-width: 800px) {
     @include overview-header-small;
@@ -372,13 +369,13 @@ $cell-margin: 2px;
     }
 
     @media (max-width: 600px) {
-      grid-template-areas: 'date'
-      'settings' !important;
+      grid-template-areas:
+        'date'
+        'settings' !important;
       grid-template-columns: 1fr !important;
       grid-template-rows: 1fr !important;
     }
   }
-
 
   &.small {
     @include overview-header-small;
@@ -401,7 +398,8 @@ $cell-margin: 2px;
     }
   }
 
-  & > div > h3, & > h3 {
+  & > div > h3,
+  & > h3 {
     // grid-area: name;
     margin: auto;
     line-height: 30px;

@@ -87,39 +87,51 @@ export default function Project({
             </NavLink>
           )}
           {(!mobile || singular) && (
-            <DatePeriodPicker
-              dateStart={dateStart}
-              setDateStart={setDateStart}
-              dateEnd={dateEnd}
-              setDateEnd={setDateEnd}
-              subPeriod={subPeriod}
-              addPeriod={addPeriod}
-              setToPast={setToPast}
-              reset={reset}
-              setToFuture={setToFuture}
-            />
+            <>
+              <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
+              <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
+            </>
+            // <DatePeriodPicker
+            //   dateStart={dateStart}
+            //   setDateStart={setDateStart}
+            //   dateEnd={dateEnd}
+            //   setDateEnd={setDateEnd}
+            //   subPeriod={subPeriod}
+            //   addPeriod={addPeriod}
+            //   setToPast={setToPast}
+            //   reset={reset}
+            //   setToFuture={setToFuture}
+            // />
           )}
           <ProjectControls projectID={project?._id} mobile={mobile} />
         </div>
-        <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
-          <div className={`overview ${vertical ? 'vertical' : ''}`}>
-            <div className="overview-topbar-left">
-              {!vertical && (
-                <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
-              )}
-              <button className="centering" onClick={subMonth} title="Move month to the left [H]">
-                <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
-              </button>
-            </div>
-            <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
-            <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-            <OverviewTopbarRight
-              vertical={vertical}
-              dateStart={dateStart}
-              subYear={subYear}
-              addYear={addYear}
-              addMonth={addMonth}
-            />
+        <div className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
+          <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
+            {mobile && (
+              <>
+                <div className="overview-topbar-left">
+                  {/* {!vertical && ( */}
+                  {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
+                  {/* )} */}
+                  <button
+                    className="centering right"
+                    onClick={subMonth}
+                    title="Move month to the left [H]"
+                  >
+                    <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
+                  </button>
+                </div>
+                <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
+                <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
+                <OverviewTopbarRight
+                  vertical={vertical}
+                  dateStart={dateStart}
+                  subYear={subYear}
+                  addYear={addYear}
+                  addMonth={addMonth}
+                />
+              </>
+            )}
             <div className="overview-habits">
               {project.habits &&
                 project.habits.map((habit, i) =>
@@ -171,7 +183,7 @@ function ProjectControls({ projectID, mobile }) {
 
   return (
     <div className="overview-settings right" style={{ [mobile ? 'width' : '']: '102px' }}>
-      <HabitAddButton projectID={projectID} standalone={projectID === 'default'}/>
+      <HabitAddButton projectID={projectID} standalone={projectID === 'default'} />
       {projectID !== 'default' && (
         <>
           <button
