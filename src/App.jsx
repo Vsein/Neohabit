@@ -8,13 +8,6 @@ import {
   useLocation,
   NavLink,
 } from 'react-router-dom';
-import NeohabitPreview from './logos/preview.png';
-import Icon192 from './logos/icon-192.png';
-import Icon512 from './logos/icon-512.png';
-import Icon192Maskable from './logos/icon-192-maskable.png';
-import Icon512Maskable from './logos/icon-512-maskable.png';
-import FaviconDark from './logos/favicon-dark2.ico';
-import Favicon from './logos/favicon.ico';
 import ToDoList from './pages/ToDoList';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
