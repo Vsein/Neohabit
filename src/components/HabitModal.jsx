@@ -139,7 +139,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <ColorPicker />
               </div>
             </div>
-            <ModalButtons disabled={submitting} isNew={!habitID} type="habit" />
+            <ModalButtons disabled={submitting || !values?.name} isNew={!habitID} type="habit" />
           </form>
         )}
       />

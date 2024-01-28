@@ -216,6 +216,11 @@ input[type='checkbox']:checked.checkbox {
   height: min-content;
   cursor: pointer;
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
   &.big {
     font-size: 100%;
     padding: 3px 32px;

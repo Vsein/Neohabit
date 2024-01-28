@@ -127,7 +127,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               <ColorPicker />
             </div>
           </div>
-          <ModalButtons disabled={submitting} isNew={!projectID} type="project" />
+          <ModalButtons disabled={submitting || !values?.name} isNew={!projectID} type="project" />
         </form>
       )}
     />
