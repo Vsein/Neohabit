@@ -69,26 +69,7 @@ export default function Habit({
           modal ? 'modal-mode' : ''
         } singular habit-mode`}
       >
-        {!modal && !onboardingSlide && (
-          <div className="overview-header-return-mode">
-            <ReturnButton />
-            <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
-          </div>
-        )}
-        {!!onboardingSlide &&
-          <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
-        }
-        <DatePeriodPicker
-          dateStart={dateStart}
-          setDateStart={setDateStart}
-          dateEnd={dateEnd}
-          setDateEnd={setDateEnd}
-          addPeriod={addPeriod}
-          subPeriod={subPeriod}
-          setToPast={setToPast}
-          reset={reset}
-          setToFuture={setToFuture}
-        />
+        <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
         <HabitControls habit={habit} heatmap={heatmap} header={true} modal={modal} habitPage={habitPage} />
       </div>
       <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>

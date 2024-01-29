@@ -328,7 +328,7 @@ $cell-margin: 2px;
 
   // 'topbar-left months   topbar-right'
   // 'topbar-left days     topbar-right'
-  grid-template-columns: 200px min-content 110px;
+  grid-template-columns: 200px calc(var(--length) * 19px) 110px;
   grid-template-rows: 15px 15px;
   column-gap: 3px;
   // justify-content: space-between;
@@ -368,17 +368,18 @@ $cell-margin: 2px;
   }
 
   &.habit-mode {
-    grid-template-columns: 250px min-content 170px;
+    grid-template-columns: 1fr 170px;
 
-    @media (max-width: 950px) {
-      gap: 0px;
-      grid-template-columns: 190px min-content 170px;
-    }
+//     @media (max-width: 950px) {
+//       gap: 0px;
+//       grid-template-columns: 190px min-content 170px;
+//     }
   }
 
   &.modal-mode {
     grid-template-areas: 'date settings';
     grid-template-columns: 4fr 1fr;
+    grid-template-rows: 1fr;
 
     @media (max-width: 950px) {
       grid-template-areas: 'date settings' !important;
@@ -397,22 +398,6 @@ $cell-margin: 2px;
   &.small {
     @include overview-header-small;
     grid-template-areas: 'name settings';
-
-    // &.singular {
-    //   grid-template-areas:
-    //     'name settings'
-    //     'date date';
-    //   padding-bottom: 5px;
-    // }
-
-    &.habit-mode {
-      grid-template-areas:
-        'name'
-        'settings'
-        'date';
-      padding-bottom: 5px;
-      justify-items: center;
-    }
   }
 
   & > div > h3,
