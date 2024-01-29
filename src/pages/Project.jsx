@@ -10,6 +10,7 @@ import useWindowDimensions from '../hooks/useWindowDimensions';
 import { ReturnButton } from '../components/HabitComponents';
 import Project from '../components/Project';
 import { DatePeriodPicker } from '../components/DatePickers';
+import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function ProjectPage() {
   useTitle('Habit | Neohabit');
@@ -54,16 +55,38 @@ function ProjectPageLayout() {
 
   const [defaultProject] = useDefaultProject();
 
+  if (projects.isFetching || habits.isFetching) {
+    return <div className="loader" />;
+  }
+
+  const project = projects.data.find((projecto) => projecto._id === projectID) ?? defaultProject;
+
+  const colorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
+    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(project.color), 0.6);
+  const calmColorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
+    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+
   return projects.isFetching || habits.isFetching ? (
     <div className="loader" />
   ) : (
     <>
-      <div className="contentlist-controls">
+      <div
+        className="contentlist-controls"
+        style={{
+          '--signature-color': colorShade,
+          '--bright-signature-color': colorShade,
+          '--calm-signature-color': `${colorShade}55`,
+          '--datepicker-text-color': getNumericTextColor(colorShade),
+          '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+        }}
+      >
         <div className="overview-centering" style={{ width: 'max-content' }}>
           <button
             className={`overview-habit-add standalone topbar ${vertical ? 'vertical' : ''}`}
             onClick={() => navigate(-1)}
-            style={{ gridTemplateColumns: 'min-content 150px'}}
+            style={{ gridTemplateColumns: 'min-content 150px' }}
             title="Add a new habit [A]"
           >
             <ReturnButton />
@@ -84,7 +107,7 @@ function ProjectPageLayout() {
       </div>
       <div className="contentlist">
         <Project
-          project={projects.data.find((projecto) => projecto._id === projectID) || defaultProject}
+          project={project}
           datePeriodLength={datePeriodLength}
           mobile={mobile}
           singular={true}
