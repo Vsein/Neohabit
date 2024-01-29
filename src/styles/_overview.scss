@@ -216,7 +216,10 @@ $cell-margin: 2px;
     display: grid;
     grid-template-rows: 17px;
     row-gap: 2px;
-    padding-top: 3px;
+
+    @media (min-width: 850px) {
+      padding-top: 3px;
+    }
 
     .overview-habit {
       display: grid;
@@ -334,9 +337,8 @@ $cell-margin: 2px;
 
   // 'topbar-left months   topbar-right'
   // 'topbar-left days     topbar-right'
-  grid-template-columns: 200px calc(var(--length) * 19px) 110px;
+  grid-template-columns: 200px calc(var(--length) * 19px) 115px;
   grid-template-rows: 15px 15px;
-  column-gap: 3px;
   // justify-content: space-between;
   align-items: center;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
