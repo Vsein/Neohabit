@@ -84,7 +84,7 @@ export default function Project({
                   <button
                     className="centering right"
                     onClick={subPeriod}
-                    title="Move month to the left [H]"
+                    title="Previous period [H]"
                   >
                     <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
                   </button>
@@ -134,7 +134,7 @@ export default function Project({
               <button
                 className="overview-period-move-down"
                 onClick={addPeriod}
-                title="Move month to the right [L]"
+                title="Next period [L]"
               >
                 <Icon path={mdiMenuDown} className="icon" />
               </button>

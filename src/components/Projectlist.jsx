@@ -60,7 +60,7 @@ export default function Projectlist() {
           <button
             className={`overview-habit-add standalone topbar ${vertical ? 'vertical' : ''}`}
             onClick={openOverlay}
-            title="Add a new habit [A]"
+            title="Add a new project"
           >
             <p>New project</p>
           </button>

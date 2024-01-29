@@ -72,7 +72,7 @@ function DatePeriodPicker({
         type="button"
         className="centering"
         onClick={subPeriod}
-        title="Move period to the left [h]"
+        title="Previous period [h]"
       >
         <Icon path={mdiMenuLeft} className="icon" />
       </button>
@@ -141,7 +141,7 @@ function DatePeriodPicker({
         type="button"
         className="centering left"
         onClick={addPeriod}
-        title="Move period to the right [l]"
+        title="Next period [l]"
       >
         <Icon path={mdiMenuRight} className="icon" />
       </button>
