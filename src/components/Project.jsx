@@ -60,20 +60,11 @@ export default function Project({
         }}
       >
         <div
-          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${
-            singular ? 'singular' : ''
-          }`}
+          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''}`}
         >
-          {singular ? (
-            <div className="overview-header-return-mode">
-              <ReturnButton />
-              <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-            </div>
-          ) : (
-            <NavLink to={`../project/${project?._id}`} title={project.name}>
-              <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-            </NavLink>
-          )}
+          <NavLink to={`../project/${project?._id}`} title={project.name}>
+            <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+          </NavLink>
           {!mobile && (
             <>
               <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { useParams, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 import useDefaultProject from '../hooks/useDefaultProject';
 import { useGetHabitsQuery } from '../state/services/habit';
@@ -7,7 +7,9 @@ import { useGetProjectsQuery } from '../state/services/project';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
+import { ReturnButton } from '../components/HabitComponents';
 import Project from '../components/Project';
+import { DatePeriodPicker } from '../components/DatePickers';
 
 export default function ProjectPage() {
   useTitle('Habit | Neohabit');
@@ -23,10 +25,12 @@ export default function ProjectPage() {
 }
 
 function ProjectPageLayout() {
+  const navigate = useNavigate();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const { projectID } = useParams();
+  const vertical = false;
 
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
@@ -53,15 +57,41 @@ function ProjectPageLayout() {
   return projects.isFetching || habits.isFetching ? (
     <div className="loader" />
   ) : (
-    <div className="contentlist">
-      <Project
-        project={projects.data.find((projecto) => projecto._id === projectID) || defaultProject}
-        datePeriodLength={datePeriodLength}
-        mobile={mobile}
-        singular={true}
-        globalDateStart={dateStart}
-        globalDateEnd={dateEnd}
-      />
-    </div>
+    <>
+      <div className="contentlist-controls">
+        <div className="overview-centering" style={{ width: 'max-content' }}>
+          <button
+            className={`overview-habit-add standalone topbar ${vertical ? 'vertical' : ''}`}
+            onClick={() => navigate(-1)}
+            style={{ gridTemplateColumns: 'min-content 150px'}}
+            title="Add a new habit [A]"
+          >
+            <ReturnButton />
+            <p>Return</p>
+          </button>
+        </div>
+        <DatePeriodPicker
+          dateStart={dateStart}
+          setDateStart={setDateStart}
+          dateEnd={dateEnd}
+          setDateEnd={setDateEnd}
+          subPeriod={subPeriod}
+          addPeriod={addPeriod}
+          setToPast={setToPast}
+          reset={reset}
+          setToFuture={setToFuture}
+        />
+      </div>
+      <div className="contentlist">
+        <Project
+          project={projects.data.find((projecto) => projecto._id === projectID) || defaultProject}
+          datePeriodLength={datePeriodLength}
+          mobile={mobile}
+          singular={true}
+          globalDateStart={dateStart}
+          globalDateEnd={dateEnd}
+        />
+      </div>
+    </>
   );
 }
