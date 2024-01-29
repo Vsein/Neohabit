@@ -73,7 +73,9 @@ export default function Project({
           )}
           <ProjectControls projectID={project?._id} mobile={mobile} />
         </div>
-        <div className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
+        <div
+          className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
+        >
           <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
             {mobile && (
               <>

@@ -9,7 +9,7 @@ import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { ReturnButton } from '../components/HabitComponents';
 import { DatePeriodPicker } from '../components/DatePickers';
-import Habit from '../components/Habit';
+import { HabitDefaultWrapper } from '../components/Habit';
 
 export default function HabitPage() {
   useTitle('Habit | Neohabit');
@@ -57,24 +57,17 @@ function Overview() {
   const vertical = false;
 
   const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
-  const datePeriodLength =
-    settings.data?.overview_adaptive ?? true
-      ? Math.min(
-          adaptiveDatePeriodLength,
-          settings.data?.overview_apply_limit ?? true
-            ? settings.data?.overview_duration_limit ?? 32
-            : Infinity,
-        )
-      : settings.data?.overview_duration ?? 32;
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
 
+  const datePeriodLength =
+    adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
-  ] = useDatePeriod(datePeriodLength, true);
+    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
+  ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365);
 
   return tasks.isFetching || habits.isFetching || heatmaps.isFetching || settings.isFetching ? (
     <> </>
@@ -85,7 +78,7 @@ function Overview() {
           <button
             className={`overview-habit-add standalone topbar ${vertical ? 'vertical' : ''}`}
             onClick={() => navigate(-1)}
-            style={{ gridTemplateColumns: 'min-content 150px'}}
+            style={{ gridTemplateColumns: 'min-content 150px' }}
             title="Add a new habit [A]"
           >
             <ReturnButton />
@@ -104,9 +97,16 @@ function Overview() {
           setToFuture={setToFuture}
         />
       </div>
-    <div className="contentlist">
-      <Habit heatmap={heatmap} habit={habit} habitPage={true} />
-    </div>
+      <div className="contentlist">
+        <HabitDefaultWrapper
+          heatmap={heatmap}
+          habit={habit}
+          habitPage={true}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          mobile={mobile}
+        />
+      </div>
     </>
   );
 }

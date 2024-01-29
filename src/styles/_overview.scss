@@ -398,6 +398,7 @@ $cell-margin: 2px;
         'settings' !important;
       grid-template-columns: 1fr !important;
       grid-template-rows: 1fr !important;
+      justify-items: center;
     }
   }
 
