@@ -23,7 +23,10 @@ export default function Habit({
     <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
       <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>
         {/* <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
-        <HeatmapMonthsWeekly dateStart={dateStart} dateEnd={dateEnd} />
+        <HeatmapMonthsWeekly
+          dateStart={dateStart}
+          diffWeeks={differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1}
+        />
         <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
         <Heatmap
           heatmap={heatmap}
@@ -83,8 +86,8 @@ function HabitDefaultWrapper({
     >
       <div
         className={`overview-header ${mobile ? 'small' : ''} ${
-            modal ? 'modal-mode' : ''
-          } singular habit-mode`}
+          modal ? 'modal-mode' : ''
+        } singular habit-mode`}
       >
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
         <HabitControls
@@ -160,9 +163,7 @@ function HabitModalWrapper({
         margin: 'auto',
       }}
     >
-      <div
-        className={`overview-header ${mobile ? 'small' : ''} modal-mode singular habit-mode`}
-      >
+      <div className={`overview-header ${mobile ? 'small' : ''} modal-mode singular habit-mode`}>
         <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}

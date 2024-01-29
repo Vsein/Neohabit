@@ -12,6 +12,11 @@
     margin: 2px;
     vertical-align: middle;
     text-align: right;
+
+    &.same-weekday {
+      color: var(--signature-color);
+      border-radius: 0px;
+    }
   }
 }
 
@@ -30,8 +35,25 @@
     margin: 2px;
     visibility: hidden;
 
+    &.active:last-child {
+      visibility: hidden;
+    }
+
     &.active {
       visibility: visible;
+
+      &:has(+ .active) {
+        visibility: hidden;
+      }
+    }
+
+    &.same-month {
+      visibility: visible;
+      color: var(--signature-color);
+    }
+
+    &.arrow {
+      padding-inline: 2px;
     }
   }
 }
