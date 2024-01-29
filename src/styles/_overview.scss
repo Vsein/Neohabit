@@ -34,6 +34,12 @@ $cell-margin: 2px;
   height: 50px;
   padding-inline: 20px;
 
+  @media (min-width: 850px) {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
   @media (max-width: 800px) {
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -338,7 +344,7 @@ $cell-margin: 2px;
   @media (min-width: 850px) {
     &.singular {
       position: sticky;
-      top: 0;
+      top: 50px;
       z-index: 2;
     }
   }

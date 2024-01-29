@@ -60,7 +60,7 @@ export default function Project({
         }}
       >
         <div
-          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''}`}
+          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
         >
           <NavLink to={`../project/${project?._id}`} title={project.name}>
             <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>

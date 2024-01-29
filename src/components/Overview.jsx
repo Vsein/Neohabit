@@ -62,11 +62,11 @@ export default function Overview({
           {mobile && (
             <>
               <div className="overview-topbar-left">
-                {!vertical && (
-                  <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
-                )}
+                {/* {!vertical && ( */}
+                {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
+                {/* )} */}
                 <button
-                  className="centering"
+                  className="centering right"
                   onClick={subPeriod}
                   title="Move month to the left [H]"
                 >
