@@ -36,7 +36,7 @@ function getAdaptivePeriodLength(width, habit = false) {
   } else if (width < 1000) {
     minus += 200 + 120 + 10;
   } else {
-    minus += 200 + 120;
+    minus += 200 + 120 + 3;
   }
   const adaptiveDatePeriodLength = Math.floor((width - minus) / 19);
   return { adaptiveDatePeriodLength, mobile: width < 850 };

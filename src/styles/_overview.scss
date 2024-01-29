@@ -35,24 +35,37 @@ $cell-margin: 2px;
   padding-inline: 20px;
 
   @media (max-width: 800px) {
-    height: 80px;
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: 1fr;
     grid-template-areas:
-      '. topbar-right'
-      'date topbar-right';
+      'date';
     justify-items: center;
+
+    &:not(.only-datepicker) {
+      height: 80px;
+      grid-template-areas:
+        '. topbar-right'
+        'date topbar-right';
+    }
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: 1fr;
     grid-template-areas:
+      'date';
+
+    &:not(.only-datepicker) {
+      grid-template-columns: 1fr min-content;
+      grid-template-areas:
       '. topbar-right'
       'date date';
-    padding-inline: 5px;
+      padding-inline: 5px;
+    }
   }
 
   @media (max-width: 330px) {
-    height: 100px;
+    &:not(.only-datepicker) {
+      height: 100px;
+    }
   }
 }
 
@@ -122,8 +135,7 @@ $cell-margin: 2px;
   direction: ltr;
   position: absolute;
   display: grid;
-  grid-template-areas:
-    'habits    habits habits';
+  grid-template-areas: 'habits    habits habits';
   grid-template-rows: min-content;
   grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(
       --habit-controls-width
@@ -132,13 +144,13 @@ $cell-margin: 2px;
 
   &.mobile {
     grid-template-areas:
-    'topbar-left months   topbar-right'
-    'topbar-left days     topbar-right'
-    'habits    habits habits';
+      'topbar-left months   topbar-right'
+      'topbar-left days     topbar-right'
+      'habits    habits habits';
     grid-template-rows: $cell-height 15px min-content;
     grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(
-    --habit-controls-width
-    );
+        --habit-controls-width
+      );
   }
 
   &.vertical {
@@ -305,9 +317,6 @@ $cell-margin: 2px;
 }
 
 .overview-header {
-  // position: sticky;
-  // top: 0;
-  // z-index: 2;
   background-color: var(--main-background-color);
   border-bottom: 1px solid var(--border-color);
   border-radius: 10px 10px 0px 0px;
@@ -326,6 +335,14 @@ $cell-margin: 2px;
   align-items: center;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
 
+  @media (min-width: 850px) {
+    &.singular {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+  }
+
   & > a {
     grid-area: name;
   }
@@ -337,12 +354,12 @@ $cell-margin: 2px;
   @media (max-width: 550px) {
     grid-template-areas: 'name settings';
 
-    &.singular {
-      grid-template-areas:
-        'name settings'
-        'date date';
-      padding-bottom: 5px;
-    }
+    // &.singular {
+    //   grid-template-areas:
+    //     'name settings'
+    //     'date date';
+    //   padding-bottom: 5px;
+    // }
   }
 
   &.vertical {
@@ -381,12 +398,12 @@ $cell-margin: 2px;
     @include overview-header-small;
     grid-template-areas: 'name settings';
 
-    &.singular {
-      grid-template-areas:
-        'name settings'
-        'date date';
-      padding-bottom: 5px;
-    }
+    // &.singular {
+    //   grid-template-areas:
+    //     'name settings'
+    //     'date date';
+    //   padding-bottom: 5px;
+    // }
 
     &.habit-mode {
       grid-template-areas:

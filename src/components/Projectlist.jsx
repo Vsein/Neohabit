@@ -13,7 +13,7 @@ import useLoaded from '../hooks/useLoaded';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';
 import Project from './Project';
-import { DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
+import { DatePeriodPicker } from './DatePickers';
 
 export default function Projectlist() {
   const [loaded] = useLoaded();
@@ -75,14 +75,6 @@ export default function Projectlist() {
           setToPast={setToPast}
           reset={reset}
           setToFuture={setToFuture}
-        />
-        <OverviewTopbarRight
-          isHeatmap={false}
-          vertical={vertical}
-          dateStart={dateStart}
-          subYear={subYear}
-          addYear={addYear}
-          addMonth={addMonth}
         />
       </div>
       <div className="contentlist">

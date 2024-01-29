@@ -1,50 +1,30 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import {
-  mdiMenuLeft,
-  mdiMenuUp,
-  mdiMenuDown,
-  mdiCalendarText,
-  mdiCalendarWeekend,
-  mdiCog,
-} from '@mdi/js';
+import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiCog } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
-import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
-import useWindowDimensions from '../hooks/useWindowDimensions';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
+import { YearPicker, OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 
-export default function Overview() {
+export default function Overview({
+  dateStart,
+  dateEnd,
+  mobile,
+  addPeriod,
+  subPeriod,
+  addYear,
+  subYear,
+}) {
   const [loaded] = useLoaded();
   const habits = useGetHabitsQuery();
   const heatmaps = useGetHeatmapsQuery();
   const settings = useGetSettingsQuery();
   const vertical = settings.data.overview_vertical;
-  const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
-
-  const datePeriodLength =
-    settings.data?.overview_adaptive ?? true
-      ? Math.min(
-          adaptiveDatePeriodLength,
-          settings.data?.overview_apply_limit ?? true
-            ? settings.data?.overview_duration_limit ?? 32
-            : Infinity,
-        )
-      : settings.data?.overview_duration ?? 32;
-  const [
-    dateEnd,
-    setDateEnd,
-    dateStart,
-    setDateStart,
-    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
-  ] = useDatePeriod(datePeriodLength);
 
   if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
     return <div className="loader" />;
@@ -69,36 +49,41 @@ export default function Overview() {
         } singular`}
       >
         <h3>Overview</h3>
-        <DatePeriodPicker
-          dateStart={dateStart}
-          setDateStart={setDateStart}
-          dateEnd={dateEnd}
-          setDateEnd={setDateEnd}
-          subPeriod={subPeriod}
-          addPeriod={addPeriod}
-          setToPast={setToPast}
-          reset={reset}
-          setToFuture={setToFuture}
-        />
+        {!mobile && (
+          <>
+            <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
+            <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
+          </>
+        )}
         <OverviewControls vertical={vertical} />
       </div>
-      <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
-        <div className={`overview ${vertical ? 'vertical' : ''}`}>
-          <div className="overview-topbar-left">
-            {!vertical && <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />}
-            <button className="centering" onClick={subMonth} title="Move month to the left [H]">
-              <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
-            </button>
-          </div>
-          <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
-          <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-          <OverviewTopbarRight
-            vertical={vertical}
-            dateStart={dateStart}
-            subYear={subYear}
-            addYear={addYear}
-            addMonth={addMonth}
-          />
+      <div className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
+        <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
+          {mobile && (
+            <>
+              <div className="overview-topbar-left">
+                {!vertical && (
+                  <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
+                )}
+                <button
+                  className="centering"
+                  onClick={subPeriod}
+                  title="Move month to the left [H]"
+                >
+                  <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
+                </button>
+              </div>
+              <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
+              <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
+              <OverviewTopbarRight
+                vertical={vertical}
+                dateStart={dateStart}
+                subYear={subYear}
+                addYear={addYear}
+                addMonth={addPeriod}
+              />
+            </>
+          )}
           <div className="overview-habits">
             {habits.data.map((habit, i) => (
               <HabitOverview
@@ -115,7 +100,7 @@ export default function Overview() {
           {vertical && (
             <button
               className="overview-period-move-down"
-              onClick={addMonth}
+              onClick={addPeriod}
               title="Move month to the right [L]"
             >
               <Icon path={mdiMenuDown} className="icon" />

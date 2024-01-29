@@ -74,22 +74,11 @@ export default function Project({
               <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
             </NavLink>
           )}
-          {(!mobile || singular) && (
+          {!mobile && (
             <>
               <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
               <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
             </>
-            // <DatePeriodPicker
-            //   dateStart={dateStart}
-            //   setDateStart={setDateStart}
-            //   dateEnd={dateEnd}
-            //   setDateEnd={setDateEnd}
-            //   subPeriod={subPeriod}
-            //   addPeriod={addPeriod}
-            //   setToPast={setToPast}
-            //   reset={reset}
-            //   setToFuture={setToFuture}
-            // />
           )}
           <ProjectControls projectID={project?._id} mobile={mobile} />
         </div>
