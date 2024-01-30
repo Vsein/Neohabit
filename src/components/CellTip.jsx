@@ -73,7 +73,7 @@ function changeCellOffset(e, tipContent, actions, override = false) {
 
   const tipWidth = cellTip.getBoundingClientRect().width;
   cellTip.style.left = `${rect.x + rect.width / 2 - tipWidth / 2}px`;
-  const leftBorder = rect.x + rect.width / 2 - tipWidth / 2;
+  const leftBorder = rect.x + window.scrollX + rect.width / 2 - tipWidth / 2;
   const rightBorder = leftBorder + tipWidth;
   if (leftBorder < rectParent.x) {
     cellTip.style.left = `${rectParent.x + 10}px`;
@@ -83,6 +83,9 @@ function changeCellOffset(e, tipContent, actions, override = false) {
   }
   if (rectParent.width < tipWidth + 10) {
     cellTip.style.left = `${rectParent.x + rectParent.width / 2 - tipWidth / 2}px`;
+  }
+  if (window.scrollX) {
+    cellTip.style.left = `${window.scrollX + rect.x + rect.width / 2 - tipWidth / 2}px`;
   }
   return 0;
 }
