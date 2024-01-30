@@ -235,6 +235,14 @@ $cell-margin: 2px;
         white-space: nowrap;
         padding-left: 5px;
 
+        &:hover {
+          opacity: 0.7;
+        }
+
+        &[disabled] {
+          opacity: 1;
+        }
+
         @media (max-width: 850px) {
           font-size: 13px;
           padding-left: 2px;
@@ -351,7 +359,7 @@ $cell-margin: 2px;
     // }
   }
 
-  & > a {
+  & > a, & > h3 {
     grid-area: name;
   }
 
@@ -377,6 +385,12 @@ $cell-margin: 2px;
 
   &.habit-mode {
     grid-template-columns: 1fr 170px;
+
+    &.small {
+      grid-template-areas: 'name'
+      'settings';
+      justify-items: center;
+    }
 
 //     @media (max-width: 950px) {
 //       gap: 0px;
@@ -409,11 +423,24 @@ $cell-margin: 2px;
     grid-template-areas: 'name settings';
   }
 
-  & > div > h3,
-  & > h3 {
+  & a {
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    height: 30px;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &[disabled] {
+      opacity: 1;
+    }
+  }
+
+  & h3 {
     // grid-area: name;
     margin: auto;
-    line-height: 30px;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-rendering: auto;

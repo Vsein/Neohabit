@@ -38,6 +38,15 @@ export default function Project({
     ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
     : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
 
+  const HeaderName = () =>
+    singular ? (
+      <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+    ) : (
+      <NavLink to={`../project/${project?._id}`} title={project.name}>
+        <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+      </NavLink>
+    );
+
   return (
     !heatmaps.isFetching &&
     !habits.isFetching &&
@@ -63,9 +72,7 @@ export default function Project({
           className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
         >
           {mobile ? (
-            <NavLink to={`../project/${project?._id}`} title={project.name}>
-              <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-            </NavLink>
+            <HeaderName />
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
               <HeaderName />
@@ -207,13 +214,8 @@ function ProjectWrapper({
   globalDateStart = null,
   globalDateEnd = null,
 }) {
-  const [
-    dateEnd,
-    setDateEnd,
-    dateStart,
-    setDateStart,
-    { subPeriod, addPeriod },
-  ] = useDatePeriod(datePeriodLength);
+  const [dateEnd, setDateEnd, dateStart, setDateStart, { subPeriod, addPeriod }] =
+    useDatePeriod(datePeriodLength);
 
   useEffect(() => {
     if (globalDateStart && globalDateEnd) {
