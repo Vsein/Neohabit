@@ -49,6 +49,7 @@ function HabitControls({
     e.stopPropagation();
     dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isActive: true, isTarget }));
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+    cellAddDropdown.classList.toggle('hidden');
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
     const { innerWidth: width, innerHeight: height } = window;
