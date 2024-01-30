@@ -423,7 +423,7 @@ $cell-margin: 2px;
     grid-template-areas: 'name settings';
   }
 
-  & a {
+  & a:not(.overview-open-settings) {
     width: 100%;
     margin: auto;
     overflow: hidden;
