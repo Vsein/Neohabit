@@ -67,12 +67,13 @@ export default function Project({
               <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
             </NavLink>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr min-content', gridArea: 'name'}}>
-              <NavLink to={`../project/${project?._id}`} title={project.name}>
-                <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-              </NavLink>
-              <button className="centering right" onClick={subPeriod} title="Previous period [H]"
-          style={{ transform: 'translateX(6px)' }}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
+              <HeaderName />
+              <button
+                className="centering right overview-date-button"
+                onClick={subPeriod}
+                title="Previous period [H]"
+                style={{ transform: 'translateX(-4px)' }}
               >
                 <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
               </button>
@@ -97,7 +98,7 @@ export default function Project({
                   {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
                   {/* )} */}
                   <button
-                    className="centering right"
+                    className="centering right overview-date-button"
                     onClick={subPeriod}
                     title="Previous period [H]"
                   >
@@ -168,9 +169,9 @@ function ProjectControls({ projectID, mobile, addPeriod }) {
     <div className="overview-settings" style={{ [mobile ? 'width' : '']: '100%' }}>
       {!mobile && (
         <button
-          className="centering left"
+          className="centering left overview-date-button"
           onClick={addPeriod}
-          title="Next period [H]"
+          title="Next period [L]"
           style={{ transform: 'translateX(-6px)' }}
         >
           <Icon path={mdiMenuRight} className="icon" />

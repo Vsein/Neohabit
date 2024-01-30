@@ -70,7 +70,7 @@ function DatePeriodPicker({
     <div className="dates-container">
       <button
         type="button"
-        className="centering"
+        className="centering overview-date-button"
         onClick={subPeriod}
         title="Previous period [h]"
       >
@@ -139,7 +139,7 @@ function DatePeriodPicker({
       </div>
       <button
         type="button"
-        className="centering left"
+        className="centering left overview-date-button"
         onClick={addPeriod}
         title="Next period [l]"
       >
@@ -165,9 +165,9 @@ function OverviewTopbarRight({
       {isHeatmap && !vertical && (
         <button
           type="button"
-          className="centering"
+          className="centering overview-date-button"
           onClick={addMonth}
-          title="Move month to the right [L]"
+          title="Next period [L]"
         >
           <Icon path={mdiMenuRight} className="icon" />
         </button>

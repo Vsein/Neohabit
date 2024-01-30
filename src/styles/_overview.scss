@@ -455,6 +455,16 @@ $cell-margin: 2px;
   }
 }
 
+.overview-date-button {
+  &:hover {
+    opacity: 0.5;
+  }
+
+  &[disabled] {
+    opacity: 1;
+  }
+}
+
 .overview-settings {
   grid-area: settings;
   display: flex;
