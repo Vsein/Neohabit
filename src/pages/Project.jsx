@@ -113,6 +113,8 @@ function ProjectPageLayout() {
           singular={true}
           globalDateStart={dateStart}
           globalDateEnd={dateEnd}
+          subPeriod={subPeriod}
+          addPeriod={addPeriod}
         />
       </div>
     </>

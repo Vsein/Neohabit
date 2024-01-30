@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete, mdiPlus } from '@mdi/js';
+import { mdiMenuLeft, mdiMenuRight, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
@@ -62,16 +62,29 @@ export default function Project({
         <div
           className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
         >
-          <NavLink to={`../project/${project?._id}`} title={project.name}>
-            <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-          </NavLink>
+          {mobile ? (
+            <NavLink to={`../project/${project?._id}`} title={project.name}>
+              <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+            </NavLink>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr min-content', gridArea: 'name'}}>
+              <NavLink to={`../project/${project?._id}`} title={project.name}>
+                <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+              </NavLink>
+              <button className="centering right" onClick={subPeriod} title="Previous period [H]"
+          style={{ transform: 'translateX(6px)' }}
+              >
+                <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
+              </button>
+            </div>
+          )}
           {!mobile && (
             <>
               <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
               <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
             </>
           )}
-          <ProjectControls projectID={project?._id} mobile={mobile} />
+          <ProjectControls projectID={project?._id} mobile={mobile} addPeriod={addPeriod} />
         </div>
         <div
           className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
@@ -148,11 +161,21 @@ export default function Project({
   );
 }
 
-function ProjectControls({ projectID, mobile }) {
+function ProjectControls({ projectID, mobile, addPeriod }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="overview-settings right" style={{ [mobile ? 'width' : '']: '102px' }}>
+    <div className="overview-settings" style={{ [mobile ? 'width' : '']: '100%' }}>
+      {!mobile && (
+        <button
+          className="centering left"
+          onClick={addPeriod}
+          title="Next period [H]"
+          style={{ transform: 'translateX(-6px)' }}
+        >
+          <Icon path={mdiMenuRight} className="icon" />
+        </button>
+      )}
       <HabitAddButton projectID={projectID} standalone={projectID === 'default'} />
       {projectID !== 'default' && (
         <>
