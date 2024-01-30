@@ -4,8 +4,11 @@ html {
   box-sizing: border-box;
   height: 100%;
   width: 100%;
-  overflow: visible;
-  // overflow-x: hidden;
+  overflow-x: hidden;
+
+  &.overflow-visible {
+    overflow: visible;
+  }
 }
 
 *,

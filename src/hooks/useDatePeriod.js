@@ -149,6 +149,15 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
     reset();
   }, [width]);
 
+  useEffect(() => {
+    const diff = differenceInDays(dateEnd, dateStart) + 1;
+    if (diff > periodDuration && width >= 850 && !weekly) {
+      document.documentElement.classList.add('overflow-visible');
+    } else {
+      document.documentElement.classList.remove('overflow-visible');
+    }
+  }, [dateEnd, dateStart]);
+
   return [
     dateEnd,
     setDateEnd,
