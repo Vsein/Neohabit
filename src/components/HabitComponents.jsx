@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { formatISO } from 'date-fns';
 import { Icon } from '@mdi/react';
 import {
   mdiDelete,
@@ -17,6 +16,7 @@ import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
+import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
 import Heatmap from './Heatmap';
 
 function HabitControls({
@@ -42,7 +42,7 @@ function HabitControls({
   const addCell = async () => {
     await updateHeatmap({
       heatmapID: heatmap?._id,
-      values: { value: 1, date: formatISO(new Date(), { representation: 'date' }) },
+      values: { value: 1, date: getUTCOffsettedDate() },
     });
   };
   const openCellAddDropdown = (e, isTarget) => {
@@ -168,7 +168,11 @@ function HabitAddButton({ projectID = '', standalone = false }) {
   return (
     <button
       className="overview-open-settings active right"
-      style={{ transform: 'scale(1.25)', [standalone ? '' : 'marginRight']: '3px', width: 'min-content' }}
+      style={{
+        transform: 'scale(1.25)',
+        [standalone ? '' : 'marginRight']: '3px',
+        width: 'min-content',
+      }}
       onClick={() => dispatch(changeTo({ habitID: '', projectID, type: 'habit' }))}
       title="Add a new habit"
       type="button"

@@ -11,6 +11,7 @@ import {
   addYears,
   addDays,
   differenceInDays,
+  formatISO,
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
@@ -165,4 +166,10 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
   ];
 }
 
-export { getAdaptivePeriodLength };
+function getUTCOffsettedDate(date = new Date()) {
+  return formatISO(addDays(date, new Date().getTimezoneOffset() > 0 * 1), {
+    representation: 'date',
+  });
+}
+
+export { getAdaptivePeriodLength, getUTCOffsettedDate };

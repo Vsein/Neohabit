@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { differenceInDays, formatISO } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import {
@@ -16,6 +16,7 @@ import {
 } from '../state/services/heatmap';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
+import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -140,8 +141,8 @@ export default function CellTip() {
               decreaseCellPeriod({
                 heatmapID,
                 values: {
-                  dateStart: formatISO(dateStart, { representation: 'date' }),
-                  dateEnd: formatISO(dateEnd, { representation: 'date' }),
+                  dateStart: getUTCOffsettedDate(dateStart),
+                  dateEnd: getUTCOffsettedDate(dateEnd),
                 },
               });
               setCellTipActions(Math.max(actions - 1, 0));
@@ -158,7 +159,7 @@ export default function CellTip() {
               updateHeatmap({
                 heatmapID,
                 values: {
-                  date: formatISO(dateStart, { representation: 'date' }),
+                  date: getUTCOffsettedDate(dateStart),
                   value: +e.target.value - actions,
                 },
               });
@@ -172,7 +173,7 @@ export default function CellTip() {
             onClick={() => {
               updateHeatmap({
                 heatmapID,
-                values: { date: formatISO(dateStart, { representation: 'date' }), value: 1 },
+                values: { date: getUTCOffsettedDate(dateStart), value: 1 },
               });
               setCellTipActions(actions + 1);
               dispatch(changeCellActions({ actions: actions + 1 }));
@@ -188,8 +189,8 @@ export default function CellTip() {
               deleteCellPeriod({
                 heatmapID,
                 values: {
-                  dateStart: formatISO(dateStart, { representation: 'date' }),
-                  dateEnd: formatISO(dateEnd, { representation: 'date' }),
+                  dateStart: getUTCOffsettedDate(dateStart),
+                  dateEnd: getUTCOffsettedDate(dateEnd),
                   actions,
                 },
               });
