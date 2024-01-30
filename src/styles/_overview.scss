@@ -528,3 +528,15 @@ $cell-margin: 2px;
     height: 100%;
   }
 }
+
+.overview-no-habits {
+  // grid-area: name;
+  margin: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-rendering: auto;
+  text-align: center;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+}

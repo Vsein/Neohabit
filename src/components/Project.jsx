@@ -124,6 +124,7 @@ export default function Project({
               </>
             )}
             <div className="overview-habits">
+              {project.habits.length === 0 && <h5 className="overview-no-habits">No habits?</h5>}
               {project.habits &&
                 project.habits.map((habit, i) =>
                   habit?._id ? (
