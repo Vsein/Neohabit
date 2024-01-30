@@ -41,9 +41,14 @@
 .react-datepicker {
   background-color: var(--main-background-color);
   color: var(--text-color);
-  border: 1px solid var(--border-color);
-  // border: none;
+  // border: 1px solid var(--border-color);
+  border: none;
   box-shadow: 0 0 3px 1px silver;
+  border-radius: 10px;
+
+  &__header, &__month-container {
+    border-radius: 10px 10px 0px 0px !important;
+  }
 }
 
 .react-datepicker__header {
