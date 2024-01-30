@@ -5,7 +5,7 @@ import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
-import Habit from './Habit';
+import { HabitModalWrapper } from './Habit';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useGetProjectsQuery } from '../state/services/project';
@@ -108,10 +108,9 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               <NameField type="habit" />
             </div>
             {width >= 850 && habitID && (
-              <Habit
+              <HabitModalWrapper
                 heatmap={heatmap}
                 habit={habit}
-                modal={true}
                 overridenElimination={values.elimination}
                 overridenNumeric={values.numeric}
               />
@@ -139,7 +138,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <ColorPicker />
               </div>
             </div>
-            <ModalButtons disabled={submitting} isNew={!habitID} type="habit" />
+            <ModalButtons disabled={submitting || !values?.name} isNew={!habitID} type="habit" />
           </form>
         )}
       />

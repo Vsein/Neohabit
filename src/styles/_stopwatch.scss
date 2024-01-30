@@ -60,13 +60,16 @@
   align-items: center;
   height: 50px;
   padding-inline: 10px;
+  display: grid;
+  grid-template-columns: min-content min-content min-content 1fr min-content;
 
   @media (max-width: 800px) {
     height: 40px;
-    padding-inline: 5px;
+    gap: 10px;
 
     & .logo-section {
       height: 35px;
+      width: 35px;
 
       & .icon.medium {
         height: 30px;
@@ -86,6 +89,10 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+
+  @media (max-width: 800px) {
+    padding-left: 0px;
+  }
 }
 
 .stopwatch-icon {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { formatISO } from 'date-fns';
 import { Icon } from '@mdi/react';
 import {
   mdiDelete,
@@ -17,6 +16,7 @@ import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
+import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
 import Heatmap from './Heatmap';
 
 function HabitControls({
@@ -42,13 +42,14 @@ function HabitControls({
   const addCell = async () => {
     await updateHeatmap({
       heatmapID: heatmap?._id,
-      values: { value: 1, date: formatISO(new Date(), { representation: 'date' }) },
+      values: { value: 1, date: getUTCOffsettedDate() },
     });
   };
   const openCellAddDropdown = (e, isTarget) => {
     e.stopPropagation();
     dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isActive: true, isTarget }));
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+    cellAddDropdown.classList.toggle('hidden');
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
     const { innerWidth: width, innerHeight: height } = window;
@@ -57,7 +58,7 @@ function HabitControls({
       cellAddDropdown.style.left = `${rect.x - (isTarget ? 165 : 113) + (width < 400 ? 25 : 0)}px`;
     } else {
       cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
-      cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
+      cellAddDropdown.style.left = `${rect.x + window.scrollX + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
     }
     cellAddDropdown.style.setProperty('--border-color', habit.color);
   };
@@ -161,21 +162,22 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile, p
   );
 }
 
-function HabitAddButton({ vertical, projectID = '' }) {
+function HabitAddButton({ projectID = '', standalone = false }) {
   const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(changeTo({ habitID: '', projectID, type: 'habit' }));
-  };
 
   return (
     <button
-      className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
-      onClick={openOverlay}
-      title="Add a new habit [A]"
+      className="overview-open-settings active right"
+      style={{
+        transform: 'scale(1.25)',
+        [standalone ? '' : 'marginRight']: '3px',
+        width: 'min-content',
+      }}
+      onClick={() => dispatch(changeTo({ habitID: '', projectID, type: 'habit' }))}
+      title="Add a new habit"
       type="button"
     >
-      <Icon className="icon small" path={mdiPlus} />
-      <p>Add a new habit</p>
+      <Icon path={mdiPlus} className="icon small centering" />
     </button>
   );
 }

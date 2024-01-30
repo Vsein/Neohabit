@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { differenceInDays, formatISO } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import {
@@ -16,6 +16,7 @@ import {
 } from '../state/services/heatmap';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
+import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -73,7 +74,7 @@ function changeCellOffset(e, tipContent, actions, override = false) {
 
   const tipWidth = cellTip.getBoundingClientRect().width;
   cellTip.style.left = `${rect.x + rect.width / 2 - tipWidth / 2}px`;
-  const leftBorder = rect.x + rect.width / 2 - tipWidth / 2;
+  const leftBorder = rect.x + window.scrollX + rect.width / 2 - tipWidth / 2;
   const rightBorder = leftBorder + tipWidth;
   if (leftBorder < rectParent.x) {
     cellTip.style.left = `${rectParent.x + 10}px`;
@@ -83,6 +84,9 @@ function changeCellOffset(e, tipContent, actions, override = false) {
   }
   if (rectParent.width < tipWidth + 10) {
     cellTip.style.left = `${rectParent.x + rectParent.width / 2 - tipWidth / 2}px`;
+  }
+  if (window.scrollX) {
+    cellTip.style.left = `${window.scrollX + rect.x + rect.width / 2 - tipWidth / 2}px`;
   }
   return 0;
 }
@@ -137,8 +141,8 @@ export default function CellTip() {
               decreaseCellPeriod({
                 heatmapID,
                 values: {
-                  dateStart: formatISO(dateStart, { representation: 'date' }),
-                  dateEnd: formatISO(dateEnd, { representation: 'date' }),
+                  dateStart: getUTCOffsettedDate(dateStart),
+                  dateEnd: getUTCOffsettedDate(dateEnd),
                 },
               });
               setCellTipActions(Math.max(actions - 1, 0));
@@ -155,7 +159,7 @@ export default function CellTip() {
               updateHeatmap({
                 heatmapID,
                 values: {
-                  date: formatISO(dateStart, { representation: 'date' }),
+                  date: getUTCOffsettedDate(dateStart),
                   value: +e.target.value - actions,
                 },
               });
@@ -169,7 +173,7 @@ export default function CellTip() {
             onClick={() => {
               updateHeatmap({
                 heatmapID,
-                values: { date: formatISO(dateStart, { representation: 'date' }), value: 1 },
+                values: { date: getUTCOffsettedDate(dateStart), value: 1 },
               });
               setCellTipActions(actions + 1);
               dispatch(changeCellActions({ actions: actions + 1 }));
@@ -185,8 +189,8 @@ export default function CellTip() {
               deleteCellPeriod({
                 heatmapID,
                 values: {
-                  dateStart: formatISO(dateStart, { representation: 'date' }),
-                  dateEnd: formatISO(dateEnd, { representation: 'date' }),
+                  dateStart: getUTCOffsettedDate(dateStart),
+                  dateEnd: getUTCOffsettedDate(dateEnd),
                   actions,
                 },
               });

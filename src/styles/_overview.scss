@@ -18,8 +18,8 @@ $cell-margin: 2px;
   }
 
   @media (max-width: 550px) {
-    padding: 5px;
-    gap: 10px;
+    padding: 7px 0px;
+    gap: 7px;
   }
 }
 
@@ -34,25 +34,44 @@ $cell-margin: 2px;
   height: 50px;
   padding-inline: 20px;
 
+  @media (min-width: 850px) {
+    // position: sticky;
+    // top: 0;
+    // z-index: 2;
+  }
+
   @media (max-width: 800px) {
-    height: 80px;
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: 1fr;
     grid-template-areas:
-      '. topbar-right'
-      'date topbar-right';
+      'date';
     justify-items: center;
+
+    &:not(.only-datepicker) {
+      height: 80px;
+      grid-template-areas:
+        '. topbar-right'
+        'date topbar-right';
+    }
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: 1fr;
     grid-template-areas:
+      'date';
+
+    &:not(.only-datepicker) {
+      grid-template-columns: 1fr min-content;
+      grid-template-areas:
       '. topbar-right'
       'date date';
-    padding-inline: 5px;
+      padding-inline: 5px;
+    }
   }
 
   @media (max-width: 330px) {
-    height: 100px;
+    &:not(.only-datepicker) {
+      height: 100px;
+    }
   }
 }
 
@@ -92,6 +111,10 @@ $cell-margin: 2px;
     calc(var(--length) * 19px) + var(--habit-name-width) + var(--habit-controls-width) + 10px,
     100%
   );
+
+  @media (max-width: 550px) {
+    border-radius: 5px;
+  }
 }
 
 .overview-container {
@@ -101,8 +124,12 @@ $cell-margin: 2px;
   direction: rtl;
   overflow-y: hidden;
   padding-right: var(--overview-padding-right);
-  height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 5px));
+  height: max(23px, calc(19px * var(--habits) * var(--multiplier) + 5px));
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+
+  &.mobile {
+    height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 5px));
+  }
 
   &.vertical {
     height: calc(var(--length) * 19px + 360px);
@@ -114,15 +141,23 @@ $cell-margin: 2px;
   direction: ltr;
   position: absolute;
   display: grid;
-  grid-template-areas:
-    'topbar-left months   topbar-right'
-    'topbar-left days     topbar-right'
-    'habits    habits habits';
-  grid-template-rows: $cell-height 15px min-content;
+  grid-template-areas: 'habits    habits habits';
+  grid-template-rows: min-content;
   grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(
       --habit-controls-width
     );
   row-gap: 4px;
+
+  &.mobile {
+    grid-template-areas:
+      'topbar-left months   topbar-right'
+      'topbar-left days     topbar-right'
+      'habits    habits habits';
+    grid-template-rows: $cell-height 15px min-content;
+    grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(
+        --habit-controls-width
+      );
+  }
 
   &.vertical {
     grid-template-areas:
@@ -130,7 +165,7 @@ $cell-margin: 2px;
       'topbar-left  topbar-left  habits'
       'months       days         habits'
       'move-right   move-right   habits';
-    grid-template-rows: 30px 200px calc(var(--length) * 19px) 115px;
+    grid-template-rows: 200px calc(var(--length) * 19px) 115px;
     grid-template-columns: 25px 15px min-content;
     gap: 3px;
 
@@ -176,41 +211,15 @@ $cell-margin: 2px;
     }
   }
 
-  .overview-days {
-    display: inline-flex;
-    flex-direction: row;
-    grid-area: days;
-
-    &-day {
-      line-height: 100%;
-      font-size: calc(
-        #{$cell-height} * var(--multiplier) + #{$cell-margin} * 2 * (var(--multiplier) - 1) + 1px
-      );
-      text-align: center;
-      padding-block: 2px;
-      border-radius: 3px;
-      height: 15px;
-      width: 15px;
-      font-weight: 600;
-      margin: $cell-margin;
-      vertical-align: middle;
-
-      &.today {
-        box-shadow: 0px 0px 4px 2px var(--signature-color);
-        border-radius: 3px;
-      }
-
-      &.weekend {
-        color: var(--bright-signature-color);
-      }
-    }
-  }
-
   .overview-habits {
     grid-area: habits;
     display: grid;
     grid-template-rows: 17px;
     row-gap: 2px;
+
+    @media (min-width: 850px) {
+      padding-top: 3px;
+    }
 
     .overview-habit {
       display: grid;
@@ -225,6 +234,14 @@ $cell-margin: 2px;
         overflow: hidden;
         white-space: nowrap;
         padding-left: 5px;
+
+        &:hover {
+          opacity: 0.7;
+        }
+
+        &[disabled] {
+          opacity: 1;
+        }
 
         @media (max-width: 850px) {
           font-size: 13px;
@@ -322,12 +339,29 @@ $cell-margin: 2px;
   border-radius: 10px 10px 0px 0px;
   display: grid;
   padding-right: 5px;
-  grid-template-areas: 'name date settings';
-  grid-template-columns: 185px min-content 115px;
-  gap: 20px;
-  justify-content: space-between;
+  grid-template-areas:
+    'name months settings'
+    'name days settings';
+
+  // 'topbar-left months   topbar-right'
+  // 'topbar-left days     topbar-right'
+  grid-template-columns: 200px calc(var(--length) * 19px) 115px;
+  grid-template-rows: 15px 15px;
+  // justify-content: space-between;
   align-items: center;
   width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
+
+  @media (min-width: 850px) {
+    // &.singular {
+    //   position: sticky;
+    //   top: 50px;
+    //   z-index: 1;
+    // }
+  }
+
+  & > a, & > h3 {
+    grid-area: name;
+  }
 
   @media (max-width: 800px) {
     @include overview-header-small;
@@ -336,12 +370,12 @@ $cell-margin: 2px;
   @media (max-width: 550px) {
     grid-template-areas: 'name settings';
 
-    &.singular {
-      grid-template-areas:
-        'name settings'
-        'date date';
-      padding-bottom: 5px;
-    }
+    // &.singular {
+    //   grid-template-areas:
+    //     'name settings'
+    //     'date date';
+    //   padding-bottom: 5px;
+    // }
   }
 
   &.vertical {
@@ -350,17 +384,24 @@ $cell-margin: 2px;
   }
 
   &.habit-mode {
-    grid-template-columns: 250px min-content 170px;
+    grid-template-columns: 1fr 170px;
 
-    @media (max-width: 950px) {
-      gap: 0px;
-      grid-template-columns: 190px min-content 170px;
+    &.small {
+      grid-template-areas: 'name'
+      'settings';
+      justify-items: center;
     }
+
+//     @media (max-width: 950px) {
+//       gap: 0px;
+//       grid-template-columns: 190px min-content 170px;
+//     }
   }
 
   &.modal-mode {
     grid-template-areas: 'date settings';
     grid-template-columns: 4fr 1fr;
+    grid-template-rows: 1fr;
 
     @media (max-width: 950px) {
       grid-template-areas: 'date settings' !important;
@@ -368,39 +409,38 @@ $cell-margin: 2px;
     }
 
     @media (max-width: 600px) {
-      grid-template-areas: 'date'
-      'settings' !important;
+      grid-template-areas:
+        'date'
+        'settings' !important;
       grid-template-columns: 1fr !important;
       grid-template-rows: 1fr !important;
-    }
-  }
-
-
-  &.small {
-    @include overview-header-small;
-    grid-template-areas: 'name settings';
-
-    &.singular {
-      grid-template-areas:
-        'name settings'
-        'date date';
-      padding-bottom: 5px;
-    }
-
-    &.habit-mode {
-      grid-template-areas:
-        'name'
-        'settings'
-        'date';
-      padding-bottom: 5px;
       justify-items: center;
     }
   }
 
-  & > div > h3, & > h3 {
+  &.small {
+    @include overview-header-small;
+    grid-template-areas: 'name settings';
+  }
+
+  & a:not(.overview-open-settings) {
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+    height: 30px;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &[disabled] {
+      opacity: 1;
+    }
+  }
+
+  & h3 {
     // grid-area: name;
     margin: auto;
-    line-height: 30px;
     text-overflow: ellipsis;
     white-space: nowrap;
     text-rendering: auto;
@@ -442,6 +482,16 @@ $cell-margin: 2px;
   }
 }
 
+.overview-date-button {
+  &:hover {
+    opacity: 0.5;
+  }
+
+  &[disabled] {
+    opacity: 1;
+  }
+}
+
 .overview-settings {
   grid-area: settings;
   display: flex;
@@ -477,4 +527,16 @@ $cell-margin: 2px;
     flex-wrap: wrap;
     height: 100%;
   }
+}
+
+.overview-no-habits {
+  // grid-area: name;
+  margin: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-rendering: auto;
+  text-align: center;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
 }

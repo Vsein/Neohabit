@@ -4,10 +4,12 @@ import {
   getWeekOfMonth,
   differenceInDays,
   getDate,
+  getDay,
   addDays,
   isToday,
   isWeekend,
   isLastDayOfMonth,
+  isSameWeek,
 } from 'date-fns';
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
@@ -15,14 +17,20 @@ const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep
 function MonthWeekly({ dateStart, index }) {
   const date = addWeeks(dateStart, index);
   const monthName = monthNames[date.getMonth()];
-  if (getWeekOfMonth(date) === 2 && index !== 1 || (index === 0 && getWeekOfMonth(date) <= 3)) {
+  if (isSameWeek(date, new Date())) {
+    if (getWeekOfMonth(date) === 2) {
+      return <div className="heatmap-months-month active same-month">{monthName}</div>;
+    }
+    return <div className="heatmap-months-month same-month arrow">⮟</div>;
+  }
+  if (getWeekOfMonth(date) === 2 || index === 0) {
     return <div className="heatmap-months-month active">{monthName}</div>;
   }
   return <div className="heatmap-months-month">{monthName}</div>;
 }
 
-function HeatmapMonthsWeekly({ dateStart }) {
-  const months = Array.from(new Array(Math.floor(365 / 7)));
+function HeatmapMonthsWeekly({ dateStart, diffWeeks }) {
+  const months = Array.from(new Array(diffWeeks));
   return (
     <div className="heatmap-months">
       {months.map((_, index) => (
@@ -53,13 +61,18 @@ function HeatmapMonthsDaily({ dateStart, dateEnd }) {
 }
 
 const DayNames = {
+  0: 'Sun',
   1: 'Mon',
+  2: 'Tue',
   3: 'Wed',
+  4: 'Thu',
   5: 'Fri',
+  6: 'Sat',
 };
 
 function Weekday({ index }) {
-  return <div className="heatmap-weekdays-weekday">{DayNames[index]}</div>;
+  const sameWeekday = getDay(new Date()) === index;
+  return <div className={`heatmap-weekdays-weekday ${sameWeekday ? 'same-weekday' : ''}`}>{(!!(index % 2) || sameWeekday) && DayNames[index]}</div>;
 }
 
 function HeatmapWeekdays({ dateStart }) {

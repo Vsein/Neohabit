@@ -1,10 +1,16 @@
 import React from 'react';
-import { Routes, Route, Navigate, Outlet, useParams } from 'react-router-dom';
+import { Routes, Route, Outlet, useParams, useNavigate } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 import { useGetTasksQuery } from '../state/services/todolist';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import Habit from '../components/Habit';
+import { useGetSettingsQuery } from '../state/services/settings';
+import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
+import useWindowDimensions from '../hooks/useWindowDimensions';
+import { ReturnButton } from '../components/HabitComponents';
+import { DatePeriodPicker } from '../components/DatePickers';
+import { HabitDefaultWrapper } from '../components/Habit';
+import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function HabitPage() {
   useTitle('Habit | Neohabit');
@@ -39,20 +45,84 @@ function HabitLayout() {
 }
 
 function Overview() {
+  const navigate = useNavigate();
   const tasks = useGetTasksQuery();
   const habits = useGetHabitsQuery();
   const heatmaps = useGetHeatmapsQuery();
+  const settings = useGetSettingsQuery();
   const { habitID } = useParams();
   const habit =
     useGetHabitsQuery().data.find((habito) => habito._id === habitID) ??
     useGetHabitsQuery().data.find((habito) => habito.name === 'Default');
   const heatmap = useGetHeatmapsQuery().data.find((heatmapo) => heatmapo.habit._id === habitID);
+  const vertical = false;
 
-  return tasks.isFetching || habits.isFetching || heatmaps.isFetching ? (
-    <> </>
+  const { width } = useWindowDimensions();
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
+
+  const datePeriodLength =
+    adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
+  const [
+    dateEnd,
+    setDateEnd,
+    dateStart,
+    setDateStart,
+    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
+  ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365);
+
+  const colorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(habit.color), 0.8)
+    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(habit.color), 0.6);
+  const calmColorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
+    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+
+  return tasks.isFetching || habits.isFetching || heatmaps.isFetching || settings.isFetching ? (
+    <div className="loader" />
   ) : (
-    <div className="contentlist">
-      <Habit heatmap={heatmap} habit={habit} habitPage={true} />
-    </div>
+    <>
+      <div className="contentlist-controls"
+        style={{
+          '--signature-color': colorShade,
+          '--bright-signature-color': colorShade,
+          '--calm-signature-color': `${colorShade}55`,
+          '--datepicker-text-color': getNumericTextColor(colorShade),
+          '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+        }}
+      >
+        <div className="overview-centering" style={{ width: 'max-content' }}>
+          <button
+            className={`overview-habit-add standalone topbar ${vertical ? 'vertical' : ''}`}
+            onClick={() => navigate(-1)}
+            style={{ gridTemplateColumns: 'min-content 150px' }}
+            title="Add a new habit [A]"
+          >
+            <ReturnButton />
+            <p>Return</p>
+          </button>
+        </div>
+        <DatePeriodPicker
+          dateStart={dateStart}
+          setDateStart={setDateStart}
+          dateEnd={dateEnd}
+          setDateEnd={setDateEnd}
+          subPeriod={subPeriod}
+          addPeriod={addPeriod}
+          setToPast={setToPast}
+          reset={reset}
+          setToFuture={setToFuture}
+        />
+      </div>
+      <div className="contentlist">
+        <HabitDefaultWrapper
+          heatmap={heatmap}
+          habit={habit}
+          habitPage={true}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          mobile={mobile}
+        />
+      </div>
+    </>
   );
 }

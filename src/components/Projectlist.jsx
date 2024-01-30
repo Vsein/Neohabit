@@ -12,8 +12,8 @@ import useWindowDimensions from '../hooks/useWindowDimensions';
 import useLoaded from '../hooks/useLoaded';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';
-import Project from './Project';
-import { DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
+import { ProjectWrapper } from './Project';
+import { DatePeriodPicker } from './DatePickers';
 
 export default function Projectlist() {
   const [loaded] = useLoaded();
@@ -60,7 +60,7 @@ export default function Projectlist() {
           <button
             className={`overview-habit-add standalone topbar ${vertical ? 'vertical' : ''}`}
             onClick={openOverlay}
-            title="Add a new habit [A]"
+            title="Add a new project"
           >
             <p>New project</p>
           </button>
@@ -76,34 +76,30 @@ export default function Projectlist() {
           reset={reset}
           setToFuture={setToFuture}
         />
-        <OverviewTopbarRight
-          isHeatmap={false}
-          vertical={vertical}
-          dateStart={dateStart}
-          subYear={subYear}
-          addYear={addYear}
-          addMonth={addMonth}
-        />
       </div>
       <div className="contentlist">
         {projects.data &&
           projects.data.map((project, i) => (
-            <Project
+            <ProjectWrapper
               key={i}
               project={project}
               datePeriodLength={datePeriodLength}
               mobile={mobile}
               globalDateStart={dateStart}
               globalDateEnd={dateEnd}
+              globalSubPeriod={subPeriod}
+              globalAddPeriod={addPeriod}
             />
           ))}
         {defaultProject.habits.length ? (
-          <Project
+          <ProjectWrapper
             project={defaultProject}
             datePeriodLength={datePeriodLength}
             mobile={mobile}
             globalDateStart={dateStart}
             globalDateEnd={dateEnd}
+            subPeriod={subPeriod}
+            addPeriod={addPeriod}
           />
         ) : (
           <></>

@@ -3,7 +3,10 @@ import api from './api';
 const changeTheme = (newTheme) => {
   const root = document.documentElement;
   const link = document.querySelector("link[rel~='icon']");
-  link.href = newTheme === 'dark' ? './logos/favicon-dark2.ico' : './logos/favicon.ico';
+  link.href = newTheme === 'dark' ? '/favicon-dark2.ico' : '/favicon.ico';
+  document
+    .querySelector('meta[name="theme-color"]')
+    .setAttribute('content', newTheme === 'dark' ? '#1c2128' : '#144e12');
   root.className = newTheme;
 };
 

@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { formatISO } from 'date-fns';
+import { formatISO, addDays } from 'date-fns';
 import { Form } from 'react-final-form';
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { close } from '../state/features/cellAdd/cellAddSlice';
 import { DateField, ActionsField, PeriodField } from './CellAddFields';
+import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
 
 export default function CellAdd() {
   const dispatch = useDispatch();
@@ -25,7 +26,10 @@ export default function CellAdd() {
     };
   });
   const onSubmit = async (values) => {
-    await updateHeatmap({ heatmapID, values });
+    await updateHeatmap({
+      heatmapID,
+      values: { ...values, date: getUTCOffsettedDate(addDays(new Date(values.date), 1)) },
+    });
     closeDropdown();
   };
 

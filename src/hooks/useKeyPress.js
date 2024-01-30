@@ -17,6 +17,8 @@ export default function useKeyPress(keys, callback, node = null) {
       }
       // check if one of the key is part of the ones we want
       if (keys.some((key) => event.key === key)) {
+        const cellTip = document.querySelector('.cell-tip');
+        cellTip.classList.add('hidden');
         callbackRef.current(event);
       }
     },

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import { mdiMenuLeft, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
+import { mdiMenuLeft, mdiMenuRight, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
@@ -18,6 +18,8 @@ export default function Project({
   project,
   datePeriodLength,
   mobile,
+  addPeriod,
+  subPeriod,
   singular = false,
   globalDateStart = null,
   globalDateEnd = null,
@@ -28,20 +30,6 @@ export default function Project({
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
-  const [
-    dateEnd,
-    setDateEnd,
-    dateStart,
-    setDateStart,
-    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
-  ] = useDatePeriod(datePeriodLength);
-
-  useEffect(() => {
-    if (globalDateStart && globalDateEnd) {
-      setDateStart(globalDateStart);
-      setDateEnd(globalDateEnd);
-    }
-  }, [globalDateStart, globalDateEnd]);
 
   const colorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
@@ -49,6 +37,15 @@ export default function Project({
   const calmColorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
     : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+
+  const HeaderName = () =>
+    singular ? (
+      <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+    ) : (
+      <NavLink to={`../project/${project?._id}`} title={project.name}>
+        <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
+      </NavLink>
+    );
 
   return (
     !heatmaps.isFetching &&
@@ -58,7 +55,7 @@ export default function Project({
         className={`overview-centering ${mobile ? 'mobile' : ''} slide-${onboardingSlide}`}
         style={{
           '--habits': project.habits.length,
-          '--length': differenceInDays(dateEnd, dateStart) + 1,
+          '--length': differenceInDays(globalDateEnd, globalDateStart) + 1,
           '--vertical': vertical * 1,
           // '--multiplier': settings.data.cell_height_multiplier,
           '--multiplier': 1,
@@ -72,63 +69,70 @@ export default function Project({
         }}
       >
         <div
-          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${
-            singular ? 'singular' : ''
-          }`}
+          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
         >
-          {singular ? (
-            <div className="overview-header-return-mode">
-              <ReturnButton />
-              <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-            </div>
+          {mobile ? (
+            <HeaderName />
           ) : (
-            <NavLink to={`../project/${project?._id}`} title={project.name}>
-              <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
-            </NavLink>
-          )}
-          {(!mobile || singular) && (
-            <DatePeriodPicker
-              dateStart={dateStart}
-              setDateStart={setDateStart}
-              dateEnd={dateEnd}
-              setDateEnd={setDateEnd}
-              subPeriod={subPeriod}
-              addPeriod={addPeriod}
-              setToPast={setToPast}
-              reset={reset}
-              setToFuture={setToFuture}
-            />
-          )}
-          <ProjectControls projectID={project?._id} />
-        </div>
-        <div className={`overview-container ${vertical ? 'vertical' : ''}`}>
-          <div className={`overview ${vertical ? 'vertical' : ''}`}>
-            <div className="overview-topbar-left">
-              {!vertical && (
-                <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
-              )}
-              <button className="centering" onClick={subMonth} title="Move month to the left [H]">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
+              <HeaderName />
+              <button
+                className="centering right overview-date-button"
+                onClick={subPeriod}
+                title="Previous period [H]"
+                style={{ transform: 'translateX(-4px)' }}
+              >
                 <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
               </button>
             </div>
-            <HeatmapMonthsDaily dateStart={dateStart} dateEnd={dateEnd} />
-            <HeatmapDays dateStart={dateStart} dateEnd={dateEnd} />
-            <OverviewTopbarRight
-              vertical={vertical}
-              dateStart={dateStart}
-              subYear={subYear}
-              addYear={addYear}
-              addMonth={addMonth}
-            />
+          )}
+          {!mobile && (
+            <>
+              <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
+              <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
+            </>
+          )}
+          <ProjectControls projectID={project?._id} mobile={mobile} addPeriod={addPeriod} />
+        </div>
+        <div
+          className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
+        >
+          <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
+            {mobile && (
+              <>
+                <div className="overview-topbar-left">
+                  {/* {!vertical && ( */}
+                  {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
+                  {/* )} */}
+                  <button
+                    className="centering right overview-date-button"
+                    onClick={subPeriod}
+                    title="Previous period [H]"
+                  >
+                    <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
+                  </button>
+                </div>
+                <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
+                <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
+                <OverviewTopbarRight
+                  vertical={vertical}
+                  dateStart={globalDateStart}
+                  // {/* subYear={subYear} */}
+                  // {/* addYear={addYear} */}
+                  addMonth={addPeriod}
+                />
+              </>
+            )}
             <div className="overview-habits">
+              {project.habits.length === 0 && <h5 className="overview-no-habits">No habits?</h5>}
               {project.habits &&
                 project.habits.map((habit, i) =>
                   habit?._id ? (
                     <HabitOverview
                       key={i}
                       habit={habit}
-                      dateStart={dateStart}
-                      dateEnd={dateEnd}
+                      dateStart={globalDateStart}
+                      dateEnd={globalDateEnd}
                       heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
                       vertical={vertical}
                       mobile={mobile}
@@ -139,8 +143,8 @@ export default function Project({
                       <HabitOverview
                         key={i}
                         habit={habits.data.find((habito) => habito._id === habit)}
-                        dateStart={dateStart}
-                        dateEnd={dateEnd}
+                        dateStart={globalDateStart}
+                        dateEnd={globalDateEnd}
                         heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
                         vertical={vertical}
                         mobile={mobile}
@@ -153,41 +157,85 @@ export default function Project({
             {vertical && (
               <button
                 className="overview-period-move-down"
-                onClick={addMonth}
-                title="Move month to the right [L]"
+                onClick={addPeriod}
+                title="Next period [L]"
               >
                 <Icon path={mdiMenuDown} className="icon" />
               </button>
             )}
           </div>
         </div>
-        {!modal && <HabitAddButton vertical={vertical} projectID={project._id} />}
       </div>
     )
   );
 }
 
-function ProjectControls({ projectID }) {
+function ProjectControls({ projectID, mobile, addPeriod }) {
   const dispatch = useDispatch();
 
   return (
-    projectID !== 'default' && (
-      <div className="overview-settings right">
+    <div className="overview-settings" style={{ [mobile ? 'width' : '']: '100%' }}>
+      {!mobile && (
         <button
-          className="overview-open-settings active"
-          onClick={() => dispatch(changeTo({ projectID, type: 'project' }))}
-          title="Edit the project"
+          className="centering left overview-date-button"
+          onClick={addPeriod}
+          title="Next period [L]"
+          style={{ transform: 'translateX(-6px)' }}
         >
-          <Icon path={mdiPencil} className="icon small centering" />
+          <Icon path={mdiMenuRight} className="icon" />
         </button>
-        <button
-          className="overview-open-settings active"
-          onClick={() => dispatch(changeTo({ projectID, type: 'deleteProject' }))}
-          title="Delete the project"
-        >
-          <Icon path={mdiDelete} className="icon small centering" />
-        </button>
-      </div>
-    )
+      )}
+      <HabitAddButton projectID={projectID} standalone={projectID === 'default'} />
+      {projectID !== 'default' && (
+        <>
+          <button
+            className="overview-open-settings active"
+            onClick={() => dispatch(changeTo({ projectID, type: 'project' }))}
+            title="Edit the project"
+          >
+            <Icon path={mdiPencil} className="icon small centering" />
+          </button>
+          <button
+            className="overview-open-settings active"
+            onClick={() => dispatch(changeTo({ projectID, type: 'deleteProject' }))}
+            title="Delete the project"
+          >
+            <Icon path={mdiDelete} className="icon small centering" />
+          </button>
+        </>
+      )}
+    </div>
   );
 }
+
+function ProjectWrapper({
+  project,
+  datePeriodLength,
+  mobile,
+  globalDateStart = null,
+  globalDateEnd = null,
+}) {
+  const [dateEnd, setDateEnd, dateStart, setDateStart, { subPeriod, addPeriod }] =
+    useDatePeriod(datePeriodLength);
+
+  useEffect(() => {
+    if (globalDateStart && globalDateEnd) {
+      setDateStart(globalDateStart);
+      setDateEnd(globalDateEnd);
+    }
+  }, [globalDateStart, globalDateEnd]);
+
+  return (
+    <Project
+      project={project}
+      datePeriodLength={datePeriodLength}
+      mobile={mobile}
+      globalDateStart={dateStart}
+      globalDateEnd={dateEnd}
+      subPeriod={subPeriod}
+      addPeriod={addPeriod}
+    />
+  );
+}
+
+export { ProjectWrapper };
