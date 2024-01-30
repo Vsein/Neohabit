@@ -198,3 +198,40 @@ function ProjectControls({ projectID, mobile, addPeriod }) {
     </div>
   );
 }
+
+function ProjectWrapper({
+  project,
+  datePeriodLength,
+  mobile,
+  globalDateStart = null,
+  globalDateEnd = null,
+}) {
+  const [
+    dateEnd,
+    setDateEnd,
+    dateStart,
+    setDateStart,
+    { subPeriod, addPeriod },
+  ] = useDatePeriod(datePeriodLength);
+
+  useEffect(() => {
+    if (globalDateStart && globalDateEnd) {
+      setDateStart(globalDateStart);
+      setDateEnd(globalDateEnd);
+    }
+  }, [globalDateStart, globalDateEnd]);
+
+  return (
+    <Project
+      project={project}
+      datePeriodLength={datePeriodLength}
+      mobile={mobile}
+      globalDateStart={dateStart}
+      globalDateEnd={dateEnd}
+      subPeriod={subPeriod}
+      addPeriod={addPeriod}
+    />
+  );
+}
+
+export { ProjectWrapper };

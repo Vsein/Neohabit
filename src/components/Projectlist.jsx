@@ -12,7 +12,7 @@ import useWindowDimensions from '../hooks/useWindowDimensions';
 import useLoaded from '../hooks/useLoaded';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';
-import Project from './Project';
+import { ProjectWrapper } from './Project';
 import { DatePeriodPicker } from './DatePickers';
 
 export default function Projectlist() {
@@ -80,19 +80,19 @@ export default function Projectlist() {
       <div className="contentlist">
         {projects.data &&
           projects.data.map((project, i) => (
-            <Project
+            <ProjectWrapper
               key={i}
               project={project}
               datePeriodLength={datePeriodLength}
               mobile={mobile}
               globalDateStart={dateStart}
               globalDateEnd={dateEnd}
-              subPeriod={subPeriod}
-              addPeriod={addPeriod}
+              globalSubPeriod={subPeriod}
+              globalAddPeriod={addPeriod}
             />
           ))}
         {defaultProject.habits.length ? (
-          <Project
+          <ProjectWrapper
             project={defaultProject}
             datePeriodLength={datePeriodLength}
             mobile={mobile}
