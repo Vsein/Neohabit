@@ -18,7 +18,7 @@ function MonthWeekly({ dateStart, index }) {
   const date = addWeeks(dateStart, index);
   const monthName = monthNames[date.getMonth()];
   if (isSameWeek(date, new Date())) {
-    if (getWeekOfMonth(date) === 2 || index === 0) {
+    if (getWeekOfMonth(date) === 2) {
       return <div className="heatmap-months-month active same-month">{monthName}</div>;
     }
     return <div className="heatmap-months-month same-month arrow">⮟</div>;
