@@ -28,7 +28,7 @@ export default function Overlay() {
   if (!isActive) return <></>;
 
   return (
-    <div className={isActive ? 'overlay overlay-active' : 'overlay'} onMouseDown={closeOverlay}>
+    <div className={isActive ? 'overlay overlay-active centering' : 'overlay'} onMouseDown={closeOverlay}>
       {type === 'habit' ? (
         <HabitModal habitID={habitID} projectID={projectID} closeOverlay={closeOverlay} />
       ) : (
