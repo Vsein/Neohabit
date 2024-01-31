@@ -103,7 +103,7 @@ $cell-margin: 2px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2px;
+  // gap: 2px;
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
@@ -124,11 +124,11 @@ $cell-margin: 2px;
   direction: rtl;
   overflow-y: hidden;
   padding-right: var(--overview-padding-right);
-  height: max(23px, calc(19px * var(--habits) * var(--multiplier) + 5px));
+  height: max(27px, calc(19px * var(--habits) * var(--multiplier) + 8px));
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
 
   &.mobile {
-    height: max(50px, calc(30px + 19px * var(--habits) * var(--multiplier) + 5px));
+    height: max(55px, calc(30px + 19px * var(--habits) * var(--multiplier) + 6px));
   }
 
   &.vertical {
@@ -146,14 +146,14 @@ $cell-margin: 2px;
   grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(
       --habit-controls-width
     );
-  row-gap: 4px;
+  // row-gap: 4px;
 
   &.mobile {
     grid-template-areas:
       'topbar-left months   topbar-right'
       'topbar-left days     topbar-right'
       'habits    habits habits';
-    grid-template-rows: $cell-height 15px min-content;
+    grid-template-rows: 15px 15px min-content;
     grid-template-columns: var(--habit-name-width) calc(var(--length) * 19px) var(
         --habit-controls-width
       );
@@ -216,9 +216,10 @@ $cell-margin: 2px;
     display: grid;
     grid-template-rows: 17px;
     row-gap: 2px;
+    padding-top: 4px;
 
     @media (min-width: 850px) {
-      padding-top: 3px;
+      padding-top: 5px;
     }
 
     .overview-habit {
