@@ -280,6 +280,9 @@ input[type='checkbox']:checked.checkbox {
 }
 
 .react-colorful {
+  height: 150px !important;
+  width: 170px !important;
+
   @media (max-width: 700px) {
     height: 150px !important;
     width: 150px !important;

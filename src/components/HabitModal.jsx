@@ -76,7 +76,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             className="modal modal-active modal-habit"
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
-            style={{ height: width >= 850 && habitID ? '680px' : 'auto' }}
           >
             <div className="modal-header">
               <div className="tag-wrapper">
@@ -117,7 +116,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             )}
             <div className="modal-details-habit-wrapper">
               <div className="modal-details-block description-area">
-                <DescriptionField rows="12" />
+                <DescriptionField rows="10" />
               </div>
               <div className="modal-details-block mode-area">
                 <div className="form-task-description">
