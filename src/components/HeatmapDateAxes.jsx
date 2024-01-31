@@ -21,7 +21,7 @@ function MonthWeekly({ dateStart, index }) {
     if (getWeekOfMonth(date) === 2) {
       return <div className="heatmap-months-month active same-month">{monthName}</div>;
     }
-    return <div className="heatmap-months-month same-month arrow">⮟</div>;
+    return <div className="heatmap-months-month same-month arrow">&#9660;</div>;
   }
   if (getWeekOfMonth(date) === 2 || index === 0) {
     return <div className="heatmap-months-month active">{monthName}</div>;
