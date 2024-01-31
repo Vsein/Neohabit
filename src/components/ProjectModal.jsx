@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
@@ -86,9 +87,14 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
             {projectID ? (
               <div className="tag-wrapper">
                 Project:
-                <div className="tag">
+                <NavLink
+                  className="tag"
+                  onClick={closeOverlay}
+                  to={`../project/${project?._id}`}
+                  title={project.name}
+                >
                   <HabitTag habit={project} />
-                </div>
+                </NavLink>
               </div>
             ) : (
               <div className="tag-wrapper" style={{ height: '100%' }}>

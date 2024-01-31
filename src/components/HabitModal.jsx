@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
@@ -82,18 +83,28 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 {projectID && (
                   <div className="tag-wrapper">
                     Project:
-                    <div className="tag">
+                    <NavLink
+                      className="tag"
+                      onClick={closeOverlay}
+                      to={`../project/${project?._id}`}
+                      title={project.name}
+                    >
                       <HabitTag habit={project} />
-                    </div>
+                    </NavLink>
                     &gt;
                   </div>
                 )}
                 {habitID ? (
                   <div className="tag-wrapper">
                     Habit:
-                    <div className="tag">
+                    <NavLink
+                      className="tag"
+                      onClick={closeOverlay}
+                      to={`../habit/${habit?._id}`}
+                      title={habit.name}
+                    >
                       <HabitTag habit={habit} />
-                    </div>
+                    </NavLink>
                   </div>
                 ) : (
                   <div className="tag-wrapper">New habit</div>
