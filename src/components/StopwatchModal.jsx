@@ -27,7 +27,8 @@ export default function StopwatchModal({ closeOverlay }) {
 
   return (
     <div
-      className="modal modal-active"
+      className="modal modal-active modal-stopwatch"
+      style={{ gridTemplateRows: 'min-content 1fr' }}
       onClick={(e) => e.stopPropagation()}
       onMouseDown={(e) => e.stopPropagation()}
     >
@@ -60,7 +61,7 @@ export default function StopwatchModal({ closeOverlay }) {
             {habit?.name}
           </h3>
           <h1 className="progressbar-circle-countdown">{clockify(currentDuration)}</h1>
-          <div className="progressbar-controls">
+          <div className="progressbar-controls fullscreen">
             <button
               className="logo-section centering stopwatch-icon"
               onClick={resetStopwatch}
