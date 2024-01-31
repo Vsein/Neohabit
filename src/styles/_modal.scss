@@ -288,17 +288,17 @@
   gap: 10px;
   transition: background-color 0.1s;
   cursor: pointer;
+  max-width: 100%;
 
-  @media (max-width: 400px) {
-    max-width: 100%;
+  & p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-rendering: auto;
+    overflow: hidden;
+  }
 
-    & p {
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      text-rendering: auto;
-      overflow: hidden;
-    }
 
+  @media (max-width: 330px) {
     &.add {
       width: 30px;
       padding: 0;
