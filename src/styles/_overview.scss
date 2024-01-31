@@ -386,6 +386,8 @@ $cell-margin: 2px;
 
   &.habit-mode {
     grid-template-columns: 1fr 170px;
+    grid-template-rows: min-content;
+    grid-template-areas: 'name settings';
 
     &.small {
       grid-template-areas: 'name'

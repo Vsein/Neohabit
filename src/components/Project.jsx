@@ -174,7 +174,7 @@ function ProjectControls({ projectID, mobile, addPeriod }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="overview-settings" style={{ [mobile ? 'width' : '']: '100%' }}>
+    <div className="overview-settings" style={{ [mobile ? 'width' : '']: '102px' }}>
       {!mobile && (
         <button
           className="centering left overview-date-button"
