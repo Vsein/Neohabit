@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
-import { mdiClose } from '@mdi/js';
-import HabitTag from './HabitTag';
+import { mdiClose, mdiPlus } from '@mdi/js';
+import HabitTag, { HabitTagToDelete } from './HabitTag';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetProjectsQuery,
@@ -12,8 +12,12 @@ import {
 } from '../state/services/project';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { close } from '../state/features/overlay/overlaySlice';
+import useMenuToggler from '../hooks/useMenuToggler';
+import useLoaded from '../hooks/useLoaded';
 
 export default function ProjectModal({ projectID, isActive, closeOverlay }) {
+  const [loaded] = useLoaded();
+  const [menuOpened, { toggleMenu }] = useMenuToggler();
   const dispatch = useDispatch();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
@@ -61,7 +65,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
     return res !== -1;
   };
 
-  return (
+  return loaded && (
     <Form
       initialValues={{
         name: project?.name,
@@ -98,25 +102,69 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
           <div className="modal-details-block" style={{ height: 'min-content' }}>
             <NameField type="project" />
           </div>
-          <div className="modal-details-block" style={{ height: '195px', overflowY: 'scroll' }}>
+          <div className="modal-header habit-mode" style={{ marginBottom: '-10px' }}>
+            <p>Habits:</p>
+            <div
+              className={`form-chooser add form-habits-toggle ${menuOpened ? 'active' : ''}`}
+              onClick={toggleMenu}
+              type="button"
+              title="Close [C]"
+            >
+              <Icon className="icon small" path={mdiPlus} />
+              <p>Add existing habits</p>
+            </div>
+            <ul
+              className={`form-habits-container ${menuOpened ? 'active' : ''}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {habits.data.map(
+                (habit, i) =>
+                  !isOneOfHabits(habit._id) && (
+                    <div
+                      className="form-chooser"
+                      key={i}
+                      onClick={() => {
+                        if (!isOneOfHabits(habit._id)) {
+                          setProjectHabitList([...projectHabitList, habit._id]);
+                        }
+                      }}
+                    >
+                      <HabitTag habit={habit} />
+                    </div>
+                  ),
+              )}
+            </ul>
+          </div>
+          <div
+            className="modal-details-block"
+            style={{
+              height: 'auto',
+              maxHeight: '200px',
+              overflowY: 'scroll',
+              backgroundColor: 'var(--support-background-color)',
+            }}
+          >
             <div className="form-habits">
-              {habits.data.map((habit, i) => (
-                <div
-                  className={`form-chooser ${isOneOfHabits(habit._id) ? 'active' : ''}`}
-                  key={i}
-                  onClick={() => {
-                    if (!isOneOfHabits(habit._id)) {
-                      setProjectHabitList([...projectHabitList, habit._id]);
-                    } else {
-                      setProjectHabitList(
-                        projectHabitList.filter((habitID) => habitID !== habit._id),
-                      );
-                    }
-                  }}
-                >
-                  <HabitTag habit={habit} />
-                </div>
-              ))}
+              {projectHabitList.map((habitID, i) => {
+                const habit = habits.data.find((habito) => habito._id === habitID);
+                return (
+                  <div
+                    className="form-chooser"
+                    key={i}
+                    onClick={() => {
+                      if (!isOneOfHabits(habit._id)) {
+                        setProjectHabitList([...projectHabitList, habit._id]);
+                      } else {
+                        setProjectHabitList(
+                          projectHabitList.filter((habitIDo) => habitIDo !== habit._id),
+                        );
+                      }
+                    }}
+                  >
+                    <HabitTagToDelete habit={habit} />
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="modal-details-project-wrapper">
@@ -127,7 +175,11 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               <ColorPicker />
             </div>
           </div>
-          <ModalButtons disabled={submitting || !values?.name} isNew={!projectID} type="project" />
+          <ModalButtons
+            disabled={submitting || !values?.name}
+            isNew={!projectID}
+            type="project"
+          />
         </form>
       )}
     />

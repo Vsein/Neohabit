@@ -1,4 +1,6 @@
 @import 'scrollbar';
+@import 'dropdown';
+@import 'scrollbar';
 
 .overlay {
   position: fixed;
@@ -23,6 +25,7 @@
 }
 
 .modal {
+  @include scrollbar;
   display: grid;
   grid-auto-rows: auto;
   gap: 10px;
@@ -32,7 +35,8 @@
   z-index: 3;
   width: min(800px, 100vw - 3em);
   height: auto;
-  // overflow-y: scroll;
+  max-height: 100%;
+  overflow-y: scroll;
   border-radius: 8px;
   background-color: var(--support-background-color);
   padding: 1em;
@@ -42,6 +46,7 @@
   @media (max-width: 550px) {
     // width: calc(100% - 16px);
     width: calc(100% - 16px);
+    border-radius: 0px;
     // height: calc(100% - 16px);
     padding: 0.4em;
 
@@ -95,6 +100,12 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    z-index: 4;
+    position: relative;
+
+    &.habit-mode {
+      grid-template-columns: 1fr min-content;
+    }
   }
 
   &-details {
@@ -218,10 +229,51 @@
 }
 
 .form-habits {
+  @include dropdown;
   padding: 5px 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  overflow-x: hidden;
+
+  &-container {
+    @include scrollbar;
+    width: 230px;
+    display: grid;
+    gap: 5px;
+    padding: 7px;
+    transition: none;
+    box-shadow: 0 0 3px 1px silver;
+    background-color: var(--support-background-color);
+    border-radius: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 6px;
+    right: 0;
+    max-height: 300px;
+
+    & .form-chooser {
+      width: 210px;
+      justify-content: flex-start;
+      margin: auto;
+      padding-right: 0px;
+
+      & p {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-rendering: auto;
+        overflow: hidden;
+      }
+    }
+
+    &.active {
+      // top: calc(100%);
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      grid-auto-rows: 27px;
+    }
+  }
 }
 
 .form-chooser {
@@ -237,9 +289,31 @@
   transition: background-color 0.1s;
   cursor: pointer;
 
+  @media (max-width: 400px) {
+    max-width: 100%;
+
+    & p {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-rendering: auto;
+      overflow: hidden;
+    }
+
+    &.add {
+      width: 30px;
+      padding: 0;
+
+      & p {
+        visibility: hidden;
+        display: none;
+      }
+    }
+  }
+
   &.add {
     background-color: var(--secondary-background-color);
     border: 1px solid var(--border-color);
+    white-space: nowrap;
 
     &:hover {
       opacity: 0.9;
