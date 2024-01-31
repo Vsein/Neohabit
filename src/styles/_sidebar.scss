@@ -175,6 +175,10 @@
   @include dropdown-collapse;
   padding: 2px;
 
+  &-arrow {
+    color: var(--contrast-text-color);
+  }
+
   &-header {
     gap: 5px;
     padding-left: 15px;
