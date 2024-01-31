@@ -28,7 +28,12 @@ export default function CellAdd() {
   const onSubmit = async (values) => {
     await updateHeatmap({
       heatmapID,
-      values: { ...values, date: getUTCOffsettedDate(addDays(new Date(values.date), 1)) },
+      values: {
+        ...values,
+        date: getUTCOffsettedDate(
+          addDays(new Date(values.date), new Date().getTimezoneOffset() > 0 * 1),
+        ),
+      },
     });
     closeDropdown();
   };
