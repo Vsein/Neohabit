@@ -169,14 +169,14 @@ export default function Settings() {
                 max="365"
               />
               <SettingsButtonOption
-                name="Use current day as..."
+                name="Use current day as period's..."
                 cssName="first-day"
                 curState={settings.data.overview_current_day ?? 'middle'}
                 update={(state) => updateSettings({ values: { overview_current_day: state } })}
                 choices={[
-                  { name: 'Period start', state: 'start' },
-                  { name: 'Period middle', state: 'middle' },
-                  { name: 'Period end', state: 'end' },
+                  { name: 'End', state: 'end' },
+                  { name: 'Middle', state: 'middle' },
+                  { name: 'Start', state: 'start' },
                 ]}
               />
             </>
