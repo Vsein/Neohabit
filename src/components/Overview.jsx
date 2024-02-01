@@ -1,8 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import { mdiMenuLeft, mdiMenuRight, mdiMenuUp, mdiMenuDown, mdiCog } from '@mdi/js';
-import { differenceInDays } from 'date-fns';
+import {
+  mdiMenuLeft,
+  mdiMenuRight,
+  mdiMenuUp,
+  mdiMenuDown,
+  mdiCalendarText,
+  mdiCalendarWeekend,
+  mdiCog,
+} from '@mdi/js';
+import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
@@ -30,11 +38,46 @@ export default function Overview({
     return <div className="loader" />;
   }
 
+  const Habits = habits.data.flatMap((habit, i) => {
+    const heatmap = heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id);
+    const data = heatmap?.data;
+    let dataSorted;
+    if (data) {
+      dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
+      dataSorted.sort((a, b) => {
+        const res = compareDesc(new Date(b.date), new Date(a.date));
+        if (res === 0) {
+          return -2 * a.is_target + 1;
+        }
+        return res;
+      });
+    }
+
+    return (new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() &&
+      dataSorted.length !== 1) ||
+      (dataSorted.length > 2 &&
+        dataSorted[dataSorted.length - 2].is_archive &&
+        new Date(dataSorted[dataSorted.length - 3].date).getTime() < dateStart.getTime()) ? (
+      []
+    ) : (
+      <HabitOverview
+        key={i}
+        habit={habit}
+        dateStart={dateStart}
+        dateEnd={dateEnd}
+        heatmapData={dataSorted}
+        heatmapID={heatmap?._id}
+        vertical={vertical}
+        mobile={mobile}
+      />
+    );
+  });
+
   return (
     <div
       className={`overview-centering ${mobile ? 'mobile' : ''}`}
       style={{
-        '--habits': habits.data.length,
+        '--habits': Habits.length,
         '--length': differenceInDays(dateEnd, dateStart) + 1,
         '--vertical': vertical * 1,
         // '--multiplier': settings.data.cell_height_multiplier,

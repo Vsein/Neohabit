@@ -34,7 +34,12 @@ export const heatmapApi = api.injectEndpoints({
             } else if (indexIsTarget !== -1 && values.is_target) {
               Heatmap.data = Heatmap.data.map((point) =>
                 isSameDay(new Date(point.date), new Date(values.date)) && point.is_target
-                  ? { ...point, value: values.value, period: values.period }
+                  ? {
+                      ...point,
+                      value: +values.value,
+                      period: values.period,
+                      is_archive: +values.value === 0 && values.is_target,
+                    }
                   : point,
               );
             } else {

@@ -1,5 +1,11 @@
 import React from 'react';
-import { differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
+import {
+  differenceInWeeks,
+  startOfWeek,
+  endOfWeek,
+  compareDesc,
+  endOfDay,
+} from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
@@ -19,6 +25,19 @@ export default function Habit({
   dateEnd,
   vertical = true,
 }) {
+  const data = heatmap?.data;
+  let dataSorted;
+  if (data) {
+    dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
+    dataSorted.sort((a, b) => {
+      const res = compareDesc(new Date(b.date), new Date(a.date));
+      if (res === 0) {
+        return -2 * a.is_target + 1;
+      }
+      return res;
+    });
+  }
+
   return (
     <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
       <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>
@@ -29,7 +48,8 @@ export default function Habit({
         />
         <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
         <Heatmap
-          heatmap={heatmap}
+          heatmapID={heatmap?._id}
+          heatmapData={dataSorted}
           habit={habit}
           dateStart={dateStart}
           dateEnd={dateEnd}
@@ -92,7 +112,7 @@ function HabitDefaultWrapper({
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
         <HabitControls
           habit={habit}
-          heatmap={heatmap}
+          heatmapID={heatmap?._id}
           header={true}
           modal={modal}
           habitPage={habitPage}
@@ -177,7 +197,7 @@ function HabitModalWrapper({
         />
         <HabitControls
           habit={habit}
-          heatmap={heatmap}
+          heatmapID={heatmap?._id}
           header={true}
           modal={true}
           habitPage={habitPage}

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuLeft, mdiMenuRight, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetSettingsQuery } from '../state/services/settings';
@@ -38,6 +38,49 @@ export default function Project({
     ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
     : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
 
+  if (heatmaps.isFetching || habits.isFetching || settings.isFetching) return <></>;
+
+  const Habits =
+    project.habits &&
+    project.habits.flatMap((habito, i) => {
+      // check if the habit ID was listed, not the habit itself
+      const habit = habito?._id ? habito : habits.data.find((habitoo) => habitoo._id === habito);
+      const heatmap = habit?._id
+        ? heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)
+        : heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit);
+      const data = heatmap?.data;
+      let dataSorted;
+      if (data) {
+        dataSorted = [...data, { date: endOfDay(globalDateEnd), value: 0, isLast: 1 }];
+        dataSorted.sort((a, b) => {
+          const res = compareDesc(new Date(b.date), new Date(a.date));
+          if (res === 0) {
+            return -2 * a.is_target + 1;
+          }
+          return res;
+        });
+      }
+      return (new Date(dataSorted[0].date).getTime() === endOfDay(globalDateEnd).getTime() &&
+        dataSorted.length !== 1) ||
+        (dataSorted.length > 2 &&
+          dataSorted[dataSorted.length - 2].is_archive &&
+          new Date(dataSorted[dataSorted.length - 3].date).getTime() < globalDateStart.getTime()) ? (
+        []
+      ) : (
+        <HabitOverview
+          key={i}
+          habit={habit}
+          dateStart={globalDateStart}
+          dateEnd={globalDateEnd}
+          heatmapData={dataSorted}
+          heatmapID={heatmap?._id}
+          vertical={vertical}
+          mobile={mobile}
+          projectID={project._id}
+        />
+      );
+    });
+
   const HeaderName = () =>
     singular ? (
       <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
@@ -48,26 +91,23 @@ export default function Project({
     );
 
   return (
-    !heatmaps.isFetching &&
-    !habits.isFetching &&
-    !settings.isFetching && (
-      <div
-        className={`overview-centering ${mobile ? 'mobile' : ''} slide-${onboardingSlide}`}
-        style={{
-          '--habits': project.habits.length,
-          '--length': differenceInDays(globalDateEnd, globalDateStart) + 1,
-          '--vertical': vertical * 1,
-          // '--multiplier': settings.data.cell_height_multiplier,
-          '--multiplier': 1,
-          '--cell-height': '15px',
-          '--cell-width': '15px',
-          '--datepicker-text-color': getNumericTextColor(colorShade),
-          '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
-          [project.color !== '#8a8a8a' ? '--signature-color' : '']: colorShade,
-          [project.color !== '#8a8a8a' ? '--bright-signature-color' : '']: colorShade,
-          [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,
-        }}
-      >
+    <div
+      className={`overview-centering ${mobile ? 'mobile' : ''} slide-${onboardingSlide}`}
+      style={{
+        '--habits': Habits.length,
+        '--length': differenceInDays(globalDateEnd, globalDateStart) + 1,
+        '--vertical': vertical * 1,
+        // '--multiplier': settings.data.cell_height_multiplier,
+        '--multiplier': 1,
+        '--cell-height': '15px',
+        '--cell-width': '15px',
+        '--datepicker-text-color': getNumericTextColor(colorShade),
+        '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+        [project.color !== '#8a8a8a' ? '--signature-color' : '']: colorShade,
+        [project.color !== '#8a8a8a' ? '--bright-signature-color' : '']: colorShade,
+        [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,
+      }}
+    >
         <div
           className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
         >
@@ -124,35 +164,8 @@ export default function Project({
               </>
             )}
             <div className="overview-habits">
-              {project.habits.length === 0 && <h5 className="overview-no-habits">No habits?</h5>}
-              {project.habits &&
-                project.habits.map((habit, i) =>
-                  habit?._id ? (
-                    <HabitOverview
-                      key={i}
-                      habit={habit}
-                      dateStart={globalDateStart}
-                      dateEnd={globalDateEnd}
-                      heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
-                      vertical={vertical}
-                      mobile={mobile}
-                      projectID={project._id}
-                    />
-                  ) : (
-                    habits.data.find((habito) => habito._id === habit) && (
-                      <HabitOverview
-                        key={i}
-                        habit={habits.data.find((habito) => habito._id === habit)}
-                        dateStart={globalDateStart}
-                        dateEnd={globalDateEnd}
-                        heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit)}
-                        vertical={vertical}
-                        mobile={mobile}
-                        projectID={project._id}
-                      />
-                    )
-                  ),
-                )}
+              {Habits.length === 0 && <h5 className="overview-no-habits">No habits?</h5>}
+              {Habits}
             </div>
             {vertical && (
               <button
@@ -166,7 +179,6 @@ export default function Project({
           </div>
         </div>
       </div>
-    )
   );
 }
 

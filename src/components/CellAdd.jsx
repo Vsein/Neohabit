@@ -30,6 +30,7 @@ export default function CellAdd() {
       heatmapID,
       values: {
         ...values,
+        is_archive: +values.value === 0 && values.is_target,
         date: getUTCOffsettedDate(
           addDays(new Date(values.date), new Date().getTimezoneOffset() > 0 * 1),
         ),

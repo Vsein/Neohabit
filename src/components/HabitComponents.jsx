@@ -21,7 +21,7 @@ import Heatmap from './Heatmap';
 
 function HabitControls({
   habit,
-  heatmap,
+  heatmapID,
   header,
   mobile,
   projectID = '',
@@ -41,13 +41,13 @@ function HabitControls({
   };
   const addCell = async () => {
     await updateHeatmap({
-      heatmapID: heatmap?._id,
+      heatmapID,
       values: { value: 1, date: getUTCOffsettedDate() },
     });
   };
   const openCellAddDropdown = (e, isTarget) => {
     e.stopPropagation();
-    dispatch(changeHeatmapTo({ heatmapID: heatmap?._id, isActive: true, isTarget }));
+    dispatch(changeHeatmapTo({ heatmapID, isActive: true, isTarget }));
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     cellAddDropdown.classList.toggle('hidden');
     const cell = e.target;
@@ -137,7 +137,16 @@ function HabitControls({
   );
 }
 
-function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile, projectID = '' }) {
+function HabitOverview({
+  dateStart,
+  dateEnd,
+  habit,
+  heatmapData,
+  heatmapID,
+  vertical,
+  mobile,
+  projectID = '',
+}) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (
@@ -150,14 +159,15 @@ function HabitOverview({ dateStart, dateEnd, habit, heatmap, vertical, mobile, p
         {habit.name}
       </NavLink>
       <Heatmap
-        heatmap={heatmap}
+        heatmapData={heatmapData}
+        heatmapID={heatmapID}
         habit={habit}
         dateStart={dateStart}
         dateEnd={dateEnd}
         vertical={vertical}
         isOverview={true}
       />
-      <HabitControls habit={habit} heatmap={heatmap} mobile={mobile} projectID={projectID} />
+      <HabitControls habit={habit} heatmapID={heatmapID} mobile={mobile} projectID={projectID} />
     </div>
   );
 }

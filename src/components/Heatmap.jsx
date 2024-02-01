@@ -17,24 +17,13 @@ export default function Heatmap({
   dateStart,
   dateEnd,
   habit,
-  heatmap,
+  heatmapData,
+  heatmapID,
   vertical = false,
   isOverview,
   overridenElimination = undefined,
   overridenNumeric = undefined,
 }) {
-  const data = heatmap?.data;
-  let dataSorted;
-  if (data) {
-    dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
-    dataSorted.sort((a, b) => {
-      const res = compareDesc(new Date(b.date), new Date(a.date));
-      if (res === 0) {
-        return -2 * a.is_target + 1;
-      }
-      return res;
-    });
-  }
   const current = { date: dateStart, value: 0 };
   // current.date === current Target Period Start if period is defined,
   // otherwise it's the current date
@@ -48,6 +37,7 @@ export default function Heatmap({
   };
   let passed = false;
   let firstPassed = false;
+  let archived = false;
 
   const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
 
@@ -59,11 +49,11 @@ export default function Heatmap({
       className={`overview-habit-cells ${isOverview ? '' : 'weekly'}`}
       style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
     >
-      {dataSorted &&
-        dataSorted.map((point, index) => {
+      {heatmapData &&
+        heatmapData.flatMap((point, index) => {
           const date = startOfDay(new Date(point.date));
           if (compareDesc(dateEnd, date) === 1 && !passed) {
-            return <React.Fragment key={index}> </React.Fragment>;
+            return [];
           }
           if (compareDesc(date, dateStart) === 1) {
             if (point?.is_target) {
@@ -79,8 +69,12 @@ export default function Heatmap({
                 current.value = point.value;
               }
             }
-            return <React.Fragment key={index}> </React.Fragment>;
+            return [];
           }
+          // if (index === heatmapData.length - 2 && point.is_archive) {
+          //   current.date = dateEnd;
+          //   return [];
+          // }
           let gap;
           if (index === 0 && compareDesc(dateStart, date) === 1) {
             const dateOfFirstEntry = min([dateCreation, date]);
@@ -95,6 +89,9 @@ export default function Heatmap({
           if (target.period === undefined) {
             const dateNowTmp = current.date;
             if (point?.is_target) {
+              if (index === heatmapData.length - 2 && point.is_archive) {
+                archived = true;
+              }
               setNewTarget(point, date);
             } else {
               current.date = addDays(date, 1);
@@ -118,7 +115,7 @@ export default function Heatmap({
                 {(differenceInDays(date, dateNowTmp) > 0 ||
                   (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
                   <CellPeriod
-                    heatmapID={heatmap?._id}
+                    heatmapID={heatmapID}
                     dateStart={max([dateNowTmp, dateStart])}
                     dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
                     color="transparent"
@@ -131,7 +128,7 @@ export default function Heatmap({
                 )}
                 {!point?.isLast && !point.is_target && (
                   <CellPeriod
-                    heatmapID={heatmap?._id}
+                    heatmapID={heatmapID}
                     dateStart={date}
                     dateEnd={endOfDay(date)}
                     color={habit.color}
@@ -156,12 +153,16 @@ export default function Heatmap({
           const previous = { ...current };
           const previousTarget = { ...target };
           let diffInPeriods = Math.floor(differenceInDays(date, current.date) / target.period);
-          if (passed && index === dataSorted.length - 1) {
+          if (passed && index === heatmapData.length - 1) {
             passed = false;
             diffInPeriods = 1;
             if (compareDesc(date, addDays(current.date, target.period)) === 1) {
               previous.value += point.value;
             }
+          }
+          if (index === heatmapData.length - 2 && point.is_archive) {
+            // current.date = dateEnd;
+            archived = true;
           }
           if (passed && compareDesc(addDays(current.date, target.period), date) === 1) {
             passed = false;
@@ -171,7 +172,21 @@ export default function Heatmap({
             passed = false;
           }
           if (point?.isLast) {
-            if (index === dataSorted.length - 1) {
+            if (archived) {
+              diffInPeriods = 1;
+              previousTarget.period = differenceInDays(date, previous.date);
+              return (isOverview ? (
+                <CellDummy key={index} length={gap} vertical={vertical} />
+              ) : (
+                <CellPeriod
+                  key={index}
+                  dateStart={previous.date}
+                  dateEnd={date}
+                  dummy
+                />
+              ));
+            }
+            if (index === heatmapData.length - 1) {
               diffInPeriods += 1;
             } else {
               passed = true;
@@ -197,7 +212,7 @@ export default function Heatmap({
               )}
               {Array.from(new Array(diffInPeriods)).map((_, Index) => (
                 <CellPeriod
-                  heatmapID={heatmap?._id}
+                  heatmapID={heatmapID}
                   key={Index}
                   targetStart={addDays(previous.date, Index * previousTarget.period)}
                   targetEnd={subMilliseconds(
