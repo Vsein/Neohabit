@@ -144,6 +144,7 @@
   flex-wrap: wrap;
   height: min-content;
   overflow: hidden;
+  border-radius: 0;
 
   & > .tag-wrapper {
     flex-wrap: nowrap;
@@ -173,6 +174,10 @@
   @include dropdown-arrow;
   @include dropdown-collapse;
   padding: 2px;
+
+  &-arrow {
+    color: var(--contrast-text-color);
+  }
 
   &-header {
     gap: 5px;

@@ -65,7 +65,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
           <div className="modal-details-block">
             <DescriptionField rows="9" />
           </div>
-          <ModalButtons disabled={submitting} isNew={!skillID} type="skill" />
+          <ModalButtons disabled={submitting || !values?.name} isNew={!skillID} type="skill" />
         </form>
       )}
     />

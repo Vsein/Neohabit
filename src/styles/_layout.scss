@@ -8,34 +8,36 @@
 }
 
 #content {
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
   @supports(min-height: 100dvh) {
-    min-height: calc(100dvh - 60px);
+    min-height: 100dvh;
   }
   width: 100%;
   display: grid;
   grid-template-areas:
     'menu    menu'
-    'sidebar main';
+    'sidebar main'
+    'stopwatch stopwatch';
   grid-template-rows: 60px 1fr;
   grid-template-columns: 85px 1fr;
   // background-color: #efefef;
 
   @media (max-width: 800px) {
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh);
     @supports(min-height: 100dvh) {
-      min-height: calc(100dvh - 50px);
+      min-height: calc(100dvh);
     }
   }
 
   @media (max-width: 550px) {
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 50px);
     @supports(min-height: 100dvh) {
-      min-height: calc(100dvh - 100px);
+      min-height: calc(100dvh - 50px);
     }
     grid-template-areas:
     'menu    menu'
-    'main main';
+    'main main'
+    'stopwatch stopwatch';
     grid-template-rows: 50px 1fr;
     .sidebar {
       @include sidebar-hidden;

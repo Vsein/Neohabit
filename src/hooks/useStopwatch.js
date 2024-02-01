@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { formatISO } from 'date-fns';
 import {
   useGetStopwatchQuery,
   useUpdateStopwatchMutation,
@@ -7,6 +6,7 @@ import {
 } from '../state/services/stopwatch';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
+import { getUTCOffsettedDate } from './useDatePeriod';
 
 export default function useStopwatch() {
   const settings = useGetSettingsQuery();
@@ -90,7 +90,7 @@ export default function useStopwatch() {
     finishStopwatch({
       values: {
         ...stopwatch.data,
-        start_time: formatISO(new Date(stopwatch.data.start_time), { representation: 'date' }),
+        start_time: getUTCOffsettedDate(new Date(stopwatch.data.start_time)),
       },
     });
     setCurrentDuration(0);

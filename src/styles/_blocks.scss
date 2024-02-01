@@ -12,6 +12,11 @@
     margin: 2px;
     vertical-align: middle;
     text-align: right;
+
+    &.same-weekday {
+      color: var(--signature-color);
+      border-radius: 0px;
+    }
   }
 }
 
@@ -30,8 +35,56 @@
     margin: 2px;
     visibility: hidden;
 
+    &.active:last-child {
+      visibility: hidden;
+    }
+
     &.active {
       visibility: visible;
+
+      &:has(+ .active) {
+        visibility: hidden;
+      }
+    }
+
+    &.same-month {
+      visibility: visible;
+      color: var(--signature-color);
+    }
+
+    &.arrow {
+      padding-inline: 2px;
+    }
+  }
+}
+
+.overview-days {
+  --multiplier: 1;
+  display: inline-flex;
+  flex-direction: row;
+  grid-area: days;
+
+  &-day {
+    line-height: 100%;
+    font-size: calc(
+      11px * var(--multiplier) + 11px * 2 * (var(--multiplier) - 1) + 1px
+    );
+    text-align: center;
+    padding-block: 2px;
+    border-radius: 3px;
+    height: 15px;
+    width: 15px;
+    font-weight: 600;
+    margin: 2px;
+    vertical-align: middle;
+
+    &.today {
+      box-shadow: 0px 0px 4px 2px var(--signature-color);
+      border-radius: 3px;
+    }
+
+    &.weekend {
+      color: var(--bright-signature-color);
     }
   }
 }
@@ -115,65 +168,35 @@
     border-radius: 50%;
     animation: glow 3s linear infinite;
   }
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button {
+  & .overview-habit-button {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
 .overview-centering.slide-2 {
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button:nth-child(n + 2) {
+  & .overview-habit-button:nth-child(n + 2) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
 .overview-centering.slide-3 {
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button:not(:nth-child(6n + 2)) {
+  & .overview-habit-button:not(:nth-child(6n + 2)) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
 .overview-centering.slide-4 {
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button:not(:nth-child(6n + 3)) {
+  & .overview-habit-button:not(:nth-child(6n + 3)) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
 .overview-centering.slide-5 {
-  &
-    > .overview-container
-    > .overview
-    > .overview-habits
-    > .overview-habit
-    > .habit-controls
-    > .overview-habit-button {
+  & .overview-habit-button {
     pointer-events: none;
     opacity: 0.3;
   }

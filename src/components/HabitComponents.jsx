@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { formatISO } from 'date-fns';
 import { Icon } from '@mdi/react';
 import {
   mdiDelete,
@@ -17,11 +16,21 @@ import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
+import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
 import Heatmap from './Heatmap';
 
-function HabitControls({ habit, heatmapID, header, mobile, projectID = '', modal = false }) {
+function HabitControls({
+  habit,
+  heatmapID,
+  header,
+  mobile,
+  projectID = '',
+  modal = false,
+  habitPage = false,
+}) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const setStopwatchHabit = () => {
     updateStopwatch({
@@ -33,17 +42,24 @@ function HabitControls({ habit, heatmapID, header, mobile, projectID = '', modal
   const addCell = async () => {
     await updateHeatmap({
       heatmapID,
-      values: { value: 1, date: formatISO(new Date(), { representation: 'date' }) },
+      values: { value: 1, date: getUTCOffsettedDate() },
     });
   };
   const openCellAddDropdown = (e, isTarget) => {
     e.stopPropagation();
     dispatch(changeHeatmapTo({ heatmapID, isActive: true, isTarget }));
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+    cellAddDropdown.classList.toggle('hidden');
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
-    cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
-    cellAddDropdown.style.left = `${rect.x + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
+    const { innerWidth: width, innerHeight: height } = window;
+    if (width <= 850) {
+      cellAddDropdown.style.top = `${window.pageYOffset + rect.y + 26}px`;
+      cellAddDropdown.style.left = `${rect.x - (isTarget ? 165 : 113) + (width < 400 ? 25 : 0)}px`;
+    } else {
+      cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
+      cellAddDropdown.style.left = `${rect.x + window.scrollX + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
+    }
     cellAddDropdown.style.setProperty('--border-color', habit.color);
   };
 
@@ -106,7 +122,12 @@ function HabitControls({ habit, heatmapID, header, mobile, projectID = '', modal
       )}
       <button
         className="overview-habit-button"
-        onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }))}
+        onClick={() => {
+          dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }));
+          if (habitPage) {
+            navigate('/projects');
+          }
+        }}
         title="Delete habit"
         type="button"
       >
@@ -151,21 +172,22 @@ function HabitOverview({
   );
 }
 
-function HabitAddButton({ vertical, projectID = '' }) {
+function HabitAddButton({ projectID = '', standalone = false }) {
   const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(changeTo({ habitID: '', projectID, type: 'habit' }));
-  };
 
   return (
     <button
-      className={`overview-habit-add ${vertical ? 'vertical' : ''}`}
-      onClick={openOverlay}
-      title="Add a new habit [A]"
+      className="overview-open-settings active right"
+      style={{
+        transform: 'scale(1.25)',
+        [standalone ? '' : 'marginRight']: '3px',
+        width: 'min-content',
+      }}
+      onClick={() => dispatch(changeTo({ habitID: '', projectID, type: 'habit' }))}
+      title="Add a new habit"
       type="button"
     >
-      <Icon className="icon small" path={mdiPlus} />
-      <p>Add a new habit</p>
+      <Icon path={mdiPlus} className="icon small centering" />
     </button>
   );
 }

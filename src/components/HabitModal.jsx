@@ -1,11 +1,12 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
 import HabitTag from './HabitTag';
-import Habit from './Habit';
+import { HabitModalWrapper } from './Habit';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useGetProjectsQuery } from '../state/services/project';
@@ -74,27 +75,40 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               await handleSubmit(e);
             }}
             className="modal modal-active modal-habit"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+              cellAddDropdown.classList.add('hidden');
+              e.stopPropagation()
+            }}
             onMouseDown={(e) => e.stopPropagation()}
-            style={{ height: width >= 850 && habitID ? '680px' : 'auto' }}
           >
             <div className="modal-header">
               <div className="tag-wrapper">
                 {projectID && (
                   <div className="tag-wrapper">
                     Project:
-                    <div className="tag">
+                    <NavLink
+                      className="tag"
+                      onClick={closeOverlay}
+                      to={`../project/${project?._id}`}
+                      title={project.name}
+                    >
                       <HabitTag habit={project} />
-                    </div>
+                    </NavLink>
                     &gt;
                   </div>
                 )}
                 {habitID ? (
                   <div className="tag-wrapper">
                     Habit:
-                    <div className="tag">
+                    <NavLink
+                      className="tag"
+                      onClick={closeOverlay}
+                      to={`../habit/${habit?._id}`}
+                      title={habit.name}
+                    >
                       <HabitTag habit={habit} />
-                    </div>
+                    </NavLink>
                   </div>
                 ) : (
                   <div className="tag-wrapper">New habit</div>
@@ -108,17 +122,16 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               <NameField type="habit" />
             </div>
             {width >= 850 && habitID && (
-              <Habit
+              <HabitModalWrapper
                 heatmap={heatmap}
                 habit={habit}
-                modal={true}
                 overridenElimination={values.elimination}
                 overridenNumeric={values.numeric}
               />
             )}
             <div className="modal-details-habit-wrapper">
               <div className="modal-details-block description-area">
-                <DescriptionField rows="12" />
+                <DescriptionField rows="10" />
               </div>
               <div className="modal-details-block mode-area">
                 <div className="form-task-description">
@@ -139,7 +152,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <ColorPicker />
               </div>
             </div>
-            <ModalButtons disabled={submitting} isNew={!habitID} type="habit" />
+            <ModalButtons disabled={submitting || !values?.name} isNew={!habitID} type="habit" />
           </form>
         )}
       />

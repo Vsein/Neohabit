@@ -71,7 +71,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
           <div className="modal-details-block">
             <DescriptionField rows="9" />
           </div>
-          <ModalButtons disabled={submitting} isNew={!taskID} type="task" />
+          <ModalButtons disabled={submitting | !values?.name} isNew={!taskID} type="task" />
         </form>
       )}
     />
