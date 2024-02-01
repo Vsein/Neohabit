@@ -51,7 +51,7 @@ export default function Project({
       const data = heatmap?.data;
       let dataSorted;
       if (data) {
-        dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
+        dataSorted = [...data, { date: endOfDay(globalDateEnd), value: 0, isLast: 1 }];
         dataSorted.sort((a, b) => {
           const res = compareDesc(new Date(b.date), new Date(a.date));
           if (res === 0) {
@@ -60,18 +60,18 @@ export default function Project({
           return res;
         });
       }
-      return (new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() &&
+      return (new Date(dataSorted[0].date).getTime() === endOfDay(globalDateEnd).getTime() &&
         dataSorted.length !== 1) ||
         (dataSorted.length > 2 &&
           dataSorted[dataSorted.length - 2].is_archive &&
-          new Date(dataSorted[dataSorted.length - 3].date).getTime() < dateStart.getTime()) ? (
+          new Date(dataSorted[dataSorted.length - 3].date).getTime() < globalDateStart.getTime()) ? (
         []
       ) : (
         <HabitOverview
           key={i}
           habit={habit}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
+          dateStart={globalDateStart}
+          dateEnd={globalDateEnd}
           heatmapData={dataSorted}
           heatmapID={heatmap?._id}
           vertical={vertical}
@@ -95,7 +95,7 @@ export default function Project({
       className={`overview-centering ${mobile ? 'mobile' : ''} slide-${onboardingSlide}`}
       style={{
         '--habits': Habits.length,
-        '--length': differenceInDays(dateEnd, dateStart) + 1,
+        '--length': differenceInDays(globalDateEnd, globalDateStart) + 1,
         '--vertical': vertical * 1,
         // '--multiplier': settings.data.cell_height_multiplier,
         '--multiplier': 1,
@@ -179,7 +179,6 @@ export default function Project({
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

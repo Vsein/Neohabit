@@ -25,6 +25,19 @@ export default function Habit({
   dateEnd,
   vertical = true,
 }) {
+  const data = heatmap?.data;
+  let dataSorted;
+  if (data) {
+    dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
+    dataSorted.sort((a, b) => {
+      const res = compareDesc(new Date(b.date), new Date(a.date));
+      if (res === 0) {
+        return -2 * a.is_target + 1;
+      }
+      return res;
+    });
+  }
+
   return (
     <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
       <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>
@@ -36,6 +49,7 @@ export default function Habit({
         <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
         <Heatmap
           heatmapID={heatmap?._id}
+          heatmapData={dataSorted}
           habit={habit}
           dateStart={dateStart}
           dateEnd={dateEnd}
@@ -142,19 +156,6 @@ function HabitModalWrapper({
   ] = useDatePeriod(datePeriodLength, false, true);
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
-
-  const data = heatmap?.data;
-  let dataSorted;
-  if (data) {
-    dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
-    dataSorted.sort((a, b) => {
-      const res = compareDesc(new Date(b.date), new Date(a.date));
-      if (res === 0) {
-        return -2 * a.is_target + 1;
-      }
-      return res;
-    });
-  }
 
   const colorShade = !settings.data?.prefer_dark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(habit.color), 0.8)
