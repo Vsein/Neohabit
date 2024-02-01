@@ -89,6 +89,9 @@ export default function Heatmap({
           if (target.period === undefined) {
             const dateNowTmp = current.date;
             if (point?.is_target) {
+              if (index === heatmapData.length - 2 && point.is_archive) {
+                archived = true;
+              }
               setNewTarget(point, date);
             } else {
               current.date = addDays(date, 1);
@@ -158,7 +161,7 @@ export default function Heatmap({
             }
           }
           if (index === heatmapData.length - 2 && point.is_archive) {
-            current.date = dateEnd;
+            // current.date = dateEnd;
             archived = true;
           }
           if (passed && compareDesc(addDays(current.date, target.period), date) === 1) {
@@ -171,7 +174,17 @@ export default function Heatmap({
           if (point?.isLast) {
             if (archived) {
               diffInPeriods = 1;
-              previousTarget.period = differenceInDays(previous.date, date);
+              previousTarget.period = differenceInDays(date, previous.date);
+              return (isOverview ? (
+                <CellDummy key={index} length={gap} vertical={vertical} />
+              ) : (
+                <CellPeriod
+                  key={index}
+                  dateStart={previous.date}
+                  dateEnd={date}
+                  dummy
+                />
+              ));
             }
             if (index === heatmapData.length - 1) {
               diffInPeriods += 1;
