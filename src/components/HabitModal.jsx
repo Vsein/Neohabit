@@ -75,7 +75,11 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               await handleSubmit(e);
             }}
             className="modal modal-active modal-habit"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+              cellAddDropdown.classList.add('hidden');
+              e.stopPropagation()
+            }}
             onMouseDown={(e) => e.stopPropagation()}
           >
             <div className="modal-header">

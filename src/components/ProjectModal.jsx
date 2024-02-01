@@ -81,7 +81,10 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               await handleSubmit(e);
             }}
             className="modal modal-active"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              if (menuOpened) toggleMenu();
+              e.stopPropagation();
+            }}
             onMouseDown={(e) => e.stopPropagation()}
           >
             <div className="modal-header">
