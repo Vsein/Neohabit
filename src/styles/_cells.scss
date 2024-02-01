@@ -490,7 +490,7 @@ $cell-margin: 2px;
       align-self: center;
       gap: 1px;
 
-      @media (max-width: 550px) {
+      @media (max-width: 850px) {
         gap: 15px;
 
         & .icon.tiny {
