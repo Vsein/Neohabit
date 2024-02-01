@@ -1,4 +1,6 @@
 @import 'scrollbar';
+@import 'dropdown';
+@import 'scrollbar';
 
 .overlay {
   position: fixed;
@@ -12,7 +14,7 @@
   z-index: 3;
 
   &-active {
-    display: block;
+    display: grid;
   }
 
   &.overlay-sidebar {
@@ -23,23 +25,24 @@
 }
 
 .modal {
-  display: grid;
+  @include scrollbar;
+  display: none;
   grid-auto-rows: auto;
   gap: 10px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
   z-index: 3;
   width: min(800px, 100vw - 3em);
   height: auto;
-  // overflow-y: scroll;
+  max-height: 100%;
+  overflow-y: scroll;
   border-radius: 8px;
   background-color: var(--support-background-color);
   padding: 1em;
-  transform: translate(-50%, -50%) scale(0);
+  align-items: center;
 
   @media (max-width: 550px) {
     width: calc(100% - 16px);
+    border-radius: 0px;
+    // height: calc(100% - 16px);
     padding: 0.4em;
 
     & .button-default {
@@ -48,7 +51,13 @@
   }
 
   &-active {
-    transform: translate(-50%, -50%) scale(1);
+    display: grid;
+  }
+
+  &-stopwatch {
+    @media (max-width: 400px) {
+      height: 400px;
+    }
   }
 
   &-onboarding.modal-mobile {
@@ -86,6 +95,12 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    z-index: 4;
+    position: relative;
+
+    &.habit-mode {
+      grid-template-columns: 1fr min-content;
+    }
   }
 
   &-details {
@@ -93,12 +108,13 @@
     height: 500px;
     overflow-y: scroll;
     width: 100%;
-    background-color: var(--main-background-color);
+    background-color: var(--support-background-color);
     padding: 10px;
     border-radius: 10px;
 
     @media (max-width: 550px) {
       padding: 5px;
+      height: min-content;
     }
   }
 
@@ -208,14 +224,56 @@
 }
 
 .form-habits {
+  @include dropdown;
   padding: 5px 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  overflow-x: hidden;
+
+  &-container {
+    @include scrollbar;
+    width: 230px;
+    display: grid;
+    gap: 5px;
+    padding: 7px;
+    transition: none;
+    box-shadow: 0 0 3px 1px silver;
+    background-color: var(--support-background-color);
+    border-radius: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 6px;
+    right: 0;
+    max-height: 300px;
+
+    & .form-chooser {
+      width: 210px;
+      justify-content: flex-start;
+      margin: auto;
+      padding-right: 0px;
+
+      & p {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-rendering: auto;
+        overflow: hidden;
+      }
+    }
+
+    &.active {
+      // top: calc(100%);
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      grid-auto-rows: 27px;
+    }
+  }
 }
 
 .form-chooser {
   height: min-content;
+  height: 27px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -225,9 +283,45 @@
   gap: 10px;
   transition: background-color 0.1s;
   cursor: pointer;
+  max-width: 100%;
+
+  & p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-rendering: auto;
+    overflow: hidden;
+  }
+
+
+  @media (max-width: 330px) {
+    &.add {
+      width: 30px;
+      padding: 0;
+
+      & p {
+        visibility: hidden;
+        display: none;
+      }
+    }
+  }
+
+  &.add {
+    background-color: var(--secondary-background-color);
+    border: 1px solid var(--border-color);
+    white-space: nowrap;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+
+    & .habit-circle.to-delete {
+      background-color: transparent;
+      color: var(--signature-color);
+    }
   }
 
   &.active {

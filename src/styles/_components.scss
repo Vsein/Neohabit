@@ -87,7 +87,8 @@
   height: 12px;
   width: 12px;
   border-radius: 50%;
-  color: var(--contrast-text-color);
+  color: transparent;
+  background-color: var(--signature-color);
 }
 
 .checkbox {
@@ -279,6 +280,9 @@ input[type='checkbox']:checked.checkbox {
 }
 
 .react-colorful {
+  height: 150px !important;
+  width: 170px !important;
+
   @media (max-width: 700px) {
     height: 150px !important;
     width: 150px !important;

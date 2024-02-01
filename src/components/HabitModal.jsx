@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
@@ -74,27 +75,40 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               await handleSubmit(e);
             }}
             className="modal modal-active modal-habit"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              const cellAddDropdown = document.querySelector('.cell-add-dropdown');
+              cellAddDropdown.classList.add('hidden');
+              e.stopPropagation()
+            }}
             onMouseDown={(e) => e.stopPropagation()}
-            style={{ height: width >= 850 && habitID ? '680px' : 'auto' }}
           >
             <div className="modal-header">
               <div className="tag-wrapper">
                 {projectID && (
                   <div className="tag-wrapper">
                     Project:
-                    <div className="tag">
+                    <NavLink
+                      className="tag"
+                      onClick={closeOverlay}
+                      to={`../project/${project?._id}`}
+                      title={project.name}
+                    >
                       <HabitTag habit={project} />
-                    </div>
+                    </NavLink>
                     &gt;
                   </div>
                 )}
                 {habitID ? (
                   <div className="tag-wrapper">
                     Habit:
-                    <div className="tag">
+                    <NavLink
+                      className="tag"
+                      onClick={closeOverlay}
+                      to={`../habit/${habit?._id}`}
+                      title={habit.name}
+                    >
                       <HabitTag habit={habit} />
-                    </div>
+                    </NavLink>
                   </div>
                 ) : (
                   <div className="tag-wrapper">New habit</div>
@@ -117,7 +131,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             )}
             <div className="modal-details-habit-wrapper">
               <div className="modal-details-block description-area">
-                <DescriptionField rows="12" />
+                <DescriptionField rows="10" />
               </div>
               <div className="modal-details-block mode-area">
                 <div className="form-task-description">
