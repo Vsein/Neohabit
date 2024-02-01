@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiClose, mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered } from '@mdi/js';
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
@@ -33,9 +34,14 @@ export default function StopwatchModal({ closeOverlay }) {
       onMouseDown={(e) => e.stopPropagation()}
     >
       <div className="modal-header">
-        <div className="tag">
+        <NavLink
+          className="tag"
+          onClick={closeOverlay}
+          to={habit?._id && `../habit/${habit?._id ?? 'Default'}`}
+          title={habit.name}
+        >
           <HabitTag habit={habit} />
-        </div>
+        </NavLink>
         <button
           className="icon small"
           onClick={closeOverlay}
