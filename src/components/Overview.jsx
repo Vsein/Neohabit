@@ -142,17 +142,7 @@ export default function Overview({
             </>
           )}
           <div className="overview-habits">
-            {habits.data.map((habit, i) => (
-              <HabitOverview
-                key={i}
-                habit={habit}
-                dateStart={dateStart}
-                dateEnd={dateEnd}
-                heatmap={heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)}
-                vertical={vertical}
-                mobile={mobile}
-              />
-            ))}
+            {Habits}
           </div>
           {vertical && (
             <button
