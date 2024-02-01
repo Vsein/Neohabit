@@ -7,6 +7,7 @@ export default defineConfig({
   define: { 'process.env': process.env },
   plugins: [
     VitePWA({
+      registerType: 'autoUpdate',
       manifest: {
         includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png'],
         name: 'Neohabit',

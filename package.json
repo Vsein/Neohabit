@@ -1,6 +1,6 @@
 {
   "name": "neohabit",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
   "type": "module",
   "private": true,
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Vsein/neohabit.git"
+    "url": "git+https://github.com/Vsein/neohabit-front.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Vsein/neohabit/issues"
+    "url": "https://github.com/Vsein/neohabit-front/issues"
   },
-  "homepage": "https://github.com/Vsein/neohabit#readme",
+  "homepage": "https://github.com/Vsein/neohabit-front#readme",
   "devDependencies": {
     "@babel/core": "^7.23.9",
     "@vite-pwa/assets-generator": "^0.2.3",
