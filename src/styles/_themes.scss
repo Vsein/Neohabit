@@ -1,9 +1,9 @@
 :root.light {
   color-scheme: light;
-  --signature-color: #144e12;
-  --bright-signature-color: #43d64e;
-  --signature-color-transparent: #144e1233;
-  --calm-signature-color: #A8ECAD;
+  --signature-color: #1D60C1;
+  --bright-signature-color: #2375EA;
+  --signature-color-transparent: #1D60C133;
+  --calm-signature-color: #A4B9D7;
   --form-error-color: #D41A00;
   --support-color: black;
   --main-background-color: white;
@@ -17,21 +17,21 @@
   --text-color-transparent: #00000050;
   --support-text-color: #606060;
   --contrast-text-color: white;
-  --gradient-color-1: #c0efa6;
-  --gradient-color-2: #71c639;
-  --gradient-color-3: #a7c4be;
-  --bamboo: url('../assets/neohabit-background-apple-full-3.png');
-  --auth-heatmap: url('../assets/heatmap.png');
-  --mini-logo: url('../logos/neohabit-mini-logo.png');
+  --gradient-color-1: #8FE9EF;
+  --gradient-color-2: #23BCDB;
+  --gradient-color-3: #A59BCF;
+  --bamboo: url('../assets/neohabit-background-cool.png');
+  --auth-heatmap: url('../assets/heatmap8.png');
+  --mini-logo: url('../logos/neohabit-mini-logo-cyan3.svg');
   --transparent-bg-color: #b0b0b0aa;
-  --registration-field-active-bg-color: #88cd6f;
-  --registration-field-bg-color: #8ec07c;
+  --registration-field-active-bg-color: #009ba2;
+  --registration-field-bg-color: transparent;
   --cell-border-color: rgba(0, 0, 0, 0.7);
   --transparent-bg-color: rgba(0, 0, 0, 0.2);
   --button-text-color: #f9faf8;
   --button-bg-color: #bbb;
   --button-bg-lighter-color: #ddd;
-  --border-color: #bbb;
+  --border-color: #aaa;
   --important-border-color: #888;
   --progressbar-bg-color: #ccc;
   --datepicker-triangle-color: #bbb;
@@ -48,6 +48,18 @@
   // --bamboo: url('../assets/neohabit-background-lightish-green.png');
   // --gradient-color-2: #57dc76;
   // --gradient-color-2: #10d065;
+}
+
+:root.legacy {
+  --signature-color: #144e12;
+  --bright-signature-color: #43d64e;
+  --signature-color-transparent: #144e1233;
+  --calm-signature-color: #A8ECAD;
+  --gradient-color-1: #c0efa6;
+  --gradient-color-2: #71c639;
+  --gradient-color-3: #a7c4be;
+  --registration-field-active-bg-color: #88cd6f;
+  --registration-field-bg-color: #8ec07c;
 }
 
 :root {

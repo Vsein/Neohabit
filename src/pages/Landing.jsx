@@ -11,8 +11,7 @@ import NihongoProject from '../assets/project-nihongo3.png';
 import SocialProject from '../assets/project-social2.png';
 import CleaningProject from '../assets/project-cleaning.png';
 import MedsProject from '../assets/project-medication.png';
-import MiniLogo from '../logos/neohabit-mini-logo-50x50.png';
-import Logo from '../logos/neohabit-mini-logo.png';
+import Logo from '../logos/neohabit-mini-logo-cyan3.svg';
 
 export default function Landing() {
   useTitle('Neohabit | A systemic, gradual habit-tracker');
@@ -25,13 +24,16 @@ export default function Landing() {
   const [exampleValues3, setExampleValues3] = useState(
     [...Array(10)].map((e) => ~~(Math.random() * 3)),
   );
+  const firstPaneColor = "#43d64e";
+  const secondPaneColor = "#25D4B5";
+  const thirdPaneColor = "#CE0705";
 
   return (
     <div id="content-landing">
       <header className="landing-header-container">
         <div className="landing-header">
           <div className="landing-header-logo">
-            <img src={MiniLogo} className="icon bigger" />
+            <img src={Logo} className="icon bigger" />
             <h1 className="neohabit" />
           </div>
           <ul className="landing-header-links">
@@ -88,7 +90,7 @@ export default function Landing() {
               {exampleValues.map((exampleValue, Index) => (
                 <CellPeriod
                   key={`habit-example-${Index}`}
-                  color="#43d64e"
+                  color={firstPaneColor}
                   value={exampleValue}
                   targetValue={1}
                   dateStart={startOfDay(addDays(new Date(), Index))}
@@ -111,7 +113,7 @@ export default function Landing() {
                   Index < 2 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#43d64e"
+                      color={firstPaneColor}
                       value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 3))}
@@ -127,7 +129,7 @@ export default function Landing() {
                   Index < 5 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#43d64e"
+                      color={firstPaneColor}
                       value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 1))}
@@ -143,7 +145,7 @@ export default function Landing() {
                   Index < 10 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#43d64e"
+                      color={firstPaneColor}
                       value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -184,7 +186,7 @@ export default function Landing() {
                   Index < 8 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#25D4B5"
+                      color={secondPaneColor}
                       value={Math.min(exampleValue + 1, 1)}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -199,7 +201,7 @@ export default function Landing() {
                   Index < 6 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#25D4B5"
+                      color={secondPaneColor}
                       value={Math.min(exampleValue + 2, 2)}
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -215,7 +217,7 @@ export default function Landing() {
                   Index < 10 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#25D4B5"
+                      color={secondPaneColor}
                       value={Math.min(exampleValue + 2, 3)}
                       targetValue={3}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -237,7 +239,7 @@ export default function Landing() {
                   Index < 10 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#CE0705"
+                      color={thirdPaneColor}
                       value={Math.min(exampleValue + 2, 3)}
                       targetValue={3}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -252,7 +254,7 @@ export default function Landing() {
                   Index < 6 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#CE0705"
+                      color={thirdPaneColor}
                       value={Math.min(exampleValue + 1, 2)}
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -267,7 +269,7 @@ export default function Landing() {
                   Index < 8 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color="#CE0705"
+                      color={thirdPaneColor}
                       value={Math.min(exampleValue, 1)}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}

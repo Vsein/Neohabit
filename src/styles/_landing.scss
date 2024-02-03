@@ -95,7 +95,7 @@ $cell-weekdays-width: 33px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
     background-color: var(--main-background-color);
-    box-shadow: 0 0 10px 5px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--border-color);
     // border-radius: 30px;
     border-radius: 15px;
 
@@ -213,7 +213,7 @@ $cell-weekdays-width: 33px;
     flex-direction: column;
     padding-bottom: 30px;
     border-radius: 15px;
-    box-shadow: 0 0 10px 5px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--border-color);
 
     @media (max-width: 700px) {
       padding: 10px;
@@ -364,7 +364,7 @@ $cell-weekdays-width: 33px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
     background-color: var(--main-background-color);
-    box-shadow: 0 0 10px 5px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--border-color);
     // border-radius: 30px;
     border-radius: 15px;
 
