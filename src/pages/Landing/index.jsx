@@ -120,7 +120,7 @@ function Heatmap({ dateStart, colorFunc, data }) {
         const height = dataPoint ? dataPoint.height : 1;
         const width = dataPoint ? dataPoint.width : 1;
         const alpha = colorMultiplier * value;
-        const colorRGB = hexToRgb(mixColors(hexToRgb('#3BCDE8'), hexToRgb('#4A8DEE'), Math.random()));
+        const colorRGB = hexToRgb(mixColors(hexToRgb('#3BCDE8'), hexToRgb('#23FFCB'), Math.random() * 0.7));
         const color = `rgba(${colorRGB.r}, ${colorRGB.g}, ${colorRGB.b}, ${alpha})`;
 
         return (
