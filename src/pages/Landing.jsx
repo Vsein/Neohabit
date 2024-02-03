@@ -25,7 +25,7 @@ export default function Landing() {
     [...Array(10)].map((e) => ~~(Math.random() * 3)),
   );
   const firstPaneColor = "#43d64e";
-  const secondPaneColor = "#25D4B5";
+  const secondPaneColor = "#00FF8F";
   const thirdPaneColor = "#CE0705";
 
   return (
