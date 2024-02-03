@@ -53,8 +53,8 @@ $cell-weekdays-width: 33px;
     height: 75px;
     background: linear-gradient(
       0.1turn,
-      var(--gradient-color-1),
-      var(--gradient-color-2) 45% 60%,
+      var(--gradient-color-2),
+      var(--gradient-color-1) 45% 60%,
       var(--gradient-color-3)
     );
     align-items: center;
