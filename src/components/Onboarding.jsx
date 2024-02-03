@@ -24,7 +24,7 @@ export default function Onboarding() {
   if (habits.isLoading || heatmaps.isLoading) return <></>;
 
   return (
-    <div className="overlay overlay-active">
+    <div className="overlay overlay-active centering">
       <div className={`modal modal-active modal-onboarding ${mobile ? 'modal-mobile' : ''}`}>
         <div className="modal-header" style={{ gridTemplateColumns: 'min-content' }}>
           <div className="tag">Introduction</div>

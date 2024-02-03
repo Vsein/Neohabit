@@ -161,13 +161,12 @@ const AuthRoutes = (params) => {
       <main className="registration-container">
         <section className="auth-intro">
           <p className="paragraph">
-            Are you struggling to find a good accountability partner? With this app, you&apos;ll
-            learn how to be your own accountability partner. As well as develop real skills, and not
-            get entrapped by some statistics which only stump your growth.
+            If you were ever frustrated with calendars, schedules, and over-optimization, then{' '}
+            <span className="neohabit" /> will give you a way to track progress without any
+            unnecessary fluff.
           </p>
           <p className="paragraph">
-            You know what to do, my friend. <span className="neohabit" /> will just help you realize
-            it.
+            You know what to do, <span className="neohabit" /> will just help you actualize it.
           </p>
         </section>
         <Outlet />
