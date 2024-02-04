@@ -32,11 +32,12 @@ import Overlay from './components/Overlay';
 import Onboarding from './components/Onboarding';
 import CellTip from './components/CellTip';
 import CellAdd from './components/CellAdd';
-import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
-import { useGetStopwatchQuery } from './state/services/stopwatch';
+import { useGetSettingsQuery, useGetSelfQuery } from './state/wrappers/settings';
+import { useGetStopwatchQuery } from './state/wrappers/stopwatch';
 import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
+import isPWA from './utils/pwa';
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(undefined);
@@ -100,20 +101,22 @@ const PrivateRoutes = (params) => {
 
   if (!loggedIn) return <Navigate to="/login" replace state={{ from: location }} />;
 
-  if (settings?.error || self?.error || stopwatch?.error) {
-    if (settings?.error?.originalStatus === 401) {
-      localStorage.clear();
-      return <Navigate to="/login" replace state={{ from: location }} />;
+  if (!isPWA()) {
+    if (settings?.error || self?.error || stopwatch?.error) {
+      if (settings?.error?.originalStatus === 401) {
+        localStorage.clear();
+        return <Navigate to="/login" replace state={{ from: location }} />;
+      }
+      return <FetchError />;
     }
-    return <FetchError />;
-  }
 
-  if (!self?.data?.verified) {
-    const path = location.pathname.split('/');
-    if (path[1] === 'verification') {
-      return <Outlet />;
+    if (!self?.data?.verified) {
+      const path = location.pathname.split('/');
+      if (path[1] === 'verification') {
+        return <Outlet />;
+      }
+      return <VerificationError />;
     }
-    return <VerificationError />;
   }
 
   if (settings.isLoading || self.isLoading || stopwatch.isLoading) return <></>;
