@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 import useDefaultProject from '../hooks/useDefaultProject';
-import { useGetHabitsQuery } from '../state/services/habit';
+import { useGetHabitsQuery } from '../state/wrappers/habit';
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';

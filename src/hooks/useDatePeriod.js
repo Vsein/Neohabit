@@ -13,7 +13,7 @@ import {
   differenceInDays,
   formatISO,
 } from 'date-fns';
-import { useGetSettingsQuery } from '../state/services/settings';
+import { useGetSettingsQuery } from '../state/wrappers/settings';
 import useKeyPress from './useKeyPress';
 import useWindowDimensions from './useWindowDimensions';
 

@@ -13,7 +13,8 @@ import {
 import PFP from './ProfilePicture';
 import AccountInfo from './AccountInfo';
 import useMenuToggler from '../hooks/useMenuToggler';
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
+import { useGetSettingsQuery } from '../state/wrappers/settings';
+import { useUpdateSettingsMutation } from '../state/services/settings';
 
 export default function MainMenu(props) {
   const { toggleSidebar } = props;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetProjectsQuery } from '../state/services/project';
+import { useGetHabitsQuery } from '../state/wrappers/habit';
+import { useGetProjectsQuery } from '../state/wrappers/project';
 import useLoaded from '../hooks/useLoaded';
 import useDefaultProject from '../hooks/useDefaultProject';
 import { ProjectWrapper } from './Project';

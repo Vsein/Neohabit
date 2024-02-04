@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useUpdateSettingsMutation } from '../state/services/settings';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import { useGetHabitsQuery } from '../state/services/habit';
+import { useGetHeatmapsQuery } from '../state/wrappers/heatmap';
+import { useGetHabitsQuery } from '../state/wrappers/habit';
 import useDefaultProject from '../hooks/useDefaultProject';
 import { HabitModalWrapper } from './Habit';
 

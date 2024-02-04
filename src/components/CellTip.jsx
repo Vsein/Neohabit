@@ -14,7 +14,8 @@ import {
   useDecreaseCellPeriodMutation,
   useUpdateHeatmapMutation,
 } from '../state/services/heatmap';
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
+import { useGetSettingsQuery } from '../state/wrappers/settings'
+import { useUpdateSettingsMutation } from '../state/services/settings';
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
 import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
 

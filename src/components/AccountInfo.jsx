@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetSelfQuery, useGetSettingsQuery } from '../state/services/settings';
+import { useGetSelfQuery, useGetSettingsQuery } from '../state/wrappers/settings';
 
 export default function AccountInfo() {
   const self = useGetSelfQuery();

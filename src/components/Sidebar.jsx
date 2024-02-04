@@ -12,8 +12,8 @@ import {
   mdiViewDashboard,
   mdiClipboardCheck,
 } from '@mdi/js';
-import { useGetProjectsQuery } from '../state/services/project';
-import { useGetHabitsQuery } from '../state/services/habit';
+import { useGetProjectsQuery } from '../state/wrappers/project';
+import { useGetHabitsQuery } from '../state/wrappers/habit';
 import HabitTag from './HabitTag';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
@@ -36,6 +36,8 @@ export default function Sidebar({ hidden }) {
   useKeyPress(['a'], openOverlay);
 
   const [defaultProject] = useDefaultProject();
+
+  if (projects.isFetching || habits.isFetching) return <></>;
 
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>

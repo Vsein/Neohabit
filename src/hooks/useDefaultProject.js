@@ -1,12 +1,17 @@
-import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetProjectsQuery } from '../state/services/project';
+import { useGetHabitsQuery } from '../state/wrappers/habit';
+import { useGetProjectsQuery } from '../state/wrappers/project';
 
 export default function useStopwatch() {
   const habits = useGetHabitsQuery();
   const projects = useGetProjectsQuery();
 
   if (habits.isFetching || projects.isFetching) {
-    return [ null ];
+    return [{
+      name: 'Default',
+      color: '#8a8a8a',
+      habits: [],
+      _id: 'default',
+    }];
   }
 
   const defaultProject = {
