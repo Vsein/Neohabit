@@ -12,6 +12,7 @@ import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
 import { useShadeGenerator } from '../hooks/usePaletteGenerator';
+import heatmapSort from '../utils/heatmapSort';
 
 export default function Project({
   project,
@@ -41,18 +42,8 @@ export default function Project({
       const heatmap = habit?._id
         ? heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)
         : heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit);
-      const data = heatmap?.data;
-      let dataSorted;
-      if (data) {
-        dataSorted = [...data, { date: endOfDay(globalDateEnd), value: 0, isLast: 1 }];
-        dataSorted.sort((a, b) => {
-          const res = compareDesc(new Date(b.date), new Date(a.date));
-          if (res === 0) {
-            return -2 * a.is_target + 1;
-          }
-          return res;
-        });
-      }
+      const dataSorted = heatmapSort(heatmap?.data, globalDateEnd);
+
       return (new Date(dataSorted[0].date).getTime() === endOfDay(globalDateEnd).getTime() &&
         dataSorted.length !== 1) ||
         (dataSorted.length > 2 &&
