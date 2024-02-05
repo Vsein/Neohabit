@@ -25,7 +25,7 @@ $cell-margin: 2px;
 
 .contentlist-controls {
   display: grid;
-  grid-template-columns: 180px min-content 115px;
+  grid-template-columns: 180px min-content 255px;
   grid-template-areas: '. date topbar-right';
   justify-content: space-between;
   align-items: center;

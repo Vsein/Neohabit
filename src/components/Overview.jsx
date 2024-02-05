@@ -13,7 +13,7 @@ import {
 import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
+import { useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, OverviewTopbarRight } from './DatePickers';
@@ -31,10 +31,9 @@ export default function Overview({
   const [loaded] = useLoaded();
   const habits = useGetHabitsQuery();
   const heatmaps = useGetHeatmapsQuery();
-  const settings = useGetSettingsQuery();
-  const vertical = settings.data.overview_vertical;
+  const vertical = false;
 
-  if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
+  if (!loaded || habits.isLoading || heatmaps.isLoading) {
     return <div className="loader" />;
   }
 
@@ -160,7 +159,7 @@ export default function Overview({
 }
 
 function OverviewControls({ vertical, mobile, addPeriod }) {
-  const [updateSettings] = useUpdateSettingsMutation();
+  // const [updateSettings] = useUpdateSettingsMutation();
 
   return (
     <div className="overview-settings">
