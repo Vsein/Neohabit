@@ -1,13 +1,20 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { changeTo } from '../state/features/overlay/overlaySlice';
+import { useGetHabitsQuery } from '../state/wrappers/habit';
+import { useGetProjectsQuery } from '../state/wrappers/project';
+import useLoaded from '../hooks/useLoaded';
+import useDefaultProject from '../hooks/useDefaultProject';
 import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import { DatePeriodPicker } from '../components/DatePickers';
-import Projectlist from '../components/Projectlist';
+import { ProjectWrapper } from '../components/Project';
 import useTitle from '../hooks/useTitle';
 
 export default function ProjectsPage() {
   useTitle('Projects | Neohabit');
+  const [loaded] = useLoaded();
+  const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const vertical = false;
 
   const dispatch = useDispatch();
@@ -24,6 +31,8 @@ export default function ProjectsPage() {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength, true);
+
+  const [defaultProject] = useDefaultProject();
 
   return (
     <>
@@ -49,14 +58,38 @@ export default function ProjectsPage() {
           setToFuture={setToFuture}
         />
       </div>
-      <Projectlist
-        datePeriodLength={datePeriodLength}
-        mobile={mobile}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-        subPeriod={subPeriod}
-        addPeriod={addPeriod}
-      />
+      {!loaded || projects.isFetching || habits.isFetching ? (
+        <div className="loader" />
+      ) : (
+        <div className="contentlist"> {/* ProjectList */}
+          {projects.data &&
+            projects.data.map((project, i) => (
+              <ProjectWrapper
+                key={i}
+                project={project}
+                datePeriodLength={datePeriodLength}
+                mobile={mobile}
+                globalDateStart={dateStart}
+                globalDateEnd={dateEnd}
+                globalSubPeriod={subPeriod}
+                globalAddPeriod={addPeriod}
+              />
+            ))}
+          {defaultProject.habits.length ? (
+            <ProjectWrapper
+              project={defaultProject}
+              datePeriodLength={datePeriodLength}
+              mobile={mobile}
+              globalDateStart={dateStart}
+              globalDateEnd={dateEnd}
+              subPeriod={subPeriod}
+              addPeriod={addPeriod}
+            />
+          ) : (
+            <></>
+          )}
+        </div>
+      )}
     </>
   );
 }
