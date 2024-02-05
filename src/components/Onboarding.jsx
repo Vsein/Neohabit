@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useUpdateSettingsMutation } from '../state/services/settings';
 import { useGetHeatmapsQuery } from '../state/wrappers/heatmap';
@@ -17,7 +16,7 @@ export default function Onboarding() {
   };
 
   const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
+  const mobile = width < 850;
 
   const [defaultProject] = useDefaultProject();
 

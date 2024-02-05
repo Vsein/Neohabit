@@ -43,6 +43,24 @@ function getAdaptivePeriodLength(width, habit = false) {
   return { adaptiveDatePeriodLength, mobile: width < 850 };
 }
 
+function useGetDatePeriodLength() {
+  const settings = useGetSettingsQuery();
+
+  const { width } = useWindowDimensions();
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
+  const datePeriodLength =
+    settings.data?.overview_adaptive ?? true
+      ? Math.min(
+          adaptiveDatePeriodLength,
+          settings.data?.overview_apply_limit ?? true
+            ? settings.data?.overview_duration_limit ?? 32
+            : Infinity,
+        )
+      : settings.data?.overview_duration ?? 32;
+
+  return { datePeriodLength, mobile, width };
+}
+
 export default function useDatePeriod(periodDuration, global = false, weekly = false) {
   const settings = useGetSettingsQuery();
   const { width } = useWindowDimensions();
@@ -172,4 +190,4 @@ function getUTCOffsettedDate(date = new Date()) {
   });
 }
 
-export { getAdaptivePeriodLength, getUTCOffsettedDate };
+export { getAdaptivePeriodLength, useGetDatePeriodLength, getUTCOffsettedDate };

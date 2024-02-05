@@ -1,16 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
-import useWindowDimensions from '../hooks/useWindowDimensions';
+import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import { DatePeriodPicker } from '../components/DatePickers';
 import Projectlist from '../components/Projectlist';
 import useTitle from '../hooks/useTitle';
 
 export default function ProjectsPage() {
   useTitle('Projects | Neohabit');
-  const settings = useGetSettingsQuery();
   const vertical = false;
 
   const dispatch = useDispatch();
@@ -18,17 +15,7 @@ export default function ProjectsPage() {
     dispatch(changeTo({ projectID: '', type: 'project' }));
   };
 
-  const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
-  const datePeriodLength =
-    settings.data?.overview_adaptive ?? true
-      ? Math.min(
-          adaptiveDatePeriodLength,
-          settings.data?.overview_apply_limit ?? true
-            ? settings.data?.overview_duration_limit ?? 32
-            : Infinity,
-        )
-      : settings.data?.overview_duration ?? 32;
+  const { datePeriodLength, mobile } = useGetDatePeriodLength();
 
   const [
     dateEnd,

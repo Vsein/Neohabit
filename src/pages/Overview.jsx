@@ -1,26 +1,12 @@
 import React from 'react';
-import { useGetSettingsQuery } from '../state/services/settings';
-import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
+import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import Overview from '../components/Overview';
 import useTitle from '../hooks/useTitle';
-import useWindowDimensions from '../hooks/useWindowDimensions';
 import { DatePeriodPicker } from '../components/DatePickers';
 
-export default function Dashboard() {
+export default function OverviewPage() {
   useTitle('Overview | Neohabit');
-  const settings = useGetSettingsQuery();
-
-  const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
-  const datePeriodLength =
-    settings.data?.overview_adaptive ?? true
-      ? Math.min(
-          adaptiveDatePeriodLength,
-          settings.data?.overview_apply_limit ?? true
-            ? settings.data?.overview_duration_limit ?? 32
-            : Infinity,
-        )
-      : settings.data?.overview_duration ?? 32;
+  const { datePeriodLength, mobile } = useGetDatePeriodLength();
 
   const [
     dateEnd,
@@ -29,10 +15,6 @@ export default function Dashboard() {
     setDateStart,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ] = useDatePeriod(datePeriodLength, true);
-
-  if (settings.isFetching) {
-    return <div className="loader" />;
-  }
 
   return (
     <>

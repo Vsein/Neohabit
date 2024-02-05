@@ -4,9 +4,7 @@ import useTitle from '../hooks/useTitle';
 import useDefaultProject from '../hooks/useDefaultProject';
 import { useGetHabitsQuery } from '../state/wrappers/habit';
 import { useGetProjectsQuery } from '../state/services/project';
-import { useGetSettingsQuery } from '../state/services/settings';
-import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
-import useWindowDimensions from '../hooks/useWindowDimensions';
+import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import { ReturnButton } from '../components/HabitComponents';
 import Project from '../components/Project';
 import { DatePeriodPicker } from '../components/DatePickers';
@@ -29,21 +27,10 @@ function ProjectPageLayout() {
   const navigate = useNavigate();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
-  const settings = useGetSettingsQuery();
   const { projectID } = useParams();
   const vertical = false;
 
-  const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
-  const datePeriodLength =
-    settings.data?.overview_adaptive ?? true
-      ? Math.min(
-          adaptiveDatePeriodLength,
-          settings.data?.overview_apply_limit ?? true
-            ? settings.data?.overview_duration_limit ?? 32
-            : Infinity,
-        )
-      : settings.data?.overview_duration ?? 32;
+  const { datePeriodLength, mobile } = useGetDatePeriodLength();
 
   const [
     dateEnd,
