@@ -1,24 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { useDeleteSelfMutation } from '../state/services/settings';
-import { close } from '../state/features/overlay/overlaySlice';
 
-export default function AccountDeleteModal({ closeOverlay }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [deleteSelf] = useDeleteSelfMutation();
-
-  const deleteAccount = async () => {
-    await deleteSelf();
-    dispatch(close());
-    dispatch({ type: 'RESET' });
-    localStorage.clear();
-    navigate('/login');
-  };
-
+export default function DeleteModal({ title, deleteOnClick, closeOverlay }) {
   return (
     <div
       className="modal modal-active modal-settings"
@@ -26,7 +10,7 @@ export default function AccountDeleteModal({ closeOverlay }) {
       onMouseDown={(e) => e.stopPropagation()}
     >
       <div className="modal-header">
-        <h2>Are you sure you want to delete your account?</h2>
+        <h2>Are you sure you want to delete {title}?</h2>
         <button className="icon small" onClick={closeOverlay}>
           <Icon path={mdiClose} />
         </button>
@@ -39,7 +23,7 @@ export default function AccountDeleteModal({ closeOverlay }) {
         <button
           className="button-default stretch"
           style={{ backgroundColor: 'red' }}
-          onClick={deleteAccount}
+          onClick={deleteOnClick}
         >
           Delete
         </button>

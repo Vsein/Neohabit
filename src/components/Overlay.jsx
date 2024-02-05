@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { close } from '../state/features/overlay/overlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
@@ -7,16 +8,23 @@ import TaskModal from './TaskModal';
 import ProjectModal from './ProjectModal';
 import SkilltreeModal from './SkilltreeModal';
 import SkillNodeModal from './SkillNodeModal';
-import AccountDeleteModal from './AccountDeleteModal';
-import HabitDeleteModal from './HabitDeleteModal';
-import ProjectDeleteModal from './ProjectDeleteModal';
-import SkilltreeDeleteModal from './SkilltreeDeleteModal';
+import { useDeleteProjectMutation } from '../state/services/project';
+import { useDeleteHabitMutation } from '../state/services/habit';
+import { useDeleteSkilltreeMutation } from '../state/services/skilltree';
+import { useDeleteSelfMutation } from '../state/services/settings';
+import DeleteModal from './DeleteModal';
 import StopwatchModal from './StopwatchModal';
 
 export default function Overlay() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { type, isActive, taskID, habitID, projectID, skilltreeID, skillID, skillparentID } =
     useSelector((state) => state.overlay);
+
+  const [deleteProject] = useDeleteProjectMutation();
+  const [deleteHabit] = useDeleteHabitMutation();
+  const [deleteSkilltree] = useDeleteSkilltreeMutation();
+  const [deleteSelf] = useDeleteSelfMutation();
 
   const closeOverlay = (e) => {
     e.stopPropagation();
@@ -30,42 +38,74 @@ export default function Overlay() {
   if (!isActive) return <></>;
 
   return (
-    <div className={isActive ? 'overlay overlay-active centering' : 'overlay'} onMouseDown={closeOverlay}>
-      {type === 'habit' ? (
+    <div
+      className={isActive ? 'overlay overlay-active centering' : 'overlay'}
+      onMouseDown={closeOverlay}
+    >
+      {type === 'habit' && (
         <HabitModal habitID={habitID} projectID={projectID} closeOverlay={closeOverlay} />
-      ) : (
-        <></>
       )}
-      {type === 'task' ? (
+      {type === 'task' && (
         <TaskModal taskID={taskID} habitID={habitID} closeOverlay={closeOverlay} />
-      ) : (
-        <></>
       )}
-      {type === 'project' ? (
+      {type === 'project' && (
         <ProjectModal isActive={isActive} projectID={projectID} closeOverlay={closeOverlay} />
-      ) : (
-        <></>
       )}
-      {type === 'skilltree' ? (
+      {type === 'skilltree' && (
         <SkilltreeModal skilltreeID={skilltreeID} closeOverlay={closeOverlay} />
-      ) : (
-        <></>
       )}
-      {type === 'skillNode' ? (
+      {type === 'skillNode' && (
         <SkillNodeModal
           skilltreeID={skilltreeID}
           skillID={skillID}
           skillparentID={skillparentID}
           closeOverlay={closeOverlay}
         />
-      ) : (
-        <></>
       )}
-      {type === 'deleteAccount' ? <AccountDeleteModal closeOverlay={closeOverlay} /> : <></>}
-      {type === 'deleteHabit' ? <HabitDeleteModal habitID={habitID} closeOverlay={closeOverlay} /> : <></>}
-      {type === 'deleteProject' ? <ProjectDeleteModal projectID={projectID} closeOverlay={closeOverlay} /> : <></>}
-      {type === 'deleteSkilltree' ? <SkilltreeDeleteModal skilltreeID={skilltreeID} closeOverlay={closeOverlay} /> : <></>}
-      {type === 'stopwatch' ? <StopwatchModal closeOverlay={closeOverlay} /> : <></>}
+      {type === 'deleteAccount' && (
+        <DeleteModal
+          title="your account"
+          deleteOnClick={async () => {
+            await deleteSelf();
+            closeOverlay();
+            dispatch({ type: 'RESET' });
+            localStorage.clear();
+            navigate('/login');
+          }}
+          closeOverlay={closeOverlay}
+        />
+      )}
+      {type === 'deleteHabit' && (
+        <DeleteModal
+          title="the habit"
+          deleteOnClick={async (e) => {
+            await deleteHabit(habitID);
+            closeOverlay(e);
+          }}
+          closeOverlay={closeOverlay}
+        />
+      )}
+      {type === 'deleteProject' && (
+        <DeleteModal
+          title="the project"
+          deleteOnClick={async (e) => {
+            await deleteProject(projectID);
+            closeOverlay(e);
+          }}
+          closeOverlay={closeOverlay}
+        />
+      )}
+      {type === 'deleteSkilltree' && (
+        <DeleteModal
+          title="the skilltree"
+          deleteOnClick={async (e) => {
+            await deleteSkilltree(skilltreeID);
+            closeOverlay(e);
+          }}
+          closeOverlay={closeOverlay}
+        />
+      )}
+      {type === 'stopwatch' && <StopwatchModal closeOverlay={closeOverlay} />}
     </div>
   );
 }
