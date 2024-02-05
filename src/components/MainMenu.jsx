@@ -16,8 +16,7 @@ import useMenuToggler from '../hooks/useMenuToggler';
 import { useGetSettingsQuery } from '../state/wrappers/settings';
 import { useUpdateSettingsMutation } from '../state/services/settings';
 
-export default function MainMenu(props) {
-  const { toggleSidebar } = props;
+export default function MainMenu({ toggleSidebar }) {
   const [menuOpened, { toggleMenu }] = useMenuToggler();
 
   return (
@@ -66,8 +65,7 @@ export default function MainMenu(props) {
   );
 }
 
-function MenuSection(props) {
-  const { path, to, title, status, raw } = props;
+function MenuSection({ path, to, title, status, raw }) {
   return (
     <li>
       <NavLink

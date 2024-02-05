@@ -9,7 +9,7 @@ import {
   mdiViewDashboard,
 } from '@mdi/js';
 
-export default function SidebarMobile(props) {
+export default function SidebarMobile() {
   return (
     <aside className="sidebar-mobile">
       <ul className="filters-mobile">

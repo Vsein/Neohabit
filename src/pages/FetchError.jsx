@@ -1,10 +1,8 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 
 export default function FetchError() {
   useTitle('Error | Neohabit');
-  const navigate = useNavigate();
 
   return (
     <div className="contentlist centering">

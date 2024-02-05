@@ -1,12 +1,6 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
-import {
-  mdiMagnify,
-  mdiBell,
-  mdiStarOutline,
-  mdiEyeOutline,
-  mdiShareVariantOutline,
-} from '@mdi/js';
+import { mdiStarOutline, mdiEyeOutline, mdiShareVariantOutline } from '@mdi/js';
 import PFP from '../components/ProfilePicture';
 import useTitle from '../hooks/useTitle';
 
@@ -104,8 +98,7 @@ function HabitCard() {
   );
 }
 
-function Post(props) {
-  const { title } = props;
+function Post({ title }) {
   return (
     <a className="post" tabIndex="0">
       <h4>{title}</h4>
@@ -117,8 +110,7 @@ function Post(props) {
   );
 }
 
-function Skill(props) {
-  const { color, name } = props;
+function Skill({ color, name }) {
   return (
     <button className="skill-icon" style={{ backgroundColor: color }}>
       {name}

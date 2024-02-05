@@ -1,13 +1,9 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Icon } from '@mdi/react';
-import { mdiPlus } from '@mdi/js';
 import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
-import useKeyPress from '../hooks/useKeyPress';
 import { DatePeriodPicker } from '../components/DatePickers';
 import Projectlist from '../components/Projectlist';
 import useTitle from '../hooks/useTitle';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import {
   mdiFamilyTree,
@@ -87,8 +87,7 @@ export default function Sidebar({ hidden }) {
   );
 }
 
-function NavigationSection(props) {
-  const { path, to, title, status, raw, num } = props;
+function NavigationSection({ path, to, title, status, raw, num }) {
   const navigate = useNavigate();
 
   useKeyPress([num], () => navigate(to));

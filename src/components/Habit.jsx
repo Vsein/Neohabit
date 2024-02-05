@@ -6,14 +6,13 @@ import {
   compareDesc,
   endOfDay,
 } from 'date-fns';
-import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
-import { HabitControls, ReturnButton } from './HabitComponents';
+import { HabitControls } from './HabitComponents';
 import { useShadeGenerator } from '../hooks/usePaletteGenerator';
 
 export default function Habit({
@@ -135,7 +134,6 @@ function HabitModalWrapper({
   habitPage = false,
 }) {
   const [loaded] = useLoaded();
-  // const settings = useGetSettingsQuery();
   const vertical = true;
 
   const { width } = useWindowDimensions();

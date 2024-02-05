@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { useParams, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 import useDefaultProject from '../hooks/useDefaultProject';
 import { useGetHabitsQuery } from '../state/wrappers/habit';

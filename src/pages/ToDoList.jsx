@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate, Outlet, NavLink, useParams } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import { mdiSquareSmall, mdiFormatListGroup } from '@mdi/js';
+import { mdiSquareSmall } from '@mdi/js';
 import useTitle from '../hooks/useTitle';
 import { useGetTasksQuery } from '../state/services/todolist';
 import { useGetHabitsQuery } from '../state/services/habit';
@@ -50,9 +50,7 @@ function Navigation() {
   );
 }
 
-function Filter(props) {
-  const { filter } = props;
-
+function Filter({ filter }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   return (

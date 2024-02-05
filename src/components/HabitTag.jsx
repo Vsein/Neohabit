@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
-import { mdiClose, mdiPlus } from '@mdi/js';
+import { mdiClose } from '@mdi/js';
 
 export default function HabitTag({ habit }) {
   return (
