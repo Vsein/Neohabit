@@ -42,7 +42,6 @@
     "@mdi/react": "^1.6.1",
     "@reduxjs/toolkit": "^2.1.0",
     "date-fns": "^3.3.1",
-    "idb-keyval": "^6.2.1",
     "react": "^18.2.0",
     "react-colorful": "^5.6.1",
     "react-datepicker": "^5.0.0",
