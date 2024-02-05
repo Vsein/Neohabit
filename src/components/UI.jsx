@@ -1,8 +1,9 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
+import { useGetSelfQuery } from '../state/wrappers/settings';
 
-export default function HabitTag({ habit }) {
+function HabitTag({ habit }) {
   return (
     <>
       <div className="centering">
@@ -29,4 +30,26 @@ function HabitTagToDelete({ habit }) {
   );
 }
 
-export { HabitTagToDelete };
+function AccountInfo() {
+  const self = useGetSelfQuery();
+
+  return self.isLoading ? (
+    <></>
+  ) : (
+    <div className="account-info">
+      <img alt="profile pic" className="pfp small" />
+      <p>{`@${self.data.username}`}</p>
+      <p className="account-username">{self.data.email}</p>
+    </div>
+  );
+}
+
+function ProfilePicture({ type }) {
+  return (
+    <a tabIndex="0" className="centering">
+      <img alt="profile pic" className={`pfp ${type}`} />
+    </a>
+  );
+}
+
+export { HabitTag, HabitTagToDelete, AccountInfo, ProfilePicture };

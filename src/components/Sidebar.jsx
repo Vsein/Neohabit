@@ -14,7 +14,7 @@ import {
 } from '@mdi/js';
 import { useGetProjectsQuery } from '../state/wrappers/project';
 import { useGetHabitsQuery } from '../state/wrappers/habit';
-import HabitTag from './HabitTag';
+import { HabitTag } from './UI';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';

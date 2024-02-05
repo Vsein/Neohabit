@@ -5,7 +5,7 @@ import { mdiClose, mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered } from '@mdi/
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
 import { useGetHabitsQuery } from '../state/services/habit';
 import useStopwatch from '../hooks/useStopwatch';
-import HabitTag from './HabitTag';
+import { HabitTag } from './UI';
 
 export default function StopwatchModal({ closeOverlay }) {
   const stopwatch = useGetStopwatchQuery();

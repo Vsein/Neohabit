@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
-import HabitTag from './HabitTag';
+import { HabitTag } from './UI';
 import { NameField, DescriptionField, ModalButtons } from './ModalComponents';
 import {
   useGetTasksQuery,

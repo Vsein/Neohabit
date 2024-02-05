@@ -4,7 +4,7 @@ import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose, mdiPlus } from '@mdi/js';
-import HabitTag, { HabitTagToDelete } from './HabitTag';
+import { HabitTag, HabitTagToDelete } from './UI';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetProjectsQuery,

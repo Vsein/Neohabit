@@ -10,10 +10,8 @@ import {
   mdiMoonWaxingCrescent,
   mdiWhiteBalanceSunny,
 } from '@mdi/js';
-import PFP from './ProfilePicture';
-import AccountInfo from './AccountInfo';
+import { AccountInfo, ProfilePicture } from './UI';
 import useMenuToggler from '../hooks/useMenuToggler';
-import { useGetSettingsQuery } from '../state/wrappers/settings';
 import { useUpdateSettingsMutation } from '../state/services/settings';
 
 export default function MainMenu({ toggleSidebar }) {
@@ -39,7 +37,7 @@ export default function MainMenu({ toggleSidebar }) {
         onClick={toggleMenu}
         title="Toggle menu [I]"
       >
-        <PFP type="tiny" />
+        <ProfilePicture type="tiny" />
       </button>
       <ul
         className={`menu-container ${menuOpened ? 'active' : ''}`}
@@ -65,7 +63,7 @@ export default function MainMenu({ toggleSidebar }) {
   );
 }
 
-function MenuSection({ path, to, title, status, raw }) {
+function MenuSection({ path, to, title }) {
   return (
     <li>
       <NavLink
@@ -82,13 +80,7 @@ function MenuSection({ path, to, title, status, raw }) {
 
 function ThemeToggle() {
   const [updateSettings] = useUpdateSettingsMutation();
-  const settings = useGetSettingsQuery();
-
-  if (settings.isLoading) {
-    return <></>;
-  }
-
-  const theme = settings.data.prefer_dark ? 'dark' : 'light';
+  const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
   return (
     <li>

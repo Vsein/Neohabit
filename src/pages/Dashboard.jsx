@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
 import { mdiStarOutline, mdiEyeOutline, mdiShareVariantOutline } from '@mdi/js';
-import PFP from '../components/ProfilePicture';
+import { ProfilePicture } from '../components/UI';
 import useTitle from '../hooks/useTitle';
 
 export default function Dashboard() {
@@ -16,7 +16,7 @@ export default function Dashboard() {
       {/* </div> */}
 
       <div className="controls">
-        <PFP type="big" />
+        <ProfilePicture type="big" />
         <div className="welcome">
           <p className="hello">Hello there,</p>
           <p className="username">Serene Coder (&#64;Vsein)</p>
