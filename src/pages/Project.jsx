@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 import useDefaultProject from '../hooks/useDefaultProject';
-import { useGetHabitsQuery } from '../state/wrappers/habit';
+import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery } from '../state/services/project';
 import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import { ReturnButton } from '../components/HabitComponents';
@@ -42,13 +42,14 @@ function ProjectPageLayout() {
 
   const [defaultProject] = useDefaultProject();
 
+  const { colorShade, calmColorShade, textColor, calmTextColor } = useShadeGenerator(project.color);
+
   if (projects.isFetching || habits.isFetching) {
     return <div className="loader" />;
   }
 
   const project = projects.data.find((projecto) => projecto._id === projectID) ?? defaultProject;
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = useShadeGenerator(project.color);
 
   return projects.isFetching || habits.isFetching ? (
     <div className="loader" />

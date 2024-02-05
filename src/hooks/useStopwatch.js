@@ -3,8 +3,8 @@ import {
   useUpdateStopwatchMutation,
   useFinishStopwatchMutation,
 } from '../state/services/stopwatch';
-import { useGetStopwatchQuery } from '../state/wrappers/stopwatch';
-import { useGetSettingsQuery } from '../state/wrappers/settings';
+import { useGetStopwatchQuery } from '../state/services/stopwatch';
+import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
 import { getUTCOffsettedDate } from './useDatePeriod';
 

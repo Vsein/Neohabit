@@ -12,8 +12,8 @@ import {
   mdiViewDashboard,
   mdiClipboardCheck,
 } from '@mdi/js';
-import { useGetProjectsQuery } from '../state/wrappers/project';
-import { useGetHabitsQuery } from '../state/wrappers/habit';
+import { useGetProjectsQuery } from '../state/services/project';
+import { useGetHabitsQuery } from '../state/services/habit';
 import { HabitTag } from './UI';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useKeyPress from '../hooks/useKeyPress';

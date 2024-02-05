@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import { useGetHabitsQuery } from '../state/wrappers/habit';
-import { useGetProjectsQuery } from '../state/wrappers/project';
+import { useGetHabitsQuery } from '../state/services/habit';
+import { useGetProjectsQuery } from '../state/services/project';
 import useLoaded from '../hooks/useLoaded';
 import useDefaultProject from '../hooks/useDefaultProject';
 import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';

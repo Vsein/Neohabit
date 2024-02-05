@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { useGetSelfQuery } from '../state/wrappers/settings';
+import { useGetSelfQuery } from '../state/services/settings';
 
 function HabitTag({ habit }) {
   return (

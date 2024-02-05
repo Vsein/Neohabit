@@ -1,5 +1,5 @@
-import { useGetHabitsQuery } from '../state/wrappers/habit';
-import { useGetProjectsQuery } from '../state/wrappers/project';
+import { useGetHabitsQuery } from '../state/services/habit';
+import { useGetProjectsQuery } from '../state/services/project';
 
 export default function useStopwatch() {
   const habits = useGetHabitsQuery();
