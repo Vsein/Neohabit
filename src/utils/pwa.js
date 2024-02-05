@@ -4,6 +4,6 @@ export default function isPWA() {
   if (navigator.standalone || window.matchMedia(mqStandAlone).matches) {
     displayMode = 'standalone';
   }
-  displayMode = 'standalone'
+  // displayMode = 'standalone'
   return displayMode === 'standalone';
 }

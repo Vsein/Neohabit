@@ -70,6 +70,25 @@ function getNumericTextColor(color) {
     : '#000000';
 }
 
+function getEliminationColor(color) {
+  return mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4);
+}
+
+function useShadeGenerator(color) {
+  const settings = useGetSettingsQuery();
+
+  const colorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.8)
+    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(color), 0.6);
+  const calmColorShade = !settings.data?.prefer_dark
+    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
+    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+  const textColor = getNumericTextColor(colorShade);
+  const calmTextColor = getNumericTextColor(calmColorShade);
+
+  return { colorShade, calmColorShade, textColor, calmTextColor };
+}
+
 export default function usePaletteGenerator(color) {
   const settings = useGetSettingsQuery();
   const themeRgb = settings.data?.prefer_dark
@@ -82,4 +101,4 @@ export default function usePaletteGenerator(color) {
   return palette;
 }
 
-export { mixColors, hexToRgb, contrast, getNumericTextColor };
+export { getNumericTextColor, getEliminationColor, useShadeGenerator };
