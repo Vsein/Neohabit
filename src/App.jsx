@@ -8,22 +8,23 @@ import {
   useLocation,
   NavLink,
 } from 'react-router-dom';
-import ToDoList from './pages/ToDoList';
+// import Dashboard from './pages/Dashboard';
+import Landing from './pages/Landing';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-// import Dashboard from './pages/Dashboard';
-import Overview from './pages/Overview';
-import Projects from './pages/Projects';
-import Skilltrees from './pages/Skilltrees';
-import Habit from './pages/Habit';
-import Project from './pages/Project';
 import Blocks from './pages/Blocks';
 import Logout from './pages/Logout';
-import NotFound from './pages/404';
 import FetchError from './pages/FetchError';
 import VerificationError from './pages/VerificationError';
 import Verification from './pages/Verification';
-import Landing from './pages/Landing';
+
+import Projects from './pages/Projects';
+import Skilltrees from './pages/Skilltrees';
+import ToDoList from './pages/ToDoList';
+import Overview from './pages/Overview';
+import Habit from './pages/Habit';
+import Project from './pages/Project';
+import NotFound from './pages/404';
 import Settings from './pages/Settings';
 import MainMenu from './components/MainMenu';
 import Stopwatch from './components/Stopwatch';
@@ -61,14 +62,14 @@ const App = () => {
         <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
           <Route path="*" element={<NotFound />} />
           <Route path="/verification/:token" element={<Verification />} />
+          <Route path="/blocks/*" element={<Blocks />} />
+          <Route path="/logout" element={<Logout />} />
           <Route path="/projects/*" element={<Projects />} />
           <Route path="/skills/*" element={<Skilltrees />} />
           <Route path="/todo/*" element={<ToDoList />} />
           <Route path="/overview/" element={<Overview />} />
-          <Route path="/blocks/*" element={<Blocks />} />
           <Route path="/habit/:habitID/*" element={<Habit />} />
           <Route path="/project/:projectID/*" element={<Project />} />
-          <Route path="/logout" element={<Logout />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
