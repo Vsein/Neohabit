@@ -37,8 +37,6 @@ export default function Sidebar({ hidden }) {
 
   const [defaultProject] = useDefaultProject();
 
-  if (projects.isFetching || habits.isFetching) return <></>;
-
   return (
     <aside className={hidden ? 'sidebar sidebar-hidden' : 'sidebar'}>
       <ul className="navigation">
