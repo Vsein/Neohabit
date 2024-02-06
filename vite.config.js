@@ -15,7 +15,7 @@ export default defineConfig({
         id: '/?homescreen=1',
         description: 'A systemic, gradual habit-tracker',
         background_color: '#ffffff',
-        theme_color: '#00c4cd"',
+        theme_color: '#00c4cd',
         start_url: '.',
         dir: 'ltr',
         scope: 'https://neohabit.app',

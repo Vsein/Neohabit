@@ -6,7 +6,7 @@ const changeTheme = (newTheme) => {
   link.href = newTheme === 'dark' ? '/favicon-dark2.ico' : '/favicon.ico';
   document
     .querySelector('meta[name="theme-color"]')
-    .setAttribute('content', newTheme === 'dark' ? '#1c2128' : '#144e12');
+    .setAttribute('content', newTheme === 'dark' ? '#1c2128' : '#00c4cd');
   root.className = newTheme;
 };
 
