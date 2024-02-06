@@ -13,7 +13,7 @@ import { DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
-import { useShadeGenerator } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
 import heatmapSort from '../utils/heatmapSort';
 
 export default function Habit({
@@ -67,7 +67,7 @@ function HabitDefaultWrapper({
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = useShadeGenerator(habit.color);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
 
   return (
     <div
@@ -139,7 +139,7 @@ function HabitModalWrapper({
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = useShadeGenerator(habit.color);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
 
   return (
     <div

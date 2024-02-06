@@ -9,7 +9,7 @@ import useWindowDimensions from '../hooks/useWindowDimensions';
 import { ReturnButton } from '../components/HabitComponents';
 import { DatePeriodPicker } from '../components/DatePickers';
 import { HabitDefaultWrapper } from '../components/Habit';
-import { useShadeGenerator } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
 
 export default function HabitPage() {
   useTitle('Habit | Neohabit');
@@ -67,7 +67,7 @@ function Overview() {
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
   ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365);
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = useShadeGenerator(habit.color);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
 
   return tasks.isFetching || habits.isFetching || heatmaps.isFetching ? (
     <div className="loader" />

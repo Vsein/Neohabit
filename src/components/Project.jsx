@@ -11,7 +11,7 @@ import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
-import { useShadeGenerator } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
 import heatmapSort from '../utils/heatmapSort';
 
 export default function Project({
@@ -30,7 +30,7 @@ export default function Project({
   const habits = useGetHabitsQuery();
   const vertical = false;
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = useShadeGenerator(project.color);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
   if (heatmaps.isFetching || habits.isFetching) return <></>;
 

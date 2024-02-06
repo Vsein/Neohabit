@@ -1,5 +1,3 @@
-import { useGetSettingsQuery } from '../state/services/settings';
-
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
@@ -74,13 +72,13 @@ function getEliminationColor(color) {
   return mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4);
 }
 
-function useShadeGenerator(color) {
-  const settings = useGetSettingsQuery();
+function generateShades(color) {
+  const preferDark = document.documentElement.classList.contains('dark');
 
-  const colorShade = !settings.data?.prefer_dark
+  const colorShade = !preferDark
     ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.8)
     : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(color), 0.6);
-  const calmColorShade = !settings.data?.prefer_dark
+  const calmColorShade = !preferDark
     ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
     : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
   const textColor = getNumericTextColor(colorShade);
@@ -90,8 +88,8 @@ function useShadeGenerator(color) {
 }
 
 export default function usePaletteGenerator(color) {
-  const settings = useGetSettingsQuery();
-  const themeRgb = settings.data?.prefer_dark
+  const preferDark = document.documentElement.classList.contains('dark');
+  const themeRgb = preferDark
     ? { r: 36, g: 36, b: 36 }
     : { r: 239, g: 239, b: 239 };
 
@@ -101,4 +99,4 @@ export default function usePaletteGenerator(color) {
   return palette;
 }
 
-export { getNumericTextColor, getEliminationColor, useShadeGenerator };
+export { getNumericTextColor, getEliminationColor, generateShades };

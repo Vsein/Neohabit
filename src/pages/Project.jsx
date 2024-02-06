@@ -8,7 +8,7 @@ import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import { ReturnButton } from '../components/HabitComponents';
 import Project from '../components/Project';
 import { DatePeriodPicker } from '../components/DatePickers';
-import { useShadeGenerator } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
 
 export default function ProjectPage() {
   useTitle('Habit | Neohabit');
@@ -42,14 +42,13 @@ function ProjectPageLayout() {
 
   const [defaultProject] = useDefaultProject();
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = useShadeGenerator(project.color);
-
   if (projects.isFetching || habits.isFetching) {
     return <div className="loader" />;
   }
 
   const project = projects.data.find((projecto) => projecto._id === projectID) ?? defaultProject;
 
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
   return projects.isFetching || habits.isFetching ? (
     <div className="loader" />

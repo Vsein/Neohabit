@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import { useShadeGenerator } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
 import SkillSegment from './SkillSegment';
 
 function processSkilltree(skilltreeProvided) {
@@ -30,7 +30,7 @@ export default function Skilltree({ skilltree }) {
   const vertical = false;
   const datePeriodLength = 46;
 
-  const { colorShade } = useShadeGenerator(skilltree.color);
+  const { colorShade } = generateShades(skilltree.color);
 
   const processedSkills = processSkilltree(skilltree);
 
