@@ -31,7 +31,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
     if (!projects.isLoading) {
       const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
         name: '',
-        color: '#aabbcc',
+        color: '#1D60C1',
         description: '',
         habits: [],
       };
@@ -43,7 +43,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
 
   const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
     name: '',
-    color: '#aabbcc',
+    color: '#1D60C1',
     description: '',
     habits: [],
   };

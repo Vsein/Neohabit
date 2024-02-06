@@ -36,7 +36,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
       initialValues={{
         name: skilltree?.name,
         description: '',
-        color: skilltree?.color || '#aabbcc',
+        color: skilltree?.color || '#1D60C1',
       }}
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
