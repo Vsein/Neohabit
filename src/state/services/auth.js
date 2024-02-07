@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import isPWA from '../../utils/pwa';
+// import isPWA from '../../utils/pwa';
 
 export const hasJWT = () => {
   const token = localStorage.getItem('token');
-  return token || isPWA();
+  // return token || isPWA();
+  return token;
 };
 
 const authApi = createApi({

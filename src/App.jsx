@@ -102,7 +102,7 @@ const PrivateRoutes = (params) => {
 
   if (!loggedIn) return <Navigate to="/login" replace state={{ from: location }} />;
 
-  if (!isPWA()) {
+  // if (!isPWA()) {
     if (settings?.error || self?.error || stopwatch?.error) {
       if (settings?.error?.originalStatus === 401) {
         localStorage.clear();
@@ -118,7 +118,7 @@ const PrivateRoutes = (params) => {
       }
       return <VerificationError />;
     }
-  }
+  // }
 
   if (settings.isLoading || self.isLoading || stopwatch.isLoading) return <></>;
 
