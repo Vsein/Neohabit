@@ -88,7 +88,7 @@ function PasswordField({ type }) {
           <div className="registration-field-container">
             <input
               {...input}
-              className="registration-field"
+              className="registration-field password-field"
               type={passwordHidden ? 'password' : 'test'}
             />
             <button className="icon-password" type="button" onClick={togglePasswordVisibility}>
