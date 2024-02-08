@@ -14,11 +14,11 @@ import {
 
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 
-function MonthWeekly({ dateStart, index }) {
+function MonthWeekly({ dateStart, index, length }) {
   const date = addWeeks(dateStart, index);
   const monthName = monthNames[date.getMonth()];
   if (isSameWeek(date, new Date())) {
-    if (getWeekOfMonth(date) === 2) {
+    if (getWeekOfMonth(date) === 2 && index !== length - 1) {
       return <div className="heatmap-months-month active same-month">{monthName}</div>;
     }
     return <div className="heatmap-months-month same-month arrow">&#9660;</div>;
@@ -34,7 +34,7 @@ function HeatmapMonthsWeekly({ dateStart, diffWeeks }) {
   return (
     <div className="heatmap-months">
       {months.map((_, index) => (
-        <MonthWeekly key={index} index={index} dateStart={dateStart} />
+        <MonthWeekly key={index} index={index} dateStart={dateStart} length={diffWeeks} />
       ))}
     </div>
   );
