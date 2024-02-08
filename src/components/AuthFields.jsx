@@ -73,7 +73,7 @@ function PasswordField({ type }) {
       required
       minLength="8"
       maxLength="30"
-      validate={composeValidators(requiredValidator, boundsValidator(8, 30))}
+      validate={composeValidators(requiredValidator, boundsValidator(8, 100))}
       // onChange="onChange()"
       autoComplete="new-password"
     >
