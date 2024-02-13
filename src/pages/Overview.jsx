@@ -29,6 +29,7 @@ export default function OverviewPage() {
           setToPast={setToPast}
           reset={reset}
           setToFuture={setToFuture}
+          mobile={mobile}
         />
       </div>
       <div className="contentlist">

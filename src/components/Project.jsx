@@ -9,7 +9,7 @@ import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
+import { OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
 import heatmapSort from '../utils/heatmapSort';

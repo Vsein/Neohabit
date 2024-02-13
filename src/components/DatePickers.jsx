@@ -37,6 +37,7 @@ function DatePeriodPicker({
   setToPast,
   reset,
   setToFuture,
+  mobile = false,
 }) {
   const startRef = useRef();
   const endRef = useRef();
@@ -91,6 +92,7 @@ function DatePeriodPicker({
             e.target.readOnly = true;
           }}
           enableTabLoop={false}
+          withPortal={mobile}
           icon={
             <Icon
               path={mdiCalendarBlank}
@@ -121,6 +123,7 @@ function DatePeriodPicker({
             e.target.readOnly = true;
           }}
           enableTabLoop={false}
+          withPortal={mobile}
           icon={
             <Icon
               path={mdiCalendarBlank}

@@ -56,6 +56,7 @@ export default function ProjectsPage() {
           setToPast={setToPast}
           reset={reset}
           setToFuture={setToFuture}
+          mobile={mobile}
         />
       </div>
       {!loaded || projects.isFetching || habits.isFetching ? (

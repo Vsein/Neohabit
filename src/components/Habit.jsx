@@ -171,6 +171,7 @@ function HabitModalWrapper({
           setToPast={setToPast}
           reset={reset}
           setToFuture={setToFuture}
+          mobile={mobile}
         />
         <HabitControls
           habit={habit}
