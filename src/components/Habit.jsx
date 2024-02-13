@@ -6,15 +6,15 @@ import {
   compareDesc,
   endOfDay,
 } from 'date-fns';
-import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
-import { HabitControls, ReturnButton } from './HabitComponents';
-import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { HabitControls } from './HabitComponents';
+import { generateShades } from '../hooks/usePaletteGenerator';
+import heatmapSort from '../utils/heatmapSort';
 
 export default function Habit({
   heatmap,
@@ -25,18 +25,7 @@ export default function Habit({
   dateEnd,
   vertical = true,
 }) {
-  const data = heatmap?.data;
-  let dataSorted;
-  if (data) {
-    dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
-    dataSorted.sort((a, b) => {
-      const res = compareDesc(new Date(b.date), new Date(a.date));
-      if (res === 0) {
-        return -2 * a.is_target + 1;
-      }
-      return res;
-    });
-  }
+  const dataSorted = heatmapSort(heatmap?.data, dateEnd);
 
   return (
     <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
@@ -74,17 +63,12 @@ function HabitDefaultWrapper({
   mobile = false,
 }) {
   const [loaded] = useLoaded();
-  const settings = useGetSettingsQuery();
   const vertical = true;
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
-  const colorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(habit.color), 0.8)
-    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(habit.color), 0.6);
-  const calmColorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
-    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
+
   return (
     <div
       className={`overview-centering slide-${onboardingSlide}`}
@@ -99,8 +83,8 @@ function HabitDefaultWrapper({
         '--signature-color': colorShade,
         '--bright-signature-color': colorShade,
         '--calm-signature-color': `${colorShade}55`,
-        '--datepicker-text-color': getNumericTextColor(colorShade),
-        '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+        '--datepicker-text-color': textColor,
+        '--datepicker-calm-text-color': calmTextColor,
         margin: 'auto',
       }}
     >
@@ -140,8 +124,6 @@ function HabitModalWrapper({
   habitPage = false,
 }) {
   const [loaded] = useLoaded();
-  const settings = useGetSettingsQuery();
-  // const settings = useGetSettingsQuery();
   const vertical = true;
 
   const { width } = useWindowDimensions();
@@ -157,12 +139,7 @@ function HabitModalWrapper({
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
-  const colorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(habit.color), 0.8)
-    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(habit.color), 0.6);
-  const calmColorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
-    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
 
   return (
     <div
@@ -178,8 +155,8 @@ function HabitModalWrapper({
         '--signature-color': colorShade,
         '--bright-signature-color': colorShade,
         '--calm-signature-color': `${colorShade}55`,
-        '--datepicker-text-color': getNumericTextColor(colorShade),
-        '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+        '--datepicker-text-color': textColor,
+        '--datepicker-calm-text-color': calmTextColor,
         margin: 'auto',
       }}
     >

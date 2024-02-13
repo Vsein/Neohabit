@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import {
-  useGetStopwatchQuery,
   useUpdateStopwatchMutation,
   useFinishStopwatchMutation,
 } from '../state/services/stopwatch';
+import { useGetStopwatchQuery } from '../state/services/stopwatch';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
 import { getUTCOffsettedDate } from './useDatePeriod';

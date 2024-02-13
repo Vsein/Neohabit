@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
-import HabitTag from './HabitTag';
+import { HabitTag } from './UI';
 import { HabitModalWrapper } from './Habit';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import useWindowDimensions from '../hooks/useWindowDimensions';
@@ -32,14 +32,14 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
 
   const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
     name: 'Default',
-    color: '#aabbcc',
+    color: '#23BCDB',
     description: '',
     habits: [],
   };
 
   const habit = habits.data.find((habito) => habito._id === habitID) ?? {
     name: '',
-    color: '#aabbcc',
+    color: '#23BCDB',
     description: '',
   };
 

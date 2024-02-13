@@ -25,7 +25,7 @@ $cell-margin: 2px;
 
 .contentlist-controls {
   display: grid;
-  grid-template-columns: 180px min-content 115px;
+  grid-template-columns: 180px min-content 255px;
   grid-template-areas: '. date topbar-right';
   justify-content: space-between;
   align-items: center;
@@ -34,7 +34,9 @@ $cell-margin: 2px;
   height: 50px;
   padding-inline: 20px;
 
-  @media (min-width: 850px) {
+  @media (max-width: 900px) {
+    grid-template-columns: 180px 1fr;
+    grid-template-areas: '. date';
     // position: sticky;
     // top: 0;
     // z-index: 2;
@@ -86,16 +88,11 @@ $cell-margin: 2px;
 .overview-centering {
   --habit-name-width: 200px;
   --habit-controls-width: 115px;
-  --overview-padding-right: 5px;
   --overview-topbar-left-padding: 35px;
 
   &.mobile {
     --habit-name-width: 110px;
     --habit-controls-width: 20px;
-    --overview-padding-right: calc(
-      (var(--habit-name-width) + var(--length) * 19px + var(--habit-controls-width)) / 2
-    );
-    --overview-padding-right: 3px;
     --overview-topbar-left-padding: 0px;
   }
 
@@ -123,9 +120,11 @@ $cell-margin: 2px;
   position: relative;
   direction: rtl;
   overflow-y: hidden;
-  padding-right: var(--overview-padding-right);
   height: max(27px, calc(19px * var(--habits) * var(--multiplier) + 8px));
-  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+  width: min(
+    calc(var(--length) * 19px) + var(--habit-name-width) + var(--habit-controls-width),
+    100%
+  );
 
   &.mobile {
     height: max(55px, calc(30px + 19px * var(--habits) * var(--multiplier) + 6px));
@@ -296,7 +295,7 @@ $cell-margin: 2px;
   border-radius: 0px 0px 10px 10px;
   display: grid;
   grid-template-columns: 30px 1fr 30px;
-  width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
+  width: min(calc(var(--length) * 19px + var(--habit-name-width) + var(--habit-controls-width)), 100%);
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -350,7 +349,7 @@ $cell-margin: 2px;
   grid-template-rows: 15px 15px;
   // justify-content: space-between;
   align-items: center;
-  width: min(calc(var(--length) * 19px + 200px + 90px + 35px), 100%);
+  width: min(calc(var(--length) * 19px + var(--habit-name-width) + var(--habit-controls-width)), 100%);
 
   @media (min-width: 850px) {
     // &.singular {

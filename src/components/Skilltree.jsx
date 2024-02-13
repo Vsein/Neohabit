@@ -3,9 +3,8 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiPencil, mdiDelete } from '@mdi/js';
-import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
 import SkillSegment from './SkillSegment';
 
 function processSkilltree(skilltreeProvided) {
@@ -28,15 +27,10 @@ function processSkilltree(skilltreeProvided) {
 }
 
 export default function Skilltree({ skilltree }) {
-  const settings = useGetSettingsQuery();
   const vertical = false;
   const datePeriodLength = 46;
 
-  if (settings.isFetching) return <></>;
-
-  const colorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(skilltree.color), 0.8)
-    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(skilltree.color), 0.6);
+  const { colorShade } = generateShades(skilltree.color);
 
   const processedSkills = processSkilltree(skilltree);
 

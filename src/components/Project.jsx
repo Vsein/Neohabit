@@ -6,13 +6,13 @@ import { mdiMenuLeft, mdiMenuRight, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete
 import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import { useGetSettingsQuery } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, DatePeriodPicker, OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
-import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
+import heatmapSort from '../utils/heatmapSort';
 
 export default function Project({
   project,
@@ -28,17 +28,11 @@ export default function Project({
 }) {
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
-  const settings = useGetSettingsQuery();
   const vertical = false;
 
-  const colorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
-    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(project.color), 0.6);
-  const calmColorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
-    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
-  if (heatmaps.isFetching || habits.isFetching || settings.isFetching) return <></>;
+  if (heatmaps.isFetching || habits.isFetching) return <></>;
 
   const Habits =
     project.habits &&
@@ -48,18 +42,8 @@ export default function Project({
       const heatmap = habit?._id
         ? heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)
         : heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit);
-      const data = heatmap?.data;
-      let dataSorted;
-      if (data) {
-        dataSorted = [...data, { date: endOfDay(globalDateEnd), value: 0, isLast: 1 }];
-        dataSorted.sort((a, b) => {
-          const res = compareDesc(new Date(b.date), new Date(a.date));
-          if (res === 0) {
-            return -2 * a.is_target + 1;
-          }
-          return res;
-        });
-      }
+      const dataSorted = heatmapSort(heatmap?.data, globalDateEnd);
+
       return (new Date(dataSorted[0].date).getTime() === endOfDay(globalDateEnd).getTime() &&
         dataSorted.length !== 1) ||
         (dataSorted.length > 2 &&
@@ -101,8 +85,8 @@ export default function Project({
         '--multiplier': 1,
         '--cell-height': '15px',
         '--cell-width': '15px',
-        '--datepicker-text-color': getNumericTextColor(colorShade),
-        '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+        '--datepicker-text-color': textColor,
+        '--datepicker-calm-text-color': calmTextColor,
         [project.color !== '#8a8a8a' ? '--signature-color' : '']: colorShade,
         [project.color !== '#8a8a8a' ? '--bright-signature-color' : '']: colorShade,
         [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,

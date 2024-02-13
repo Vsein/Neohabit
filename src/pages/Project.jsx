@@ -1,16 +1,14 @@
 import React from 'react';
-import { useParams, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { useParams, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 import useDefaultProject from '../hooks/useDefaultProject';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery } from '../state/services/project';
-import { useGetSettingsQuery } from '../state/services/settings';
-import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
-import useWindowDimensions from '../hooks/useWindowDimensions';
+import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import { ReturnButton } from '../components/HabitComponents';
 import Project from '../components/Project';
 import { DatePeriodPicker } from '../components/DatePickers';
-import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
 
 export default function ProjectPage() {
   useTitle('Habit | Neohabit');
@@ -29,21 +27,10 @@ function ProjectPageLayout() {
   const navigate = useNavigate();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
-  const settings = useGetSettingsQuery();
   const { projectID } = useParams();
   const vertical = false;
 
-  const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
-  const datePeriodLength =
-    settings.data?.overview_adaptive ?? true
-      ? Math.min(
-          adaptiveDatePeriodLength,
-          settings.data?.overview_apply_limit ?? true
-            ? settings.data?.overview_duration_limit ?? 32
-            : Infinity,
-        )
-      : settings.data?.overview_duration ?? 32;
+  const { datePeriodLength, mobile } = useGetDatePeriodLength();
 
   const [
     dateEnd,
@@ -61,12 +48,7 @@ function ProjectPageLayout() {
 
   const project = projects.data.find((projecto) => projecto._id === projectID) ?? defaultProject;
 
-  const colorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(project.color), 0.8)
-    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(project.color), 0.6);
-  const calmColorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
-    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
   return projects.isFetching || habits.isFetching ? (
     <div className="loader" />
@@ -78,8 +60,8 @@ function ProjectPageLayout() {
           '--signature-color': colorShade,
           '--bright-signature-color': colorShade,
           '--calm-signature-color': `${colorShade}55`,
-          '--datepicker-text-color': getNumericTextColor(colorShade),
-          '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+          '--datepicker-text-color': textColor,
+          '--datepicker-calm-text-color': calmTextColor,
         }}
       >
         <div className="overview-centering" style={{ width: 'max-content' }}>

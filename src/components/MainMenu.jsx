@@ -10,13 +10,11 @@ import {
   mdiMoonWaxingCrescent,
   mdiWhiteBalanceSunny,
 } from '@mdi/js';
-import PFP from './ProfilePicture';
-import AccountInfo from './AccountInfo';
+import { AccountInfo, ProfilePicture } from './UI';
 import useMenuToggler from '../hooks/useMenuToggler';
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
+import { useUpdateSettingsMutation } from '../state/services/settings';
 
-export default function MainMenu(props) {
-  const { toggleSidebar } = props;
+export default function MainMenu({ toggleSidebar }) {
   const [menuOpened, { toggleMenu }] = useMenuToggler();
 
   return (
@@ -39,7 +37,7 @@ export default function MainMenu(props) {
         onClick={toggleMenu}
         title="Toggle menu [I]"
       >
-        <PFP type="tiny" />
+        <ProfilePicture type="tiny" />
       </button>
       <ul
         className={`menu-container ${menuOpened ? 'active' : ''}`}
@@ -65,8 +63,7 @@ export default function MainMenu(props) {
   );
 }
 
-function MenuSection(props) {
-  const { path, to, title, status, raw } = props;
+function MenuSection({ path, to, title }) {
   return (
     <li>
       <NavLink
@@ -83,13 +80,7 @@ function MenuSection(props) {
 
 function ThemeToggle() {
   const [updateSettings] = useUpdateSettingsMutation();
-  const settings = useGetSettingsQuery();
-
-  if (settings.isLoading) {
-    return <></>;
-  }
-
-  const theme = settings.data.prefer_dark ? 'dark' : 'light';
+  const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
   return (
     <li>

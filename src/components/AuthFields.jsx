@@ -73,7 +73,7 @@ function PasswordField({ type }) {
       required
       minLength="8"
       maxLength="30"
-      validate={composeValidators(requiredValidator, boundsValidator(8, 30))}
+      validate={composeValidators(requiredValidator, boundsValidator(8, 100))}
       // onChange="onChange()"
       autoComplete="new-password"
     >
@@ -88,7 +88,7 @@ function PasswordField({ type }) {
           <div className="registration-field-container">
             <input
               {...input}
-              className="registration-field"
+              className="registration-field password-field"
               type={passwordHidden ? 'password' : 'test'}
             />
             <button className="icon-password" type="button" onClick={togglePasswordVisibility}>

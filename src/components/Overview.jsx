@@ -13,11 +13,12 @@ import {
 import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
+import { useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, OverviewTopbarRight } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
+import heatmapSort from '../utils/heatmapSort';
 
 export default function Overview({
   dateStart,
@@ -31,27 +32,15 @@ export default function Overview({
   const [loaded] = useLoaded();
   const habits = useGetHabitsQuery();
   const heatmaps = useGetHeatmapsQuery();
-  const settings = useGetSettingsQuery();
-  const vertical = settings.data.overview_vertical;
+  const vertical = false;
 
-  if (!loaded || habits.isLoading || heatmaps.isLoading || settings.isLoading) {
+  if (!loaded || habits.isLoading || heatmaps.isLoading) {
     return <div className="loader" />;
   }
 
   const Habits = habits.data.flatMap((habit, i) => {
     const heatmap = heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id);
-    const data = heatmap?.data;
-    let dataSorted;
-    if (data) {
-      dataSorted = [...data, { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
-      dataSorted.sort((a, b) => {
-        const res = compareDesc(new Date(b.date), new Date(a.date));
-        if (res === 0) {
-          return -2 * a.is_target + 1;
-        }
-        return res;
-      });
-    }
+    const dataSorted = heatmapSort(heatmap?.data, dateEnd);
 
     return (new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() &&
       dataSorted.length !== 1) ||
@@ -160,7 +149,7 @@ export default function Overview({
 }
 
 function OverviewControls({ vertical, mobile, addPeriod }) {
-  const [updateSettings] = useUpdateSettingsMutation();
+  // const [updateSettings] = useUpdateSettingsMutation();
 
   return (
     <div className="overview-settings">

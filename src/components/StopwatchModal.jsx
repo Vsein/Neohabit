@@ -5,7 +5,7 @@ import { mdiClose, mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered } from '@mdi/
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
 import { useGetHabitsQuery } from '../state/services/habit';
 import useStopwatch from '../hooks/useStopwatch';
-import HabitTag from './HabitTag';
+import { HabitTag } from './UI';
 
 export default function StopwatchModal({ closeOverlay }) {
   const stopwatch = useGetStopwatchQuery();
@@ -23,7 +23,7 @@ export default function StopwatchModal({ closeOverlay }) {
 
   const habit = habits.data.find((habito) => habito._id === stopwatch?.data?.habit?._id) ?? {
     name: 'No habit',
-    color: '#aabbcc',
+    color: '#23BCDB',
   };
 
   return (

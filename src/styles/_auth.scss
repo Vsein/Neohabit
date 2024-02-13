@@ -84,6 +84,10 @@
   border: 1px solid var(--signature-color);
   padding: 5px 10px;
 
+  &.password-field {
+    padding: 5px 40px 5px 10px;
+  }
+
   &:focus {
     background-color: var(--registartion-field-active-bg-color);
   }

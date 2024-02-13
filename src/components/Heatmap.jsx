@@ -11,7 +11,7 @@ import {
   subMilliseconds,
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
-import { getNumericTextColor, mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
+import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function Heatmap({
   dateStart,

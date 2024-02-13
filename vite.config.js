@@ -15,8 +15,8 @@ export default defineConfig({
         id: '/?homescreen=1',
         description: 'A systemic, gradual habit-tracker',
         background_color: '#ffffff',
-        theme_color: '#00c4cd"',
-        start_url: '.',
+        theme_color: '#00c4cd',
+        start_url: './projects',
         dir: 'ltr',
         scope: 'https://neohabit.app',
         lang: 'en',
@@ -26,17 +26,16 @@ export default defineConfig({
         prefer_related_applications: false,
         shortcuts: [
           {
-            name: 'Login',
-            url: '/login',
-          },
-          {
-            name: 'Signup',
-            url: '/signup',
-          },
-          {
             name: 'Projects',
             url: '/projects',
-            description: 'An overview of all your projects.',
+            description: 'Your projects',
+            icons: [{ src: 'trending-up-custom.png', sizes: '192x192' }],
+          },
+          {
+            name: 'Overview',
+            url: '/overview',
+            description: 'Your habits',
+            icons: [{ src: 'view-dashboard-custom.png', sizes: '192x192' }],
           },
         ],
         categories: ['health', 'productivity', 'utilities', 'lifestyle'],
@@ -51,7 +50,7 @@ export default defineConfig({
           {
             src: 'favicon.ico',
             type: 'image/x-icon',
-            sizes: '16x16 32x32',
+            sizes: '48x48',
             purpose: 'any',
           },
           {

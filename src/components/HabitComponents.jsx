@@ -52,7 +52,7 @@ function HabitControls({
     cellAddDropdown.classList.toggle('hidden');
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
-    const { innerWidth: width, innerHeight: height } = window;
+    const { innerWidth: width } = window;
     if (width <= 850) {
       cellAddDropdown.style.top = `${window.pageYOffset + rect.y + 26}px`;
       cellAddDropdown.style.left = `${rect.x - (isTarget ? 165 : 113) + (width < 400 ? 25 : 0)}px`;

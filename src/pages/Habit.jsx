@@ -4,13 +4,12 @@ import useTitle from '../hooks/useTitle';
 import { useGetTasksQuery } from '../state/services/todolist';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import { useGetSettingsQuery } from '../state/services/settings';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { ReturnButton } from '../components/HabitComponents';
 import { DatePeriodPicker } from '../components/DatePickers';
 import { HabitDefaultWrapper } from '../components/Habit';
-import { mixColors, hexToRgb, getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { generateShades } from '../hooks/usePaletteGenerator';
 
 export default function HabitPage() {
   useTitle('Habit | Neohabit');
@@ -49,7 +48,6 @@ function Overview() {
   const tasks = useGetTasksQuery();
   const habits = useGetHabitsQuery();
   const heatmaps = useGetHeatmapsQuery();
-  const settings = useGetSettingsQuery();
   const { habitID } = useParams();
   const habit =
     useGetHabitsQuery().data.find((habito) => habito._id === habitID) ??
@@ -60,8 +58,7 @@ function Overview() {
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
 
-  const datePeriodLength =
-    adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
+  const datePeriodLength = adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
   const [
     dateEnd,
     setDateEnd,
@@ -70,24 +67,20 @@ function Overview() {
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
   ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365);
 
-  const colorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(habit.color), 0.8)
-    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(habit.color), 0.6);
-  const calmColorShade = !settings.data?.prefer_dark
-    ? mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(colorShade), 0.33)
-    : mixColors({ r: 45, g: 51, b: 51 }, hexToRgb(colorShade), 0.33);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
 
-  return tasks.isFetching || habits.isFetching || heatmaps.isFetching || settings.isFetching ? (
+  return tasks.isFetching || habits.isFetching || heatmaps.isFetching ? (
     <div className="loader" />
   ) : (
     <>
-      <div className="contentlist-controls"
+      <div
+        className="contentlist-controls"
         style={{
           '--signature-color': colorShade,
           '--bright-signature-color': colorShade,
           '--calm-signature-color': `${colorShade}55`,
-          '--datepicker-text-color': getNumericTextColor(colorShade),
-          '--datepicker-calm-text-color': getNumericTextColor(calmColorShade),
+          '--datepicker-text-color': textColor,
+          '--datepicker-calm-text-color': calmTextColor,
         }}
       >
         <div className="overview-centering" style={{ width: 'max-content' }}>

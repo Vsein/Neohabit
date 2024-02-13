@@ -36,7 +36,7 @@ function StopwatchContents() {
 
   const habit = habits.data.find((habito) => habito._id === stopwatch?.data?.habit?._id) ?? {
     name: 'No habit',
-    color: '#aabbcc',
+    color: '#23BCDB',
   };
 
   return (

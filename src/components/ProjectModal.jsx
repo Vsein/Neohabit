@@ -4,7 +4,7 @@ import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose, mdiPlus } from '@mdi/js';
-import HabitTag, { HabitTagToDelete } from './HabitTag';
+import { HabitTag, HabitTagToDelete } from './UI';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetProjectsQuery,
@@ -31,7 +31,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
     if (!projects.isLoading) {
       const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
         name: '',
-        color: '#aabbcc',
+        color: '#1D60C1',
         description: '',
         habits: [],
       };
@@ -43,7 +43,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
 
   const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
     name: '',
-    color: '#aabbcc',
+    color: '#1D60C1',
     description: '',
     habits: [],
   };

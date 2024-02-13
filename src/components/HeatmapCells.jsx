@@ -11,7 +11,7 @@ import {
 } from 'date-fns';
 import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
-import { mixColors, hexToRgb } from '../hooks/usePaletteGenerator';
+import { getEliminationColor } from '../hooks/usePaletteGenerator';
 
 function Cell({
   color,
@@ -24,9 +24,7 @@ function Cell({
   elimination,
 }) {
   const trueColor =
-    numeric && elimination && value > targetValue
-      ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
-      : color;
+    numeric && elimination && value > targetValue ? getEliminationColor(color) : color;
   const dispatch = useDispatch();
   const style = {
     [value ? '--blank-cell-color' : '']: trueColor,
@@ -99,9 +97,7 @@ function CellFractured({
           className="cell-fraction"
           style={{
             [index < value ? 'backgroundColor' : '']:
-              index >= targetValue && elimination
-                ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
-                : color,
+              index >= targetValue && elimination ? getEliminationColor(color) : color,
           }}
         />
       ))}
@@ -166,7 +162,7 @@ function CellPeriod({
 
   const trueColor =
     (value > 1 || numeric) && !dummy && elimination && value > targetValue
-      ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4)
+      ? getEliminationColor(color)
       : color;
 
   let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;

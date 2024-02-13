@@ -1,13 +1,7 @@
 import React from 'react';
 import { Icon } from '@mdi/react';
-import {
-  mdiMagnify,
-  mdiBell,
-  mdiStarOutline,
-  mdiEyeOutline,
-  mdiShareVariantOutline,
-} from '@mdi/js';
-import PFP from '../components/ProfilePicture';
+import { mdiStarOutline, mdiEyeOutline, mdiShareVariantOutline } from '@mdi/js';
+import { ProfilePicture } from '../components/UI';
 import useTitle from '../hooks/useTitle';
 
 export default function Dashboard() {
@@ -22,7 +16,7 @@ export default function Dashboard() {
       {/* </div> */}
 
       <div className="controls">
-        <PFP type="big" />
+        <ProfilePicture type="big" />
         <div className="welcome">
           <p className="hello">Hello there,</p>
           <p className="username">Serene Coder (&#64;Vsein)</p>
@@ -104,8 +98,7 @@ function HabitCard() {
   );
 }
 
-function Post(props) {
-  const { title } = props;
+function Post({ title }) {
   return (
     <a className="post" tabIndex="0">
       <h4>{title}</h4>
@@ -117,8 +110,7 @@ function Post(props) {
   );
 }
 
-function Skill(props) {
-  const { color, name } = props;
+function Skill({ color, name }) {
   return (
     <button className="skill-icon" style={{ backgroundColor: color }}>
       {name}

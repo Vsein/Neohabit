@@ -6,7 +6,12 @@ export default function useStopwatch() {
   const projects = useGetProjectsQuery();
 
   if (habits.isFetching || projects.isFetching) {
-    return [ null ];
+    return [{
+      name: 'Default',
+      color: '#8a8a8a',
+      habits: [],
+      _id: 'default',
+    }];
   }
 
   const defaultProject = {

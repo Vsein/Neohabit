@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import {
   mdiFamilyTree,
@@ -14,7 +14,7 @@ import {
 } from '@mdi/js';
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHabitsQuery } from '../state/services/habit';
-import HabitTag from './HabitTag';
+import { HabitTag } from './UI';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useKeyPress from '../hooks/useKeyPress';
 import useDefaultProject from '../hooks/useDefaultProject';
@@ -85,8 +85,7 @@ export default function Sidebar({ hidden }) {
   );
 }
 
-function NavigationSection(props) {
-  const { path, to, title, status, raw, num } = props;
+function NavigationSection({ path, to, title, status, raw, num }) {
   const navigate = useNavigate();
 
   useKeyPress([num], () => navigate(to));

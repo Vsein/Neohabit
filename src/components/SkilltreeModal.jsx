@@ -3,7 +3,7 @@ import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import HabitTag from './HabitTag';
+import { HabitTag } from './UI';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import {
   useGetSkilltreesQuery,
@@ -36,7 +36,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
       initialValues={{
         name: skilltree?.name,
         description: '',
-        color: skilltree?.color || '#aabbcc',
+        color: skilltree?.color || '#1D60C1',
       }}
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (

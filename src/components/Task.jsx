@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { useUpdateTaskMutation, useDeleteTaskMutation } from '../state/services/todolist';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 
-export default function Task(props) {
-  const { task } = props;
+export default function Task({ task }) {
   const dispatch = useDispatch();
-  const [deleteTask, { isLoading }] = useDeleteTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
 
   const habit = task?.habit || { name: 'Default', color: '#8a8a8a' };
