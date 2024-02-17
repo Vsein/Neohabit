@@ -64,7 +64,10 @@ function useGetDatePeriodLength() {
 export default function useDatePeriod(periodDuration, global = false, weekly = false) {
   const settings = useGetSettingsQuery();
   const { width } = useWindowDimensions();
-  const state = settings.data.overview_current_day;
+  const state =
+    !weekly || !settings.data.habit_heatmaps_override
+      ? settings.data.overview_current_day
+      : settings.data.habit_heatmaps_current_day;
   const offset = settings.data.overview_offset ?? 0;
 
   const getStart = (neededState = state) => {

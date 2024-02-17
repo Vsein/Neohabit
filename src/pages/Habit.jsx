@@ -58,14 +58,14 @@ function Overview() {
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
 
-  const datePeriodLength = adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 365;
+  const datePeriodLength = adaptiveDatePeriodLength < 53 ? adaptiveDatePeriodLength : 53;
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
-  ] = useDatePeriod(datePeriodLength, false, datePeriodLength !== 365);
+  ] = useDatePeriod(datePeriodLength, false, true);
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
 

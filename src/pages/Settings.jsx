@@ -36,21 +36,11 @@ export default function Settings() {
         <Link className="settings-type" to="#heatmaps">
           Heatmaps
         </Link>
-        <Link
-          className="settings-type ribbon ribbon-top"
-          style={{ opacity: 0.3, position: 'relative' }}
-          to="#overview"
-        >
-          <span style={{ borderRadius: '10px 10px 0px 0px'}}>soon</span>
-          Overview
-        </Link>
-        <Link
-          className="settings-type ribbon ribbon-top"
-          style={{ opacity: 0.3, position: 'relative' }}
-          to="#overview"
-        >
-          <span style={{ borderRadius: '10px 10px 0px 0px'}}>soon</span>
+        <Link className="settings-type" to="#habits">
           Habits
+        </Link>
+        <Link className="settings-type" to="#stopwatch">
+          Stopwatch
         </Link>
         <Link className="settings-type" to="#danger-zone">
           Danger
@@ -183,6 +173,34 @@ export default function Settings() {
           }
         />
         <SettingsSection
+          name="habits"
+          elements={
+            <>
+              <SettingsButtonOption
+                name="Use a different period start for heatmaps"
+                curState={settings.data.habit_heatmaps_override ?? false}
+                update={(state) => updateSettings({ values: { habit_heatmaps_override: state } })}
+                choices={[
+                  { name: 'On', state: true },
+                  { name: 'Off', state: false },
+                ]}
+              />
+              <SettingsButtonOption
+                name="Use current day as period's..."
+                cssName="first-day"
+                disabled={!settings.data.habit_heatmaps_override ?? true}
+                curState={settings.data.habit_heatmaps_current_day ?? 'middle'}
+                update={(state) => updateSettings({ values: { habit_heatmaps_current_day: state } })}
+                choices={[
+                  { name: 'End', state: 'end' },
+                  { name: 'Middle', state: 'middle' },
+                  { name: 'Start', state: 'start' },
+                ]}
+              />
+            </>
+          }
+        />
+        <SettingsSection
           name="stopwatch"
           elements={
             <>
@@ -258,9 +276,9 @@ function SettingsSection({ name, id = '', elements }) {
   );
 }
 
-function SettingsButtonOption({ name, cssName, update, choices, curState = undefined }) {
+function SettingsButtonOption({ name, cssName, update, choices, curState = undefined, disabled = false }) {
   return (
-    <div className={`settings-option ${cssName}`}>
+    <div className={`settings-option ${cssName} ${disabled ? 'disabled' : ''}`}>
       <h3 className="settings-name">{name}</h3>
       <div className="settings-chooser">
         {choices.map((choice, index) => (
