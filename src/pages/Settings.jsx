@@ -188,7 +188,7 @@ export default function Settings() {
               <SettingsButtonOption
                 name="Use current day as period's..."
                 cssName="first-day"
-                disabled={!settings.data.habit_heatmaps_override ?? true}
+                disabled={!settings.data.habit_heatmaps_override}
                 curState={settings.data.habit_heatmaps_current_day ?? 'middle'}
                 update={(state) => updateSettings({ values: { habit_heatmaps_current_day: state } })}
                 choices={[
