@@ -152,9 +152,14 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
     setDateEnd(getEnd('start'));
   };
 
-  const reset = () => {
-    setDateStart(getStart());
-    setDateEnd(getEnd());
+  const reset = (e, hard = false) => {
+    if (hard) {
+      setDateStart(getStart());
+      setDateEnd(getEnd());
+    } else {
+      setDateStart(getStart('middle'));
+      setDateEnd(getEnd('middle'));
+    }
   };
 
   if (!global) {
@@ -166,7 +171,7 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
   }
 
   useEffect(() => {
-    reset();
+    reset(undefined, true);
   }, [width]);
 
   useEffect(() => {
