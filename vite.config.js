@@ -20,7 +20,7 @@ export default defineConfig({
         dir: 'ltr',
         scope: 'https://neohabit.app',
         lang: 'en',
-        orientation: 'portrait-primary',
+        orientation: 'any',
         display: 'standalone',
         display_override: ['window-controls-overlay', 'standalone', 'browser'],
         prefer_related_applications: false,
