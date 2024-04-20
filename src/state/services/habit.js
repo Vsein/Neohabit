@@ -57,8 +57,10 @@ export const habitApi = api.injectEndpoints({
         );
         dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const Project = draft.find((project) => project.habits.includes(habitID));
-            Project.habits = Project.habits.filter((ID) => ID !== habitID);
+            const Projects = draft.filter((project) => project.habits.includes(habitID));
+            Projects.forEach((Project) => {
+              Project.habits = Project.habits.filter((ID) => ID !== habitID);
+            });
           }),
         );
       },
