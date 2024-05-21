@@ -41,8 +41,8 @@ export default function Heatmap({
 
   const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
 
-  const elimination = overridenElimination === undefined ? habit?.elimination : overridenElimination;
-  const numeric = overridenNumeric === undefined ? habit?.numeric : overridenNumeric;
+  const elimination = overridenElimination ?? habit?.elimination;
+  const numeric = overridenNumeric ?? habit?.numeric;
 
   return (
     <div
