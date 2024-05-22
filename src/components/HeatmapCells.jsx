@@ -22,6 +22,7 @@ function Cell({
   numeric,
   targetValue = 1,
   elimination,
+  dummy = false,
 }) {
   const trueColor =
     numeric && elimination && value > targetValue ? getEliminationColor(color) : color;
@@ -34,7 +35,7 @@ function Cell({
 
   return (
     <div
-      className={`cell centering ${
+      className={`cell centering ${dummy ? 'dummy' : ''} ${
         value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
       }`}
       style={style}
@@ -68,13 +69,14 @@ function CellFractured({
   length,
   vertical = true,
   elimination,
+  dummy = false,
 }) {
   const dispatch = useDispatch();
   const fractions = Math.max(value, targetValue);
 
   return (
     <div
-      className={`cell fractured f${fractions} ${length > 1 ? 'long' : ''} ${vertical ? 'vertical' : ''}`}
+      className={`cell fractured f${fractions} ${dummy ? 'dummy' : ''} ${length > 1 ? 'long' : ''} ${vertical ? 'vertical' : ''}`}
       style={{ '--color': color, '--length': length }}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
       onMouseLeave={(e) => tipContent && hideTip()}
@@ -146,6 +148,7 @@ function CellPeriod({
         numeric={numeric || value > 16 || (value === 0 && targetValue > 16)}
         targetValue={targetValue}
         elimination={elimination}
+        dummy={dummy}
       />
     ) : (
       <CellFractured
@@ -156,6 +159,7 @@ function CellPeriod({
         length={diffDays}
         vertical={vertical}
         elimination={elimination}
+        dummy={dummy}
       />
     );
   }
@@ -173,14 +177,6 @@ function CellPeriod({
     '--height': 7,
     '--width': width,
   };
-  if (dummy) {
-    Object.assign(style, {
-      '--blank-cell-color': 'transparent',
-      '--cell-border-color': 'transparent',
-      '--cell-shadow-color': 'transparent',
-      pointerEvents: 'none',
-    });
-  }
   const beforeHeight =
     differenceInHours(addMilliseconds(endOfWeek(dateStart), 1), dateStart) / basePeriod;
   const styleBefore = {
@@ -201,7 +197,7 @@ function CellPeriod({
   return (
     <>
       <div
-        className={`cell-period centering ${width ? 'wide' : 'hollow'} ${
+        className={`cell-period centering ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
           value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
         } `}
         style={style}

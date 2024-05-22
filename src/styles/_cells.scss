@@ -9,6 +9,16 @@ $cell-margin: 2px;
   margin: $cell-margin;
 }
 
+.cell.dummy,
+.cell-period.dummy,
+.cell-fraction.dummy,
+.cell-numeric.dummy {
+  --blank-cell-color: transparent !important;
+  --cell-border-color: transparent !important;
+  --cell-shadow-color: transparent !important;
+  pointer-events: none !important;
+}
+
 @mixin cell-common {
   position: relative;
   border: 1px solid transparent;
