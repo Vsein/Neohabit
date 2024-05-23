@@ -65,7 +65,7 @@ function Overview() {
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
-  ] = useDatePeriod(datePeriodLength, false, true);
+  ] = useDatePeriod(datePeriodLength, true, true);
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
 
