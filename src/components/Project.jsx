@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuLeft, mdiMenuRight, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
-import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
+import { differenceInDays, compareDesc, endOfDay, startOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { changeTo } from '../state/features/overlay/overlaySlice';
@@ -48,7 +48,7 @@ export default function Project({
         dataSorted.length !== 1) ||
         (dataSorted.length > 2 &&
           dataSorted[dataSorted.length - 2].is_archive &&
-          new Date(dataSorted[dataSorted.length - 2].date).getTime() < globalDateStart.getTime()) ? (
+          startOfDay(new Date(dataSorted[dataSorted.length - 2].date).getTime()) <= globalDateStart.getTime()) ? (
         []
       ) : (
         <HabitOverview
