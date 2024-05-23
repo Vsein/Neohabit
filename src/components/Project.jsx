@@ -48,7 +48,7 @@ export default function Project({
         dataSorted.length !== 1) ||
         (dataSorted.length > 2 &&
           dataSorted[dataSorted.length - 2].is_archive &&
-          new Date(dataSorted[dataSorted.length - 3].date).getTime() < globalDateStart.getTime()) ? (
+          new Date(dataSorted[dataSorted.length - 2].date).getTime() < globalDateStart.getTime()) ? (
         []
       ) : (
         <HabitOverview
