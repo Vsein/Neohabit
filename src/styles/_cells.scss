@@ -9,14 +9,20 @@ $cell-margin: 2px;
   margin: $cell-margin;
 }
 
-.cell.dummy,
-.cell-period.dummy,
-.cell-fraction.dummy,
-.cell-numeric.dummy {
-  --blank-cell-color: transparent !important;
-  --cell-border-color: transparent !important;
-  --cell-shadow-color: transparent !important;
-  pointer-events: none !important;
+.cell,
+.cell-period,
+.cell-fraction,
+.cell-numeric {
+  &.dummy {
+    --blank-cell-color: transparent !important;
+    --cell-border-color: transparent !important;
+    --cell-shadow-color: transparent !important;
+    pointer-events: none !important;
+  }
+
+  &.nonzero {
+    border: 1px solid var(--nonzero-cell-border-color);
+  }
 }
 
 @mixin cell-common {
