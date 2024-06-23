@@ -95,7 +95,6 @@ export default function Landing() {
                   targetValue={1}
                   dateStart={startOfDay(addDays(new Date(), Index))}
                   dateEnd={endOfDay(addDays(new Date(), Index))}
-                  dummy={true}
                   vertical={false}
                 />
               ))}
@@ -118,7 +117,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 3))}
                       dateEnd={endOfDay(addDays(new Date(), (Index + 1) * 3))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -134,7 +132,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 1))}
                       dateEnd={endOfDay(addDays(new Date(), (Index + 1) * 1))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -150,7 +147,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -191,7 +187,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -206,7 +201,6 @@ export default function Landing() {
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -222,7 +216,6 @@ export default function Landing() {
                       targetValue={3}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -244,7 +237,6 @@ export default function Landing() {
                       targetValue={3}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -259,7 +251,6 @@ export default function Landing() {
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -274,7 +265,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -462,7 +452,6 @@ function FeaturesSection() {
                   value={value}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                 />
               </div>
             </div>
@@ -477,7 +466,6 @@ function FeaturesSection() {
                   targetValue={2}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={false}
                 />
               </div>
@@ -488,7 +476,6 @@ function FeaturesSection() {
                   targetValue={4}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={false}
                 />
               </div>
@@ -499,7 +486,6 @@ function FeaturesSection() {
                   targetValue={9}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={false}
                 />
               </div>
@@ -510,7 +496,6 @@ function FeaturesSection() {
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={false}
                 />
               </div>
@@ -526,7 +511,6 @@ function FeaturesSection() {
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={true}
                 />
               </div>
@@ -542,7 +526,6 @@ function FeaturesSection() {
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(addDays(new Date(), 2))}
-                  dummy={true}
                   numeric={true}
                   vertical={false}
                 />
@@ -554,7 +537,6 @@ function FeaturesSection() {
                   targetValue={2}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(addDays(new Date(), 2))}
-                  dummy={true}
                   vertical={false}
                 />
               </div>
