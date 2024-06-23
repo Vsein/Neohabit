@@ -162,7 +162,7 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
     }
   };
 
-  if (!global) {
+  if (global) {
     useKeyPress(['r'], reset);
     useKeyPress(['H'], subMonth);
     useKeyPress(['L'], addMonth);
