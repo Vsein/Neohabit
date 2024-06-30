@@ -29,10 +29,6 @@ $cell-margin: 2px;
   }
 }
 
-.cell-fractured:hover > * {
-  --cell-border-color: var(--hover-cell-border-color);
-}
-
 @mixin cell-common {
   position: relative;
   border: 1px solid var(--cell-border-color);
@@ -42,6 +38,11 @@ $cell-margin: 2px;
   width: calc(var(--width) * (var(--cell-width) + 4px) - 4px);
   margin: $cell-margin;
   background-color: var(--blank-cell-color);
+
+  &:hover .cell-numeric.target {
+    color: var(--text-color);
+    opacity: 1;
+  }
 }
 
 .cell {
@@ -58,13 +59,6 @@ $cell-margin: 2px;
       0px 0px 0px 1px var(--blank-cell-color),
       0 0 0 2px var(--cell-shadow-color);
     border-color: transparent;
-  }
-
-  &:hover {
-    & .cell-numeric.target {
-      color: var(--text-color);
-      opacity: 1;
-    }
   }
 
   &.fractured {
@@ -153,6 +147,10 @@ $cell-margin: 2px;
       height: 100%;
     }
 
+    &:hover > * {
+      --cell-border-color: var(--hover-cell-border-color);
+    }
+
     & > * {
       box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
     }
@@ -219,7 +217,7 @@ $cell-margin: 2px;
   @mixin shadow-fix {
     display: block;
     background-color: var(--blank-cell-color);
-    width: 3px;
+    width: 2px;
     height: calc(100% + 1px);
     content: ' ';
     position: absolute;
@@ -264,13 +262,13 @@ $cell-margin: 2px;
     &:after {
       @include shadow-fix;
       top: -1px;
-      right: -2px;
+      right: -1px;
     }
 
     &:before {
       @include shadow-fix;
       top: 0px;
-      left: -2px;
+      left: -1px;
     }
   }
 
@@ -278,35 +276,36 @@ $cell-margin: 2px;
     & .cell-period-before:after {
       @include shadow-fix;
       top: -1px;
-      right: -2px;
+      right: -1px;
     }
     & .cell-period-after:after {
       @include shadow-fix;
       top: 0px;
-      left: -2px;
+      left: -1px;
     }
 
-    &:not(.hundred) {
+    &.nonzero:not(.hundred),
+    &:hover:not(.hundred) {
       border: 1px solid var(--cell-border-color);
 
       & > .cell-period-before {
         border: 1px solid var(--cell-border-color);
         border-right: none;
         box-shadow: none;
-        //
-        // &:after {
-        //   display: none;
-        // }
+
+        &:after {
+          display: none;
+        }
       }
 
       & > .cell-period-after {
         border: 1px solid var(--cell-border-color);
         border-left: none;
         box-shadow: none;
-        //
-        // &:after {
-        //   display: none;
-        // }
+
+        &:after {
+          display: none;
+        }
       }
     }
   }
@@ -358,9 +357,12 @@ $cell-margin: 2px;
     & .cell-period-after,
     & .cell-period-connector {
       box-shadow:
-        0px 0px 0px 1px var(--cell-border-color),
         0px 0px 0px 1px var(--blank-cell-color),
         0 0 0 2px var(--cell-shadow-color);
+    }
+
+    &.nonzero.wide {
+      border-color: transparent;
     }
 
     & .cell-period-connector:before {
@@ -376,25 +378,21 @@ $cell-margin: 2px;
       width: 4px;
     }
 
-    & .cell-period-connector {
-
+    &.nonzero .cell-period-connector,
+    &:hover .cell-period-connector {
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
-        0px 0px 0px 1px var(--blank-cell-color),
-        0 0 0 2px var(--cell-shadow-color);
-      // box-shadow:
-      //   0px 0px 0px 1px var(--cell-border-color),
-      //   0px 0px 0px 1px var(--blank-cell-color);
+        0px 0px 0px 1px var(--blank-cell-color);
       border-color: transparent;
       &:before {
         @include shadow-fix;
         top: 0px;
-        left: -2px;
+        left: -1px;
       }
       &:after {
         @include shadow-fix;
         top: -1px;
-        right: -2px;
+        right: -1px;
       }
     }
 
@@ -411,7 +409,8 @@ $cell-margin: 2px;
       left: -2px;
     }
 
-    &:is(.wide) {
+    &.nonzero.wide,
+    &:hover:is(.wide) {
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
         0px 0px 0px 1px var(--blank-cell-color),
@@ -420,31 +419,25 @@ $cell-margin: 2px;
 
       & .cell-period-before,
       & .cell-period-after {
-        // box-shadow:
-        //   0px 0px 0px 1px var(--cell-border-color),
-        //   0px 0px 0px 1px var(--blank-cell-color);
-
-      box-shadow:
-        0px 0px 0px 1px var(--cell-border-color),
-        0px 0px 0px 1px var(--blank-cell-color),
-        0 0 0 2px var(--cell-shadow-color);
-        // border-color: transparent;
+        box-shadow:
+          0px 0px 0px 1px var(--cell-border-color),
+          0px 0px 0px 1px var(--blank-cell-color);
+        border-color: transparent;
       }
       & .cell-period-before:after {
         @include shadow-fix;
-        // width: 3px;
         top: -1px;
-        right: -2px;
+        right: -1px;
       }
       & .cell-period-after:after {
         @include shadow-fix;
-        // width: 3px;
         top: 0px;
-        left: -2px;
+        left: -1px;
       }
     }
 
-    &:is(.hollow) {
+    &.nonzero.hollow,
+    &:hover:is(.hollow) {
       & .cell-period-before,
       & .cell-period-after {
         box-shadow:
