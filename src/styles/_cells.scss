@@ -15,19 +15,27 @@ $cell-margin: 2px;
 .cell-numeric {
   &.dummy {
     --blank-cell-color: transparent !important;
-    --cell-border-color: transparent !important;
+    --hover-cell-border-color: transparent !important;
     --cell-shadow-color: transparent !important;
     pointer-events: none !important;
   }
 
   &.nonzero {
-    border: 1px solid var(--nonzero-cell-border-color);
+    --cell-border-color: var(--nonzero-cell-border-color);
   }
+
+  &:hover {
+    --cell-border-color: var(--hover-cell-border-color);
+  }
+}
+
+.cell-fractured:hover > * {
+  --cell-border-color: var(--hover-cell-border-color);
 }
 
 @mixin cell-common {
   position: relative;
-  border: 1px solid transparent;
+  border: 1px solid var(--cell-border-color);
   border-radius: 1px;
   box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
   height: calc(var(--height) * var(--multiplier) * (var(--cell-height) + 4px) - 4px);
@@ -46,21 +54,13 @@ $cell-margin: 2px;
 
   &.hundred {
     box-shadow:
+      0px 0px 0px 1px var(--cell-border-color),
       0px 0px 0px 1px var(--blank-cell-color),
       0 0 0 2px var(--cell-shadow-color);
-
-    &:hover {
-      box-shadow:
-        0px 0px 0px 1px var(--cell-border-color),
-        0px 0px 0px 1px var(--blank-cell-color),
-        0 0 0 2px var(--cell-shadow-color);
-      border-color: transparent;
-    }
+    border-color: transparent;
   }
 
   &:hover {
-    border: 1px solid var(--cell-border-color);
-
     & .cell-numeric.target {
       color: var(--text-color);
       opacity: 1;
@@ -156,14 +156,6 @@ $cell-margin: 2px;
     & > * {
       box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
     }
-
-    &:hover {
-      border: none;
-
-      & > * {
-        border: 1px solid var(--cell-border-color);
-      }
-    }
   }
 }
 
@@ -181,6 +173,7 @@ $cell-margin: 2px;
       ) / var(--width-fractions)
   );
   border-radius: 1px;
+  border: 1px solid var(--cell-border-color);
   position: relative;
   background-color: var(--blank-cell-color);
   margin: 0;
@@ -293,7 +286,7 @@ $cell-margin: 2px;
       left: -1px;
     }
 
-    &:hover:not(.hundred) {
+    &:not(.hundred) {
       border: 1px solid var(--cell-border-color);
 
       & > .cell-period-before {
@@ -334,7 +327,7 @@ $cell-margin: 2px;
       right: calc(-1 * var(--cell-height) - 1px);
     }
 
-    &:hover:not(.hundred) {
+    &:not(.hundred) {
       border-top: 1px solid var(--cell-border-color);
       border-bottom: 1px solid var(--cell-border-color);
 
@@ -365,6 +358,7 @@ $cell-margin: 2px;
     & .cell-period-after,
     & .cell-period-connector {
       box-shadow:
+        0px 0px 0px 1px var(--cell-border-color),
         0px 0px 0px 1px var(--blank-cell-color),
         0 0 0 2px var(--cell-shadow-color);
     }
@@ -382,7 +376,7 @@ $cell-margin: 2px;
       width: 4px;
     }
 
-    &:hover .cell-period-connector {
+    & .cell-period-connector {
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
         0px 0px 0px 1px var(--blank-cell-color);
@@ -412,7 +406,7 @@ $cell-margin: 2px;
       left: -2px;
     }
 
-    &:hover:is(.wide) {
+    &:is(.wide) {
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
         0px 0px 0px 1px var(--blank-cell-color),
@@ -438,7 +432,7 @@ $cell-margin: 2px;
       }
     }
 
-    &:hover:is(.hollow) {
+    &:is(.hollow) {
       & .cell-period-before,
       & .cell-period-after {
         box-shadow:
