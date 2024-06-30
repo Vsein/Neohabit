@@ -37,7 +37,7 @@ function Cell({
     <div
       className={`cell centering ${dummy ? 'dummy' : ''} ${
         value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
-      }`}
+      } ${value ? 'nonzero' : ''}`}
       style={style}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
       onMouseLeave={(e) => tipContent && hideTip()}
@@ -96,7 +96,7 @@ function CellFractured({
       {[...Array(+fractions)].map((point, index) => (
         <div
           key={index}
-          className="cell-fraction"
+          className={`cell-fraction ${index < value ? 'nonzero' : ''}`}
           style={{
             [index < value ? 'backgroundColor' : '']:
               index >= targetValue && elimination ? getEliminationColor(color) : color,
@@ -199,7 +199,7 @@ function CellPeriod({
       <div
         className={`cell-period centering ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
           value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
-        } `}
+        } ${value ? 'nonzero' : ''}`}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
         onMouseLeave={hideTip}

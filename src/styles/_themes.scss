@@ -26,7 +26,9 @@
   --transparent-bg-color: #b0b0b0aa;
   --registration-field-active-bg-color: #009ba2;
   --registration-field-bg-color: transparent;
-  --cell-border-color: rgba(0, 0, 0, 0.7);
+  --cell-border-color: transparent;
+  --hover-cell-border-color: rgba(0, 0, 0, 0.7);
+  --nonzero-cell-border-color: rgba(0, 0, 0, 0.15);
   --transparent-bg-color: rgba(0, 0, 0, 0.2);
   --button-text-color: #f9faf8;
   --button-bg-color: #bbb;
@@ -89,7 +91,9 @@
   --transparent-bg-color: #404040aa;
   --registration-field-active-bg-color: #009ba2;
   --registration-field-bg-color: #2d3333;
-  --cell-border-color: rgba(255, 255, 255, 0.7);
+  --cell-border-color: transparent;
+  --hover-cell-border-color: rgba(255, 255, 255, 0.7);
+  --nonzero-cell-border-color: transparent;
   --transparent-bg-color: rgba(0, 0, 0, 0.3);
   --button-text-color: #f9faf8;
   --button-bg-color: #545454;
