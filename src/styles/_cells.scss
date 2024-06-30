@@ -219,7 +219,7 @@ $cell-margin: 2px;
   @mixin shadow-fix {
     display: block;
     background-color: var(--blank-cell-color);
-    width: 2px;
+    width: 3px;
     height: calc(100% + 1px);
     content: ' ';
     position: absolute;
@@ -264,13 +264,13 @@ $cell-margin: 2px;
     &:after {
       @include shadow-fix;
       top: -1px;
-      right: -1px;
+      right: -2px;
     }
 
     &:before {
       @include shadow-fix;
       top: 0px;
-      left: -1px;
+      left: -2px;
     }
   }
 
@@ -278,12 +278,12 @@ $cell-margin: 2px;
     & .cell-period-before:after {
       @include shadow-fix;
       top: -1px;
-      right: -1px;
+      right: -2px;
     }
     & .cell-period-after:after {
       @include shadow-fix;
       top: 0px;
-      left: -1px;
+      left: -2px;
     }
 
     &:not(.hundred) {
@@ -293,20 +293,20 @@ $cell-margin: 2px;
         border: 1px solid var(--cell-border-color);
         border-right: none;
         box-shadow: none;
-
-        &:after {
-          display: none;
-        }
+        //
+        // &:after {
+        //   display: none;
+        // }
       }
 
       & > .cell-period-after {
         border: 1px solid var(--cell-border-color);
         border-left: none;
         box-shadow: none;
-
-        &:after {
-          display: none;
-        }
+        //
+        // &:after {
+        //   display: none;
+        // }
       }
     }
   }
@@ -377,19 +377,24 @@ $cell-margin: 2px;
     }
 
     & .cell-period-connector {
+
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
-        0px 0px 0px 1px var(--blank-cell-color);
+        0px 0px 0px 1px var(--blank-cell-color),
+        0 0 0 2px var(--cell-shadow-color);
+      // box-shadow:
+      //   0px 0px 0px 1px var(--cell-border-color),
+      //   0px 0px 0px 1px var(--blank-cell-color);
       border-color: transparent;
       &:before {
         @include shadow-fix;
         top: 0px;
-        left: -1px;
+        left: -2px;
       }
       &:after {
         @include shadow-fix;
         top: -1px;
-        right: -1px;
+        right: -2px;
       }
     }
 
@@ -415,20 +420,27 @@ $cell-margin: 2px;
 
       & .cell-period-before,
       & .cell-period-after {
-        box-shadow:
-          0px 0px 0px 1px var(--cell-border-color),
-          0px 0px 0px 1px var(--blank-cell-color);
-        border-color: transparent;
+        // box-shadow:
+        //   0px 0px 0px 1px var(--cell-border-color),
+        //   0px 0px 0px 1px var(--blank-cell-color);
+
+      box-shadow:
+        0px 0px 0px 1px var(--cell-border-color),
+        0px 0px 0px 1px var(--blank-cell-color),
+        0 0 0 2px var(--cell-shadow-color);
+        // border-color: transparent;
       }
       & .cell-period-before:after {
         @include shadow-fix;
+        // width: 3px;
         top: -1px;
-        right: -1px;
+        right: -2px;
       }
       & .cell-period-after:after {
         @include shadow-fix;
+        // width: 3px;
         top: 0px;
-        left: -1px;
+        left: -2px;
       }
     }
 
