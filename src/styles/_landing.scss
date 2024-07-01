@@ -392,7 +392,7 @@ $cell-weekdays-width: 33px;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 
   &-title {
@@ -404,6 +404,30 @@ $cell-weekdays-width: 33px;
     white-space: normal;
     text-align: center;
     line-height: 3.5rem;
+    }
+  }
+
+  &-social {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    flex-direction: column;
+
+    @media (max-width: 550px) {
+      flex-direction: column;
+    }
+
+    &-header {
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    &-links {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 25px;
     }
   }
 }

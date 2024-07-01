@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { startOfDay, endOfDay, addDays } from 'date-fns';
 import { Icon } from '@mdi/react';
 import { mdiCalendar, mdiTimerOutline, mdiCalendarMultiselect } from '@mdi/js';
+import { SocialIcon } from 'react-social-icons'
 import useTitle from '../hooks/useTitle';
 import { CellPeriod } from '../components/HeatmapCells';
 import ExerciseProject from '../assets/project-exercise2.png';
@@ -389,27 +390,15 @@ export default function Landing() {
                 <button className="button-default stretch big">Sign up</button>
               </NavLink>
             </div>
-            <p>
-              Follow our Telegram channel{' '}
-              <a
-                href="https://t.me/Neohabit_Official"
-                className="landing-contact"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                @Neohabit_Official
-              </a>{' '}
-              to know about any updates or upcoming feautres! If you have any suggestions, or wish
-              to support us, feel free to reach out to{' '}
-              <a
-                href="https://t.me/VseinHanma"
-                className="landing-contact"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                @VseinHanma
-              </a>
-            </p>
+            <div className="landing-lastcall-social">
+              <h3 className="landing-lastcall-social-header">And stay tuned for the latest updates:</h3>
+              <div className="landing-lastcall-social-links">
+                <SocialIcon target="_blank" bgColor="black" label="Telegram" url="https://t.me/Neohabit_Official" style={{ height: 40, width: 40 }}/>
+                <SocialIcon target="_blank" bgColor="black" label="Reddit" url="https://www.reddit.com/user/VseinSama/" style={{ height: 40, width: 40 }}/>
+                <SocialIcon target="_blank" bgColor="black" label="Twitter" url="https://x.com/VseinHanma" style={{ height: 40, width: 40 }}/>
+                <SocialIcon target="_blank" bgColor="black" label="YouTube" url="https://www.youtube.com/@Neohabit" style={{ height: 40, width: 40 }}/>
+              </div>
+            </div>
           </div>
         </section>
       </main>
