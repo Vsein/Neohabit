@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { startOfDay, endOfDay, addDays } from 'date-fns';
 import { Icon } from '@mdi/react';
 import { mdiCalendar, mdiTimerOutline, mdiCalendarMultiselect } from '@mdi/js';
-import { SocialIcon } from 'react-social-icons'
 import useTitle from '../hooks/useTitle';
 import { CellPeriod } from '../components/HeatmapCells';
 import ExerciseProject from '../assets/project-exercise2.png';
@@ -13,6 +12,10 @@ import SocialProject from '../assets/project-social2.png';
 import CleaningProject from '../assets/project-cleaning.png';
 import MedsProject from '../assets/project-medication.png';
 import Logo from '../logos/neohabit-mini-logo-cyan3.svg';
+import Telegram from '../logos/telegram.svg';
+import X from '../logos/x.svg';
+import Reddit from '../logos/reddit.svg';
+import Youtube from '../logos/youtube.svg';
 
 export default function Landing() {
   useTitle('Neohabit | A systemic, gradual habit-tracker');
@@ -28,6 +31,7 @@ export default function Landing() {
   const firstPaneColor = "#43d64e";
   const secondPaneColor = "#1D60C1";
   const thirdPaneColor = "#CE0705";
+  console.log(mdiCalendar);
 
   return (
     <div id="content-landing">
@@ -393,10 +397,30 @@ export default function Landing() {
             <div className="landing-lastcall-social">
               <h3 className="landing-lastcall-social-header">And stay tuned for the latest updates:</h3>
               <div className="landing-lastcall-social-links">
-                <SocialIcon target="_blank" bgColor="black" label="Telegram" url="https://t.me/Neohabit_Official" style={{ height: 40, width: 40 }}/>
-                <SocialIcon target="_blank" bgColor="black" label="Reddit" url="https://www.reddit.com/user/VseinSama/" style={{ height: 40, width: 40 }}/>
-                <SocialIcon target="_blank" bgColor="black" label="Twitter" url="https://x.com/VseinHanma" style={{ height: 40, width: 40 }}/>
-                <SocialIcon target="_blank" bgColor="black" label="YouTube" url="https://www.youtube.com/@Neohabit" style={{ height: 40, width: 40 }}/>
+                <Link
+                  to="https://t.me/Neohabit_Official"
+                  target="_blank"
+                >
+                  <img src={Telegram} className="icon big circle" />
+                </Link>
+                <Link
+                  to="https://www.reddit.com/user/VseinSama/"
+                  target="_blank"
+                >
+                  <img src={Reddit} className="icon big circle" />
+                </Link>
+                <Link
+                  to="https://x.com/VseinHanma"
+                  target="_blank"
+                >
+                  <img src={X} className="icon big circle" />
+                </Link>
+                <Link
+                  to="https://www.youtube.com/@Neohabit"
+                  target="_blank"
+                >
+                  <img src={Youtube} className="icon big circle" />
+                </Link>
               </div>
             </div>
           </div>

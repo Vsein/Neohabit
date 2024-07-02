@@ -428,6 +428,10 @@ $cell-weekdays-width: 33px;
       justify-content: space-between;
       align-items: center;
       gap: 25px;
+
+      & > * {
+        height: 40px;
+      }
     }
   }
 }
