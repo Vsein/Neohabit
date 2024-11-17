@@ -111,7 +111,7 @@ const PrivateRoutes = (params) => {
       return <FetchError />;
     }
 
-    if (!self?.data?.verified) {
+    if (!self?.data?.verified && process.env.REACT_APP_STAGE !== 'dev') {
       const path = location.pathname.split('/');
       if (path[1] === 'verification') {
         return <Outlet />;
