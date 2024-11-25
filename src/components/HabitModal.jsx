@@ -141,11 +141,11 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     type="checkbox"
                     className="checkbox"
                   />
-                  <label>Use elimination</label>
+                  <label>Exceeding targets</label>
                 </div>
                 <div className="form-task-description">
                   <Field name="numeric" component="input" type="checkbox" className="checkbox" />
-                  <label>Use numeric</label>
+                  <label>Show as numbers</label>
                 </div>
               </div>
               <div className="modal-details-block color-area">
