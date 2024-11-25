@@ -9,7 +9,7 @@ import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { OverviewTopbarRight } from './DatePickers';
+import { OverviewTopbarRight, NextPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
 import heatmapSort from '../utils/heatmapSort';
@@ -172,14 +172,7 @@ function ProjectControls({ projectID, mobile, addPeriod }) {
   return (
     <div className="overview-settings" style={{ [mobile ? 'width' : '']: '102px' }}>
       {!mobile && (
-        <button
-          className="centering left overview-date-button"
-          onClick={addPeriod}
-          title="Next period [L]"
-          style={{ transform: 'translateX(-6px)' }}
-        >
-          <Icon path={mdiMenuRight} className="icon" />
-        </button>
+        <NextPeriodButton onClick={addPeriod} alignLeft style={{ transform: 'translateX(-6px)' }} />
       )}
       <HabitAddButton projectID={projectID} standalone={projectID === 'default'} />
       {projectID !== 'default' && (

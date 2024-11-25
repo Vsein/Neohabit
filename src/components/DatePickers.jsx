@@ -140,14 +140,7 @@ function DatePeriodPicker({
           />
         </DatePicker>
       </div>
-      <button
-        type="button"
-        className="centering left overview-date-button"
-        onClick={addPeriod}
-        title="Next period [l]"
-      >
-        <Icon path={mdiMenuRight} className="icon" />
-      </button>
+      <NextPeriodButton onClick={addPeriod} alignLeft />
     </div>
   );
 }
@@ -166,14 +159,7 @@ function OverviewTopbarRight({
         <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
       )}
       {isHeatmap && !vertical && (
-        <button
-          type="button"
-          className="centering overview-date-button"
-          onClick={addMonth}
-          title="Next period [L]"
-        >
-          <Icon path={mdiMenuRight} className="icon" />
-        </button>
+        <NextPeriodButton onClick={addMonth} />
       )}
     </div>
   );
@@ -210,4 +196,18 @@ function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
   );
 }
 
-export { YearPicker, DatePeriodPicker, DatePeriodControls, OverviewTopbarRight };
+function NextPeriodButton({ onClick, alignLeft, style }) {
+  return (
+    <button
+      type="button"
+      className={`centering overview-date-button ${alignLeft ? 'left' : ''}`}
+      onClick={onClick}
+      title="Next period [L]"
+      style={style}
+    >
+      <Icon path={mdiMenuRight} className="icon" />
+    </button>
+  );
+}
+
+export { YearPicker, DatePeriodPicker, DatePeriodControls, OverviewTopbarRight, NextPeriodButton };

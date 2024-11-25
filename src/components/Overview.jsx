@@ -16,7 +16,7 @@ import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, OverviewTopbarRight } from './DatePickers';
+import { YearPicker, OverviewTopbarRight, NextPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 import heatmapSort from '../utils/heatmapSort';
 
@@ -137,7 +137,7 @@ export default function Overview({
             <button
               className="overview-period-move-down"
               onClick={addPeriod}
-              title="Move month to the right [L]"
+              title="Next Period [L]"
             >
               <Icon path={mdiMenuDown} className="icon" />
             </button>
@@ -168,14 +168,8 @@ function OverviewControls({ vertical, mobile, addPeriod }) {
       {/*   <Icon path={mdiCalendarWeekend} className="icon small centering" /> */}
       {/* </button> */}
       {!mobile && (
-        <button
-          className="centering left overview-date-button"
-          onClick={addPeriod}
-          title="Next period [L]"
-          style={{ transform: 'translateX(-6px)' }}
-        >
-          <Icon path={mdiMenuRight} className="icon" />
-        </button>
+        <NextPeriodButton onClick={addPeriod} alignLeft style={{ transform: 'translateX(-6px)' }}
+        />
       )}
       <HabitAddButton />
       <NavLink
