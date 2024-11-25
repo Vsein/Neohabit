@@ -63,7 +63,7 @@ function StopwatchContents() {
         <button
           className="logo-section centering stopwatch-icon"
           onClick={togglePause}
-          title={stopwatch.data.is_paused ? 'Play [p]' : 'Pause [p]'}
+          title={stopwatch.data.is_paused ? 'Start timer [p]' : 'Pause [p]'}
         >
           <Icon path={stopwatch.data.is_paused ? mdiPlay : mdiPause} className="icon big" />
         </button>

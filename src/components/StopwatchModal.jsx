@@ -82,7 +82,7 @@ export default function StopwatchModal({ closeOverlay }) {
             <button
               className="logo-section centering stopwatch-icon"
               onClick={togglePause}
-              title={stopwatch.data.is_paused ? 'Play [P]' : 'Pause [P]'}
+              title={stopwatch.data.is_paused ? 'Start timer [P]' : 'Pause [P]'}
             >
               <Icon
                 path={stopwatch.data.is_paused ? mdiPlay : mdiPause}
