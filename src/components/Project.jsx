@@ -148,7 +148,7 @@ export default function Project({
               </>
             )}
             <div className="overview-habits">
-              {Habits.length === 0 && <h5 className="overview-no-habits">No habits?</h5>}
+              {Habits.length === 0 && <h5 className="overview-no-habits">No habits</h5>}
               {Habits}
             </div>
             {vertical && (
