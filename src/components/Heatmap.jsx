@@ -50,26 +50,7 @@ export default function Heatmap({
     target.period = point.period;
     target.value = point.value;
     target.start = date;
-    if (target.period === 25) {
-      target.sequence = [
-        { value: 2, period: 10, start: 0, duration: 10 },
-        { value: 3, period: 1, start: 10, duration: 5 },
-        { value: 0, period: 10, start: 15, duration: 10 },
-      ];
-    } else if (target.period === 20) {
-      target.sequence = [
-        { value: 20, period: 5, start: 0, duration: 10 },
-        { value: 5, period: 2, start: 10, duration: 4 },
-        { value: 0, period: 6, start: 14, duration: 6 },
-      ];
-    } else if (target.period === 7) {
-      target.sequence = [
-        { value: 1, period: 1, start: 0, duration: 1 },
-        { value: 0, period: 6, start: 1, duration: 6 },
-      ];
-    } else {
-      target.sequence = [];
-    }
+    target.sequence = [];
     current.date = date;
     current.values = target.sequence.length
       ? new Array(getCellPositionInSequence(target.period)).fill(0)
@@ -200,7 +181,6 @@ export default function Heatmap({
               ? target.sequence.slice()
               : [{ ...target, duration: target.period, start: 0 }],
           };
-          console.log(previous.values, previousTarget.sequence);
           let diffInPeriods = Math.floor(differenceInDays(date, current.date) / target.period);
           const valueIndex = getCellPositionInSequence(
             differenceInDays(date, current.date) % target.period,
