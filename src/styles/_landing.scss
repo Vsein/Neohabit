@@ -18,7 +18,7 @@ $cell-weekdays-width: 33px;
 
 .landing-header {
   width: calc(100vw - 2em);
-  padding: 15px 15px 15px 5px;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,34 +72,38 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-intro {
-  position: relative;
-  height: calc(100vh - 75px);
-  // height: calc(15px * 30);
-  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+  height: calc(100vh - 100px);
   overflow: hidden;
 
   @media (max-width: 550px) {
     height: calc(100vh - 60px);
   }
 
+  @media (max-width: 700px) {
+    margin: 30px 10px;
+  }
+
   &-text {
     font-size: 3rem;
-    position: absolute;
     width: auto;
     max-width: 700px;
     z-index: 4;
-    top: 0;
-    bottom: 0;
-    margin: auto 50px;
-    padding: 30px;
+    margin: auto;
+    padding: 30px 30px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
     background-color: var(--main-background-color);
     box-shadow: 0 0 16px 8px var(--border-color);
     // border-radius: 30px;
     border-radius: 15px;
+    text-align: center;
 
     @media (max-width: 700px) {
+      font-size: 2.5rem;
       margin: auto 10px;
       left: 0;
       right: 0;
@@ -344,22 +348,30 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-lastcall {
-  position: relative;
   height: 100vh;
-  // height: calc(15px * 30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  margin: 20px;
+  margin-bottom: 0px;
+
+  @media (max-width: 550px) {
+    height: calc(100vh - 60px);
+  }
+
+  @media (max-width: 700px) {
+    margin: 30px 10px;
+  }
 
   &-container {
-    // font-size: 3rem;
-    position: absolute;
-    // width: min(100%, 700px);
-    width: auto;
+    width: min(100%, 700px);
     max-width: 700px;
     z-index: 4;
     top: 0;
     bottom: 0;
     right: 0;
-    margin: auto 100px;
+    margin: auto;
     padding: 30px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
@@ -380,7 +392,7 @@ $cell-weekdays-width: 33px;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 
   &-title {
@@ -392,6 +404,34 @@ $cell-weekdays-width: 33px;
     white-space: normal;
     text-align: center;
     line-height: 3.5rem;
+    }
+  }
+
+  &-social {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+    flex-direction: column;
+
+    @media (max-width: 550px) {
+      flex-direction: column;
+    }
+
+    &-header {
+      font-size: 1.1rem;
+      text-align: center;
+    }
+
+    &-links {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 25px;
+
+      & > * {
+        height: 40px;
+      }
     }
   }
 }

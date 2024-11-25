@@ -38,6 +38,7 @@ function HabitControls({
         habit,
       },
     });
+    dispatch(changeTo({ type: 'stopwatch' }));
   };
   const addCell = async () => {
     await updateHeatmap({

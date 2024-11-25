@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { startOfDay, endOfDay, addDays } from 'date-fns';
 import { Icon } from '@mdi/react';
 import { mdiCalendar, mdiTimerOutline, mdiCalendarMultiselect } from '@mdi/js';
@@ -12,6 +12,10 @@ import SocialProject from '../assets/project-social2.png';
 import CleaningProject from '../assets/project-cleaning.png';
 import MedsProject from '../assets/project-medication.png';
 import Logo from '../logos/neohabit-mini-logo-cyan3.svg';
+import Telegram from '../logos/telegram.svg';
+import X from '../logos/x.svg';
+import Reddit from '../logos/reddit.svg';
+import Youtube from '../logos/youtube.svg';
 
 export default function Landing() {
   useTitle('Neohabit | A systemic, gradual habit-tracker');
@@ -27,6 +31,7 @@ export default function Landing() {
   const firstPaneColor = "#43d64e";
   const secondPaneColor = "#1D60C1";
   const thirdPaneColor = "#CE0705";
+  console.log(mdiCalendar);
 
   return (
     <div id="content-landing">
@@ -95,7 +100,6 @@ export default function Landing() {
                   targetValue={1}
                   dateStart={startOfDay(addDays(new Date(), Index))}
                   dateEnd={endOfDay(addDays(new Date(), Index))}
-                  dummy={true}
                   vertical={false}
                 />
               ))}
@@ -118,7 +122,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 3))}
                       dateEnd={endOfDay(addDays(new Date(), (Index + 1) * 3))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -134,7 +137,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 1))}
                       dateEnd={endOfDay(addDays(new Date(), (Index + 1) * 1))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -150,7 +152,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -191,7 +192,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -206,7 +206,6 @@ export default function Landing() {
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -222,7 +221,6 @@ export default function Landing() {
                       targetValue={3}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -244,7 +242,6 @@ export default function Landing() {
                       targetValue={3}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -259,7 +256,6 @@ export default function Landing() {
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -274,7 +270,6 @@ export default function Landing() {
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
                       dateEnd={endOfDay(addDays(new Date(), Index))}
-                      dummy={true}
                       vertical={false}
                     />
                   ),
@@ -399,27 +394,35 @@ export default function Landing() {
                 <button className="button-default stretch big">Sign up</button>
               </NavLink>
             </div>
-            <p>
-              Follow our Telegram channel{' '}
-              <a
-                href="https://t.me/Neohabit_Official"
-                className="landing-contact"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                @Neohabit_Official
-              </a>{' '}
-              to know about any updates or upcoming feautres! If you have any suggestions, or wish
-              to support us, feel free to reach out to{' '}
-              <a
-                href="https://t.me/VseinHanma"
-                className="landing-contact"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                @VseinHanma
-              </a>
-            </p>
+            <div className="landing-lastcall-social">
+              <h3 className="landing-lastcall-social-header">And stay tuned for the latest updates:</h3>
+              <div className="landing-lastcall-social-links">
+                <Link
+                  to="https://t.me/Neohabit_Official"
+                  target="_blank"
+                >
+                  <img src={Telegram} className="icon big circle" />
+                </Link>
+                <Link
+                  to="https://www.reddit.com/user/VseinSama/"
+                  target="_blank"
+                >
+                  <img src={Reddit} className="icon big circle" />
+                </Link>
+                <Link
+                  to="https://x.com/VseinHanma"
+                  target="_blank"
+                >
+                  <img src={X} className="icon big circle" />
+                </Link>
+                <Link
+                  to="https://www.youtube.com/@Neohabit"
+                  target="_blank"
+                >
+                  <img src={Youtube} className="icon big circle" />
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -462,7 +465,6 @@ function FeaturesSection() {
                   value={value}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                 />
               </div>
             </div>
@@ -477,7 +479,6 @@ function FeaturesSection() {
                   targetValue={2}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={false}
                 />
               </div>
@@ -488,7 +489,6 @@ function FeaturesSection() {
                   targetValue={4}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={false}
                 />
               </div>
@@ -499,7 +499,6 @@ function FeaturesSection() {
                   targetValue={9}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={false}
                 />
               </div>
@@ -510,7 +509,6 @@ function FeaturesSection() {
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={false}
                 />
               </div>
@@ -526,7 +524,6 @@ function FeaturesSection() {
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
-                  dummy={true}
                   numeric={true}
                 />
               </div>
@@ -542,7 +539,6 @@ function FeaturesSection() {
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(addDays(new Date(), 2))}
-                  dummy={true}
                   numeric={true}
                   vertical={false}
                 />
@@ -554,7 +550,6 @@ function FeaturesSection() {
                   targetValue={2}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(addDays(new Date(), 2))}
-                  dummy={true}
                   vertical={false}
                 />
               </div>
