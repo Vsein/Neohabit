@@ -17,10 +17,8 @@ import {
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
 import useWindowDimensions from './useWindowDimensions';
-
-function getISODate(date) {
-  return formatISO(date, { representation: 'date' });
-}
+import { getISODate } from '../utils/dates';
+import useValidatedDatePeriodParams from './useValidatedDatePeriodParams';
 
 function getAdaptivePeriodLength(width, habit = false) {
   let minus = 0;
@@ -82,14 +80,11 @@ export default function useDatePeriod(
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [firstRender, setFirstRender] = useState(true);
+  const { dateStartURL, dateEndURL } = useValidatedDatePeriodParams();
 
   const getStart = (neededState = state) => {
-    if (
-      firstRender &&
-      searchParams.get('from') &&
-      getISODate(new Date(searchParams.get('from'))) === searchParams.get('from')
-    ) {
-      return startOfDay(new Date(searchParams.get('from')));
+    if (firstRender && dateStartURL) {
+      return startOfDay(dateStartURL);
     }
 
     const curDate = startOfDay(new Date());
@@ -105,12 +100,8 @@ export default function useDatePeriod(
   };
 
   const getEnd = (neededState = state) => {
-    if (
-      firstRender &&
-      searchParams.get('to') &&
-      getISODate(new Date(searchParams.get('to'))) === searchParams.get('to')
-    ) {
-      return startOfDay(new Date(searchParams.get('to')));
+    if (firstRender && dateEndURL) {
+      return startOfDay(dateEndURL);
     }
 
     const curDate = startOfDay(new Date());
@@ -250,22 +241,11 @@ export default function useDatePeriod(
   }, [width]);
 
   useEffect(() => {
-    if (!firstRender) {
-      const from = searchParams.get('from');
-      const to = searchParams.get('to');
-      if (
-        !global &&
-        !unsubscribed &&
-        from &&
-        to &&
-        (searchParams.get('from') !== getISODate(dateStart) ||
-          searchParams.get('to') !== getISODate(dateEnd))
-      ) {
-        setDateStart(startOfDay(from));
-        setDateEnd(startOfDay(to));
-      }
+    if (!firstRender && !unsubscribed && dateStartURL && dateEndURL) {
+      setDateStart(startOfDay(dateStartURL));
+      setDateEnd(startOfDay(dateEndURL));
     }
-  }, [searchParams]);
+  }, [dateStartURL, dateEndURL]);
 
   useEffect(() => {
     if (currentPeriodDuration > periodDuration && width >= 850 && !weekly) {
