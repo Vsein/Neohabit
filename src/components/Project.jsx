@@ -9,7 +9,7 @@ import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { OverviewTopbarRight } from './DatePickers';
+import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
 import heatmapSort from '../utils/heatmapSort';
@@ -100,14 +100,7 @@ export default function Project({
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
               <HeaderName />
-              <button
-                className="centering right overview-date-button"
-                onClick={subPeriod}
-                title="Previous period [H]"
-                style={{ transform: 'translateX(-4px)' }}
-              >
-                <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
-              </button>
+              <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} />
             </div>
           )}
           {!mobile && (
@@ -128,13 +121,7 @@ export default function Project({
                   {/* {!vertical && ( */}
                   {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
                   {/* )} */}
-                  <button
-                    className="centering right overview-date-button"
-                    onClick={subPeriod}
-                    title="Previous period [H]"
-                  >
-                    <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
-                  </button>
+                  <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} />
                 </div>
                 <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
                 <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
@@ -172,14 +159,7 @@ function ProjectControls({ projectID, mobile, addPeriod }) {
   return (
     <div className="overview-settings" style={{ [mobile ? 'width' : '']: '102px' }}>
       {!mobile && (
-        <button
-          className="centering left overview-date-button"
-          onClick={addPeriod}
-          title="Next period [L]"
-          style={{ transform: 'translateX(-6px)' }}
-        >
-          <Icon path={mdiMenuRight} className="icon" />
-        </button>
+        <NextPeriodButton onClick={addPeriod} alignLeft style={{ transform: 'translateX(-6px)' }} />
       )}
       <HabitAddButton projectID={projectID} standalone={projectID === 'default'} />
       {projectID !== 'default' && (
