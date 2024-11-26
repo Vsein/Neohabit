@@ -3,6 +3,7 @@ import { Icon } from '@mdi/react';
 import { getYear, compareDesc, differenceInDays, addDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import {
+  mdiMenuUp,
   mdiMenuLeft,
   mdiMenuRight,
   mdiCalendarBlank,
@@ -69,14 +70,7 @@ function DatePeriodPicker({
 
   return (
     <div className="dates-container">
-      <button
-        type="button"
-        className="centering overview-date-button"
-        onClick={subPeriod}
-        title="Previous period [h]"
-      >
-        <Icon path={mdiMenuLeft} className="icon" />
-      </button>
+      <PreviousPeriodButton onClick={subPeriod} />
       <div className="dates-period">
         <DatePicker
           ref={startRef}
@@ -210,4 +204,18 @@ function NextPeriodButton({ onClick, alignLeft, style }) {
   );
 }
 
-export { YearPicker, DatePeriodPicker, DatePeriodControls, OverviewTopbarRight, NextPeriodButton };
+function PreviousPeriodButton({ onClick, alignRight, vertical, style }) {
+  return (
+    <button
+      type="button"
+      className={`centering overview-date-button ${alignRight ? 'right' : ''}`}
+      onClick={onClick}
+      title="Previous period [H]"
+      style={style}
+    >
+      <Icon path={vertical ? mdiMenuUp : mdiMenuLeft} className="icon" />
+    </button>
+  );
+}
+
+export { YearPicker, DatePeriodPicker, DatePeriodControls, OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton };
