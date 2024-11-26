@@ -231,6 +231,10 @@ export default function useDatePeriod(
     }
   };
 
+  const resetGracefully = () => {
+    setDateEndSafely(addDays(dateStart, periodDuration));
+  };
+
   if (global) {
     useKeyPress(['r'], reset);
     useKeyPress(['H'], subMonth);
@@ -241,7 +245,7 @@ export default function useDatePeriod(
 
   useEffect(() => {
     if (!firstRender) {
-      reset(undefined, true);
+      resetGracefully();
     }
   }, [width]);
 
