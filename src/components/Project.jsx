@@ -188,18 +188,9 @@ function ProjectWrapper({
   project,
   datePeriodLength,
   mobile,
-  globalDateStart = null,
-  globalDateEnd = null,
 }) {
   const [dateEnd, setDateEnd, dateStart, setDateStart, { subPeriod, addPeriod }] =
     useDatePeriod(datePeriodLength);
-
-  useEffect(() => {
-    if (globalDateStart && globalDateEnd) {
-      setDateStart(globalDateStart);
-      setDateEnd(globalDateEnd);
-    }
-  }, [globalDateStart, globalDateEnd]);
 
   return (
     <Project

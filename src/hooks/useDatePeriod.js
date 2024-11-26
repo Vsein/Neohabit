@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams, useParams } from 'react-router-dom';
 import {
   startOfDay,
   isFirstDayOfMonth,
@@ -16,6 +17,10 @@ import {
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
 import useWindowDimensions from './useWindowDimensions';
+
+function getISODate(date) {
+  return formatISO(date, { representation: 'date' });
+}
 
 function getAdaptivePeriodLength(width, habit = false) {
   let minus = 0;
@@ -61,7 +66,7 @@ function useGetDatePeriodLength() {
   return { datePeriodLength, mobile, width };
 }
 
-export default function useDatePeriod(periodDuration, global = false, weekly = false) {
+export default function useDatePeriod(periodDuration, global = false, weekly = false, unsubscribed = false) {
   const settings = useGetSettingsQuery();
   const { width } = useWindowDimensions();
   const state =
@@ -69,6 +74,8 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
       ? settings.data.overview_current_day
       : settings.data.habit_heatmaps_current_day;
   const offset = settings.data.overview_offset ?? 0;
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const getStart = (neededState = state) => {
     const curDate = startOfDay(new Date());
@@ -106,59 +113,91 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
   const [dateStart, setDateStart] = useState(getStart());
   const [dateEnd, setDateEnd] = useState(getEnd());
 
+  const setDateStartSafely = (newDateStart) => {
+    setDateStart(newDateStart);
+
+    if (global) {
+      searchParams.set('from', getISODate(newDateStart));
+      setSearchParams(searchParams);
+    }
+  };
+
+  const setDateEndSafely = (newDateEnd) => {
+    setDateEnd(newDateEnd);
+
+    if (global) {
+      searchParams.set('to', getISODate(newDateEnd));
+      setSearchParams(searchParams);
+    }
+  };
+
+  const setDatePeriod = (newDateStart, newDateEnd, revert = false) => {
+    if (revert) {
+      setDateEnd(newDateEnd);
+      setDateStart(newDateStart);
+    } else {
+      setDateStart(newDateStart);
+      setDateEnd(newDateEnd);
+    }
+
+    if (global) {
+      const setGlobalDatePeriod = () => {
+        if (revert) {
+          searchParams.set('to', getISODate(newDateEnd));
+          searchParams.set('from', getISODate(newDateStart));
+        } else {
+          searchParams.set('from', getISODate(newDateStart));
+          searchParams.set('to', getISODate(newDateEnd));
+        }
+        setSearchParams(searchParams);
+      };
+      setGlobalDatePeriod();
+    }
+  };
+
   const subMonth = () => {
     const tmpStart = startOfMonth(
       isFirstDayOfMonth(dateStart) ? subMonths(dateStart, 1) : dateStart,
     );
-    setDateStart(tmpStart);
-    setDateEnd(addDays(tmpStart, periodDuration - 1));
+    setDatePeriod(tmpStart, addDays(tmpStart, periodDuration - 1));
   };
 
   const addMonth = () => {
     const tmpStart = startOfMonth(addMonths(dateStart, 1));
-    setDateStart(tmpStart);
-    setDateEnd(addDays(tmpStart, periodDuration - 1));
+    setDatePeriod(tmpStart, addDays(tmpStart, periodDuration - 1));
   };
 
   const subYear = () => {
-    setDateStart(subYears(dateStart, 1));
-    setDateEnd(subYears(dateEnd, 1));
+    setDatePeriod(subYears(dateStart, 1), subYears(dateEnd, 1));
   };
 
   const addYear = () => {
-    setDateStart(addYears(dateStart, 1));
-    setDateEnd(addYears(dateEnd, 1));
+    setDatePeriod(addYears(dateStart, 1), addYears(dateEnd, 1));
   };
 
   const subPeriod = () => {
     const period = differenceInDays(dateEnd, dateStart) + 1;
-    setDateStart(addDays(dateStart, -period));
-    setDateEnd(addDays(dateEnd, -period));
+    setDatePeriod(addDays(dateStart, -period), addDays(dateEnd, -period));
   };
 
   const addPeriod = () => {
     const period = differenceInDays(dateEnd, dateStart) + 1;
-    setDateStart(addDays(dateStart, period));
-    setDateEnd(addDays(dateEnd, period));
+    setDatePeriod(addDays(dateStart, period), addDays(dateEnd, period));
   };
 
   const setToPast = () => {
-    setDateEnd(getEnd('end'));
-    setDateStart(getStart('end'));
+    setDatePeriod(getStart('end'), getEnd('end'), true);
   };
 
   const setToFuture = () => {
-    setDateStart(getStart('start'));
-    setDateEnd(getEnd('start'));
+    setDatePeriod(getStart('start'), getEnd('start'));
   };
 
   const reset = (e, hard = false) => {
     if (hard) {
-      setDateStart(getStart());
-      setDateEnd(getEnd());
+      setDatePeriod(getStart(), getEnd());
     } else {
-      setDateStart(getStart('middle'));
-      setDateEnd(getEnd('middle'));
+      setDatePeriod(getStart('middle'), getEnd('middle'));
     }
   };
 
@@ -175,6 +214,19 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
   }, [width]);
 
   useEffect(() => {
+    const from = searchParams.get('from');
+    const to = searchParams.get('to');
+    if (
+      !global && !unsubscribed && from && to &&
+      (searchParams.get('from') !== getISODate(dateStart) ||
+        searchParams.get('to') !== getISODate(dateEnd))
+    ) {
+      setDateStart(startOfDay(from));
+      setDateEnd(startOfDay(to));
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     const diff = differenceInDays(dateEnd, dateStart) + 1;
     if (diff > periodDuration && width >= 850 && !weekly) {
       document.documentElement.classList.add('overflow-visible');
@@ -185,9 +237,9 @@ export default function useDatePeriod(periodDuration, global = false, weekly = f
 
   return [
     dateEnd,
-    setDateEnd,
+    setDateEndSafely,
     dateStart,
-    setDateStart,
+    setDateStartSafely,
     { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
   ];
 }

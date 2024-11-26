@@ -135,7 +135,7 @@ function HabitModalWrapper({
     dateStart,
     setDateStart,
     { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
-  ] = useDatePeriod(datePeriodLength, false, true);
+  ] = useDatePeriod(datePeriodLength, false, true, true);
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 

@@ -113,13 +113,14 @@ function HabitControls({
         <Icon path={mdiTimer} />
       </button>
       {!modal && (
-        <Link
+        <button
           className="overview-habit-button"
           onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
           title="Edit habit"
+          type="button"
         >
           <Icon path={mdiPencil} />
-        </Link>
+        </button>
       )}
       <button
         className="overview-habit-button"
