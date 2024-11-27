@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import {
   startOfDay,
   isFirstDayOfMonth,
+  isSameDay,
   startOfMonth,
   startOfWeek,
   endOfWeek,
@@ -82,45 +83,45 @@ export default function useDatePeriod(
   const [firstRender, setFirstRender] = useState(true);
   const { dateStartURL, dateEndURL } = useValidatedDatePeriodParams();
 
-  const getStart = (neededState = state) => {
+  const curDate = startOfDay(new Date());
+
+  const getStart = (neededState = state, date = curDate) => {
     if (firstRender && dateStartURL) {
       return startOfDay(dateStartURL);
     }
 
-    const curDate = startOfDay(new Date());
     if (weekly) {
-      if (neededState === 'start') return startOfWeek(addDays(curDate, -offset));
+      if (neededState === 'start') return startOfWeek(addDays(date, -offset));
       if (neededState === 'end')
-        return startOfWeek(addDays(curDate, (-periodDuration + 1) * 7 + offset + 1));
-      return startOfWeek(addDays(curDate, -Math.floor(periodDuration / 2) * 7 + offset));
+        return startOfWeek(addDays(date, (-periodDuration + 1) * 7 + offset + 1));
+      return startOfWeek(addDays(date, -Math.floor(periodDuration / 2) * 7 + offset));
     }
-    if (neededState === 'start') return addDays(curDate, -offset);
-    if (neededState === 'end') return addDays(curDate, -periodDuration + offset + 1);
-    return addDays(curDate, -Math.floor(periodDuration / 2) + offset);
+    if (neededState === 'start') return addDays(date, -offset);
+    if (neededState === 'end') return addDays(date, -periodDuration + offset + 1);
+    return addDays(date, -Math.floor(periodDuration / 2) + offset);
   };
 
-  const getEnd = (neededState = state) => {
+  const getEnd = (neededState = state, date = curDate) => {
     if (firstRender && dateEndURL) {
       return startOfDay(dateEndURL);
     }
 
-    const curDate = startOfDay(new Date());
     if (weekly) {
       if (neededState === 'start')
-        return startOfDay(endOfWeek(addDays(curDate, (periodDuration - 1) * 7 - offset - 1)));
-      if (neededState === 'end') return startOfDay(endOfWeek(addDays(curDate, offset)));
+        return startOfDay(endOfWeek(addDays(date, (periodDuration - 1) * 7 - offset - 1)));
+      if (neededState === 'end') return startOfDay(endOfWeek(addDays(date, offset)));
       return startOfDay(
         endOfWeek(
           addDays(
-            curDate,
+            date,
             Math.floor(periodDuration / 2 - 1) * 7 + offset - 1 + (periodDuration % 2) * 7,
           ),
         ),
       );
     }
-    if (neededState === 'start') return addDays(curDate, periodDuration - offset - 1);
-    if (neededState === 'end') return addDays(curDate, offset);
-    return addDays(curDate, Math.floor(periodDuration / 2) + offset - 1 + (periodDuration % 2));
+    if (neededState === 'start') return addDays(date, periodDuration - offset - 1);
+    if (neededState === 'end') return addDays(date, offset);
+    return addDays(date, Math.floor(periodDuration / 2) + offset - 1 + (periodDuration % 2));
   };
 
   const [dateStart, setDateStart] = useState(getStart(state, true));
@@ -223,7 +224,9 @@ export default function useDatePeriod(
   };
 
   const resetGracefully = () => {
-    setDateEndSafely(addDays(dateStart, periodDuration));
+    const diff = differenceInDays(dateEnd, dateStart) + 1;
+    const dateMiddle = addDays(dateStart, diff / 2);
+    setDatePeriod(getStart(state, dateMiddle), getEnd(state, dateMiddle));
   };
 
   if (global) {
@@ -241,11 +244,17 @@ export default function useDatePeriod(
   }, [width]);
 
   useEffect(() => {
-    if (!firstRender && !unsubscribed && dateStartURL && dateEndURL) {
+    if (
+      !firstRender &&
+      !unsubscribed &&
+      dateStartURL &&
+      dateEndURL &&
+      (!isSameDay(dateStartURL, dateStart) || !isSameDay(dateEndURL, dateEnd))
+    ) {
       setDateStart(startOfDay(dateStartURL));
       setDateEnd(startOfDay(dateEndURL));
     }
-  }, [dateStartURL, dateEndURL]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (currentPeriodDuration > periodDuration && width >= 850 && !weekly) {

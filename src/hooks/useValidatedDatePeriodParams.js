@@ -1,11 +1,12 @@
 import { useSearchParams } from 'react-router-dom';
+import { startOfDay } from 'date-fns';
 import { getISODate } from '../utils/dates';
 
 export default function useValidatedDatePeriodParams() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const dateStartRawURL = searchParams.get('from');
-  const dateStartURL = new Date(dateStartRawURL);
+  const dateStartURL = startOfDay(new Date(dateStartRawURL));
   const dateStartError = getISODate(dateStartURL) !== dateStartRawURL;
 
   if (dateStartRawURL && dateStartError) {
@@ -14,7 +15,7 @@ export default function useValidatedDatePeriodParams() {
   }
 
   const dateEndRawURL = searchParams.get('to');
-  const dateEndURL = new Date(dateEndRawURL);
+  const dateEndURL = startOfDay(new Date(dateEndRawURL));
   const dateEndError = getISODate(dateEndURL) !== dateEndRawURL;
 
   if (dateEndRawURL && dateEndError) {
