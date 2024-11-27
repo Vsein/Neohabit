@@ -86,7 +86,7 @@ export default function useDatePeriod(
   const curDate = startOfDay(new Date());
 
   const getStart = (neededState = state, date = curDate) => {
-    if (firstRender && dateStartURL) {
+    if (!unsubscribed && firstRender && dateStartURL) {
       return startOfDay(dateStartURL);
     }
 
@@ -102,7 +102,7 @@ export default function useDatePeriod(
   };
 
   const getEnd = (neededState = state, date = curDate) => {
-    if (firstRender && dateEndURL) {
+    if (!unsubscribed && firstRender && dateEndURL) {
       return startOfDay(dateEndURL);
     }
 
@@ -124,8 +124,8 @@ export default function useDatePeriod(
     return addDays(date, Math.floor(periodDuration / 2) + offset - 1 + (periodDuration % 2));
   };
 
-  const [dateStart, setDateStart] = useState(getStart(state, true));
-  const [dateEnd, setDateEnd] = useState(getEnd(state, true));
+  const [dateStart, setDateStart] = useState(getStart());
+  const [dateEnd, setDateEnd] = useState(getEnd());
   const [currentPeriodDuration, setCurrentPeriodDuration] = useState(periodDuration);
 
   const recalcCurrentPeriodDuration = () => {
