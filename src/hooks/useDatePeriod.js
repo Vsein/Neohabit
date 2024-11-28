@@ -14,6 +14,7 @@ import {
   addDays,
   differenceInDays,
   formatISO,
+  compareAsc,
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
@@ -128,20 +129,44 @@ export default function useDatePeriod(
   const [dateEnd, setDateEnd] = useState(getEnd());
 
   const setDateStartSafely = (newDateStart) => {
-    setDateStart(newDateStart);
+    if (compareAsc(newDateStart, dateEnd) === 1) {
+      const period = differenceInDays(dateEnd, dateStart) || periodDuration;
+      setDateEnd(addDays(newDateStart, period));
+      setDateStart(newDateStart);
 
-    if (global) {
-      searchParams.set('from', getISODate(newDateStart));
-      setSearchParams(searchParams);
+      if (global) {
+        searchParams.set('from', getISODate(newDateStart));
+        searchParams.set('to', addDays(newDateStart, period));
+        setSearchParams(searchParams);
+      }
+    } else {
+      setDateStart(newDateStart);
+
+      if (global) {
+        searchParams.set('from', getISODate(newDateStart));
+        setSearchParams(searchParams);
+      }
     }
   };
 
   const setDateEndSafely = (newDateEnd) => {
-    setDateEnd(newDateEnd);
+    if (compareAsc(dateStart, newDateEnd) === 1) {
+      const period = differenceInDays(dateEnd, dateStart) || periodDuration;
+      setDateStart(addDays(newDateEnd, -period));
+      setDateEnd(newDateEnd);
 
-    if (global) {
-      searchParams.set('to', getISODate(newDateEnd));
-      setSearchParams(searchParams);
+      if (global) {
+        searchParams.set('from', addDays(newDateEnd, -period));
+        searchParams.set('to', getISODate(newDateEnd));
+        setSearchParams(searchParams);
+      }
+    } else {
+      setDateEnd(newDateEnd);
+
+      if (global) {
+        searchParams.set('to', getISODate(newDateEnd));
+        setSearchParams(searchParams);
+      }
     }
   };
 
@@ -245,9 +270,9 @@ export default function useDatePeriod(
         setDateStart(startOfDay(dateStartURL));
         setDateEnd(startOfDay(dateEndURL));
       } else if (dateStartURL && !isSameDay(dateStartURL, dateStart)) {
-        setDateStartSafely();
+        setDateStartSafely(startOfDay(dateStartURL));
       } else if (dateEndURL && !isSameDay(dateEndURL, dateEnd)) {
-        setDateEndSafely();
+        setDateEndSafely(startOfDay(dateEndURL));
       }
     }
   }, [searchParams]);
@@ -260,6 +285,14 @@ export default function useDatePeriod(
       document.documentElement.classList.remove('overflow-visible');
     }
     setFirstRender(false);
+
+    if (diff <= 0) {
+      if (dateStartURL) {
+        setDateEnd(addDays(dateStartURL, periodDuration));
+      } else if (dateEndURL) {
+        setDateStart(addDays(dateEndURL, -periodDuration));
+      }
+    }
   }, [dateStart, dateEnd]);
 
   return [
