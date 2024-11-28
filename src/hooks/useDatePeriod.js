@@ -13,13 +13,12 @@ import {
   addYears,
   addDays,
   differenceInDays,
-  formatISO,
   compareAsc,
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
 import useWindowDimensions from './useWindowDimensions';
-import { getISODate } from '../utils/dates';
+import { getUTCOffsettedDate } from '../utils/dates';
 import useValidatedDatePeriodParams from './useValidatedDatePeriodParams';
 
 function getAdaptivePeriodLength(width, habit = false) {
@@ -135,7 +134,7 @@ export default function useDatePeriod(
       setDateStart(newDateStart);
 
       if (global) {
-        searchParams.set('from', getISODate(newDateStart));
+        searchParams.set('from', getUTCOffsettedDate(newDateStart));
         searchParams.set('to', addDays(newDateStart, period));
         setSearchParams(searchParams);
       }
@@ -143,7 +142,7 @@ export default function useDatePeriod(
       setDateStart(newDateStart);
 
       if (global) {
-        searchParams.set('from', getISODate(newDateStart));
+        searchParams.set('from', getUTCOffsettedDate(newDateStart));
         setSearchParams(searchParams);
       }
     }
@@ -157,14 +156,14 @@ export default function useDatePeriod(
 
       if (global) {
         searchParams.set('from', addDays(newDateEnd, -period));
-        searchParams.set('to', getISODate(newDateEnd));
+        searchParams.set('to', getUTCOffsettedDate(newDateEnd));
         setSearchParams(searchParams);
       }
     } else {
       setDateEnd(newDateEnd);
 
       if (global) {
-        searchParams.set('to', getISODate(newDateEnd));
+        searchParams.set('to', getUTCOffsettedDate(newDateEnd));
         setSearchParams(searchParams);
       }
     }
@@ -182,11 +181,11 @@ export default function useDatePeriod(
     if (global) {
       const setGlobalDatePeriod = () => {
         if (revert) {
-          searchParams.set('to', getISODate(newDateEnd));
-          searchParams.set('from', getISODate(newDateStart));
+          searchParams.set('to', getUTCOffsettedDate(newDateEnd));
+          searchParams.set('from', getUTCOffsettedDate(newDateStart));
         } else {
-          searchParams.set('from', getISODate(newDateStart));
-          searchParams.set('to', getISODate(newDateEnd));
+          searchParams.set('from', getUTCOffsettedDate(newDateStart));
+          searchParams.set('to', getUTCOffsettedDate(newDateEnd));
         }
         setSearchParams(searchParams);
       };
@@ -261,6 +260,7 @@ export default function useDatePeriod(
   }, [width]);
 
   useEffect(() => {
+    // console.log(dateStart, dateEnd, new Date());
     if (!firstRender && !unsubscribed) {
       if (
         dateStartURL &&
@@ -304,10 +304,4 @@ export default function useDatePeriod(
   ];
 }
 
-function getUTCOffsettedDate(date = new Date()) {
-  return formatISO(addDays(date, new Date().getTimezoneOffset() > 0 * 1), {
-    representation: 'date',
-  });
-}
-
-export { getAdaptivePeriodLength, useGetDatePeriodLength, getUTCOffsettedDate };
+export { getAdaptivePeriodLength, useGetDatePeriodLength };

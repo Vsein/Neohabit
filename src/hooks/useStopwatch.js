@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import {
   useUpdateStopwatchMutation,
   useFinishStopwatchMutation,
+  useGetStopwatchQuery,
 } from '../state/services/stopwatch';
-import { useGetStopwatchQuery } from '../state/services/stopwatch';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
-import { getUTCOffsettedDate } from './useDatePeriod';
+import { getUTCOffsettedDate } from '../utils/dates';
 
 export default function useStopwatch() {
   const settings = useGetSettingsQuery();
@@ -31,7 +31,7 @@ export default function useStopwatch() {
   const baseDuration = 90 * 60;
 
   const clockify = (time) => {
-    let hours = Math.floor(time / 3600);
+    const hours = Math.floor(time / 3600);
     let minutes = Math.floor((time / 60) % 60);
     let seconds = Math.floor(time % 60);
     minutes = minutes < 10 ? `0${minutes}` : minutes;
@@ -101,7 +101,7 @@ export default function useStopwatch() {
 
   useEffect(() => {
     if (!stopwatch.data.is_paused) {
-      let timerInterval = setInterval(() => {
+      const timerInterval = setInterval(() => {
         const recalc = calcCurrentDuration();
         setCurrentDuration(recalc);
         if (settings.data?.stopwatch_title ?? true) {

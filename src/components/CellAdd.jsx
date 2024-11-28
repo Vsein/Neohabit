@@ -7,7 +7,7 @@ import { mdiPlus } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { close } from '../state/features/cellAdd/cellAddSlice';
 import { DateField, ActionsField, PeriodField } from './CellAddFields';
-import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
+import { getUTCOffsettedDate } from '../utils/dates';
 
 export default function CellAdd() {
   const dispatch = useDispatch();

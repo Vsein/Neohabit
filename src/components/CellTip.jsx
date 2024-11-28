@@ -16,7 +16,7 @@ import {
 } from '../state/services/heatmap';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings'
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
-import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
+import { getUTCOffsettedDate } from '../utils/dates';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
