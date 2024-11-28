@@ -126,15 +126,9 @@ export default function useDatePeriod(
 
   const [dateStart, setDateStart] = useState(getStart());
   const [dateEnd, setDateEnd] = useState(getEnd());
-  const [currentPeriodDuration, setCurrentPeriodDuration] = useState(periodDuration);
-
-  const recalcCurrentPeriodDuration = () => {
-    setCurrentPeriodDuration(differenceInDays(dateEnd, dateStart) + 1);
-  };
 
   const setDateStartSafely = (newDateStart) => {
     setDateStart(newDateStart);
-    recalcCurrentPeriodDuration();
 
     if (global) {
       searchParams.set('from', getISODate(newDateStart));
@@ -144,7 +138,6 @@ export default function useDatePeriod(
 
   const setDateEndSafely = (newDateEnd) => {
     setDateEnd(newDateEnd);
-    recalcCurrentPeriodDuration();
 
     if (global) {
       searchParams.set('to', getISODate(newDateEnd));
@@ -160,7 +153,6 @@ export default function useDatePeriod(
       setDateStart(newDateStart);
       setDateEnd(newDateEnd);
     }
-    recalcCurrentPeriodDuration();
 
     if (global) {
       const setGlobalDatePeriod = () => {
@@ -244,26 +236,31 @@ export default function useDatePeriod(
   }, [width]);
 
   useEffect(() => {
-    if (
-      !firstRender &&
-      !unsubscribed &&
-      dateStartURL &&
-      dateEndURL &&
-      (!isSameDay(dateStartURL, dateStart) || !isSameDay(dateEndURL, dateEnd))
-    ) {
-      setDateStart(startOfDay(dateStartURL));
-      setDateEnd(startOfDay(dateEndURL));
+    if (!firstRender && !unsubscribed) {
+      if (
+        dateStartURL &&
+        dateEndURL &&
+        (!isSameDay(dateStartURL, dateStart) || !isSameDay(dateEndURL, dateEnd))
+      ) {
+        setDateStart(startOfDay(dateStartURL));
+        setDateEnd(startOfDay(dateEndURL));
+      } else if (dateStartURL && !isSameDay(dateStartURL, dateStart)) {
+        setDateStartSafely();
+      } else if (dateEndURL && !isSameDay(dateEndURL, dateEnd)) {
+        setDateEndSafely();
+      }
     }
   }, [searchParams]);
 
   useEffect(() => {
-    if (currentPeriodDuration > periodDuration && width >= 850 && !weekly) {
+    const diff = differenceInDays(dateEnd, dateStart) + 1;
+    if (diff > periodDuration && width >= 850 && !weekly) {
       document.documentElement.classList.add('overflow-visible');
     } else {
       document.documentElement.classList.remove('overflow-visible');
     }
     setFirstRender(false);
-  }, [currentPeriodDuration]);
+  }, [dateStart, dateEnd]);
 
   return [
     dateEnd,
