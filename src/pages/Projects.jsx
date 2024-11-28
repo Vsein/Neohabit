@@ -70,10 +70,6 @@ export default function ProjectsPage() {
                 project={project}
                 datePeriodLength={datePeriodLength}
                 mobile={mobile}
-                globalDateStart={dateStart}
-                globalDateEnd={dateEnd}
-                globalSubPeriod={subPeriod}
-                globalAddPeriod={addPeriod}
               />
             ))}
           {defaultProject.habits.length ? (
@@ -81,10 +77,6 @@ export default function ProjectsPage() {
               project={defaultProject}
               datePeriodLength={datePeriodLength}
               mobile={mobile}
-              globalDateStart={dateStart}
-              globalDateEnd={dateEnd}
-              subPeriod={subPeriod}
-              addPeriod={addPeriod}
             />
           ) : (
             <></>

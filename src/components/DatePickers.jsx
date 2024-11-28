@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Icon } from '@mdi/react';
-import { getYear, compareDesc, differenceInDays, addDays } from 'date-fns';
+import { getYear, compareAsc, differenceInDays, addDays } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import {
   mdiMenuUp,
@@ -48,26 +48,6 @@ function DatePeriodPicker({
     endRef.current.setOpen(false);
   };
 
-  const handleSetDateStart = (date) => {
-    if (compareDesc(dateEnd, date) === 1) {
-      const period = differenceInDays(dateEnd, dateStart);
-      setDateEnd(addDays(date, period));
-      setDateStart(date);
-    } else {
-      setDateStart(date);
-    }
-  };
-
-  const handleSetDateEnd = (date) => {
-    if (compareDesc(date, dateStart) === 1) {
-      const period = differenceInDays(dateEnd, dateStart);
-      setDateStart(addDays(date, -period));
-      setDateEnd(date);
-    } else {
-      setDateEnd(date);
-    }
-  };
-
   return (
     <div className="dates-container">
       <PreviousPeriodButton onClick={subPeriod} />
@@ -81,7 +61,7 @@ function DatePeriodPicker({
           selected={dateStart}
           startDate={dateStart}
           endDate={dateEnd}
-          onChange={(date) => handleSetDateStart(date)}
+          onChange={(date) => setDateStart(date)}
           onFocus={(e) => {
             e.target.readOnly = true;
           }}
@@ -112,7 +92,7 @@ function DatePeriodPicker({
           selected={dateEnd}
           startDate={dateStart}
           endDate={dateEnd}
-          onChange={(date) => handleSetDateEnd(date)}
+          onChange={(date) => setDateEnd(date)}
           onFocus={(e) => {
             e.target.readOnly = true;
           }}

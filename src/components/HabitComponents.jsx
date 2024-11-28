@@ -16,7 +16,8 @@ import { useUpdateHeatmapMutation } from '../state/services/heatmap';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
-import { getUTCOffsettedDate } from '../hooks/useDatePeriod';
+import { getUTCOffsettedDate } from '../utils/dates';
+
 import Heatmap from './Heatmap';
 
 function HabitControls({
@@ -113,13 +114,14 @@ function HabitControls({
         <Icon path={mdiTimer} />
       </button>
       {!modal && (
-        <Link
+        <button
           className="overview-habit-button"
           onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
           title="Edit habit"
+          type="button"
         >
           <Icon path={mdiPencil} />
-        </Link>
+        </button>
       )}
       <button
         className="overview-habit-button"
