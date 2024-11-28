@@ -29,7 +29,7 @@ export default function ProjectsPage() {
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
+    { subPeriod, addPeriod, setToPast, setToFuture, reset, isPastPeriod, isFuturePeriod },
   ] = useDatePeriod(datePeriodLength, true);
 
   const [defaultProject] = useDefaultProject();
@@ -57,6 +57,8 @@ export default function ProjectsPage() {
           reset={reset}
           setToFuture={setToFuture}
           mobile={mobile}
+          isPastPeriod={isPastPeriod}
+          isFuturePeriod={isFuturePeriod}
         />
       </div>
       {!loaded || projects.isFetching || habits.isFetching ? (
