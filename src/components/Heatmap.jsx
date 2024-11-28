@@ -2,7 +2,7 @@ import React from 'react';
 import {
   differenceInDays,
   addDays,
-  compareAsc,
+  compareDesc,
   startOfDay,
   endOfDay,
   startOfWeek,
@@ -73,10 +73,10 @@ export default function Heatmap({
       {heatmapData &&
         heatmapData.flatMap((point, index) => {
           const date = startOfDay(new Date(point.date));
-          if (compareAsc(date, dateEnd) === 1 && !passed) {
+          if (compareDesc(dateEnd, date) === 1 && !passed) {
             return [];
           }
-          if (compareAsc(dateStart, date) === 1) {
+          if (compareDesc(date, dateStart) === 1) {
             if (point?.is_target) {
               setNewTarget(point, date);
             } else if (target.period) {
@@ -100,7 +100,7 @@ export default function Heatmap({
           //   return [];
           // }
           let gap;
-          if (index === 0 && compareAsc(date, dateStart) === 1) {
+          if (index === 0 && compareDesc(dateStart, date) === 1) {
             const dateOfFirstEntry = min([dateCreation, date]);
             gap = Math.max(differenceInDays(dateOfFirstEntry, dateStart), 0);
             current.date = dateOfFirstEntry;
@@ -137,7 +137,7 @@ export default function Heatmap({
                     />
                   ))}
                 {(differenceInDays(date, dateNowTmp) > 0 ||
-                  (point?.isLast && compareAsc(date, dateNowTmp) >= 0 && !gap)) && (
+                  (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
                   <CellPeriod
                     heatmapID={heatmapID}
                     dateStart={max([dateNowTmp, dateStart])}
@@ -188,7 +188,7 @@ export default function Heatmap({
           if (passed && index === heatmapData.length - 1) {
             passed = false;
             diffInPeriods = 1;
-            if (compareAsc(addDays(current.date, target.period), date) === 1) {
+            if (compareDesc(date, addDays(current.date, target.period)) === 1) {
               previous.values[valueIndex] += point.value;
             }
           }
@@ -196,7 +196,7 @@ export default function Heatmap({
             // current.date = dateEnd;
             archived = true;
           }
-          if (passed && compareAsc(date, addDays(current.date, target.period)) === 1) {
+          if (passed && compareDesc(addDays(current.date, target.period), date) === 1) {
             passed = false;
             diffInPeriods = 1;
           }
