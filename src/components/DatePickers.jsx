@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Icon } from '@mdi/react';
-import { getYear, compareAsc, differenceInDays, addDays } from 'date-fns';
+import { getYear } from 'date-fns';
 import DatePicker from 'react-datepicker';
 import {
   mdiMenuUp,
@@ -39,6 +39,8 @@ function DatePeriodPicker({
   reset,
   setToFuture,
   mobile = false,
+  isPastPeriod,
+  isFuturePeriod,
 }) {
   const startRef = useRef();
   const endRef = useRef();
@@ -50,7 +52,7 @@ function DatePeriodPicker({
 
   return (
     <div className="dates-container">
-      <PreviousPeriodButton onClick={subPeriod} />
+      <PreviousPeriodButton onClick={subPeriod} isFuturePeriod={isFuturePeriod} />
       <div className="dates-period">
         <DatePicker
           ref={startRef}
@@ -114,7 +116,7 @@ function DatePeriodPicker({
           />
         </DatePicker>
       </div>
-      <NextPeriodButton onClick={addPeriod} alignLeft />
+      <NextPeriodButton onClick={addPeriod} alignLeft isPastPeriod={isPastPeriod} />
     </div>
   );
 }
@@ -170,11 +172,11 @@ function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
   );
 }
 
-function NextPeriodButton({ onClick, alignLeft, style }) {
+function NextPeriodButton({ onClick, alignLeft, style, isPastPeriod }) {
   return (
     <button
       type="button"
-      className={`centering overview-date-button ${alignLeft ? 'left' : ''}`}
+      className={`centering overview-date-button ${alignLeft ? 'left' : ''} ${isPastPeriod ? 'highlight' : ''}`}
       onClick={onClick}
       title="Next period [L]"
       style={style}
@@ -184,11 +186,11 @@ function NextPeriodButton({ onClick, alignLeft, style }) {
   );
 }
 
-function PreviousPeriodButton({ onClick, alignRight, vertical, style }) {
+function PreviousPeriodButton({ onClick, alignRight, vertical, style, isFuturePeriod }) {
   return (
     <button
       type="button"
-      className={`centering overview-date-button ${alignRight ? 'right' : ''}`}
+      className={`centering overview-date-button ${alignRight ? 'right' : ''} ${isFuturePeriod ? 'highlight' : ''}`}
       onClick={onClick}
       title="Previous period [H]"
       style={style}

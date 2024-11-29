@@ -13,7 +13,7 @@ export default function OverviewPage() {
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
+    { subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset, isPastPeriod, isFuturePeriod },
   ] = useDatePeriod(datePeriodLength, true);
 
   return (
@@ -30,6 +30,8 @@ export default function OverviewPage() {
           reset={reset}
           setToFuture={setToFuture}
           mobile={mobile}
+          isPastPeriod={isPastPeriod}
+          isFuturePeriod={isFuturePeriod}
         />
       </div>
       <div className="contentlist">

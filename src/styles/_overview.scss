@@ -489,6 +489,14 @@ $cell-margin: 2px;
     opacity: 0.5;
   }
 
+  &.highlight {
+    color: var(--bright-signature-color);
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
   &[disabled] {
     opacity: 1;
   }

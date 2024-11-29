@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import { mdiMenuLeft, mdiMenuRight, mdiMenuUp, mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
+import { mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays, compareDesc, endOfDay, startOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
@@ -16,15 +16,15 @@ import heatmapSort from '../utils/heatmapSort';
 
 export default function Project({
   project,
-  datePeriodLength,
   mobile,
   addPeriod,
   subPeriod,
   singular = false,
   globalDateStart = null,
   globalDateEnd = null,
-  modal = false,
   onboardingSlide = 0,
+  isPastPeriod = false,
+  isFuturePeriod = false,
 }) {
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
@@ -100,7 +100,7 @@ export default function Project({
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
               <HeaderName />
-              <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} />
+              <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} isFuturePeriod={isFuturePeriod} />
             </div>
           )}
           {!mobile && (
@@ -109,7 +109,7 @@ export default function Project({
               <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
             </>
           )}
-          <ProjectControls projectID={project?._id} mobile={mobile} addPeriod={addPeriod} />
+          <ProjectControls projectID={project?._id} mobile={mobile} addPeriod={addPeriod} isPastPeriod={isPastPeriod} />
         </div>
         <div
           className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
@@ -121,7 +121,7 @@ export default function Project({
                   {/* {!vertical && ( */}
                   {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
                   {/* )} */}
-                  <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} />
+                  <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} isFuturePeriod={isFuturePeriod} />
                 </div>
                 <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
                 <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
@@ -153,13 +153,13 @@ export default function Project({
   );
 }
 
-function ProjectControls({ projectID, mobile, addPeriod }) {
+function ProjectControls({ projectID, mobile, addPeriod, isPastPeriod }) {
   const dispatch = useDispatch();
 
   return (
     <div className="overview-settings" style={{ [mobile ? 'width' : '']: '102px' }}>
       {!mobile && (
-        <NextPeriodButton onClick={addPeriod} alignLeft style={{ transform: 'translateX(-6px)' }} />
+        <NextPeriodButton onClick={addPeriod} alignLeft style={{ transform: 'translateX(-6px)' }} isPastPeriod={isPastPeriod} />
       )}
       <HabitAddButton projectID={projectID} standalone={projectID === 'default'} />
       {projectID !== 'default' && (
@@ -189,7 +189,7 @@ function ProjectWrapper({
   datePeriodLength,
   mobile,
 }) {
-  const [dateEnd, setDateEnd, dateStart, setDateStart, { subPeriod, addPeriod }] =
+  const [dateEnd, setDateEnd, dateStart, setDateStart, { subPeriod, addPeriod, isPastPeriod, isFuturePeriod }] =
     useDatePeriod(datePeriodLength);
 
   return (
@@ -201,6 +201,8 @@ function ProjectWrapper({
       globalDateEnd={dateEnd}
       subPeriod={subPeriod}
       addPeriod={addPeriod}
+      isPastPeriod={isPastPeriod}
+      isFuturePeriod={isFuturePeriod}
     />
   );
 }

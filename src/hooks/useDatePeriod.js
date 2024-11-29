@@ -13,7 +13,7 @@ import {
   addYears,
   addDays,
   differenceInDays,
-  compareAsc,
+  compareDesc,
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useKeyPress from './useKeyPress';
@@ -127,8 +127,11 @@ export default function useDatePeriod(
   const [dateStart, setDateStart] = useState(getStart());
   const [dateEnd, setDateEnd] = useState(getEnd());
 
+  const [isPastPeriod, setIsPastPeriod] = useState(false);
+  const [isFuturePeriod, setIsFuturePeriod] = useState(false);
+
   const setDateStartSafely = (newDateStart) => {
-    if (compareAsc(newDateStart, dateEnd) === 1) {
+    if (compareDesc(dateEnd, newDateStart) === 1) {
       const period = differenceInDays(dateEnd, dateStart) || periodDuration;
       setDateEnd(addDays(newDateStart, period));
       setDateStart(newDateStart);
@@ -149,7 +152,7 @@ export default function useDatePeriod(
   };
 
   const setDateEndSafely = (newDateEnd) => {
-    if (compareAsc(dateStart, newDateEnd) === 1) {
+    if (compareDesc(newDateEnd, dateStart) === 1) {
       const period = differenceInDays(dateEnd, dateStart) || periodDuration;
       setDateStart(addDays(newDateEnd, -period));
       setDateEnd(newDateEnd);
@@ -293,6 +296,18 @@ export default function useDatePeriod(
         setDateStart(addDays(dateEndURL, -periodDuration));
       }
     }
+
+    if (compareDesc(dateEnd, curDate) === 1) {
+      setIsPastPeriod(true);
+    } else {
+      setIsPastPeriod(false);
+    }
+
+    if (compareDesc(curDate, dateStart) === 1) {
+      setIsFuturePeriod(true);
+    } else {
+      setIsFuturePeriod(false);
+    }
   }, [dateStart, dateEnd]);
 
   return [
@@ -300,7 +315,19 @@ export default function useDatePeriod(
     setDateEndSafely,
     dateStart,
     setDateStartSafely,
-    { subMonth, addMonth, subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset },
+    {
+      subMonth,
+      addMonth,
+      subYear,
+      addYear,
+      subPeriod,
+      addPeriod,
+      setToPast,
+      setToFuture,
+      reset,
+      isPastPeriod,
+      isFuturePeriod,
+    },
   ];
 }
 
