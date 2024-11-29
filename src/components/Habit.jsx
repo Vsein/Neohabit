@@ -134,7 +134,7 @@ function HabitModalWrapper({
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
+    { setToPast, setToFuture, reset, addPeriod, subPeriod, isPastPeriod, isFuturePeriod },
   ] = useDatePeriod(datePeriodLength, false, true, true);
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
@@ -172,6 +172,8 @@ function HabitModalWrapper({
           reset={reset}
           setToFuture={setToFuture}
           mobile={mobile}
+          isPastPeriod={isPastPeriod}
+          isFuturePeriod={isFuturePeriod}
         />
         <HabitControls
           habit={habit}

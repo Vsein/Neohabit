@@ -64,7 +64,7 @@ function Overview() {
     setDateEnd,
     dateStart,
     setDateStart,
-    { subMonth, addMonth, subYear, addYear, setToPast, setToFuture, reset, addPeriod, subPeriod },
+    { setToPast, setToFuture, reset, addPeriod, subPeriod, isPastPeriod, isFuturePeriod },
   ] = useDatePeriod(datePeriodLength, true, true);
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
@@ -105,6 +105,8 @@ function Overview() {
           reset={reset}
           setToFuture={setToFuture}
           mobile={mobile}
+          isPastPeriod={isPastPeriod}
+          isFuturePeriod={isFuturePeriod}
         />
       </div>
       <div className="contentlist">
