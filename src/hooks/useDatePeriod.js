@@ -83,7 +83,7 @@ export default function useDatePeriod(
   const [firstRender, setFirstRender] = useState(true);
   const { dateStartURL, dateEndURL } = useValidatedDatePeriodParams();
 
-  const curDate = startOfDay(new Date());
+  const [curDate, setCurDate] = useState(startOfDay(new Date()));
 
   const getStart = (neededState = state, date = curDate) => {
     if (!unsubscribed && firstRender && dateStartURL) {
@@ -309,6 +309,21 @@ export default function useDatePeriod(
       setIsFuturePeriod(false);
     }
   }, [dateStart, dateEnd]);
+
+  useEffect(() => {
+    if (global) {
+      const timerInterval = setInterval(() => {
+        const date = startOfDay(new Date());
+        if (date !== curDate) {
+          setCurDate(date);
+        }
+      }, 1000 * 30);
+
+      return () => clearInterval(timerInterval);
+    }
+
+    return undefined;
+  });
 
   return [
     dateEnd,
