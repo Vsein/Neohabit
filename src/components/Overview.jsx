@@ -18,7 +18,7 @@ import useLoaded from '../hooks/useLoaded';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { YearPicker, OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
-import heatmapSort from '../utils/heatmapSort';
+import { heatmapSort, isHabitArchived } from '../utils/heatmap';
 
 export default function Overview({
   dateStart,
@@ -41,12 +41,9 @@ export default function Overview({
   const Habits = habits.data.flatMap((habit, i) => {
     const heatmap = heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id);
     const dataSorted = heatmapSort(heatmap?.data, dateEnd);
+    const targetsSorted = heatmapSort(heatmap?.targets, dateEnd);
 
-    return (new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() &&
-      dataSorted.length !== 1) ||
-      (dataSorted.length > 2 &&
-        dataSorted[dataSorted.length - 2].is_archive &&
-        new Date(dataSorted[dataSorted.length - 3].date).getTime() < dateStart.getTime()) ? (
+    return isHabitArchived(targetsSorted, dateStart, dateEnd) ? (
       []
     ) : (
       <HabitOverview
@@ -54,7 +51,9 @@ export default function Overview({
         habit={habit}
         dateStart={dateStart}
         dateEnd={dateEnd}
+        heatmap={heatmap}
         heatmapData={dataSorted}
+        heatmapTargets={targetsSorted}
         heatmapID={heatmap?._id}
         vertical={vertical}
         mobile={mobile}

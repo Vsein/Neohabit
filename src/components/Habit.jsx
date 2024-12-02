@@ -14,7 +14,7 @@ import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
-import heatmapSort from '../utils/heatmapSort';
+import { heatmapSort } from '../utils/heatmap';
 
 export default function Habit({
   heatmap,
@@ -26,6 +26,7 @@ export default function Habit({
   vertical = true,
 }) {
   const dataSorted = heatmapSort(heatmap?.data, dateEnd);
+  const targetsSorted = heatmapSort(heatmap?.targets, dateEnd);
 
   return (
     <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
@@ -39,6 +40,7 @@ export default function Habit({
         <Heatmap
           heatmapID={heatmap?._id}
           heatmapData={dataSorted}
+          heatmapTargets={targetsSorted}
           habit={habit}
           dateStart={dateStart}
           dateEnd={dateEnd}

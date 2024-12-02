@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   differenceInDays,
   addDays,
@@ -12,18 +12,29 @@ import {
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { heatmapSort } from '../utils/heatmap';
 
 export default function Heatmap({
   dateStart,
   dateEnd,
   habit,
-  heatmapData,
+  heatmap,
+  // heatmapData,
+  heatmapTargets,
   heatmapID,
   vertical = false,
   isOverview,
   overridenElimination = undefined,
   overridenNumeric = undefined,
 }) {
+  const firstPeriodTarget = heatmapTargets.findLast((point) => compareDesc(startOfDay(new Date(point.date)), dateStart) === 1);
+  const lastPeriodTarget = heatmapTargets.find((point) => compareDesc(startOfDay(new Date(point.date)), dateEnd) === 1);
+  const [heatmapData, setHeatmapData] = useState(heatmapSort(heatmap?.data, dateEnd));
+
+  useEffect(() => {
+    setHeatmapData(heatmapSort(heatmap?.data, dateEnd));
+  }, [heatmap?.data])
+
   const current = { date: dateStart, values: [0] };
   // current.date === current Target Period Start if period is defined,
   // otherwise it's the current date

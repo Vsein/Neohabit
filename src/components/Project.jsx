@@ -12,7 +12,7 @@ import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
-import heatmapSort from '../utils/heatmapSort';
+import { heatmapSort, isHabitArchived } from '../utils/heatmap';
 
 export default function Project({
   project,
@@ -43,12 +43,9 @@ export default function Project({
         ? heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)
         : heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit);
       const dataSorted = heatmapSort(heatmap?.data, globalDateEnd);
+      const targetsSorted = heatmapSort(heatmap?.targets, globalDateEnd);
 
-      return (new Date(dataSorted[0].date).getTime() === endOfDay(globalDateEnd).getTime() &&
-        dataSorted.length !== 1) ||
-        (dataSorted.length > 2 &&
-          dataSorted[dataSorted.length - 2].is_archive &&
-          startOfDay(new Date(dataSorted[dataSorted.length - 2].date).getTime()) <= globalDateStart.getTime()) ? (
+      return isHabitArchived(targetsSorted, globalDateStart, globalDateEnd) ? (
         []
       ) : (
         <HabitOverview
@@ -56,7 +53,9 @@ export default function Project({
           habit={habit}
           dateStart={globalDateStart}
           dateEnd={globalDateEnd}
+          heatmap={heatmap}
           heatmapData={dataSorted}
+          heatmapTargets={targetsSorted}
           heatmapID={heatmap?._id}
           vertical={vertical}
           mobile={mobile}
