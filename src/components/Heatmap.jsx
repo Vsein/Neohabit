@@ -63,17 +63,17 @@ export default function Heatmap({
   // console.log(firstPeriodStart);
 
   useEffect(() => {
-    setHeatmapSortedData(heatmapSort(heatmap?.data, dateEnd));
+    setHeatmapSortedData(heatmapSort(heatmapTargets.concat(heatmap?.data), dateEnd));
   }, [heatmap?.data])
 
-  console.log(heatmapSortedData);
+  // console.log(heatmapSortedData);
 
-  const heatmapData = [ ...heatmapSortedData.filter((point) => {
-    const date = startOfDay(new Date(point.date));
-    return compareDesc(firstPeriodStart, date) === 1 && compareDesc(date, lastPeriodEnd) === 1;
-  }),  { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
+  // const heatmapData = [ ...heatmapSortedData.filter((point) => {
+  //   const date = startOfDay(new Date(point.date));
+  //   return compareDesc(firstPeriodStart, date) === 1 && compareDesc(date, lastPeriodEnd) === 1;
+  // }),  { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
 
-  console.log(heatmapData);
+  // console.log(heatmapData);
 
   const current = { date: dateStart, values: [0] };
   // current.date === current Target Period Start if period is defined,
@@ -122,8 +122,8 @@ export default function Heatmap({
       className={`overview-habit-cells ${isOverview ? '' : 'weekly'}`}
       style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
     >
-      {heatmapData &&
-        heatmapData.flatMap((point, index) => {
+      {heatmapSortedData &&
+        heatmapSortedData.flatMap((point, index) => {
           const date = startOfDay(new Date(point.date));
           if (compareDesc(dateEnd, date) === 1 && !passed) {
             return [];
@@ -165,7 +165,7 @@ export default function Heatmap({
           if (target.period === undefined) {
             const dateNowTmp = current.date;
             if (point?.is_target) {
-              if (index === heatmapData.length - 2 && point.is_archive) {
+              if (index === heatmapSortedData.length - 2 && point.is_archive) {
                 archived = true;
               }
               setNewTarget(point, date);
@@ -237,14 +237,14 @@ export default function Heatmap({
           const valueIndex = getCellPositionInSequence(
             differenceInDays(date, current.date) % target.period,
           );
-          if (passed && index === heatmapData.length - 1) {
+          if (passed && index === heatmapSortedData.length - 1) {
             passed = false;
             diffInPeriods = 1;
             if (compareDesc(date, addDays(current.date, target.period)) === 1) {
               previous.values[valueIndex] += point.value;
             }
           }
-          if (index === heatmapData.length - 2 && point.is_archive) {
+          if (index === heatmapSortedData.length - 2 && point.is_archive) {
             // current.date = dateEnd;
             archived = true;
           }
@@ -265,7 +265,7 @@ export default function Heatmap({
                 <CellPeriod key={index} dateStart={previous.date} dateEnd={date} dummy />
               );
             }
-            if (index === heatmapData.length - 1) {
+            if (index === heatmapSortedData.length - 1) {
               diffInPeriods += 1;
             } else {
               passed = true;
