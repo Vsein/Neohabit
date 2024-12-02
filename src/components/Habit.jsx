@@ -39,6 +39,7 @@ export default function Habit({
         <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
         <Heatmap
           heatmapID={heatmap?._id}
+          heatmap={heatmap}
           heatmapData={dataSorted}
           heatmapTargets={targetsSorted}
           habit={habit}

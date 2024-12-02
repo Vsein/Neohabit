@@ -2,15 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import {
-  mdiMenuLeft,
-  mdiMenuRight,
-  mdiMenuUp,
   mdiMenuDown,
   mdiCalendarText,
   mdiCalendarWeekend,
   mdiCog,
 } from '@mdi/js';
-import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
+import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useUpdateSettingsMutation } from '../state/services/settings';

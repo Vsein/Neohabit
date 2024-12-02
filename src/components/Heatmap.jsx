@@ -28,12 +28,48 @@ export default function Heatmap({
   overridenNumeric = undefined,
 }) {
   const firstPeriodTarget = heatmapTargets.findLast((point) => compareDesc(startOfDay(new Date(point.date)), dateStart) === 1);
-  const lastPeriodTarget = heatmapTargets.find((point) => compareDesc(startOfDay(new Date(point.date)), dateEnd) === 1);
-  const [heatmapData, setHeatmapData] = useState(heatmapSort(heatmap?.data, dateEnd));
+  const lastPeriodTarget = heatmapTargets.findLast((point) => compareDesc(startOfDay(new Date(point.date)), dateEnd) === 1);
+
+  const [heatmapSortedData, setHeatmapSortedData] = useState(heatmapSort(heatmap?.data, dateEnd));
+
+  const getFirstPeriodStart = () => {
+    if (firstPeriodTarget) {
+      const date = startOfDay(new Date(firstPeriodTarget.date));
+      const diffInPeriods = Math.floor(differenceInDays(dateStart, date) / firstPeriodTarget.period);
+      // console.log(habit.name, firstPeriodTarget, diffInPeriods, heatmapData);
+      if (diffInPeriods >= 0) {
+        return addDays(date, diffInPeriods * firstPeriodTarget.period);
+      }
+    }
+    return dateStart;
+  };
+
+  const firstPeriodStart = getFirstPeriodStart();
+
+  const getLastPeriodEnd = () => {
+    if (lastPeriodTarget) {
+      const date = startOfDay(new Date(lastPeriodTarget.date));
+      const diffInPeriods = Math.floor(differenceInDays(dateEnd, date) / lastPeriodTarget.period);
+      // console.log(habit.name, firstPeriodTarget, diffInPeriods, heatmapData);
+      if (diffInPeriods >= 0) {
+        return addDays(date, diffInPeriods * lastPeriodTarget.period);
+      }
+    }
+    return dateEnd;
+  }
+
+  const lastPeriodEnd = getLastPeriodEnd();
+
+  // console.log(firstPeriodStart);
 
   useEffect(() => {
-    setHeatmapData(heatmapSort(heatmap?.data, dateEnd));
+    setHeatmapSortedData(heatmapSort(heatmap?.data, dateEnd));
   }, [heatmap?.data])
+
+  const heatmapData = [ ...heatmapSortedData.filter((point) => {
+    const date = startOfDay(new Date(point.date));
+    return compareDesc(firstPeriodStart, date, lastPeriodEnd) === 1;
+  }),  { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
 
   const current = { date: dateStart, values: [0] };
   // current.date === current Target Period Start if period is defined,
@@ -62,6 +98,7 @@ export default function Heatmap({
     target.value = point.value;
     target.start = date;
     target.sequence = [];
+    target.index = -1;
     current.date = date;
     current.values = target.sequence.length
       ? new Array(getCellPositionInSequence(target.period)).fill(0)
