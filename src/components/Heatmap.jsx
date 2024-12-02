@@ -66,10 +66,14 @@ export default function Heatmap({
     setHeatmapSortedData(heatmapSort(heatmap?.data, dateEnd));
   }, [heatmap?.data])
 
+  console.log(heatmapSortedData);
+
   const heatmapData = [ ...heatmapSortedData.filter((point) => {
     const date = startOfDay(new Date(point.date));
-    return compareDesc(firstPeriodStart, date, lastPeriodEnd) === 1;
+    return compareDesc(firstPeriodStart, date) === 1 && compareDesc(date, lastPeriodEnd) === 1;
   }),  { date: endOfDay(dateEnd), value: 0, isLast: 1 }];
+
+  console.log(heatmapData);
 
   const current = { date: dateStart, values: [0] };
   // current.date === current Target Period Start if period is defined,
