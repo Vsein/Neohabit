@@ -10,7 +10,9 @@
     "start": "REACT_APP_STAGE=dev vite serve --open",
     "build": "REACT_APP_STAGE=prod vite build --emptyOutDir",
     "lint": "eslint --ext .js,.jsx src/ --fix",
-    "prettier": "prettier . --write"
+    "prettier": "prettier . --write",
+    "obfuscate": "find dist -type f -name 'index-*.js' -print0 | xargs -0 -I {} terser {} --compress --mangle --output {}",
+    "ship": "GENERATE_SOURCEMAP=false npm run build && npm run obfuscate"
   },
   "repository": {
     "type": "git",
