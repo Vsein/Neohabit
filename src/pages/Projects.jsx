@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery } from '../state/services/project';
+import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDefaultProject from '../hooks/useDefaultProject';
 import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
@@ -15,6 +16,7 @@ export default function ProjectsPage() {
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
+  const settings = useGetSettingsQuery();
   const vertical = false;
 
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ export default function ProjectsPage() {
   };
 
   const { datePeriodLength, mobile } = useGetDatePeriodLength();
+  const [projectsOrder, setProjectsOrder] = useState(settings.data.projects_order);
 
   const [
     dateEnd,
@@ -33,6 +36,17 @@ export default function ProjectsPage() {
   ] = useDatePeriod(datePeriodLength, true);
 
   const [defaultProject] = useDefaultProject();
+
+  const DefaultProject = defaultProject.habits.length ? (
+    <ProjectWrapper
+      key='default'
+      project={defaultProject}
+      datePeriodLength={datePeriodLength}
+      mobile={mobile}
+    />
+  ) : (
+      <></>
+    );
 
   return (
     <>
@@ -61,28 +75,43 @@ export default function ProjectsPage() {
           isFuturePeriod={isFuturePeriod}
         />
       </div>
-      {!loaded || projects.isFetching || habits.isFetching ? (
+      {!loaded || projects.isFetching || habits.isFetching || settings.isFetching ? (
         <div className="loader" />
       ) : (
         <div className="contentlist"> {/* ProjectList */}
-          {projects.data &&
-            projects.data.map((project, i) => (
-              <ProjectWrapper
-                key={i}
-                project={project}
-                datePeriodLength={datePeriodLength}
-                mobile={mobile}
-              />
-            ))}
-          {defaultProject.habits.length ? (
-            <ProjectWrapper
-              project={defaultProject}
-              datePeriodLength={datePeriodLength}
-              mobile={mobile}
-            />
-          ) : (
-            <></>
-          )}
+            {
+              settings.data.projects_enable_order && settings.data.projects_order ? <>
+                {
+                  projectsOrder.flatMap((projectID, i) => {
+                    if (projectID === 'default') return DefaultProject;
+
+                    const project = projects.data.find((projecto) => projecto._id === projectID);
+
+                    return <ProjectWrapper
+                      key={i}
+                      project={project}
+                      datePeriodLength={datePeriodLength}
+                      mobile={mobile}
+                    />;
+                  })
+                }
+              </> : (
+                  <>
+                    {
+                      projects.data &&
+                        projects.data.map((project, i) => (
+                          <ProjectWrapper
+                            key={i}
+                            project={project}
+                            datePeriodLength={datePeriodLength}
+                            mobile={mobile}
+                          />
+                        ))
+                    }
+                    {DefaultProject}
+                  </>
+                )
+            }
         </div>
       )}
     </>

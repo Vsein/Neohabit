@@ -6,6 +6,7 @@ import { mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays, endOfDay, startOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
+import { useUpdateSettingsMutation } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -29,6 +30,8 @@ export default function Project({
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
   const vertical = false;
+
+  const [updateSettings] = useUpdateSettingsMutation();
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
@@ -95,6 +98,9 @@ export default function Project({
       const dropTo = target.nextSibling;
       projectsContainer.insertBefore(draggedProject, dropTo);
     }
+
+    const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].map(({ id }) => id);
+    updateSettings({ values: { projects_order: ids } })
   }
 
   return (
