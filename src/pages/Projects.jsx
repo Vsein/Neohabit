@@ -25,6 +25,8 @@ export default function ProjectsPage() {
   };
 
   const { datePeriodLength, mobile } = useGetDatePeriodLength();
+
+  const [projectsMap, setProjectsMap] = useState({});
   const [projectsOrder, setProjectsOrder] = useState(settings.data.projects_order);
 
   const [
@@ -79,39 +81,36 @@ export default function ProjectsPage() {
         <div className="loader" />
       ) : (
         <div className="contentlist"> {/* ProjectList */}
-            {
-              settings.data.projects_enable_order && settings.data.projects_order ? <>
-                {
-                  projectsOrder.flatMap((projectID, i) => {
-                    if (projectID === 'default') return DefaultProject;
+            {settings.data.projects_enable_order && settings.data.projects_order && projects.data &&
+                projectsOrder.flatMap((projectID, i) => {
+                  projectsMap[projectID] = true;
 
-                    const project = projects.data.find((projecto) => projecto._id === projectID);
+                  if (projectID === 'default') return DefaultProject;
 
-                    return <ProjectWrapper
-                      key={i}
-                      project={project}
-                      datePeriodLength={datePeriodLength}
-                      mobile={mobile}
-                    />;
-                  })
-                }
-              </> : (
-                  <>
-                    {
-                      projects.data &&
-                        projects.data.map((project, i) => (
-                          <ProjectWrapper
-                            key={i}
-                            project={project}
-                            datePeriodLength={datePeriodLength}
-                            mobile={mobile}
-                          />
-                        ))
-                    }
-                    {DefaultProject}
-                  </>
-                )
+                  const project = projects.data.find((projecto) => projecto._id === projectID);
+
+                  if (!project) return <React.Fragment key={i}></React.Fragment>;
+
+                  return <ProjectWrapper
+                    key={i}
+                    project={project}
+                    datePeriodLength={datePeriodLength}
+                    mobile={mobile}
+                  />;
+                })
             }
+            {projects.data && projects.data.map((project, i) =>
+                projectsMap[project._id] ? <React.Fragment key={Object.keys(projectsMap).length * 10 + i}></React.Fragment> : (
+                  <ProjectWrapper
+                    key={Object.keys(projectsMap).length * 10 + i}
+                    project={project}
+                    datePeriodLength={datePeriodLength}
+                    mobile={mobile}
+                  />
+                )
+              )
+            }
+            {projectsMap.default ? <React.Fragment key='default'></React.Fragment> : DefaultProject}
         </div>
       )}
     </>
