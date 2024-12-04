@@ -3,14 +3,15 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
-import { differenceInDays, compareDesc, endOfDay, startOfDay } from 'date-fns';
+import { differenceInDays, endOfDay, startOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
+import { useUpdateSettingsMutation } from '../state/services/settings';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
-import { HabitOverview, HabitAddButton, ReturnButton } from './HabitComponents';
+import { HabitOverview, HabitAddButton } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
 import heatmapSort from '../utils/heatmapSort';
 
@@ -29,6 +30,8 @@ export default function Project({
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
   const vertical = false;
+
+  const [updateSettings] = useUpdateSettingsMutation();
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
@@ -65,6 +68,14 @@ export default function Project({
       );
     });
 
+  const allowDrop = (e) => {
+    e.preventDefault();
+  }
+
+  const drag = (e) => {
+    e.dataTransfer.setData("text", e.target.id);
+  }
+
   const HeaderName = () =>
     singular ? (
       <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
@@ -73,6 +84,24 @@ export default function Project({
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
       </NavLink>
     );
+
+  const drop = (e) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData("text");
+    const draggedProject = document.getElementById(data);
+    const projectsContainer = draggedProject.parentNode;
+    const target = e.target.closest('.overview-centering')
+
+    if (target.offsetTop < draggedProject.offsetTop) {
+      projectsContainer.insertBefore(draggedProject, target);
+    } else {
+      const dropTo = target.nextSibling;
+      projectsContainer.insertBefore(draggedProject, dropTo);
+    }
+
+    const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].map(({ id }) => id);
+    updateSettings({ values: { projects_order: ids } })
+  }
 
   return (
     <div
@@ -91,6 +120,9 @@ export default function Project({
         [project.color !== '#8a8a8a' ? '--bright-signature-color' : '']: colorShade,
         [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,
       }}
+      onDrop={drop}
+      onDragOver={allowDrop} draggable onDragStart={drag}
+      id={project?._id}
     >
         <div
           className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
