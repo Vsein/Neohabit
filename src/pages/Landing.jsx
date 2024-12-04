@@ -31,7 +31,6 @@ export default function Landing() {
   const firstPaneColor = "#43d64e";
   const secondPaneColor = "#1D60C1";
   const thirdPaneColor = "#CE0705";
-  console.log(mdiCalendar);
 
   return (
     <div id="content-landing">

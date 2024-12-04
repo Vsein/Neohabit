@@ -4,7 +4,13 @@ import { VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  define: { 'process.env': process.env },
+  define: {
+    process: {
+      env: {
+        REACT_APP_STAGE: process.env.REACT_APP_STAGE,
+      },
+    },
+  },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',

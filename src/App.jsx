@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -59,7 +59,7 @@ const App = () => {
           <Route path="/signup/" element={<Signup />} />
           <Route path="/login/" element={<Login />} />
         </Route>
-        <Route path="/" element={<PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
+        {loggedIn && <Route path="/" element={<Suspense fallback={<></>}><PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} /></Suspense>}>
           <Route path="*" element={<NotFound />} />
           <Route path="/verification/:token" element={<Verification />} />
           <Route path="/blocks/*" element={<Blocks />} />
@@ -71,7 +71,8 @@ const App = () => {
           <Route path="/habit/:habitID/*" element={<Habit />} />
           <Route path="/project/:projectID/*" element={<Project />} />
           <Route path="/settings" element={<Settings />} />
-        </Route>
+        </Route>}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );
