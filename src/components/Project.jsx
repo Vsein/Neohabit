@@ -100,7 +100,7 @@ export default function Project({
     }
 
     const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].map(({ id }) => id);
-    updateSettings({ values: { projects_order: ids } })
+    updateSettings({ values: { projects_order: ids, projects_enable_order: true } })
   }
 
   return (
