@@ -89,6 +89,11 @@ export default function Project({
     e.preventDefault();
     const data = e.dataTransfer.getData("text");
     const draggedProject = document.getElementById(data);
+
+    if (!draggedProject.classList.contains('.overview-centering')) {
+      return;
+    };
+
     const projectsContainer = draggedProject.parentNode;
     const target = e.target.closest('.overview-centering')
 

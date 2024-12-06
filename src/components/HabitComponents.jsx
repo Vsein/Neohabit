@@ -152,8 +152,43 @@ function HabitOverview({
 }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
+  const allowDrop = (e) => {
+    e.preventDefault();
+  }
+
+  const drag = (e) => {
+    e.dataTransfer.setData("text", e.target.id);
+  }
+
+  const drop = (e) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData("text");
+    const draggedHabit = document.getElementById(data);
+
+    if (!draggedHabit.classList.contains('overview-habit')) {
+      return;
+    };
+
+    const habitContainer = draggedHabit.parentNode;
+    const target = e.target.closest('.overview-habit')
+
+    if (target.offsetTop < draggedHabit.offsetTop) {
+      habitContainer.insertBefore(draggedHabit, target);
+    } else {
+      const dropTo = target.nextSibling;
+      habitContainer.insertBefore(draggedHabit, dropTo);
+    }
+
+    const ids = [...document.querySelectorAll('.overview-habits > .overview-habit')].map(({ id }) => id);
+  }
+
   return (
-    <div className="overview-habit">
+    <div
+      className="overview-habit"
+      onDrop={drop}
+      onDragOver={allowDrop} draggable onDragStart={drag}
+      id={habit?._id}
+    >
       <NavLink
         className="overview-habit-name"
         to={`../habit/${linkify(habit._id)}`}
