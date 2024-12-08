@@ -177,9 +177,6 @@ function HabitOverview({
     const draggedFromProjectID = draggedHabit.closest('.overview-centering').id;
     const draggedToProjectID = target.closest('.overview-centering').id;
 
-    console.log(draggedFromProjectID, draggedToProjectID);
-    console.log(habitContainer);
-
     if (draggedFromProjectID === draggedToProjectID) {
       if (target.offsetTop < draggedHabit.offsetTop) {
         habitContainer.insertBefore(draggedHabit, target);
@@ -190,37 +187,22 @@ function HabitOverview({
     } else {
       const draggedFromProject = document.getElementById(draggedFromProjectID);
       const fromHabits = draggedFromProject.querySelector('.overview-habits');
-      // .closest('.overview-habits');
+
       const draggedToProject = document.getElementById(draggedToProjectID);
       const toHabits = draggedToProject.querySelector('.overview-habits');
-      // .closest('.overview-habits');
 
-      console.log(draggedFromProject,draggedToProject);
+      fromHabits.removeChild(draggedHabit);
+      toHabits.appendChild(draggedHabit);
 
       if (target.offsetTop < draggedHabit.offsetTop) {
-        fromHabits.removeChild(draggedHabit);
-        toHabits.appendChild(draggedHabit);
         toHabits.insertBefore(draggedHabit, target);
-
-        console.log(draggedToProject.style.getPropertyValue('--habits'));
-
-        draggedFromProject.style.setProperty('--habits', draggedFromProject.style.getPropertyValue('--habits') - 1);
-        draggedToProject.style.setProperty('--habits', +draggedToProject.style.getPropertyValue('--habits') + 1)
-
-        console.log(draggedToProject.style.getPropertyValue('--habits'));
       } else {
-        fromHabits.removeChild(draggedHabit);
-        toHabits.appendChild(draggedHabit);
         const dropTo = target.nextSibling;
         toHabits.insertBefore(draggedHabit, dropTo);
-
-        console.log(draggedToProject.style.getPropertyValue('--habits'));
-
-        draggedFromProject.style.setProperty('--habits', draggedFromProject.style.getPropertyValue('--habits') - 1);
-        draggedToProject.style.setProperty('--habits', +draggedToProject.style.getPropertyValue('--habits') + 1)
-
-        console.log(draggedToProject.style.getPropertyValue('--habits'));
       }
+
+      draggedFromProject.style.setProperty('--habits', draggedFromProject.style.getPropertyValue('--habits') - 1);
+      draggedToProject.style.setProperty('--habits', +draggedToProject.style.getPropertyValue('--habits') + 1)
     }
 
 //     await updateProject({projectID, values: { habits:
