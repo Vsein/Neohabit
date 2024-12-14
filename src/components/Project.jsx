@@ -90,7 +90,7 @@ export default function Project({
     const data = e.dataTransfer.getData("text");
     const draggedProject = document.getElementById(data);
 
-    if (!draggedProject.classList.contains('.overview-centering')) {
+    if (!draggedProject || !draggedProject.classList.contains('.overview-centering')) {
       return;
     };
 

@@ -13,7 +13,7 @@ import {
   mdiKeyboardReturn,
 } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
-import { useUpdateProjectMutation } from '../state/services/project';
+import { useUpdateProjectMutation, useDragHabitInProjectMutation } from '../state/services/project';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
@@ -152,6 +152,7 @@ function HabitOverview({
   projectID = '',
 }) {
   const [updateProject] = useUpdateProjectMutation();
+  const [dragHabitInProject] = useDragHabitInProjectMutation();
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   const allowDrop = (e) => {
@@ -164,10 +165,10 @@ function HabitOverview({
 
   const drop = async (e) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData("text");
-    const draggedHabit = document.getElementById(data);
+    const id = e.dataTransfer.getData("text");
+    const draggedHabit = document.getElementById(id);
 
-    if (!draggedHabit.classList.contains('overview-habit')) {
+    if (!draggedHabit || !draggedHabit.classList.contains('overview-habit')) {
       return;
     };
 
@@ -177,12 +178,24 @@ function HabitOverview({
     const draggedFromProjectID = draggedHabit.closest('.overview-centering').id;
     const draggedToProjectID = target.closest('.overview-centering').id;
 
-    if (draggedFromProjectID === draggedToProjectID) {
+    console.log(target.id, id);
+
+    if (target.nextSibling === draggedHabit) {
+      console.log('pair! 1', target.id, target.nextSibling.id);
+      // habitContainer.insertBefore(draggedHabit, target);
+      await dragHabitInProject({ projectID: draggedFromProjectID, values: { draggedHabitID: target.id, targetHabitID: target.nextSibling.id, insertAfter: true } });
+    } else if (draggedHabit.nextSibling === target) {
+      console.log('pair! 2');
+      await dragHabitInProject({ projectID: draggedFromProjectID, values: { draggedHabitID: draggedHabit.id, targetHabitID: draggedHabit.nextSibling.id, insertAfter: true } });
+      // habitContainer.insertBefore(target, draggedHabit);
+    } else if (draggedFromProjectID === draggedToProjectID) {
       if (target.offsetTop < draggedHabit.offsetTop) {
-        habitContainer.insertBefore(draggedHabit, target);
+        // habitContainer.insertBefore(draggedHabit, target);
+        await dragHabitInProject({ projectID: draggedFromProjectID, values: { draggedHabitID: draggedHabit.id, targetHabitID: target.id, insertAfter: false } });
       } else {
         const dropTo = target.nextSibling;
-        habitContainer.insertBefore(draggedHabit, dropTo);
+        // habitContainer.insertBefore(draggedHabit, dropTo);
+        await dragHabitInProject({ projectID: draggedFromProjectID, values: { draggedHabitID: draggedHabit.id, targetHabitID: target.id, insertAfter: true } });
       }
     } else {
       const draggedFromProject = document.getElementById(draggedFromProjectID);
@@ -204,6 +217,7 @@ function HabitOverview({
       draggedFromProject.style.setProperty('--habits', draggedFromProject.style.getPropertyValue('--habits') - 1);
       draggedToProject.style.setProperty('--habits', +draggedToProject.style.getPropertyValue('--habits') + 1)
     }
+
 
 //     await updateProject({projectID, values: { habits:
 // [
@@ -229,7 +243,6 @@ function HabitOverview({
 
     const ids = [...habitContainer.querySelectorAll(':scope > .overview-habit')].map(({ id }) => id);
     console.log(ids);
-    // await updateProject({ projectID, values: { habits: ids } });
   }
 
   return (
