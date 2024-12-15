@@ -13,7 +13,7 @@ import {
   mdiKeyboardReturn,
 } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
-import { useUpdateProjectMutation, useDragHabitInProjectMutation } from '../state/services/project';
+import { useUpdateProjectMutation } from '../state/services/project';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
@@ -150,9 +150,8 @@ function HabitOverview({
   vertical,
   mobile,
   projectID = '',
+  dragHabitInProject,
 }) {
-  const [updateProject] = useUpdateProjectMutation();
-  const [dragHabitInProject] = useDragHabitInProjectMutation();
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
   const allowDrop = (e) => {
@@ -172,31 +171,17 @@ function HabitOverview({
       return;
     };
 
-    const habitContainer = draggedHabit.parentNode;
     const target = e.target.closest('.overview-habit')
+
+    if (target.id === id) {
+      return;
+    }
 
     const draggedFromProjectID = draggedHabit.closest('.overview-centering').id;
     const draggedToProjectID = target.closest('.overview-centering').id;
 
-    console.log(target.id, id);
-
-    if (target.nextSibling === draggedHabit) {
-      console.log('pair! 1', target.id, target.nextSibling.id);
-      // habitContainer.insertBefore(draggedHabit, target);
-      await dragHabitInProject({ projectID: draggedFromProjectID, values: { draggedHabitID: target.id, targetHabitID: target.nextSibling.id, insertAfter: true } });
-    } else if (draggedHabit.nextSibling === target) {
-      console.log('pair! 2');
-      await dragHabitInProject({ projectID: draggedFromProjectID, values: { draggedHabitID: draggedHabit.id, targetHabitID: draggedHabit.nextSibling.id, insertAfter: true } });
-      // habitContainer.insertBefore(target, draggedHabit);
-    } else if (draggedFromProjectID === draggedToProjectID) {
-      if (target.offsetTop < draggedHabit.offsetTop) {
-        // habitContainer.insertBefore(draggedHabit, target);
-        await dragHabitInProject({ projectID: draggedFromProjectID, values: { draggedHabitID: draggedHabit.id, targetHabitID: target.id, insertAfter: false } });
-      } else {
-        const dropTo = target.nextSibling;
-        // habitContainer.insertBefore(draggedHabit, dropTo);
-        await dragHabitInProject({ projectID: draggedFromProjectID, values: { draggedHabitID: draggedHabit.id, targetHabitID: target.id, insertAfter: true } });
-      }
+    if (draggedFromProjectID === draggedToProjectID) {
+      await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
     } else {
       const draggedFromProject = document.getElementById(draggedFromProjectID);
       const fromHabits = draggedFromProject.querySelector('.overview-habits');
@@ -217,32 +202,6 @@ function HabitOverview({
       draggedFromProject.style.setProperty('--habits', draggedFromProject.style.getPropertyValue('--habits') - 1);
       draggedToProject.style.setProperty('--habits', +draggedToProject.style.getPropertyValue('--habits') + 1)
     }
-
-
-//     await updateProject({projectID, values: { habits:
-// [
-//     "64b734495b24ad2131f6517a",
-//     "64c59a558a128ff351fabd7d",
-//     "6511e5d4756a3ef535ccc467",
-//     "651b8b47963fca7bb3f68100",
-//     "655fabfba8272bd54ee56699",
-//     "6569a6cefc3c754bf476249a",
-//     "6569a706fc3c754bf47624a3",
-//     "6585840e72283235e67ba9c4",
-//     "6588fdb6967d8876dbffdac6",
-//     "65890288967d8876dbffdae0",
-//     "65a116c34949c78ef996deb2",
-//     "65ad5c1747075f5f1805dd10",
-//     "65b0ed96a8ad6e0e96903989",
-//     "65c8edba1fb07589c09f22a1",
-//     "65d1d153f82360856f6da8da",
-//     "65d79594f82360856f6dbedd",
-//     "65d9d22ff82360856f6dda02"
-// ]
-//     }});
-
-    const ids = [...habitContainer.querySelectorAll(':scope > .overview-habit')].map(({ id }) => id);
-    console.log(ids);
   }
 
   return (
