@@ -74,9 +74,9 @@ export default function Sidebar({ hidden }) {
           ) : (
             <>
               {projects.data.map((project, i) => (
-                <Project key={`project-${i}`} project={project} />
+                <ProjectSidebar key={`project-${i}`} project={project} />
               ))}
-              {defaultProject.habits.length ? <Project project={defaultProject} /> : <></>}
+              {defaultProject.habits.length ? <ProjectSidebar project={defaultProject} /> : <></>}
             </>
           )}
         </ul>
@@ -110,7 +110,7 @@ function NavigationSection({ path, to, title, status, raw, num }) {
   );
 }
 
-function Project({ project }) {
+function ProjectSidebar({ project }) {
   const habits = useGetHabitsQuery();
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
   const [habitsCollapsed, setHabitsCollapsed] = useState(true);

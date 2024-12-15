@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetProjectsQuery } from '../state/services/project';
+import { useGetProjectsQuery, useUpdateProjectMutation } from '../state/services/project';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDefaultProject from '../hooks/useDefaultProject';
@@ -29,6 +29,8 @@ export default function ProjectsPage() {
   const [projectsMap, setProjectsMap] = useState({});
   const [projectsOrder, setProjectsOrder] = useState(settings.data.projects_order);
 
+  const [updateProject] = useUpdateProjectMutation();
+
   const [
     dateEnd,
     setDateEnd,
@@ -49,6 +51,19 @@ export default function ProjectsPage() {
   ) : (
       <></>
     );
+
+  const dragHabitToProject = async (fromProjectID, toProjectID, draggedHabitID, targetHabitID, insertAfter = false) => {
+    const fromProject = structuredClone(projects.data.find((projecto) => projecto._id === fromProjectID) ?? defaultProject);
+    const toProject = structuredClone(projects.data.find((projecto) => projecto._id === toProjectID) ?? defaultProject);
+    if (fromProject && fromProject.habits && fromProjectID !== 'default') {
+      await updateProject({projectID: fromProjectID, values: { habits: fromProject.habits.filter((habitID) => habitID !== draggedHabitID)}});
+    }
+    if (toProject && toProject.habits && toProjectID !== 'default') {
+      const position = toProject.habits.findIndex((habit) => habit === targetHabitID);
+      toProject.habits.splice(position + insertAfter, 0, draggedHabitID);
+      await updateProject({projectID: toProjectID, values: { habits: toProject.habits}});
+    }
+  };
 
   return (
     <>
@@ -96,6 +111,7 @@ export default function ProjectsPage() {
                     project={project}
                     datePeriodLength={datePeriodLength}
                     mobile={mobile}
+                    dragHabitToProject={dragHabitToProject}
                   />;
                 })
             }
@@ -106,6 +122,7 @@ export default function ProjectsPage() {
                     project={project}
                     datePeriodLength={datePeriodLength}
                     mobile={mobile}
+                    dragHabitToProject={dragHabitToProject}
                   />
                 )
               )

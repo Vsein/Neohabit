@@ -27,6 +27,7 @@ export default function Project({
   onboardingSlide = 0,
   isPastPeriod = false,
   isFuturePeriod = false,
+  dragHabitToProject,
 }) {
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
@@ -80,6 +81,7 @@ export default function Project({
           mobile={mobile}
           projectID={project._id}
           dragHabitInProject={dragHabitInProject}
+          dragHabitToProject={dragHabitToProject}
         />
       );
     });
@@ -241,6 +243,7 @@ function ProjectWrapper({
   project,
   datePeriodLength,
   mobile,
+  dragHabitToProject,
 }) {
   const [dateEnd, setDateEnd, dateStart, setDateStart, { subPeriod, addPeriod, isPastPeriod, isFuturePeriod }] =
     useDatePeriod(datePeriodLength);
@@ -256,6 +259,7 @@ function ProjectWrapper({
       addPeriod={addPeriod}
       isPastPeriod={isPastPeriod}
       isFuturePeriod={isFuturePeriod}
+      dragHabitToProject={dragHabitToProject}
     />
   );
 }

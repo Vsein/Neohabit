@@ -151,6 +151,7 @@ function HabitOverview({
   mobile,
   projectID = '',
   dragHabitInProject,
+  dragHabitToProject,
 }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
@@ -181,26 +182,11 @@ function HabitOverview({
     const draggedToProjectID = target.closest('.overview-centering').id;
 
     if (draggedFromProjectID === draggedToProjectID) {
-      await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
-    } else {
-      const draggedFromProject = document.getElementById(draggedFromProjectID);
-      const fromHabits = draggedFromProject.querySelector('.overview-habits');
-
-      const draggedToProject = document.getElementById(draggedToProjectID);
-      const toHabits = draggedToProject.querySelector('.overview-habits');
-
-      fromHabits.removeChild(draggedHabit);
-      toHabits.appendChild(draggedHabit);
-
-      if (target.offsetTop < draggedHabit.offsetTop) {
-        toHabits.insertBefore(draggedHabit, target);
-      } else {
-        const dropTo = target.nextSibling;
-        toHabits.insertBefore(draggedHabit, dropTo);
+      if (draggedFromProjectID !== 'default') {
+        await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
       }
-
-      draggedFromProject.style.setProperty('--habits', draggedFromProject.style.getPropertyValue('--habits') - 1);
-      draggedToProject.style.setProperty('--habits', +draggedToProject.style.getPropertyValue('--habits') + 1)
+    } else {
+      await dragHabitToProject(draggedFromProjectID, draggedToProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
     }
   }
 
