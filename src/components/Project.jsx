@@ -7,6 +7,7 @@ import { differenceInDays, endOfDay, startOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useUpdateSettingsMutation } from '../state/services/settings';
+import { useUpdateProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -26,16 +27,31 @@ export default function Project({
   onboardingSlide = 0,
   isPastPeriod = false,
   isFuturePeriod = false,
+  dragHabitToProject,
 }) {
   const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
   const vertical = false;
 
   const [updateSettings] = useUpdateSettingsMutation();
+  const [updateProject] = useUpdateProjectMutation();
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
   if (heatmaps.isFetching || habits.isFetching) return <></>;
+
+  const dragHabitInProject = async (projectID, draggedHabitID, targetHabitID, insertAfter) => {
+    const projecto = structuredClone(project);
+    if (projecto && projectID === projecto._id && projecto.habits) {
+      const draggedHabitPosition = projecto.habits.findIndex(
+        (habit) => habit === draggedHabitID,
+      );
+      projecto.habits.splice(draggedHabitPosition, 1);
+      const position = projecto.habits.findIndex((habit) => habit === targetHabitID);
+      projecto.habits.splice(position + insertAfter, 0, draggedHabitID);
+      await updateProject({projectID, values: { habits: projecto.habits }});
+    }
+  };
 
   const Habits =
     project.habits &&
@@ -64,6 +80,8 @@ export default function Project({
           vertical={vertical}
           mobile={mobile}
           projectID={project._id}
+          dragHabitInProject={dragHabitInProject}
+          dragHabitToProject={dragHabitToProject}
         />
       );
     });
@@ -89,6 +107,11 @@ export default function Project({
     e.preventDefault();
     const data = e.dataTransfer.getData("text");
     const draggedProject = document.getElementById(data);
+
+    if (!draggedProject || !draggedProject.classList.contains('.overview-centering')) {
+      return;
+    };
+
     const projectsContainer = draggedProject.parentNode;
     const target = e.target.closest('.overview-centering')
 
@@ -220,6 +243,7 @@ function ProjectWrapper({
   project,
   datePeriodLength,
   mobile,
+  dragHabitToProject,
 }) {
   const [dateEnd, setDateEnd, dateStart, setDateStart, { subPeriod, addPeriod, isPastPeriod, isFuturePeriod }] =
     useDatePeriod(datePeriodLength);
@@ -235,6 +259,7 @@ function ProjectWrapper({
       addPeriod={addPeriod}
       isPastPeriod={isPastPeriod}
       isFuturePeriod={isFuturePeriod}
+      dragHabitToProject={dragHabitToProject}
     />
   );
 }

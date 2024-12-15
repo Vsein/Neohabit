@@ -13,6 +13,7 @@ import {
   mdiKeyboardReturn,
 } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
+import { useUpdateProjectMutation } from '../state/services/project';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
@@ -149,11 +150,53 @@ function HabitOverview({
   vertical,
   mobile,
   projectID = '',
+  dragHabitInProject,
+  dragHabitToProject,
 }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
+  const allowDrop = (e) => {
+    e.preventDefault();
+  }
+
+  const drag = (e) => {
+    e.dataTransfer.setData("text", e.target.id);
+  }
+
+  const drop = async (e) => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData("text");
+    const draggedHabit = document.getElementById(id);
+
+    if (!draggedHabit || !draggedHabit.classList.contains('overview-habit')) {
+      return;
+    };
+
+    const target = e.target.closest('.overview-habit')
+
+    if (target.id === id) {
+      return;
+    }
+
+    const draggedFromProjectID = draggedHabit.closest('.overview-centering').id;
+    const draggedToProjectID = target.closest('.overview-centering').id;
+
+    if (draggedFromProjectID === draggedToProjectID) {
+      if (draggedFromProjectID !== 'default') {
+        await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
+      }
+    } else {
+      await dragHabitToProject(draggedFromProjectID, draggedToProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
+    }
+  }
+
   return (
-    <div className="overview-habit">
+    <div
+      className="overview-habit"
+      onDrop={drop}
+      onDragOver={allowDrop} draggable onDragStart={drag}
+      id={habit?._id}
+    >
       <NavLink
         className="overview-habit-name"
         to={`../habit/${linkify(habit._id)}`}
