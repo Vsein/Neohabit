@@ -397,12 +397,6 @@ export default function Landing() {
               <h3 className="landing-lastcall-social-header">And stay tuned for the latest updates:</h3>
               <div className="landing-lastcall-social-links">
                 <Link
-                  to="https://t.me/Neohabit_Official"
-                  target="_blank"
-                >
-                  <img src={Telegram} className="icon big circle" />
-                </Link>
-                <Link
                   to="https://www.reddit.com/user/VseinSama/"
                   target="_blank"
                 >
