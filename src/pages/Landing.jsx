@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { startOfDay, endOfDay, addDays } from 'date-fns';
+import { startOfDay, endOfDay, addDays, getYear } from 'date-fns';
 import { Icon } from '@mdi/react';
 import { mdiCalendar, mdiTimerOutline, mdiCalendarMultiselect } from '@mdi/js';
 import useTitle from '../hooks/useTitle';
@@ -421,7 +421,7 @@ export default function Landing() {
       </main>
       <footer className="landing-footer-container">
         <div className="landing-footer">
-          <h3> Copyright @ 2023 - 2024</h3>
+          <h3> Copyright @ 2023 - {getYear(new Date)}</h3>
         </div>
       </footer>
     </div>
