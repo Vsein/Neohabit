@@ -1,4 +1,4 @@
-@import 'scrollbar';
+@use 'scrollbar';
 
 .page-habit {
   display: grid;
@@ -63,7 +63,7 @@
 }
 
 .habit-heatmap-container {
-  @include scrollbar;
+  @include scrollbar.scrollbar;
   --negate-margin-block: 0px;
   position: relative;
   direction: rtl;

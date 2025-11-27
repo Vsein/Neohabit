@@ -1,7 +1,7 @@
-@import 'scrollbar';
+@use 'scrollbar';
 
 .tasklists-navigation {
-  @include scrollbar;
+  @include scrollbar.scrollbar;
   background-color: iherit;
   display: flex;
   align-items: center;
