@@ -1,0 +1,333 @@
+openapi: '3.0.0'
+info:
+  version: 0.0.0
+  title: Neohabit API
+  description: |
+    REST API for Neohabit's backend, rewritten in go
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /habit:
+    post:
+      summary: Create Habit
+      operationId: createHabit
+      tags:
+        - habit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHabitRequest'
+      responses:
+        '201':
+          description: Habit created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HabitID'
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Habit already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: List Habits
+      operationId: listHabits
+      tags:
+        - habit
+      parameters:
+        - name: ids
+          in: query
+          required: false
+          description: Filter by specific IDs
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/HabitID'
+      responses:
+        '200':
+          description: List of Habits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Habit'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /habit/{habitID}:
+    get:
+      summary: Get Habit by ID
+      operationId: getHabit
+      tags:
+        - habit
+      parameters:
+        - name: habitID
+          in: path
+          required: true
+          description: Habit identifier
+          schema:
+            $ref: '#/components/schemas/HabitID'
+      responses:
+        '200':
+          description: Habit found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habit'
+        '404':
+          description: Habit not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    UUID:
+      type: string
+      # format: uuid
+      example: "550e8400-e29b-41d4-a716-446655440000"
+      # pattern: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+
+    HabitID:
+      type: string
+      # format: uuid
+      description: Unique identifier for Habit
+      example: "550e8400-e29b-41d4-a716-446655440000"
+
+    UserID:
+      type: string
+      # format: uuid
+      description: Unique identifier for User
+      example: "550e8400-e29b-41d4-a716-446655440000"
+
+    HeatmapID:
+      type: string
+      # format: uuid
+      description: Unique identifier for User
+      example: "550e8400-e29b-41d4-a716-446655440000"
+
+    Habit:
+      type: object
+      required:
+        - id
+        - userId
+        - name
+      properties:
+        id:
+          # $ref: '#/components/schemas/UUID'
+          $ref: '#/components/schemas/HabitID'
+        userId:
+          $ref: '#/components/schemas/UserID'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Name of the Habit
+          example: "Sample Habit"
+        description:
+          type: string
+          maxLength: 1024
+          description: Description of the Habit
+          example: "This is a sample Habit"
+        color:
+          type: string
+          maxLength: 100
+          description: Color of the Habit
+          example: "#23BCDB"
+        dueDate: # TODO: do I even need it right now?
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Habit is due, so-called goal
+          example: 1609459200000
+        createdAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Habit was created
+          example: 1609459200000
+        updatedAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Habit was last updated
+          example: 1609459200000
+
+    HeatmapData:
+      type: object
+      required:
+        - date
+        - value
+      properties:
+        Date:
+          type: integer
+          format: int64
+          example: 1609459200000
+        # Date:
+        #   type: string
+        #   example: 2025-11-29
+        Value:
+          type: integer
+          format: uint8
+          description: "How many times the activity was completed this day"
+
+    HeatmapTarget:
+      type: object
+      required:
+        # add fields from the entity
+        - date
+        - value
+        - period
+        - isArchive
+      properties:
+        Date:
+          type: integer
+          format: int64
+          example: 1609459200000
+        # Date:
+        #   type: string
+        #   example: 2025-11-29
+        Value:
+          type: integer
+          format: uint8
+          description: "How many times the activity has to be completed in the specified Period"
+          example: 2
+        Period:
+          type: integer
+          format: uint8
+          description: "How many days you have to complete the activity"
+          example: 1
+        IsArchive:
+          type: boolean
+
+    Heatmap:
+      type: object
+      required:
+        - id
+        - userId
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/HeatmapID'
+        userId:
+          $ref: '#/components/schemas/UserID'
+        habitId:
+          $ref: '#/components/schemas/HabitID'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HeatmapData'
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/HeatmapTarget'
+        createdAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Heatmap was created
+          example: 1609459200000
+        updatedAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Heatmap was last updated
+          example: 1609459200000
+
+    Project:
+      type: object
+      required:
+        - id
+        - userId
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/HabitID'
+        userId:
+          $ref: '#/components/schemas/UserID'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Name of the Project
+          example: "Sample Project"
+        description:
+          type: string
+          maxLength: 1024
+          description: Description of the Project
+          example: "This is a sample Project"
+        color:
+          type: string
+          maxLength: 100
+          description: Color of the Project
+          example: "#23BCDB"
+        habitIDs:
+          type: array
+          items:
+            $ref: '#/components/schemas/HabitID'
+        createdAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Project was created
+          example: 1609459200000
+        updatedAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Project was last updated
+          example: 1609459200000
+
+    CreateHabitRequest:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Name of the Habit
+          example: "Sample Habit"
+        description:
+          type: string
+          maxLength: 1024
+          description: Description of the Habit
+          example: "This is a sample Habit"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: "Habit not found"
+
+tags:
+  - name: habit
+    description: Habit management operations
