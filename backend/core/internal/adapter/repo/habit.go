@@ -16,8 +16,8 @@ import (
 // SQL queries for Habit operations
 const (
 	queryCreateHabit = `
-		INSERT INTO habits (id, name, description, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO habits (id, user_id, name, description, color, due_date, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
 
 	queryReadHabit = `

@@ -135,17 +135,55 @@ components:
       description: Unique identifier for User
       example: "550e8400-e29b-41d4-a716-446655440000"
 
+    StopwatchID:
+      type: string
+      # format: uuid
+      description: Unique identifier for User
+      example: "550e8400-e29b-41d4-a716-446655440000"
+
+    User:
+      type: object
+      required:
+        - id
+        - userID
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/UserID'
+        username:
+          type: string
+        password:
+          type: string
+        verified:
+          type: boolean
+        verificationAttempts:
+          type: integer
+          format: uint8
+        verificationTime:
+          type: integer
+          format: int64
+        createdAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Habit was created
+          example: 1609459200000
+        updatedAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Habit was last updated
+          example: 1609459200000
+
     Habit:
       type: object
       required:
         - id
-        - userId
+        - userID
         - name
       properties:
         id:
           # $ref: '#/components/schemas/UUID'
           $ref: '#/components/schemas/HabitID'
-        userId:
+        userID:
           $ref: '#/components/schemas/UserID'
         name:
           type: string
@@ -230,14 +268,14 @@ components:
       type: object
       required:
         - id
-        - userId
+        - userID
         - name
       properties:
         id:
           $ref: '#/components/schemas/HeatmapID'
-        userId:
+        userID:
           $ref: '#/components/schemas/UserID'
-        habitId:
+        habitID:
           $ref: '#/components/schemas/HabitID'
         data:
           type: array
@@ -262,12 +300,12 @@ components:
       type: object
       required:
         - id
-        - userId
+        - userID
         - name
       properties:
         id:
           $ref: '#/components/schemas/HabitID'
-        userId:
+        userID:
           $ref: '#/components/schemas/UserID'
         name:
           type: string
@@ -289,6 +327,116 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/HabitID'
+        createdAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Project was created
+          example: 1609459200000
+        updatedAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Project was last updated
+          example: 1609459200000
+
+    Stopwatch:
+      type: object
+      required:
+        - id
+        - userID
+        - isInitiated
+      properties:
+        id:
+          $ref: '#/components/schemas/StopwatchID'
+        userID:
+          $ref: '#/components/schemas/UserID'
+        habitID:
+          $ref: '#/components/schemas/HabitID'
+        isAnitiated:
+          type: boolean
+        startTime:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Stopwatch started its countdown
+          example: 1609459200000
+        duration:
+          type: integer
+          format: int64
+          description: Stopwatch duration in milliseconds
+        isPaused:
+          type: boolean
+        pauseDuration:
+          type: integer
+          format: int64
+          description: Stopwatch pause duration in milliseconds
+        createdAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Project was created
+          example: 1609459200000
+        updatedAt:
+          type: integer
+          format: int64
+          description: Unix timestamp (milliseconds) when Project was last updated
+          example: 1609459200000
+
+    Settings:
+      type: object
+      required:
+        - id
+        - userID
+      properties:
+        id:
+          $ref: '#/components/schemas/HabitID'
+        userID:
+          $ref: '#/components/schemas/UserID'
+        theme:
+          type: string
+          enum: ["dark", "light"]
+        readSettingsFromConfigFile:
+          type: boolean
+        cellHeightMultiplier:
+          type: integer
+          format: uint8
+        cellWidthMultiplier:
+          type: integer
+          format: uint8
+        overviewVertical:
+          type: boolean
+        overviewCurrentDay:
+          type: string
+          enum: ["end", "middle", "start"]
+        overviewOffset:
+          type: integer
+          format: uint8
+
+        # Want to deprecate
+        overviewDuration:
+          type: integer
+          format: uint8
+        overviewApplyLimit:
+          type: boolean
+        overviewDurationLimit:
+          type: integer
+          format: uint8
+        #######################
+
+        allowHorizontalScrolling:
+          type: boolean
+
+        # Want to deprecate
+        habitHeatmapsOverride:
+          type: boolean
+        habitHeatmapsCurrentDay:
+          type: integer
+          format: uint8
+        #######################
+
+        showStopwatchTimeInPageTitle:
+          type: boolean
+        hideCellHint:
+          type: boolean
+        hideOnboarding:
+          type: boolean
         createdAt:
           type: integer
           format: int64

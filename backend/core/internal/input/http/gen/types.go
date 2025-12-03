@@ -41,8 +41,8 @@ type Habit struct {
 	// UpdatedAt Unix timestamp (milliseconds) when Habit was last updated
 	UpdatedAt *int64 `json:"updatedAt,omitempty"`
 
-	// UserId Unique identifier for User
-	UserId UserID `json:"userId"`
+	// UserID Unique identifier for User
+	UserID UserID `json:"userID"`
 }
 
 // HabitID Unique identifier for Habit

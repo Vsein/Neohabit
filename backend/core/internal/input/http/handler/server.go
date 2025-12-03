@@ -167,7 +167,7 @@ func toAPIHabit(e *entity.Habit) gen.Habit {
 	return gen.Habit{
 		Id:          e.ID,
 		Name:        e.Name,
-		Description: e.Description,
+		Description: &e.Description,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 	}
