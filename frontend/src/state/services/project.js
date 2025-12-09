@@ -58,7 +58,7 @@ export const projectApi = api.injectEndpoints({
 
 export const {
   useGetProjectsQuery,
-  useGetProjectQuery,
+  // useGetProjectQuery,
   useCreateProjectMutation,
   useDeleteProjectMutation,
   useUpdateProjectMutation,

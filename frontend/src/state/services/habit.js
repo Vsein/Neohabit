@@ -9,11 +9,11 @@ export const habitApi = api.injectEndpoints({
         url: 'habits',
       }),
     }),
-    getHabit: builder.query({
-      query: (id) => ({
-        url: `habit/${id}`,
-      }),
-    }),
+    // getHabit: builder.query({
+    //   query: (id) => ({
+    //     url: `habit/${id}`,
+    //   }),
+    // }),
     createHabit: builder.mutation({
       query: (values) => ({
         url: 'habit',
@@ -87,7 +87,7 @@ export const habitApi = api.injectEndpoints({
 
 export const {
   useGetHabitsQuery,
-  useGetHabitQuery,
+  // useGetHabitQuery,
   useCreateHabitMutation,
   useDeleteHabitMutation,
   useUpdateHabitMutation,
