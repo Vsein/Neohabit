@@ -54,34 +54,7 @@ export default function Landing() {
         <section className="landing-intro">
           <h1 className="landing-intro-text">A fresh new look at habit-tracking</h1>
         </section>
-        <section className="landing-about">
-          <div className="landing-about-text">
-            <h2 className="landing-about-text-header">The Precursor</h2>
-            {/* <p> */}
-            {/*   Have you noticed that almost every self-improvement app has a system of streaks, in */}
-            {/*   one way or another? */}
-            {/* </p> */}
-            <p>
-              In the lifting communitiy, progressive overload is a concept where you try to go
-              slightly further each week, while still remaining comfortable.
-            </p>
-            <p>
-              Why won't habit-trackers incorporate that principle for building habits? Why would you
-              focus on streaks and doing something daily from the very start, instead of starting
-              small?
-            </p>
-            <p>
-              Why is it so hard to see the correlations between different habits/addictions on those
-              apps, when it should be their main goal?
-            </p>
-            <p>
-              Also, once something like studying/immersing for 1 hour a day becomes a habit, why
-              isn't there a better way to display trying to study more than that?
-            </p>
-            <br />
-            <p>All those questions led to the creation of Neohabit.</p>
-          </div>
-        </section>
+        <FeaturesSection />
         <section className="landing-features-content">
           <div className="landing-features-container" style={{ minHeight: 'auto' }}>
             {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
@@ -551,6 +524,39 @@ function FeaturesSection() {
           </div>
         </div>
         {/* Skill trees, habits, heatmaps */}
+      </div>
+    </section>
+  );
+}
+
+function PrecursorSection() {
+  return (
+    <section className="landing-about">
+      <div className="landing-about-text">
+        <h2 className="landing-about-text-header">The Precursor</h2>
+        {/* <p> */}
+        {/*   Have you noticed that almost every self-improvement app has a system of streaks, in */}
+        {/*   one way or another? */}
+        {/* </p> */}
+        <p>
+          In the lifting communitiy, progressive overload is a concept where you try to go
+          slightly further each week, while still remaining comfortable.
+        </p>
+        <p>
+          Why won't habit-trackers incorporate that principle for building habits? Why would you
+          focus on streaks and doing something daily from the very start, instead of starting
+          small?
+        </p>
+        <p>
+          Why is it so hard to see the correlations between different habits/addictions on those
+          apps, when it should be their main goal?
+        </p>
+        <p>
+          Also, once something like studying/immersing for 1 hour a day becomes a habit, why
+          isn&apos;t there a better way to display trying to study more than that?
+        </p>
+        <br />
+        <p>All those questions led to the creation of Neohabit.</p>
       </div>
     </section>
   );
