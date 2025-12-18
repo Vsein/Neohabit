@@ -62,7 +62,6 @@ export default function Landing() {
             <p>In a regular habit-tracker, you would probably have something like this:</p>
             <div
               className="overview-habit-cells landing-cells"
-              // style={{ '--numeric-text-color': getNumericTextColor('#43d64e') }}
             >
               {exampleValues.map((exampleValue, Index) => (
                 <CellPeriod
@@ -82,7 +81,6 @@ export default function Landing() {
             </p>
             <div
               className="overview-habit-cells landing-cells"
-              // style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
             >
               {exampleValues2.map(
                 (exampleValue, Index) =>
@@ -152,7 +150,6 @@ export default function Landing() {
             </p>
             <div
               className="overview-habit-cells landing-cells"
-              // style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
             >
               {exampleValues3.map(
                 (exampleValue, Index) =>
@@ -201,7 +198,6 @@ export default function Landing() {
             <p>The same principle can be used in reverse for dropping addictions:</p>
             <div
               className="overview-habit-cells landing-cells"
-              // style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
             >
               {exampleValues3.map(
                 (exampleValue, Index) =>
@@ -402,6 +398,7 @@ export default function Landing() {
 
 function FeaturesSection() {
   const [value, setValue] = useState(0);
+  const color = "#8FE9EF";
 
   useEffect(() => {
     const timerInterval = setTimeout(() => {
@@ -426,7 +423,7 @@ function FeaturesSection() {
             <div className="landing-feature centering">
               <div className="landing-cell-container">
                 <CellPeriod
-                  color="#d700ff"
+                  color={color}
                   value={value}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
@@ -439,7 +436,7 @@ function FeaturesSection() {
             <div className="landing-feature centering">
               <div className="landing-cell-container">
                 <CellPeriod
-                  color="#d700ff"
+                  color={color}
                   value={value % 3}
                   targetValue={2}
                   dateStart={startOfDay(new Date())}
@@ -449,7 +446,7 @@ function FeaturesSection() {
               </div>
               <div className="landing-cell-container">
                 <CellPeriod
-                  color="#d700ff"
+                  color={color}
                   value={value % 5}
                   targetValue={4}
                   dateStart={startOfDay(new Date())}
@@ -459,7 +456,7 @@ function FeaturesSection() {
               </div>
               <div className="landing-cell-container">
                 <CellPeriod
-                  color="#d700ff"
+                  color={color}
                   value={value % 10}
                   targetValue={9}
                   dateStart={startOfDay(new Date())}
@@ -469,7 +466,7 @@ function FeaturesSection() {
               </div>
               <div className="landing-cell-container">
                 <CellPeriod
-                  color="#d700ff"
+                  color={color}
                   value={value}
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
@@ -484,7 +481,7 @@ function FeaturesSection() {
             <div className="landing-feature centering">
               <div className="landing-cell-container">
                 <CellPeriod
-                  color="#d700ff"
+                  color={color}
                   value={value}
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
@@ -499,7 +496,7 @@ function FeaturesSection() {
             <div className="landing-feature centering">
               <div className="landing-cell-container" style={{ '--total-width': 3 }}>
                 <CellPeriod
-                  color="#d700ff"
+                  color={color}
                   value={value}
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
@@ -510,7 +507,7 @@ function FeaturesSection() {
               </div>
               <div className="landing-cell-container" style={{ '--total-width': 3 }}>
                 <CellPeriod
-                  color="#d700ff"
+                  color={color}
                   value={value % 3}
                   targetValue={2}
                   dateStart={startOfDay(new Date())}
