@@ -10,32 +10,22 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/oapi-codegen/runtime"
 	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-	// List Habits
-	// (GET /habit)
-	ListHabits(w http.ResponseWriter, r *http.Request, params ListHabitsParams)
 	// Create Habit
 	// (POST /habit)
 	CreateHabit(w http.ResponseWriter, r *http.Request)
-	// Get Habit by ID
-	// (GET /habit/{habitID})
-	GetHabit(w http.ResponseWriter, r *http.Request, habitID HabitID)
+	// List Habits
+	// (GET /habits)
+	ListHabits(w http.ResponseWriter, r *http.Request)
 }
 
 // Unimplemented server implementation that returns http.StatusNotImplemented for each endpoint.
 
 type Unimplemented struct{}
-
-// List Habits
-// (GET /habit)
-func (_ Unimplemented) ListHabits(w http.ResponseWriter, r *http.Request, params ListHabitsParams) {
-	w.WriteHeader(http.StatusNotImplemented)
-}
 
 // Create Habit
 // (POST /habit)
@@ -43,9 +33,9 @@ func (_ Unimplemented) CreateHabit(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-// Get Habit by ID
-// (GET /habit/{habitID})
-func (_ Unimplemented) GetHabit(w http.ResponseWriter, r *http.Request, habitID HabitID) {
+// List Habits
+// (GET /habits)
+func (_ Unimplemented) ListHabits(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -57,33 +47,6 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
-
-// ListHabits operation middleware
-func (siw *ServerInterfaceWrapper) ListHabits(w http.ResponseWriter, r *http.Request) {
-
-	var err error
-
-	// Parameter object where we will unmarshal all parameters from the context
-	var params ListHabitsParams
-
-	// ------------- Optional query parameter "ids" -------------
-
-	err = runtime.BindQueryParameter("form", true, false, "ids", r.URL.Query(), &params.Ids)
-	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "ids", Err: err})
-		return
-	}
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.ListHabits(w, r, params)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
 
 // CreateHabit operation middleware
 func (siw *ServerInterfaceWrapper) CreateHabit(w http.ResponseWriter, r *http.Request) {
@@ -99,22 +62,17 @@ func (siw *ServerInterfaceWrapper) CreateHabit(w http.ResponseWriter, r *http.Re
 	handler.ServeHTTP(w, r)
 }
 
-// GetHabit operation middleware
-func (siw *ServerInterfaceWrapper) GetHabit(w http.ResponseWriter, r *http.Request) {
+// ListHabits operation middleware
+func (siw *ServerInterfaceWrapper) ListHabits(w http.ResponseWriter, r *http.Request) {
 
-	var err error
+	ctx := r.Context()
 
-	// ------------- Path parameter "habitID" -------------
-	var habitID HabitID
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
 
-	err = runtime.BindStyledParameterWithOptions("simple", "habitID", chi.URLParam(r, "habitID"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
-	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "habitID", Err: err})
-		return
-	}
+	r = r.WithContext(ctx)
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.GetHabit(w, r, habitID)
+		siw.Handler.ListHabits(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -238,42 +196,13 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	}
 
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/habit", wrapper.ListHabits)
-	})
-	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/habit", wrapper.CreateHabit)
 	})
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/habit/{habitID}", wrapper.GetHabit)
+		r.Get(options.BaseURL+"/habits", wrapper.ListHabits)
 	})
 
 	return r
-}
-
-type ListHabitsRequestObject struct {
-	Params ListHabitsParams
-}
-
-type ListHabitsResponseObject interface {
-	VisitListHabitsResponse(w http.ResponseWriter) error
-}
-
-type ListHabits200JSONResponse []Habit
-
-func (response ListHabits200JSONResponse) VisitListHabitsResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-
-	return json.NewEncoder(w).Encode(response)
-}
-
-type ListHabits500JSONResponse ErrorResponse
-
-func (response ListHabits500JSONResponse) VisitListHabitsResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(500)
-
-	return json.NewEncoder(w).Encode(response)
 }
 
 type CreateHabitRequestObject struct {
@@ -302,6 +231,14 @@ func (response CreateHabit400JSONResponse) VisitCreateHabitResponse(w http.Respo
 	return json.NewEncoder(w).Encode(response)
 }
 
+type CreateHabit401Response struct {
+}
+
+func (response CreateHabit401Response) VisitCreateHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
 type CreateHabit409JSONResponse ErrorResponse
 
 func (response CreateHabit409JSONResponse) VisitCreateHabitResponse(w http.ResponseWriter) error {
@@ -320,35 +257,33 @@ func (response CreateHabit500JSONResponse) VisitCreateHabitResponse(w http.Respo
 	return json.NewEncoder(w).Encode(response)
 }
 
-type GetHabitRequestObject struct {
-	HabitID HabitID `json:"habitID"`
+type ListHabitsRequestObject struct {
 }
 
-type GetHabitResponseObject interface {
-	VisitGetHabitResponse(w http.ResponseWriter) error
+type ListHabitsResponseObject interface {
+	VisitListHabitsResponse(w http.ResponseWriter) error
 }
 
-type GetHabit200JSONResponse Habit
+type ListHabits200JSONResponse []Habit
 
-func (response GetHabit200JSONResponse) VisitGetHabitResponse(w http.ResponseWriter) error {
+func (response ListHabits200JSONResponse) VisitListHabitsResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(200)
 
 	return json.NewEncoder(w).Encode(response)
 }
 
-type GetHabit404JSONResponse ErrorResponse
-
-func (response GetHabit404JSONResponse) VisitGetHabitResponse(w http.ResponseWriter) error {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(404)
-
-	return json.NewEncoder(w).Encode(response)
+type ListHabits401Response struct {
 }
 
-type GetHabit500JSONResponse ErrorResponse
+func (response ListHabits401Response) VisitListHabitsResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
 
-func (response GetHabit500JSONResponse) VisitGetHabitResponse(w http.ResponseWriter) error {
+type ListHabits500JSONResponse ErrorResponse
+
+func (response ListHabits500JSONResponse) VisitListHabitsResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -357,15 +292,12 @@ func (response GetHabit500JSONResponse) VisitGetHabitResponse(w http.ResponseWri
 
 // StrictServerInterface represents all server handlers.
 type StrictServerInterface interface {
-	// List Habits
-	// (GET /habit)
-	ListHabits(ctx context.Context, request ListHabitsRequestObject) (ListHabitsResponseObject, error)
 	// Create Habit
 	// (POST /habit)
 	CreateHabit(ctx context.Context, request CreateHabitRequestObject) (CreateHabitResponseObject, error)
-	// Get Habit by ID
-	// (GET /habit/{habitID})
-	GetHabit(ctx context.Context, request GetHabitRequestObject) (GetHabitResponseObject, error)
+	// List Habits
+	// (GET /habits)
+	ListHabits(ctx context.Context, request ListHabitsRequestObject) (ListHabitsResponseObject, error)
 }
 
 type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
@@ -395,32 +327,6 @@ type strictHandler struct {
 	ssi         StrictServerInterface
 	middlewares []StrictMiddlewareFunc
 	options     StrictHTTPServerOptions
-}
-
-// ListHabits operation middleware
-func (sh *strictHandler) ListHabits(w http.ResponseWriter, r *http.Request, params ListHabitsParams) {
-	var request ListHabitsRequestObject
-
-	request.Params = params
-
-	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
-		return sh.ssi.ListHabits(ctx, request.(ListHabitsRequestObject))
-	}
-	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "ListHabits")
-	}
-
-	response, err := handler(r.Context(), w, r, request)
-
-	if err != nil {
-		sh.options.ResponseErrorHandlerFunc(w, r, err)
-	} else if validResponse, ok := response.(ListHabitsResponseObject); ok {
-		if err := validResponse.VisitListHabitsResponse(w); err != nil {
-			sh.options.ResponseErrorHandlerFunc(w, r, err)
-		}
-	} else if response != nil {
-		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
-	}
 }
 
 // CreateHabit operation middleware
@@ -454,25 +360,23 @@ func (sh *strictHandler) CreateHabit(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// GetHabit operation middleware
-func (sh *strictHandler) GetHabit(w http.ResponseWriter, r *http.Request, habitID HabitID) {
-	var request GetHabitRequestObject
-
-	request.HabitID = habitID
+// ListHabits operation middleware
+func (sh *strictHandler) ListHabits(w http.ResponseWriter, r *http.Request) {
+	var request ListHabitsRequestObject
 
 	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
-		return sh.ssi.GetHabit(ctx, request.(GetHabitRequestObject))
+		return sh.ssi.ListHabits(ctx, request.(ListHabitsRequestObject))
 	}
 	for _, middleware := range sh.middlewares {
-		handler = middleware(handler, "GetHabit")
+		handler = middleware(handler, "ListHabits")
 	}
 
 	response, err := handler(r.Context(), w, r, request)
 
 	if err != nil {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
-	} else if validResponse, ok := response.(GetHabitResponseObject); ok {
-		if err := validResponse.VisitGetHabitResponse(w); err != nil {
+	} else if validResponse, ok := response.(ListHabitsResponseObject); ok {
+		if err := validResponse.VisitListHabitsResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

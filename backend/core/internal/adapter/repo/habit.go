@@ -15,27 +15,15 @@ import (
 
 // SQL queries for Habit operations
 const (
+	// queryReadHabit   = `SELECT * FROM habits WHERE id = $1`
+	queryListHabits  = `SELECT * FROM habits WHERE user_id = $1`
 	queryCreateHabit = `
 		INSERT INTO habits (id, user_id, name, description, color, due_date, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
-
-	queryReadHabit = `
-		SELECT id, name, description, created_at, updated_at
-		FROM habits
-		WHERE id = $1
-	`
-
-	queryListHabits = `
-		SELECT id, name, description, created_at, updated_at
-		FROM habits
-	`
-
-	queryListHabitsByIDs = `
-		SELECT id, name, description, created_at, updated_at
-		FROM habits
-		WHERE id = ANY($1)
-	`
+	queryUpdateHabit  = `UPDATE habits SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
+	queryDeleteHabit  = `DELETE FROM habits WHERE id = $1`
+	queryDeleteHabit2 = `DELETE FROM habits WHERE id = $1; UPDATE projects SET habit_ids_order = array_remove(habit_ids_order, $1)`
 )
 
 // Habit implements the HabitRepo interface
@@ -52,35 +40,17 @@ func NewHabit(pool db.PoolTX, logger *zap.Logger) *Habit {
 	}
 }
 
-// Create creates a new Habit in the database
-func (r *Habit) Create(ctx context.Context, habit *entity.Habit) error {
-	_, err := r.pool.Exec(
-		ctx,
-		queryCreateHabit,
-		habit.ID,
-		habit.Name,
-		habit.Description,
-		habit.CreatedAt,
-		habit.UpdatedAt,
-	)
-	if err != nil {
-		// Check for unique constraint violation (duplicate name, etc.)
-		// Adjust this based on your actual database constraints
-		if db.IsUniqueViolation(err) {
-			return repo.ErrConflict
-		}
-		return fmt.Errorf("exec create habit: %w", err)
-	}
-	return nil
-}
-
-// Read retrieves an Habit by ID from the database
+// Read retrieves a Habit by ID from the database
+// XXX: Unneccessary, thus untested and unused
 func (r *Habit) Read(ctx context.Context, id string) (*entity.Habit, error) {
 	var habit entity.Habit
 	err := r.pool.QueryRow(ctx, queryReadHabit, id).Scan(
 		&habit.ID,
+		&habit.UserID,
 		&habit.Name,
 		&habit.Description,
+		&habit.Color,
+		&habit.DueDate,
 		&habit.CreatedAt,
 		&habit.UpdatedAt,
 	)
@@ -93,17 +63,12 @@ func (r *Habit) Read(ctx context.Context, id string) (*entity.Habit, error) {
 	return &habit, nil
 }
 
-// List retrieves Habits based on filter criteria from the database
-func (r *Habit) List(ctx context.Context, filter entity.HabitFilter) ([]*entity.Habit, error) {
+// List retrieves Habits of the logged in user from the database
+func (r *Habit) List(ctx context.Context, user_id string) ([]*entity.Habit, error) {
 	var rows pgx.Rows
 	var err error
 
-	// Apply filters
-	if len(filter.IDs) > 0 {
-		rows, err = r.pool.Query(ctx, queryListHabitsByIDs, filter.IDs)
-	} else {
-		rows, err = r.pool.Query(ctx, queryListHabits)
-	}
+	rows, err = r.pool.Query(ctx, queryListHabits, user_id)
 
 	if err != nil {
 		return nil, fmt.Errorf("query list habits: %w", err)
@@ -115,8 +80,11 @@ func (r *Habit) List(ctx context.Context, filter entity.HabitFilter) ([]*entity.
 		var habit entity.Habit
 		err := rows.Scan(
 			&habit.ID,
+			&habit.UserID,
 			&habit.Name,
 			&habit.Description,
+			&habit.Color,
+			&habit.DueDate,
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
 		)
@@ -131,4 +99,62 @@ func (r *Habit) List(ctx context.Context, filter entity.HabitFilter) ([]*entity.
 	}
 
 	return habits, nil
+}
+
+// Create creates a new Habit in the database
+func (r *Habit) Create(ctx context.Context, habit *entity.Habit) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryCreateHabit,
+		habit.ID,
+		habit.UserID,
+		habit.Name,
+		habit.Description,
+		habit.Color,
+		habit.DueDate,
+		habit.CreatedAt,
+		habit.UpdatedAt,
+	)
+	if err != nil {
+		// Check for unique constraint violation (duplicate name, etc.)
+		// Adjust this based on your actual database constraints
+		if db.IsUniqueViolation(err) {
+			return repo.ErrConflict
+		}
+		return fmt.Errorf("exec create habit: %w", err)
+	}
+	return nil
+}
+
+func (r *Habit) Update(ctx context.Context, habit *entity.Habit) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryUpdateHabit,
+		habit.ID,
+		habit.Name,
+		habit.Description,
+		habit.Color,
+		habit.UpdatedAt,
+	)
+	if err != nil {
+		return fmt.Errorf("exec update habit: %w", err)
+	}
+	return nil
+}
+
+func (r *Habit) Delete(ctx context.Context, id string) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryDeleteHabit,
+		id,
+	)
+	if err != nil {
+		// Check for unique constraint violation (duplicate name, etc.)
+		// Adjust this based on your actual database constraints
+		if db.IsUniqueViolation(err) {
+			return repo.ErrConflict
+		}
+		return fmt.Errorf("exec create habit: %w", err)
+	}
+	return nil
 }

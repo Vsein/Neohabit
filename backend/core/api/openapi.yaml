@@ -8,6 +8,32 @@ servers:
   - url: http://localhost:8080
 
 paths:
+  /habits:
+    get:
+      summary: List Habits
+      operationId: listHabits
+      tags:
+        - habit
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of user's Habits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Habit'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /habit:
     post:
       summary: Create Habit
@@ -33,6 +59,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
         '409':
           description: Habit already exists
           content:
@@ -46,68 +74,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-    get:
-      summary: List Habits
-      operationId: listHabits
-      tags:
-        - habit
-      parameters:
-        - name: ids
-          in: query
-          required: false
-          description: Filter by specific IDs
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/HabitID'
-      responses:
-        '200':
-          description: List of Habits
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Habit'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-
-  /habit/{habitID}:
-    get:
-      summary: Get Habit by ID
-      operationId: getHabit
-      tags:
-        - habit
-      parameters:
-        - name: habitID
-          in: path
-          required: true
-          description: Habit identifier
-          schema:
-            $ref: '#/components/schemas/HabitID'
-      responses:
-        '200':
-          description: Habit found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Habit'
-        '404':
-          description: Habit not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   securitySchemes:
@@ -186,8 +152,7 @@ components:
         - userID
         - name
       properties:
-        id:
-          # $ref: '#/components/schemas/UUID'
+        ID:
           $ref: '#/components/schemas/HabitID'
         userID:
           $ref: '#/components/schemas/UserID'
@@ -207,21 +172,17 @@ components:
           maxLength: 100
           description: Color of the Habit
           example: "#23BCDB"
-        dueDate: # TODO: do I even need it right now?
+        dueDate:
           type: integer
           format: int64
-          description: Unix timestamp (milliseconds) when Habit is due, so-called goal
+          description: Unix timestamp (milliseconds) when Habit is due, the so-called goal
           example: 1609459200000
         createdAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Habit was created
-          example: 1609459200000
+          type: string
+          format: date-time
         updatedAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Habit was last updated
-          example: 1609459200000
+          type: string
+          format: date-time
 
     HeatmapData:
       type: object

@@ -102,10 +102,16 @@ func (s *server) CreateHabit(
 		return gen.CreateHabit400JSONResponse{}, nil
 	}
 
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.CreateHabit401Response{}, nil
+	}
+
 	// Convert to domain entity
 	habit := &entity.Habit{
 		Name:        request.Body.Name,
 		Description: request.Body.Description,
+		UserID:      userID,
 	}
 
 	// Call use-case
@@ -122,38 +128,37 @@ func (s *server) CreateHabit(
 }
 
 // GetHabit handles GET /habit/{habitId}
-func (s *server) GetHabit(
-	ctx context.Context,
-	request gen.GetHabitRequestObject,
-) (gen.GetHabitResponseObject, error) {
-	// Call use-case
-	habit, err := s.habits.Read(ctx, request.HabitID)
-	if err != nil {
-		if errors.Is(err, cases.ErrNotFound) {
-			return gen.GetHabit404JSONResponse{}, nil
-		}
-		s.logger.Error("failed to get habit", zap.Error(err))
-		return gen.GetHabit500JSONResponse{}, nil
-	}
-
-	// Convert to API response
-	response := toAPIHabit(habit)
-	return gen.GetHabit200JSONResponse(response), nil
-}
+// func (s *server) GetHabit(
+// 	ctx context.Context,
+// 	request gen.GetHabitRequestObject,
+// ) (gen.GetHabitResponseObject, error) {
+// 	// Call use-case
+// 	habit, err := s.habits.Read(ctx, request.HabitID)
+// 	if err != nil {
+// 		if errors.Is(err, cases.ErrNotFound) {
+// 			return gen.GetHabit404JSONResponse{}, nil
+// 		}
+// 		s.logger.Error("failed to get habit", zap.Error(err))
+// 		return gen.GetHabit500JSONResponse{}, nil
+// 	}
+//
+// 	// Convert to API response
+// 	response := toAPIHabit(habit)
+// 	return gen.GetHabit200JSONResponse(response), nil
+// }
 
 // ListHabits handles GET /habit
 func (s *server) ListHabits(
 	ctx context.Context,
 	request gen.ListHabitsRequestObject,
 ) (gen.ListHabitsResponseObject, error) {
-	// Build filter
-	filter := entity.HabitFilter{}
-	if request.Params.Ids != nil {
-		filter.IDs = *request.Params.Ids
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.ListHabits401Response{}, nil
 	}
 
 	// Call use-case
-	habits, err := s.habits.List(ctx, filter)
+	habits, err := s.habits.List(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to list habits", zap.Error(err))
 		return gen.ListHabits500JSONResponse{}, nil
@@ -171,7 +176,7 @@ func (s *server) ListHabits(
 // toAPIHabit converts domain entity to API response
 func toAPIHabit(e *entity.Habit) gen.Habit {
 	return gen.Habit{
-		Id:          e.ID,
+		ID:          &e.ID,
 		Name:        e.Name,
 		Description: &e.Description,
 		CreatedAt:   &e.CreatedAt,

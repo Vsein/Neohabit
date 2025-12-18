@@ -16,7 +16,7 @@ import (
 // HabitCase orchestrates Habit-related business logic
 type HabitCase struct {
 	habitRepo repo.HabitRepo
-	txManager             port.TransactionManager
+	txManager port.TransactionManager
 }
 
 // NewHabitCase creates a new HabitCase instance
@@ -26,7 +26,7 @@ func NewHabitCase(
 ) *HabitCase {
 	return &HabitCase{
 		habitRepo: habitRepo,
-		txManager:             txManager,
+		txManager: txManager,
 	}
 }
 
@@ -34,7 +34,7 @@ func NewHabitCase(
 func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit) (string, error) {
 	// Generate ID and timestamps
 	habit.ID = uuid.NewString()
-	habit.CreatedAt = time.Now().UnixMilli()
+	habit.CreatedAt = time.Now()
 	habit.UpdatedAt = habit.CreatedAt
 
 	// Execute in transaction
@@ -67,9 +67,9 @@ func (c *HabitCase) Read(ctx context.Context, id string) (*entity.Habit, error) 
 	return habit, nil
 }
 
-// List retrieves Habits based on filter criteria
-func (c *HabitCase) List(ctx context.Context, filter entity.HabitFilter) ([]*entity.Habit, error) {
-	habits, err := c.habitRepo.List(ctx, filter)
+// List retrieves all Habits of a user
+func (c *HabitCase) List(ctx context.Context, user_id string) ([]*entity.Habit, error) {
+	habits, err := c.habitRepo.List(ctx, user_id)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
 	}

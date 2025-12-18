@@ -17,13 +17,9 @@ var (
 //
 //go:generate mockgen -destination ../../adapter/repo/mock/habit_mock.go -package mock -source ./habit.go
 type HabitRepo interface {
-	// Create creates a new Habit
+	// Read(ctx context.Context, id string) (*entity.Habit, error)
+	List(ctx context.Context, user_id string) ([]*entity.Habit, error)
 	Create(ctx context.Context, habit *entity.Habit) error
-
-	// Read retrieves an Habit by ID
-	// Returns ErrNotFound if the Habit doesn't exist
-	Read(ctx context.Context, id string) (*entity.Habit, error)
-
-	// List retrieves Habits based on filter criteria
-	List(ctx context.Context, filter entity.HabitFilter) ([]*entity.Habit, error)
+	Update(ctx context.Context, habit *entity.Habit) error
+	Delete(ctx context.Context, id string) error
 }
