@@ -249,8 +249,7 @@ export default function Landing() {
             </div>
             <p>
               {' '}
-              It can be anything - packs of cigarettes, weed, alcohol, hours wasted on social
-              media...{' '}
+              It can be anything - hours wasted on social media, alcohol, packs of cigarettes...{' '}
             </p>
           </div>
         </section>
@@ -304,7 +303,7 @@ export default function Landing() {
               <div>
                 <h4>Calendars:</h4>
                 <ul>
-                  {/* <li className="landing-li">are more suited for appointments and meetings</li> */}
+                  <li className="landing-li">are more suited for appointments and meetings</li>
                   <li className="landing-li">are very rigid</li>
                   <li className="landing-li">require to set a time for every entry</li>
                   <li className="landing-li">often need rescheduling to work properly</li>
@@ -348,7 +347,7 @@ export default function Landing() {
                 <ul>
                   <li className="landing-li">allows you to adjust the load</li>
                   <li className="landing-li">serves as a convenient overview</li>
-                  <li className="landing-li">is a better replacement for a calendar</li>
+                  <li className="landing-li">is a good way to track any habit</li>
                   <li className="landing-li">
                     doesn&apos;t require a lot of time to set up/maintain
                   </li>
@@ -434,7 +433,7 @@ function FeaturesSection() {
                 />
               </div>
             </div>
-            <p>Intuitive design for habits which happen more than once a day</p>
+            <p>Intuitive design for habits that happen more than once a day</p>
           </div>
           <div className="landing-feature-container">
             <div className="landing-feature centering">
@@ -520,7 +519,7 @@ function FeaturesSection() {
                 />
               </div>
             </div>
-            <p>Set date periods for habits (weekly, monthly, once in X days)</p>
+            <p>Set date periods for habits (weekly, monthly, once in X days/weeks)</p>
           </div>
         </div>
         {/* Skill trees, habits, heatmaps */}
