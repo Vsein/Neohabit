@@ -1,4 +1,4 @@
-@import 'dropdown';
+@use 'dropdown';
 
 .page-settings {
   display: grid;
@@ -141,9 +141,9 @@
 }
 
 .settings-section {
-  @include dropdown;
-  @include dropdown-arrow;
-  @include dropdown-collapse;
+  @include dropdown.dropdown;
+  @include dropdown.dropdown-arrow;
+  @include dropdown.dropdown-collapse;
 
   &-header {
     margin-left: -8px;

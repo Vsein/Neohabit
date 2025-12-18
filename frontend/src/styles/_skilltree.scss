@@ -1,4 +1,4 @@
-@import 'scrollbar';
+@use 'scrollbar';
 
 @property --a {
   syntax: '<angle>';
@@ -30,7 +30,7 @@
 }
 
 .skilltree-container {
-  @include scrollbar;
+  @include scrollbar.scrollbar;
   --negate-margin-block: calc(2 - 2 * var(--vertical));
   position: relative;
   overflow-y: hidden;

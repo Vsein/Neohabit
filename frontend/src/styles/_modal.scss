@@ -1,6 +1,5 @@
-@import 'scrollbar';
-@import 'dropdown';
-@import 'scrollbar';
+@use 'scrollbar';
+@use 'dropdown';
 
 .overlay {
   position: fixed;
@@ -25,7 +24,7 @@
 }
 
 .modal {
-  @include scrollbar;
+  @include scrollbar.scrollbar;
   display: none;
   grid-auto-rows: auto;
   gap: 10px;
@@ -102,7 +101,7 @@
   }
 
   &-details {
-    @include scrollbar;
+    @include scrollbar.scrollbar;
     height: 500px;
     overflow-y: scroll;
     width: 100%;
@@ -117,7 +116,7 @@
   }
 
   &-details-block {
-    @include scrollbar;
+    @include scrollbar.scrollbar;
     height: 100%;
     width: 100%;
     // overflow-y: scroll;
@@ -208,7 +207,7 @@
   position: relative;
 
   & > textarea {
-    @include scrollbar;
+    @include scrollbar.scrollbar;
   }
 
   & > textarea:focus ~ .form-field-length {
@@ -222,7 +221,7 @@
 }
 
 .form-habits {
-  @include dropdown;
+  @include dropdown.dropdown;
   padding: 5px 10px;
   display: flex;
   flex-wrap: wrap;
@@ -230,7 +229,7 @@
   overflow-x: hidden;
 
   &-container {
-    @include scrollbar;
+    @include scrollbar.scrollbar;
     width: 230px;
     display: grid;
     gap: 5px;

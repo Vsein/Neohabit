@@ -1,8 +1,8 @@
-@import 'dropdown';
-@import 'scrollbar';
+@use 'dropdown';
+@use 'scrollbar';
 
 .sidebar {
-  @include scrollbar;
+  @include scrollbar.scrollbar;
   grid-area: sidebar;
   // background-color: #fafafa;
   background-color: var(--main-background-color);
@@ -159,9 +159,9 @@
 
 
 .sidebar-projects {
-  @include dropdown;
-  @include dropdown-arrow;
-  @include dropdown-collapse;
+  @include dropdown.dropdown;
+  @include dropdown.dropdown-arrow;
+  @include dropdown.dropdown-collapse;
 
   &-container.active {
     gap: 5px;
@@ -170,9 +170,9 @@
 }
 
 .sidebar-habits {
-  @include dropdown;
-  @include dropdown-arrow;
-  @include dropdown-collapse;
+  @include dropdown.dropdown;
+  @include dropdown.dropdown-arrow;
+  @include dropdown.dropdown-collapse;
   padding: 2px;
 
   &-arrow {
