@@ -14,6 +14,7 @@ import (
 	"neohabit/core/internal/cases"
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/input/http/gen"
+	"neohabit/core/internal/input/http/middleware"
 )
 
 const (
@@ -28,24 +29,27 @@ var _ gen.StrictServerInterface = (*server)(nil)
 
 // server implements the HTTP handlers for the API
 type server struct {
-	address             string
+	address string
 	habits  *cases.HabitCase
-	logger              *zap.Logger
-	debug               bool
+	auth    *cases.AuthCase
+	logger  *zap.Logger
+	debug   bool
 }
 
 // NewServer creates a new HTTP server instance
 func NewServer(
 	address string,
 	habits *cases.HabitCase,
+	auth *cases.AuthCase,
 	logger *zap.Logger,
 	debug bool,
 ) *server {
 	return &server{
-		address:            address,
-		habits:             habits,
-		logger:             logger,
-		debug:              debug,
+		address: address,
+		habits:  habits,
+		auth:    auth,
+		logger:  logger,
+		debug:   debug,
 	}
 }
 
@@ -64,6 +68,8 @@ func (s *server) Start() {
 
 	// Create router with middleware
 	router := chi.NewRouter()
+
+	router.Use(middleware.NewAuthMiddleware(s.auth, s.logger))
 
 	// Add logging middleware if in debug mode
 	if s.debug {

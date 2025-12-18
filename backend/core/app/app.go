@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -10,8 +11,13 @@ import (
 	"neohabit/core/config"
 	"neohabit/core/internal/adapter/repo"
 	"neohabit/core/internal/adapter/repo/db"
+	"neohabit/core/internal/adapter/secret"
 	"neohabit/core/internal/cases"
 	"neohabit/core/internal/input/http/handler"
+)
+
+const (
+	secretTTL = 5 * time.Minute
 )
 
 func Run(cfg *config.Config) error {
@@ -49,11 +55,16 @@ func Run(cfg *config.Config) error {
 	habitCase := cases.NewHabitCase(habitRepo, txManager)
 	logger.Info("use cases initialization completed")
 
+	// Initialize authentication service
+	secretProvider := secret.NewSecretProviderCache(secretTTL, secret.EnvSecretFetcher)
+	authService := cases.NewAuthCase(secretProvider)
+
 	// Start HTTP server
 	logger.Info("starting HTTP server")
 	handler.NewServer(
 		cfg.Address,
 		habitCase,
+		authService,
 		logger.Named("http-server"),
 		cfg.LogConfig.Level == -1, // debug mode
 	).Start()
