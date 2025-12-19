@@ -7,12 +7,7 @@ import useTitle from '../hooks/useTitle';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 import { CellPeriod } from '../components/HeatmapCells';
 import { ProfilePicture } from '../components/UI';
-import ExerciseProject from '../assets/project-exercise2.png';
-import DevelopmentProject from '../assets/project-development3.png';
-import NihongoProject from '../assets/project-nihongo3.png';
-import SocialProject from '../assets/project-social2.png';
-import CleaningProject from '../assets/project-cleaning.png';
-import MedsProject from '../assets/project-medication.png';
+import mockProjectsData from '../assets/mockProjectsData';
 import Telegram from '../logos/telegram.svg';
 import X from '../logos/x.svg';
 import Reddit from '../logos/reddit.svg';
@@ -258,31 +253,27 @@ export default function Landing() {
           <div className="landing-projects">
             <div className="landing-project">
               <h2 className="landing-project-title">Learn languages</h2>
-              <img alt="Nihongo project" src={NihongoProject} style={{ borderRadius: '10px' }} />
+              <MockProjectSection name="nihongo" />
             </div>
             <div className="landing-project">
               <h2 className="landing-project-title">Stay in shape</h2>
-              <img alt="Exercise project" src={ExerciseProject} style={{ borderRadius: '10px' }} />
+              <MockProjectSection name="exercise" />
             </div>
             <div className="landing-project">
               <h2 className="landing-project-title">Adjust your work-life balance</h2>
-              <img
-                alt="Development project"
-                src={DevelopmentProject}
-                style={{ borderRadius: '10px' }}
-              />
+              <MockProjectSection name="development" />
             </div>
             <div className="landing-project">
               <h2 className="landing-project-title">Remind yourself to reach out</h2>
-              <img alt="Social project" src={SocialProject} style={{ borderRadius: '10px' }} />
+              <MockProjectSection name="social" />
             </div>
             <div className="landing-project">
               <h2 className="landing-project-title">Clean up your house in your free time</h2>
-              <img alt="Social project" src={CleaningProject} style={{ borderRadius: '10px' }} />
+              <MockProjectSection name="cleaning" />
             </div>
             <div className="landing-project">
               <h2 className="landing-project-title">Never forget whether you took meds</h2>
-              <img alt="Meds project" src={MedsProject} style={{ borderRadius: '10px' }} />
+              <MockProjectSection name="meds" />
             </div>
           </div>
         </section>
@@ -524,6 +515,36 @@ function FeaturesSection() {
         {/* Skill trees, habits, heatmaps */}
       </div>
     </section>
+  );
+}
+
+function MockProjectSection({ name }) {
+  return (
+    <div className="landing-habits" >
+      {mockProjectsData[name].map((habit, index) => (
+        <div key={index} className="landing-habit" style={{ '--length': 16, '--numeric-text-color': getNumericTextColor(habit.color) }}>
+          <div className="landing-habit-name">
+            {habit.name}
+          </div>
+          <div className="landing-habit-cells">
+            {habit.data.map((value, Index) => (
+              <CellPeriod
+                key={`habit-example-${Index}`}
+                color={habit.color}
+                value={value}
+                targetValue={habit.target[Index]}
+                dateStart={startOfDay(addDays(new Date(), Index))}
+                dateEnd={endOfDay(addDays(new Date(), Index + habit.cell_length[Index] - 1))}
+                vertical={false}
+                numeric={habit.numeric}
+                dummy={habit?.is_dummy && habit.is_dummy[Index] || false}
+              />
+            ))}
+          </div>
+          <div />
+        </div>
+      ))}
+    </div>
   );
 }
 

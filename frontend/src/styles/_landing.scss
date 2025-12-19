@@ -173,7 +173,7 @@ $cell-weekdays-width: 33px;
 .landing-about {
   height: auto;
   min-height: 105vh;
-  background-color: var(--main-background-color);
+  background-color: var(--secondary-background-color);
   display: flex;
   align-items: center;
 
@@ -288,7 +288,7 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-projects {
-  background-color: var(--landing-border-color);
+  background-color: var(--secondary-background-color);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -297,28 +297,31 @@ $cell-weekdays-width: 33px;
   height: auto;
   min-height: 700px;
   justify-content: center;
-  gap: 3px;
-  margin: 10px;
+  gap: 30px;
+  margin: 20px;
+  margin-bottom: 30px;
+
+  @media (max-width: 1150px) {
+    margin: 10px;
+    gap: 20px;
+  }
 }
 
 .landing-project {
   background-color: var(--main-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
   flex: 1 0 0;
   display: grid;
   grid-template-rows: 1fr 2fr;
   justify-content: center;
+  justify-items: center;
   align-items: center;
-  padding-block: 10px;
+  padding: 10px;
+  gap: 10px;
 
-  & img {
-    @media (max-width: 600px) {
-      width: 100%;
-      min-width: 300px;
-    }
-
-    @media (max-width: 320px) {
-      min-width: 200px;
-    }
+  @media (max-width: 1100px) {
+    max-width: 600px;
   }
 
   &-title {
@@ -451,4 +454,65 @@ $cell-weekdays-width: 33px;
 .landing-li {
   list-style: square inside;
   overflow: auto;
+}
+
+.landing-habits {
+  display: grid;
+  grid-template-rows: 17px;
+  row-gap: 2px;
+
+  .landing-habit {
+    display: grid;
+    grid-template-columns: 200px calc(var(--length) * 19px);
+    font-size: 15px;
+
+    @media (max-width: 550px) {
+      grid-template-columns: 160px calc(var(--length) * 17px);
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 140px calc(var(--length) * 16px);
+      font-size: 13px;
+    }
+
+    &-name {
+      line-height: 17px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-left: 5px;
+      color: var(--text-color);
+
+      &:hover {
+        opacity: 0.7;
+      }
+
+      &[disabled] {
+        opacity: 1;
+      }
+
+      @media (max-width: 850px) {
+        font-size: 13px;
+        padding-left: 2px;
+      }
+    }
+
+    &-cells {
+      --cell-height: 15px;
+      --cell-width: 15px;
+      height: var(--cell-height);
+      display: flex;
+      align-self: center;
+
+      @media (max-width: 550px) {
+        --cell-height: 13px;
+        --cell-width: 13px;
+      }
+
+      @media (max-width: 480px) {
+        --cell-height: 12px;
+        --cell-width: 12px;
+      }
+    }
+  }
 }
