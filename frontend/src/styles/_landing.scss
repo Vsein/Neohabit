@@ -9,6 +9,7 @@ $cell-weekdays-width: 33px;
   align-items: stretch;
   justify-items: center;
   background-color: white;
+  color: var(--landing-text-color);
 }
 
 .landing {
@@ -99,7 +100,7 @@ $cell-weekdays-width: 33px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
     background-color: var(--main-background-color);
-    box-shadow: 0 0 16px 8px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--landing-border-color);
     // border-radius: 30px;
     border-radius: 15px;
     text-align: center;
@@ -184,6 +185,7 @@ $cell-weekdays-width: 33px;
     &-header {
       text-align: center;
       font-size: 2rem;
+      color: var(--support-color);
     }
 
     & p {
@@ -219,7 +221,7 @@ $cell-weekdays-width: 33px;
     flex-direction: column;
     padding-bottom: 30px;
     border-radius: 15px;
-    box-shadow: 0 0 16px 8px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--landing-border-color);
 
     @media (max-width: 700px) {
       padding: 10px;
@@ -231,6 +233,7 @@ $cell-weekdays-width: 33px;
     padding: 20px;
     font-size: 2rem;
     margin-top: 10px;
+    color: var(--support-color);
   }
 
   &-section {
@@ -268,7 +271,7 @@ $cell-weekdays-width: 33px;
   width: 200px;
   height: 200px;
   border-radius: 10px;
-  border: 3px solid var(--border-color);
+  border: 3px solid var(--landing-border-color-inside);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -285,7 +288,7 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-projects {
-  background-color: var(--border-color);
+  background-color: var(--landing-border-color);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -378,7 +381,7 @@ $cell-weekdays-width: 33px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
     background-color: var(--main-background-color);
-    box-shadow: 0 0 16px 8px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--landing-border-color);
     // border-radius: 30px;
     border-radius: 15px;
 
@@ -401,6 +404,7 @@ $cell-weekdays-width: 33px;
     // flex: 0 0 70%;
     font-size: 3rem;
     white-space: nowrap;
+    color: var(--support-color);
 
     @media (max-width: 550px) {
     white-space: normal;

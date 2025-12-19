@@ -15,6 +15,9 @@
   --cell-shadow-color: transparent;
   --text-color: black;
   --text-color-transparent: #00000050;
+  --landing-text-color: black;
+  --landing-border-color: #aaa;
+  --landing-border-color-inside: #aaa;
   --support-text-color: #606060;
   --contrast-text-color: white;
   --gradient-color-1: #23BCDB;
@@ -80,12 +83,15 @@
   --cell-shadow-color: #3c3c3c;
   --text-color: #bbb;
   --text-color-transparent: #bbbbbb70;
+  --landing-text-color: #dedede;
+  --landing-border-color: black;
+  --landing-border-color-inside: #777;
   --support-text-color: #999;
   --contrast-text-color: black;
   --gradient-color-1: #009096; // cyan seems to be distractive
   --gradient-color-2: #1c2128;
   --gradient-color-3: #009096;
-  --bamboo: url('../assets/neohabit-background-dark.png');
+  --bamboo: url('../assets/neohabit-background-dark-v2.png');
   --auth-heatmap: url('../assets/heatmap-dark.png');
   --mini-logo: url('../logos/neohabit-mini-logo-dark2.png');
   --transparent-bg-color: #404040aa;

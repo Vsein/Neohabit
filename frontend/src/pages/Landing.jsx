@@ -4,6 +4,7 @@ import { startOfDay, endOfDay, addDays, getYear } from 'date-fns';
 import { Icon } from '@mdi/react';
 import { mdiCalendar, mdiTimerOutline, mdiCalendarMultiselect } from '@mdi/js';
 import useTitle from '../hooks/useTitle';
+import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 import { CellPeriod } from '../components/HeatmapCells';
 import { ProfilePicture } from '../components/UI';
 import ExerciseProject from '../assets/project-exercise2.png';
@@ -398,7 +399,8 @@ export default function Landing() {
 
 function FeaturesSection() {
   const [value, setValue] = useState(0);
-  const color = "#8FE9EF";
+  const preferDark = document.documentElement.classList.contains('dark');
+  const color = preferDark ? "#1D93FF" : "#8FE9EF";
 
   useEffect(() => {
     const timerInterval = setTimeout(() => {
@@ -418,7 +420,7 @@ function FeaturesSection() {
     <section className="landing-features-content">
       <div className="landing-features-container">
         <h3 className="landing-features-title">Features you won&apos;t find anywhere else</h3>
-        <div className="landing-features" style={{ marginBlock: 'auto' }}>
+        <div className="landing-features" style={{ marginBlock: 'auto', '--numeric-text-color': getNumericTextColor(color) }}>
           <div className="landing-feature-container">
             <div className="landing-feature centering">
               <div className="landing-cell-container">
