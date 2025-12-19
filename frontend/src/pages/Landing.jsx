@@ -5,13 +5,13 @@ import { Icon } from '@mdi/react';
 import { mdiCalendar, mdiTimerOutline, mdiCalendarMultiselect } from '@mdi/js';
 import useTitle from '../hooks/useTitle';
 import { CellPeriod } from '../components/HeatmapCells';
+import { ProfilePicture } from '../components/UI';
 import ExerciseProject from '../assets/project-exercise2.png';
 import DevelopmentProject from '../assets/project-development3.png';
 import NihongoProject from '../assets/project-nihongo3.png';
 import SocialProject from '../assets/project-social2.png';
 import CleaningProject from '../assets/project-cleaning.png';
 import MedsProject from '../assets/project-medication.png';
-import Logo from '../logos/neohabit-mini-logo-cyan3.svg';
 import Telegram from '../logos/telegram.svg';
 import X from '../logos/x.svg';
 import Reddit from '../logos/reddit.svg';
@@ -37,7 +37,7 @@ export default function Landing() {
       <header className="landing-header-container">
         <div className="landing-header">
           <div className="landing-header-logo">
-            <img src={Logo} className="icon bigger" />
+            <ProfilePicture type="small" />
             <h1 className="neohabit" />
           </div>
           <ul className="landing-header-links">
@@ -294,7 +294,7 @@ export default function Landing() {
             <h3 className="landing-features-title">How does it compare with other tools?</h3>
             <div className="landing-features-section">
               <div className="landing-features-section-image centering">
-                <Icon className="icon damn" path={mdiCalendar} />
+                <Icon className="icon gigantic" path={mdiCalendar} />
               </div>
               <div>
                 <h4>Calendars:</h4>
@@ -308,7 +308,7 @@ export default function Landing() {
             </div>
             <div className="landing-features-section">
               <div className="landing-features-section-image centering">
-                <Icon className="icon damn" path={mdiTimerOutline} />
+                <Icon className="icon gigantic" path={mdiTimerOutline} />
               </div>
               <div>
                 <h4>Time-trackers:</h4>
@@ -321,7 +321,7 @@ export default function Landing() {
             </div>
             <div className="landing-features-section">
               <div className="landing-features-section-image centering">
-                <Icon className="icon damn" path={mdiCalendarMultiselect} />
+                <Icon className="icon gigantic" path={mdiCalendarMultiselect} />
               </div>
               <div>
                 <h4>Regular habit-trackers:</h4>
@@ -336,7 +336,7 @@ export default function Landing() {
             </div>
             <div className="landing-features-section">
               <div className="landing-features-section-image centering">
-                <img src={Logo} className="icon damn" />
+                <ProfilePicture type="gigantic" />
               </div>
               <div>
                 <h4>Neohabit:</h4>

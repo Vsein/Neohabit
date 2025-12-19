@@ -17,7 +17,7 @@
   width: 30px;
   justify-self: center;
 
-  &.damn {
+  &.gigantic {
     height: 120px;
     width: 120px;
   }
@@ -172,6 +172,11 @@ input[type='checkbox']:checked.checkbox {
   cursor: pointer;
   content: var(--mini-logo);
 
+  &.tiny {
+    height: 40px;
+    width: 40px;
+  }
+
   &.small {
     height: 50px;
     width: 50px;
@@ -182,9 +187,9 @@ input[type='checkbox']:checked.checkbox {
     width: 75px;
   }
 
-  &.tiny {
-    height: 40px;
-    width: 40px;
+  &.gigantic {
+    height: 120px;
+    width: 120px;
   }
 }
 

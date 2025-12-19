@@ -23,12 +23,14 @@ $cell-weekdays-width: 33px;
   justify-content: space-between;
   align-items: center;
 
+
   @media (max-width: 550px) {
     padding: 5px;
   }
 
   &-logo {
-    display: flex;
+    display: grid;
+    grid-template-columns: 50px 1fr;
     gap: 20px;
     align-items: center;
     pointer-events: none;
