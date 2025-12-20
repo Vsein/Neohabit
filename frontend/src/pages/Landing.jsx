@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { startOfDay, endOfDay, addDays, getYear } from 'date-fns';
 import { Icon } from '@mdi/react';
-import { mdiCalendar, mdiTimerOutline, mdiCalendarMultiselect } from '@mdi/js';
+import {
+  mdiCalendar,
+  mdiTimerOutline,
+  mdiCalendarMultiselect,
+  mdiMoonWaxingCrescent,
+  mdiWhiteBalanceSunny,
+} from '@mdi/js';
 import useTitle from '../hooks/useTitle';
+import { useMediaColorScheme, getPreferredTheme } from '../hooks/useMediaColorScheme';
+import changeTheme from '../utils/changeTheme';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 import { CellPeriod } from '../components/HeatmapCells';
 import { ProfilePicture } from '../components/UI';
@@ -15,6 +23,7 @@ import Youtube from '../logos/youtube.svg';
 
 export default function Landing() {
   useTitle('Neohabit | A systemic, gradual habit-tracker');
+  useMediaColorScheme();
   const [exampleValues, setExampleValues] = useState(
     [...Array(19)].map((e) => ~~(Math.random() * 2)),
   );
@@ -40,6 +49,9 @@ export default function Landing() {
             {/* <li> */}
             {/*   <NavLink to="/contact">Contact</NavLink> */}
             {/* </li> */}
+            <li>
+              <ThemeToggle />
+            </li>
             <li>
               <NavLink to="/signup">Sign up</NavLink>
             </li>
@@ -387,6 +399,27 @@ export default function Landing() {
     </div>
   );
 }
+
+function ThemeToggle() {
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  return (
+    <button
+      className="landing-header-links-theme-toggle centering"
+      title="Theme toggle"
+      onClick={() => {
+        changeTheme(getPreferredTheme() === 'dark' ? 'light' : 'dark');
+        forceUpdate();
+      }}
+    >
+      <Icon
+        path={getPreferredTheme() === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
+        className="icon"
+      />
+    </button>
+  );
+}
+
 
 function FeaturesSection() {
   const [value, setValue] = useState(0);

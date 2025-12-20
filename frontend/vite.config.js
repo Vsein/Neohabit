@@ -20,7 +20,7 @@ export default defineConfig({
         short_name: 'Neohabit',
         id: '/?homescreen=1',
         description: 'A systemic, gradual habit-tracker',
-        background_color: '#ffffff',
+        background_color: '#2d3333',
         theme_color: '#00c4cd',
         start_url: './projects',
         dir: 'ltr',

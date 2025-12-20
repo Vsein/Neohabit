@@ -48,6 +48,18 @@ $cell-weekdays-width: 33px;
     gap: 30px;
     padding: 0;
     margin: 0;
+    align-items: center;
+    user-select: none;
+
+    &-theme-toggle {
+      border-radius: 50%;
+      padding: 10px;
+
+      &:hover {
+        background-color: var(--transparent-bg-color);
+        cursor: pointer;
+      }
+    }
   }
 
   &-container {
@@ -98,7 +110,6 @@ $cell-weekdays-width: 33px;
     margin: auto;
     padding: 30px 30px;
     height: min-content;
-    background-color: rgba(255, 255, 255, 0.8);
     background-color: var(--main-background-color);
     box-shadow: 0 0 16px 8px var(--landing-border-color);
     // border-radius: 30px;

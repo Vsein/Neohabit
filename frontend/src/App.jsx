@@ -38,6 +38,7 @@ import { useGetStopwatchQuery } from './state/services/stopwatch';
 import SidebarMobile from './components/SidebarMobile';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
+import { useMediaColorScheme } from './hooks/useMediaColorScheme';
 import isPWA from './utils/pwa';
 
 const App = () => {
@@ -149,6 +150,8 @@ const PrivateRoutes = (params) => {
 const AuthRoutes = (params) => {
   const { loggedIn, changeAuth } = params;
   const location = useLocation();
+
+  useMediaColorScheme();
 
   useEffect(() => {
     changeAuth(hasJWT());
