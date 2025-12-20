@@ -298,11 +298,13 @@ $cell-weekdays-width: 33px;
   min-height: 700px;
   justify-content: center;
   gap: 30px;
-  margin: 20px;
+  margin-inline: 20px;
   margin-bottom: 30px;
 
   @media (max-width: 1150px) {
-    margin: 10px;
+    min-height: 200px;
+    margin-inline: 10px;
+    margin-bottom: 15px;
     gap: 20px;
   }
 }
@@ -322,6 +324,7 @@ $cell-weekdays-width: 33px;
 
   @media (max-width: 1100px) {
     max-width: 600px;
+    grid-template-rows: min-content auto;
   }
 
   &-title {
