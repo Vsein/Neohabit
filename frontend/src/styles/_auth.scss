@@ -12,13 +12,20 @@
   background-repeat: repeat-y;
   background-color: #efefef;
   width: min(66.84vh, 100vw);
+  place-content: center;
 
   &-header {
     display: flex;
     margin-block: 10%;
     text-align: center;
     padding: 1em;
-    background-color: var(--auth-transparent-bg-color);
+    box-shadow: 0px 0px 50px 3px #4c3f37;
+    background: linear-gradient(
+      0.15turn,
+      var(--gradient-color-1) -20%,
+      var(--gradient-color-2) 35% 65%,
+      var(--gradient-color-3) 120%
+    );
     justify-content: center;
     align-items: center;
     gap: 20px;
