@@ -104,31 +104,33 @@ function Cell({
 }
 
 function Heatmap({ dateStart, colorFunc, data }) {
-  const cells = Array.from(new Array(data.length));
-
-  const min = Math.min(0, ...data.map((d) => d.value));
-  const max = Math.max(...data.map((d) => d.value));
+  const min = Math.min(0, ...data.flat().map((d) => d.value));
+  const max = Math.max(...data.flat().map((d) => d.value));
 
   const colorMultiplier = 1 / (max - min);
+  let firstHue;
 
   return (
     <div className="landing-heatmap-cells">
-      {cells.map((_, index) => {
-        const date = new Date(
-          new Date().setDate(dateStart.getDate() + index - 365),
-        );
-        const dataPoint = data.find((d) => isSameDay(date, d.date));
+      {data.map((cells, index) => cells.map((dataPoint, Index) => {
+        const { date } = dataPoint;
         const value = dataPoint ? dataPoint.value : 0;
         const height = dataPoint ? dataPoint.height : 1;
         const width = dataPoint ? dataPoint.width : 1;
 
         const alpha = colorMultiplier * value;
-        const colorRGB = hexToRgb(mixColors(hexToRgb('#3BCDE8'), hexToRgb('#23FFCB'), Math.random() * 0.7));
+        let randomHue = Math.random() * 0.7;
+        if (Index === 0) {
+          firstHue = randomHue;
+        } else if (Index === cells.length - 1) {
+          randomHue = firstHue;
+        }
+        const colorRGB = hexToRgb(mixColors(hexToRgb('#3BCDE8'), hexToRgb('#23FFCB'), randomHue));
         const color = `rgba(${colorRGB.r}, ${colorRGB.g}, ${colorRGB.b}, ${alpha})`;
 
         return (
           <Cell
-            key={index}
+            key={`${index}-${Index}`}
             index={index}
             value={value}
             date={date}
@@ -137,7 +139,7 @@ function Heatmap({ dateStart, colorFunc, data }) {
             color={color}
           />
         );
-      })}
+      }))}
     </div>
   );
 }

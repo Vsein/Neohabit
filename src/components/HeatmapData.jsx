@@ -55,7 +55,7 @@ function LineActiveRandom(
     cnt++;
   }
   dataActive[dataActive.length - 1].value = dataActive[0].value;
-  console.log(dataActive);
+  // console.log(dataActive);
   return dataActive;
 }
 
@@ -168,14 +168,16 @@ function YearDataRandom() {
 }
 
 function LotsOfRandom() {
-  let data = [];
+  const data = [];
   const len = 51;
 
   // data = data.concat(LineActiveRandom(data.length, 5000));
 
   // data = data.concat(LineActiveRandom(data.length, len - new Date().getDay()));
+  let dataLength = 0;
   for (let i = 0; i < 100; i++) {
-    data = data.concat(LineActiveRandom(data.length, len));
+    data[i] = LineActiveRandom(dataLength, len);
+    dataLength += data.length;
   }
   // data = data.concat(LineActiveRandom(data.length, new Date().getDay() + 1));
 
