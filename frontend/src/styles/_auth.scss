@@ -27,16 +27,16 @@
   grid-template-rows: 1fr min-content 1fr;
   gap: 5px;
   background: linear-gradient(
-    0.15turn,
-    var(--gradient-color-1),
     var(--gradient-color-2),
-    var(--gradient-color-3)
+    var(--gradient-color-1) 50% 50%,
+    var(--gradient-color-2)
   );
   width: min(500px, 100%);
+  color: var(--landing-text-color);
 }
 
 .auth-intro {
-  max-width: 70ch;
+  max-width: 75ch;
   padding-inline: 2em;
   flex: 2;
   padding-top: 20px;
@@ -49,9 +49,9 @@
 .registration {
   padding-inline: 2em;
   flex: 2;
-  background: linear-gradient(var(--gradient-color-1), var(--gradient-color-2));
+  background: var(--main-background-color);
   padding-block: 1em;
-  box-shadow: 0 3px 17px rgb(33, 33, 33);
+  box-shadow: 0 0 16px 8px var(--landing-border-color);
 }
 
 .login-ref {

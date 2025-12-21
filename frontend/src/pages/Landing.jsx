@@ -400,7 +400,6 @@ function ThemeToggle() {
   );
 }
 
-
 function FeaturesSection() {
   const [value, setValue] = useState(0);
   const preferDark = document.documentElement.classList.contains('dark');

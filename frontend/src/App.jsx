@@ -57,7 +57,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/" element={<AuthRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
-          <Route path="/signup/" element={<Signup />} />
+          {/* <Route path="/signup/" element={<Signup />} /> */}
           <Route path="/login/" element={<Login />} />
         </Route>
         {loggedIn && <Route path="/" element={<Suspense fallback={<></>}><PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} /></Suspense>}>
@@ -169,24 +169,23 @@ const AuthRoutes = (params) => {
       <main className="registration-container">
         <section className="auth-intro">
           <p className="paragraph">
-            If you were ever frustrated with calendars, schedules, and over-optimization, then{' '}
-            <span className="neohabit" /> will give you a way to track progress without any
-            unnecessary fluff.
+            Because <span className="neohabit" /> is currently in beta, some functionality is not completely implemented.
+            By default, there&apos;s only one account created - the one you specified when starting your docker container.
           </p>
           <p className="paragraph">
-            You know what to do, <span className="neohabit" /> will just help you actualize it.
+            Currently, new account creation is available only through direct access to the db.
           </p>
         </section>
         <Outlet />
-        {location.pathname === '/login' ? (
-          <p className="login-ref">
-            Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink>
-          </p>
-        ) : (
-          <p className="login-ref">
-            Already have an account? <NavLink to="/login">Log in</NavLink>
-          </p>
-        )}
+        {/* {location.pathname === '/login' ? ( */}
+        {/*   <p className="login-ref"> */}
+        {/*     Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink> */}
+        {/*   </p> */}
+        {/* ) : ( */}
+        {/*   <p className="login-ref"> */}
+        {/*     Already have an account? <NavLink to="/login">Log in</NavLink> */}
+        {/*   </p> */}
+        {/* )} */}
       </main>
     </div>
   );

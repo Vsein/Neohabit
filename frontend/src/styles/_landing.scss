@@ -8,7 +8,7 @@ $cell-weekdays-width: 33px;
   flex-direction: column;
   align-items: stretch;
   justify-items: center;
-  background-color: white;
+  background-color: var(--main-background-color);
   color: var(--landing-text-color);
 }
 
