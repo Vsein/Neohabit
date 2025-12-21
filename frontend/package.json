@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Vsein/neohabit-front.git"
+    "url": "git+https://github.com/Vsein/neohabit.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Vsein/neohabit-front/issues"
+    "url": "https://github.com/Vsein/neohabit/issues"
   },
-  "homepage": "https://github.com/Vsein/neohabit-front#readme",
+  "homepage": "https://github.com/Vsein/neohabit#readme",
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@vite-pwa/assets-generator": "^1.0.2",
