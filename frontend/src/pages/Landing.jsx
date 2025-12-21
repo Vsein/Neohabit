@@ -390,11 +390,11 @@ function ThemeToggle() {
     >
       <Icon
         path={mdiWhiteBalanceSunny}
-        className={`icon bigger ${getPreferredTheme() === 'light' ? 'active' : ''}`}
+        className={`icon big ${getPreferredTheme() === 'light' ? 'active' : ''}`}
       />
       <Icon
         path={mdiMoonWaxingCrescent}
-        className={`icon bigger ${getPreferredTheme() === 'dark' ? 'active' : ''}`}
+        className={`icon big ${getPreferredTheme() === 'dark' ? 'active' : ''}`}
       />
     </button>
   );
@@ -607,7 +607,7 @@ function SelfhostedSection() {
           >
             <button className="landing-lastcall-social-links button-default stretch big centering">
               Installation guide
-              <Icon className="icon big" path={mdiGithub} />
+              <Icon className="icon medium" path={mdiGithub} />
             </button>
           </Link>
         </div>

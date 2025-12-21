@@ -55,6 +55,7 @@ $cell-weekdays-width: 33px;
       display: flex;
       border-radius: 40px;
       background-color: var(--transparent-bg-color);
+      cursor: pointer;
 
       & .icon {
         padding: 10px;
