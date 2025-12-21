@@ -47,21 +47,22 @@ function LineActiveRandom(
 ) {
   const dataActive = [];
   let cnt = 0;
-  for (let i = 0; i < len; ) {
+  for (let i = 0; i < len;) {
     // const curLen = 17;
     const curLen = randomRange(1, Math.min(5, len - i, min));
     dataActive.push(LineActiveStraight(cnt + start, curLen));
     i += curLen;
     cnt++;
   }
-  // console.log(dataActive);
+  dataActive[dataActive.length - 1].value = dataActive[0].value;
+  console.log(dataActive);
   return dataActive;
 }
 
 function LineGapRandom(start, len = 14) {
   const dataGap = [];
   let cnt = 0;
-  for (let i = 0; i < len; ) {
+  for (let i = 0; i < len;) {
     const curLen = randomRange(1, Math.min(5, len - i, min));
     dataGap.push(LineGapStraight(cnt + start, curLen));
     i += curLen;
@@ -73,7 +74,7 @@ function LineGapRandom(start, len = 14) {
 function LineRandom(start, len = 14) {
   const data = [];
   let cnt = 0;
-  for (let i = 0; i < len; ) {
+  for (let i = 0; i < len;) {
     if (cnt % 2) {
       const curLen = randomRange(1, Math.min(1, len - i));
       data.push(LineGapStraight(cnt + start, curLen));
@@ -275,10 +276,11 @@ const PERIODS5 = [
 
 let len = 0;
 const PERIODS6 = Array.from(new Array(130)).map((_, index) => {
-  if (index === 129)
+  if (index === 129) {
     return {
       date: new Date(),
     };
+  }
   const curLen = randomRange(1, 5);
   len += curLen;
   return {
@@ -288,10 +290,11 @@ const PERIODS6 = Array.from(new Array(130)).map((_, index) => {
 
 let curPeriod = 0;
 const PERIODS7 = Array.from(new Array(36)).map((_, index) => {
-  if (index === 34)
+  if (index === 34) {
     return {
       date: new Date(),
     };
+  }
   curPeriod += 12;
   return {
     date: addWeeks(startOfDay(dateYearBefore), index),

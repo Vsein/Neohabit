@@ -92,7 +92,9 @@ export default function Landing() {
   );
 }
 
-function Cell({ color, date, value, height, width }) {
+function Cell({
+  color, date, value, height, width,
+}) {
   const style = {
     backgroundColor: color,
     height: 11 * height + 2 * 2 * (height - 1),
@@ -119,6 +121,7 @@ function Heatmap({ dateStart, colorFunc, data }) {
         const value = dataPoint ? dataPoint.value : 0;
         const height = dataPoint ? dataPoint.height : 1;
         const width = dataPoint ? dataPoint.width : 1;
+
         const alpha = colorMultiplier * value;
         const colorRGB = hexToRgb(mixColors(hexToRgb('#3BCDE8'), hexToRgb('#23FFCB'), Math.random() * 0.7));
         const color = `rgba(${colorRGB.r}, ${colorRGB.g}, ${colorRGB.b}, ${alpha})`;
@@ -143,20 +146,20 @@ function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16),
+    }
     : null;
 }
 
 function componentToHex(c) {
   const hex = c.toString(16);
-  return hex.length === 1 ? '0' + hex : hex;
+  return hex.length === 1 ? `0${hex}` : hex;
 }
 
 function rgbToHex(r, g, b) {
-  return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  return `#${componentToHex(r)}${componentToHex(g)}${componentToHex(b)}`;
 }
 
 function mixColors(base, goal, alpha) {
@@ -203,8 +206,8 @@ function getNumericTextColor(color) {
   if (contrast(hexToRgb(color), hexToRgb('#efefef')) > 1.95) {
     return '#efefef';
   }
-  return contrast(hexToRgb(color), hexToRgb('#efefef')) >
-    contrast(hexToRgb(color), hexToRgb('#000000'))
+  return contrast(hexToRgb(color), hexToRgb('#efefef'))
+    > contrast(hexToRgb(color), hexToRgb('#000000'))
     ? '#efefef'
     : '#000000';
 }
