@@ -8,6 +8,8 @@ import {
   mdiCalendarMultiselect,
   mdiMoonWaxingCrescent,
   mdiWhiteBalanceSunny,
+  mdiGithub,
+  mdiYoutube,
 } from '@mdi/js';
 import useTitle from '../hooks/useTitle';
 import { useMediaColorScheme, getPreferredTheme } from '../hooks/useMediaColorScheme';
@@ -16,10 +18,7 @@ import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 import { CellPeriod } from '../components/HeatmapCells';
 import { ProfilePicture } from '../components/UI';
 import mockProjectsData from '../assets/mockProjectsData';
-import Telegram from '../logos/telegram.svg';
-import X from '../logos/x.svg';
 import Reddit from '../logos/reddit.svg';
-import Youtube from '../logos/youtube.svg';
 
 export default function Landing() {
   useTitle('Neohabit | A systemic, gradual habit-tracker');
@@ -53,8 +52,17 @@ export default function Landing() {
               <ThemeToggle />
             </li>
             <li>
-              <NavLink to="/signup">Sign up</NavLink>
+              <Link
+                to="https://github.com/Vsein/neohabit"
+                target="_blank"
+                className="landing-header-links-button centering"
+              >
+                <Icon className="icon big circle" path={mdiGithub} />
+              </Link>
             </li>
+            {/* <li> */}
+            {/*   <NavLink to="/signup">Sign up</NavLink> */}
+            {/* </li> */}
           </ul>
         </div>
       </header>
@@ -357,39 +365,7 @@ export default function Landing() {
             </div>
           </div>
         </section>
-        <section className="landing-lastcall">
-          <div className="landing-lastcall-container">
-            <div className="landing-lastcall-header">
-              <h1 className="landing-lastcall-title">Create your account</h1>
-              <NavLink to="/signup" style={{ width: '100%' }}>
-                <button className="button-default stretch big">Sign up</button>
-              </NavLink>
-            </div>
-            <div className="landing-lastcall-social">
-              <h3 className="landing-lastcall-social-header">And stay tuned for the latest updates:</h3>
-              <div className="landing-lastcall-social-links">
-                <Link
-                  to="https://www.reddit.com/user/VseinSama/"
-                  target="_blank"
-                >
-                  <img src={Reddit} className="icon big circle" />
-                </Link>
-                <Link
-                  to="https://x.com/VseinHanma"
-                  target="_blank"
-                >
-                  <img src={X} className="icon big circle" />
-                </Link>
-                <Link
-                  to="https://www.youtube.com/@Neohabit"
-                  target="_blank"
-                >
-                  <img src={Youtube} className="icon big circle" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
+        <SelfhostedSection />
       </main>
       <footer className="landing-footer-container">
         <div className="landing-footer">
@@ -413,8 +389,12 @@ function ThemeToggle() {
       }}
     >
       <Icon
-        path={getPreferredTheme() === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
-        className="icon"
+        path={mdiWhiteBalanceSunny}
+        className={`icon bigger ${getPreferredTheme() === 'light' ? 'active' : ''}`}
+      />
+      <Icon
+        path={mdiMoonWaxingCrescent}
+        className={`icon bigger ${getPreferredTheme() === 'dark' ? 'active' : ''}`}
       />
     </button>
   );
@@ -609,6 +589,66 @@ function PrecursorSection() {
         </p>
         <br />
         <p>All those questions led to the creation of Neohabit.</p>
+      </div>
+    </section>
+  );
+}
+
+function SelfhostedSection() {
+  return (
+    <section className="landing-lastcall">
+      <div className="landing-lastcall-container">
+        <div className="landing-lastcall-header">
+          <h1 className="landing-lastcall-title">Self-host</h1>
+          <Link
+            to="https://github.com/Vsein/neohabit"
+            target="_blank"
+            style={{ width: '100%' }}
+          >
+            <button className="landing-lastcall-social-links button-default stretch big centering">
+              Installation guide
+              <Icon className="icon big" path={mdiGithub} />
+            </button>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SignupSection() {
+  return (
+    <section className="landing-lastcall">
+      <div className="landing-lastcall-container">
+        <div className="landing-lastcall-header">
+          <h1 className="landing-lastcall-title">Create your account</h1>
+          <NavLink to="/signup" style={{ width: '100%' }}>
+            <button className="button-default stretch big">Sign up</button>
+          </NavLink>
+        </div>
+        <div className="landing-lastcall-social">
+          <h3 className="landing-lastcall-social-header">And stay tuned for the latest updates:</h3>
+          <div className="landing-lastcall-social-links">
+            <Link
+              to="https://www.reddit.com/user/VseinSama/"
+              target="_blank"
+            >
+              <img src={Reddit} className="icon big circle" />
+            </Link>
+            <Link
+              to="https://github.com/Vsein/neohabit"
+              target="_blank"
+            >
+              <Icon className="icon big circle" path={mdiGithub} />
+            </Link>
+            {/* <Link */}
+            {/*   to="https://www.youtube.com/@Neohabit" */}
+            {/*   target="_blank" */}
+            {/* > */}
+            {/*   <Icon className="icon big circle" path={mdiYoutube} /> */}
+            {/* </Link> */}
+          </div>
+        </div>
       </div>
     </section>
   );

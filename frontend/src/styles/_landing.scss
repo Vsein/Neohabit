@@ -45,13 +45,28 @@ $cell-weekdays-width: 33px;
     color: var(--support-color);
     display: flex;
     list-style-type: none;
-    gap: 30px;
+    gap: 20px;
     padding: 0;
     margin: 0;
     align-items: center;
     user-select: none;
 
     &-theme-toggle {
+      display: flex;
+      border-radius: 40px;
+      background-color: var(--transparent-bg-color);
+
+      & .icon {
+        padding: 10px;
+        border-radius: 40px;
+      }
+
+      & .icon.active {
+        background-color: var(--secondary-background-color);
+      }
+    }
+
+    &-button {
       border-radius: 50%;
       padding: 10px;
 
@@ -414,7 +429,6 @@ $cell-weekdays-width: 33px;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    margin-bottom: 40px;
   }
 
   &-title {
@@ -436,6 +450,7 @@ $cell-weekdays-width: 33px;
     align-items: center;
     gap: 20px;
     flex-direction: column;
+    margin-top: 40px;
 
     @media (max-width: 550px) {
       flex-direction: column;
@@ -448,7 +463,7 @@ $cell-weekdays-width: 33px;
 
     &-links {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       gap: 25px;
 
