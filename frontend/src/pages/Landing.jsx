@@ -21,7 +21,7 @@ import mockProjectsData from '../assets/mockProjectsData';
 import Reddit from '../logos/reddit.svg';
 
 export default function Landing() {
-  useTitle('Neohabit | A systemic, gradual habit-tracker');
+  useTitle('Neohabit | A self-hosted, periodic habit-tracker');
   useMediaColorScheme();
   const [exampleValues, setExampleValues] = useState(
     [...Array(19)].map((e) => ~~(Math.random() * 2)),
