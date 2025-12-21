@@ -36,6 +36,7 @@ import CellAdd from './components/CellAdd';
 import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
 import { useGetStopwatchQuery } from './state/services/stopwatch';
 import SidebarMobile from './components/SidebarMobile';
+import { ProfilePicture } from './components/UI';
 import { hasJWT } from './state/services/auth';
 import useKeyPress from './hooks/useKeyPress';
 import { useMediaColorScheme } from './hooks/useMediaColorScheme';
@@ -163,6 +164,7 @@ const AuthRoutes = (params) => {
     <div id="content-auth">
       <div className="sidebar-auth">
         <h1 className="sidebar-auth-header">
+          <ProfilePicture type="small" />
           <div className="neohabit" />
         </h1>
       </div>

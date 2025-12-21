@@ -14,10 +14,14 @@
   width: min(66.84vh, 100vw);
 
   &-header {
+    display: flex;
     margin-block: 10%;
     text-align: center;
     padding: 1em;
-    background-color: var(--transparent-bg-color);
+    background-color: var(--auth-transparent-bg-color);
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
   }
 }
 
