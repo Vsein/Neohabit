@@ -15,14 +15,18 @@
   --cell-shadow-color: transparent;
   --text-color: black;
   --text-color-transparent: #00000050;
+  --landing-text-color: black;
+  --landing-border-color: #aaa;
+  --landing-border-color-inside: #aaa;
   --support-text-color: #606060;
   --contrast-text-color: white;
   --gradient-color-1: #23BCDB;
   --gradient-color-2: #8FE9EF;
   --gradient-color-3: #A59BCF;
-  --bamboo: url('../assets/neohabit-background-cool-triple.png');
+  --bamboo: url('../assets/neohabit-background-cool-triple-v2.png');
   --auth-heatmap: url('../assets/heatmap8.png');
   --mini-logo: url('../logos/neohabit-mini-logo-cyan3.svg');
+  --auth-transparent-bg-color: #00000035;
   --transparent-bg-color: #b0b0b0aa;
   --registration-field-active-bg-color: #009ba2;
   --registration-field-bg-color: transparent;
@@ -46,7 +50,7 @@
   --gradient-color-1: #94FFC3;
   --gradient-color-2: #5FFF84;
   --gradient-color-2: #34FF63;
-  // --bamboo: url('../assets/neohabit-background-lightish-green.png');
+  // --bamboo: url('../assets/archive/neohabit-background-lightish-green.png');
   // --gradient-color-2: #57dc76;
   // --gradient-color-2: #10d065;
 }
@@ -61,6 +65,7 @@
   --gradient-color-3: #a7c4be;
   --registration-field-active-bg-color: #88cd6f;
   --registration-field-bg-color: #8ec07c;
+  --bamboo: url('../assets/archive/neohabit-background-apple-full-3.png');
 }
 
 :root {
@@ -80,14 +85,18 @@
   --cell-shadow-color: #3c3c3c;
   --text-color: #bbb;
   --text-color-transparent: #bbbbbb70;
+  --landing-text-color: #dedede;
+  --landing-border-color: black;
+  --landing-border-color-inside: #777;
   --support-text-color: #999;
   --contrast-text-color: black;
   --gradient-color-1: #009096; // cyan seems to be distractive
   --gradient-color-2: #1c2128;
   --gradient-color-3: #009096;
-  --bamboo: url('../assets/neohabit-background-dark.png');
-  --auth-heatmap: url('../assets/heatmap-dark.png');
+  --bamboo: url('../assets/neohabit-background-dark-v4.png');
+  --auth-heatmap: url('../assets/heatmap8-dark.png');
   --mini-logo: url('../logos/neohabit-mini-logo-dark2.png');
+  --auth-transparent-bg-color: #00000099;
   --transparent-bg-color: #404040aa;
   --registration-field-active-bg-color: #009ba2;
   --registration-field-bg-color: #2d3333;

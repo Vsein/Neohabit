@@ -29,9 +29,9 @@ export default function MainMenu({ toggleSidebar }) {
       <h2 className="logo neohabit"></h2>
       {/* <Icon path={mdiApps} className="icon" /> */}
       {/* </button> */}
-      <button className="logo-section">
-        <Icon path={mdiBell} alt="bell" className="icon right" />
-      </button>
+      {/* <button className="logo-section"> */}
+      {/*   <Icon path={mdiBell} alt="bell" className="icon right" /> */}
+      {/* </button> */}
       <button
         className={`logo-section right menu-toggle ${menuOpened ? 'active' : ''}`}
         onClick={toggleMenu}
@@ -97,3 +97,5 @@ function ThemeToggle() {
     </li>
   );
 }
+
+export { MenuSection };

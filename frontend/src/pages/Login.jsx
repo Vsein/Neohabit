@@ -56,7 +56,7 @@ function LoginForm() {
             await handleSubmit(e);
           }}
         >
-          <h2>Enter:</h2>
+          <h2>Login:</h2>
           <div className="registration-fields">
             <EmailField />
             <PasswordField type="define" />

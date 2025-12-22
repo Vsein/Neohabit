@@ -8,7 +8,31 @@ $cell-weekdays-width: 33px;
   flex-direction: column;
   align-items: stretch;
   justify-items: center;
-  background-color: white;
+  background-color: var(--main-background-color);
+  color: var(--landing-text-color);
+}
+
+.landing-mobile-menu {
+  background: unset;
+  padding: 0;
+  margin: 0;
+  transition: none;
+  width: min-content;
+  display: none;
+
+  @media (max-width: 700px) {
+    display: block;
+  }
+
+  & .menu-container {
+    right: -35px;
+    top: 53px;
+
+    @media (max-width: 550px) {
+      right: -25px;
+      top: 45px;
+    }
+  }
 }
 
 .landing {
@@ -28,7 +52,8 @@ $cell-weekdays-width: 33px;
   }
 
   &-logo {
-    display: flex;
+    display: grid;
+    grid-template-columns: 50px 1fr;
     gap: 20px;
     align-items: center;
     pointer-events: none;
@@ -42,9 +67,41 @@ $cell-weekdays-width: 33px;
     color: var(--support-color);
     display: flex;
     list-style-type: none;
-    gap: 30px;
+    gap: 20px;
     padding: 0;
     margin: 0;
+    align-items: center;
+    user-select: none;
+
+    @media (max-width: 700px) {
+      display: none;
+    }
+
+    &-theme-toggle {
+      display: flex;
+      border-radius: 40px;
+      background-color: var(--transparent-bg-color);
+      cursor: pointer;
+
+      & .icon {
+        padding: 10px;
+        border-radius: 40px;
+      }
+
+      & .icon.active {
+        background-color: var(--secondary-background-color);
+      }
+    }
+
+    &-button {
+      border-radius: 50%;
+      padding: 10px;
+
+      &:hover {
+        background-color: var(--transparent-bg-color);
+        cursor: pointer;
+      }
+    }
   }
 
   &-container {
@@ -75,7 +132,7 @@ $cell-weekdays-width: 33px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px;
+  margin-block: 20px;
   height: calc(100vh - 100px);
   overflow: hidden;
 
@@ -84,7 +141,7 @@ $cell-weekdays-width: 33px;
   }
 
   @media (max-width: 700px) {
-    margin: 30px 10px;
+    margin-block: 30px;
   }
 
   &-text {
@@ -92,19 +149,18 @@ $cell-weekdays-width: 33px;
     width: auto;
     max-width: 700px;
     z-index: 4;
-    margin: auto;
+    margin-block: auto;
+    margin-inline: 20px;
     padding: 30px 30px;
     height: min-content;
-    background-color: rgba(255, 255, 255, 0.8);
     background-color: var(--main-background-color);
-    box-shadow: 0 0 16px 8px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--landing-border-color);
     // border-radius: 30px;
     border-radius: 15px;
     text-align: center;
 
     @media (max-width: 700px) {
       font-size: 2.5rem;
-      margin: auto 10px;
       left: 0;
       right: 0;
       padding: 20px;
@@ -170,7 +226,7 @@ $cell-weekdays-width: 33px;
 .landing-about {
   height: auto;
   min-height: 105vh;
-  background-color: var(--main-background-color);
+  background-color: var(--secondary-background-color);
   display: flex;
   align-items: center;
 
@@ -182,6 +238,7 @@ $cell-weekdays-width: 33px;
     &-header {
       text-align: center;
       font-size: 2rem;
+      color: var(--support-color);
     }
 
     & p {
@@ -217,7 +274,7 @@ $cell-weekdays-width: 33px;
     flex-direction: column;
     padding-bottom: 30px;
     border-radius: 15px;
-    box-shadow: 0 0 16px 8px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--landing-border-color);
 
     @media (max-width: 700px) {
       padding: 10px;
@@ -229,6 +286,7 @@ $cell-weekdays-width: 33px;
     padding: 20px;
     font-size: 2rem;
     margin-top: 10px;
+    color: var(--support-color);
   }
 
   &-section {
@@ -266,7 +324,7 @@ $cell-weekdays-width: 33px;
   width: 200px;
   height: 200px;
   border-radius: 10px;
-  border: 3px solid var(--border-color);
+  border: 3px solid var(--landing-border-color-inside);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -283,7 +341,7 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-projects {
-  background-color: var(--border-color);
+  background-color: var(--secondary-background-color);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -292,28 +350,34 @@ $cell-weekdays-width: 33px;
   height: auto;
   min-height: 700px;
   justify-content: center;
-  gap: 3px;
-  margin: 10px;
+  gap: 30px;
+  margin-inline: 20px;
+  margin-bottom: 30px;
+
+  @media (max-width: 1150px) {
+    min-height: 200px;
+    margin-inline: 10px;
+    margin-bottom: 15px;
+    gap: 20px;
+  }
 }
 
 .landing-project {
   background-color: var(--main-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
   flex: 1 0 0;
   display: grid;
   grid-template-rows: 1fr 2fr;
   justify-content: center;
+  justify-items: center;
   align-items: center;
-  padding-block: 10px;
+  padding: 10px;
+  gap: 10px;
 
-  & img {
-    @media (max-width: 600px) {
-      width: 100%;
-      min-width: 300px;
-    }
-
-    @media (max-width: 320px) {
-      min-width: 200px;
-    }
+  @media (max-width: 1100px) {
+    max-width: 600px;
+    grid-template-rows: min-content auto;
   }
 
   &-title {
@@ -353,7 +417,7 @@ $cell-weekdays-width: 33px;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin: 20px;
+  margin-top: 20px;
   margin-bottom: 0px;
 
   @media (max-width: 550px) {
@@ -361,7 +425,7 @@ $cell-weekdays-width: 33px;
   }
 
   @media (max-width: 700px) {
-    margin: 30px 10px;
+    margin-block: 30px;
   }
 
   &-container {
@@ -371,19 +435,20 @@ $cell-weekdays-width: 33px;
     top: 0;
     bottom: 0;
     right: 0;
-    margin: auto;
+    margin-block: auto;
+    margin-inline: 20px;
     padding: 30px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
     background-color: var(--main-background-color);
-    box-shadow: 0 0 16px 8px var(--border-color);
+    box-shadow: 0 0 16px 8px var(--landing-border-color);
     // border-radius: 30px;
     border-radius: 15px;
 
     @media (max-width: 700px) {
-      margin: auto 10px;
       left: 0;
       padding: 20px;
+      box-shadow: 0 0 8px 8px var(--landing-border-color);
     }
   }
 
@@ -392,13 +457,13 @@ $cell-weekdays-width: 33px;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    margin-bottom: 40px;
   }
 
   &-title {
     // flex: 0 0 70%;
     font-size: 3rem;
     white-space: nowrap;
+    color: var(--support-color);
 
     @media (max-width: 550px) {
     white-space: normal;
@@ -413,6 +478,7 @@ $cell-weekdays-width: 33px;
     align-items: center;
     gap: 20px;
     flex-direction: column;
+    margin-top: 40px;
 
     @media (max-width: 550px) {
       flex-direction: column;
@@ -425,7 +491,7 @@ $cell-weekdays-width: 33px;
 
     &-links {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       gap: 25px;
 
@@ -445,4 +511,65 @@ $cell-weekdays-width: 33px;
 .landing-li {
   list-style: square inside;
   overflow: auto;
+}
+
+.landing-habits {
+  display: grid;
+  grid-template-rows: 17px;
+  row-gap: 2px;
+
+  .landing-habit {
+    display: grid;
+    grid-template-columns: 200px calc(var(--length) * 19px);
+    font-size: 15px;
+
+    @media (max-width: 550px) {
+      grid-template-columns: 160px calc(var(--length) * 17px);
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 140px calc(var(--length) * 16px);
+      font-size: 13px;
+    }
+
+    &-name {
+      line-height: 17px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-left: 5px;
+      color: var(--text-color);
+
+      &:hover {
+        opacity: 0.7;
+      }
+
+      &[disabled] {
+        opacity: 1;
+      }
+
+      @media (max-width: 850px) {
+        font-size: 13px;
+        padding-left: 2px;
+      }
+    }
+
+    &-cells {
+      --cell-height: 15px;
+      --cell-width: 15px;
+      height: var(--cell-height);
+      display: flex;
+      align-self: center;
+
+      @media (max-width: 550px) {
+        --cell-height: 13px;
+        --cell-width: 13px;
+      }
+
+      @media (max-width: 480px) {
+        --cell-height: 12px;
+        --cell-width: 12px;
+      }
+    }
+  }
 }
