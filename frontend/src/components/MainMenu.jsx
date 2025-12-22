@@ -97,3 +97,5 @@ function ThemeToggle() {
     </li>
   );
 }
+
+export { MenuSection };

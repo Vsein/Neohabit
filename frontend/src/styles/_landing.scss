@@ -12,6 +12,29 @@ $cell-weekdays-width: 33px;
   color: var(--landing-text-color);
 }
 
+.landing-mobile-menu {
+  background: unset;
+  padding: 0;
+  margin: 0;
+  transition: none;
+  width: min-content;
+  display: none;
+
+  @media (max-width: 700px) {
+    display: block;
+  }
+
+  & .menu-container {
+    right: -35px;
+    top: 53px;
+
+    @media (max-width: 550px) {
+      right: -25px;
+      top: 45px;
+    }
+  }
+}
+
 .landing {
   background-image: var(--bamboo);
   box-shadow: inset 0px 0px 277px 3px #4c3f37;
@@ -23,7 +46,6 @@ $cell-weekdays-width: 33px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 
   @media (max-width: 550px) {
     padding: 5px;
@@ -50,6 +72,10 @@ $cell-weekdays-width: 33px;
     margin: 0;
     align-items: center;
     user-select: none;
+
+    @media (max-width: 700px) {
+      display: none;
+    }
 
     &-theme-toggle {
       display: flex;

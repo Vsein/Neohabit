@@ -8,6 +8,8 @@ import {
   mdiCalendarMultiselect,
   mdiMoonWaxingCrescent,
   mdiWhiteBalanceSunny,
+  mdiMenu,
+  mdiLoginVariant,
   mdiGithub,
   mdiYoutube,
 } from '@mdi/js';
@@ -15,7 +17,9 @@ import useTitle from '../hooks/useTitle';
 import { useMediaColorScheme, getPreferredTheme } from '../hooks/useMediaColorScheme';
 import changeTheme from '../utils/changeTheme';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
+import useMenuToggler from '../hooks/useMenuToggler';
 import { CellPeriod } from '../components/HeatmapCells';
+import { MenuSection } from '../components/MainMenu';
 import { ProfilePicture } from '../components/UI';
 import mockProjectsData from '../assets/mockProjectsData';
 import Reddit from '../logos/reddit.svg';
@@ -64,6 +68,7 @@ export default function Landing() {
               <NavLink to="/login">Login</NavLink>
             </li>
           </ul>
+          <DropdownMenu />
         </div>
       </header>
       <main className="landing">
@@ -397,6 +402,64 @@ function ThemeToggle() {
         className={`icon big ${getPreferredTheme() === 'dark' ? 'active' : ''}`}
       />
     </button>
+  );
+}
+
+function ThemeToggleMenu() {
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const theme = getPreferredTheme();
+
+  return (
+    <li>
+      <a
+        className="menu-section"
+        title="Theme toggle"
+        onClick={() => {
+          changeTheme(theme === 'dark' ? 'light' : 'dark');
+          forceUpdate();
+        }}
+      >
+        <Icon
+          path={theme === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
+          className="icon"
+        />
+        <p className="link">{`Theme: ${theme}`}</p>
+      </a>
+    </li>
+  );
+}
+
+function DropdownMenu() {
+  const [menuOpened, { toggleMenu }] = useMenuToggler();
+
+  return (
+    <nav className="menu landing-mobile-menu">
+      <button
+        className={`centering menu-toggle ${menuOpened ? 'active' : ''}`}
+        onClick={toggleMenu}
+        title="Toggle menu [I]"
+      >
+        <Icon path={mdiMenu} className="icon medium" />
+      </button>
+      <ul
+        className={`menu-container ${menuOpened ? 'active' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <ThemeToggleMenu />
+        <li>
+          <Link
+            className="menu-section"
+            tabIndex="0"
+            target="_blank"
+            to="https://github.com/Vsein/neohabit"
+          >
+            <Icon path={mdiGithub} className="icon" />
+            <p className="link">Github</p>
+          </Link>
+        </li>
+        <MenuSection path={mdiLoginVariant} title="Login" to="/login" />
+      </ul>
+    </nav>
   );
 }
 
