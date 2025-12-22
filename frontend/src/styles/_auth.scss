@@ -44,6 +44,13 @@
   );
   width: min(500px, 100%);
   color: var(--landing-text-color);
+
+  & a {
+    width: min-content;
+    color: var(--signature-color);
+    text-decoration: none;
+    white-space: nowrap;
+  }
 }
 
 .auth-intro {
@@ -55,6 +62,10 @@
 
 .paragraph {
   margin-block: 1em;
+
+  & a {
+    display: inline;
+  }
 }
 
 .registration {
@@ -67,13 +78,7 @@
 
 .login-ref {
   padding: 1em 2em;
-
-  & > a {
-    width: min-content;
-    color: var(--signature-color);
-    text-decoration: none;
-    white-space: nowrap;
-  }
+  max-width: 75ch;
 }
 
 .registration-fields {

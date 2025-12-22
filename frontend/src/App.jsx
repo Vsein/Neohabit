@@ -6,7 +6,7 @@ import {
   Navigate,
   Outlet,
   useLocation,
-  NavLink,
+  Link,
 } from 'react-router-dom';
 // import Dashboard from './pages/Dashboard';
 import Landing from './pages/Landing';
@@ -171,14 +171,25 @@ const AuthRoutes = (params) => {
       <main className="registration-container">
         <section className="auth-intro">
           <p className="paragraph">
-            Because <span className="neohabit" /> is currently in beta, some functionality is not completely implemented.
-            By default, there&apos;s only one account created - the one you specified when starting your docker container.
-          </p>
-          <p className="paragraph">
-            Currently, new account creation is available only through direct access to the db.
+            Because <span className="neohabit" /> is currently in beta, some functionality is not completely implemented. Feel free to report any bugs on{' '}
+            <Link to="https://github.com/Vsein/neohabit/issues" target="_blank">
+              github issues
+            </Link>, or write directly to{' '}
+            <Link to="https://www.reddit.com/user/VseinSama/" target="_blank">
+              me on reddit
+            </Link> if you want to suggest anything.
           </p>
         </section>
         <Outlet />
+        <p className="login-ref">
+          By default, there&apos;s only one account created - the one you specified in the config when starting the app.
+          <br />
+          <br />
+          Currently, new account creation is available only through direct access to the db.
+          <Link to="https://github.com/Vsein/neohabit#new-account-creation" target="_blank">
+            See documentation
+          </Link>
+        </p>
         {/* {location.pathname === '/login' ? ( */}
         {/*   <p className="login-ref"> */}
         {/*     Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink> */}
