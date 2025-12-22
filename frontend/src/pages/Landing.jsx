@@ -406,18 +406,11 @@ function FeaturesSection() {
   const color = preferDark ? "#1D93FF" : "#8FE9EF";
 
   useEffect(() => {
-    const timerInterval = setTimeout(() => {
-      function onTimeOut() {
-        if (value >= 16) {
-          setValue(0);
-          return 0;
-        }
-        setValue(value + 1);
-      }
-      onTimeOut();
+    const timerInterval = setInterval(() => {
+      setValue((prev) => prev >= 16 ? 0 : prev + 1);
     }, 1000);
     return () => clearInterval(timerInterval);
-  });
+  }, []);
 
   return (
     <section className="landing-features-content">
