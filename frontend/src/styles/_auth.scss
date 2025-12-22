@@ -10,7 +10,7 @@
   background-image: var(--auth-heatmap);
   background-size: 100% auto;
   background-repeat: repeat-y;
-  background-color: #efefef;
+  background-color: var(--support-background-color);
   width: min(66.84vh, 100vw);
   place-content: center;
 
