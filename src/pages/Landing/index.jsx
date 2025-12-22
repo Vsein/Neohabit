@@ -137,6 +137,7 @@ function Heatmap({ dateStart, colorFunc, data }) {
             height={height}
             width={width}
             color={color}
+          // color={Index === cells.length - 1 ? 'black' : color}
           />
         );
       }))}

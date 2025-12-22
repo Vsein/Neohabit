@@ -169,13 +169,16 @@ function YearDataRandom() {
 
 function LotsOfRandom() {
   const data = [];
-  const len = 51;
+  const len = 60;
+  // 62 len, 110 columns - 1920x1080
+  // 52 len - 1440x900, 115% zoom
+  // 60 len - 1440x900, 100% zoom
 
   // data = data.concat(LineActiveRandom(data.length, 5000));
 
   // data = data.concat(LineActiveRandom(data.length, len - new Date().getDay()));
   let dataLength = 0;
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 110; i++) {
     data[i] = LineActiveRandom(dataLength, len);
     dataLength += data.length;
   }
