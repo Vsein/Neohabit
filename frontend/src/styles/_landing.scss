@@ -106,7 +106,7 @@ $cell-weekdays-width: 33px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px;
+  margin-block: 20px;
   height: calc(100vh - 100px);
   overflow: hidden;
 
@@ -115,7 +115,7 @@ $cell-weekdays-width: 33px;
   }
 
   @media (max-width: 700px) {
-    margin: 30px 10px;
+    margin-block: 30px;
   }
 
   &-text {
@@ -123,7 +123,8 @@ $cell-weekdays-width: 33px;
     width: auto;
     max-width: 700px;
     z-index: 4;
-    margin: auto;
+    margin-block: auto;
+    margin-inline: 20px;
     padding: 30px 30px;
     height: min-content;
     background-color: var(--main-background-color);
@@ -134,7 +135,6 @@ $cell-weekdays-width: 33px;
 
     @media (max-width: 700px) {
       font-size: 2.5rem;
-      margin: auto 10px;
       left: 0;
       right: 0;
       padding: 20px;
@@ -391,7 +391,7 @@ $cell-weekdays-width: 33px;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  margin: 20px;
+  margin-top: 20px;
   margin-bottom: 0px;
 
   @media (max-width: 550px) {
@@ -399,7 +399,7 @@ $cell-weekdays-width: 33px;
   }
 
   @media (max-width: 700px) {
-    margin: 30px 10px;
+    margin-block: 30px;
   }
 
   &-container {
@@ -409,7 +409,8 @@ $cell-weekdays-width: 33px;
     top: 0;
     bottom: 0;
     right: 0;
-    margin: auto;
+    margin-block: auto;
+    margin-inline: 20px;
     padding: 30px;
     height: min-content;
     background-color: rgba(255, 255, 255, 0.8);
@@ -419,9 +420,9 @@ $cell-weekdays-width: 33px;
     border-radius: 15px;
 
     @media (max-width: 700px) {
-      margin: auto 10px;
       left: 0;
       padding: 20px;
+      box-shadow: 0 0 8px 8px var(--landing-border-color);
     }
   }
 
