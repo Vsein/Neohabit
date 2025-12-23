@@ -51,7 +51,7 @@ export default function Onboarding() {
             type="button"
             className="button-default stretch cancel onboarding"
             onClick={() => slide > 1 && setSlide(slide - 1)}
-            title="Cancel [c]"
+            title="Cancel [esc / c]"
           >
             Previous
           </button>

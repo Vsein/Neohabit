@@ -8,6 +8,7 @@ import {
   useLocation,
   Link,
 } from 'react-router-dom';
+import { useHotkeys } from 'react-hotkeys-hook'
 // import Dashboard from './pages/Dashboard';
 import Landing from './pages/Landing';
 import Signup from './pages/Signup';
@@ -38,7 +39,6 @@ import { useGetStopwatchQuery } from './state/services/stopwatch';
 import SidebarMobile from './components/SidebarMobile';
 import { ProfilePicture } from './components/UI';
 import { hasJWT } from './state/services/auth';
-import useKeyPress from './hooks/useKeyPress';
 import { useMediaColorScheme } from './hooks/useMediaColorScheme';
 import isPWA from './utils/pwa';
 
@@ -93,7 +93,7 @@ const PrivateRoutes = (params) => {
     setSidebarHidden(!sidebarHidden);
   };
 
-  useKeyPress(['s'], toggleSidebar);
+  useHotkeys('0', toggleSidebar)
 
   useEffect(() => {
     changeAuth(hasJWT());

@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { useHotkeys } from 'react-hotkeys-hook'
 import { Icon } from '@mdi/react';
 import {
   mdiCog,
@@ -35,7 +36,7 @@ export default function MainMenu({ toggleSidebar }) {
       <button
         className={`logo-section right menu-toggle ${menuOpened ? 'active' : ''}`}
         onClick={toggleMenu}
-        title="Toggle menu [I]"
+        title="Toggle menu [i]"
       >
         <ProfilePicture type="tiny" />
       </button>
@@ -82,18 +83,21 @@ function ThemeToggle() {
   const [updateSettings] = useUpdateSettingsMutation();
   const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
+  const toggleTheme = () => updateSettings({ values: { prefer_dark: theme !== 'dark' } });
+  useHotkeys('shift+t', toggleTheme);
+
   return (
     <li>
-      <a
+      <button
         className="menu-section"
-        onClick={() => updateSettings({ values: { prefer_dark: theme !== 'dark' } })}
+        onClick={toggleTheme}
       >
         <Icon
           path={theme === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
           className="icon"
         />
         <p className="link">{`Theme: ${theme}`}</p>
-      </a>
+      </button>
     </li>
   );
 }

@@ -5,7 +5,6 @@ import {
   useGetStopwatchQuery,
 } from '../state/services/stopwatch';
 import { useGetSettingsQuery } from '../state/services/settings';
-import useKeyPress from './useKeyPress';
 import { getUTCOffsettedDate } from '../utils/dates';
 
 export default function useStopwatch() {
@@ -114,10 +113,6 @@ export default function useStopwatch() {
     const recalc = calcCurrentDuration();
     setCurrentDuration(recalc);
   });
-
-  useKeyPress(['p'], togglePause);
-  useKeyPress(['R'], resetStopwatch);
-  useKeyPress(['F'], finishCountdown);
 
   return [
     currentDuration,
