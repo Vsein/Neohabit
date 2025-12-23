@@ -29,7 +29,7 @@ function StopwatchContents() {
       dispatch(changeTo({ type: 'stopwatch' }));
     }
   };
-  useHotkeys('f', toggleStopwatchOverlay);
+  useHotkeys('s', toggleStopwatchOverlay);
 
   const [
     currentDuration,
@@ -39,7 +39,7 @@ function StopwatchContents() {
 
   useHotkeys('p', togglePause);
   useHotkeys('shift+r', resetStopwatch);
-  useHotkeys('shift+f', finishCountdown);
+  useHotkeys('f', finishCountdown);
 
   if (habits.isFetching) return <></>;
 

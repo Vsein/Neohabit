@@ -37,7 +37,7 @@ export default function Sidebar({ hidden }) {
       dispatch(changeTo({ projectID: '', habitID: '', type: 'project' }));
     }
   };
-  useHotkeys('a', openOverlay);
+  useHotkeys('shift+p', openOverlay);
 
   const [defaultProject] = useDefaultProject();
 

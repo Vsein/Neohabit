@@ -93,7 +93,7 @@ const PrivateRoutes = (params) => {
     setSidebarHidden(!sidebarHidden);
   };
 
-  useHotkeys('s', toggleSidebar)
+  useHotkeys('0', toggleSidebar)
 
   useEffect(() => {
     changeAuth(hasJWT());
