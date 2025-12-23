@@ -84,7 +84,7 @@ function ThemeToggle() {
 
   return (
     <li>
-      <a
+      <button
         className="menu-section"
         onClick={() => updateSettings({ values: { prefer_dark: theme !== 'dark' } })}
       >
@@ -93,7 +93,7 @@ function ThemeToggle() {
           className="icon"
         />
         <p className="link">{`Theme: ${theme}`}</p>
-      </a>
+      </button>
     </li>
   );
 }

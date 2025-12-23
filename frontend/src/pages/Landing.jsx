@@ -411,7 +411,7 @@ function ThemeToggleMenu() {
 
   return (
     <li>
-      <a
+      <button
         className="menu-section"
         title="Theme toggle"
         onClick={() => {
@@ -424,7 +424,7 @@ function ThemeToggleMenu() {
           className="icon"
         />
         <p className="link">{`Theme: ${theme}`}</p>
-      </a>
+      </button>
     </li>
   );
 }
