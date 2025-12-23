@@ -1,12 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook'
 import { Icon } from '@mdi/react';
 import { mdiPause, mdiPlay, mdiRestart, mdiFlagCheckered, mdiFullscreen } from '@mdi/js';
 import { useGetStopwatchQuery } from '../state/services/stopwatch';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { changeTo } from '../state/features/overlay/overlaySlice';
+import { changeTo, close } from '../state/features/overlay/overlaySlice';
 import useStopwatch from '../hooks/useStopwatch';
-import useKeyPress from '../hooks/useKeyPress';
 
 export default function Stopwatch() {
   const stopwatch = useGetStopwatchQuery();
@@ -20,17 +20,26 @@ function StopwatchContents() {
   const stopwatch = useGetStopwatchQuery();
   const habits = useGetHabitsQuery();
 
+  const { type, isActive } = useSelector((state) => state.overlay);
   const dispatch = useDispatch();
-  const openFullscreenStopwatch = () => {
-    dispatch(changeTo({ type: 'stopwatch' }));
+  const toggleStopwatchOverlay = () => {
+    if (type === 'stopwatch' && isActive) {
+      dispatch(close());
+    } else {
+      dispatch(changeTo({ type: 'stopwatch' }));
+    }
   };
-  useKeyPress(['f'], openFullscreenStopwatch);
+  useHotkeys('f', toggleStopwatchOverlay);
 
   const [
     currentDuration,
     baseDuration,
     { togglePause, resetStopwatch, finishCountdown, clockify },
   ] = useStopwatch();
+
+  useHotkeys('p', togglePause);
+  useHotkeys('shift+r', resetStopwatch);
+  useHotkeys('shift+f', finishCountdown);
 
   if (habits.isFetching) return <></>;
 
@@ -78,7 +87,7 @@ function StopwatchContents() {
         <h3 className="progressbar-text">{habit?.name}</h3>
         <button
           className="logo-section centering right stopwatch-icon"
-          onClick={openFullscreenStopwatch}
+          onClick={toggleStopwatchOverlay}
           title="Fullscreen [f]"
         >
           <Icon path={mdiFullscreen} className="icon medium" />
