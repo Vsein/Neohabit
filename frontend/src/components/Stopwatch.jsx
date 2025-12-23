@@ -79,7 +79,7 @@ function StopwatchContents() {
         <button
           className="logo-section centering stopwatch-icon"
           onClick={(e) => habit?._id && finishCountdown(e)}
-          title="Finish [F]"
+          title="Finish [f]"
           disabled={!habit?._id}
         >
           <Icon path={mdiFlagCheckered} style={{ marginTop: '-1px' }} className="icon medium" />
@@ -88,7 +88,7 @@ function StopwatchContents() {
         <button
           className="logo-section centering right stopwatch-icon"
           onClick={toggleStopwatchOverlay}
-          title="Fullscreen [f]"
+          title="Stopwatch [s]"
         >
           <Icon path={mdiFullscreen} className="icon medium" />
         </button>

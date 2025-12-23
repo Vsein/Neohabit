@@ -114,7 +114,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   <div className="tag-wrapper">New habit</div>
                 )}
               </div>
-              <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
+              <button className="icon small" onClick={closeOverlay} type="button" title="Close [esc / c]">
                 <Icon path={mdiClose} />
               </button>
             </div>

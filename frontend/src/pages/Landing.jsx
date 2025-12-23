@@ -437,7 +437,7 @@ function DropdownMenu() {
       <button
         className={`centering menu-toggle ${menuOpened ? 'active' : ''}`}
         onClick={toggleMenu}
-        title="Toggle menu [I]"
+        title="Toggle menu [i]"
       >
         <Icon path={mdiMenu} className="icon medium" />
       </button>

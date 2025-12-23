@@ -35,7 +35,7 @@ export default function MainMenu({ toggleSidebar }) {
       <button
         className={`logo-section right menu-toggle ${menuOpened ? 'active' : ''}`}
         onClick={toggleMenu}
-        title="Toggle menu [I]"
+        title="Toggle menu [i]"
       >
         <ProfilePicture type="tiny" />
       </button>

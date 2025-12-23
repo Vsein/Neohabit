@@ -105,7 +105,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                   New project
                 </div>
               )}
-              <button className="icon small" onClick={closeOverlay} type="button" title="Close [C]">
+              <button className="icon small" onClick={closeOverlay} type="button" title="Close [esc / c]">
                 <Icon path={mdiClose} />
               </button>
             </div>
@@ -118,7 +118,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                 className={`form-chooser add form-habits-toggle ${menuOpened ? 'active' : ''}`}
                 onClick={toggleMenu}
                 type="button"
-                title="Close [C]"
+                title="Close [esc / c]"
               >
                 <Icon className="icon small" path={mdiPlus} />
                 <p>Add existing habits</p>

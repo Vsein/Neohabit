@@ -17,9 +17,8 @@ function NameField({ type }) {
         <div className="form-task-name">
           <input {...input} type="text" placeholder={`Change ${type} name`} />
           <p
-            className={`form-field-length ${
-              input?.value?.length > maxLength || input?.value?.length === 0 ? 'error' : ''
-            }`}
+            className={`form-field-length ${input?.value?.length > maxLength || input?.value?.length === 0 ? 'error' : ''
+              }`}
           >{`${input?.value?.length ?? 0}/${maxLength}`}</p>
         </div>
       )}
@@ -35,9 +34,8 @@ function DescriptionField({ rows }) {
       {({ input, meta }) => (
         <div className="form-task-description">
           <textarea {...input} type="text" placeholder="Change description" rows={rows} />
-          <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}>{`${
-            input?.value?.length ?? 0
-          }/${maxLength}`}</p>
+          <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}>{`${input?.value?.length ?? 0
+            }/${maxLength}`}</p>
         </div>
       )}
     </Field>
@@ -57,7 +55,7 @@ function ModalButtons({ disabled, isNew, type }) {
         type="button"
         className="button-default stretch cancel"
         onClick={closeOverlay}
-        title="Cancel [c]"
+        title="Cancel [esc / c]"
       >
         Cancel
       </button>
