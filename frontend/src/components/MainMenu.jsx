@@ -10,6 +10,7 @@ import {
   mdiBell,
   mdiMoonWaxingCrescent,
   mdiWhiteBalanceSunny,
+  mdiGithub,
 } from '@mdi/js';
 import { AccountInfo, ProfilePicture } from './UI';
 import useMenuToggler from '../hooks/useMenuToggler';
@@ -58,9 +59,27 @@ export default function MainMenu({ toggleSidebar }) {
         </li>
         <ThemeToggle />
         <MenuSection path={mdiCog} title="Settings" to="/settings" />
+        <GithubLink />
+        <hr />
         <MenuSection path={mdiLogoutVariant} title="Log out" to="/logout" />
       </ul>
     </nav>
+  );
+}
+
+function GithubLink() {
+  return (
+    <li>
+      <Link
+        className="menu-section"
+        tabIndex="0"
+        target="_blank"
+        to="https://github.com/Vsein/neohabit"
+      >
+        <Icon path={mdiGithub} className="icon" />
+        <p className="link">Github</p>
+      </Link>
+    </li>
   );
 }
 
@@ -102,4 +121,4 @@ function ThemeToggle() {
   );
 }
 
-export { MenuSection };
+export { MenuSection, GithubLink };

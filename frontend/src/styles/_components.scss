@@ -199,7 +199,7 @@ input[type='checkbox']:checked.checkbox {
   grid-template-rows: 26px 26px;
   align-items: center;
   column-gap: 10px;
-  padding-top: 10px;
+  padding-bottom: 3px;
 
   & > .pfp {
     grid-row: span 2;
