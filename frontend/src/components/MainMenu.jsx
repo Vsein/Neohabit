@@ -28,7 +28,13 @@ export default function MainMenu({ toggleSidebar }) {
       >
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
       </button>
-      <h2 className="logo neohabit"></h2>
+      <Link
+        tabIndex="0"
+        to="/"
+        target="_blank"
+      >
+        <h2 className="neohabit logo"></h2>
+      </Link>
       {/* <Icon path={mdiApps} className="icon" /> */}
       {/* </button> */}
       {/* <button className="logo-section"> */}

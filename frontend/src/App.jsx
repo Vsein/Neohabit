@@ -164,8 +164,14 @@ const AuthRoutes = (params) => {
     <div id="content-auth">
       <div className="sidebar-auth">
         <h1 className="sidebar-auth-header">
-          <ProfilePicture type="small" />
-          <div className="neohabit" />
+          <Link
+            tabIndex="0"
+            to="/"
+            style={{ display: 'flex', gap: '20px', alignItems: 'center' }}
+          >
+            <ProfilePicture type="small" />
+            <div className="neohabit" />
+          </Link>
         </h1>
       </div>
       <main className="registration-container">
