@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="7000px" height="2000px">
+<svg xmlns="http://www.w3.org/2000/svg" width="9000px" height="2000px">
   <defs>
     <style>
       @font-face {
@@ -11,7 +11,7 @@
 
       .header {
         font-family: "Poppins", sans-serif;
-        font-size: 1000px;
+        font-size: 1300px;
       }
     </style>
   </defs>
@@ -34,7 +34,7 @@
   <rect fill="#80e2e6" width="270" height="270" rx="27" ry="27" x="1310.64" y="1013.64" />
   <rect fill="#08c6cf" width="270" height="270" rx="27" ry="27" x="1310.64" y="1310.64" />
 
-  <text class="header" x="2200" y="1400">
+  <text class="header" x="2700" y="1520">
     <tspan fill="#00c4cd">Neo</tspan><tspan fill="white">habit</tspan>
   </text>
 </svg>
