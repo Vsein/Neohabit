@@ -16,7 +16,9 @@
     </style>
   </defs>
 
-  <circle cx="1000" cy="1000" r="1000" fill="#ffffff" />
+  <svg stroke="#bec7d1" stroke-width="10" fill="none" >
+    <circle cx="1000" cy="1000" r="990" fill="#ffffff" />
+  </svg>
   <rect fill="#02e8f3" width="270" height="270" rx="27" ry="27" x="419.64" y="419.64" />
   <rect fill="#07c0ca" width="270" height="270" rx="27" ry="27" x="419.64" y="716.64" />
   <rect fill="#0aaab4" width="270" height="270" rx="27" ry="27" x="419.64" y="1013.64" />
