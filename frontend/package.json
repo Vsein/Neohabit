@@ -12,7 +12,8 @@
     "lint": "eslint --ext .js,.jsx src/ --fix",
     "prettier": "prettier . --write",
     "obfuscate": "find dist -type f -name 'index-*.js' -print0 | xargs -0 -I {} terser {} --compress --mangle --output {}",
-    "ship": "GENERATE_SOURCEMAP=false npm run build && npm run obfuscate"
+    "ship": "GENERATE_SOURCEMAP=false npm run build && npm run obfuscate",
+    "generate-pwa-assets": "pwa-assets-generator --preset minimal-2023 public/favicon-light.svg"
   },
   "repository": {
     "type": "git",

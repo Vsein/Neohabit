@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="2000" text-anchor="middle">
+  <circle cx="1000" cy="1000" r="1000" fill="#ffffff" />
+  <rect fill="#02e8f3" width="270" height="270" rx="27" ry="27" x="419.64" y="419.64" />
+  <rect fill="#07c0ca" width="270" height="270" rx="27" ry="27" x="419.64" y="716.64" />
+  <rect fill="#0aaab4" width="270" height="270" rx="27" ry="27" x="419.64" y="1013.64" />
+  <rect fill="#02e8f3" width="270" height="270" rx="27" ry="27" x="419.64" y="1310.64" />
+  <rect fill="#ffffff" width="270" height="270" rx="27" ry="27" x="716.64" y="419.64" />
+  <rect fill="#03dfea" width="270" height="270" rx="27" ry="27" x="716.64" y="716.64" />
+  <rect fill="#ffffff" width="270" height="270" rx="27" ry="27" x="716.64" y="1013.64" />
+  <rect fill="#ffffff" width="270" height="270" rx="27" ry="27" x="716.64" y="1310.64" />
+  <rect fill="#ffffff" width="270" height="270" rx="27" ry="27" x="1013.64" y="419.64" />
+  <rect fill="#ffffff" width="270" height="270" rx="27" ry="27" x="1013.64" y="716.64" />
+  <rect fill="#04d4de" width="270" height="270" rx="27" ry="27" x="1013.64" y="1013.64" />
+  <rect fill="#ffffff" width="270" height="270" rx="27" ry="27" x="1013.64" y="1310.64" />
+  <rect fill="#05cdd7" width="270" height="270" rx="27" ry="27" x="1310.64" y="419.64" />
+  <rect fill="#02e8f3" width="270" height="270" rx="27" ry="27" x="1310.64" y="716.64" />
+  <rect fill="#08b4be" width="270" height="270" rx="27" ry="27" x="1310.64" y="1013.64" />
+  <rect fill="#05cdd7" width="270" height="270" rx="27" ry="27" x="1310.64" y="1310.64" />
+</svg>
