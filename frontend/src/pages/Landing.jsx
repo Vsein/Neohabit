@@ -19,7 +19,7 @@ import changeTheme from '../utils/changeTheme';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 import useMenuToggler from '../hooks/useMenuToggler';
 import { CellPeriod } from '../components/HeatmapCells';
-import { MenuSection } from '../components/MainMenu';
+import { MenuSection, GithubLink } from '../components/MainMenu';
 import { ProfilePicture } from '../components/UI';
 import mockProjectsData from '../assets/mockProjectsData';
 import Reddit from '../logos/reddit.svg';
@@ -333,6 +333,8 @@ export default function Landing() {
                   <li className="landing-li">may provide insights on what you waste time on</li>
                   {/* <li className="landing-li">are good to use in the background</li> */}
                   <li className="landing-li">usually lead to over-optimization</li>
+                  <li className="landing-li">require to start and end each entry</li>
+                  <li className="landing-li">are hard to automate for anything, except screen time</li>
                 </ul>
               </div>
             </div>
@@ -358,7 +360,7 @@ export default function Landing() {
               <div>
                 <h4>Neohabit:</h4>
                 <ul>
-                  <li className="landing-li">allows you to adjust the load</li>
+                  <li className="landing-li">allows you to ease into new habits</li>
                   <li className="landing-li">serves as a convenient overview</li>
                   <li className="landing-li">is a good way to track any habit</li>
                   <li className="landing-li">
@@ -446,17 +448,8 @@ function DropdownMenu() {
         onClick={(e) => e.stopPropagation()}
       >
         <ThemeToggleMenu />
-        <li>
-          <Link
-            className="menu-section"
-            tabIndex="0"
-            target="_blank"
-            to="https://github.com/Vsein/neohabit"
-          >
-            <Icon path={mdiGithub} className="icon" />
-            <p className="link">Github</p>
-          </Link>
-        </li>
+        <GithubLink />
+        <hr />
         <MenuSection path={mdiLoginVariant} title="Login" to="/login" />
       </ul>
     </nav>

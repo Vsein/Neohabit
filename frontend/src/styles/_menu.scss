@@ -5,7 +5,7 @@
   grid-area: menu;
   width: 100%;
   display: grid;
-  grid-template-columns: 45px 1fr 45px;
+  grid-template-columns: 45px min-content 45px;
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
@@ -23,7 +23,7 @@
   &-container {
     width: 270px;
     display: grid;
-    gap: 10px;
+    gap: 5px;
     padding: 15px;
     align-content: center;
     transition: none;
@@ -40,10 +40,14 @@
       opacity: 1;
       pointer-events: auto;
     }
+
+    & hr {
+      margin: 5px;
+    }
   }
 
   &-section {
-    height: 100%;
+    height: 35px;
     width: 100%;
     display: grid;
     grid-template-columns: 30px 1fr;
