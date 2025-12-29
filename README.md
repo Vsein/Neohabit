@@ -11,8 +11,15 @@
 </p>
 
 <p align="center">A highly customizable habit-tracker<br> that is wired for systematic self-improvement </p>
+<br>
 
-![](frontend/src/assets/heatmap8-dark.png)
+<div align="center">
+  <img src="frontend/src/assets/neohabit-readme-overview.png" />
+  <sup align="center">zoomed out overview for 6 months </sup>
+</div>
+
+## Features
+
 
 ## Installation
 
