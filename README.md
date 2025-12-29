@@ -14,7 +14,10 @@
 <br>
 
 <div align="center">
-  <img src="frontend/src/assets/neohabit-readme-overview.png" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-overview-dark.png" />
+    <img src="frontend/src/assets/neohabit-readme-overview-light.png" />
+  </picture>
   <sup align="center">zoomed out overview for 6 months </sup>
 </div>
 
@@ -24,7 +27,7 @@ You can see the features dynamically on the
 [landing](https://vsein.github.io/neohabit). The list below repeats its contents:
 
 - Intutive design for habits that happen more than once a day
-- Habits happen X times in Y days, where X and Y are positive integers, no other limitations
+- Habits happen X times in Y days, where X and Y are positive integers
 - Ability to set targets, and change them on the go
 - Tracking numeric values and setting numeric targets
 - Github/Anki-style heatmaps, plus all the above features
