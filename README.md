@@ -1,3 +1,4 @@
+<a names="neohabit" />
 <h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/logos/neohabit-header-readme-dark.svg" width="1000px" />
