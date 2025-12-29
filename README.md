@@ -30,7 +30,14 @@ You can see the features dynamically on the
 - Habits happen X times in Y days, where X and Y are positive integers
 - Ability to set targets, and change them on the go
 - Tracking numeric values and setting numeric targets
-- Github/Anki-style heatmaps, plus all the above features
+- **Github/Anki-style heatmaps, with all the above features:**
+
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-heatmaps-dark.png" />
+    <img src="frontend/src/assets/neohabit-readme-heatmaps-light.png" />
+  </picture>
+</div>
 
 ## Installation
 
