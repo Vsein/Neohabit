@@ -6,7 +6,7 @@
 </h1>
 <p align="center">
   <a href="#installation">Install</a> •
-  <a href="#github-pages">Features preview</a> •
+  <a href="https://vsein.github.io/neohabit">Features preview</a> •
   <a href="#donations">Donations</a>
 </p>
 
@@ -20,6 +20,14 @@
 
 ## Features
 
+You can see the features dynamically on the
+[landing](https://vsein.github.io/neohabit). The list below repeats its contents:
+
+- Intutive design for habits that happen more than once a day
+- Habits happen X times in Y days, where X and Y are positive integers, no other limitations
+- Ability to set targets, and change them on the go
+- Tracking numeric values and setting numeric targets
+- Github/Anki-style heatmaps, plus all the above features
 
 ## Installation
 
