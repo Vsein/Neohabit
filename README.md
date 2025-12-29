@@ -6,7 +6,7 @@
 </h1>
 <p align="center">
   <a href="#installation">Install</a> •
-  <a href="https://vsein.github.io/neohabit">Features preview</a> •
+  <a href="#features">Features preview</a> •
   <a href="#donations">Donations</a>
 </p>
 
@@ -23,14 +23,15 @@
 
 ## Features
 
-You can see the features dynamically on the
+You can see the features overview with examples on the
 [landing](https://vsein.github.io/neohabit). The list below repeats its contents:
 
 - Intutive design for habits that happen more than once a day
 - Habits happen X times in Y days, where X and Y are positive integers
 - Ability to set targets, and change them on the go
 - Tracking numeric values and setting numeric targets
-- **Github/Anki-style heatmaps, with all the above features:**
+
+### Github/Anki-style heatmaps, with all the above features
 
 <div align="center">
   <picture>
@@ -42,6 +43,26 @@ You can see the features dynamically on the
 ## Installation
 
 TODO
+
+## Ultimate vision
+
+My ultimate vision for Neohabit is to have a public, community-driven archive of
+habits that may be imported into your database/account, with all the needed
+progressions. Somewhat similar to the Anki's shared decks, except for habits.
+I've implemented the core feature - the habit-tracking part, but the rest of it
+still needs some time to come together.
+
+For example:
+- There's the tasklist section that I want to integrate with habits, so you can
+  see which habits are due today (currently the tasks are dangling in their own
+  section, and weren't my development focus)
+- The skilltrees are implemented, but I'm aware of a couple of bugs there, and
+  right now there's no way to start habits directly based on the skills listed
+  in the skilltree. I may even take skilltrees as the base for importing new
+  habits, I guess it'll be more clear in the future.
+- "The blocks" page is dangling as a section in the side menu, but I think it'll
+  just be a link to a website with all the archived skilltrees/habits.
+- Contribution guides and community support/groups
 
 ## Donations
 

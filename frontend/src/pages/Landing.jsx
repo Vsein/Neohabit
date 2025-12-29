@@ -333,6 +333,8 @@ export default function Landing() {
                   <li className="landing-li">may provide insights on what you waste time on</li>
                   {/* <li className="landing-li">are good to use in the background</li> */}
                   <li className="landing-li">usually lead to over-optimization</li>
+                  <li className="landing-li">require to start and end each entry</li>
+                  <li className="landing-li">are hard to automate for anything, except screen time</li>
                 </ul>
               </div>
             </div>
@@ -358,7 +360,7 @@ export default function Landing() {
               <div>
                 <h4>Neohabit:</h4>
                 <ul>
-                  <li className="landing-li">allows you to adjust the load</li>
+                  <li className="landing-li">allows you to ease into new habits</li>
                   <li className="landing-li">serves as a convenient overview</li>
                   <li className="landing-li">is a good way to track any habit</li>
                   <li className="landing-li">
