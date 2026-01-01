@@ -19,6 +19,14 @@ func NewAuthMiddleware(authService *cases.AuthCase, logger *zap.Logger) func(nex
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			authHeader := r.Header.Get(headerAuthorization)
+			logger.Info("url path:" + r.URL.Path)
+			if r.URL.Path == "/signup" || r.URL.Path == "/login" {
+				if authHeader != "" {
+					http.Error(w, "already authorized", http.StatusConflict)
+				}
+				next.ServeHTTP(w, r)
+				return
+			}
 
 			if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer") {
 				http.Error(w, "missing or invalid authorization header", http.StatusUnauthorized)

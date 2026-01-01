@@ -11,14 +11,11 @@ const (
 	BearerAuthScopes = "bearerAuth.Scopes"
 )
 
-// CreateHabitRequest defines model for CreateHabitRequest.
-type CreateHabitRequest struct {
-	// Description Description of the Habit
-	Description string `json:"description"`
+// Color defines model for Color.
+type Color = string
 
-	// Name Name of the Habit
-	Name string `json:"name"`
-}
+// Description Activity description
+type Description = string
 
 // ErrorResponse defines model for ErrorResponse.
 type ErrorResponse struct {
@@ -29,20 +26,18 @@ type ErrorResponse struct {
 // Habit defines model for Habit.
 type Habit struct {
 	// ID Unique identifier for Habit
-	ID *HabitID `json:"ID,omitempty"`
-
-	// Color Color of the Habit
-	Color     *string    `json:"color,omitempty"`
+	ID        *HabitID   `json:"ID,omitempty"`
+	Color     *Color     `json:"color,omitempty"`
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 
-	// Description Description of the Habit
-	Description *string `json:"description,omitempty"`
+	// Description Activity description
+	Description *Description `json:"description,omitempty"`
 
 	// DueDate Unix timestamp (milliseconds) when Habit is due, the so-called goal
 	DueDate *int64 `json:"dueDate,omitempty"`
 
-	// Name Name of the Habit
-	Name      string     `json:"name"`
+	// Name Activity name
+	Name      Name       `json:"name"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 
 	// UserID Unique identifier for User
@@ -52,8 +47,31 @@ type Habit struct {
 // HabitID Unique identifier for Habit
 type HabitID = string
 
+// Name Activity name
+type Name = string
+
 // UserID Unique identifier for User
 type UserID = string
 
+// CreateHabitJSONBody defines parameters for CreateHabit.
+type CreateHabitJSONBody struct {
+	Color *Color `json:"color,omitempty"`
+
+	// Description Activity description
+	Description Description `json:"description"`
+
+	// Name Activity name
+	Name Name `json:"name"`
+}
+
+// SignupJSONBody defines parameters for Signup.
+type SignupJSONBody struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
 // CreateHabitJSONRequestBody defines body for CreateHabit for application/json ContentType.
-type CreateHabitJSONRequestBody = CreateHabitRequest
+type CreateHabitJSONRequestBody CreateHabitJSONBody
+
+// SignupJSONRequestBody defines body for Signup for application/json ContentType.
+type SignupJSONRequestBody SignupJSONBody

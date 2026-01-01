@@ -31,6 +31,7 @@ var _ gen.StrictServerInterface = (*server)(nil)
 type server struct {
 	address string
 	habits  *cases.HabitCase
+	users   *cases.UserCase
 	auth    *cases.AuthCase
 	logger  *zap.Logger
 	debug   bool
@@ -40,6 +41,7 @@ type server struct {
 func NewServer(
 	address string,
 	habits *cases.HabitCase,
+	users *cases.UserCase,
 	auth *cases.AuthCase,
 	logger *zap.Logger,
 	debug bool,
@@ -47,6 +49,7 @@ func NewServer(
 	return &server{
 		address: address,
 		habits:  habits,
+		users:   users,
 		auth:    auth,
 		logger:  logger,
 		debug:   debug,
@@ -90,6 +93,32 @@ func (s *server) Start() {
 
 	s.logger.Info("HTTP server started", zap.String("address", s.address))
 	log.Fatal(httpServer.ListenAndServe())
+}
+
+// POST /signup
+func (s *server) Signup(
+	ctx context.Context,
+	request gen.SignupRequestObject,
+) (gen.SignupResponseObject, error) {
+	// Convert to domain entity
+	user := &entity.User{
+		Username: request.Body.Username,
+		Password: request.Body.Password,
+	}
+
+	// Call use-case
+	id, err := s.users.Create(ctx, user)
+	if err != nil {
+		if errors.Is(err, cases.ErrAlreadyExists) {
+			return gen.Signup409JSONResponse{}, nil
+		}
+		s.logger.Error("failed to create user", zap.Error(err))
+		return gen.Signup500JSONResponse{}, nil
+	}
+
+	return gen.Signup201JSONResponse{
+		Token: &id,
+	}, nil
 }
 
 // POST /habit

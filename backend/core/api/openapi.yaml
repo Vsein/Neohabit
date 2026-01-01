@@ -7,13 +7,65 @@ info:
 servers:
   - url: http://localhost:8080
 
+tags:
+  - name: Auth
+  - name: Habits
+  - name: Projects
+  - name: Skilltrees
+  - name: Tasks
+  - name: Settings
+  - name: Stopwatch
+
 paths:
+  /signup:
+    post:
+      summary: Create a new account
+      operationId: signup
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ username, password ]
+              properties:
+                username:
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                  example: "Vsein"
+                password:
+                  type: string
+                  maxLength: 100
+      responses:
+        '201':
+          description: New user created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '409':
+          description: Username already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /habits:
     get:
       summary: List Habits
       operationId: listHabits
-      tags:
-        - habit
+      tags: [Habits]
       security:
         - bearerAuth: []
       responses:
@@ -429,7 +481,3 @@ components:
           type: string
           description: Human-readable error message
           example: "Habit not found"
-
-tags:
-  - name: habit
-    description: Habit management operations

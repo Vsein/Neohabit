@@ -40,20 +40,15 @@ func Run(cfg *config.Config) error {
 	}
 	logger.Info("postgres initialization completed")
 
-	// Initialize transaction manager
 	logger.Info("starting transaction manager initialization")
 	txManager := db.NewTxManager(pool)
 	logger.Info("transaction manager initialization completed")
 
-	// Initialize repositories
-	logger.Info("starting habit repository initialization")
 	habitRepo := repo.NewHabit(pool, logger.Named("habit"))
-	logger.Info("habit repository initialization completed")
+	userRepo := repo.NewUser(pool, logger.Named("user"))
 
-	// Initialize use cases
-	logger.Info("starting use cases initialization")
 	habitCase := cases.NewHabitCase(habitRepo, txManager)
-	logger.Info("use cases initialization completed")
+	userCase := cases.NewUserCase(userRepo, txManager)
 
 	// Initialize authentication service
 	secretProvider := secret.NewSecretProviderCache(secretTTL, secret.EnvSecretFetcher)
@@ -64,6 +59,7 @@ func Run(cfg *config.Config) error {
 	handler.NewServer(
 		cfg.Address,
 		habitCase,
+		userCase,
 		authService,
 		logger.Named("http-server"),
 		cfg.LogConfig.Level == -1, // debug mode

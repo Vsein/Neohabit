@@ -16,12 +16,12 @@ function UsernameField() {
       name="username"
       id="name"
       required
-      minLength="4"
+      minLength="1"
       pattern="[a-zA-Z0-9]{3,20}"
       title="Your name should only contain latin characters and numbers!"
       validate={composeValidators(
         requiredValidator,
-        boundsValidator(4, 20),
+        boundsValidator(1, 32),
         onlyLatinAndNumbersValidator,
       )}
     >
@@ -71,9 +71,9 @@ function PasswordField({ type }) {
     <Field
       name={type === 'confirm' ? 'password_confirm' : 'password'}
       required
-      minLength="8"
-      maxLength="30"
-      validate={composeValidators(requiredValidator, boundsValidator(8, 100))}
+      minLength="0"
+      maxLength="100"
+      validate={composeValidators(requiredValidator, boundsValidator(0, 100))}
       // onChange="onChange()"
       autoComplete="new-password"
     >
