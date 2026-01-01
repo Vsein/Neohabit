@@ -26,13 +26,11 @@ const (
 	queryDeleteHabit2 = `DELETE FROM habits WHERE id = $1; UPDATE projects SET habit_ids_order = array_remove(habit_ids_order, $1)`
 )
 
-// Habit implements the HabitRepo interface
 type Habit struct {
 	pool   db.PoolTX
 	logger *zap.Logger
 }
 
-// NewHabit creates a new Habit repository instance
 func NewHabit(pool db.PoolTX, logger *zap.Logger) *Habit {
 	return &Habit{
 		pool:   pool,
@@ -40,28 +38,27 @@ func NewHabit(pool db.PoolTX, logger *zap.Logger) *Habit {
 	}
 }
 
-// Read retrieves a Habit by ID from the database
 // XXX: Unneccessary, thus untested and unused
-func (r *Habit) Read(ctx context.Context, id string) (*entity.Habit, error) {
-	var habit entity.Habit
-	err := r.pool.QueryRow(ctx, queryReadHabit, id).Scan(
-		&habit.ID,
-		&habit.UserID,
-		&habit.Name,
-		&habit.Description,
-		&habit.Color,
-		&habit.DueDate,
-		&habit.CreatedAt,
-		&habit.UpdatedAt,
-	)
-	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, repo.ErrNotFound
-		}
-		return nil, fmt.Errorf("query row read habit: %w", err)
-	}
-	return &habit, nil
-}
+// func (r *Habit) Read(ctx context.Context, id string) (*entity.Habit, error) {
+// 	var habit entity.Habit
+// 	err := r.pool.QueryRow(ctx, queryReadHabit, id).Scan(
+// 		&habit.ID,
+// 		&habit.UserID,
+// 		&habit.Name,
+// 		&habit.Description,
+// 		&habit.Color,
+// 		&habit.DueDate,
+// 		&habit.CreatedAt,
+// 		&habit.UpdatedAt,
+// 	)
+// 	if err != nil {
+// 		if errors.Is(err, pgx.ErrNoRows) {
+// 			return nil, repo.ErrNotFound
+// 		}
+// 		return nil, fmt.Errorf("query row read habit: %w", err)
+// 	}
+// 	return &habit, nil
+// }
 
 // List retrieves Habits of the logged in user from the database
 func (r *Habit) List(ctx context.Context, user_id string) ([]*entity.Habit, error) {

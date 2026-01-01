@@ -45,7 +45,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateHabitRequest'
+              type: object
+              required: [ name, description ]
+              properties:
+                name:
+                  $ref: '#/components/schemas/Name'
+                description:
+                  $ref: '#/components/schemas/Description'
+                color:
+                  $ref: '#/components/schemas/Color'
+
       responses:
         '201':
           description: Habit created successfully
@@ -113,12 +122,28 @@ components:
       description: Unique identifier for User
       example: "550e8400-e29b-41d4-a716-446655440000"
 
+    Name:
+      type: string
+      maxLength: 150
+      description: Activity name
+      example: "Sample activity (project, habit, skill)"
+
+    Description:
+      type: string
+      maxLength: 3000
+      description: Activity description
+      example: "This is a sample activity"
+
+    Color:
+      type: string
+      maxLength: 50
+      example: "#23BCDB"
+
     User:
       type: object
       required:
         - id
-        - userID
-        - name
+        - username
       properties:
         id:
           $ref: '#/components/schemas/UserID'
@@ -157,21 +182,11 @@ components:
         userID:
           $ref: '#/components/schemas/UserID'
         name:
-          type: string
-          minLength: 1
-          maxLength: 256
-          description: Name of the Habit
-          example: "Sample Habit"
+          $ref: '#/components/schemas/Name'
         description:
-          type: string
-          maxLength: 1024
-          description: Description of the Habit
-          example: "This is a sample Habit"
+          $ref: '#/components/schemas/Description'
         color:
-          type: string
-          maxLength: 100
-          description: Color of the Habit
-          example: "#23BCDB"
+          $ref: '#/components/schemas/Color'
         dueDate:
           type: integer
           format: int64
@@ -275,21 +290,11 @@ components:
         userID:
           $ref: '#/components/schemas/UserID'
         name:
-          type: string
-          minLength: 1
-          maxLength: 256
-          description: Name of the Project
-          example: "Sample Project"
+          $ref: '#/components/schemas/Name'
         description:
-          type: string
-          maxLength: 1024
-          description: Description of the Project
-          example: "This is a sample Project"
+          $ref: '#/components/schemas/Description'
         color:
-          type: string
-          maxLength: 100
-          description: Color of the Project
-          example: "#23BCDB"
+          $ref: '#/components/schemas/Color'
         habitIDs:
           type: array
           items:
@@ -414,24 +419,6 @@ components:
           format: int64
           description: Unix timestamp (milliseconds) when Project was last updated
           example: 1609459200000
-
-    CreateHabitRequest:
-      type: object
-      required:
-        - name
-        - description
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 256
-          description: Name of the Habit
-          example: "Sample Habit"
-        description:
-          type: string
-          maxLength: 1024
-          description: Description of the Habit
-          example: "This is a sample Habit"
 
     ErrorResponse:
       type: object

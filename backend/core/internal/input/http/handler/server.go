@@ -92,7 +92,7 @@ func (s *server) Start() {
 	log.Fatal(httpServer.ListenAndServe())
 }
 
-// CreateHabit handles POST /habit
+// POST /habit
 func (s *server) CreateHabit(
 	ctx context.Context,
 	request gen.CreateHabitRequestObject,
@@ -111,6 +111,7 @@ func (s *server) CreateHabit(
 	habit := &entity.Habit{
 		Name:        request.Body.Name,
 		Description: request.Body.Description,
+		Color:       *request.Body.Color,
 		UserID:      userID,
 	}
 
@@ -147,7 +148,8 @@ func (s *server) CreateHabit(
 // 	return gen.GetHabit200JSONResponse(response), nil
 // }
 
-// ListHabits handles GET /habit
+// Returns all the habits of the authorized user
+// GET /habit
 func (s *server) ListHabits(
 	ctx context.Context,
 	request gen.ListHabitsRequestObject,

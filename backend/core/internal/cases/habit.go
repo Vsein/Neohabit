@@ -55,17 +55,16 @@ func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit) (string, er
 	return habit.ID, nil
 }
 
-// Read retrieves an Habit by ID
-func (c *HabitCase) Read(ctx context.Context, id string) (*entity.Habit, error) {
-	habit, err := c.habitRepo.Read(ctx, id)
-	if err != nil {
-		if errors.Is(err, repo.ErrNotFound) {
-			return nil, ErrNotFound
-		}
-		return nil, fmt.Errorf("read: %w", err)
-	}
-	return habit, nil
-}
+// func (c *HabitCase) Read(ctx context.Context, id string) (*entity.Habit, error) {
+// 	habit, err := c.habitRepo.Read(ctx, id)
+// 	if err != nil {
+// 		if errors.Is(err, repo.ErrNotFound) {
+// 			return nil, ErrNotFound
+// 		}
+// 		return nil, fmt.Errorf("read: %w", err)
+// 	}
+// 	return habit, nil
+// }
 
 // List retrieves all Habits of a user
 func (c *HabitCase) List(ctx context.Context, user_id string) ([]*entity.Habit, error) {
