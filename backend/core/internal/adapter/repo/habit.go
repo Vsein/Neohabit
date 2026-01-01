@@ -2,7 +2,7 @@ package repo
 
 import (
 	"context"
-	"errors"
+	// "errors"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
@@ -116,7 +116,7 @@ func (r *Habit) Create(ctx context.Context, habit *entity.Habit) error {
 		// Check for unique constraint violation (duplicate name, etc.)
 		// Adjust this based on your actual database constraints
 		if db.IsUniqueViolation(err) {
-			return repo.ErrConflict
+			return repo.ErrAlreadyExists
 		}
 		return fmt.Errorf("exec create habit: %w", err)
 	}
@@ -149,7 +149,7 @@ func (r *Habit) Delete(ctx context.Context, id string) error {
 		// Check for unique constraint violation (duplicate name, etc.)
 		// Adjust this based on your actual database constraints
 		if db.IsUniqueViolation(err) {
-			return repo.ErrConflict
+			return repo.ErrAlreadyExists
 		}
 		return fmt.Errorf("exec create habit: %w", err)
 	}

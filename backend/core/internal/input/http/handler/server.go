@@ -147,7 +147,7 @@ func (s *server) CreateHabit(
 	// Call use-case
 	id, err := s.habits.Create(ctx, habit)
 	if err != nil {
-		if errors.Is(err, cases.ErrConflict) {
+		if errors.Is(err, cases.ErrAlreadyExists) {
 			return gen.CreateHabit409JSONResponse{}, nil
 		}
 		s.logger.Error("failed to create habit", zap.Error(err))

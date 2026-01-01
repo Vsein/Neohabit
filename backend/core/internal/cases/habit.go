@@ -41,8 +41,8 @@ func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit) (string, er
 	_, err := c.txManager.WithTx(ctx, func(ctx context.Context) (any, error) {
 		err := c.habitRepo.Create(ctx, habit)
 		if err != nil {
-			if errors.Is(err, repo.ErrConflict) {
-				return nil, ErrConflict
+			if errors.Is(err, repo.ErrAlreadyExists) {
+				return nil, ErrAlreadyExists
 			}
 			return nil, fmt.Errorf("create: %w", err)
 		}

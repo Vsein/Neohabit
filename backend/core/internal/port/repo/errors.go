@@ -1,9 +1,7 @@
-package cases
+package repo
 
 import "errors"
 
-// Domain-level errors
-// These are mapped from repository errors and returned to handlers
 var (
 	ErrAlreadyExists = errors.New("already exists")
 	ErrNotFound      = errors.New("not found")
