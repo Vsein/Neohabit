@@ -12,13 +12,15 @@ import (
 type contextKey string
 
 const (
-	UserIDKey contextKey = "userId"
-	EmailKey  contextKey = "email"
+	UserIDKey contextKey = "user_id"
+	// UsernameKey contextKey = "username"
+	// EmailKey  contextKey = "email"
 )
 
 type AuthClaims struct {
 	UserID string
-	Email  string
+	// Username string
+	// Email  string
 	jwt.RegisteredClaims
 }
 
@@ -72,4 +74,23 @@ func (r *AuthCase) AuthenticateWithAccessToken(ctx context.Context, token string
 	}
 
 	return claims.UserID, true, nil
+}
+
+func (r *AuthCase) IssueAccessToken(ctx context.Context, user_id string) (string, error) {
+	claims := &AuthClaims{
+		UserID: user_id,
+	}
+
+	secret, err := r.secretProvider.GetJWTSecret()
+	if err != nil {
+		return "", fmt.Errorf("cannot get JWT secret: %w", err)
+	}
+
+	token := jwt.NewWithClaims(jwt.GetSigningMethod(r.signingAlgoName), claims)
+	tokenString, err := token.SignedString([]byte(secret))
+	if err != nil {
+		return "", fmt.Errorf("failed to sign string: %w", err)
+	}
+
+	return tokenString, nil
 }

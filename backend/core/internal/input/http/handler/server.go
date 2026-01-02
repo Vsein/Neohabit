@@ -10,6 +10,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
+	"golang.org/x/crypto/bcrypt"
 
 	"neohabit/core/internal/cases"
 	"neohabit/core/internal/entity"
@@ -101,13 +102,11 @@ func (s *server) Signup(
 	ctx context.Context,
 	request gen.SignupRequestObject,
 ) (gen.SignupResponseObject, error) {
-	// Convert to domain entity
 	user := &entity.User{
 		Username: request.Body.Username,
 		Password: request.Body.Password,
 	}
 
-	// Call use-case
 	id, err := s.users.Create(ctx, user)
 	if err != nil {
 		if errors.Is(err, cases.ErrAlreadyExists) {
@@ -117,8 +116,46 @@ func (s *server) Signup(
 		return gen.Signup500JSONResponse{}, nil
 	}
 
+	token, err := s.auth.IssueAccessToken(ctx, id)
+	if err != nil {
+		s.logger.Error("failed to issue token", zap.Error(err))
+		return gen.Signup500JSONResponse{}, nil
+	}
+
 	return gen.Signup201JSONResponse{
-		Token: &id,
+		Token: &token,
+	}, nil
+}
+
+// POST /login
+func (s *server) Login(
+	ctx context.Context,
+	request gen.LoginRequestObject,
+) (gen.LoginResponseObject, error) {
+	username := request.Body.Username
+	password := request.Body.Password
+
+	user, err := s.users.GetByUsername(ctx, username)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.Login404JSONResponse{}, nil
+		}
+		s.logger.Error("user not found", zap.Error(err))
+		return gen.Login500JSONResponse{}, nil
+	}
+
+	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
+		return gen.Login401Response{}, nil
+	}
+
+	token, err := s.auth.IssueAccessToken(ctx, user.ID)
+	if err != nil {
+		s.logger.Error("failed to issue token", zap.Error(err))
+		return gen.Login500JSONResponse{}, nil
+	}
+
+	return gen.Login200JSONResponse{
+		Token: &token,
 	}, nil
 }
 

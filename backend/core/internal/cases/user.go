@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
@@ -29,13 +30,19 @@ func NewUserCase(
 }
 
 func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error) {
+	password, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
+	if err != nil {
+		return "", fmt.Errorf("bcrypt password generation: %w", err)
+	}
+
 	user.ID = uuid.NewString()
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = user.CreatedAt
 	user.Verified = true
 	user.VerificationTime = user.CreatedAt
+	user.Password = string(password)
 
-	_, err := c.txManager.WithTx(ctx, func(ctx context.Context) (any, error) {
+	_, err = c.txManager.WithTx(ctx, func(ctx context.Context) (any, error) {
 		err := c.userRepo.Create(ctx, user)
 		if err != nil {
 			if errors.Is(err, repo.ErrAlreadyExists) {
@@ -50,4 +57,16 @@ func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error
 	}
 
 	return user.ID, nil
+}
+
+func (c *UserCase) GetByUsername(ctx context.Context, username string) (*entity.User, error) {
+	user, err := c.userRepo.GetByUsername(ctx, username)
+	if err != nil {
+		if errors.Is(err, repo.ErrNotFound) {
+			return nil, ErrNotFound
+		}
+		return nil, err
+	}
+
+	return user, nil
 }

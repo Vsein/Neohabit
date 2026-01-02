@@ -64,6 +64,12 @@ type CreateHabitJSONBody struct {
 	Name Name `json:"name"`
 }
 
+// LoginJSONBody defines parameters for Login.
+type LoginJSONBody struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
+}
+
 // SignupJSONBody defines parameters for Signup.
 type SignupJSONBody struct {
 	Password string `json:"password"`
@@ -72,6 +78,9 @@ type SignupJSONBody struct {
 
 // CreateHabitJSONRequestBody defines body for CreateHabit for application/json ContentType.
 type CreateHabitJSONRequestBody CreateHabitJSONBody
+
+// LoginJSONRequestBody defines body for Login for application/json ContentType.
+type LoginJSONRequestBody LoginJSONBody
 
 // SignupJSONRequestBody defines body for Signup for application/json ContentType.
 type SignupJSONRequestBody SignupJSONBody

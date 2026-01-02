@@ -13,7 +13,8 @@ import (
 
 const (
 	// queryListUsers  = `SELECT * FROM users`
-	queryCreateUser = `
+	queryGetUserByUsername = `SELECT * FROM users WHERE username = $1`
+	queryCreateUser        = `
 		INSERT INTO users (id, username, email, password, verified, verification_attempts, verification_time, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
@@ -52,4 +53,23 @@ func (r *User) Create(ctx context.Context, user *entity.User) error {
 		return fmt.Errorf("exec create user: %w", err)
 	}
 	return nil
+}
+
+func (r *User) GetByUsername(ctx context.Context, username string) (*entity.User, error) {
+	var user entity.User
+	err := r.pool.QueryRow(ctx, queryGetUserByUsername, username).Scan(
+		&user.ID,
+		&user.Username,
+		&user.Email,
+		&user.Password,
+		&user.Verified,
+		&user.VerificationAttempts,
+		&user.VerificationTime,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
+	if err != nil {
+		return nil, repo.ErrNotFound
+	}
+	return &user, nil
 }

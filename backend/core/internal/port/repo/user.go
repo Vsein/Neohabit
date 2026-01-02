@@ -7,7 +7,7 @@ import (
 )
 
 type UserRepo interface {
-	// List(ctx context.Context) ([]*entity.User, error)
 	Create(ctx context.Context, user *entity.User) error
+	GetByUsername(ctx context.Context, username string) (*entity.User, error)
 	// Delete(ctx context.Context, user_id string) error
 }
