@@ -56,7 +56,7 @@ func NewServer(
 	}
 }
 
-// Start starts the HTTP server
+// Start the HTTP server
 func (s *server) Start() {
 	// Create strict handler with options
 	srv := gen.NewStrictHandlerWithOptions(
@@ -72,6 +72,7 @@ func (s *server) Start() {
 	// Create router with middleware
 	router := chi.NewRouter()
 
+	router.Use(CORS())
 	router.Use(middleware.NewAuthMiddleware(s.auth, s.logger))
 
 	// Add logging middleware if in debug mode
@@ -231,6 +232,27 @@ func responseErrorHandler(w http.ResponseWriter, r *http.Request, err error) {
 		Error: "internal server error",
 	}
 	_ = json.NewEncoder(w).Encode(response)
+}
+
+func CORS() func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// TODO allow-origin ENV == 'dev' ? 'http://127.0.0.1:8080' : ''
+			// may need to put the entire path as a variable as well,
+			// since not everyone has 8080 port available, even for dev environments
+			w.Header().Add("Access-Control-Allow-Origin", "http://127.0.0.1:8080")
+			w.Header().Add("Access-Control-Allow-Credentials", "true")
+			w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
+
+			if r.Method == "OPTIONS" {
+				http.Error(w, "No Content", http.StatusNoContent)
+				return
+			}
+
+			next.ServeHTTP(w, r)
+		})
+	}
 }
 
 // loggingMiddleware logs HTTP requests
