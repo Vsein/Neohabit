@@ -52,14 +52,12 @@ paths:
           description: Username already exists
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
         '500':
           description: Internal server error
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
 
   /login:
     post:
@@ -98,25 +96,23 @@ paths:
           description: User not found
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
         '500':
           description: Internal server error
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
 
   /habits:
     get:
-      summary: List Habits
+      summary: List habits
       operationId: listHabits
       tags: [Habits]
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: List of user's Habits
+          description: Successfully fetched user's habits
           content:
             application/json:
               schema:
@@ -129,15 +125,15 @@ paths:
           description: Internal server error
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
 
   /habit:
     post:
-      summary: Create Habit
+      summary: Create habit
       operationId: createHabit
-      tags:
-        - habit
+      tags: [Habits]
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -164,23 +160,87 @@ paths:
           description: Invalid request data
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
         '401':
           description: Unauthorized
         '409':
           description: Habit already exists
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
         '500':
           description: Internal server error
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /projects:
+    get:
+      summary: List projects
+      operationId: listProjects
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /settings:
+    get:
+      summary: Returns user's settings
+      operationId: getSettings
+      tags: [Settings]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /stopwatch:
+    get:
+      summary: Returns user's stopwatch
+      operationId: getStopwatch
+      tags: [Stopwatch]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's stopwatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
 
 components:
   securitySchemes:

@@ -11,6 +11,19 @@ const (
 	BearerAuthScopes = "bearerAuth.Scopes"
 )
 
+// Defines values for SettingsOverviewCurrentDay.
+const (
+	End    SettingsOverviewCurrentDay = "end"
+	Middle SettingsOverviewCurrentDay = "middle"
+	Start  SettingsOverviewCurrentDay = "start"
+)
+
+// Defines values for SettingsTheme.
+const (
+	Dark  SettingsTheme = "dark"
+	Light SettingsTheme = "light"
+)
+
 // Color defines model for Color.
 type Color = string
 
@@ -49,6 +62,68 @@ type HabitID = string
 
 // Name Activity name
 type Name = string
+
+// Project defines model for Project.
+type Project struct {
+	Color *Color `json:"color,omitempty"`
+
+	// CreatedAt Unix timestamp (milliseconds) when Project was created
+	CreatedAt *int64 `json:"createdAt,omitempty"`
+
+	// Description Activity description
+	Description *Description `json:"description,omitempty"`
+	HabitIDs    *[]HabitID   `json:"habitIDs,omitempty"`
+
+	// Id Unique identifier for Habit
+	Id HabitID `json:"id"`
+
+	// Name Activity name
+	Name Name `json:"name"`
+
+	// UpdatedAt Unix timestamp (milliseconds) when Project was last updated
+	UpdatedAt *int64 `json:"updatedAt,omitempty"`
+
+	// UserID Unique identifier for User
+	UserID UserID `json:"userID"`
+}
+
+// Settings defines model for Settings.
+type Settings struct {
+	AllowHorizontalScrolling *bool  `json:"allowHorizontalScrolling,omitempty"`
+	CellHeightMultiplier     *uint8 `json:"cellHeightMultiplier,omitempty"`
+	CellWidthMultiplier      *uint8 `json:"cellWidthMultiplier,omitempty"`
+
+	// CreatedAt Unix timestamp (milliseconds) when Project was created
+	CreatedAt               *int64 `json:"createdAt,omitempty"`
+	HabitHeatmapsCurrentDay *uint8 `json:"habitHeatmapsCurrentDay,omitempty"`
+	HabitHeatmapsOverride   *bool  `json:"habitHeatmapsOverride,omitempty"`
+	HideCellHint            *bool  `json:"hideCellHint,omitempty"`
+	HideOnboarding          *bool  `json:"hideOnboarding,omitempty"`
+
+	// Id Unique identifier for Habit
+	Id                           HabitID                     `json:"id"`
+	OverviewApplyLimit           *bool                       `json:"overviewApplyLimit,omitempty"`
+	OverviewCurrentDay           *SettingsOverviewCurrentDay `json:"overviewCurrentDay,omitempty"`
+	OverviewDuration             *uint8                      `json:"overviewDuration,omitempty"`
+	OverviewDurationLimit        *uint8                      `json:"overviewDurationLimit,omitempty"`
+	OverviewOffset               *uint8                      `json:"overviewOffset,omitempty"`
+	OverviewVertical             *bool                       `json:"overviewVertical,omitempty"`
+	ReadSettingsFromConfigFile   *bool                       `json:"readSettingsFromConfigFile,omitempty"`
+	ShowStopwatchTimeInPageTitle *bool                       `json:"showStopwatchTimeInPageTitle,omitempty"`
+	Theme                        *SettingsTheme              `json:"theme,omitempty"`
+
+	// UpdatedAt Unix timestamp (milliseconds) when Project was last updated
+	UpdatedAt *int64 `json:"updatedAt,omitempty"`
+
+	// UserID Unique identifier for User
+	UserID UserID `json:"userID"`
+}
+
+// SettingsOverviewCurrentDay defines model for Settings.OverviewCurrentDay.
+type SettingsOverviewCurrentDay string
+
+// SettingsTheme defines model for Settings.Theme.
+type SettingsTheme string
 
 // UserID Unique identifier for User
 type UserID = string
