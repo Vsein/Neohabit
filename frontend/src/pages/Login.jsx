@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-final-form';
 import { useNavigate } from 'react-router-dom';
-import { EmailField, PasswordField } from '../components/AuthFields';
+import { EmailField, UsernameField, PasswordField } from '../components/AuthFields';
 import { useLoginMutation } from '../state/services/auth';
 import useTitle from '../hooks/useTitle';
 
@@ -24,9 +24,9 @@ function LoginForm() {
         return { password: 'Wrong password!' };
       }
       if (res?.error?.data?.error === 'User not found') {
-        return { email: 'User not found' };
+        return { username: 'User not found' };
       }
-      return { email: 'Login failed' };
+      return { username: 'Login failed' };
     }
     if (res) navigate('/projects');
   };
@@ -34,16 +34,16 @@ function LoginForm() {
   return (
     <Form
       initialValues={{
-        email: '',
+        username: '',
         password: '',
       }}
       onSubmit={login}
       validate={(values) => {
         const errors = {};
-        if (!values.email) {
-          errors.email = 'Required';
+        if (!values.username) {
+          errors.username = 'Required';
         }
-        if (!values.password) {
+        if (process.env.STRICT_USER_FIELDS && !values.password) {
           errors.password = 'Required';
         }
         return errors;
@@ -56,10 +56,10 @@ function LoginForm() {
             await handleSubmit(e);
           }}
         >
-          <h2>Enter:</h2>
+          <h2>Login:</h2>
           <div className="registration-fields">
-            <EmailField />
-            <PasswordField type="define" />
+            <UsernameField />
+            <PasswordField />
             <button type="submit" className="button-default stretch big" disabled={submitting}>
               Log in
             </button>

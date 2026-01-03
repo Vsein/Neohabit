@@ -10,7 +10,7 @@ import {
   composeValidators,
 } from '../utils/validators';
 
-function UsernameField() {
+function UsernameField({ showAsterisk = false }) {
   return (
     <Field
       name="username"
@@ -29,6 +29,7 @@ function UsernameField() {
         <div>
           <label htmlFor="name">
             Username
+            {showAsterisk ? '*' : ''}
             {(meta.error || (meta.submitError && !meta.dirtySinceLastSubmit)) && meta.touched && (
               <span className="registration-error">{meta.error || meta.submitError}</span>
             )}
@@ -45,7 +46,7 @@ function EmailField({ signup = false }) {
     <Field
       name="email"
       validate={
-        signup ? composeValidators(requiredValidator, simpleEmailValidator) : requiredValidator
+        signup ? composeValidators(process.env.REQUIRE_EMAIL && requiredValidator, simpleEmailValidator) : requiredValidator
       }
     >
       {({ input, meta }) => (
@@ -63,17 +64,17 @@ function EmailField({ signup = false }) {
   );
 }
 
-function PasswordField({ type }) {
+function PasswordField({ type, signup }) {
   const [passwordHidden, setPasswordHidden] = useState(true);
   const togglePasswordVisibility = () => setPasswordHidden(!passwordHidden);
+  const strictFields = process.env.STRICT_USER_FIELDS;
 
   return (
     <Field
       name={type === 'confirm' ? 'password_confirm' : 'password'}
-      required
       minLength="0"
       maxLength="100"
-      validate={composeValidators(requiredValidator, boundsValidator(0, 100))}
+      validate={composeValidators(strictFields && requiredValidator, boundsValidator(strictFields ? 8 : 0, 100))}
       // onChange="onChange()"
       autoComplete="new-password"
     >
@@ -81,6 +82,7 @@ function PasswordField({ type }) {
         <div>
           <label htmlFor={type === 'confirm' ? 'password_confirm' : 'password'}>
             {type === 'confirm' ? 'Confirm Password' : 'Password'}
+            {signup && strictFields ? '*' : ''}
             {(meta.error || (meta.submitError && !meta.dirtySinceLastSubmit)) && meta.touched && (
               <span className="registration-error">{meta.error || meta.submitError}</span>
             )}

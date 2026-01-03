@@ -47,15 +47,18 @@ function SignupForm() {
         if (!values.username) {
           errors.username = 'Required';
         }
-        if (!values.email) {
-          errors.email = 'Required';
+        if (process.env.STRICT_USER_FIELDS) {
+          if (process.env.REQUIRE_EMAIL && !values.email) {
+            errors.email = 'Required';
+          }
+          if (!values.password) {
+            errors.password = 'Required';
+          }
+          if (!values.password_confirm) {
+            errors.password_confirm = 'Required';
+          }
         }
-        if (!values.password) {
-          errors.password = 'Required';
-        }
-        if (!values.password_confirm) {
-          errors.password_confirm = 'Required';
-        } else if (values.password_confirm !== values.password) {
+        if (values.password_confirm !== values.password) {
           errors.password_confirm = 'Must match';
         }
         return errors;
@@ -68,14 +71,14 @@ function SignupForm() {
             await handleSubmit(e);
           }}
         >
-          <h2>Register:</h2>
+          <h2>New account:</h2>
           <div className="registration-fields">
-            <UsernameField />
-            <EmailField signup={true} />
-            <PasswordField type="define" />
-            <PasswordField type="confirm" />
+            <UsernameField showAsterisk />
+            <EmailField signup />
+            <PasswordField signup type="define" />
+            <PasswordField signup type="confirm" />
             <button type="submit" className="button-default stretch big" disabled={submitting}>
-              Create Account
+              Sign up
             </button>
           </div>
         </form>
