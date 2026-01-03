@@ -24,6 +24,14 @@ const (
 	Light SettingsTheme = "light"
 )
 
+// Defines values for SkillStatus.
+const (
+	Completed   SkillStatus = "completed"
+	Disregarded SkillStatus = "disregarded"
+	Idle        SkillStatus = "idle"
+	InProgress  SkillStatus = "in-progress"
+)
+
 // Color defines model for Color.
 type Color = string
 
@@ -103,6 +111,59 @@ type SettingsOverviewCurrentDay string
 
 // SettingsTheme defines model for Settings.Theme.
 type SettingsTheme string
+
+// Skill defines model for Skill.
+type Skill struct {
+	CreatedAt *Date `json:"createdAt,omitempty"`
+
+	// Description Activity description
+	Description *Description `json:"description,omitempty"`
+	Id          string       `json:"id"`
+	IsRootSkill bool         `json:"isRootSkill"`
+
+	// Name Activity name
+	Name          Name         `json:"name"`
+	ParentSkillID string       `json:"parentSkillID"`
+	Status        *SkillStatus `json:"status,omitempty"`
+	UpdatedAt     *Date        `json:"updatedAt,omitempty"`
+}
+
+// SkillStatus defines model for Skill.Status.
+type SkillStatus string
+
+// Skilltree defines model for Skilltree.
+type Skilltree struct {
+	CreatedAt *Date `json:"createdAt,omitempty"`
+
+	// Description Activity description
+	Description *Description `json:"description,omitempty"`
+	Id          string       `json:"id"`
+
+	// Name Activity name
+	Name      Name     `json:"name"`
+	ProjectID *string  `json:"projectID,omitempty"`
+	Skills    *[]Skill `json:"skills,omitempty"`
+	UpdatedAt *Date    `json:"updatedAt,omitempty"`
+	UserID    string   `json:"userID"`
+}
+
+// Task defines model for Task.
+type Task struct {
+	CreatedAt *Date `json:"createdAt,omitempty"`
+
+	// Description Activity description
+	Description *Description `json:"description,omitempty"`
+	DueDate     *Date        `json:"dueDate,omitempty"`
+	HabitID     *string      `json:"habitID,omitempty"`
+	Id          string       `json:"id"`
+	IsCompleted *bool        `json:"isCompleted,omitempty"`
+	IsImportant *bool        `json:"isImportant,omitempty"`
+
+	// Name Activity name
+	Name      Name   `json:"name"`
+	UpdatedAt *Date  `json:"updatedAt,omitempty"`
+	UserID    string `json:"userID"`
+}
 
 // CreateHabitJSONBody defines parameters for CreateHabit.
 type CreateHabitJSONBody struct {

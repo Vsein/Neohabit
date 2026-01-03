@@ -33,9 +33,15 @@ type ServerInterface interface {
 	// Create a new account
 	// (POST /signup)
 	Signup(w http.ResponseWriter, r *http.Request)
+	// List skilltrees
+	// (GET /skilltrees)
+	ListSkilltrees(w http.ResponseWriter, r *http.Request)
 	// Returns user's stopwatch
 	// (GET /stopwatch)
 	GetStopwatch(w http.ResponseWriter, r *http.Request)
+	// List tasks
+	// (GET /tasks)
+	ListTasks(w http.ResponseWriter, r *http.Request)
 }
 
 // Unimplemented server implementation that returns http.StatusNotImplemented for each endpoint.
@@ -78,9 +84,21 @@ func (_ Unimplemented) Signup(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
+// List skilltrees
+// (GET /skilltrees)
+func (_ Unimplemented) ListSkilltrees(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
 // Returns user's stopwatch
 // (GET /stopwatch)
 func (_ Unimplemented) GetStopwatch(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// List tasks
+// (GET /tasks)
+func (_ Unimplemented) ListTasks(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -201,6 +219,26 @@ func (siw *ServerInterfaceWrapper) Signup(w http.ResponseWriter, r *http.Request
 	handler.ServeHTTP(w, r)
 }
 
+// ListSkilltrees operation middleware
+func (siw *ServerInterfaceWrapper) ListSkilltrees(w http.ResponseWriter, r *http.Request) {
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListSkilltrees(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // GetStopwatch operation middleware
 func (siw *ServerInterfaceWrapper) GetStopwatch(w http.ResponseWriter, r *http.Request) {
 
@@ -212,6 +250,26 @@ func (siw *ServerInterfaceWrapper) GetStopwatch(w http.ResponseWriter, r *http.R
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.GetStopwatch(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListTasks operation middleware
+func (siw *ServerInterfaceWrapper) ListTasks(w http.ResponseWriter, r *http.Request) {
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListTasks(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -353,7 +411,13 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Post(options.BaseURL+"/signup", wrapper.Signup)
 	})
 	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/skilltrees", wrapper.ListSkilltrees)
+	})
+	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/stopwatch", wrapper.GetStopwatch)
+	})
+	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/tasks", wrapper.ListTasks)
 	})
 
 	return r
@@ -592,6 +656,39 @@ func (response Signup500JSONResponse) VisitSignupResponse(w http.ResponseWriter)
 	return json.NewEncoder(w).Encode(response)
 }
 
+type ListSkilltreesRequestObject struct {
+}
+
+type ListSkilltreesResponseObject interface {
+	VisitListSkilltreesResponse(w http.ResponseWriter) error
+}
+
+type ListSkilltrees200JSONResponse []Skilltree
+
+func (response ListSkilltrees200JSONResponse) VisitListSkilltreesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListSkilltrees401Response struct {
+}
+
+func (response ListSkilltrees401Response) VisitListSkilltreesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type ListSkilltrees500JSONResponse ErrorResponse
+
+func (response ListSkilltrees500JSONResponse) VisitListSkilltreesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 type GetStopwatchRequestObject struct {
 }
 
@@ -625,6 +722,39 @@ func (response GetStopwatch500JSONResponse) VisitGetStopwatchResponse(w http.Res
 	return json.NewEncoder(w).Encode(response)
 }
 
+type ListTasksRequestObject struct {
+}
+
+type ListTasksResponseObject interface {
+	VisitListTasksResponse(w http.ResponseWriter) error
+}
+
+type ListTasks200JSONResponse []Task
+
+func (response ListTasks200JSONResponse) VisitListTasksResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListTasks401Response struct {
+}
+
+func (response ListTasks401Response) VisitListTasksResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type ListTasks500JSONResponse ErrorResponse
+
+func (response ListTasks500JSONResponse) VisitListTasksResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 // StrictServerInterface represents all server handlers.
 type StrictServerInterface interface {
 	// Create habit
@@ -645,9 +775,15 @@ type StrictServerInterface interface {
 	// Create a new account
 	// (POST /signup)
 	Signup(ctx context.Context, request SignupRequestObject) (SignupResponseObject, error)
+	// List skilltrees
+	// (GET /skilltrees)
+	ListSkilltrees(ctx context.Context, request ListSkilltreesRequestObject) (ListSkilltreesResponseObject, error)
 	// Returns user's stopwatch
 	// (GET /stopwatch)
 	GetStopwatch(ctx context.Context, request GetStopwatchRequestObject) (GetStopwatchResponseObject, error)
+	// List tasks
+	// (GET /tasks)
+	ListTasks(ctx context.Context, request ListTasksRequestObject) (ListTasksResponseObject, error)
 }
 
 type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
@@ -844,6 +980,30 @@ func (sh *strictHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// ListSkilltrees operation middleware
+func (sh *strictHandler) ListSkilltrees(w http.ResponseWriter, r *http.Request) {
+	var request ListSkilltreesRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListSkilltrees(ctx, request.(ListSkilltreesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListSkilltrees")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListSkilltreesResponseObject); ok {
+		if err := validResponse.VisitListSkilltreesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // GetStopwatch operation middleware
 func (sh *strictHandler) GetStopwatch(w http.ResponseWriter, r *http.Request) {
 	var request GetStopwatchRequestObject
@@ -861,6 +1021,30 @@ func (sh *strictHandler) GetStopwatch(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(GetStopwatchResponseObject); ok {
 		if err := validResponse.VisitGetStopwatchResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListTasks operation middleware
+func (sh *strictHandler) ListTasks(w http.ResponseWriter, r *http.Request) {
+	var request ListTasksRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListTasks(ctx, request.(ListTasksRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListTasks")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListTasksResponseObject); ok {
+		if err := validResponse.VisitListTasksResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {
