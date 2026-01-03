@@ -297,6 +297,16 @@ components:
       maxLength: 50
       example: "#23BCDB"
 
+    Date:
+      type: string
+      format: date-time
+
+    DateInt:
+      type: integer
+      format: int64
+      description: Unix timestamp (milliseconds)
+      example: 1609459200000
+
     User:
       type: object
       required:
@@ -315,18 +325,11 @@ components:
           type: integer
           format: uint8
         verificationTime:
-          type: integer
-          format: int64
+          $ref: '#/components/schemas/Date'
         createdAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Habit was created
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
         updatedAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Habit was last updated
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
 
     Habit:
       type: object
@@ -346,16 +349,11 @@ components:
         color:
           $ref: '#/components/schemas/Color'
         dueDate:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Habit is due, the so-called goal
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
         createdAt:
-          type: string
-          format: date-time
+          $ref: '#/components/schemas/Date'
         updatedAt:
-          type: string
-          format: date-time
+          $ref: '#/components/schemas/Date'
 
     HeatmapData:
       type: object
@@ -364,12 +362,7 @@ components:
         - value
       properties:
         Date:
-          type: integer
-          format: int64
-          example: 1609459200000
-        # Date:
-        #   type: string
-        #   example: 2025-11-29
+          $ref: '#/components/schemas/Date'
         Value:
           type: integer
           format: uint8
@@ -385,12 +378,7 @@ components:
         - isArchive
       properties:
         Date:
-          type: integer
-          format: int64
-          example: 1609459200000
-        # Date:
-        #   type: string
-        #   example: 2025-11-29
+          $ref: '#/components/schemas/Date'
         Value:
           type: integer
           format: uint8
@@ -426,15 +414,9 @@ components:
           items:
             $ref: '#/components/schemas/HeatmapTarget'
         createdAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Heatmap was created
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
         updatedAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Heatmap was last updated
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
 
     Project:
       type: object
@@ -458,15 +440,9 @@ components:
           items:
             $ref: '#/components/schemas/HabitID'
         createdAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Project was created
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
         updatedAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Project was last updated
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
 
     Stopwatch:
       type: object
@@ -484,10 +460,7 @@ components:
         isAnitiated:
           type: boolean
         startTime:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Stopwatch started its countdown
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
         duration:
           type: integer
           format: int64
@@ -499,15 +472,9 @@ components:
           format: int64
           description: Stopwatch pause duration in milliseconds
         createdAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Project was created
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
         updatedAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Project was last updated
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
 
     Settings:
       type: object
@@ -568,15 +535,9 @@ components:
         hideOnboarding:
           type: boolean
         createdAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Project was created
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
         updatedAt:
-          type: integer
-          format: int64
-          description: Unix timestamp (milliseconds) when Project was last updated
-          example: 1609459200000
+          $ref: '#/components/schemas/Date'
 
     ErrorResponse:
       type: object
