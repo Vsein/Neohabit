@@ -155,7 +155,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HabitID'
+                type: string
         '400':
           description: Invalid request data
           content:
@@ -250,36 +250,6 @@ components:
       bearerFormat: JWT
 
   schemas:
-    UUID:
-      type: string
-      # format: uuid
-      example: "550e8400-e29b-41d4-a716-446655440000"
-      # pattern: '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
-
-    HabitID:
-      type: string
-      # format: uuid
-      description: Unique identifier for Habit
-      example: "550e8400-e29b-41d4-a716-446655440000"
-
-    UserID:
-      type: string
-      # format: uuid
-      description: Unique identifier for User
-      example: "550e8400-e29b-41d4-a716-446655440000"
-
-    HeatmapID:
-      type: string
-      # format: uuid
-      description: Unique identifier for User
-      example: "550e8400-e29b-41d4-a716-446655440000"
-
-    StopwatchID:
-      type: string
-      # format: uuid
-      description: Unique identifier for User
-      example: "550e8400-e29b-41d4-a716-446655440000"
-
     Name:
       type: string
       maxLength: 150
@@ -314,7 +284,7 @@ components:
         - username
       properties:
         id:
-          $ref: '#/components/schemas/UserID'
+          type: string
         username:
           type: string
         password:
@@ -339,9 +309,9 @@ components:
         - name
       properties:
         ID:
-          $ref: '#/components/schemas/HabitID'
+          type: string
         userID:
-          $ref: '#/components/schemas/UserID'
+          type: string
         name:
           $ref: '#/components/schemas/Name'
         description:
@@ -400,11 +370,11 @@ components:
         - name
       properties:
         id:
-          $ref: '#/components/schemas/HeatmapID'
+          type: string
         userID:
-          $ref: '#/components/schemas/UserID'
+          type: string
         habitID:
-          $ref: '#/components/schemas/HabitID'
+          type: string
         data:
           type: array
           items:
@@ -426,9 +396,9 @@ components:
         - name
       properties:
         id:
-          $ref: '#/components/schemas/HabitID'
+          type: string
         userID:
-          $ref: '#/components/schemas/UserID'
+          type: string
         name:
           $ref: '#/components/schemas/Name'
         description:
@@ -438,7 +408,7 @@ components:
         habitIDs:
           type: array
           items:
-            $ref: '#/components/schemas/HabitID'
+            type: string
         createdAt:
           $ref: '#/components/schemas/Date'
         updatedAt:
@@ -452,11 +422,11 @@ components:
         - isInitiated
       properties:
         id:
-          $ref: '#/components/schemas/StopwatchID'
+          type: string
         userID:
-          $ref: '#/components/schemas/UserID'
+          type: string
         habitID:
-          $ref: '#/components/schemas/HabitID'
+          type: string
         isAnitiated:
           type: boolean
         startTime:
@@ -483,9 +453,9 @@ components:
         - userID
       properties:
         id:
-          $ref: '#/components/schemas/HabitID'
+          type: string
         userID:
-          $ref: '#/components/schemas/UserID'
+          type: string
         theme:
           type: string
           enum: ["dark", "light"]

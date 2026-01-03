@@ -27,6 +27,9 @@ const (
 // Color defines model for Color.
 type Color = string
 
+// Date defines model for Date.
+type Date = time.Time
+
 // Description Activity description
 type Description = string
 
@@ -38,70 +41,50 @@ type ErrorResponse struct {
 
 // Habit defines model for Habit.
 type Habit struct {
-	// ID Unique identifier for Habit
-	ID        *HabitID   `json:"ID,omitempty"`
-	Color     *Color     `json:"color,omitempty"`
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	ID        *string `json:"ID,omitempty"`
+	Color     *Color  `json:"color,omitempty"`
+	CreatedAt *Date   `json:"createdAt,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-
-	// DueDate Unix timestamp (milliseconds) when Habit is due, the so-called goal
-	DueDate *int64 `json:"dueDate,omitempty"`
+	DueDate     *Date        `json:"dueDate,omitempty"`
 
 	// Name Activity name
-	Name      Name       `json:"name"`
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
-
-	// UserID Unique identifier for User
-	UserID UserID `json:"userID"`
+	Name      Name   `json:"name"`
+	UpdatedAt *Date  `json:"updatedAt,omitempty"`
+	UserID    string `json:"userID"`
 }
-
-// HabitID Unique identifier for Habit
-type HabitID = string
 
 // Name Activity name
 type Name = string
 
 // Project defines model for Project.
 type Project struct {
-	Color *Color `json:"color,omitempty"`
-
-	// CreatedAt Unix timestamp (milliseconds) when Project was created
-	CreatedAt *int64 `json:"createdAt,omitempty"`
+	Color     *Color `json:"color,omitempty"`
+	CreatedAt *Date  `json:"createdAt,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	HabitIDs    *[]HabitID   `json:"habitIDs,omitempty"`
-
-	// Id Unique identifier for Habit
-	Id HabitID `json:"id"`
+	HabitIDs    *[]string    `json:"habitIDs,omitempty"`
+	Id          string       `json:"id"`
 
 	// Name Activity name
-	Name Name `json:"name"`
-
-	// UpdatedAt Unix timestamp (milliseconds) when Project was last updated
-	UpdatedAt *int64 `json:"updatedAt,omitempty"`
-
-	// UserID Unique identifier for User
-	UserID UserID `json:"userID"`
+	Name      Name   `json:"name"`
+	UpdatedAt *Date  `json:"updatedAt,omitempty"`
+	UserID    string `json:"userID"`
 }
 
 // Settings defines model for Settings.
 type Settings struct {
-	AllowHorizontalScrolling *bool  `json:"allowHorizontalScrolling,omitempty"`
-	CellHeightMultiplier     *uint8 `json:"cellHeightMultiplier,omitempty"`
-	CellWidthMultiplier      *uint8 `json:"cellWidthMultiplier,omitempty"`
-
-	// CreatedAt Unix timestamp (milliseconds) when Project was created
-	CreatedAt               *int64 `json:"createdAt,omitempty"`
-	HabitHeatmapsCurrentDay *uint8 `json:"habitHeatmapsCurrentDay,omitempty"`
-	HabitHeatmapsOverride   *bool  `json:"habitHeatmapsOverride,omitempty"`
-	HideCellHint            *bool  `json:"hideCellHint,omitempty"`
-	HideOnboarding          *bool  `json:"hideOnboarding,omitempty"`
-
-	// Id Unique identifier for Habit
-	Id                           HabitID                     `json:"id"`
+	AllowHorizontalScrolling     *bool                       `json:"allowHorizontalScrolling,omitempty"`
+	CellHeightMultiplier         *uint8                      `json:"cellHeightMultiplier,omitempty"`
+	CellWidthMultiplier          *uint8                      `json:"cellWidthMultiplier,omitempty"`
+	CreatedAt                    *Date                       `json:"createdAt,omitempty"`
+	HabitHeatmapsCurrentDay      *uint8                      `json:"habitHeatmapsCurrentDay,omitempty"`
+	HabitHeatmapsOverride        *bool                       `json:"habitHeatmapsOverride,omitempty"`
+	HideCellHint                 *bool                       `json:"hideCellHint,omitempty"`
+	HideOnboarding               *bool                       `json:"hideOnboarding,omitempty"`
+	Id                           string                      `json:"id"`
 	OverviewApplyLimit           *bool                       `json:"overviewApplyLimit,omitempty"`
 	OverviewCurrentDay           *SettingsOverviewCurrentDay `json:"overviewCurrentDay,omitempty"`
 	OverviewDuration             *uint8                      `json:"overviewDuration,omitempty"`
@@ -111,12 +94,8 @@ type Settings struct {
 	ReadSettingsFromConfigFile   *bool                       `json:"readSettingsFromConfigFile,omitempty"`
 	ShowStopwatchTimeInPageTitle *bool                       `json:"showStopwatchTimeInPageTitle,omitempty"`
 	Theme                        *SettingsTheme              `json:"theme,omitempty"`
-
-	// UpdatedAt Unix timestamp (milliseconds) when Project was last updated
-	UpdatedAt *int64 `json:"updatedAt,omitempty"`
-
-	// UserID Unique identifier for User
-	UserID UserID `json:"userID"`
+	UpdatedAt                    *Date                       `json:"updatedAt,omitempty"`
+	UserID                       string                      `json:"userID"`
 }
 
 // SettingsOverviewCurrentDay defines model for Settings.OverviewCurrentDay.
@@ -124,9 +103,6 @@ type SettingsOverviewCurrentDay string
 
 // SettingsTheme defines model for Settings.Theme.
 type SettingsTheme string
-
-// UserID Unique identifier for User
-type UserID = string
 
 // CreateHabitJSONBody defines parameters for CreateHabit.
 type CreateHabitJSONBody struct {

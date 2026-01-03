@@ -367,7 +367,7 @@ type CreateHabitResponseObject interface {
 	VisitCreateHabitResponse(w http.ResponseWriter) error
 }
 
-type CreateHabit201JSONResponse HabitID
+type CreateHabit201JSONResponse string
 
 func (response CreateHabit201JSONResponse) VisitCreateHabitResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
