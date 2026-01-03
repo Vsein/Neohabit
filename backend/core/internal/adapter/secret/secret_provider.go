@@ -34,30 +34,8 @@ func NewSecretProviderCache(ttl time.Duration, fetcher func(name string) (string
 }
 
 func (r *SecretProviderCache) GetJWTSecret() (string, error) {
-	r.mu.RLock()
-
-	entry, exists := r.cache[key]
-	if exists && time.Since(entry.fetchedAt) < r.cacheTTL {
-		secret := entry.value
-		r.mu.RUnlock()
-		return secret, nil
-	}
-
-	r.mu.RUnlock()
-
-	r.mu.Lock()
-	defer r.mu.Unlock()
-
-	entry, exists = r.cache[key]
-	if exists && time.Since(entry.fetchedAt) < r.cacheTTL {
-		return entry.value, nil
-	}
-
 	secret, err := r.fetcher(key)
 	if err != nil {
-		if exists {
-			return entry.value, nil
-		}
 		return "", fmt.Errorf("failed to fetch secret %q: %w", key, err)
 	}
 
