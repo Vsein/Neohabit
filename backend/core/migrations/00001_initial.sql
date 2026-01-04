@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     habit_id TEXT REFERENCES habits(id) ON DELETE SET NULL,
     name TEXT NOT NULL,
     description TEXT,
-    due_date bigint,
+    due_date TIMESTAMPTZ ,
     is_important BOOLEAN NOT NULL DEFAULT FALSE,
     is_completed BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,

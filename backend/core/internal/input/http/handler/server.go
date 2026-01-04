@@ -34,6 +34,7 @@ type server struct {
 	users    *cases.UserCase
 	habits   *cases.HabitCase
 	projects *cases.ProjectCase
+	tasks    *cases.TaskCase
 	auth     *cases.AuthCase
 	logger   *zap.Logger
 	debug    bool
@@ -45,6 +46,7 @@ func NewServer(
 	users *cases.UserCase,
 	habits *cases.HabitCase,
 	projects *cases.ProjectCase,
+	tasks *cases.TaskCase,
 	auth *cases.AuthCase,
 	logger *zap.Logger,
 	debug bool,
@@ -54,6 +56,7 @@ func NewServer(
 		users:    users,
 		habits:   habits,
 		projects: projects,
+		tasks:    tasks,
 		auth:     auth,
 		logger:   logger,
 		debug:    debug,
@@ -162,7 +165,7 @@ func (s *server) Login(
 	}, nil
 }
 
-// Returns all the habits of the authorized user
+// Returns all habits of the authorized user
 // GET /habit
 func (s *server) ListHabits(
 	ctx context.Context,
@@ -245,8 +248,8 @@ func (s *server) CreateHabit(
 // 	return gen.GetHabit200JSONResponse(response), nil
 // }
 
-// Returns all the habits of the authorized user
-// GET /habit
+// Returns all projects of the authorized user
+// GET /project
 func (s *server) ListProjects(
 	ctx context.Context,
 	request gen.ListProjectsRequestObject,
@@ -259,7 +262,7 @@ func (s *server) ListProjects(
 	// Call use-case
 	projects, err := s.projects.List(ctx, userID)
 	if err != nil {
-		s.logger.Error("failed to list habits", zap.Error(err))
+		s.logger.Error("failed to list projects", zap.Error(err))
 		return gen.ListProjects500JSONResponse{}, nil
 	}
 
@@ -270,6 +273,33 @@ func (s *server) ListProjects(
 	}
 
 	return gen.ListProjects200JSONResponse(response), nil
+}
+
+// Returns all tasks of the authorized user
+// GET /task
+func (s *server) ListTasks(
+	ctx context.Context,
+	request gen.ListTasksRequestObject,
+) (gen.ListTasksResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.ListTasks401Response{}, nil
+	}
+
+	// Call use-case
+	tasks, err := s.tasks.List(ctx, userID)
+	if err != nil {
+		s.logger.Error("failed to list tasks", zap.Error(err))
+		return gen.ListTasks500JSONResponse{}, nil
+	}
+
+	// Convert to API response
+	response := make([]gen.Task, 0, len(tasks))
+	for _, task := range tasks {
+		response = append(response, toAPITask(task))
+	}
+
+	return gen.ListTasks200JSONResponse(response), nil
 }
 
 func toAPIHabit(e *entity.Habit) gen.Habit {
@@ -293,6 +323,21 @@ func toAPIProject(e *entity.Project) gen.Project {
 		Description: &e.Description,
 		Color:       &e.Color,
 		HabitIds:    &e.HabitIDs,
+		CreatedAt:   &e.CreatedAt,
+		UpdatedAt:   &e.UpdatedAt,
+	}
+}
+
+func toAPITask(e *entity.Task) gen.Task {
+	return gen.Task{
+		ID:          e.ID,
+		UserID:      e.UserID,
+		HabitID:     &e.HabitID,
+		Name:        e.Name,
+		Description: &e.Description,
+		DueDate:     &e.DueDate,
+		IsImportant: &e.IsImportant,
+		IsCompleted: &e.IsCompleted,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 	}
