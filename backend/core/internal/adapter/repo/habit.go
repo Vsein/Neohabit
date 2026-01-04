@@ -30,7 +30,7 @@ type Habit struct {
 	logger *zap.Logger
 }
 
-func NewHabit(pool db.PoolTX, logger *zap.Logger) *Habit {
+func NewHabitRepo(pool db.PoolTX, logger *zap.Logger) *Habit {
 	return &Habit{
 		pool:   pool,
 		logger: logger,

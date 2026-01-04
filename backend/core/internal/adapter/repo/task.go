@@ -30,7 +30,7 @@ type Task struct {
 	logger *zap.Logger
 }
 
-func NewTask(pool db.PoolTX, logger *zap.Logger) *Task {
+func NewTaskRepo(pool db.PoolTX, logger *zap.Logger) *Task {
 	return &Task{
 		pool:   pool,
 		logger: logger,

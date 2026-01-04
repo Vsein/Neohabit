@@ -30,7 +30,7 @@ type Project struct {
 	logger *zap.Logger
 }
 
-func NewProject(pool db.PoolTX, logger *zap.Logger) *Project {
+func NewProjectRepo(pool db.PoolTX, logger *zap.Logger) *Project {
 	return &Project{
 		pool:   pool,
 		logger: logger,

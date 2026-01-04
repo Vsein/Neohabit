@@ -44,10 +44,10 @@ func Run(cfg *config.Config) error {
 	txManager := db.NewTxManager(pool)
 	logger.Info("transaction manager initialization completed")
 
-	userRepo := repo.NewUser(pool, logger.Named("user"))
-	habitRepo := repo.NewHabit(pool, logger.Named("habit"))
-	projectRepo := repo.NewProject(pool, logger.Named("project"))
-	taskRepo := repo.NewTask(pool, logger.Named("task"))
+	userRepo := repo.NewUserRepo(pool, logger.Named("user"))
+	habitRepo := repo.NewHabitRepo(pool, logger.Named("habit"))
+	projectRepo := repo.NewProjectRepo(pool, logger.Named("project"))
+	taskRepo := repo.NewTaskRepo(pool, logger.Named("task"))
 
 	userCase := cases.NewUserCase(userRepo, txManager)
 	habitCase := cases.NewHabitCase(habitRepo, txManager)
