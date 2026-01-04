@@ -30,30 +30,33 @@ var _ gen.StrictServerInterface = (*server)(nil)
 
 // server implements the HTTP handlers for the API
 type server struct {
-	address string
-	habits  *cases.HabitCase
-	users   *cases.UserCase
-	auth    *cases.AuthCase
-	logger  *zap.Logger
-	debug   bool
+	address  string
+	users    *cases.UserCase
+	habits   *cases.HabitCase
+	projects *cases.ProjectCase
+	auth     *cases.AuthCase
+	logger   *zap.Logger
+	debug    bool
 }
 
 // NewServer creates a new HTTP server instance
 func NewServer(
 	address string,
-	habits *cases.HabitCase,
 	users *cases.UserCase,
+	habits *cases.HabitCase,
+	projects *cases.ProjectCase,
 	auth *cases.AuthCase,
 	logger *zap.Logger,
 	debug bool,
 ) *server {
 	return &server{
-		address: address,
-		habits:  habits,
-		users:   users,
-		auth:    auth,
-		logger:  logger,
-		debug:   debug,
+		address:  address,
+		users:    users,
+		habits:   habits,
+		projects: projects,
+		auth:     auth,
+		logger:   logger,
+		debug:    debug,
 	}
 }
 
@@ -159,6 +162,33 @@ func (s *server) Login(
 	}, nil
 }
 
+// Returns all the habits of the authorized user
+// GET /habit
+func (s *server) ListHabits(
+	ctx context.Context,
+	request gen.ListHabitsRequestObject,
+) (gen.ListHabitsResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.ListHabits401Response{}, nil
+	}
+
+	// Call use-case
+	habits, err := s.habits.List(ctx, userID)
+	if err != nil {
+		s.logger.Error("failed to list habits", zap.Error(err))
+		return gen.ListHabits500JSONResponse{}, nil
+	}
+
+	// Convert to API response
+	response := make([]gen.Habit, 0, len(habits))
+	for _, habit := range habits {
+		response = append(response, toAPIHabit(habit))
+	}
+
+	return gen.ListHabits200JSONResponse(response), nil
+}
+
 // POST /habit
 func (s *server) CreateHabit(
 	ctx context.Context,
@@ -217,37 +247,52 @@ func (s *server) CreateHabit(
 
 // Returns all the habits of the authorized user
 // GET /habit
-func (s *server) ListHabits(
+func (s *server) ListProjects(
 	ctx context.Context,
-	request gen.ListHabitsRequestObject,
-) (gen.ListHabitsResponseObject, error) {
+	request gen.ListProjectsRequestObject,
+) (gen.ListProjectsResponseObject, error) {
 	userID, ok := s.auth.GetUserID(ctx)
 	if !ok {
-		return gen.ListHabits401Response{}, nil
+		return gen.ListProjects401Response{}, nil
 	}
 
 	// Call use-case
-	habits, err := s.habits.List(ctx, userID)
+	projects, err := s.projects.List(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to list habits", zap.Error(err))
-		return gen.ListHabits500JSONResponse{}, nil
+		return gen.ListProjects500JSONResponse{}, nil
 	}
 
 	// Convert to API response
-	response := make([]gen.Habit, 0, len(habits))
-	for _, habit := range habits {
-		response = append(response, toAPIHabit(habit))
+	response := make([]gen.Project, 0, len(projects))
+	for _, project := range projects {
+		response = append(response, toAPIProject(project))
 	}
 
-	return gen.ListHabits200JSONResponse(response), nil
+	return gen.ListProjects200JSONResponse(response), nil
 }
 
-// toAPIHabit converts domain entity to API response
 func toAPIHabit(e *entity.Habit) gen.Habit {
 	return gen.Habit{
-		ID:          &e.ID,
+		ID:          e.ID,
+		UserID:      e.UserID,
 		Name:        e.Name,
 		Description: &e.Description,
+		Color:       &e.Color,
+		DueDate:     &e.DueDate,
+		CreatedAt:   &e.CreatedAt,
+		UpdatedAt:   &e.UpdatedAt,
+	}
+}
+
+func toAPIProject(e *entity.Project) gen.Project {
+	return gen.Project{
+		ID:          e.ID,
+		UserID:      e.UserID,
+		Name:        e.Name,
+		Description: &e.Description,
+		Color:       &e.Color,
+		HabitIds:    &e.HabitIDs,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 	}

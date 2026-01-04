@@ -13,7 +13,6 @@ import (
 	"neohabit/core/internal/port/repo"
 )
 
-// SQL queries for Habit operations
 const (
 	// queryReadHabit   = `SELECT * FROM habits WHERE id = $1`
 	queryListHabits  = `SELECT * FROM habits WHERE user_id = $1`
@@ -98,7 +97,6 @@ func (r *Habit) List(ctx context.Context, user_id string) ([]*entity.Habit, erro
 	return habits, nil
 }
 
-// Create creates a new Habit in the database
 func (r *Habit) Create(ctx context.Context, habit *entity.Habit) error {
 	_, err := r.pool.Exec(
 		ctx,

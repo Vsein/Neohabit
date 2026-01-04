@@ -44,11 +44,13 @@ func Run(cfg *config.Config) error {
 	txManager := db.NewTxManager(pool)
 	logger.Info("transaction manager initialization completed")
 
-	habitRepo := repo.NewHabit(pool, logger.Named("habit"))
 	userRepo := repo.NewUser(pool, logger.Named("user"))
+	habitRepo := repo.NewHabit(pool, logger.Named("habit"))
+	projectRepo := repo.NewProject(pool, logger.Named("project"))
 
-	habitCase := cases.NewHabitCase(habitRepo, txManager)
 	userCase := cases.NewUserCase(userRepo, txManager)
+	habitCase := cases.NewHabitCase(habitRepo, txManager)
+	projectCase := cases.NewProjectCase(projectRepo, txManager)
 
 	// Initialize authentication service
 	secretProvider := secret.NewSecretProviderCache(secretTTL, secret.EnvSecretFetcher)
@@ -58,8 +60,9 @@ func Run(cfg *config.Config) error {
 	logger.Info("starting HTTP server")
 	handler.NewServer(
 		cfg.Address,
-		habitCase,
 		userCase,
+		habitCase,
+		projectCase,
 		authService,
 		logger.Named("http-server"),
 		cfg.LogConfig.Level == -1, // debug mode

@@ -13,13 +13,11 @@ import (
 	"neohabit/core/internal/port/repo"
 )
 
-// HabitCase orchestrates Habit-related business logic
 type HabitCase struct {
 	habitRepo repo.HabitRepo
 	txManager port.TransactionManager
 }
 
-// NewHabitCase creates a new HabitCase instance
 func NewHabitCase(
 	habitRepo repo.HabitRepo,
 	txManager port.TransactionManager,
@@ -30,14 +28,11 @@ func NewHabitCase(
 	}
 }
 
-// Create creates a new Habit
 func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit) (string, error) {
-	// Generate ID and timestamps
 	habit.ID = uuid.NewString()
 	habit.CreatedAt = time.Now()
 	habit.UpdatedAt = habit.CreatedAt
 
-	// Execute in transaction
 	_, err := c.txManager.WithTx(ctx, func(ctx context.Context) (any, error) {
 		err := c.habitRepo.Create(ctx, habit)
 		if err != nil {

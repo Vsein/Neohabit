@@ -1,5 +1,7 @@
 package entity
 
+import "time"
+
 type Project struct {
 	ID          string
 	UserID      string
@@ -7,8 +9,8 @@ type Project struct {
 	Description string
 	Color       string
 	HabitIDs    []string
-	CreatedAt   int64
-	UpdatedAt   int64
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type ProjectFilter struct {
