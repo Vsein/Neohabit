@@ -49,18 +49,18 @@ type ErrorResponse struct {
 
 // Habit defines model for Habit.
 type Habit struct {
-	ID        *string `json:"ID,omitempty"`
-	Color     *Color  `json:"color,omitempty"`
-	CreatedAt *Date   `json:"createdAt,omitempty"`
+	Color     *Color `json:"color,omitempty"`
+	CreatedAt *Date  `json:"created_at,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
 	DueDate     *Date        `json:"dueDate,omitempty"`
+	ID          string       `json:"id"`
 
 	// Name Activity name
 	Name      Name   `json:"name"`
-	UpdatedAt *Date  `json:"updatedAt,omitempty"`
-	UserID    string `json:"userID"`
+	UpdatedAt *Date  `json:"updated_at,omitempty"`
+	UserID    string `json:"user_id"`
 }
 
 // Name Activity name
@@ -69,41 +69,41 @@ type Name = string
 // Project defines model for Project.
 type Project struct {
 	Color     *Color `json:"color,omitempty"`
-	CreatedAt *Date  `json:"createdAt,omitempty"`
+	CreatedAt *Date  `json:"created_at,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	HabitIDs    *[]string    `json:"habitIDs,omitempty"`
-	Id          string       `json:"id"`
+	HabitIds    *[]string    `json:"habit_ids,omitempty"`
+	ID          string       `json:"id"`
 
 	// Name Activity name
 	Name      Name   `json:"name"`
-	UpdatedAt *Date  `json:"updatedAt,omitempty"`
-	UserID    string `json:"userID"`
+	UpdatedAt *Date  `json:"updated_at,omitempty"`
+	UserID    string `json:"user_id"`
 }
 
 // Settings defines model for Settings.
 type Settings struct {
-	AllowHorizontalScrolling     *bool                       `json:"allowHorizontalScrolling,omitempty"`
-	CellHeightMultiplier         *uint8                      `json:"cellHeightMultiplier,omitempty"`
-	CellWidthMultiplier          *uint8                      `json:"cellWidthMultiplier,omitempty"`
-	CreatedAt                    *Date                       `json:"createdAt,omitempty"`
-	HabitHeatmapsCurrentDay      *uint8                      `json:"habitHeatmapsCurrentDay,omitempty"`
-	HabitHeatmapsOverride        *bool                       `json:"habitHeatmapsOverride,omitempty"`
-	HideCellHint                 *bool                       `json:"hideCellHint,omitempty"`
-	HideOnboarding               *bool                       `json:"hideOnboarding,omitempty"`
-	Id                           string                      `json:"id"`
-	OverviewApplyLimit           *bool                       `json:"overviewApplyLimit,omitempty"`
-	OverviewCurrentDay           *SettingsOverviewCurrentDay `json:"overviewCurrentDay,omitempty"`
-	OverviewDuration             *uint8                      `json:"overviewDuration,omitempty"`
-	OverviewDurationLimit        *uint8                      `json:"overviewDurationLimit,omitempty"`
-	OverviewOffset               *uint8                      `json:"overviewOffset,omitempty"`
-	OverviewVertical             *bool                       `json:"overviewVertical,omitempty"`
-	ReadSettingsFromConfigFile   *bool                       `json:"readSettingsFromConfigFile,omitempty"`
-	ShowStopwatchTimeInPageTitle *bool                       `json:"showStopwatchTimeInPageTitle,omitempty"`
+	AllowHorizontalScrolling     *bool                       `json:"allow_horizontal_scrolling,omitempty"`
+	CellHeightMultiplier         *uint8                      `json:"cell_height_multiplier,omitempty"`
+	CellWidthMultiplier          *uint8                      `json:"cell_width_multiplier,omitempty"`
+	CreatedAt                    *Date                       `json:"created_at,omitempty"`
+	HabitHeatmapsCurrentDay      *uint8                      `json:"habit_heatmaps_current_day,omitempty"`
+	HabitHeatmapsOverride        *bool                       `json:"habit_heatmaps_override,omitempty"`
+	HideCellHint                 *bool                       `json:"hide_cell_hint,omitempty"`
+	HideOnboarding               *bool                       `json:"hide_onboarding,omitempty"`
+	ID                           string                      `json:"id"`
+	OverviewApplyLimit           *bool                       `json:"overview_apply_limit,omitempty"`
+	OverviewCurrentDay           *SettingsOverviewCurrentDay `json:"overview_current_day,omitempty"`
+	OverviewDuration             *uint8                      `json:"overview_duration,omitempty"`
+	OverviewDurationLimit        *uint8                      `json:"overview_duration_limit,omitempty"`
+	OverviewOffset               *uint8                      `json:"overview_offset,omitempty"`
+	OverviewVertical             *bool                       `json:"overview_vertical,omitempty"`
+	ReadSettingsFromConfigFile   *bool                       `json:"read_settings_from_config_file,omitempty"`
+	ShowStopwatchTimeInPageTitle *bool                       `json:"show_stopwatch_time_in_page_title,omitempty"`
 	Theme                        *SettingsTheme              `json:"theme,omitempty"`
-	UpdatedAt                    *Date                       `json:"updatedAt,omitempty"`
-	UserID                       string                      `json:"userID"`
+	UpdatedAt                    *Date                       `json:"updated_at,omitempty"`
+	UserID                       string                      `json:"user_id"`
 }
 
 // SettingsOverviewCurrentDay defines model for Settings.OverviewCurrentDay.
@@ -114,18 +114,18 @@ type SettingsTheme string
 
 // Skill defines model for Skill.
 type Skill struct {
-	CreatedAt *Date `json:"createdAt,omitempty"`
+	CreatedAt *Date `json:"created_at,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	Id          string       `json:"id"`
-	IsRootSkill bool         `json:"isRootSkill"`
+	ID          string       `json:"id"`
+	IsRootSkill *bool        `json:"is_root_skill,omitempty"`
 
 	// Name Activity name
 	Name          Name         `json:"name"`
-	ParentSkillID string       `json:"parentSkillID"`
+	ParentSkillID *string      `json:"parent_skill_id,omitempty"`
 	Status        *SkillStatus `json:"status,omitempty"`
-	UpdatedAt     *Date        `json:"updatedAt,omitempty"`
+	UpdatedAt     *Date        `json:"updated_at,omitempty"`
 }
 
 // SkillStatus defines model for Skill.Status.
@@ -133,36 +133,36 @@ type SkillStatus string
 
 // Skilltree defines model for Skilltree.
 type Skilltree struct {
-	CreatedAt *Date `json:"createdAt,omitempty"`
+	CreatedAt *Date `json:"created_at,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	Id          string       `json:"id"`
+	ID          string       `json:"id"`
 
 	// Name Activity name
 	Name      Name     `json:"name"`
-	ProjectID *string  `json:"projectID,omitempty"`
+	ProjectID *string  `json:"project_id,omitempty"`
 	Skills    *[]Skill `json:"skills,omitempty"`
-	UpdatedAt *Date    `json:"updatedAt,omitempty"`
-	UserID    string   `json:"userID"`
+	UpdatedAt *Date    `json:"updated_at,omitempty"`
+	UserID    string   `json:"user_id"`
 }
 
 // Task defines model for Task.
 type Task struct {
-	CreatedAt *Date `json:"createdAt,omitempty"`
+	CreatedAt *Date `json:"created_at,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	DueDate     *Date        `json:"dueDate,omitempty"`
-	HabitID     *string      `json:"habitID,omitempty"`
-	Id          string       `json:"id"`
-	IsCompleted *bool        `json:"isCompleted,omitempty"`
-	IsImportant *bool        `json:"isImportant,omitempty"`
+	DueDate     *Date        `json:"due_date,omitempty"`
+	HabitID     *string      `json:"habit_id,omitempty"`
+	ID          string       `json:"id"`
+	IsCompleted *bool        `json:"is_completed,omitempty"`
+	IsImportant *bool        `json:"is_important,omitempty"`
 
 	// Name Activity name
 	Name      Name   `json:"name"`
-	UpdatedAt *Date  `json:"updatedAt,omitempty"`
-	UserID    string `json:"userID"`
+	UpdatedAt *Date  `json:"updated_at,omitempty"`
+	UserID    string `json:"user_id"`
 }
 
 // CreateHabitJSONBody defines parameters for CreateHabit.

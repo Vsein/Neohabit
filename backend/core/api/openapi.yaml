@@ -339,26 +339,26 @@ components:
           type: string
         verified:
           type: boolean
-        verificationAttempts:
+        verification_attempts:
           type: integer
           format: uint8
-        verificationTime:
+        verification_time:
           $ref: '#/components/schemas/Date'
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     Habit:
       type: object
       required:
         - id
-        - userID
+        - user_id
         - name
       properties:
-        ID:
+        id:
           type: string
-        userID:
+        user_id:
           type: string
         name:
           $ref: '#/components/schemas/Name'
@@ -368,9 +368,9 @@ components:
           $ref: '#/components/schemas/Color'
         dueDate:
           $ref: '#/components/schemas/Date'
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     HeatmapData:
@@ -379,9 +379,9 @@ components:
         - date
         - value
       properties:
-        Date:
+        date:
           $ref: '#/components/schemas/Date'
-        Value:
+        value:
           type: integer
           format: uint8
           description: "How many times the activity was completed this day"
@@ -393,35 +393,35 @@ components:
         - date
         - value
         - period
-        - isArchive
+        - is_archive
       properties:
-        Date:
+        date:
           $ref: '#/components/schemas/Date'
-        Value:
+        value:
           type: integer
           format: uint8
           description: "How many times the activity has to be completed in the specified Period"
           example: 2
-        Period:
+        period:
           type: integer
           format: uint8
           description: "How many days you have to complete the activity"
           example: 1
-        IsArchive:
+        is_archive:
           type: boolean
 
     Heatmap:
       type: object
       required:
         - id
-        - userID
+        - user_id
         - name
       properties:
         id:
           type: string
-        userID:
+        user_id:
           type: string
-        habitID:
+        habit_id:
           type: string
         data:
           type: array
@@ -431,21 +431,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/HeatmapTarget'
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     Project:
       type: object
       required:
         - id
-        - userID
+        - user_id
         - name
       properties:
         id:
           type: string
-        userID:
+        user_id:
           type: string
         name:
           $ref: '#/components/schemas/Name'
@@ -453,55 +453,55 @@ components:
           $ref: '#/components/schemas/Description'
         color:
           $ref: '#/components/schemas/Color'
-        habitIDs:
+        habit_ids:
           type: array
           items:
             type: string
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     Task:
       type: object
       required:
         - id
-        - userID
+        - user_id
         - name
       properties:
         id:
           type: string
-        userID:
+        user_id:
           type: string
-        habitID:
+        habit_id:
           type: string
         name:
           $ref: '#/components/schemas/Name'
         description:
           $ref: '#/components/schemas/Description'
-        dueDate:
+        due_date:
           $ref: '#/components/schemas/Date'
-        isImportant:
+        is_important:
           type: boolean
-        isCompleted:
+        is_completed:
           type: boolean
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     Skilltree:
       type: object
       required:
         - id
-        - userID
+        - user_id
         - name
       properties:
         id:
           type: string
-        userID:
+        user_id:
           type: string
-        projectID:
+        project_id:
           type: string
         name:
           $ref: '#/components/schemas/Name'
@@ -511,9 +511,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Skill'
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     Skill:
@@ -526,9 +526,9 @@ components:
       properties:
         id:
           type: string
-        parentSkillID:
+        parent_skill_id:
           type: string
-        isRootSkill:
+        is_root_skill:
           type: boolean
         name:
           $ref: '#/components/schemas/Name'
@@ -537,104 +537,104 @@ components:
         status:
           type: string
           enum: [completed, idle, in-progress, disregarded]
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     Stopwatch:
       type: object
       required:
         - id
-        - userID
+        - user_id
         - isInitiated
       properties:
         id:
           type: string
-        userID:
+        user_id:
           type: string
-        habitID:
+        habit_id:
           type: string
-        isInitiated:
+        is_initiated:
           type: boolean
-        startTime:
+        start_time:
           $ref: '#/components/schemas/Date'
         duration:
           type: integer
           format: int64
           description: Stopwatch duration in milliseconds
-        isPaused:
+        is_paused:
           type: boolean
-        pauseDuration:
+        pause_duration:
           type: integer
           format: int64
           description: Stopwatch pause duration in milliseconds
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     Settings:
       type: object
       required:
         - id
-        - userID
+        - user_id
       properties:
         id:
           type: string
-        userID:
+        user_id:
           type: string
         theme:
           type: string
           enum: ["dark", "light"]
-        readSettingsFromConfigFile:
+        read_settings_from_config_file:
           type: boolean
-        cellHeightMultiplier:
+        cell_height_multiplier:
           type: integer
           format: uint8
-        cellWidthMultiplier:
+        cell_width_multiplier:
           type: integer
           format: uint8
-        overviewVertical:
+        overview_vertical:
           type: boolean
-        overviewCurrentDay:
+        overview_current_day:
           type: string
           enum: ["end", "middle", "start"]
-        overviewOffset:
+        overview_offset:
           type: integer
           format: uint8
 
         # Want to deprecate
-        overviewDuration:
+        overview_duration:
           type: integer
           format: uint8
-        overviewApplyLimit:
+        overview_apply_limit:
           type: boolean
-        overviewDurationLimit:
+        overview_duration_limit:
           type: integer
           format: uint8
         #######################
 
-        allowHorizontalScrolling:
+        allow_horizontal_scrolling:
           type: boolean
 
         # Want to deprecate
-        habitHeatmapsOverride:
+        habit_heatmaps_override:
           type: boolean
-        habitHeatmapsCurrentDay:
+        habit_heatmaps_current_day:
           type: integer
           format: uint8
         #######################
 
-        showStopwatchTimeInPageTitle:
+        show_stopwatch_time_in_page_title:
           type: boolean
-        hideCellHint:
+        hide_cell_hint:
           type: boolean
-        hideOnboarding:
+        hide_onboarding:
           type: boolean
-        createdAt:
+        created_at:
           $ref: '#/components/schemas/Date'
-        updatedAt:
+        updated_at:
           $ref: '#/components/schemas/Date'
 
     ErrorResponse:
