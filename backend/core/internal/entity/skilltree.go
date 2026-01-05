@@ -1,13 +1,18 @@
 package entity
 
+import "time"
+
 type Skilltree struct {
-	ID        string
-	UserID    string
-	SkillIDs  []string
-	Name      string
-	Color     string
-	CreatedAt int64
-	UpdatedAt int64
+	ID          string
+	UserID      string
+	ProjectID   string
+	HabitID     string
+	SkillIDs    []string
+	Name        string
+	Description string
+	Color       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type Skills struct {
@@ -17,6 +22,6 @@ type Skills struct {
 	Description   string
 	Status        string
 	IsRootSkill   bool
-	CreatedAt     int64
-	UpdatedAt     int64
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
 }

@@ -503,14 +503,20 @@ components:
           type: string
         project_id:
           type: string
+        habit_id:
+          type: string
         name:
           $ref: '#/components/schemas/Name'
         description:
           $ref: '#/components/schemas/Description'
-        skills:
+        # skills:
+        #   type: array
+        #   items:
+        #     $ref: '#/components/schemas/Skill'
+        skill_ids:
           type: array
           items:
-            $ref: '#/components/schemas/Skill'
+            type: string
         created_at:
           $ref: '#/components/schemas/Date'
         updated_at:

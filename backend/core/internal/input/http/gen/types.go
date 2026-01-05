@@ -149,14 +149,15 @@ type Skilltree struct {
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
+	HabitID     *string      `json:"habit_id,omitempty"`
 	ID          string       `json:"id"`
 
 	// Name Activity name
-	Name      Name     `json:"name"`
-	ProjectID *string  `json:"project_id,omitempty"`
-	Skills    *[]Skill `json:"skills,omitempty"`
-	UpdatedAt *Date    `json:"updated_at,omitempty"`
-	UserID    string   `json:"user_id"`
+	Name      Name      `json:"name"`
+	ProjectID *string   `json:"project_id,omitempty"`
+	SkillIds  *[]string `json:"skill_ids,omitempty"`
+	UpdatedAt *Date     `json:"updated_at,omitempty"`
+	UserID    string    `json:"user_id"`
 }
 
 // Stopwatch defines model for Stopwatch.

@@ -35,6 +35,7 @@ type server struct {
 	habits      *cases.HabitCase
 	projects    *cases.ProjectCase
 	tasks       *cases.TaskCase
+	skilltrees  *cases.SkilltreeCase
 	settings    *cases.SettingsCase
 	stopwatches *cases.StopwatchCase
 	auth        *cases.AuthCase
@@ -49,6 +50,7 @@ func NewServer(
 	habits *cases.HabitCase,
 	projects *cases.ProjectCase,
 	tasks *cases.TaskCase,
+	skilltrees *cases.SkilltreeCase,
 	settings *cases.SettingsCase,
 	stopwatches *cases.StopwatchCase,
 	auth *cases.AuthCase,
@@ -61,6 +63,7 @@ func NewServer(
 		habits:      habits,
 		projects:    projects,
 		tasks:       tasks,
+		skilltrees:  skilltrees,
 		settings:    settings,
 		stopwatches: stopwatches,
 		auth:        auth,
@@ -308,6 +311,33 @@ func (s *server) ListTasks(
 	return gen.ListTasks200JSONResponse(response), nil
 }
 
+// Returns all tasks of the authorized user
+// GET /skilltrees
+func (s *server) ListSkilltrees(
+	ctx context.Context,
+	request gen.ListSkilltreesRequestObject,
+) (gen.ListSkilltreesResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.ListSkilltrees401Response{}, nil
+	}
+
+	// Call use-case
+	skilltrees, err := s.skilltrees.List(ctx, userID)
+	if err != nil {
+		s.logger.Error("failed to list skilltrees", zap.Error(err))
+		return gen.ListSkilltrees500JSONResponse{}, nil
+	}
+
+	// Convert to API response
+	response := make([]gen.Skilltree, 0, len(skilltrees))
+	for _, skilltree := range skilltrees {
+		response = append(response, toAPISkilltree(skilltree))
+	}
+
+	return gen.ListSkilltrees200JSONResponse(response), nil
+}
+
 // GET /stopwatch
 func (s *server) GetStopwatch(
 	ctx context.Context,
@@ -384,6 +414,20 @@ func toAPITask(e *entity.Task) gen.Task {
 		DueDate:     &e.DueDate,
 		IsImportant: &e.IsImportant,
 		IsCompleted: &e.IsCompleted,
+		CreatedAt:   &e.CreatedAt,
+		UpdatedAt:   &e.UpdatedAt,
+	}
+}
+
+func toAPISkilltree(e *entity.Skilltree) gen.Skilltree {
+	return gen.Skilltree{
+		ID:          e.ID,
+		UserID:      e.UserID,
+		ProjectID:   &e.HabitID,
+		HabitID:     &e.HabitID,
+		Name:        e.Name,
+		Description: &e.Description,
+		SkillIds:    &e.SkillIDs,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 	}
