@@ -35,7 +35,6 @@ func NewSettingsRepo(pool db.PoolTX, logger *zap.Logger) *Settings {
 	}
 }
 
-// List retrieves Settings of the logged in user from the database
 func (r *Settings) Read(ctx context.Context, user_id string) (*entity.Settings, error) {
 	var settings entity.Settings
 	err := r.pool.QueryRow(ctx, queryReadSettings, user_id).Scan(

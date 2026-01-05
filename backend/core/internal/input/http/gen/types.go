@@ -159,6 +159,24 @@ type Skilltree struct {
 	UserID    string   `json:"user_id"`
 }
 
+// Stopwatch defines model for Stopwatch.
+type Stopwatch struct {
+	CreatedAt *Date `json:"created_at,omitempty"`
+
+	// Duration Stopwatch duration in milliseconds
+	Duration    *int64  `json:"duration,omitempty"`
+	HabitID     *string `json:"habit_id,omitempty"`
+	ID          string  `json:"id"`
+	IsInitiated *bool   `json:"is_initiated,omitempty"`
+	IsPaused    *bool   `json:"is_paused,omitempty"`
+
+	// PauseDuration Stopwatch pause duration in milliseconds
+	PauseDuration *int64 `json:"pause_duration,omitempty"`
+	StartTime     *Date  `json:"start_time,omitempty"`
+	UpdatedAt     *Date  `json:"updated_at,omitempty"`
+	UserID        string `json:"user_id"`
+}
+
 // Task defines model for Task.
 type Task struct {
 	CreatedAt *Date `json:"created_at,omitempty"`

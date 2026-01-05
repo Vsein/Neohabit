@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS habits (
     name TEXT NOT NULL,
     description TEXT,
     color TEXT NOT NULL DEFAULT '#23BCDB',
-    due_date bigint,
+    due_date TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
@@ -95,11 +95,11 @@ CREATE TABLE IF NOT EXISTS stopwatches (
     id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
     habit_id TEXT REFERENCES habits(id) ON DELETE SET NULL,
-    is_initiated BOOLEAN,
-    start_time TIMESTAMPTZ,
-    duration bigint,
-    is_paused BOOLEAN,
-    pause_duration bigint,
+    is_initiated BOOLEAN DEFAULT FALSE,
+    start_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    duration BIGINT DEFAULT 0,
+    is_paused BOOLEAN DEFAULT TRUE,
+    pause_duration BIGINT DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     habit_id TEXT REFERENCES habits(id) ON DELETE SET NULL,
     name TEXT NOT NULL,
     description TEXT,
-    due_date TIMESTAMPTZ ,
+    due_date TIMESTAMPTZ,
     is_important BOOLEAN NOT NULL DEFAULT FALSE,
     is_completed BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,

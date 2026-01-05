@@ -30,15 +30,16 @@ var _ gen.StrictServerInterface = (*server)(nil)
 
 // server implements the HTTP handlers for the API
 type server struct {
-	address  string
-	users    *cases.UserCase
-	habits   *cases.HabitCase
-	projects *cases.ProjectCase
-	tasks    *cases.TaskCase
-	settings *cases.SettingsCase
-	auth     *cases.AuthCase
-	logger   *zap.Logger
-	debug    bool
+	address     string
+	users       *cases.UserCase
+	habits      *cases.HabitCase
+	projects    *cases.ProjectCase
+	tasks       *cases.TaskCase
+	settings    *cases.SettingsCase
+	stopwatches *cases.StopwatchCase
+	auth        *cases.AuthCase
+	logger      *zap.Logger
+	debug       bool
 }
 
 // NewServer creates a new HTTP server instance
@@ -49,20 +50,22 @@ func NewServer(
 	projects *cases.ProjectCase,
 	tasks *cases.TaskCase,
 	settings *cases.SettingsCase,
+	stopwatches *cases.StopwatchCase,
 	auth *cases.AuthCase,
 	logger *zap.Logger,
 	debug bool,
 ) *server {
 	return &server{
-		address:  address,
-		users:    users,
-		habits:   habits,
-		projects: projects,
-		tasks:    tasks,
-		settings: settings,
-		auth:     auth,
-		logger:   logger,
-		debug:    debug,
+		address:     address,
+		users:       users,
+		habits:      habits,
+		projects:    projects,
+		tasks:       tasks,
+		settings:    settings,
+		stopwatches: stopwatches,
+		auth:        auth,
+		logger:      logger,
+		debug:       debug,
 	}
 }
 
@@ -305,6 +308,26 @@ func (s *server) ListTasks(
 	return gen.ListTasks200JSONResponse(response), nil
 }
 
+// GET /stopwatch
+func (s *server) GetStopwatch(
+	ctx context.Context,
+	request gen.GetStopwatchRequestObject,
+) (gen.GetStopwatchResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.GetStopwatch401Response{}, nil
+	}
+
+	// Call use-case
+	stopwatch, err := s.stopwatches.Read(ctx, userID)
+	if err != nil {
+		s.logger.Error("failed to read stopwatch", zap.Error(err))
+		return gen.GetStopwatch500JSONResponse{}, nil
+	}
+
+	return gen.GetStopwatch200JSONResponse(toAPIStopwatch(stopwatch)), nil
+}
+
 // GET /settings
 func (s *server) GetSettings(
 	ctx context.Context,
@@ -318,11 +341,11 @@ func (s *server) GetSettings(
 	// Call use-case
 	settings, err := s.settings.Read(ctx, userID)
 	if err != nil {
-		s.logger.Error("failed to list settings", zap.Error(err))
+		s.logger.Error("failed to read settings", zap.Error(err))
 		return gen.GetSettings500JSONResponse{}, nil
 	}
 
-	return gen.GetSettings200JSONResponse(settings), nil
+	return gen.GetSettings200JSONResponse(toAPISettings(settings)), nil
 }
 
 func toAPIHabit(e *entity.Habit) gen.Habit {
@@ -363,6 +386,21 @@ func toAPITask(e *entity.Task) gen.Task {
 		IsCompleted: &e.IsCompleted,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
+	}
+}
+
+func toAPIStopwatch(e *entity.Stopwatch) gen.Stopwatch {
+	return gen.Stopwatch{
+		ID:            e.ID,
+		UserID:        e.UserID,
+		HabitID:       &e.HabitID,
+		IsInitiated:   &e.IsInitiated,
+		StartTime:     &e.StartTime,
+		Duration:      &e.Duration,
+		IsPaused:      &e.IsPaused,
+		PauseDuration: &e.PauseDuration,
+		CreatedAt:     &e.CreatedAt,
+		UpdatedAt:     &e.UpdatedAt,
 	}
 }
 

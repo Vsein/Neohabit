@@ -696,7 +696,7 @@ type GetStopwatchResponseObject interface {
 	VisitGetStopwatchResponse(w http.ResponseWriter) error
 }
 
-type GetStopwatch200JSONResponse Settings
+type GetStopwatch200JSONResponse Stopwatch
 
 func (response GetStopwatch200JSONResponse) VisitGetStopwatchResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
