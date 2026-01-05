@@ -67,18 +67,25 @@ CREATE TABLE IF NOT EXISTS habit_targets (
 CREATE TABLE IF NOT EXISTS settings (
     id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-    theme TEXT NOT NULL DEFAULT 'dark',
+    theme SMALLINT,
     read_settings_from_config_file BOOLEAN NOT NULL DEFAULT FALSE,
     cell_height_multiplier SMALLINT,
     cell_width_multiplier SMALLINT,
     overview_vertical BOOLEAN,
-    overview_current_day TEXT,
+    overview_current_day SMALLINT,
     overview_offset SMALLINT,
+    overview_duration SMALLINT,
+    overview_apply_limit BOOLEAN,
+    overview_duratinon_limit SMALLINT,
     allow_horizontal_scrolling BOOLEAN DEFAULT TRUE,
+    habit_heatmaps_override BOOLEAN,
+    habit_heatmaps_current_day BOOLEAN,
+    show_stopwatch_time_in_page_title BOOLEAN,
     hide_cell_hint BOOLEAN,
     hide_onboarding BOOLEAN,
 
-    project_ids_order TEXT[],
+    projects_enable_custom_order BOOLEAN,
+    projects_id_order TEXT[],
 
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP

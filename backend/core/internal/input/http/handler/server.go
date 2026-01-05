@@ -35,6 +35,7 @@ type server struct {
 	habits   *cases.HabitCase
 	projects *cases.ProjectCase
 	tasks    *cases.TaskCase
+	settings *cases.SettingsCase
 	auth     *cases.AuthCase
 	logger   *zap.Logger
 	debug    bool
@@ -47,6 +48,7 @@ func NewServer(
 	habits *cases.HabitCase,
 	projects *cases.ProjectCase,
 	tasks *cases.TaskCase,
+	settings *cases.SettingsCase,
 	auth *cases.AuthCase,
 	logger *zap.Logger,
 	debug bool,
@@ -57,6 +59,7 @@ func NewServer(
 		habits:   habits,
 		projects: projects,
 		tasks:    tasks,
+		settings: settings,
 		auth:     auth,
 		logger:   logger,
 		debug:    debug,
@@ -302,6 +305,26 @@ func (s *server) ListTasks(
 	return gen.ListTasks200JSONResponse(response), nil
 }
 
+// GET /settings
+func (s *server) GetSettings(
+	ctx context.Context,
+	request gen.GetSettingsRequestObject,
+) (gen.GetSettingsResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.GetSettings401Response{}, nil
+	}
+
+	// Call use-case
+	settings, err := s.settings.Read(ctx, userID)
+	if err != nil {
+		s.logger.Error("failed to list settings", zap.Error(err))
+		return gen.GetSettings500JSONResponse{}, nil
+	}
+
+	return gen.GetSettings200JSONResponse(settings), nil
+}
+
 func toAPIHabit(e *entity.Habit) gen.Habit {
 	return gen.Habit{
 		ID:          e.ID,
@@ -340,6 +363,37 @@ func toAPITask(e *entity.Task) gen.Task {
 		IsCompleted: &e.IsCompleted,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
+	}
+}
+
+func toAPISettings(e *entity.Settings) gen.Settings {
+	theme := gen.SettingsTheme(e.Theme.String())
+	overviewCurrentDay := gen.SettingsOverviewCurrentDay(e.OverviewCurrentDay.String())
+	habitHeatmapsCurrentDay := gen.SettingsHabitHeatmapsCurrentDay(e.HabitHeatmapsCurrentDay.String())
+
+	return gen.Settings{
+		ID:                           e.ID,
+		UserID:                       e.UserID,
+		Theme:                        &theme,
+		ReadSettingsFromConfigFile:   &e.ReadSettingsFromConfigFile,
+		CellHeightMultiplier:         &e.CellHeightMultiplier,
+		CellWidthMultiplier:          &e.CellWidthMultiplier,
+		OverviewVertical:             &e.OverviewVertical,
+		OverviewCurrentDay:           &overviewCurrentDay,
+		OverviewOffset:               &e.OverviewOffset,
+		OverviewDuration:             &e.OverviewDuration,
+		OverviewApplyLimit:           &e.OverviewApplyLimit,
+		OverviewDurationLimit:        &e.OverviewDurationLimit,
+		AllowHorizontalScrolling:     &e.AllowHorizontalScrolling,
+		HabitHeatmapsOverride:        &e.HabitHeatmapsOverride,
+		HabitHeatmapsCurrentDay:      &habitHeatmapsCurrentDay,
+		ShowStopwatchTimeInPageTitle: &e.ShowStopwatchTimeInPageTitle,
+		HideCellHint:                 &e.HideCellHint,
+		HideOnboarding:               &e.HideOnboarding,
+		ProjectsEnableCustomOrder:    &e.ProjectsEnableCustomOrder,
+		ProjectsIDOrder:              &e.ProjectsIDOrder,
+		CreatedAt:                    &e.CreatedAt,
+		UpdatedAt:                    &e.UpdatedAt,
 	}
 }
 

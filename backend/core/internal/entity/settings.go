@@ -1,14 +1,16 @@
 package entity
 
+import "time"
+
 type Settings struct {
 	ID                         string
 	UserID                     string
-	Theme                      string // 'light' 'dark'
+	Theme                      SettingsTheme
 	ReadSettingsFromConfigFile bool
 	CellHeightMultiplier       uint8
 	CellWidthMultiplier        uint8
 	OverviewVertical           bool
-	OverviewCurrentDay         string
+	OverviewCurrentDay         SettingsHeatmapCurrentDay
 	OverviewOffset             uint8
 
 	// Those three feel like such unintuitive features that I'm considering ditching them
@@ -30,12 +32,52 @@ type Settings struct {
 	// never get used anyway that I don't even want to release something like that
 	// It's already possible, and would look more elegant in the frontend part as well
 	HabitHeatmapsOverride   bool
-	HabitHeatmapsCurrentDay uint8
+	HabitHeatmapsCurrentDay SettingsHeatmapCurrentDay
 
 	ShowStopwatchTimeInPageTitle bool
 	HideCellHint                 bool
 	HideOnboarding               bool
+	ProjectsEnableCustomOrder    bool
+	ProjectsIDOrder              []string
+	CreatedAt                    time.Time
+	UpdatedAt                    time.Time
+}
 
-	CreatedAt int64
-	UpdatedAt int64
+type SettingsTheme uint8
+
+const (
+	Dark SettingsTheme = iota
+	Light
+)
+
+func (s SettingsTheme) String() string {
+	switch s {
+	case Dark:
+		return "dark"
+	case Light:
+		return "light"
+	default:
+		return "dark"
+	}
+}
+
+type SettingsHeatmapCurrentDay uint8
+
+const (
+	End SettingsHeatmapCurrentDay = iota
+	Middle
+	Start
+)
+
+func (s SettingsHeatmapCurrentDay) String() string {
+	switch s {
+	case End:
+		return "end"
+	case Middle:
+		return "middle"
+	case Start:
+		return "start"
+	default:
+		return "middle"
+	}
 }

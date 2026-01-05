@@ -48,11 +48,13 @@ func Run(cfg *config.Config) error {
 	habitRepo := repo.NewHabitRepo(pool, logger.Named("habit"))
 	projectRepo := repo.NewProjectRepo(pool, logger.Named("project"))
 	taskRepo := repo.NewTaskRepo(pool, logger.Named("task"))
+	settingsRepo := repo.NewSettingsRepo(pool, logger.Named("settings"))
 
 	userCase := cases.NewUserCase(userRepo, txManager)
 	habitCase := cases.NewHabitCase(habitRepo, txManager)
 	projectCase := cases.NewProjectCase(projectRepo, txManager)
 	taskCase := cases.NewTaskCase(taskRepo, txManager)
+	settingsCase := cases.NewSettingsCase(settingsRepo, txManager)
 
 	// Initialize authentication service
 	secretProvider := secret.NewSecretProviderCache(secretTTL, secret.EnvSecretFetcher)
@@ -66,6 +68,7 @@ func Run(cfg *config.Config) error {
 		habitCase,
 		projectCase,
 		taskCase,
+		settingsCase,
 		authService,
 		logger.Named("http-server"),
 		cfg.LogConfig.Level == -1, // debug mode

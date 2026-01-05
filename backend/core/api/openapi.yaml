@@ -622,8 +622,8 @@ components:
         habit_heatmaps_override:
           type: boolean
         habit_heatmaps_current_day:
-          type: integer
-          format: uint8
+          type: string
+          enum: ["end", "middle", "start"]
         #######################
 
         show_stopwatch_time_in_page_title:
@@ -632,6 +632,13 @@ components:
           type: boolean
         hide_onboarding:
           type: boolean
+        projects_enable_custom_order:
+          type: boolean
+        projects_id_order:
+          type: array
+          items:
+            type: string
+
         created_at:
           $ref: '#/components/schemas/Date'
         updated_at:

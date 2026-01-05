@@ -11,11 +11,18 @@ const (
 	BearerAuthScopes = "bearerAuth.Scopes"
 )
 
+// Defines values for SettingsHabitHeatmapsCurrentDay.
+const (
+	SettingsHabitHeatmapsCurrentDayEnd    SettingsHabitHeatmapsCurrentDay = "end"
+	SettingsHabitHeatmapsCurrentDayMiddle SettingsHabitHeatmapsCurrentDay = "middle"
+	SettingsHabitHeatmapsCurrentDayStart  SettingsHabitHeatmapsCurrentDay = "start"
+)
+
 // Defines values for SettingsOverviewCurrentDay.
 const (
-	End    SettingsOverviewCurrentDay = "end"
-	Middle SettingsOverviewCurrentDay = "middle"
-	Start  SettingsOverviewCurrentDay = "start"
+	SettingsOverviewCurrentDayEnd    SettingsOverviewCurrentDay = "end"
+	SettingsOverviewCurrentDayMiddle SettingsOverviewCurrentDay = "middle"
+	SettingsOverviewCurrentDayStart  SettingsOverviewCurrentDay = "start"
 )
 
 // Defines values for SettingsTheme.
@@ -84,27 +91,32 @@ type Project struct {
 
 // Settings defines model for Settings.
 type Settings struct {
-	AllowHorizontalScrolling     *bool                       `json:"allow_horizontal_scrolling,omitempty"`
-	CellHeightMultiplier         *uint8                      `json:"cell_height_multiplier,omitempty"`
-	CellWidthMultiplier          *uint8                      `json:"cell_width_multiplier,omitempty"`
-	CreatedAt                    *Date                       `json:"created_at,omitempty"`
-	HabitHeatmapsCurrentDay      *uint8                      `json:"habit_heatmaps_current_day,omitempty"`
-	HabitHeatmapsOverride        *bool                       `json:"habit_heatmaps_override,omitempty"`
-	HideCellHint                 *bool                       `json:"hide_cell_hint,omitempty"`
-	HideOnboarding               *bool                       `json:"hide_onboarding,omitempty"`
-	ID                           string                      `json:"id"`
-	OverviewApplyLimit           *bool                       `json:"overview_apply_limit,omitempty"`
-	OverviewCurrentDay           *SettingsOverviewCurrentDay `json:"overview_current_day,omitempty"`
-	OverviewDuration             *uint8                      `json:"overview_duration,omitempty"`
-	OverviewDurationLimit        *uint8                      `json:"overview_duration_limit,omitempty"`
-	OverviewOffset               *uint8                      `json:"overview_offset,omitempty"`
-	OverviewVertical             *bool                       `json:"overview_vertical,omitempty"`
-	ReadSettingsFromConfigFile   *bool                       `json:"read_settings_from_config_file,omitempty"`
-	ShowStopwatchTimeInPageTitle *bool                       `json:"show_stopwatch_time_in_page_title,omitempty"`
-	Theme                        *SettingsTheme              `json:"theme,omitempty"`
-	UpdatedAt                    *Date                       `json:"updated_at,omitempty"`
-	UserID                       string                      `json:"user_id"`
+	AllowHorizontalScrolling     *bool                            `json:"allow_horizontal_scrolling,omitempty"`
+	CellHeightMultiplier         *uint8                           `json:"cell_height_multiplier,omitempty"`
+	CellWidthMultiplier          *uint8                           `json:"cell_width_multiplier,omitempty"`
+	CreatedAt                    *Date                            `json:"created_at,omitempty"`
+	HabitHeatmapsCurrentDay      *SettingsHabitHeatmapsCurrentDay `json:"habit_heatmaps_current_day,omitempty"`
+	HabitHeatmapsOverride        *bool                            `json:"habit_heatmaps_override,omitempty"`
+	HideCellHint                 *bool                            `json:"hide_cell_hint,omitempty"`
+	HideOnboarding               *bool                            `json:"hide_onboarding,omitempty"`
+	ID                           string                           `json:"id"`
+	OverviewApplyLimit           *bool                            `json:"overview_apply_limit,omitempty"`
+	OverviewCurrentDay           *SettingsOverviewCurrentDay      `json:"overview_current_day,omitempty"`
+	OverviewDuration             *uint8                           `json:"overview_duration,omitempty"`
+	OverviewDurationLimit        *uint8                           `json:"overview_duration_limit,omitempty"`
+	OverviewOffset               *uint8                           `json:"overview_offset,omitempty"`
+	OverviewVertical             *bool                            `json:"overview_vertical,omitempty"`
+	ProjectsEnableCustomOrder    *bool                            `json:"projects_enable_custom_order,omitempty"`
+	ProjectsIDOrder              *[]string                        `json:"projects_id_order,omitempty"`
+	ReadSettingsFromConfigFile   *bool                            `json:"read_settings_from_config_file,omitempty"`
+	ShowStopwatchTimeInPageTitle *bool                            `json:"show_stopwatch_time_in_page_title,omitempty"`
+	Theme                        *SettingsTheme                   `json:"theme,omitempty"`
+	UpdatedAt                    *Date                            `json:"updated_at,omitempty"`
+	UserID                       string                           `json:"user_id"`
 }
+
+// SettingsHabitHeatmapsCurrentDay defines model for Settings.HabitHeatmapsCurrentDay.
+type SettingsHabitHeatmapsCurrentDay string
 
 // SettingsOverviewCurrentDay defines model for Settings.OverviewCurrentDay.
 type SettingsOverviewCurrentDay string
