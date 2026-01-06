@@ -196,6 +196,17 @@ type Task struct {
 	UserID    string `json:"user_id"`
 }
 
+// User defines model for User.
+type User struct {
+	CreatedAt            *Date  `json:"created_at,omitempty"`
+	ID                   string `json:"id"`
+	UpdatedAt            *Date  `json:"updated_at,omitempty"`
+	Username             string `json:"username"`
+	VerificationAttempts *uint8 `json:"verification_attempts,omitempty"`
+	VerificationTime     *Date  `json:"verification_time,omitempty"`
+	Verified             *bool  `json:"verified,omitempty"`
+}
+
 // CreateHabitJSONBody defines parameters for CreateHabit.
 type CreateHabitJSONBody struct {
 	Color *Color `json:"color,omitempty"`

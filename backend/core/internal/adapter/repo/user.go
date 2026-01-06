@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"go.uber.org/zap"
@@ -14,6 +15,7 @@ import (
 const (
 	// queryListUsers  = `SELECT * FROM users`
 	queryGetUserByUsername = `SELECT * FROM users WHERE username = $1`
+	queryGetUserByID       = `SELECT * FROM users WHERE id = $1`
 	queryCreateUser        = `
 		INSERT INTO users (id, username, email, password, verified, verification_attempts, verification_time, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -69,7 +71,32 @@ func (r *User) GetByUsername(ctx context.Context, username string) (*entity.User
 		&user.UpdatedAt,
 	)
 	if err != nil {
-		return nil, repo.ErrNotFound
+		if errors.Is(err, repo.ErrNotFound) {
+			return nil, repo.ErrNotFound
+		}
+		return nil, err
+	}
+	return &user, nil
+}
+
+func (r *User) GetByID(ctx context.Context, userID string) (*entity.User, error) {
+	var user entity.User
+	err := r.pool.QueryRow(ctx, queryGetUserByID, userID).Scan(
+		&user.ID,
+		&user.Username,
+		&user.Email,
+		&user.Password,
+		&user.Verified,
+		&user.VerificationAttempts,
+		&user.VerificationTime,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
+	if err != nil {
+		if errors.Is(err, repo.ErrNotFound) {
+			return nil, repo.ErrNotFound
+		}
+		return nil, err
 	}
 	return &user, nil
 }

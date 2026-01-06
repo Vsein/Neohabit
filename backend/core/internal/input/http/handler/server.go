@@ -174,6 +174,26 @@ func (s *server) Login(
 	}, nil
 }
 
+// GET /user
+func (s *server) GetUser(
+	ctx context.Context,
+	request gen.GetUserRequestObject,
+) (gen.GetUserResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.GetUser401Response{}, nil
+	}
+
+	// Call use-case
+	user, err := s.users.GetByID(ctx, userID)
+	if err != nil {
+		s.logger.Error("failed to read user", zap.Error(err))
+		return gen.GetUser500JSONResponse{}, nil
+	}
+
+	return gen.GetUser200JSONResponse(toAPIUser(user)), nil
+}
+
 // Returns all habits of the authorized user
 // GET /habit
 func (s *server) ListHabits(
@@ -376,6 +396,18 @@ func (s *server) GetSettings(
 	}
 
 	return gen.GetSettings200JSONResponse(toAPISettings(settings)), nil
+}
+
+func toAPIUser(e *entity.User) gen.User {
+	return gen.User{
+		ID:                   e.ID,
+		Username:             e.Username,
+		Verified:             &e.Verified,
+		VerificationAttempts: &e.VerificationAttempts,
+		VerificationTime:     &e.VerificationTime,
+		CreatedAt:            &e.CreatedAt,
+		UpdatedAt:            &e.UpdatedAt,
+	}
 }
 
 func toAPIHabit(e *entity.Habit) gen.Habit {

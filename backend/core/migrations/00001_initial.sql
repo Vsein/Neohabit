@@ -3,9 +3,9 @@
 CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     username TEXT NOT NULL,
-    email TEXT,
+    email TEXT DEFAULT '',
     password TEXT NOT NULL,
-    verified BOOLEAN,
+    verified BOOLEAN DEFAULT FALSE,
     verification_attempts INTEGER NOT NULL DEFAULT 0,
     verification_time TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,

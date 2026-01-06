@@ -42,6 +42,9 @@ type ServerInterface interface {
 	// List tasks
 	// (GET /tasks)
 	ListTasks(w http.ResponseWriter, r *http.Request)
+	// Get user info
+	// (GET /user)
+	GetUser(w http.ResponseWriter, r *http.Request)
 }
 
 // Unimplemented server implementation that returns http.StatusNotImplemented for each endpoint.
@@ -99,6 +102,12 @@ func (_ Unimplemented) GetStopwatch(w http.ResponseWriter, r *http.Request) {
 // List tasks
 // (GET /tasks)
 func (_ Unimplemented) ListTasks(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Get user info
+// (GET /user)
+func (_ Unimplemented) GetUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -279,6 +288,26 @@ func (siw *ServerInterfaceWrapper) ListTasks(w http.ResponseWriter, r *http.Requ
 	handler.ServeHTTP(w, r)
 }
 
+// GetUser operation middleware
+func (siw *ServerInterfaceWrapper) GetUser(w http.ResponseWriter, r *http.Request) {
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetUser(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 type UnescapedCookieParamError struct {
 	ParamName string
 	Err       error
@@ -418,6 +447,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/tasks", wrapper.ListTasks)
+	})
+	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/user", wrapper.GetUser)
 	})
 
 	return r
@@ -755,6 +787,39 @@ func (response ListTasks500JSONResponse) VisitListTasksResponse(w http.ResponseW
 	return json.NewEncoder(w).Encode(response)
 }
 
+type GetUserRequestObject struct {
+}
+
+type GetUserResponseObject interface {
+	VisitGetUserResponse(w http.ResponseWriter) error
+}
+
+type GetUser200JSONResponse User
+
+func (response GetUser200JSONResponse) VisitGetUserResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type GetUser401Response struct {
+}
+
+func (response GetUser401Response) VisitGetUserResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type GetUser500JSONResponse ErrorResponse
+
+func (response GetUser500JSONResponse) VisitGetUserResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 // StrictServerInterface represents all server handlers.
 type StrictServerInterface interface {
 	// Create habit
@@ -784,6 +849,9 @@ type StrictServerInterface interface {
 	// List tasks
 	// (GET /tasks)
 	ListTasks(ctx context.Context, request ListTasksRequestObject) (ListTasksResponseObject, error)
+	// Get user info
+	// (GET /user)
+	GetUser(ctx context.Context, request GetUserRequestObject) (GetUserResponseObject, error)
 }
 
 type StrictHandlerFunc = strictnethttp.StrictHTTPHandlerFunc
@@ -1045,6 +1113,30 @@ func (sh *strictHandler) ListTasks(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(ListTasksResponseObject); ok {
 		if err := validResponse.VisitListTasksResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// GetUser operation middleware
+func (sh *strictHandler) GetUser(w http.ResponseWriter, r *http.Request) {
+	var request GetUserRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.GetUser(ctx, request.(GetUserRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "GetUser")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(GetUserResponseObject); ok {
+		if err := validResponse.VisitGetUserResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

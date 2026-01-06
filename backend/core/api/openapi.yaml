@@ -9,6 +9,7 @@ servers:
 
 tags:
   - name: Auth
+  - name: Users
   - name: Habits
   - name: Projects
   - name: Skilltrees
@@ -97,6 +98,28 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /user:
+    get:
+      summary: Get user info
+      operationId: getUser
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
         '500':
           description: Internal server error
           content:
@@ -334,8 +357,6 @@ components:
         id:
           type: string
         username:
-          type: string
-        password:
           type: string
         verified:
           type: boolean

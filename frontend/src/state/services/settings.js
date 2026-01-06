@@ -25,7 +25,7 @@ export const settingsApi = api.injectEndpoints({
     }),
     getSelf: builder.query({
       query: () => ({
-        url: 'user/im',
+        url: 'user',
       }),
     }),
     getVerified: builder.query({

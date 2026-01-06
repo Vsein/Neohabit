@@ -112,3 +112,15 @@ func (c *UserCase) GetByUsername(ctx context.Context, username string) (*entity.
 
 	return user, nil
 }
+
+func (c *UserCase) GetByID(ctx context.Context, userID string) (*entity.User, error) {
+	user, err := c.userRepo.GetByID(ctx, userID)
+	if err != nil {
+		if errors.Is(err, repo.ErrNotFound) {
+			return nil, ErrNotFound
+		}
+		return nil, err
+	}
+
+	return user, nil
+}
