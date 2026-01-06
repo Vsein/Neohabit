@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
 	"neohabit/core/internal/adapter/repo/db"
@@ -20,6 +21,7 @@ const (
 		INSERT INTO users (id, username, email, password, verified, verification_attempts, verification_time, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
+	queryDeleteUser = `DELETE FROM users WHERE id = $1`
 )
 
 type User struct {
@@ -99,4 +101,19 @@ func (r *User) GetByID(ctx context.Context, userID string) (*entity.User, error)
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (r *User) Delete(ctx context.Context, userID string) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryDeleteUser,
+		userID,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return repo.ErrNotFound
+		}
+		return fmt.Errorf("exec delete user: %w", err)
+	}
+	return nil
 }

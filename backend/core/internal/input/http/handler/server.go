@@ -194,6 +194,28 @@ func (s *server) GetUser(
 	return gen.GetUser200JSONResponse(toAPIUser(user)), nil
 }
 
+// DELETE /user/{user_id}
+func (s *server) DeleteUser(
+	ctx context.Context,
+	request gen.DeleteUserRequestObject,
+) (gen.DeleteUserResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.DeleteUser401Response{}, nil
+	}
+
+	err := s.users.Delete(ctx, userID)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.DeleteUser404Response{}, nil
+		}
+		s.logger.Error("failed to delete user", zap.Error(err))
+		return gen.DeleteUser500JSONResponse{}, nil
+	}
+
+	return gen.DeleteUser200Response{}, nil
+}
+
 // Returns all habits of the authorized user
 // GET /habit
 func (s *server) ListHabits(
@@ -257,6 +279,32 @@ func (s *server) CreateHabit(
 	return gen.CreateHabit201JSONResponse(id), nil
 }
 
+// DELETE /habit/{habit_id}
+func (s *server) DeleteHabit(
+	ctx context.Context,
+	request gen.DeleteHabitRequestObject,
+) (gen.DeleteHabitResponseObject, error) {
+	if request.HabitID == "" {
+		return gen.DeleteHabit400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.DeleteHabit401Response{}, nil
+	}
+
+	err := s.habits.Delete(ctx, request.HabitID)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.DeleteHabit404Response{}, nil
+		}
+		s.logger.Error("failed to delete habit", zap.Error(err))
+		return gen.DeleteHabit500JSONResponse{}, nil
+	}
+
+	return gen.DeleteHabit200Response{}, nil
+}
+
 // GetHabit handles GET /habit/{habitId}
 // func (s *server) GetHabit(
 // 	ctx context.Context,
@@ -304,6 +352,32 @@ func (s *server) ListProjects(
 	return gen.ListProjects200JSONResponse(response), nil
 }
 
+// DELETE /project/{project_id}
+func (s *server) DeleteProject(
+	ctx context.Context,
+	request gen.DeleteProjectRequestObject,
+) (gen.DeleteProjectResponseObject, error) {
+	if request.ProjectID == "" {
+		return gen.DeleteProject400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.DeleteProject401Response{}, nil
+	}
+
+	err := s.projects.Delete(ctx, request.ProjectID)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.DeleteProject404Response{}, nil
+		}
+		s.logger.Error("failed to delete project", zap.Error(err))
+		return gen.DeleteProject500JSONResponse{}, nil
+	}
+
+	return gen.DeleteProject200Response{}, nil
+}
+
 // Returns all tasks of the authorized user
 // GET /task
 func (s *server) ListTasks(
@@ -331,6 +405,32 @@ func (s *server) ListTasks(
 	return gen.ListTasks200JSONResponse(response), nil
 }
 
+// DELETE /task/{task_id}
+func (s *server) DeleteTask(
+	ctx context.Context,
+	request gen.DeleteTaskRequestObject,
+) (gen.DeleteTaskResponseObject, error) {
+	if request.TaskID == "" {
+		return gen.DeleteTask400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.DeleteTask401Response{}, nil
+	}
+
+	err := s.tasks.Delete(ctx, request.TaskID)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.DeleteTask404Response{}, nil
+		}
+		s.logger.Error("failed to delete task", zap.Error(err))
+		return gen.DeleteTask500JSONResponse{}, nil
+	}
+
+	return gen.DeleteTask200Response{}, nil
+}
+
 // Returns all tasks of the authorized user
 // GET /skilltrees
 func (s *server) ListSkilltrees(
@@ -356,6 +456,32 @@ func (s *server) ListSkilltrees(
 	}
 
 	return gen.ListSkilltrees200JSONResponse(response), nil
+}
+
+// DELETE /skilltree/{skilltree_id}
+func (s *server) DeleteSkilltree(
+	ctx context.Context,
+	request gen.DeleteSkilltreeRequestObject,
+) (gen.DeleteSkilltreeResponseObject, error) {
+	if request.SkilltreeID == "" {
+		return gen.DeleteSkilltree400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.DeleteSkilltree401Response{}, nil
+	}
+
+	err := s.skilltrees.Delete(ctx, request.SkilltreeID)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.DeleteSkilltree404Response{}, nil
+		}
+		s.logger.Error("failed to delete skilltree", zap.Error(err))
+		return gen.DeleteSkilltree500JSONResponse{}, nil
+	}
+
+	return gen.DeleteSkilltree200Response{}, nil
 }
 
 // GET /stopwatch

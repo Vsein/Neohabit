@@ -124,3 +124,11 @@ func (c *UserCase) GetByID(ctx context.Context, userID string) (*entity.User, er
 
 	return user, nil
 }
+
+func (c *UserCase) Delete(ctx context.Context, userID string) error {
+	err := c.userRepo.Delete(ctx, userID)
+	if err != nil {
+		return fmt.Errorf("delete: %w", err)
+	}
+	return nil
+}

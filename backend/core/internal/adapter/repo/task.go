@@ -2,7 +2,7 @@ package repo
 
 import (
 	"context"
-	// "errors"
+	"errors"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
@@ -129,12 +129,10 @@ func (r *Task) Delete(ctx context.Context, id string) error {
 		id,
 	)
 	if err != nil {
-		// Check for unique constraint violation (duplicate name, etc.)
-		// Adjust this based on your actual database constraints
-		if db.IsUniqueViolation(err) {
-			return repo.ErrAlreadyExists
+		if errors.Is(err, pgx.ErrNoRows) {
+			return repo.ErrNotFound
 		}
-		return fmt.Errorf("exec create task: %w", err)
+		return fmt.Errorf("exec delete task: %w", err)
 	}
 	return nil
 }

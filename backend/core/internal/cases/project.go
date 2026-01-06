@@ -58,3 +58,11 @@ func (c *ProjectCase) List(ctx context.Context, userID string) ([]*entity.Projec
 	}
 	return projects, nil
 }
+
+func (c *ProjectCase) Delete(ctx context.Context, id string) error {
+	err := c.projectRepo.Delete(ctx, id)
+	if err != nil {
+		return fmt.Errorf("delete: %w", err)
+	}
+	return nil
+}

@@ -58,3 +58,11 @@ func (c *SkilltreeCase) List(ctx context.Context, userID string) ([]*entity.Skil
 	}
 	return skilltrees, nil
 }
+
+func (c *SkilltreeCase) Delete(ctx context.Context, id string) error {
+	err := c.skilltreeRepo.Delete(ctx, id)
+	if err != nil {
+		return fmt.Errorf("delete: %w", err)
+	}
+	return nil
+}

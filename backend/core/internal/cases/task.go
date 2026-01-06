@@ -58,3 +58,11 @@ func (c *TaskCase) List(ctx context.Context, userID string) ([]*entity.Task, err
 	}
 	return tasks, nil
 }
+
+func (c *TaskCase) Delete(ctx context.Context, id string) error {
+	err := c.taskRepo.Delete(ctx, id)
+	if err != nil {
+		return fmt.Errorf("delete: %w", err)
+	}
+	return nil
+}

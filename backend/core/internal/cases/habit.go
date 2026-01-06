@@ -69,3 +69,11 @@ func (c *HabitCase) List(ctx context.Context, userID string) ([]*entity.Habit, e
 	}
 	return habits, nil
 }
+
+func (c *HabitCase) Delete(ctx context.Context, id string) error {
+	err := c.habitRepo.Delete(ctx, id)
+	if err != nil {
+		return fmt.Errorf("delete: %w", err)
+	}
+	return nil
+}

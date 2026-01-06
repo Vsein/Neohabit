@@ -15,7 +15,7 @@ tags:
   - name: Skilltrees
   - name: Tasks
   - name: Settings
-  - name: Stopwatch
+  - name: Stopwatches
 
 paths:
   /signup:
@@ -106,7 +106,7 @@ paths:
 
   /user:
     get:
-      summary: Get user info
+      summary: Get authorized user's info
       operationId: getUser
       tags: [Users]
       security:
@@ -122,6 +122,24 @@ paths:
           description: Unauthorized
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+    delete:
+      summary: Delete authorized user and all related data
+      operationId: deleteUser
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully deleted the user
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+        '500':
+          description: Unexpected error
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
@@ -197,6 +215,32 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /habit/{habit_id}:
+    delete:
+      summary: Delete habit
+      operationId: deleteHabit
+      tags: [Habits]
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the habit
+        '400':
+          description: HabitID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Habit not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
   /projects:
     get:
       summary: List projects
@@ -217,6 +261,32 @@ paths:
           description: Unauthorized
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /project/{project_id}:
+    delete:
+      summary: Delete project
+      operationId: deleteProject
+      tags: [Projects]
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the project
+        '400':
+          description: ProjectID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Project not found
+        '500':
+          description: Unexpected error
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
@@ -245,6 +315,32 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /task/{task_id}:
+    delete:
+      summary: Delete task
+      operationId: deleteTask
+      tags: [Tasks]
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the task
+        '400':
+          description: TaskID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Task not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
   /skilltrees:
     get:
       summary: List skilltrees
@@ -265,6 +361,32 @@ paths:
           description: Unauthorized
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /skilltree/{skilltree_id}:
+    delete:
+      summary: Delete skilltree
+      operationId: deleteSkilltree
+      tags: [Skilltrees]
+      parameters:
+        - name: skilltree_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully deleted the skilltree
+        '400':
+          description: SkilltreeID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Skilltree not found
+        '500':
+          description: Unexpected error
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
@@ -295,7 +417,7 @@ paths:
     get:
       summary: Returns user's stopwatch
       operationId: getStopwatch
-      tags: [Stopwatch]
+      tags: [Stopwatches]
       security:
         - bearerAuth: []
       responses:

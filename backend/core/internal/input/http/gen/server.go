@@ -10,6 +10,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/oapi-codegen/runtime"
 	strictnethttp "github.com/oapi-codegen/runtime/strictmiddleware/nethttp"
 )
 
@@ -18,12 +19,18 @@ type ServerInterface interface {
 	// Create habit
 	// (POST /habit)
 	CreateHabit(w http.ResponseWriter, r *http.Request)
+	// Delete habit
+	// (DELETE /habit/{habit_id})
+	DeleteHabit(w http.ResponseWriter, r *http.Request, habitID string)
 	// List habits
 	// (GET /habits)
 	ListHabits(w http.ResponseWriter, r *http.Request)
 	// Login into existing account
 	// (POST /login)
 	Login(w http.ResponseWriter, r *http.Request)
+	// Delete project
+	// (DELETE /project/{project_id})
+	DeleteProject(w http.ResponseWriter, r *http.Request, projectID string)
 	// List projects
 	// (GET /projects)
 	ListProjects(w http.ResponseWriter, r *http.Request)
@@ -33,16 +40,25 @@ type ServerInterface interface {
 	// Create a new account
 	// (POST /signup)
 	Signup(w http.ResponseWriter, r *http.Request)
+	// Delete skilltree
+	// (DELETE /skilltree/{skilltree_id})
+	DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID string)
 	// List skilltrees
 	// (GET /skilltrees)
 	ListSkilltrees(w http.ResponseWriter, r *http.Request)
 	// Returns user's stopwatch
 	// (GET /stopwatch)
 	GetStopwatch(w http.ResponseWriter, r *http.Request)
+	// Delete task
+	// (DELETE /task/{task_id})
+	DeleteTask(w http.ResponseWriter, r *http.Request, taskID string)
 	// List tasks
 	// (GET /tasks)
 	ListTasks(w http.ResponseWriter, r *http.Request)
-	// Get user info
+	// Delete authorized user and all related data
+	// (DELETE /user)
+	DeleteUser(w http.ResponseWriter, r *http.Request)
+	// Get authorized user's info
 	// (GET /user)
 	GetUser(w http.ResponseWriter, r *http.Request)
 }
@@ -57,6 +73,12 @@ func (_ Unimplemented) CreateHabit(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
+// Delete habit
+// (DELETE /habit/{habit_id})
+func (_ Unimplemented) DeleteHabit(w http.ResponseWriter, r *http.Request, habitID string) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
 // List habits
 // (GET /habits)
 func (_ Unimplemented) ListHabits(w http.ResponseWriter, r *http.Request) {
@@ -66,6 +88,12 @@ func (_ Unimplemented) ListHabits(w http.ResponseWriter, r *http.Request) {
 // Login into existing account
 // (POST /login)
 func (_ Unimplemented) Login(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Delete project
+// (DELETE /project/{project_id})
+func (_ Unimplemented) DeleteProject(w http.ResponseWriter, r *http.Request, projectID string) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -87,6 +115,12 @@ func (_ Unimplemented) Signup(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
+// Delete skilltree
+// (DELETE /skilltree/{skilltree_id})
+func (_ Unimplemented) DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID string) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
 // List skilltrees
 // (GET /skilltrees)
 func (_ Unimplemented) ListSkilltrees(w http.ResponseWriter, r *http.Request) {
@@ -99,13 +133,25 @@ func (_ Unimplemented) GetStopwatch(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
+// Delete task
+// (DELETE /task/{task_id})
+func (_ Unimplemented) DeleteTask(w http.ResponseWriter, r *http.Request, taskID string) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
 // List tasks
 // (GET /tasks)
 func (_ Unimplemented) ListTasks(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-// Get user info
+// Delete authorized user and all related data
+// (DELETE /user)
+func (_ Unimplemented) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Get authorized user's info
 // (GET /user)
 func (_ Unimplemented) GetUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
@@ -140,6 +186,31 @@ func (siw *ServerInterfaceWrapper) CreateHabit(w http.ResponseWriter, r *http.Re
 	handler.ServeHTTP(w, r)
 }
 
+// DeleteHabit operation middleware
+func (siw *ServerInterfaceWrapper) DeleteHabit(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "habit_id" -------------
+	var habitID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "habit_id", chi.URLParam(r, "habit_id"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "habit_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteHabit(w, r, habitID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListHabits operation middleware
 func (siw *ServerInterfaceWrapper) ListHabits(w http.ResponseWriter, r *http.Request) {
 
@@ -165,6 +236,31 @@ func (siw *ServerInterfaceWrapper) Login(w http.ResponseWriter, r *http.Request)
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.Login(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteProject operation middleware
+func (siw *ServerInterfaceWrapper) DeleteProject(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "project_id" -------------
+	var projectID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "project_id", chi.URLParam(r, "project_id"), &projectID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "project_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteProject(w, r, projectID)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -228,6 +324,31 @@ func (siw *ServerInterfaceWrapper) Signup(w http.ResponseWriter, r *http.Request
 	handler.ServeHTTP(w, r)
 }
 
+// DeleteSkilltree operation middleware
+func (siw *ServerInterfaceWrapper) DeleteSkilltree(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "skilltree_id" -------------
+	var skilltreeID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "skilltree_id", chi.URLParam(r, "skilltree_id"), &skilltreeID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "skilltree_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteSkilltree(w, r, skilltreeID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListSkilltrees operation middleware
 func (siw *ServerInterfaceWrapper) ListSkilltrees(w http.ResponseWriter, r *http.Request) {
 
@@ -268,6 +389,31 @@ func (siw *ServerInterfaceWrapper) GetStopwatch(w http.ResponseWriter, r *http.R
 	handler.ServeHTTP(w, r)
 }
 
+// DeleteTask operation middleware
+func (siw *ServerInterfaceWrapper) DeleteTask(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "task_id" -------------
+	var taskID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "task_id", chi.URLParam(r, "task_id"), &taskID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "task_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteTask(w, r, taskID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListTasks operation middleware
 func (siw *ServerInterfaceWrapper) ListTasks(w http.ResponseWriter, r *http.Request) {
 
@@ -279,6 +425,26 @@ func (siw *ServerInterfaceWrapper) ListTasks(w http.ResponseWriter, r *http.Requ
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.ListTasks(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteUser operation middleware
+func (siw *ServerInterfaceWrapper) DeleteUser(w http.ResponseWriter, r *http.Request) {
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteUser(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -425,10 +591,16 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Post(options.BaseURL+"/habit", wrapper.CreateHabit)
 	})
 	r.Group(func(r chi.Router) {
+		r.Delete(options.BaseURL+"/habit/{habit_id}", wrapper.DeleteHabit)
+	})
+	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/habits", wrapper.ListHabits)
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/login", wrapper.Login)
+	})
+	r.Group(func(r chi.Router) {
+		r.Delete(options.BaseURL+"/project/{project_id}", wrapper.DeleteProject)
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/projects", wrapper.ListProjects)
@@ -440,13 +612,22 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Post(options.BaseURL+"/signup", wrapper.Signup)
 	})
 	r.Group(func(r chi.Router) {
+		r.Delete(options.BaseURL+"/skilltree/{skilltree_id}", wrapper.DeleteSkilltree)
+	})
+	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/skilltrees", wrapper.ListSkilltrees)
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/stopwatch", wrapper.GetStopwatch)
 	})
 	r.Group(func(r chi.Router) {
+		r.Delete(options.BaseURL+"/task/{task_id}", wrapper.DeleteTask)
+	})
+	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/tasks", wrapper.ListTasks)
+	})
+	r.Group(func(r chi.Router) {
+		r.Delete(options.BaseURL+"/user", wrapper.DeleteUser)
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/user", wrapper.GetUser)
@@ -501,6 +682,55 @@ func (response CreateHabit409JSONResponse) VisitCreateHabitResponse(w http.Respo
 type CreateHabit500JSONResponse ErrorResponse
 
 func (response CreateHabit500JSONResponse) VisitCreateHabitResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteHabitRequestObject struct {
+	HabitID string `json:"habit_id"`
+}
+
+type DeleteHabitResponseObject interface {
+	VisitDeleteHabitResponse(w http.ResponseWriter) error
+}
+
+type DeleteHabit200Response struct {
+}
+
+func (response DeleteHabit200Response) VisitDeleteHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type DeleteHabit400Response struct {
+}
+
+func (response DeleteHabit400Response) VisitDeleteHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type DeleteHabit401Response struct {
+}
+
+func (response DeleteHabit401Response) VisitDeleteHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type DeleteHabit404Response struct {
+}
+
+func (response DeleteHabit404Response) VisitDeleteHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteHabit500JSONResponse ErrorResponse
+
+func (response DeleteHabit500JSONResponse) VisitDeleteHabitResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -579,6 +809,55 @@ func (response Login404JSONResponse) VisitLoginResponse(w http.ResponseWriter) e
 type Login500JSONResponse ErrorResponse
 
 func (response Login500JSONResponse) VisitLoginResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteProjectRequestObject struct {
+	ProjectID string `json:"project_id"`
+}
+
+type DeleteProjectResponseObject interface {
+	VisitDeleteProjectResponse(w http.ResponseWriter) error
+}
+
+type DeleteProject200Response struct {
+}
+
+func (response DeleteProject200Response) VisitDeleteProjectResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type DeleteProject400Response struct {
+}
+
+func (response DeleteProject400Response) VisitDeleteProjectResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type DeleteProject401Response struct {
+}
+
+func (response DeleteProject401Response) VisitDeleteProjectResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type DeleteProject404Response struct {
+}
+
+func (response DeleteProject404Response) VisitDeleteProjectResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteProject500JSONResponse ErrorResponse
+
+func (response DeleteProject500JSONResponse) VisitDeleteProjectResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -688,6 +967,55 @@ func (response Signup500JSONResponse) VisitSignupResponse(w http.ResponseWriter)
 	return json.NewEncoder(w).Encode(response)
 }
 
+type DeleteSkilltreeRequestObject struct {
+	SkilltreeID string `json:"skilltree_id"`
+}
+
+type DeleteSkilltreeResponseObject interface {
+	VisitDeleteSkilltreeResponse(w http.ResponseWriter) error
+}
+
+type DeleteSkilltree200Response struct {
+}
+
+func (response DeleteSkilltree200Response) VisitDeleteSkilltreeResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type DeleteSkilltree400Response struct {
+}
+
+func (response DeleteSkilltree400Response) VisitDeleteSkilltreeResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type DeleteSkilltree401Response struct {
+}
+
+func (response DeleteSkilltree401Response) VisitDeleteSkilltreeResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type DeleteSkilltree404Response struct {
+}
+
+func (response DeleteSkilltree404Response) VisitDeleteSkilltreeResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteSkilltree500JSONResponse ErrorResponse
+
+func (response DeleteSkilltree500JSONResponse) VisitDeleteSkilltreeResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 type ListSkilltreesRequestObject struct {
 }
 
@@ -754,6 +1082,55 @@ func (response GetStopwatch500JSONResponse) VisitGetStopwatchResponse(w http.Res
 	return json.NewEncoder(w).Encode(response)
 }
 
+type DeleteTaskRequestObject struct {
+	TaskID string `json:"task_id"`
+}
+
+type DeleteTaskResponseObject interface {
+	VisitDeleteTaskResponse(w http.ResponseWriter) error
+}
+
+type DeleteTask200Response struct {
+}
+
+func (response DeleteTask200Response) VisitDeleteTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type DeleteTask400Response struct {
+}
+
+func (response DeleteTask400Response) VisitDeleteTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type DeleteTask401Response struct {
+}
+
+func (response DeleteTask401Response) VisitDeleteTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type DeleteTask404Response struct {
+}
+
+func (response DeleteTask404Response) VisitDeleteTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteTask500JSONResponse ErrorResponse
+
+func (response DeleteTask500JSONResponse) VisitDeleteTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 type ListTasksRequestObject struct {
 }
 
@@ -781,6 +1158,46 @@ func (response ListTasks401Response) VisitListTasksResponse(w http.ResponseWrite
 type ListTasks500JSONResponse ErrorResponse
 
 func (response ListTasks500JSONResponse) VisitListTasksResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteUserRequestObject struct {
+}
+
+type DeleteUserResponseObject interface {
+	VisitDeleteUserResponse(w http.ResponseWriter) error
+}
+
+type DeleteUser200Response struct {
+}
+
+func (response DeleteUser200Response) VisitDeleteUserResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type DeleteUser401Response struct {
+}
+
+func (response DeleteUser401Response) VisitDeleteUserResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type DeleteUser404Response struct {
+}
+
+func (response DeleteUser404Response) VisitDeleteUserResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteUser500JSONResponse ErrorResponse
+
+func (response DeleteUser500JSONResponse) VisitDeleteUserResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -825,12 +1242,18 @@ type StrictServerInterface interface {
 	// Create habit
 	// (POST /habit)
 	CreateHabit(ctx context.Context, request CreateHabitRequestObject) (CreateHabitResponseObject, error)
+	// Delete habit
+	// (DELETE /habit/{habit_id})
+	DeleteHabit(ctx context.Context, request DeleteHabitRequestObject) (DeleteHabitResponseObject, error)
 	// List habits
 	// (GET /habits)
 	ListHabits(ctx context.Context, request ListHabitsRequestObject) (ListHabitsResponseObject, error)
 	// Login into existing account
 	// (POST /login)
 	Login(ctx context.Context, request LoginRequestObject) (LoginResponseObject, error)
+	// Delete project
+	// (DELETE /project/{project_id})
+	DeleteProject(ctx context.Context, request DeleteProjectRequestObject) (DeleteProjectResponseObject, error)
 	// List projects
 	// (GET /projects)
 	ListProjects(ctx context.Context, request ListProjectsRequestObject) (ListProjectsResponseObject, error)
@@ -840,16 +1263,25 @@ type StrictServerInterface interface {
 	// Create a new account
 	// (POST /signup)
 	Signup(ctx context.Context, request SignupRequestObject) (SignupResponseObject, error)
+	// Delete skilltree
+	// (DELETE /skilltree/{skilltree_id})
+	DeleteSkilltree(ctx context.Context, request DeleteSkilltreeRequestObject) (DeleteSkilltreeResponseObject, error)
 	// List skilltrees
 	// (GET /skilltrees)
 	ListSkilltrees(ctx context.Context, request ListSkilltreesRequestObject) (ListSkilltreesResponseObject, error)
 	// Returns user's stopwatch
 	// (GET /stopwatch)
 	GetStopwatch(ctx context.Context, request GetStopwatchRequestObject) (GetStopwatchResponseObject, error)
+	// Delete task
+	// (DELETE /task/{task_id})
+	DeleteTask(ctx context.Context, request DeleteTaskRequestObject) (DeleteTaskResponseObject, error)
 	// List tasks
 	// (GET /tasks)
 	ListTasks(ctx context.Context, request ListTasksRequestObject) (ListTasksResponseObject, error)
-	// Get user info
+	// Delete authorized user and all related data
+	// (DELETE /user)
+	DeleteUser(ctx context.Context, request DeleteUserRequestObject) (DeleteUserResponseObject, error)
+	// Get authorized user's info
 	// (GET /user)
 	GetUser(ctx context.Context, request GetUserRequestObject) (GetUserResponseObject, error)
 }
@@ -914,6 +1346,32 @@ func (sh *strictHandler) CreateHabit(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteHabit operation middleware
+func (sh *strictHandler) DeleteHabit(w http.ResponseWriter, r *http.Request, habitID string) {
+	var request DeleteHabitRequestObject
+
+	request.HabitID = habitID
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteHabit(ctx, request.(DeleteHabitRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteHabit")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteHabitResponseObject); ok {
+		if err := validResponse.VisitDeleteHabitResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // ListHabits operation middleware
 func (sh *strictHandler) ListHabits(w http.ResponseWriter, r *http.Request) {
 	var request ListHabitsRequestObject
@@ -962,6 +1420,32 @@ func (sh *strictHandler) Login(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(LoginResponseObject); ok {
 		if err := validResponse.VisitLoginResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteProject operation middleware
+func (sh *strictHandler) DeleteProject(w http.ResponseWriter, r *http.Request, projectID string) {
+	var request DeleteProjectRequestObject
+
+	request.ProjectID = projectID
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteProject(ctx, request.(DeleteProjectRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteProject")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteProjectResponseObject); ok {
+		if err := validResponse.VisitDeleteProjectResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {
@@ -1048,6 +1532,32 @@ func (sh *strictHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteSkilltree operation middleware
+func (sh *strictHandler) DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID string) {
+	var request DeleteSkilltreeRequestObject
+
+	request.SkilltreeID = skilltreeID
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteSkilltree(ctx, request.(DeleteSkilltreeRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteSkilltree")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteSkilltreeResponseObject); ok {
+		if err := validResponse.VisitDeleteSkilltreeResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // ListSkilltrees operation middleware
 func (sh *strictHandler) ListSkilltrees(w http.ResponseWriter, r *http.Request) {
 	var request ListSkilltreesRequestObject
@@ -1096,6 +1606,32 @@ func (sh *strictHandler) GetStopwatch(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteTask operation middleware
+func (sh *strictHandler) DeleteTask(w http.ResponseWriter, r *http.Request, taskID string) {
+	var request DeleteTaskRequestObject
+
+	request.TaskID = taskID
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteTask(ctx, request.(DeleteTaskRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteTask")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteTaskResponseObject); ok {
+		if err := validResponse.VisitDeleteTaskResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
 // ListTasks operation middleware
 func (sh *strictHandler) ListTasks(w http.ResponseWriter, r *http.Request) {
 	var request ListTasksRequestObject
@@ -1113,6 +1649,30 @@ func (sh *strictHandler) ListTasks(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(ListTasksResponseObject); ok {
 		if err := validResponse.VisitListTasksResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteUser operation middleware
+func (sh *strictHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	var request DeleteUserRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteUser(ctx, request.(DeleteUserRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteUser")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteUserResponseObject); ok {
+		if err := validResponse.VisitDeleteUserResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {
