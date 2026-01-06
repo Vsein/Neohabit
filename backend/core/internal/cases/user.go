@@ -15,17 +15,26 @@ import (
 )
 
 type UserCase struct {
-	userRepo  repo.UserRepo
-	txManager port.TransactionManager
+	userRepo      repo.UserRepo
+	habitRepo     repo.HabitRepo
+	settingsRepo  repo.SettingsRepo
+	stopwatchRepo repo.StopwatchRepo
+	txManager     port.TransactionManager
 }
 
 func NewUserCase(
 	userRepo repo.UserRepo,
+	habitRepo repo.HabitRepo,
+	settingsRepo repo.SettingsRepo,
+	stopwatchRepo repo.StopwatchRepo,
 	txManager port.TransactionManager,
 ) *UserCase {
 	return &UserCase{
-		userRepo:  userRepo,
-		txManager: txManager,
+		userRepo:      userRepo,
+		habitRepo:     habitRepo,
+		settingsRepo:  settingsRepo,
+		stopwatchRepo: stopwatchRepo,
+		txManager:     txManager,
 	}
 }
 
@@ -48,8 +57,41 @@ func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error
 			if errors.Is(err, repo.ErrAlreadyExists) {
 				return nil, ErrAlreadyExists
 			}
-			return nil, fmt.Errorf("create: %w", err)
+			return nil, fmt.Errorf("create user: %w", err)
 		}
+
+		habitID := uuid.NewString()
+		err = c.habitRepo.Create(ctx, &entity.Habit{
+			ID:        habitID,
+			UserID:    user.ID,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("create habit: %w", err)
+		}
+
+		err = c.settingsRepo.Create(ctx, &entity.Settings{
+			ID:        uuid.NewString(),
+			UserID:    user.ID,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("create settings: %w", err)
+		}
+
+		err = c.stopwatchRepo.Create(ctx, &entity.Stopwatch{
+			ID:        uuid.NewString(),
+			UserID:    user.ID,
+			HabitID:   habitID,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("create stopwatch: %w", err)
+		}
+
 		return nil, nil
 	})
 	if err != nil {
