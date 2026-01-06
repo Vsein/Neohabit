@@ -51,8 +51,8 @@ func (c *ProjectCase) Create(ctx context.Context, project *entity.Project) (stri
 }
 
 // List retrieves all Projects of a user
-func (c *ProjectCase) List(ctx context.Context, user_id string) ([]*entity.Project, error) {
-	projects, err := c.projectRepo.List(ctx, user_id)
+func (c *ProjectCase) List(ctx context.Context, userID string) ([]*entity.Project, error) {
+	projects, err := c.projectRepo.List(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
 	}

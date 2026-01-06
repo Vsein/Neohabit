@@ -34,9 +34,9 @@ func NewSettingsRepo(pool db.PoolTX, logger *zap.Logger) *Settings {
 	}
 }
 
-func (r *Settings) Read(ctx context.Context, user_id string) (*entity.Settings, error) {
+func (r *Settings) Read(ctx context.Context, userID string) (*entity.Settings, error) {
 	var settings entity.Settings
-	err := r.pool.QueryRow(ctx, queryReadSettings, user_id).Scan(
+	err := r.pool.QueryRow(ctx, queryReadSettings, userID).Scan(
 		&settings.ID,
 		&settings.UserID,
 		&settings.Theme,
@@ -102,11 +102,11 @@ func (r *Settings) Update(ctx context.Context, settings *entity.Settings) error 
 	return nil
 }
 
-func (r *Settings) Delete(ctx context.Context, user_id string) error {
+func (r *Settings) Delete(ctx context.Context, userID string) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteSettings,
-		user_id,
+		userID,
 	)
 	if err != nil {
 		return err

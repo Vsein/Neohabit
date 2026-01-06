@@ -38,11 +38,11 @@ func NewProjectRepo(pool db.PoolTX, logger *zap.Logger) *Project {
 }
 
 // List retrieves Projects of the logged in user from the database
-func (r *Project) List(ctx context.Context, user_id string) ([]*entity.Project, error) {
+func (r *Project) List(ctx context.Context, userID string) ([]*entity.Project, error) {
 	var rows pgx.Rows
 	var err error
 
-	rows, err = r.pool.Query(ctx, queryListProjects, user_id)
+	rows, err = r.pool.Query(ctx, queryListProjects, userID)
 
 	if err != nil {
 		return nil, fmt.Errorf("query list projects: %w", err)

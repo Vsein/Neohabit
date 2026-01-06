@@ -51,8 +51,8 @@ func (c *StopwatchCase) Create(ctx context.Context, stopwatch *entity.Stopwatch)
 	return stopwatch.ID, nil
 }
 
-func (c *StopwatchCase) Read(ctx context.Context, user_id string) (*entity.Stopwatch, error) {
-	stopwatch, err := c.stopwatchRepo.Read(ctx, user_id)
+func (c *StopwatchCase) Read(ctx context.Context, userID string) (*entity.Stopwatch, error) {
+	stopwatch, err := c.stopwatchRepo.Read(ctx, userID)
 	if err != nil {
 		if errors.Is(err, repo.ErrNotFound) {
 			return nil, ErrNotFound

@@ -7,8 +7,8 @@ import (
 )
 
 type StopwatchRepo interface {
-	Read(ctx context.Context, user_id string) (*entity.Stopwatch, error)
+	Read(ctx context.Context, userID string) (*entity.Stopwatch, error)
 	Create(ctx context.Context, stopwatch *entity.Stopwatch) error
 	Update(ctx context.Context, stopwatch *entity.Stopwatch) error
-	Delete(ctx context.Context, user_id string) error
+	Delete(ctx context.Context, userID string) error
 }

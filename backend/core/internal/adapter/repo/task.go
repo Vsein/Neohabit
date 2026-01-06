@@ -38,11 +38,11 @@ func NewTaskRepo(pool db.PoolTX, logger *zap.Logger) *Task {
 }
 
 // List retrieves Tasks of the logged in user from the database
-func (r *Task) List(ctx context.Context, user_id string) ([]*entity.Task, error) {
+func (r *Task) List(ctx context.Context, userID string) ([]*entity.Task, error) {
 	var rows pgx.Rows
 	var err error
 
-	rows, err = r.pool.Query(ctx, queryListTasks, user_id)
+	rows, err = r.pool.Query(ctx, queryListTasks, userID)
 
 	if err != nil {
 		return nil, fmt.Errorf("query list tasks: %w", err)

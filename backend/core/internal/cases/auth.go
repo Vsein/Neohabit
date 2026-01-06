@@ -76,9 +76,9 @@ func (r *AuthCase) AuthenticateWithAccessToken(ctx context.Context, token string
 	return claims.UserID, true, nil
 }
 
-func (r *AuthCase) IssueAccessToken(ctx context.Context, user_id string) (string, error) {
+func (r *AuthCase) IssueAccessToken(ctx context.Context, userID string) (string, error) {
 	claims := &AuthClaims{
-		UserID: user_id,
+		UserID: userID,
 	}
 
 	secret, err := r.secretProvider.GetJWTSecret()

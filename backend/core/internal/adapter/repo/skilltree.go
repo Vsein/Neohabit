@@ -38,11 +38,11 @@ func NewSkilltreeRepo(pool db.PoolTX, logger *zap.Logger) *Skilltree {
 }
 
 // List retrieves Skilltrees of the logged in user from the database
-func (r *Skilltree) List(ctx context.Context, user_id string) ([]*entity.Skilltree, error) {
+func (r *Skilltree) List(ctx context.Context, userID string) ([]*entity.Skilltree, error) {
 	var rows pgx.Rows
 	var err error
 
-	rows, err = r.pool.Query(ctx, queryListSkilltrees, user_id)
+	rows, err = r.pool.Query(ctx, queryListSkilltrees, userID)
 
 	if err != nil {
 		return nil, fmt.Errorf("query list skilltrees: %w", err)

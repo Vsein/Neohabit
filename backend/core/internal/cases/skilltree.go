@@ -51,8 +51,8 @@ func (c *SkilltreeCase) Create(ctx context.Context, skilltree *entity.Skilltree)
 }
 
 // List retrieves all Skilltrees of a user
-func (c *SkilltreeCase) List(ctx context.Context, user_id string) ([]*entity.Skilltree, error) {
-	skilltrees, err := c.skilltreeRepo.List(ctx, user_id)
+func (c *SkilltreeCase) List(ctx context.Context, userID string) ([]*entity.Skilltree, error) {
+	skilltrees, err := c.skilltreeRepo.List(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
 	}

@@ -62,8 +62,8 @@ func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit) (string, er
 // }
 
 // List retrieves all Habits of a user
-func (c *HabitCase) List(ctx context.Context, user_id string) ([]*entity.Habit, error) {
-	habits, err := c.habitRepo.List(ctx, user_id)
+func (c *HabitCase) List(ctx context.Context, userID string) ([]*entity.Habit, error) {
+	habits, err := c.habitRepo.List(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
 	}

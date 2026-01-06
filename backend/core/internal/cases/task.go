@@ -51,8 +51,8 @@ func (c *TaskCase) Create(ctx context.Context, task *entity.Task) (string, error
 }
 
 // List retrieves all Tasks of a user
-func (c *TaskCase) List(ctx context.Context, user_id string) ([]*entity.Task, error) {
-	tasks, err := c.taskRepo.List(ctx, user_id)
+func (c *TaskCase) List(ctx context.Context, userID string) ([]*entity.Task, error) {
+	tasks, err := c.taskRepo.List(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
 	}

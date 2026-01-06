@@ -34,10 +34,10 @@ func NewStopwatchRepo(pool db.PoolTX, logger *zap.Logger) *Stopwatch {
 	}
 }
 
-func (r *Stopwatch) Read(ctx context.Context, user_id string) (*entity.Stopwatch, error) {
+func (r *Stopwatch) Read(ctx context.Context, userID string) (*entity.Stopwatch, error) {
 	var stopwatch entity.Stopwatch
 	var habitID *string
-	err := r.pool.QueryRow(ctx, queryReadStopwatch, user_id).Scan(
+	err := r.pool.QueryRow(ctx, queryReadStopwatch, userID).Scan(
 		&stopwatch.ID,
 		&stopwatch.UserID,
 		&habitID,
@@ -95,11 +95,11 @@ func (r *Stopwatch) Update(ctx context.Context, stopwatch *entity.Stopwatch) err
 	return nil
 }
 
-func (r *Stopwatch) Delete(ctx context.Context, user_id string) error {
+func (r *Stopwatch) Delete(ctx context.Context, userID string) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteStopwatch,
-		user_id,
+		userID,
 	)
 	if err != nil {
 		return err

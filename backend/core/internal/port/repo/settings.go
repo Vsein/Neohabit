@@ -7,8 +7,8 @@ import (
 )
 
 type SettingsRepo interface {
-	Read(ctx context.Context, user_id string) (*entity.Settings, error)
+	Read(ctx context.Context, userID string) (*entity.Settings, error)
 	Create(ctx context.Context, settings *entity.Settings) error
 	Update(ctx context.Context, settings *entity.Settings) error
-	Delete(ctx context.Context, user_id string) error
+	Delete(ctx context.Context, userID string) error
 }

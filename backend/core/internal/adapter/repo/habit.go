@@ -60,11 +60,11 @@ func NewHabitRepo(pool db.PoolTX, logger *zap.Logger) *Habit {
 // }
 
 // List retrieves Habits of the logged in user from the database
-func (r *Habit) List(ctx context.Context, user_id string) ([]*entity.Habit, error) {
+func (r *Habit) List(ctx context.Context, userID string) ([]*entity.Habit, error) {
 	var rows pgx.Rows
 	var err error
 
-	rows, err = r.pool.Query(ctx, queryListHabits, user_id)
+	rows, err = r.pool.Query(ctx, queryListHabits, userID)
 
 	if err != nil {
 		return nil, fmt.Errorf("query list habits: %w", err)
