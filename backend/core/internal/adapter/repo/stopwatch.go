@@ -2,6 +2,7 @@ package repo
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"go.uber.org/zap"
@@ -12,13 +13,13 @@ import (
 )
 
 const (
-	queryReadStopwatch   = `SELECT * FROM stopwatch WHERE user_id = $1`
+	queryReadStopwatch   = `SELECT * FROM stopwatches WHERE user_id = $1`
 	queryCreateStopwatch = `
-		INSERT INTO stopwatch (id, user_id, created_at, updated_at)
+		INSERT INTO stopwatches (id, user_id, created_at, updated_at)
 		VALUES ($1, $2, $3, $4)
 	`
-	queryUpdateStopwatch = `UPDATE stopwatch SET updated_at = $5 WHERE id = $1`
-	queryDeleteStopwatch = `DELETE FROM stopwatch WHERE user_id = $1`
+	queryUpdateStopwatch = `UPDATE stopwatches SET updated_at = $5 WHERE id = $1`
+	queryDeleteStopwatch = `DELETE FROM stopwatches WHERE user_id = $1`
 )
 
 type Stopwatch struct {
@@ -35,10 +36,11 @@ func NewStopwatchRepo(pool db.PoolTX, logger *zap.Logger) *Stopwatch {
 
 func (r *Stopwatch) Read(ctx context.Context, user_id string) (*entity.Stopwatch, error) {
 	var stopwatch entity.Stopwatch
+	var habitID *string
 	err := r.pool.QueryRow(ctx, queryReadStopwatch, user_id).Scan(
 		&stopwatch.ID,
 		&stopwatch.UserID,
-		&stopwatch.HabitID,
+		&habitID,
 		&stopwatch.IsInitiated,
 		&stopwatch.StartTime,
 		&stopwatch.Duration,
@@ -48,8 +50,15 @@ func (r *Stopwatch) Read(ctx context.Context, user_id string) (*entity.Stopwatch
 		&stopwatch.UpdatedAt,
 	)
 	if err != nil {
-		return nil, repo.ErrNotFound
+		if errors.Is(err, repo.ErrNotFound) {
+			return nil, repo.ErrNotFound
+		}
+		return nil, err
 	}
+	if habitID != nil {
+		stopwatch.HabitID = *habitID
+	}
+
 	return &stopwatch, nil
 }
 

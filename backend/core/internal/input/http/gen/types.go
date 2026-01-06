@@ -61,7 +61,7 @@ type Habit struct {
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	DueDate     *Date        `json:"dueDate,omitempty"`
+	DueDate     *Date        `json:"due_date,omitempty"`
 	ID          string       `json:"id"`
 
 	// Name Activity name

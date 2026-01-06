@@ -2,10 +2,9 @@ package repo
 
 import (
 	"context"
-	// "errors"
+	"errors"
 	"fmt"
 
-	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
 	"neohabit/core/internal/adapter/repo/db"
@@ -62,7 +61,10 @@ func (r *Settings) Read(ctx context.Context, user_id string) (*entity.Settings, 
 		&settings.UpdatedAt,
 	)
 	if err != nil {
-		return nil, repo.ErrNotFound
+		if errors.Is(err, repo.ErrNotFound) {
+			return nil, repo.ErrNotFound
+		}
+		return nil, err
 	}
 	return &settings, nil
 }

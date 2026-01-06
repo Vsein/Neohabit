@@ -118,8 +118,8 @@ CREATE TABLE IF NOT EXISTS skills (
 CREATE TABLE IF NOT EXISTS skilltrees (
     id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-    project_id TEXT REFERENCES project(id) ON DELETE SET NULL,
-    habit_id TEXT REFERENCES habit(id) ON DELETE SET NULL,
+    project_id TEXT REFERENCES projects(id) ON DELETE SET NULL,
+    habit_id TEXT REFERENCES habits(id) ON DELETE SET NULL,
     skill_ids TEXT[],
     name TEXT NOT NULL,
     description TEXT,

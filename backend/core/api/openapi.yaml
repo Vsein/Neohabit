@@ -366,7 +366,7 @@ components:
           $ref: '#/components/schemas/Description'
         color:
           $ref: '#/components/schemas/Color'
-        dueDate:
+        due_date:
           $ref: '#/components/schemas/Date'
         created_at:
           $ref: '#/components/schemas/Date'

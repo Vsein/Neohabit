@@ -4,9 +4,7 @@ const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl:
-      process.env.REACT_APP_STAGE === 'dev'
-        ? 'http://localhost:9000/private/'
-        : 'https://neohabit.app/api/private',
+      process.env.REACT_APP_STAGE === 'dev' ? 'http://localhost:9000/' : 'https://neohabit.app/api',
     prepareHeaders: (headers, { getState }) => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -15,7 +13,7 @@ const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Heatmaps'],
+  // tagTypes: ['Heatmaps'],
   endpoints: () => ({}),
 });
 

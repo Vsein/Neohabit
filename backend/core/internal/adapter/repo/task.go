@@ -83,10 +83,12 @@ func (r *Task) Create(ctx context.Context, task *entity.Task) error {
 		queryCreateTask,
 		task.ID,
 		task.UserID,
+		task.HabitID,
 		task.Name,
 		task.Description,
-		task.Color,
-		task.HabitIDs,
+		task.DueDate,
+		task.IsImportant,
+		task.IsCompleted,
 		task.CreatedAt,
 		task.UpdatedAt,
 	)
@@ -106,9 +108,12 @@ func (r *Task) Update(ctx context.Context, task *entity.Task) error {
 		ctx,
 		queryUpdateTask,
 		task.ID,
+		task.HabitID,
 		task.Name,
 		task.Description,
-		task.Color,
+		task.DueDate,
+		task.IsImportant,
+		task.IsCompleted,
 		task.UpdatedAt,
 	)
 	if err != nil {
