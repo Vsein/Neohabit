@@ -56,8 +56,9 @@ type ErrorResponse struct {
 
 // Habit defines model for Habit.
 type Habit struct {
-	Color     *Color `json:"color,omitempty"`
-	CreatedAt *Date  `json:"created_at,omitempty"`
+	Color     *Color       `json:"color,omitempty"`
+	CreatedAt *Date        `json:"created_at,omitempty"`
+	Data      *[]HabitData `json:"data,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
@@ -65,9 +66,32 @@ type Habit struct {
 	ID          string       `json:"id"`
 
 	// Name Activity name
-	Name      Name   `json:"name"`
-	UpdatedAt *Date  `json:"updated_at,omitempty"`
-	UserID    string `json:"user_id"`
+	Name      Name           `json:"name"`
+	Targets   *[]HabitTarget `json:"targets,omitempty"`
+	UpdatedAt *Date          `json:"updated_at,omitempty"`
+	UserID    string         `json:"user_id"`
+}
+
+// HabitData defines model for HabitData.
+type HabitData struct {
+	Date Date `json:"date"`
+
+	// Value How many times the activity was completed this day
+	Value uint8 `json:"value"`
+}
+
+// HabitTarget defines model for HabitTarget.
+type HabitTarget struct {
+	DateEnd   *Date   `json:"date_end,omitempty"`
+	DateStart Date    `json:"date_start"`
+	ID        *string `json:"id,omitempty"`
+	IsArchive bool    `json:"is_archive"`
+
+	// Period How many days you have to complete the activity
+	Period uint8 `json:"period"`
+
+	// Value How many times the activity has to be completed in the specified Period
+	Value uint8 `json:"value"`
 }
 
 // Name Activity name

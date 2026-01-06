@@ -389,12 +389,20 @@ components:
           $ref: '#/components/schemas/Color'
         due_date:
           $ref: '#/components/schemas/Date'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HabitData'
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/HabitTarget'
         created_at:
           $ref: '#/components/schemas/Date'
         updated_at:
           $ref: '#/components/schemas/Date'
 
-    HeatmapData:
+    HabitData:
       type: object
       required:
         - date
@@ -407,16 +415,19 @@ components:
           format: uint8
           description: "How many times the activity was completed this day"
 
-    HeatmapTarget:
+    HabitTarget:
       type: object
       required:
-        # add fields from the entity
-        - date
+        - date_start
         - value
         - period
         - is_archive
       properties:
-        date:
+        id:
+          type: string
+        date_start:
+          $ref: '#/components/schemas/Date'
+        date_end:
           $ref: '#/components/schemas/Date'
         value:
           type: integer
@@ -430,32 +441,6 @@ components:
           example: 1
         is_archive:
           type: boolean
-
-    Heatmap:
-      type: object
-      required:
-        - id
-        - user_id
-        - name
-      properties:
-        id:
-          type: string
-        user_id:
-          type: string
-        habit_id:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/HeatmapData'
-        targets:
-          type: array
-          items:
-            $ref: '#/components/schemas/HeatmapTarget'
-        created_at:
-          $ref: '#/components/schemas/Date'
-        updated_at:
-          $ref: '#/components/schemas/Date'
 
     Project:
       type: object

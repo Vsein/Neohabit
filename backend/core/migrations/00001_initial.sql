@@ -38,11 +38,11 @@ CREATE TABLE IF NOT EXISTS projects (
 CREATE TABLE IF NOT EXISTS habit_data (
     id TEXT PRIMARY KEY,
     habit_id TEXT REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
-    date TEXT NOT NULL,
-    value INTEGER NOT NULL, -- smallint maybe?
+    date TIMESTAMPTZ NOT NULL,
+    value INTEGER NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(date) -- should I?
+    UNIQUE(date)
 );
 
 CREATE TABLE IF NOT EXISTS habit_targets (
@@ -54,14 +54,14 @@ CREATE TABLE IF NOT EXISTS habit_targets (
     period INTEGER NOT NULL,
     -- period_unit ? m y d - if you want it to happen EXACTLY on 17th of the month
     -- fractions are prohibited by the period
-    is_sequential BOOLEAN NOT NULL DEFAULT FALSE,
+    is_a_sequence BOOLEAN NOT NULL DEFAULT FALSE,
     sequence INTEGER[],
-    is_archive BOOLEAN NOT NULL DEFAULT FALSE,
-    is_antihabit BOOLEAN NOT NULL DEFAULT FALSE,
+    is_archiving BOOLEAN NOT NULL DEFAULT FALSE,
     is_numeric BOOLEAN NOT NULL DEFAULT FALSE,
+    more_is_bad BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(date_start) -- should I?
+    UNIQUE(date_start)
 );
 
 CREATE TABLE IF NOT EXISTS settings (
