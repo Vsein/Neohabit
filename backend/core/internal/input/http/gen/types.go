@@ -77,7 +77,7 @@ type HabitData struct {
 	Date Date `json:"date"`
 
 	// Value How many times the activity was completed this day
-	Value uint8 `json:"value"`
+	Value int `json:"value"`
 }
 
 // HabitTarget defines model for HabitTarget.

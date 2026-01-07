@@ -12,7 +12,6 @@ import {
 } from '@mdi/js';
 import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -31,16 +30,14 @@ export default function Overview({
 }) {
   const [loaded] = useLoaded();
   const habits = useGetHabitsQuery();
-  const heatmaps = useGetHeatmapsQuery();
   const vertical = false;
 
-  if (!loaded || habits.isLoading || heatmaps.isLoading) {
+  if (!loaded || habits.isLoading) {
     return <div className="loader" />;
   }
 
   const Habits = habits.data.flatMap((habit, i) => {
-    const heatmap = heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id);
-    const dataSorted = heatmapSort(heatmap?.data, dateEnd);
+    const dataSorted = habit.data;
 
     return (new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() &&
       dataSorted.length !== 1) ||
@@ -55,7 +52,6 @@ export default function Overview({
         dateStart={dateStart}
         dateEnd={dateEnd}
         heatmapData={dataSorted}
-        heatmapID={heatmap?._id}
         vertical={vertical}
         mobile={mobile}
       />

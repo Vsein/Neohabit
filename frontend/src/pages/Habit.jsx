@@ -3,7 +3,6 @@ import { Routes, Route, Outlet, useParams, useNavigate } from 'react-router-dom'
 import useTitle from '../hooks/useTitle';
 import { useGetTasksQuery } from '../state/services/todolist';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { ReturnButton } from '../components/HabitComponents';
@@ -30,9 +29,8 @@ export default function HabitPage() {
 
 function HabitLayout() {
   const habits = useGetHabitsQuery();
-  const heatmaps = useGetHeatmapsQuery();
 
-  return habits.isFetching || heatmaps.isLoading || heatmaps.isFetching ? (
+  return habits.isFetching ? (
     <div className="loader" />
   ) : (
     <Outlet />
@@ -47,10 +45,8 @@ function Overview() {
   const navigate = useNavigate();
   const tasks = useGetTasksQuery();
   const habits = useGetHabitsQuery();
-  const heatmaps = useGetHeatmapsQuery();
   const { habitID } = useParams();
   const habit =
-  const heatmap = useGetHeatmapsQuery().data.find((heatmapo) => heatmapo.habit._id === habitID);
     useGetHabitsQuery().data.find((h) => h.id === habitID) ??
     useGetHabitsQuery().data.find((h) => h.name === 'Default');
   const vertical = false;
@@ -69,7 +65,7 @@ function Overview() {
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
 
-  return tasks.isFetching || habits.isFetching || heatmaps.isFetching ? (
+  return tasks.isFetching || habits.isFetching ? (
     <div className="loader" />
   ) : (
     <>
@@ -111,7 +107,7 @@ function Overview() {
       </div>
       <div className="contentlist">
         <HabitDefaultWrapper
-          heatmap={heatmap}
+          heatmap={habit.data}
           habit={habit}
           habitPage={true}
           dateStart={dateStart}

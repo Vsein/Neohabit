@@ -5,7 +5,6 @@ import { Icon } from '@mdi/react';
 import { mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays, endOfDay, startOfDay } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useUpdateSettingsMutation } from '../state/services/settings';
 import { useUpdateProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
@@ -29,7 +28,6 @@ export default function Project({
   isFuturePeriod = false,
   dragHabitToProject,
 }) {
-  const heatmaps = useGetHeatmapsQuery();
   const habits = useGetHabitsQuery();
   const vertical = false;
 
@@ -38,7 +36,7 @@ export default function Project({
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
-  if (heatmaps.isFetching || habits.isFetching) return <></>;
+  if (habits.isFetching) return <></>;
 
   const dragHabitInProject = async (projectID, draggedHabitID, targetHabitID, insertAfter) => {
     const projecto = structuredClone(project);
@@ -76,7 +74,6 @@ export default function Project({
           dateStart={globalDateStart}
           dateEnd={globalDateEnd}
           heatmapData={dataSorted}
-          heatmapID={heatmap?._id}
           vertical={vertical}
           mobile={mobile}
           projectID={project.id}

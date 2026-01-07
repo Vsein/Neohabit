@@ -537,6 +537,14 @@ func toAPIUser(e *entity.User) gen.User {
 }
 
 func toAPIHabit(e *entity.Habit) gen.Habit {
+	data := make([]gen.HabitData, 0, len(e.Data))
+	for _, datum := range e.Data {
+		data = append(data, gen.HabitData{
+			Date:  datum.Date,
+			Value: datum.Value,
+		})
+	}
+
 	return gen.Habit{
 		ID:          e.ID,
 		UserID:      e.UserID,
@@ -546,6 +554,7 @@ func toAPIHabit(e *entity.Habit) gen.Habit {
 		DueDate:     &e.DueDate,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
+		Data:        &data,
 	}
 }
 

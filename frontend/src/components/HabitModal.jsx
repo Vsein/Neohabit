@@ -15,20 +15,18 @@ import {
   useCreateHabitMutation,
   useUpdateHabitMutation,
 } from '../state/services/habit';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { close } from '../state/features/overlay/overlaySlice';
 
 export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const dispatch = useDispatch();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
-  const heatmaps = useGetHeatmapsQuery();
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
 
   const { width } = useWindowDimensions();
 
-  if (habits.isLoading || projects.isLoading || heatmaps.isLoading) return <></>;
+  if (habits.isLoading || projects.isLoading) return <></>;
 
   const project = projects.data.find((p) => p.id === projectID) ?? {
     name: 'Default',
@@ -42,8 +40,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
     color: '#23BCDB',
     description: '',
   };
-
-  const heatmap = useGetHeatmapsQuery().data.find((heatmapo) => heatmapo.habit._id === habitID);
 
   const onSubmit = async (values) => {
     if (habit.name === '') {
@@ -123,7 +119,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             </div>
             {width >= 850 && habitID && (
               <HabitModalWrapper
-                heatmap={heatmap}
+                heatmap={habit.data}
                 habit={habit}
                 overridenElimination={values.elimination}
                 overridenNumeric={values.numeric}

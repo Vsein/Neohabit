@@ -6,12 +6,14 @@ export default function useStopwatch() {
   const projects = useGetProjectsQuery();
 
   if (habits.isFetching || projects.isFetching) {
-    return [{
-      name: 'Default',
-      color: '#8a8a8a',
-      habits: [],
-      _id: 'default',
-    }];
+    return [
+      {
+        name: 'Default',
+        color: '#8a8a8a',
+        habits: [],
+        id: 'default',
+      },
+    ];
   }
 
   const defaultProject = {
@@ -25,8 +27,8 @@ export default function useStopwatch() {
         );
       return found === -1 || found === undefined;
     }),
-    _id: 'default',
+    id: 'default',
   };
 
-  return [ defaultProject ];
+  return [defaultProject];
 }

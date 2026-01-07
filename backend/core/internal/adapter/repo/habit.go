@@ -15,7 +15,17 @@ import (
 
 const (
 	// queryReadHabit   = `SELECT * FROM habits WHERE id = $1`
-	queryListHabits  = `SELECT * FROM habits WHERE user_id = $1`
+	queryListHabits = `
+		SELECT *
+		FROM
+			habits h
+			LEFT JOIN (
+				SELECT hd.habit_id as id, array_agg(array[date, created_at, updated_at]) as data
+				FROM habit_data hd
+				GROUP BY hd.habit_id
+			) hd USING (id)
+		WHERE h.user_id = $1
+	`
 	queryCreateHabit = `
 		INSERT INTO habits (id, user_id, name, description, color, due_date, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -83,6 +93,7 @@ func (r *Habit) List(ctx context.Context, userID string) ([]*entity.Habit, error
 			&habit.DueDate,
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
+			&habit.Data,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("scan habit: %w", err)

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useUpdateSettingsMutation } from '../state/services/settings';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { useGetHabitsQuery } from '../state/services/habit';
 import useDefaultProject from '../hooks/useDefaultProject';
 import { HabitModalWrapper } from './Habit';
@@ -9,7 +8,6 @@ import { HabitModalWrapper } from './Habit';
 export default function Onboarding() {
   const [updateSettings] = useUpdateSettingsMutation();
   const habits = useGetHabitsQuery();
-  const heatmaps = useGetHeatmapsQuery();
   const [slide, setSlide] = useState(1);
   const skip = () => {
     updateSettings({ values: { hide_onboarding: true } });
@@ -20,7 +18,7 @@ export default function Onboarding() {
 
   const [defaultProject] = useDefaultProject();
 
-  if (habits.isLoading || heatmaps.isLoading) return <></>;
+  if (habits.isLoading) return <></>;
 
   return (
     <div className="overlay overlay-active centering">
@@ -32,9 +30,7 @@ export default function Onboarding() {
         <div className="contentlist">
           {defaultProject.habits[0] ? (
             <HabitModalWrapper
-              heatmap={heatmaps.data.find(
-                (heatmapo) => heatmapo.habit._id === defaultProject.habits[0]._id,
-              )}
+              heatmap={habits.data[0].data}
               habit={defaultProject.habits[0]}
               onboardingSlide={slide}
               modal={true}
