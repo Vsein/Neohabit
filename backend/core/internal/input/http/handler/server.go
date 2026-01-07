@@ -125,7 +125,7 @@ func (s *server) Signup(
 	id, err := s.users.Create(ctx, user)
 	if err != nil {
 		if errors.Is(err, cases.ErrAlreadyExists) {
-			return gen.Signup409JSONResponse{}, nil
+			return gen.Signup409JSONResponse{Error: "Username already exists"}, nil
 		}
 		s.logger.Error("failed to create user", zap.Error(err))
 		return gen.Signup500JSONResponse{}, nil

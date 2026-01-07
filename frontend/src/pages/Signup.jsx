@@ -27,7 +27,7 @@ function SignupForm() {
       if (res?.error?.data?.error === 'Email is already registered') {
         return { email: 'Email is already registered' };
       }
-      return { email: 'Signup failed' };
+      return { username: 'Signup failed' };
     }
     await sendLoginRequest(data);
     if (res) navigate('/projects');
