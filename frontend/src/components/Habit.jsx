@@ -55,7 +55,6 @@ export default function Habit({
 function HabitDefaultWrapper({
   heatmap,
   habit,
-  onboardingSlide = 0,
   modal = false,
   habitPage = false,
   dateStart,
@@ -71,7 +70,7 @@ function HabitDefaultWrapper({
 
   return (
     <div
-      className={`overview-centering slide-${onboardingSlide}`}
+      className="overview-centering"
       style={{
         '--habits': 7,
         '--length': diffWeeks - 14.5,
@@ -89,9 +88,8 @@ function HabitDefaultWrapper({
       }}
     >
       <div
-        className={`overview-header ${mobile ? 'small' : ''} ${
-          modal ? 'modal-mode' : ''
-        } singular habit-mode`}
+        className={`overview-header ${mobile ? 'small' : ''} ${modal ? 'modal-mode' : ''
+          } singular habit-mode`}
       >
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
         <HabitControls
@@ -118,7 +116,7 @@ function HabitDefaultWrapper({
 function HabitModalWrapper({
   heatmap,
   habit,
-  onboardingSlide = 0,
+  onboardingSlideTag = '',
   overridenElimination = undefined,
   overridenNumeric = undefined,
   habitPage = false,
@@ -128,7 +126,7 @@ function HabitModalWrapper({
 
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
-  const datePeriodLength = Math.min(35, adaptiveDatePeriodLength - !!onboardingSlide * 2);
+  const datePeriodLength = Math.min(35, adaptiveDatePeriodLength - (onboardingSlideTag ? 2 : 0));
   const [
     dateEnd,
     setDateEnd,
@@ -143,7 +141,7 @@ function HabitModalWrapper({
 
   return (
     <div
-      className={`overview-centering slide-${onboardingSlide}`}
+      className={`overview-centering slide_${onboardingSlideTag}`}
       style={{
         '--habits': 7,
         '--length': diffWeeks - 14.5,
@@ -160,7 +158,7 @@ function HabitModalWrapper({
         margin: 'auto',
       }}
     >
-      <div className={`overview-header ${mobile ? 'small' : ''} modal-mode singular habit-mode`}>
+      <div className={`overview-header ${mobile ? 'small' : ''} ${onboardingSlideTag ? 'slide-mode' : ''} modal-mode singular habit-mode`}>
         <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}
@@ -179,7 +177,7 @@ function HabitModalWrapper({
           habit={habit}
           heatmapID={heatmap?.id}
           header={true}
-          modal={true}
+          modal={!onboardingSlideTag}
           habitPage={habitPage}
         />
       </div>

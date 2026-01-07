@@ -23,7 +23,6 @@ export default function Project({
   singular = false,
   globalDateStart = null,
   globalDateEnd = null,
-  onboardingSlide = 0,
   isPastPeriod = false,
   isFuturePeriod = false,
   dragHabitToProject,
@@ -115,7 +114,7 @@ export default function Project({
 
   return (
     <div
-      className={`overview-centering ${mobile ? 'mobile' : ''} slide-${onboardingSlide}`}
+      className={`overview-centering ${mobile ? 'mobile' : ''}`}
       style={{
         '--habits': Habits.length,
         '--length': differenceInDays(globalDateEnd, globalDateStart) + 1,

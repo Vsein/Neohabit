@@ -284,8 +284,11 @@ $cell-margin: 2px;
   }
 
   &-period-button {
-    width: min-content;
     padding-top: 3px;
+
+    & .icon {
+      width: 50px;
+    }
   }
 }
 
@@ -331,6 +334,17 @@ $cell-margin: 2px;
     'name settings'
     'date settings';
   gap: 3px;
+}
+
+.overview-header.slide-mode.modal-mode {
+  @media (max-width: 750px) {
+    grid-template-areas:
+      'date'
+      'settings' !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr !important;
+    justify-items: center;
+  }
 }
 
 .overview-header {

@@ -156,17 +156,19 @@
     background-color: var(--calm-signature-color);
   }
   50% {
-    background-color: var(--main-background-color);
+    // The color itself doesn't matter, it won't appear as white/black.
+    // the resulting effect is transition to 0 background opacity
+    background-color: rgb(255, 255, 255, 0);;
   }
   100% {
     background-color: var(--calm-signature-color);
   }
 }
 
-.overview-centering.slide-1 {
-  button > .icon {
-    border-radius: 50%;
-    animation: glow 3s linear infinite;
+.overview-centering.slide_date-indicators {
+  .dates-container > button > .icon {
+      border-radius: 50%;
+      animation: glow 3s linear infinite;
   }
   & .overview-habit-button {
     pointer-events: none;
@@ -174,28 +176,43 @@
   }
 }
 
-.overview-centering.slide-2 {
+.overview-centering.slide_date-pickers {
+  .dates-period {
+    animation: glow 3s linear infinite;
+
+    & button > .icon {
+      border-radius: 6px;
+      animation: glow 3s linear infinite;
+    }
+  }
+  & .overview-habit-button {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+.overview-centering.slide_habit-datum {
   & .overview-habit-button:nth-child(n + 2) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
-.overview-centering.slide-3 {
+.overview-centering.slide_habit-data {
   & .overview-habit-button:not(:nth-child(6n + 2)) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
-.overview-centering.slide-4 {
+.overview-centering.slide_habit-targets {
   & .overview-habit-button:not(:nth-child(6n + 3)) {
     pointer-events: none;
     opacity: 0.3;
   }
 }
 
-.overview-centering.slide-5 {
+.overview-centering.slide_final {
   & .overview-habit-button {
     pointer-events: none;
     opacity: 0.3;

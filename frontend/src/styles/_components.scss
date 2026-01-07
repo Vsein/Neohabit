@@ -232,6 +232,11 @@ input[type='checkbox']:checked.checkbox {
     border-radius: 10px;
   }
 
+  &.chameleon {
+    color: var(--text-color);
+    background-color: transparent;
+  }
+
   &.muted {
     color: var(--text-color);
     border: 2px solid var(--border-color);
@@ -268,11 +273,11 @@ input[type='checkbox']:checked.checkbox {
   &.onboarding {
     width: 150px;
 
-    @media (max-width: 450px) {
+    @media (max-width: 480px) {
       width: 100px;
     }
 
-    @media (max-width: 300px) {
+    @media (max-width: 370px) {
       width: 75px;
     }
   }

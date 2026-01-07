@@ -57,32 +57,13 @@
     }
   }
 
+  &-onboarding {
+    display: flex;
+    flex-direction: column;
+  }
+
   &-onboarding.modal-mobile {
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
     text-align: center;
-
-    @media (max-width: 850px) {
-      grid-template-rows: 25px 35px 80px 230px 40px;
-    }
-
-    @media (max-width: 700px) {
-      grid-template-rows: 25px 60px 80px 230px 40px;
-    }
-
-    @media (max-width: 550px) {
-      gap: 5px;
-      grid-template-rows: 25px 60px 110px 230px 40px;
-    }
-
-    @media (max-width: 410px) {
-      grid-template-rows: 25px 60px 130px 230px 40px;
-    }
-
-    @media (max-width: 365px) {
-      grid-template-rows: 25px 80px 130px 265px 40px;
-    }
   }
 
   &-header {
