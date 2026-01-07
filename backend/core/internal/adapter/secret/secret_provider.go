@@ -39,11 +39,6 @@ func (r *SecretProviderCache) GetJWTSecret() (string, error) {
 		return "", fmt.Errorf("failed to fetch secret %q: %w", key, err)
 	}
 
-	r.cache[key] = cachedSecret{
-		value:     secret,
-		fetchedAt: time.Now(),
-	}
-
 	return secret, nil
 }
 
