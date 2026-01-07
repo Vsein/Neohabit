@@ -23,7 +23,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
 
   if (habits.isLoading || tasks.isLoading) return <></>;
 
-  const task = tasks.data.find((task1) => task1._id === taskID);
+  const task = tasks.data.find((t) => t.id === taskID);
 
   const onSubmit = async (values) => {
     if (task) {
@@ -34,7 +34,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
     dispatch(close());
   };
 
-  const habit = habits.data.find((habito) => habito._id === habitID) ?? {
+  const habit = habits.data.find((h) => h.id === habitID) ?? {
     name: 'Default',
     color: '#8a8a8a',
   };
@@ -45,7 +45,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
         completed: task?.completed ?? false,
         name: task?.name ?? '',
         description: task?.description ?? '',
-        habitID: task?.habit?._id ?? habit?._id,
+        habitID: task?.habit?.id ?? habit?.id,
       }}
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (

@@ -50,9 +50,9 @@ function Overview() {
   const heatmaps = useGetHeatmapsQuery();
   const { habitID } = useParams();
   const habit =
-    useGetHabitsQuery().data.find((habito) => habito._id === habitID) ??
-    useGetHabitsQuery().data.find((habito) => habito.name === 'Default');
   const heatmap = useGetHeatmapsQuery().data.find((heatmapo) => heatmapo.habit._id === habitID);
+    useGetHabitsQuery().data.find((h) => h.id === habitID) ??
+    useGetHabitsQuery().data.find((h) => h.name === 'Default');
   const vertical = false;
 
   const { width } = useWindowDimensions();

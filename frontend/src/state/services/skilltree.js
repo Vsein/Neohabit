@@ -31,7 +31,7 @@ export const skilltreeApi = api.injectEndpoints({
       onQueryStarted({ skilltreeID, values }, { dispatch }) {
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
+            const skilltree = draft.find((skilltreo) => skilltreo.id == skilltreeID);
             if (skilltree) {
               skilltree.name = values.name;
               skilltree.color = values.color;
@@ -50,7 +50,7 @@ export const skilltreeApi = api.injectEndpoints({
         const res = await queryFulfilled;
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
+            const skilltree = draft.find((skilltreo) => skilltreo.id == skilltreeID);
             if (skilltree) {
               const { skills } = skilltree;
               skills.push(res.data);
@@ -68,10 +68,10 @@ export const skilltreeApi = api.injectEndpoints({
       async onQueryStarted({ skilltreeID, skillID, values }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
+            const skilltree = draft.find((skilltreo) => skilltreo.id == skilltreeID);
             if (skilltree) {
               const { skills } = skilltree;
-              const skill = skills.find((skillo) => skillo._id === skillID);
+              const skill = skills.find((skillo) => skillo.id === skillID);
               Object.assign(skill, values);
             }
           }),
@@ -87,9 +87,9 @@ export const skilltreeApi = api.injectEndpoints({
       async onQueryStarted({ skilltreeID, values }, { dispatch }) {
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
+            const skilltree = draft.find((skilltreo) => skilltreo.id == skilltreeID);
             skilltree.skills = skilltree.skills.filter((skill) => {
-              return values.ids.findIndex((id) => skill._id === id) === -1;
+              return values.ids.findIndex((id) => skill.id === id) === -1;
             });
           }),
         );
@@ -103,7 +103,7 @@ export const skilltreeApi = api.injectEndpoints({
       onQueryStarted(skilltreeID, { dispatch }) {
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const index = draft.findIndex((skilltree) => skilltree._id === skilltreeID);
+            const index = draft.findIndex((skilltree) => skilltree.id === skilltreeID);
             draft.splice(index, 1);
           }),
         );

@@ -31,7 +31,7 @@ export const todolistApi = api.injectEndpoints({
       onQueryStarted({ taskID, values }, { dispatch }) {
         const patchResult = dispatch(
           todolistApi.util.updateQueryData('getTasks', undefined, (draft) => {
-            const task = draft.find((task) => task._id == taskID);
+            const task = draft.find((t) => t.id === taskID);
             if (task) {
               task.name = values.name;
               task.description = values.description;
@@ -51,7 +51,7 @@ export const todolistApi = api.injectEndpoints({
       onQueryStarted(taskID, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           todolistApi.util.updateQueryData('getTasks', undefined, (draft) => {
-            const index = draft.findIndex((task) => task._id == taskID);
+            const index = draft.findIndex((t) => t.id === taskID);
             draft.splice(index, 1);
           }),
         );

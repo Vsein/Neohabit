@@ -42,7 +42,7 @@ export default function Project({
 
   const dragHabitInProject = async (projectID, draggedHabitID, targetHabitID, insertAfter) => {
     const projecto = structuredClone(project);
-    if (projecto && projectID === projecto._id && projecto.habits) {
+    if (projecto && projectID === projecto.id && projecto.habits) {
       const draggedHabitPosition = projecto.habits.findIndex(
         (habit) => habit === draggedHabitID,
       );
@@ -79,7 +79,7 @@ export default function Project({
           heatmapID={heatmap?._id}
           vertical={vertical}
           mobile={mobile}
-          projectID={project._id}
+          projectID={project.id}
           dragHabitInProject={dragHabitInProject}
           dragHabitToProject={dragHabitToProject}
         />
@@ -98,7 +98,7 @@ export default function Project({
     singular ? (
       <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
     ) : (
-      <NavLink to={`../project/${project?._id}`} title={project.name}>
+      <NavLink to={`../project/${project?.id}`} title={project.name}>
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
       </NavLink>
     );
@@ -145,7 +145,7 @@ export default function Project({
       }}
       onDrop={drop}
       onDragOver={allowDrop} draggable onDragStart={drag}
-      id={project?._id}
+      id={project?.id}
     >
         <div
           className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}

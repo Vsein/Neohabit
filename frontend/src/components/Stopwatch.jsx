@@ -34,7 +34,7 @@ function StopwatchContents() {
 
   if (habits.isFetching) return <></>;
 
-  const habit = habits.data.find((habito) => habito._id === stopwatch?.data?.habit?._id) ?? {
+  const habit = habits.data.find((h) => h.id === stopwatch?.data?.habit?.id) ?? {
     name: 'No habit',
     color: '#23BCDB',
   };
@@ -69,9 +69,9 @@ function StopwatchContents() {
         </button>
         <button
           className="logo-section centering stopwatch-icon"
-          onClick={(e) => habit?._id && finishCountdown(e)}
+          onClick={(e) => habit?.id && finishCountdown(e)}
           title="Finish [F]"
-          disabled={!habit?._id}
+          disabled={!habit?.id}
         >
           <Icon path={mdiFlagCheckered} style={{ marginTop: '-1px' }} className="icon medium" />
         </button>

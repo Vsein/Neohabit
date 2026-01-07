@@ -43,7 +43,7 @@ export const stopwatchApi = api.injectEndpoints({
         );
         dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            const Heatmap = draft.find((heatmap) => heatmap.habit._id == values.habit._id);
+            const Heatmap = draft.find((heatmap) => heatmap.habit.id === values.habit.id);
             const index = Heatmap.data.findIndex(
               (point) =>
                 isSameDay(new Date(point.date), new Date(values.start_time)) && !point.is_target,

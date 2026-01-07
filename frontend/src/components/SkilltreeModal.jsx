@@ -20,7 +20,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
 
   if (skilltrees.isLoading) return <></>;
 
-  const skilltree = skilltrees.data.find((skilltreo) => skilltreo._id === skilltreeID);
+  const skilltree = skilltrees.data.find((s) => s.id === skilltreeID);
 
   const onSubmit = async (values) => {
     if (!skilltree) {

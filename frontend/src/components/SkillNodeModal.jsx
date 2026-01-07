@@ -20,8 +20,8 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
 
   if (skilltrees.isLoading) return <></>;
 
-  const skilltree = skilltrees.data.find((skilltreo) => skilltreo._id === skilltreeID);
-  const skill = skillID ? skilltree.skills.find((skillo) => skillo._id === skillID) : {};
+  const skilltree = skilltrees.data.find((s) => s.id === skilltreeID);
+  const skill = skillID ? skilltree.skills.find((s) => s.id === skillID) : {};
 
   const onSubmit = async (values) => {
     if (!skillID) {

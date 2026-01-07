@@ -117,7 +117,7 @@ function HabitControls({
       {!modal && (
         <button
           className="overview-habit-button"
-          onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
+          onClick={() => dispatch(changeTo({ habitID: habit.id, projectID, type: 'habit' }))}
           title="Edit habit"
           type="button"
         >
@@ -127,7 +127,7 @@ function HabitControls({
       <button
         className="overview-habit-button"
         onClick={() => {
-          dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }));
+          dispatch(changeTo({ habitID: habit.id, projectID, type: 'deleteHabit' }));
           if (habitPage) {
             navigate('/projects');
           }
@@ -195,11 +195,11 @@ function HabitOverview({
       className="overview-habit"
       onDrop={drop}
       onDragOver={allowDrop} draggable onDragStart={drag}
-      id={habit?._id}
+      id={habit?.id}
     >
       <NavLink
         className="overview-habit-name"
-        to={`../habit/${linkify(habit._id)}`}
+        to={`../habit/${linkify(habit.id)}`}
         title={habit.name}
       >
         {habit.name}

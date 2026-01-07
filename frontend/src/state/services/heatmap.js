@@ -18,7 +18,7 @@ export const heatmapApi = api.injectEndpoints({
       async onQueryStarted({ heatmapID, values }, { dispatch }) {
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
+            const Heatmap = draft.find((heatmap) => heatmap.id === heatmapID);
             const index = Heatmap.data.findIndex(
               (point) => isSameDay(new Date(point.date), new Date(values.date)) && !point.is_target,
             );
@@ -59,7 +59,7 @@ export const heatmapApi = api.injectEndpoints({
       async onQueryStarted({ heatmapID, values }, { dispatch }) {
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
+            const Heatmap = draft.find((heatmap) => heatmap.id === heatmapID);
             const zeroPoints = Heatmap.data.filter(
               (point) =>
                 compareDesc(startOfDay(new Date(values.dateStart)), new Date(point.date)) > 0 &&
@@ -70,13 +70,13 @@ export const heatmapApi = api.injectEndpoints({
             const points = zeroPoints.filter((point) => point.value > 1);
             if (points.length) {
               Heatmap.data = Heatmap.data.map((point) =>
-                point._id === points[0]._id && !point.is_target
+                point.id === points[0].id && !point.is_target
                   ? { ...point, value: +point.value - 1 }
                   : point,
               );
             } else if (zeroPoints.length) {
               Heatmap.data = Heatmap.data.filter(
-                (point) => !(point._id === zeroPoints[0]._id) || point.is_target,
+                (point) => !(point.id === zeroPoints[0].id) || point.is_target,
               );
             }
           }),
@@ -92,7 +92,7 @@ export const heatmapApi = api.injectEndpoints({
       async onQueryStarted({ heatmapID, values }, { dispatch }) {
         const patchResult = dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            const Heatmap = draft.find((heatmap) => heatmap._id === heatmapID);
+            const Heatmap = draft.find((heatmap) => heatmap.id === heatmapID);
             Heatmap.data = Heatmap.data.filter(
               (point) =>
                 compareDesc(new Date(point.date), startOfDay(new Date(values.dateStart))) > 0 ||

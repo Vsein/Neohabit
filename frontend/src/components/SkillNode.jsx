@@ -24,38 +24,38 @@ export default function SkillNode({ skilltreeID, skill, color }) {
   // const hasChildren = !!skill.ski.length;
 
   const openAddSkillMenu = () => {
-    dispatch(changeTo({ skilltreeID, skillparentID: skill._id, type: 'skillNode' }));
+    dispatch(changeTo({ skilltreeID, skillparentID: skill.id, type: 'skillNode' }));
   };
 
   const openEditSkillMenu = () => {
-    dispatch(changeTo({ skilltreeID, skillID: skill._id, type: 'skillNode' }));
+    dispatch(changeTo({ skilltreeID, skillID: skill.id, type: 'skillNode' }));
   };
 
   const pauseSkillAcquirement = () => {
-    editSkill({ skilltreeID, skillID: skill._id, values: { status: 'idle' } });
+    editSkill({ skilltreeID, skillID: skill.id, values: { status: 'idle' } });
   };
 
   const startSkillAcquirement = () => {
-    editSkill({ skilltreeID, skillID: skill._id, values: { status: 'in-progress' } });
+    editSkill({ skilltreeID, skillID: skill.id, values: { status: 'in-progress' } });
   };
 
   const finishSkillAcquirement = () => {
     editSkill({
       skilltreeID,
-      skillID: skill._id,
+      skillID: skill.id,
       values: { status: isCompleted || isDisregarded ? 'idle' : 'completed' },
     });
   };
 
   const disregardSkill = () => {
-    editSkill({ skilltreeID, skillID: skill._id, values: { status: 'disregarded' } });
+    editSkill({ skilltreeID, skillID: skill.id, values: { status: 'disregarded' } });
   };
 
-  const getAllChildrenIDs = (skilly) => {
-    const ids = [skilly._id];
-    if (skilly.children) {
-      skilly.children.forEach((skillo) => {
-        const childrenIDs = getAllChildrenIDs(skillo);
+  const getAllChildrenIDs = (parentSkill) => {
+    const ids = [parentSkill.id];
+    if (parentSkill.children) {
+      parentSkill.children.forEach((childSkill) => {
+        const childrenIDs = getAllChildrenIDs(childSkill);
         ids.push(...childrenIDs);
       });
     }

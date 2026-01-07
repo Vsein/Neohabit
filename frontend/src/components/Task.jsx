@@ -14,13 +14,13 @@ export default function Task({ task }) {
 
   const deleteThisTask = (e) => {
     e.stopPropagation();
-    deleteTask(task._id);
+    deleteTask(task.id);
   };
 
   const completeTask = (e) => {
     e.stopPropagation();
     updateTask({
-      taskID: task._id,
+      taskID: task.id,
       values: { ...task, completed: !task.completed },
     });
   };
@@ -30,7 +30,7 @@ export default function Task({ task }) {
     : `${habit?.color}33`;
 
   const openOverlay = (e) => {
-    dispatch(changeTo({ taskID: task._id, habitID: habit?._id, type: 'task' }));
+    dispatch(changeTo({ taskID: task.id, habitID: habit?.id, type: 'task' }));
   };
 
   return (

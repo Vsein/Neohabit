@@ -30,14 +30,14 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
 
   if (habits.isLoading || projects.isLoading || heatmaps.isLoading) return <></>;
 
-  const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
+  const project = projects.data.find((p) => p.id === projectID) ?? {
     name: 'Default',
     color: '#23BCDB',
     description: '',
     habits: [],
   };
 
-  const habit = habits.data.find((habito) => habito._id === habitID) ?? {
+  const habit = habits.data.find((h) => h.id === habitID) ?? {
     name: '',
     color: '#23BCDB',
     description: '',
@@ -90,7 +90,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     <NavLink
                       className="tag"
                       onClick={closeOverlay}
-                      to={`../project/${project?._id}`}
+                      to={`../project/${project?.id}`}
                       title={project.name}
                     >
                       <HabitTag habit={project} />
@@ -104,7 +104,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     <NavLink
                       className="tag"
                       onClick={closeOverlay}
-                      to={`../habit/${habit?._id}`}
+                      to={`../habit/${habit?.id}`}
                       title={habit.name}
                     >
                       <HabitTag habit={habit} />

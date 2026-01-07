@@ -37,7 +37,7 @@ export default function Habit({
         />
         <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
         <Heatmap
-          heatmapID={heatmap?._id}
+          heatmapID={heatmap?.id}
           heatmapData={dataSorted}
           habit={habit}
           dateStart={dateStart}
@@ -96,7 +96,7 @@ function HabitDefaultWrapper({
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
         <HabitControls
           habit={habit}
-          heatmapID={heatmap?._id}
+          heatmapID={heatmap?.id}
           header={true}
           modal={modal}
           habitPage={habitPage}
@@ -177,7 +177,7 @@ function HabitModalWrapper({
         />
         <HabitControls
           habit={habit}
-          heatmapID={heatmap?._id}
+          heatmapID={heatmap?.id}
           header={true}
           modal={true}
           habitPage={habitPage}

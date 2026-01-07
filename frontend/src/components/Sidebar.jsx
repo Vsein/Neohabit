@@ -135,7 +135,7 @@ function ProjectSidebar({ project }) {
         </button>
         <NavLink
           className={({ isActive }) => (isActive ? 'sidebar-project active' : 'sidebar-project')}
-          to={`project/${linkify(project._id)}`}
+          to={`project/${linkify(project.id)}`}
           style={{
             backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
           }}
@@ -150,11 +150,11 @@ function ProjectSidebar({ project }) {
       <ul className={`sidebar-habits-container ${habitsCollapsed ? '' : 'active'}`}>
         {project.habits &&
           project.habits.map((habit, i) =>
-            habit?._id ? (
+            habit?.id ? (
               <NavLink
                 key={i}
                 className="habit"
-                to={`habit/${linkify(habit._id)}`}
+                to={`habit/${linkify(habit.id)}`}
                 style={{
                   backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
                 }}
@@ -163,7 +163,7 @@ function ProjectSidebar({ project }) {
                 <HabitTag key={i} habit={habit} />
               </NavLink>
             ) : (
-              habits.data.find((habito) => habito._id === habit) && (
+              habits.data.find((h) => h.id === habit) && (
                 <NavLink
                   key={i}
                   className="habit"
@@ -172,7 +172,7 @@ function ProjectSidebar({ project }) {
                     backgroundColor: ({ isActive }) => (isActive ? `${project.color}33` : ''),
                   }}
                 >
-                  <HabitTag key={i} habit={habits.data.find((habito) => habito._id === habit)} />
+                  <HabitTag key={i} habit={habits.data.find((h) => h.id === habit)} />
                 </NavLink>
               )
             ),

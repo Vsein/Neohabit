@@ -46,7 +46,7 @@ function ProjectPageLayout() {
     return <div className="loader" />;
   }
 
-  const project = projects.data.find((projecto) => projecto._id === projectID) ?? defaultProject;
+  const project = projects.data.find((p) => p.id === projectID) ?? defaultProject;
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 

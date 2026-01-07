@@ -21,7 +21,7 @@ export default function StopwatchModal({ closeOverlay }) {
     { togglePause, resetStopwatch, finishCountdown, clockify },
   ] = useStopwatch();
 
-  const habit = habits.data.find((habito) => habito._id === stopwatch?.data?.habit?._id) ?? {
+  const habit = habits.data.find((h) => h.id === stopwatch?.data?.habit?.id) ?? {
     name: 'No habit',
     color: '#23BCDB',
   };
@@ -37,7 +37,7 @@ export default function StopwatchModal({ closeOverlay }) {
         <NavLink
           className="tag"
           onClick={closeOverlay}
-          to={habit?._id && `../habit/${habit?._id ?? 'Default'}`}
+          to={habit?.id && `../habit/${habit?.id ?? 'Default'}`}
           title={habit.name}
         >
           <HabitTag habit={habit} />
@@ -91,9 +91,9 @@ export default function StopwatchModal({ closeOverlay }) {
             </button>
             <button
               className="logo-section centering stopwatch-icon"
-              onClick={(e) => habit?._id && finishCountdown(e)}
+              onClick={(e) => habit?.id && finishCountdown(e)}
               title="Finish [F]"
-              disabled={!habit?._id}
+              disabled={!habit?.id}
             >
               <Icon
                 path={mdiFlagCheckered}

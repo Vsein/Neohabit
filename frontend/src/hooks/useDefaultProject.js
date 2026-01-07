@@ -21,7 +21,7 @@ export default function useStopwatch() {
       const found =
         projects.data &&
         projects.data.find((project) =>
-          project.habits.find((projectHabitID) => habit._id === projectHabitID),
+          project.habits.find((projectHabitID) => habit.id === projectHabitID),
         );
       return found === -1 || found === undefined;
     }),

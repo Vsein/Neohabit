@@ -11,7 +11,7 @@ function processSkilltree(skilltreeProvided) {
   const skilltree = { ...skilltreeProvided };
   const vertices = new Map();
   const skills = skilltree.skills.map((skill, i) => {
-    vertices.set(skilltree.skills[i]._id, i);
+    vertices.set(skilltree.skills[i].id, i);
     return { ...skilltree.skills[i], children: [], height: 1, width: 1 };
   });
   for (let i = skills.length - 1; i >= 0; i--) {
@@ -56,7 +56,7 @@ export default function Skilltree({ skilltree }) {
           datePeriodLength < 14 ? 'small' : ''
         }`}
       >
-        <NavLink to={`../skilltree/${skilltree?._id}`} title={skilltree.name}>
+        <NavLink to={`../skilltree/${skilltree?.id}`} title={skilltree.name}>
           <h3
             style={{
               color: colorShade,
@@ -68,12 +68,12 @@ export default function Skilltree({ skilltree }) {
             {skilltree?.name}
           </h3>
         </NavLink>
-        <SkilltreeControls skilltreeID={skilltree?._id} />
+        <SkilltreeControls skilltreeID={skilltree?.id} />
       </div>
       <div className="skilltree-container">
         <div className={`skills ${vertical ? 'vertical' : ''}`}>
           <SkillSegment
-            skilltreeID={skilltree?._id}
+            skilltreeID={skilltree?.id}
             skill={processedSkills}
             color={skilltree.color}
           />

@@ -29,7 +29,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
 
   useEffect(() => {
     if (!projects.isLoading) {
-      const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
+      const project = projects.data.find((p) => p.id === projectID) ?? {
         name: '',
         color: '#1D60C1',
         description: '',
@@ -41,7 +41,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
 
   if (habits.isLoading || projects.isLoading) return <></>;
 
-  const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
+  const project = projects.data.find((p) => p.id === projectID) ?? {
     name: '',
     color: '#1D60C1',
     description: '',
@@ -60,7 +60,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
 
   if (!project) return <div>Missing project!</div>;
 
-  const isOneOfHabits = (habitID) => {
+  const belongsToThisProject = (habitID) => {
     const res = projectHabitList.find((projectHabitID) => projectHabitID === habitID);
     if (res === undefined) return false;
     return res !== -1;
@@ -94,7 +94,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                   <NavLink
                     className="tag"
                     onClick={closeOverlay}
-                    to={`../project/${project?._id}`}
+                    to={`../project/${project?.id}`}
                     title={project.name}
                   >
                     <HabitTag habit={project} />
@@ -129,13 +129,13 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               >
                 {habits.data.map(
                   (habit, i) =>
-                    !isOneOfHabits(habit._id) && (
+                    !isOneOfHabits(habit.id) && (
                       <div
                         className="form-chooser"
                         key={i}
                         onClick={() => {
-                          if (!isOneOfHabits(habit._id)) {
-                            setProjectHabitList([...projectHabitList, habit._id]);
+                          if (!isOneOfHabits(habit.id)) {
+                            setProjectHabitList([...projectHabitList, habit.id]);
                           }
                         }}
                       >
@@ -158,17 +158,17 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               >
                 <div className="form-habits">
                   {projectHabitList.map((habitID, i) => {
-                    const habit = habits.data.find((habito) => habito._id === habitID);
+                    const habit = habits.data.find((h) => h.id === habitID);
                     return (
                       <div
                         className="form-chooser"
                         key={i}
                         onClick={() => {
-                          if (!isOneOfHabits(habit._id)) {
-                            setProjectHabitList([...projectHabitList, habit._id]);
+                          if (!habit || !belongsToThisProject(habit?.id)) {
+                            setProjectHabitList([...projectHabitList, habit.id]);
                           } else {
                             setProjectHabitList(
-                              projectHabitList.filter((habitIDo) => habitIDo !== habit._id),
+                              projectHabitList.filter((id) => id !== habit.id),
                             );
                           }
                         }}

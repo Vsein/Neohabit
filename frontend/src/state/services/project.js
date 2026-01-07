@@ -31,7 +31,7 @@ export const projectApi = api.injectEndpoints({
       onQueryStarted({ projectID, values }, { dispatch }) {
         const patchResult = dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const project = draft.find((projecto) => projecto._id == projectID);
+            const project = draft.find((p) => p.id === projectID);
             if (project) {
               Object.assign(project, values);
             }
@@ -47,7 +47,7 @@ export const projectApi = api.injectEndpoints({
       onQueryStarted(projectID, { dispatch }) {
         const patchResult = dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const index = draft.findIndex((project) => project._id === projectID);
+            const index = draft.findIndex((p) => p.id === projectID);
             draft.splice(index, 1);
           }),
         );
@@ -60,6 +60,6 @@ export const {
   useGetProjectsQuery,
   // useGetProjectQuery,
   useCreateProjectMutation,
-  useDeleteProjectMutation,
   useUpdateProjectMutation,
+  useDeleteProjectMutation,
 } = projectApi;
