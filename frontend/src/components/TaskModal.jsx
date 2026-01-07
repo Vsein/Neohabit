@@ -65,7 +65,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
               <Icon path={mdiClose} />
             </button>
           </div>
-          <div className="modal-details-block" style={{ height: 'min-content'}}>
+          <div className="modal-details-block" style={{ height: 'min-content' }}>
             <NameField type="task" />
           </div>
           <div className="modal-details-block">

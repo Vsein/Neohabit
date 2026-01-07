@@ -138,18 +138,18 @@ export default function Heatmap({
                   ))}
                 {(differenceInDays(date, dateNowTmp) > 0 ||
                   (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
-                  <CellPeriod
-                    heatmapID={heatmapID}
-                    dateStart={max([dateNowTmp, dateStart])}
-                    dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
-                    color="transparent"
-                    value={0}
-                    vertical={vertical}
-                    elimination={elimination}
-                    numeric={numeric}
-                    isOverview={isOverview}
-                  />
-                )}
+                    <CellPeriod
+                      heatmapID={heatmapID}
+                      dateStart={max([dateNowTmp, dateStart])}
+                      dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
+                      color="transparent"
+                      value={0}
+                      vertical={vertical}
+                      elimination={elimination}
+                      numeric={numeric}
+                      isOverview={isOverview}
+                    />
+                  )}
                 {!point?.isLast && !point.is_target && (
                   <CellPeriod
                     heatmapID={heatmapID}
@@ -250,14 +250,14 @@ export default function Heatmap({
                             const targetStart = addDays(
                               previous.date,
                               previousTarget.period * Index +
-                                sequenceTarget.start +
-                                sequenceTarget.period * sequencePeriodIndex,
+                              sequenceTarget.start +
+                              sequenceTarget.period * sequencePeriodIndex,
                             );
                             const targetEnd = addDays(
                               previous.date,
                               previousTarget.period * Index +
-                                sequenceTarget.start +
-                                sequenceTarget.period * (sequencePeriodIndex + 1),
+                              sequenceTarget.start +
+                              sequenceTarget.period * (sequencePeriodIndex + 1),
                             );
                             return (
                               <CellPeriod

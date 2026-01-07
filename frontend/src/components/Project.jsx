@@ -47,7 +47,7 @@ export default function Project({
       projecto.habits.splice(draggedHabitPosition, 1);
       const position = projecto.habits.findIndex((habit) => habit === targetHabitID);
       projecto.habits.splice(position + insertAfter, 0, draggedHabitID);
-      await updateProject({projectID, values: { habits: projecto.habits }});
+      await updateProject({ projectID, values: { habits: projecto.habits } });
     }
   };
 
@@ -134,64 +134,64 @@ export default function Project({
       onDragOver={allowDrop} draggable onDragStart={drag}
       id={project?.id}
     >
-        <div
-          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
-        >
-          {mobile ? (
+      <div
+        className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
+      >
+        {mobile ? (
+          <HeaderName />
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
             <HeaderName />
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
-              <HeaderName />
-              <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} isFuturePeriod={isFuturePeriod} />
-            </div>
-          )}
-          {!mobile && (
+            <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} isFuturePeriod={isFuturePeriod} />
+          </div>
+        )}
+        {!mobile && (
+          <>
+            <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
+            <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
+          </>
+        )}
+        <ProjectControls projectID={project?.id} mobile={mobile} addPeriod={addPeriod} isPastPeriod={isPastPeriod} />
+      </div>
+      <div
+        className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
+      >
+        <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
+          {mobile && (
             <>
+              <div className="overview-topbar-left">
+                {/* {!vertical && ( */}
+                {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
+                {/* )} */}
+                <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} isFuturePeriod={isFuturePeriod} />
+              </div>
               <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
               <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
+              <OverviewTopbarRight
+                vertical={vertical}
+                dateStart={globalDateStart}
+                // {/* subYear={subYear} */}
+                // {/* addYear={addYear} */}
+                addMonth={addPeriod}
+              />
             </>
           )}
-          <ProjectControls projectID={project?._id} mobile={mobile} addPeriod={addPeriod} isPastPeriod={isPastPeriod} />
-        </div>
-        <div
-          className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
-        >
-          <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
-            {mobile && (
-              <>
-                <div className="overview-topbar-left">
-                  {/* {!vertical && ( */}
-                  {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
-                  {/* )} */}
-                  <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} isFuturePeriod={isFuturePeriod} />
-                </div>
-                <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
-                <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
-                <OverviewTopbarRight
-                  vertical={vertical}
-                  dateStart={globalDateStart}
-                  // {/* subYear={subYear} */}
-                  // {/* addYear={addYear} */}
-                  addMonth={addPeriod}
-                />
-              </>
-            )}
-            <div className="overview-habits">
-              {Habits.length === 0 && <h5 className="overview-no-habits">No habits</h5>}
-              {Habits}
-            </div>
-            {vertical && (
-              <button
-                className="overview-period-move-down"
-                onClick={addPeriod}
-                title="Next period [L]"
-              >
-                <Icon path={mdiMenuDown} className="icon" />
-              </button>
-            )}
+          <div className="overview-habits">
+            {Habits.length === 0 && <h5 className="overview-no-habits">No habits</h5>}
+            {Habits}
           </div>
+          {vertical && (
+            <button
+              className="overview-period-move-down"
+              onClick={addPeriod}
+              title="Next period [L]"
+            >
+              <Icon path={mdiMenuDown} className="icon" />
+            </button>
+          )}
         </div>
       </div>
+    </div>
   );
 }
 

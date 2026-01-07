@@ -72,9 +72,8 @@ export default function Overview({
       }}
     >
       <div
-        className={`overview-header ${vertical ? 'vertical' : ''} ${
-          mobile ? 'small' : ''
-        } singular`}
+        className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''
+          } singular`}
       >
         {mobile ? (
           <h3>Overview</h3>

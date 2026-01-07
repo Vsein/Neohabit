@@ -59,7 +59,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
               <Icon path={mdiClose} />
             </button>
           </div>
-          <div className="modal-details-block" style={{ height: 'min-content'}}>
+          <div className="modal-details-block" style={{ height: 'min-content' }}>
             <NameField type="skill" />
           </div>
           <div className="modal-details-block">

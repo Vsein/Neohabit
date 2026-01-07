@@ -125,6 +125,7 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
+
     delete:
       summary: Delete authorized user and all related data
       operationId: deleteUser
@@ -189,7 +190,6 @@ paths:
                   $ref: '#/components/schemas/Description'
                 color:
                   $ref: '#/components/schemas/Color'
-
       responses:
         '201':
           description: Habit created successfully

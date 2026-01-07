@@ -124,9 +124,8 @@ function ProjectSidebar({ project }) {
       <li className="sidebar-habits-header">
         <button className="centering" onClick={toggleHabitsCollapsed}>
           <Icon
-            className={`icon small habit-circle sidebar-habits-arrow ${
-              habitsCollapsed ? '' : 'active'
-            }`}
+            className={`icon small habit-circle sidebar-habits-arrow ${habitsCollapsed ? '' : 'active'
+              }`}
             path={mdiChevronDown}
             style={{
               backgroundColor: project.color,
