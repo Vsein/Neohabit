@@ -53,35 +53,25 @@ export default function Project({
 
   const Habits =
     project.habits &&
-    project.habits.flatMap((habito, i) => {
-      // check if the habit ID was listed, not the habit itself
-      const habit = habito?._id ? habito : habits.data.find((habitoo) => habitoo._id === habito);
-      const heatmap = habit?._id
-        ? heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)
-        : heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit);
-      const dataSorted = heatmapSort(heatmap?.data, globalDateEnd);
-
-      return (new Date(dataSorted[0].date).getTime() === endOfDay(globalDateEnd).getTime() &&
-        dataSorted.length !== 1) ||
-        (dataSorted.length > 2 &&
-          dataSorted[dataSorted.length - 2].is_archive &&
-          startOfDay(new Date(dataSorted[dataSorted.length - 2].date).getTime()) <= globalDateStart.getTime()) ? (
-        []
-      ) : (
-        <HabitOverview
-          key={i}
-          habit={habit}
-          dateStart={globalDateStart}
-          dateEnd={globalDateEnd}
-          heatmapData={dataSorted}
-          vertical={vertical}
-          mobile={mobile}
-          projectID={project.id}
-          dragHabitInProject={dragHabitInProject}
-          dragHabitToProject={dragHabitToProject}
-        />
-      );
-    });
+    project.habits.flatMap((habit, i) =>
+      // TODO: First habit target check, check if the interval is archived
+      differenceInDays(habit.created_at, globalDateStart) < 0 ?
+        [] :
+        (
+          <HabitOverview
+            key={i}
+            habit={habit}
+            dateStart={globalDateStart}
+            dateEnd={globalDateEnd}
+            heatmapData={habit.data}
+            vertical={vertical}
+            mobile={mobile}
+            projectID={project.id}
+            dragHabitInProject={dragHabitInProject}
+            dragHabitToProject={dragHabitToProject}
+          />
+        )
+    );
 
   const allowDrop = (e) => {
     e.preventDefault();
