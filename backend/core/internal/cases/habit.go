@@ -70,6 +70,20 @@ func (c *HabitCase) List(ctx context.Context, userID string) ([]*entity.Habit, e
 	return habits, nil
 }
 
+func (c *HabitCase) Update(ctx context.Context, habit *entity.Habit) error {
+	habit.UpdatedAt = time.Now()
+
+	err := c.habitRepo.Update(ctx, habit)
+	if err != nil {
+		if errors.Is(err, repo.ErrNotFound) {
+			return ErrNotFound
+		}
+		return fmt.Errorf("update: %w", err)
+	}
+
+	return nil
+}
+
 func (c *HabitCase) Delete(ctx context.Context, id string) error {
 	err := c.habitRepo.Delete(ctx, id)
 	if err != nil {

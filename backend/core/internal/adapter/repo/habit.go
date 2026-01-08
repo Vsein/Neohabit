@@ -144,6 +144,9 @@ func (r *Habit) Update(ctx context.Context, habit *entity.Habit) error {
 		habit.UpdatedAt,
 	)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return repo.ErrNotFound
+		}
 		return fmt.Errorf("exec update habit: %w", err)
 	}
 	return nil

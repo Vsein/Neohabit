@@ -242,6 +242,17 @@ type CreateHabitJSONBody struct {
 	Name Name `json:"name"`
 }
 
+// UpdateHabitJSONBody defines parameters for UpdateHabit.
+type UpdateHabitJSONBody struct {
+	Color *Color `json:"color,omitempty"`
+
+	// Description Activity description
+	Description Description `json:"description"`
+
+	// Name Activity name
+	Name Name `json:"name"`
+}
+
 // LoginJSONBody defines parameters for Login.
 type LoginJSONBody struct {
 	Password string `json:"password"`
@@ -256,6 +267,9 @@ type SignupJSONBody struct {
 
 // CreateHabitJSONRequestBody defines body for CreateHabit for application/json ContentType.
 type CreateHabitJSONRequestBody CreateHabitJSONBody
+
+// UpdateHabitJSONRequestBody defines body for UpdateHabit for application/json ContentType.
+type UpdateHabitJSONRequestBody UpdateHabitJSONBody
 
 // LoginJSONRequestBody defines body for Login for application/json ContentType.
 type LoginJSONRequestBody LoginJSONBody

@@ -269,6 +269,40 @@ func (s *server) CreateHabit(
 	return gen.CreateHabit201JSONResponse(id), nil
 }
 
+// PUT /habit/{habit_id}
+func (s *server) UpdateHabit(
+	ctx context.Context,
+	request gen.UpdateHabitRequestObject,
+) (gen.UpdateHabitResponseObject, error) {
+	if request.HabitID == "" {
+		return gen.UpdateHabit400Response{}, nil
+	}
+
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.UpdateHabit401Response{}, nil
+	}
+
+	habit := &entity.Habit{
+		ID:          request.HabitID,
+		Name:        request.Body.Name,
+		Description: request.Body.Description,
+		Color:       *request.Body.Color,
+		UserID:      userID,
+	}
+
+	err := s.habits.Update(ctx, habit)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.UpdateHabit404JSONResponse{}, nil
+		}
+		s.logger.Error("failed to update habit", zap.Error(err))
+		return gen.UpdateHabit500JSONResponse{}, nil
+	}
+
+	return gen.UpdateHabit200Response{}, nil
+}
+
 // DELETE /habit/{habit_id}
 func (s *server) DeleteHabit(
 	ctx context.Context,

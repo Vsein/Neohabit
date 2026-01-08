@@ -51,7 +51,7 @@ export const habitApi = api.injectEndpoints({
         const res = await queryFulfilled;
         dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            const index = draft.findIndex((habit) => habit.id == habitID);
+            const index = draft.findIndex((habit) => habit.id === habitID);
             draft.splice(index, 1);
           }),
         );
@@ -74,7 +74,7 @@ export const habitApi = api.injectEndpoints({
       onQueryStarted({ habitID, values }, { dispatch }) {
         const patchResult = dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            const habit = draft.find((h) => h.id == habitID);
+            const habit = draft.find((h) => h.id === habitID);
             if (habit) {
               Object.assign(habit, values);
             }

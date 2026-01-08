@@ -22,6 +22,9 @@ type ServerInterface interface {
 	// Delete habit
 	// (DELETE /habit/{habit_id})
 	DeleteHabit(w http.ResponseWriter, r *http.Request, habitID string)
+	// Update Habit by ID
+	// (PUT /habit/{habit_id})
+	UpdateHabit(w http.ResponseWriter, r *http.Request, habitID string)
 	// List habits
 	// (GET /habits)
 	ListHabits(w http.ResponseWriter, r *http.Request)
@@ -76,6 +79,12 @@ func (_ Unimplemented) CreateHabit(w http.ResponseWriter, r *http.Request) {
 // Delete habit
 // (DELETE /habit/{habit_id})
 func (_ Unimplemented) DeleteHabit(w http.ResponseWriter, r *http.Request, habitID string) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Update Habit by ID
+// (PUT /habit/{habit_id})
+func (_ Unimplemented) UpdateHabit(w http.ResponseWriter, r *http.Request, habitID string) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -202,6 +211,31 @@ func (siw *ServerInterfaceWrapper) DeleteHabit(w http.ResponseWriter, r *http.Re
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.DeleteHabit(w, r, habitID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// UpdateHabit operation middleware
+func (siw *ServerInterfaceWrapper) UpdateHabit(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "habit_id" -------------
+	var habitID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "habit_id", chi.URLParam(r, "habit_id"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "habit_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateHabit(w, r, habitID)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -594,6 +628,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Delete(options.BaseURL+"/habit/{habit_id}", wrapper.DeleteHabit)
 	})
 	r.Group(func(r chi.Router) {
+		r.Put(options.BaseURL+"/habit/{habit_id}", wrapper.UpdateHabit)
+	})
+	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/habits", wrapper.ListHabits)
 	})
 	r.Group(func(r chi.Router) {
@@ -731,6 +768,57 @@ func (response DeleteHabit404Response) VisitDeleteHabitResponse(w http.ResponseW
 type DeleteHabit500JSONResponse ErrorResponse
 
 func (response DeleteHabit500JSONResponse) VisitDeleteHabitResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdateHabitRequestObject struct {
+	HabitID string `json:"habit_id"`
+	Body    *UpdateHabitJSONRequestBody
+}
+
+type UpdateHabitResponseObject interface {
+	VisitUpdateHabitResponse(w http.ResponseWriter) error
+}
+
+type UpdateHabit200Response struct {
+}
+
+func (response UpdateHabit200Response) VisitUpdateHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(200)
+	return nil
+}
+
+type UpdateHabit400Response struct {
+}
+
+func (response UpdateHabit400Response) VisitUpdateHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type UpdateHabit401Response struct {
+}
+
+func (response UpdateHabit401Response) VisitUpdateHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type UpdateHabit404JSONResponse ErrorResponse
+
+func (response UpdateHabit404JSONResponse) VisitUpdateHabitResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdateHabit500JSONResponse ErrorResponse
+
+func (response UpdateHabit500JSONResponse) VisitUpdateHabitResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -1246,6 +1334,9 @@ type StrictServerInterface interface {
 	// Delete habit
 	// (DELETE /habit/{habit_id})
 	DeleteHabit(ctx context.Context, request DeleteHabitRequestObject) (DeleteHabitResponseObject, error)
+	// Update Habit by ID
+	// (PUT /habit/{habit_id})
+	UpdateHabit(ctx context.Context, request UpdateHabitRequestObject) (UpdateHabitResponseObject, error)
 	// List habits
 	// (GET /habits)
 	ListHabits(ctx context.Context, request ListHabitsRequestObject) (ListHabitsResponseObject, error)
@@ -1366,6 +1457,39 @@ func (sh *strictHandler) DeleteHabit(w http.ResponseWriter, r *http.Request, hab
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(DeleteHabitResponseObject); ok {
 		if err := validResponse.VisitDeleteHabitResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// UpdateHabit operation middleware
+func (sh *strictHandler) UpdateHabit(w http.ResponseWriter, r *http.Request, habitID string) {
+	var request UpdateHabitRequestObject
+
+	request.HabitID = habitID
+
+	var body UpdateHabitJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateHabit(ctx, request.(UpdateHabitRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateHabit")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(UpdateHabitResponseObject); ok {
+		if err := validResponse.VisitUpdateHabitResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

@@ -42,7 +42,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
   };
 
   const onSubmit = async (values) => {
-    if (habit.name === '') {
+    if (!habitID) {
       await createHabit({ ...values, projectID });
     } else {
       await updateHabit({ habitID, values });
