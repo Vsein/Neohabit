@@ -129,12 +129,12 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               >
                 {habits.data.map(
                   (habit, i) =>
-                    !isOneOfHabits(habit.id) && (
+                    !belongsToThisProject(habit.id) && (
                       <div
                         className="form-chooser"
                         key={i}
                         onClick={() => {
-                          if (!isOneOfHabits(habit.id)) {
+                          if (!belongsToThisProject(habit.id)) {
                             setProjectHabitList([...projectHabitList, habit.id]);
                           }
                         }}

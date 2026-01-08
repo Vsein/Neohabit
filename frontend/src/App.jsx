@@ -41,10 +41,14 @@ import useKeyPress from './hooks/useKeyPress';
 import isPWA from './utils/pwa';
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(undefined);
+  const [loggedIn, setLoggedIn] = useState(hasJWT());
 
   useEffect(() => {
-    setLoggedIn(hasJWT());
+    const checkJWT = () => {
+      setLoggedIn(hasJWT());
+    }
+    window.addEventListener('storage', checkJWT);
+    return () => window.removeEventListener('storage', checkJWT);
   }, []);
 
   if (loggedIn === undefined) {
@@ -104,21 +108,21 @@ const PrivateRoutes = (params) => {
   if (!loggedIn) return <Navigate to="/login" replace state={{ from: location }} />;
 
   // if (!isPWA()) {
-    if (settings?.error || self?.error || stopwatch?.error) {
-      if (settings?.error?.originalStatus === 401) {
-        localStorage.clear();
-        return <Navigate to="/login" replace state={{ from: location }} />;
-      }
-      return <FetchError />;
+  if (settings?.error || self?.error || stopwatch?.error) {
+    if (settings?.error?.originalStatus === 401) {
+      localStorage.clear();
+      return <Navigate to="/login" replace state={{ from: location }} />;
     }
+    return <FetchError />;
+  }
 
-    if (!self?.data?.verified && process.env.REACT_APP_STAGE !== 'dev') {
-      const path = location.pathname.split('/');
-      if (path[1] === 'verification') {
-        return <Outlet />;
-      }
-      return <VerificationError />;
+  if (!self?.data?.verified && process.env.REACT_APP_STAGE !== 'dev') {
+    const path = location.pathname.split('/');
+    if (path[1] === 'verification') {
+      return <Outlet />;
     }
+    return <VerificationError />;
+  }
   // }
 
   if (settings.isLoading || self.isLoading || stopwatch.isLoading) return <></>;

@@ -45,7 +45,7 @@ export default function Landing() {
             {/*   <NavLink to="/contact">Contact</NavLink> */}
             {/* </li> */}
             <li>
-              <NavLink to="/signup">Sign up</NavLink>
+              <NavLink to="/login">Log in</NavLink>
             </li>
           </ul>
         </div>
