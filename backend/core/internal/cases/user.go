@@ -64,6 +64,7 @@ func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error
 		err = c.habitRepo.Create(ctx, &entity.Habit{
 			ID:        habitID,
 			UserID:    user.ID,
+			Name:      "Sample habit",
 			Color:     "#23BCDB",
 			CreatedAt: user.CreatedAt,
 			UpdatedAt: user.UpdatedAt,

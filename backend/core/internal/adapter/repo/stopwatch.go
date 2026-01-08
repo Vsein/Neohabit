@@ -16,8 +16,8 @@ import (
 const (
 	queryReadStopwatch   = `SELECT * FROM stopwatches WHERE user_id = $1`
 	queryCreateStopwatch = `
-		INSERT INTO stopwatches (id, user_id, created_at, updated_at)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO stopwatches (id, user_id, habit_id, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5)
 	`
 	queryUpdateStopwatch = `UPDATE stopwatches SET updated_at = $5 WHERE id = $1`
 	queryDeleteStopwatch = `DELETE FROM stopwatches WHERE user_id = $1`
@@ -69,6 +69,7 @@ func (r *Stopwatch) Create(ctx context.Context, stopwatch *entity.Stopwatch) err
 		queryCreateStopwatch,
 		stopwatch.ID,
 		stopwatch.UserID,
+		stopwatch.HabitID,
 		stopwatch.CreatedAt,
 		stopwatch.UpdatedAt,
 	)

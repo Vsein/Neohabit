@@ -34,7 +34,7 @@ function StopwatchContents() {
 
   if (habits.isFetching) return <></>;
 
-  const habit = habits.data.find((h) => h.id === stopwatch?.data?.habit?.id) ?? {
+  const habit = habits.data.find((h) => h.id === stopwatch?.data?.habit_id) ?? {
     name: 'No habit',
     color: '#23BCDB',
   };
