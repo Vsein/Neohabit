@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS users (
     UNIQUE(username)
 );
 
+CREATE INDEX users_lower_username_idx ON users (LOWER(username));
+
 CREATE TABLE IF NOT EXISTS habits (
     id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,

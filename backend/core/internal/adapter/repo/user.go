@@ -15,7 +15,7 @@ import (
 
 const (
 	// queryListUsers  = `SELECT * FROM users`
-	queryGetUserByUsername = `SELECT * FROM users WHERE username = $1`
+	queryGetUserByUsername = `SELECT * FROM users WHERE LOWER(username) = LOWER($1)`
 	queryGetUserByID       = `SELECT * FROM users WHERE id = $1`
 	queryCreateUser        = `
 		INSERT INTO users (id, username, email, password, verified, verification_attempts, verification_time, created_at, updated_at)
