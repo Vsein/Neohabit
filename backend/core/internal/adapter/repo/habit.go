@@ -25,6 +25,7 @@ const (
 				GROUP BY hd.habit_id
 			) hd USING (id)
 		WHERE h.user_id = $1
+		ORDER BY h.created_at
 	`
 	queryCreateHabit = `
 		INSERT INTO habits (id, user_id, name, description, color, due_date, created_at, updated_at)

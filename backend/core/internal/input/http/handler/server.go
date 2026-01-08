@@ -245,11 +245,6 @@ func (s *server) CreateHabit(
 	ctx context.Context,
 	request gen.CreateHabitRequestObject,
 ) (gen.CreateHabitResponseObject, error) {
-	// Validate request
-	if request.Body.Name == "" {
-		return gen.CreateHabit400JSONResponse{}, nil
-	}
-
 	userID, ok := s.auth.GetUserID(ctx)
 	if !ok {
 		return gen.CreateHabit401Response{}, nil

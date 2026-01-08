@@ -24,7 +24,7 @@ export const habitApi = api.injectEndpoints({
         const res = await queryFulfilled;
         dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            draft.push(res.data.habit);
+            draft.push({ id: res.data, ...values });
           }),
         );
         dispatch(
