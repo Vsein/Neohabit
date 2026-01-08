@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
 	"neohabit/core/internal/adapter/repo/db"
@@ -61,7 +62,7 @@ func (r *Settings) Read(ctx context.Context, userID string) (*entity.Settings, e
 		&settings.UpdatedAt,
 	)
 	if err != nil {
-		if errors.Is(err, repo.ErrNotFound) {
+		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, repo.ErrNotFound
 		}
 		return nil, err

@@ -153,14 +153,14 @@ func (s *server) Login(
 	user, err := s.users.GetByUsername(ctx, username)
 	if err != nil {
 		if errors.Is(err, cases.ErrNotFound) {
-			return gen.Login404JSONResponse{}, nil
+			return gen.Login404JSONResponse{Error: "User not found"}, nil
 		}
 		s.logger.Error("user not found", zap.Error(err))
 		return gen.Login500JSONResponse{}, nil
 	}
 
 	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)) != nil {
-		return gen.Login401Response{}, nil
+		return gen.Login401JSONResponse{Error: "Wrong password"}, nil
 	}
 
 	token, err := s.auth.IssueAccessToken(ctx, user.ID)

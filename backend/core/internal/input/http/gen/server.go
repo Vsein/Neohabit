@@ -789,12 +789,13 @@ func (response Login200JSONResponse) VisitLoginResponse(w http.ResponseWriter) e
 	return json.NewEncoder(w).Encode(response)
 }
 
-type Login401Response struct {
-}
+type Login401JSONResponse ErrorResponse
 
-func (response Login401Response) VisitLoginResponse(w http.ResponseWriter) error {
+func (response Login401JSONResponse) VisitLoginResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(401)
-	return nil
+
+	return json.NewEncoder(w).Encode(response)
 }
 
 type Login404JSONResponse ErrorResponse

@@ -73,7 +73,7 @@ func (r *User) GetByUsername(ctx context.Context, username string) (*entity.User
 		&user.UpdatedAt,
 	)
 	if err != nil {
-		if errors.Is(err, repo.ErrNotFound) {
+		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, repo.ErrNotFound
 		}
 		return nil, err
@@ -95,7 +95,7 @@ func (r *User) GetByID(ctx context.Context, userID string) (*entity.User, error)
 		&user.UpdatedAt,
 	)
 	if err != nil {
-		if errors.Is(err, repo.ErrNotFound) {
+		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, repo.ErrNotFound
 		}
 		return nil, err
