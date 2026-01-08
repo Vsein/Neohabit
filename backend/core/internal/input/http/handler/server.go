@@ -184,7 +184,6 @@ func (s *server) GetUser(
 		return gen.GetUser401Response{}, nil
 	}
 
-	// Call use-case
 	user, err := s.users.GetByID(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to read user", zap.Error(err))
@@ -227,14 +226,12 @@ func (s *server) ListHabits(
 		return gen.ListHabits401Response{}, nil
 	}
 
-	// Call use-case
 	habits, err := s.habits.List(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to list habits", zap.Error(err))
 		return gen.ListHabits500JSONResponse{}, nil
 	}
 
-	// Convert to API response
 	response := make([]gen.Habit, 0, len(habits))
 	for _, habit := range habits {
 		response = append(response, toAPIHabit(habit))
@@ -258,7 +255,6 @@ func (s *server) CreateHabit(
 		return gen.CreateHabit401Response{}, nil
 	}
 
-	// Convert to domain entity
 	habit := &entity.Habit{
 		Name:        request.Body.Name,
 		Description: request.Body.Description,
@@ -266,7 +262,6 @@ func (s *server) CreateHabit(
 		UserID:      userID,
 	}
 
-	// Call use-case
 	id, err := s.habits.Create(ctx, habit)
 	if err != nil {
 		if errors.Is(err, cases.ErrAlreadyExists) {
@@ -310,7 +305,6 @@ func (s *server) DeleteHabit(
 // 	ctx context.Context,
 // 	request gen.GetHabitRequestObject,
 // ) (gen.GetHabitResponseObject, error) {
-// 	// Call use-case
 // 	habit, err := s.habits.Read(ctx, request.HabitID)
 // 	if err != nil {
 // 		if errors.Is(err, cases.ErrNotFound) {
@@ -320,7 +314,6 @@ func (s *server) DeleteHabit(
 // 		return gen.GetHabit500JSONResponse{}, nil
 // 	}
 //
-// 	// Convert to API response
 // 	response := toAPIHabit(habit)
 // 	return gen.GetHabit200JSONResponse(response), nil
 // }
@@ -336,14 +329,12 @@ func (s *server) ListProjects(
 		return gen.ListProjects401Response{}, nil
 	}
 
-	// Call use-case
 	projects, err := s.projects.List(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to list projects", zap.Error(err))
 		return gen.ListProjects500JSONResponse{}, nil
 	}
 
-	// Convert to API response
 	response := make([]gen.Project, 0, len(projects))
 	for _, project := range projects {
 		response = append(response, toAPIProject(project))
@@ -389,14 +380,12 @@ func (s *server) ListTasks(
 		return gen.ListTasks401Response{}, nil
 	}
 
-	// Call use-case
 	tasks, err := s.tasks.List(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to list tasks", zap.Error(err))
 		return gen.ListTasks500JSONResponse{}, nil
 	}
 
-	// Convert to API response
 	response := make([]gen.Task, 0, len(tasks))
 	for _, task := range tasks {
 		response = append(response, toAPITask(task))
@@ -442,14 +431,12 @@ func (s *server) ListSkilltrees(
 		return gen.ListSkilltrees401Response{}, nil
 	}
 
-	// Call use-case
 	skilltrees, err := s.skilltrees.List(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to list skilltrees", zap.Error(err))
 		return gen.ListSkilltrees500JSONResponse{}, nil
 	}
 
-	// Convert to API response
 	response := make([]gen.Skilltree, 0, len(skilltrees))
 	for _, skilltree := range skilltrees {
 		response = append(response, toAPISkilltree(skilltree))
@@ -494,7 +481,6 @@ func (s *server) GetStopwatch(
 		return gen.GetStopwatch401Response{}, nil
 	}
 
-	// Call use-case
 	stopwatch, err := s.stopwatches.Read(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to read stopwatch", zap.Error(err))
@@ -514,7 +500,6 @@ func (s *server) GetSettings(
 		return gen.GetSettings401Response{}, nil
 	}
 
-	// Call use-case
 	settings, err := s.settings.Read(ctx, userID)
 	if err != nil {
 		s.logger.Error("failed to read settings", zap.Error(err))

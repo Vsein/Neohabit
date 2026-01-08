@@ -13,5 +13,3 @@ type User struct {
 	CreatedAt            time.Time
 	UpdatedAt            time.Time
 }
-
-// somewhere here should be a hook for encrypting/verifying the password
