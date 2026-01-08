@@ -67,9 +67,8 @@ export default function Overlay() {
           title="your account"
           deleteOnClick={async () => {
             await deleteSelf();
-            closeOverlay();
-            dispatch({ type: 'RESET' });
             localStorage.clear();
+            dispatch({ type: 'RESET' });
             navigate('/login');
           }}
           closeOverlay={closeOverlay}

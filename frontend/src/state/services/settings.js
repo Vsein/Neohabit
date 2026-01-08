@@ -60,7 +60,7 @@ export const settingsApi = api.injectEndpoints({
     }),
     deleteSelf: builder.mutation({
       query: () => ({
-        url: 'user/im',
+        url: 'user',
         method: 'DELETE',
       }),
     }),
