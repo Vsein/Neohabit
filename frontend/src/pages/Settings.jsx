@@ -114,14 +114,14 @@ export default function Settings() {
               {/* /> */}
               <SettingsButtonOption
                 name="Behavior when whole period doesn't fit"
-                curState={settings.data.overview_adaptive ?? true}
-                update={(state) => updateSettings({ values: { overview_adaptive: state } })}
+                curState={settings.data.allow_horizontal_scrolling ?? true}
+                update={(state) => updateSettings({ values: { allow_horizontal_scrolling: state } })}
                 choices={[
                   { name: 'Adaptive', state: true },
                   { name: 'Rigid', state: false },
                 ]}
               />
-              {settings.data.overview_adaptive ? (
+              {settings.data.allow_horizontal_scrolling ? (
                 <SettingsButtonOption
                   name="Limit the adaptive period duration?"
                   curState={settings.data.overview_apply_limit ?? true}
@@ -140,7 +140,7 @@ export default function Settings() {
                   max="365"
                 />
               )}
-              {settings.data.overview_adaptive && settings.data?.overview_apply_limit && (
+              {settings.data.allow_horizontal_scrolling && settings.data?.overview_apply_limit && (
                 <SettingsNumberOption
                   name="Period duration limit"
                   curState={settings.data?.overview_duration_limit ?? 32}
@@ -207,8 +207,8 @@ export default function Settings() {
               <SettingsButtonOption
                 name="Show stopwatch time in the page title"
                 cssName="orientation"
-                curState={settings.data.stopwatch_title ?? true}
-                update={(state) => updateSettings({ values: { stopwatch_title: state } })}
+                curState={settings.data.show_stopwatch_time_in_page_title ?? true}
+                update={(state) => updateSettings({ values: { show_stopwatch_time_in_page_title: state } })}
                 choices={[
                   { name: 'On', state: true },
                   { name: 'Off', state: false },

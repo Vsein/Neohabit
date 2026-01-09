@@ -53,14 +53,14 @@ function useGetDatePeriodLength() {
   const { width } = useWindowDimensions();
   const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width);
   const datePeriodLength =
-    settings.data?.overview_adaptive ?? true
+    (settings.data?.allow_horizontal_scrolling ?? true)
       ? Math.min(
           adaptiveDatePeriodLength,
-          settings.data?.overview_apply_limit ?? true
-            ? settings.data?.overview_duration_limit ?? 32
+          (settings.data?.overview_apply_limit ?? true)
+            ? (settings.data?.overview_duration_limit ?? 32)
             : Infinity,
         )
-      : settings.data?.overview_duration ?? 32;
+      : (settings.data?.overview_duration ?? 32);
 
   return { datePeriodLength, mobile, width };
 }

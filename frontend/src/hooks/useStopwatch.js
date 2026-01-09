@@ -81,7 +81,7 @@ export default function useStopwatch() {
       },
     });
     setCurrentDuration(0);
-    if (settings.data?.stopwatch_title ?? true) {
+    if (settings.data?.show_stopwatch_time_in_page_title ?? true) {
       document.title = '0:00:00 | Neohabit';
     }
   };
@@ -94,7 +94,7 @@ export default function useStopwatch() {
       },
     });
     setCurrentDuration(0);
-    if (settings.data?.stopwatch_title ?? true) {
+    if (settings.data?.show_stopwatch_time_in_page_title ?? true) {
       document.title = '0:00:00 | Neohabit';
     }
   };
@@ -104,7 +104,7 @@ export default function useStopwatch() {
       const timerInterval = setInterval(() => {
         const recalc = calcCurrentDuration();
         setCurrentDuration(recalc);
-        if (settings.data?.stopwatch_title ?? true) {
+        if (settings.data?.show_stopwatch_time_in_page_title ?? true) {
           document.title = `${clockify(recalc)} | Neohabit`;
         }
       }, 1000);
