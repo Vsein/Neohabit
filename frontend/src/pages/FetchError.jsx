@@ -36,7 +36,7 @@ export default function FetchError() {
           </p>
           <p className="back-ref" style={{ width: 'min(100%, 800px)' }}>
             Otherwise, you can try to login in a new private window and test things there,
-            or <a className="inline" onClick={logout} style={{ cursor: 'pointer' }}>log out</a>
+            or <a className="inline" onClick={logout} style={{ cursor: 'pointer' }}>log out </a>
             here and try logging back in.
           </p>
           <p className="back-ref" style={{ width: 'min(100%, 800px)' }}>
