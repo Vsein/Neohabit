@@ -613,51 +613,48 @@ func (s *server) UpdateSettings(
 		return gen.UpdateSettings401Response{}, nil
 	}
 
-	var theme entity.SettingsTheme
-	if request.Body.Theme != nil {
-		theme = entity.SettingsTheme(map[gen.SettingsTheme]int{
-			"dark":  0,
-			"light": 1,
-		}[*request.Body.Theme])
-	}
-
-	var overviewCurrentDay entity.SettingsHeatmapCurrentDay
-	if request.Body.OverviewCurrentDay != nil {
-		overviewCurrentDay = entity.SettingsHeatmapCurrentDay(map[gen.SettingsOverviewCurrentDay]int{
-			"end":    0,
-			"middle": 1,
-			"start":  2,
-		}[*request.Body.OverviewCurrentDay])
-	}
-
-	var habitHeatmapsCurrentDay entity.SettingsHeatmapCurrentDay
-	if request.Body.HabitHeatmapsCurrentDay != nil {
-		habitHeatmapsCurrentDay = entity.SettingsHeatmapCurrentDay(map[gen.SettingsHabitHeatmapsCurrentDay]int{
-			"end":    0,
-			"middle": 1,
-			"start":  2,
-		}[*request.Body.HabitHeatmapsCurrentDay])
-	}
-
 	settings := &entity.Settings{
 		UserID:                       userID,
-		Theme:                        &theme,
 		ReadSettingsFromConfigFile:   request.Body.ReadSettingsFromConfigFile,
 		CellHeightMultiplier:         request.Body.CellHeightMultiplier,
 		CellWidthMultiplier:          request.Body.CellWidthMultiplier,
 		OverviewVertical:             request.Body.OverviewVertical,
-		OverviewCurrentDay:           &overviewCurrentDay,
 		OverviewOffset:               request.Body.OverviewOffset,
 		OverviewDuration:             request.Body.OverviewDuration,
 		OverviewApplyLimit:           request.Body.OverviewApplyLimit,
 		OverviewDurationLimit:        request.Body.OverviewDurationLimit,
 		AllowHorizontalScrolling:     request.Body.AllowHorizontalScrolling,
 		HabitHeatmapsOverride:        request.Body.HabitHeatmapsOverride,
-		HabitHeatmapsCurrentDay:      &habitHeatmapsCurrentDay,
 		ShowStopwatchTimeInPageTitle: request.Body.ShowStopwatchTimeInPageTitle,
 		HideCellHint:                 request.Body.HideCellHint,
 		HideOnboarding:               request.Body.HideOnboarding,
 		ProjectsEnableCustomOrder:    request.Body.ProjectsEnableCustomOrder,
+	}
+
+	if request.Body.Theme != nil {
+		theme := entity.SettingsTheme(map[gen.SettingsTheme]int{
+			"dark":  0,
+			"light": 1,
+		}[*request.Body.Theme])
+		settings.Theme = &theme
+	}
+
+	if request.Body.OverviewCurrentDay != nil {
+		overviewCurrentDay := entity.SettingsHeatmapCurrentDay(map[gen.SettingsOverviewCurrentDay]int{
+			"end":    0,
+			"middle": 1,
+			"start":  2,
+		}[*request.Body.OverviewCurrentDay])
+		settings.OverviewCurrentDay = &overviewCurrentDay
+	}
+
+	if request.Body.HabitHeatmapsCurrentDay != nil {
+		habitHeatmapsCurrentDay := entity.SettingsHeatmapCurrentDay(map[gen.SettingsHabitHeatmapsCurrentDay]int{
+			"end":    0,
+			"middle": 1,
+			"start":  2,
+		}[*request.Body.HabitHeatmapsCurrentDay])
+		settings.HabitHeatmapsCurrentDay = &habitHeatmapsCurrentDay
 	}
 
 	err := s.settings.Update(ctx, settings)
