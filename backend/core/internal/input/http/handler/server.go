@@ -603,6 +603,72 @@ func (s *server) GetSettings(
 	return gen.GetSettings200JSONResponse(toAPISettings(settings)), nil
 }
 
+// PATCH /settings
+func (s *server) UpdateSettings(
+	ctx context.Context,
+	request gen.UpdateSettingsRequestObject,
+) (gen.UpdateSettingsResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.UpdateSettings401Response{}, nil
+	}
+
+	var theme entity.SettingsTheme
+	if request.Body.Theme != nil {
+		theme = entity.SettingsTheme(map[gen.SettingsTheme]int{
+			"dark":  0,
+			"light": 1,
+		}[*request.Body.Theme])
+	}
+
+	var overviewCurrentDay entity.SettingsHeatmapCurrentDay
+	if request.Body.OverviewCurrentDay != nil {
+		overviewCurrentDay = entity.SettingsHeatmapCurrentDay(map[gen.SettingsOverviewCurrentDay]int{
+			"end":    0,
+			"middle": 1,
+			"start":  2,
+		}[*request.Body.OverviewCurrentDay])
+	}
+
+	var habitHeatmapsCurrentDay entity.SettingsHeatmapCurrentDay
+	if request.Body.HabitHeatmapsCurrentDay != nil {
+		habitHeatmapsCurrentDay = entity.SettingsHeatmapCurrentDay(map[gen.SettingsHabitHeatmapsCurrentDay]int{
+			"end":    0,
+			"middle": 1,
+			"start":  2,
+		}[*request.Body.HabitHeatmapsCurrentDay])
+	}
+
+	settings := &entity.Settings{
+		UserID:                       userID,
+		Theme:                        &theme,
+		ReadSettingsFromConfigFile:   request.Body.ReadSettingsFromConfigFile,
+		CellHeightMultiplier:         request.Body.CellHeightMultiplier,
+		CellWidthMultiplier:          request.Body.CellWidthMultiplier,
+		OverviewVertical:             request.Body.OverviewVertical,
+		OverviewCurrentDay:           &overviewCurrentDay,
+		OverviewOffset:               request.Body.OverviewOffset,
+		OverviewDuration:             request.Body.OverviewDuration,
+		OverviewApplyLimit:           request.Body.OverviewApplyLimit,
+		OverviewDurationLimit:        request.Body.OverviewDurationLimit,
+		AllowHorizontalScrolling:     request.Body.AllowHorizontalScrolling,
+		HabitHeatmapsOverride:        request.Body.HabitHeatmapsOverride,
+		HabitHeatmapsCurrentDay:      &habitHeatmapsCurrentDay,
+		ShowStopwatchTimeInPageTitle: request.Body.ShowStopwatchTimeInPageTitle,
+		HideCellHint:                 request.Body.HideCellHint,
+		HideOnboarding:               request.Body.HideOnboarding,
+		ProjectsEnableCustomOrder:    request.Body.ProjectsEnableCustomOrder,
+	}
+
+	err := s.settings.Update(ctx, settings)
+	if err != nil {
+		s.logger.Error("failed to update settings", zap.Error(err))
+		return gen.UpdateSettings500JSONResponse{}, nil
+	}
+
+	return gen.UpdateSettings204Response{}, nil
+}
+
 func toAPIUser(e *entity.User) gen.User {
 	return gen.User{
 		ID:                   e.ID,
@@ -703,23 +769,22 @@ func toAPISettings(e *entity.Settings) gen.Settings {
 		ID:                           e.ID,
 		UserID:                       e.UserID,
 		Theme:                        &theme,
-		ReadSettingsFromConfigFile:   &e.ReadSettingsFromConfigFile,
-		CellHeightMultiplier:         &e.CellHeightMultiplier,
-		CellWidthMultiplier:          &e.CellWidthMultiplier,
-		OverviewVertical:             &e.OverviewVertical,
+		ReadSettingsFromConfigFile:   e.ReadSettingsFromConfigFile,
+		CellHeightMultiplier:         e.CellHeightMultiplier,
+		CellWidthMultiplier:          e.CellWidthMultiplier,
+		OverviewVertical:             e.OverviewVertical,
 		OverviewCurrentDay:           &overviewCurrentDay,
-		OverviewOffset:               &e.OverviewOffset,
-		OverviewDuration:             &e.OverviewDuration,
-		OverviewApplyLimit:           &e.OverviewApplyLimit,
-		OverviewDurationLimit:        &e.OverviewDurationLimit,
-		AllowHorizontalScrolling:     &e.AllowHorizontalScrolling,
-		HabitHeatmapsOverride:        &e.HabitHeatmapsOverride,
+		OverviewOffset:               e.OverviewOffset,
+		OverviewDuration:             e.OverviewDuration,
+		OverviewApplyLimit:           e.OverviewApplyLimit,
+		OverviewDurationLimit:        e.OverviewDurationLimit,
+		AllowHorizontalScrolling:     e.AllowHorizontalScrolling,
+		HabitHeatmapsOverride:        e.HabitHeatmapsOverride,
 		HabitHeatmapsCurrentDay:      &habitHeatmapsCurrentDay,
-		ShowStopwatchTimeInPageTitle: &e.ShowStopwatchTimeInPageTitle,
-		HideCellHint:                 &e.HideCellHint,
-		HideOnboarding:               &e.HideOnboarding,
-		ProjectsEnableCustomOrder:    &e.ProjectsEnableCustomOrder,
-		ProjectsIDOrder:              &e.ProjectsIDOrder,
+		ShowStopwatchTimeInPageTitle: e.ShowStopwatchTimeInPageTitle,
+		HideCellHint:                 e.HideCellHint,
+		HideOnboarding:               e.HideOnboarding,
+		ProjectsEnableCustomOrder:    e.ProjectsEnableCustomOrder,
 		CreatedAt:                    &e.CreatedAt,
 		UpdatedAt:                    &e.UpdatedAt,
 	}
@@ -752,7 +817,7 @@ func CORS() func(http.Handler) http.Handler {
 			w.Header().Add("Access-Control-Allow-Origin", "http://127.0.0.1:8080")
 			w.Header().Add("Access-Control-Allow-Credentials", "true")
 			w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
+			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, PATCH, DELETE, OPTIONS")
 
 			if r.Method == "OPTIONS" {
 				http.Error(w, "No Content", http.StatusNoContent)

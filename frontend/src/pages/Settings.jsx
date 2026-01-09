@@ -67,7 +67,7 @@ export default function Settings() {
                 <h3 className="settings-name ribbon ribbon-top"
                   style={{ opacity: 0.5, position: 'relative', width: 'min-content', whiteSpace: 'nowrap' }}
                 >
-                  <span style={{ borderRadius: '10px 10px 0px 0px'}}>soon</span>
+                  <span style={{ borderRadius: '10px 10px 0px 0px' }}>soon</span>
                   Change password
                 </h3>
               </div>
@@ -81,11 +81,11 @@ export default function Settings() {
               <SettingsButtonOption
                 name="Preferred theme"
                 cssName="theme"
-                curState={settings.data.prefer_dark}
-                update={(state) => updateSettings({ values: { prefer_dark: state } })}
+                curState={settings.data.theme}
+                update={(state) => updateSettings({ values: { theme: state } })}
                 choices={[
-                  { name: 'Dark', state: true },
-                  { name: 'Light', state: false },
+                  { name: 'Dark', state: 'dark' },
+                  { name: 'Light', state: 'light' },
                 ]}
               />
               <SettingsButtonOption
@@ -284,9 +284,8 @@ function SettingsButtonOption({ name, cssName, update, choices, curState = undef
         {choices.map((choice, index) => (
           <button
             key={index}
-            className={`button-default muted stretch ${choice.state} ${
-              choice.state === curState ? 'active' : ''
-            }`}
+            className={`button-default muted stretch ${choice.state} ${choice.state === curState ? 'active' : ''
+              }`}
             onClick={() => update(choice.state)}
           >
             {choice.name}

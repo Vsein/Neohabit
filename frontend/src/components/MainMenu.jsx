@@ -86,7 +86,7 @@ function ThemeToggle() {
     <li>
       <a
         className="menu-section"
-        onClick={() => updateSettings({ values: { prefer_dark: theme !== 'dark' } })}
+        onClick={() => updateSettings({ values: { theme: theme === 'dark' ? 'light' : 'dark' } })}
       >
         <Icon
           path={theme === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}

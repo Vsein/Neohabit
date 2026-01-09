@@ -61,3 +61,13 @@ func (c *SettingsCase) Read(ctx context.Context, settings_id string) (*entity.Se
 
 	return settings, nil
 }
+
+func (c *SettingsCase) Update(ctx context.Context, settings *entity.Settings) error {
+	settings.UpdatedAt = time.Now()
+
+	err := c.settingsRepo.Update(ctx, settings)
+	if err != nil {
+		return err
+	}
+	return nil
+}

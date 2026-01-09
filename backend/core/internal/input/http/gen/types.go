@@ -304,5 +304,8 @@ type CreateProjectJSONRequestBody CreateProjectJSONBody
 // UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
 type UpdateProjectJSONRequestBody UpdateProjectJSONBody
 
+// UpdateSettingsJSONRequestBody defines body for UpdateSettings for application/json ContentType.
+type UpdateSettingsJSONRequestBody = Settings
+
 // SignupJSONRequestBody defines body for Signup for application/json ContentType.
 type SignupJSONRequestBody SignupJSONBody
