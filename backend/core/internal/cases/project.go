@@ -59,6 +59,20 @@ func (c *ProjectCase) List(ctx context.Context, userID string) ([]*entity.Projec
 	return projects, nil
 }
 
+func (c *ProjectCase) Update(ctx context.Context, project *entity.Project) error {
+	project.UpdatedAt = time.Now()
+
+	err := c.projectRepo.Update(ctx, project)
+	if err != nil {
+		if errors.Is(err, repo.ErrNotFound) {
+			return ErrNotFound
+		}
+		return fmt.Errorf("update: %w", err)
+	}
+
+	return nil
+}
+
 func (c *ProjectCase) Delete(ctx context.Context, id string) error {
 	err := c.projectRepo.Delete(ctx, id)
 	if err != nil {

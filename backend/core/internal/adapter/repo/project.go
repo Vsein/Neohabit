@@ -17,10 +17,10 @@ const (
 	// queryReadProject   = `SELECT * FROM projects WHERE id = $1`
 	queryListProjects  = `SELECT * FROM projects WHERE user_id = $1`
 	queryCreateProject = `
-		INSERT INTO projects (id, user_id, name, description, color, habit_ids, created_at, updated_at)
+		INSERT INTO projects (id, user_id, name, description, color, habit_ids_order, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
-	queryUpdateProject = `UPDATE projects SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
+	queryUpdateProject = `UPDATE projects SET name = $2, description = $3, color = $4, habit_ids_order = $5, updated_at = $6 WHERE id = $1`
 	queryDeleteProject = `DELETE FROM projects WHERE id = $1`
 	// queryDeleteProjectAndItsHabits = `DELETE FROM projects WHERE id = $1`
 )
@@ -107,6 +107,7 @@ func (r *Project) Update(ctx context.Context, project *entity.Project) error {
 		project.Name,
 		project.Description,
 		project.Color,
+		project.HabitIDs,
 		project.UpdatedAt,
 	)
 	if err != nil {

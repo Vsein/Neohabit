@@ -348,7 +348,7 @@ func (s *server) DeleteHabit(
 // }
 
 // Returns all projects of the authorized user
-// GET /project
+// GET /projects
 func (s *server) ListProjects(
 	ctx context.Context,
 	request gen.ListProjectsRequestObject,
@@ -370,6 +370,71 @@ func (s *server) ListProjects(
 	}
 
 	return gen.ListProjects200JSONResponse(response), nil
+}
+
+// POST /project
+func (s *server) CreateProject(
+	ctx context.Context,
+	request gen.CreateProjectRequestObject,
+) (gen.CreateProjectResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.CreateProject401Response{}, nil
+	}
+
+	project := &entity.Project{
+		Name:        request.Body.Name,
+		Description: request.Body.Description,
+		Color:       *request.Body.Color,
+		HabitIDs:    *request.Body.HabitIds,
+		UserID:      userID,
+	}
+
+	id, err := s.projects.Create(ctx, project)
+	if err != nil {
+		if errors.Is(err, cases.ErrAlreadyExists) {
+			return gen.CreateProject409JSONResponse{}, nil
+		}
+		s.logger.Error("failed to create project", zap.Error(err))
+		return gen.CreateProject500JSONResponse{}, nil
+	}
+
+	return gen.CreateProject201JSONResponse(id), nil
+}
+
+// PUT /project/{project_id}
+func (s *server) UpdateProject(
+	ctx context.Context,
+	request gen.UpdateProjectRequestObject,
+) (gen.UpdateProjectResponseObject, error) {
+	if request.ProjectID == "" {
+		return gen.UpdateProject400Response{}, nil
+	}
+
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.UpdateProject401Response{}, nil
+	}
+
+	project := &entity.Project{
+		ID:          request.ProjectID,
+		Name:        request.Body.Name,
+		Description: request.Body.Description,
+		Color:       *request.Body.Color,
+		HabitIDs:    *request.Body.HabitIds,
+		UserID:      userID,
+	}
+
+	err := s.projects.Update(ctx, project)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.UpdateProject404JSONResponse{}, nil
+		}
+		s.logger.Error("failed to update habit", zap.Error(err))
+		return gen.UpdateProject500JSONResponse{}, nil
+	}
+
+	return gen.UpdateProject200Response{}, nil
 }
 
 // DELETE /project/{project_id}

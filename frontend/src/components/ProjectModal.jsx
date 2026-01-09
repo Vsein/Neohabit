@@ -49,10 +49,10 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
   };
 
   const onSubmit = async (values) => {
-    if (project.name == '') {
-      await createProject({ ...values, habits: projectHabitList });
+    if (!projectID) {
+      await createProject({ ...values, habit_ids: projectHabitList });
     } else {
-      await updateProject({ projectID, values: { ...values, habits: projectHabitList } });
+      await updateProject({ projectID, values: { ...values, habit_ids: projectHabitList } });
     }
     setProjectHabitList([]);
     dispatch(close());
@@ -189,7 +189,8 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               </div>
             </div>
             <ModalButtons
-              disabled={submitting || !values?.name}
+              disabled={submitting}
+              unnamed={!values?.name}
               isNew={!projectID}
               type="project"
             />

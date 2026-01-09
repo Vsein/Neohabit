@@ -259,6 +259,30 @@ type LoginJSONBody struct {
 	Username string `json:"username"`
 }
 
+// CreateProjectJSONBody defines parameters for CreateProject.
+type CreateProjectJSONBody struct {
+	Color *Color `json:"color,omitempty"`
+
+	// Description Activity description
+	Description Description `json:"description"`
+	HabitIds    *[]string   `json:"habit_ids,omitempty"`
+
+	// Name Activity name
+	Name Name `json:"name"`
+}
+
+// UpdateProjectJSONBody defines parameters for UpdateProject.
+type UpdateProjectJSONBody struct {
+	Color *Color `json:"color,omitempty"`
+
+	// Description Activity description
+	Description Description `json:"description"`
+	HabitIds    *[]string   `json:"habit_ids,omitempty"`
+
+	// Name Activity name
+	Name Name `json:"name"`
+}
+
 // SignupJSONBody defines parameters for Signup.
 type SignupJSONBody struct {
 	Password string `json:"password"`
@@ -273,6 +297,12 @@ type UpdateHabitJSONRequestBody UpdateHabitJSONBody
 
 // LoginJSONRequestBody defines body for Login for application/json ContentType.
 type LoginJSONRequestBody LoginJSONBody
+
+// CreateProjectJSONRequestBody defines body for CreateProject for application/json ContentType.
+type CreateProjectJSONRequestBody CreateProjectJSONBody
+
+// UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
+type UpdateProjectJSONRequestBody UpdateProjectJSONBody
 
 // SignupJSONRequestBody defines body for Signup for application/json ContentType.
 type SignupJSONRequestBody SignupJSONBody
