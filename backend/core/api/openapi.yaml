@@ -136,7 +136,7 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        '200':
+        '204':
           description: Successfully deleted the user
         '401':
           description: Unauthorized
@@ -244,7 +244,7 @@ paths:
                 color:
                   $ref: '#/components/schemas/Color'
       responses:
-        '200':
+        '204':
           description: Habit successfully modified
         '400':
           description: HabitID not provided
@@ -274,7 +274,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        '204':
           description: Successfully deleted the habit
         '400':
           description: HabitID not provided
@@ -394,7 +394,7 @@ paths:
                   items:
                     type: string
       responses:
-        '200':
+        '204':
           description: Project successfully modified
         '400':
           description: ProjectID not provided
@@ -424,7 +424,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        '204':
           description: Successfully deleted the project
         '400':
           description: ProjectID not provided
@@ -474,7 +474,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        '204':
           description: Successfully deleted the task
         '400':
           description: TaskID not provided
@@ -524,7 +524,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        '204':
           description: Successfully deleted the skilltree
         '400':
           description: SkilltreeID not provided

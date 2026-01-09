@@ -796,11 +796,11 @@ type DeleteHabitResponseObject interface {
 	VisitDeleteHabitResponse(w http.ResponseWriter) error
 }
 
-type DeleteHabit200Response struct {
+type DeleteHabit204Response struct {
 }
 
-func (response DeleteHabit200Response) VisitDeleteHabitResponse(w http.ResponseWriter) error {
-	w.WriteHeader(200)
+func (response DeleteHabit204Response) VisitDeleteHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
 	return nil
 }
 
@@ -846,11 +846,11 @@ type UpdateHabitResponseObject interface {
 	VisitUpdateHabitResponse(w http.ResponseWriter) error
 }
 
-type UpdateHabit200Response struct {
+type UpdateHabit204Response struct {
 }
 
-func (response UpdateHabit200Response) VisitUpdateHabitResponse(w http.ResponseWriter) error {
-	w.WriteHeader(200)
+func (response UpdateHabit204Response) VisitUpdateHabitResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
 	return nil
 }
 
@@ -1027,11 +1027,11 @@ type DeleteProjectResponseObject interface {
 	VisitDeleteProjectResponse(w http.ResponseWriter) error
 }
 
-type DeleteProject200Response struct {
+type DeleteProject204Response struct {
 }
 
-func (response DeleteProject200Response) VisitDeleteProjectResponse(w http.ResponseWriter) error {
-	w.WriteHeader(200)
+func (response DeleteProject204Response) VisitDeleteProjectResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
 	return nil
 }
 
@@ -1077,11 +1077,11 @@ type UpdateProjectResponseObject interface {
 	VisitUpdateProjectResponse(w http.ResponseWriter) error
 }
 
-type UpdateProject200Response struct {
+type UpdateProject204Response struct {
 }
 
-func (response UpdateProject200Response) VisitUpdateProjectResponse(w http.ResponseWriter) error {
-	w.WriteHeader(200)
+func (response UpdateProject204Response) VisitUpdateProjectResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
 	return nil
 }
 
@@ -1230,11 +1230,11 @@ type DeleteSkilltreeResponseObject interface {
 	VisitDeleteSkilltreeResponse(w http.ResponseWriter) error
 }
 
-type DeleteSkilltree200Response struct {
+type DeleteSkilltree204Response struct {
 }
 
-func (response DeleteSkilltree200Response) VisitDeleteSkilltreeResponse(w http.ResponseWriter) error {
-	w.WriteHeader(200)
+func (response DeleteSkilltree204Response) VisitDeleteSkilltreeResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
 	return nil
 }
 
@@ -1345,11 +1345,11 @@ type DeleteTaskResponseObject interface {
 	VisitDeleteTaskResponse(w http.ResponseWriter) error
 }
 
-type DeleteTask200Response struct {
+type DeleteTask204Response struct {
 }
 
-func (response DeleteTask200Response) VisitDeleteTaskResponse(w http.ResponseWriter) error {
-	w.WriteHeader(200)
+func (response DeleteTask204Response) VisitDeleteTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
 	return nil
 }
 
@@ -1426,11 +1426,11 @@ type DeleteUserResponseObject interface {
 	VisitDeleteUserResponse(w http.ResponseWriter) error
 }
 
-type DeleteUser200Response struct {
+type DeleteUser204Response struct {
 }
 
-func (response DeleteUser200Response) VisitDeleteUserResponse(w http.ResponseWriter) error {
-	w.WriteHeader(200)
+func (response DeleteUser204Response) VisitDeleteUserResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
 	return nil
 }
 

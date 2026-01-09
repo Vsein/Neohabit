@@ -212,7 +212,7 @@ func (s *server) DeleteUser(
 		return gen.DeleteUser500JSONResponse{}, nil
 	}
 
-	return gen.DeleteUser200Response{}, nil
+	return gen.DeleteUser204Response{}, nil
 }
 
 // Returns all habits of the authorized user
@@ -300,7 +300,7 @@ func (s *server) UpdateHabit(
 		return gen.UpdateHabit500JSONResponse{}, nil
 	}
 
-	return gen.UpdateHabit200Response{}, nil
+	return gen.UpdateHabit204Response{}, nil
 }
 
 // DELETE /habit/{habit_id}
@@ -326,7 +326,7 @@ func (s *server) DeleteHabit(
 		return gen.DeleteHabit500JSONResponse{}, nil
 	}
 
-	return gen.DeleteHabit200Response{}, nil
+	return gen.DeleteHabit204Response{}, nil
 }
 
 // GetHabit handles GET /habit/{habitId}
@@ -434,7 +434,7 @@ func (s *server) UpdateProject(
 		return gen.UpdateProject500JSONResponse{}, nil
 	}
 
-	return gen.UpdateProject200Response{}, nil
+	return gen.UpdateProject204Response{}, nil
 }
 
 // DELETE /project/{project_id}
@@ -460,7 +460,7 @@ func (s *server) DeleteProject(
 		return gen.DeleteProject500JSONResponse{}, nil
 	}
 
-	return gen.DeleteProject200Response{}, nil
+	return gen.DeleteProject204Response{}, nil
 }
 
 // Returns all tasks of the authorized user
@@ -511,7 +511,7 @@ func (s *server) DeleteTask(
 		return gen.DeleteTask500JSONResponse{}, nil
 	}
 
-	return gen.DeleteTask200Response{}, nil
+	return gen.DeleteTask204Response{}, nil
 }
 
 // Returns all tasks of the authorized user
@@ -562,7 +562,7 @@ func (s *server) DeleteSkilltree(
 		return gen.DeleteSkilltree500JSONResponse{}, nil
 	}
 
-	return gen.DeleteSkilltree200Response{}, nil
+	return gen.DeleteSkilltree204Response{}, nil
 }
 
 // GET /stopwatch
