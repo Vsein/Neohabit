@@ -15,7 +15,7 @@ function NameField({ type }) {
     >
       {({ input, meta }) => (
         <div className="form-task-name">
-          <input {...input} type="text" placeholder={`Change ${type} name`} />
+          <input {...input} type="text" placeholder={`Change ${type} name`} autoFocus />
           <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}
           >{`${input?.value?.length ?? 0}/${maxLength}`}</p>
         </div>

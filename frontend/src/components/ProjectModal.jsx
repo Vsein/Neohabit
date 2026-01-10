@@ -50,7 +50,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
 
   const onSubmit = async (values) => {
     if (!projectID) {
-      await createProject({ ...values, habit_ids: projectHabitList });
+      await createProject({ ...values, habit_ids: projectHabitList, order_index: projects.data.length });
     } else {
       await updateProject({ projectID, values: { ...values, habit_ids: projectHabitList } });
     }

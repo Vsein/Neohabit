@@ -61,9 +61,16 @@ CREATE TABLE IF NOT EXISTS projects (
     name TEXT NOT NULL,
     description TEXT,
     color TEXT NOT NULL DEFAULT '#1D60C1',
-    habit_ids_order TEXT[],
+    order_index INT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS project_habits (
+    project_id TEXT REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
+    habit_id TEXT REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
+    order_index INT NOT NULL,
+    PRIMARY KEY (project_id, habit_id)
 );
 
 CREATE TABLE IF NOT EXISTS settings (
@@ -150,6 +157,7 @@ DROP TABLE IF EXISTS skilltrees;
 DROP TABLE IF EXISTS skills;
 DROP TABLE IF EXISTS stopwatches;
 DROP TABLE IF EXISTS settings;
+DROP TABLE IF EXISTS project_habits;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS habit_targets;
 DROP TABLE IF EXISTS habit_data;

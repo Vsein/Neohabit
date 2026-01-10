@@ -105,12 +105,14 @@ type Project struct {
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
 	HabitIds    *[]string    `json:"habit_ids,omitempty"`
+	Habits      *[]Habit     `json:"habits,omitempty"`
 	ID          string       `json:"id"`
 
 	// Name Activity name
-	Name      Name   `json:"name"`
-	UpdatedAt *Date  `json:"updated_at,omitempty"`
-	UserID    string `json:"user_id"`
+	Name       Name   `json:"name"`
+	OrderIndex *int   `json:"order_index,omitempty"`
+	UpdatedAt  *Date  `json:"updated_at,omitempty"`
+	UserID     string `json:"user_id"`
 }
 
 // Settings defines model for Settings.
@@ -131,7 +133,6 @@ type Settings struct {
 	OverviewOffset               *uint8                           `json:"overview_offset,omitempty"`
 	OverviewVertical             *bool                            `json:"overview_vertical,omitempty"`
 	ProjectsEnableCustomOrder    *bool                            `json:"projects_enable_custom_order,omitempty"`
-	ProjectsIDOrder              *[]string                        `json:"projects_id_order,omitempty"`
 	ReadSettingsFromConfigFile   *bool                            `json:"read_settings_from_config_file,omitempty"`
 	ShowStopwatchTimeInPageTitle *bool                            `json:"show_stopwatch_time_in_page_title,omitempty"`
 	Theme                        *SettingsTheme                   `json:"theme,omitempty"`
@@ -259,18 +260,6 @@ type LoginJSONBody struct {
 	Username string `json:"username"`
 }
 
-// CreateProjectJSONBody defines parameters for CreateProject.
-type CreateProjectJSONBody struct {
-	Color *Color `json:"color,omitempty"`
-
-	// Description Activity description
-	Description Description `json:"description"`
-	HabitIds    *[]string   `json:"habit_ids,omitempty"`
-
-	// Name Activity name
-	Name Name `json:"name"`
-}
-
 // UpdateProjectJSONBody defines parameters for UpdateProject.
 type UpdateProjectJSONBody struct {
 	Color *Color `json:"color,omitempty"`
@@ -308,7 +297,7 @@ type UpdateHabitJSONRequestBody UpdateHabitJSONBody
 type LoginJSONRequestBody LoginJSONBody
 
 // CreateProjectJSONRequestBody defines body for CreateProject for application/json ContentType.
-type CreateProjectJSONRequestBody CreateProjectJSONBody
+type CreateProjectJSONRequestBody = Project
 
 // UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
 type UpdateProjectJSONRequestBody UpdateProjectJSONBody

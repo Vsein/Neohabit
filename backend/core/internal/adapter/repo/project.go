@@ -15,14 +15,57 @@ import (
 
 const (
 	// queryReadProject   = `SELECT * FROM projects WHERE id = $1`
-	queryListProjects  = `SELECT * FROM projects WHERE user_id = $1`
+	queryListProjects           = `SELECT * FROM projects WHERE user_id = $1`
+	queryListProjectsWithHabits = `
+		SELECT
+			p.id,
+			p.user_id,
+			p.name,
+			p.description,
+			p.color,
+			p.order_index,
+			p.created_at,
+			p.updated_at,
+			json_agg(
+			    json_build_object(
+				'id', h.id,
+				'name', h.name,
+				'description', h.description,
+				'color', h.color,
+				'due_date', h.due_date,
+				'created_at', h.created_at,
+				'updated_at', h.updated_at,
+				'order_index', ph.order_index
+			    ) ORDER BY ph.order_index
+			) AS habits
+		FROM
+			projects p
+		JOIN
+			project_habits ph ON p.id = ph.project_id
+		JOIN
+			habits h ON h.id = ph.habit_id
+		WHERE p.user_id = $1
+		GROUP BY
+			p.created_at, p.id
+		ORDER BY
+			p.order_index
+	`
 	queryCreateProject = `
-		INSERT INTO projects (id, user_id, name, description, color, habit_ids_order, created_at, updated_at)
+		INSERT INTO projects (id, user_id, name, description, color, order_index, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
-	queryUpdateProject = `UPDATE projects SET name = $2, description = $3, color = $4, habit_ids_order = $5, updated_at = $6 WHERE id = $1`
+	queryCreateProjectHabitsOrder = `
+		INSERT INTO project_habits (project_id, habit_id, order_index)
+		SELECT $1, hi.habit_id, hi.order_index
+		FROM (
+			SELECT
+				unnest($2::text[]) AS habit_id,
+				generate_series(1, cardinality($2)) AS order_index
+		) hi
+	`
+	queryUpdateProject            = `UPDATE projects SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
+	`
 	queryDeleteProject = `DELETE FROM projects WHERE id = $1`
-	// queryDeleteProjectAndItsHabits = `DELETE FROM projects WHERE id = $1`
 )
 
 type Project struct {
@@ -42,7 +85,7 @@ func (r *Project) List(ctx context.Context, userID string) ([]*entity.Project, e
 	var rows pgx.Rows
 	var err error
 
-	rows, err = r.pool.Query(ctx, queryListProjects, userID)
+	rows, err = r.pool.Query(ctx, queryListProjectsWithHabits, userID)
 
 	if err != nil {
 		return nil, fmt.Errorf("query list projects: %w", err)
@@ -58,9 +101,10 @@ func (r *Project) List(ctx context.Context, userID string) ([]*entity.Project, e
 			&project.Name,
 			&project.Description,
 			&project.Color,
-			&project.HabitIDs,
+			&project.OrderIndex,
 			&project.CreatedAt,
 			&project.UpdatedAt,
+			&project.Habits,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("scan project: %w", err)
@@ -84,18 +128,27 @@ func (r *Project) Create(ctx context.Context, project *entity.Project) error {
 		project.Name,
 		project.Description,
 		project.Color,
-		project.HabitIDs,
+		project.OrderIndex,
 		project.CreatedAt,
 		project.UpdatedAt,
 	)
 	if err != nil {
-		// Check for unique constraint violation (duplicate name, etc.)
-		// Adjust this based on your actual database constraints
 		if db.IsUniqueViolation(err) {
 			return repo.ErrAlreadyExists
 		}
 		return fmt.Errorf("exec create project: %w", err)
 	}
+
+	_, err = r.pool.Exec(
+		ctx,
+		queryCreateProjectHabitsOrder,
+		project.ID,
+		project.HabitIDs,
+	)
+	if err != nil {
+		return fmt.Errorf("exec create project habits order: %w", err)
+	}
+
 	return nil
 }
 
@@ -107,7 +160,6 @@ func (r *Project) Update(ctx context.Context, project *entity.Project) error {
 		project.Name,
 		project.Description,
 		project.Color,
-		project.HabitIDs,
 		project.UpdatedAt,
 	)
 	if err != nil {

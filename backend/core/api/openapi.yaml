@@ -322,19 +322,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [ name, description ]
-              properties:
-                name:
-                  $ref: '#/components/schemas/Name'
-                description:
-                  $ref: '#/components/schemas/Description'
-                color:
-                  $ref: '#/components/schemas/Color'
-                habit_ids:
-                  type: array
-                  items:
-                    type: string
+              $ref: '#/components/schemas/Project'
       responses:
         '201':
           description: Project created successfully
@@ -864,10 +852,16 @@ components:
           $ref: '#/components/schemas/Description'
         color:
           $ref: '#/components/schemas/Color'
+        order_index:
+          type: integer
         habit_ids:
           type: array
           items:
             type: string
+        habits:
+          type: array
+          items:
+            $ref: '#/components/schemas/Habit'
         created_at:
           $ref: '#/components/schemas/Date'
         updated_at:
@@ -1047,12 +1041,9 @@ components:
           type: boolean
         hide_onboarding:
           type: boolean
+
         projects_enable_custom_order:
           type: boolean
-        projects_id_order:
-          type: array
-          items:
-            type: string
 
         created_at:
           $ref: '#/components/schemas/Date'

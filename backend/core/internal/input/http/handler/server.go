@@ -384,9 +384,10 @@ func (s *server) CreateProject(
 
 	project := &entity.Project{
 		Name:        request.Body.Name,
-		Description: request.Body.Description,
+		Description: *request.Body.Description,
 		Color:       *request.Body.Color,
 		HabitIDs:    *request.Body.HabitIds,
+		OrderIndex:  *request.Body.OrderIndex,
 		UserID:      userID,
 	}
 
@@ -792,6 +793,11 @@ func toAPIHabit(e *entity.Habit) gen.Habit {
 }
 
 func toAPIProject(e *entity.Project) gen.Project {
+	habits := make([]gen.Habit, 0, len(e.Habits))
+	for _, habit := range e.Habits {
+		habits = append(habits, toAPIHabit(&habit))
+	}
+
 	return gen.Project{
 		ID:          e.ID,
 		UserID:      e.UserID,
@@ -799,6 +805,7 @@ func toAPIProject(e *entity.Project) gen.Project {
 		Description: &e.Description,
 		Color:       &e.Color,
 		HabitIds:    &e.HabitIDs,
+		Habits:      &habits,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 	}
