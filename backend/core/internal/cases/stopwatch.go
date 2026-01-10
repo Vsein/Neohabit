@@ -32,7 +32,7 @@ func (c *StopwatchCase) Create(ctx context.Context, stopwatch *entity.Stopwatch)
 	stopwatch.ID = uuid.NewString()
 	stopwatch.CreatedAt = time.Now()
 	stopwatch.UpdatedAt = stopwatch.CreatedAt
-	stopwatch.StartTime = stopwatch.CreatedAt
+	stopwatch.StartTime = &stopwatch.CreatedAt
 
 	_, err := c.txManager.WithTx(ctx, func(ctx context.Context) (any, error) {
 		err := c.stopwatchRepo.Create(ctx, stopwatch)
@@ -61,4 +61,14 @@ func (c *StopwatchCase) Read(ctx context.Context, userID string) (*entity.Stopwa
 	}
 
 	return stopwatch, nil
+}
+
+func (c *StopwatchCase) Update(ctx context.Context, stopwatch *entity.Stopwatch) error {
+	stopwatch.UpdatedAt = time.Now()
+
+	err := c.stopwatchRepo.Update(ctx, stopwatch)
+	if err != nil {
+		return err
+	}
+	return nil
 }

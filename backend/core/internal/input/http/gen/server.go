@@ -61,6 +61,9 @@ type ServerInterface interface {
 	// Returns user's stopwatch
 	// (GET /stopwatch)
 	GetStopwatch(w http.ResponseWriter, r *http.Request)
+	// Update user's stopwatch
+	// (PATCH /stopwatch)
+	UpdateStopwatch(w http.ResponseWriter, r *http.Request)
 	// Delete task
 	// (DELETE /task/{task_id})
 	DeleteTask(w http.ResponseWriter, r *http.Request, taskID string)
@@ -166,6 +169,12 @@ func (_ Unimplemented) ListSkilltrees(w http.ResponseWriter, r *http.Request) {
 // Returns user's stopwatch
 // (GET /stopwatch)
 func (_ Unimplemented) GetStopwatch(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Update user's stopwatch
+// (PATCH /stopwatch)
+func (_ Unimplemented) UpdateStopwatch(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -509,6 +518,26 @@ func (siw *ServerInterfaceWrapper) GetStopwatch(w http.ResponseWriter, r *http.R
 	handler.ServeHTTP(w, r)
 }
 
+// UpdateStopwatch operation middleware
+func (siw *ServerInterfaceWrapper) UpdateStopwatch(w http.ResponseWriter, r *http.Request) {
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateStopwatch(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // DeleteTask operation middleware
 func (siw *ServerInterfaceWrapper) DeleteTask(w http.ResponseWriter, r *http.Request) {
 
@@ -751,6 +780,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/stopwatch", wrapper.GetStopwatch)
+	})
+	r.Group(func(r chi.Router) {
+		r.Patch(options.BaseURL+"/stopwatch", wrapper.UpdateStopwatch)
 	})
 	r.Group(func(r chi.Router) {
 		r.Delete(options.BaseURL+"/task/{task_id}", wrapper.DeleteTask)
@@ -1411,6 +1443,48 @@ func (response GetStopwatch500JSONResponse) VisitGetStopwatchResponse(w http.Res
 	return json.NewEncoder(w).Encode(response)
 }
 
+type UpdateStopwatchRequestObject struct {
+	Body *UpdateStopwatchJSONRequestBody
+}
+
+type UpdateStopwatchResponseObject interface {
+	VisitUpdateStopwatchResponse(w http.ResponseWriter) error
+}
+
+type UpdateStopwatch204Response struct {
+}
+
+func (response UpdateStopwatch204Response) VisitUpdateStopwatchResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type UpdateStopwatch400JSONResponse ErrorResponse
+
+func (response UpdateStopwatch400JSONResponse) VisitUpdateStopwatchResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdateStopwatch401Response struct {
+}
+
+func (response UpdateStopwatch401Response) VisitUpdateStopwatchResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type UpdateStopwatch500JSONResponse ErrorResponse
+
+func (response UpdateStopwatch500JSONResponse) VisitUpdateStopwatchResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 type DeleteTaskRequestObject struct {
 	TaskID string `json:"task_id"`
 }
@@ -1613,6 +1687,9 @@ type StrictServerInterface interface {
 	// Returns user's stopwatch
 	// (GET /stopwatch)
 	GetStopwatch(ctx context.Context, request GetStopwatchRequestObject) (GetStopwatchResponseObject, error)
+	// Update user's stopwatch
+	// (PATCH /stopwatch)
+	UpdateStopwatch(ctx context.Context, request UpdateStopwatchRequestObject) (UpdateStopwatchResponseObject, error)
 	// Delete task
 	// (DELETE /task/{task_id})
 	DeleteTask(ctx context.Context, request DeleteTaskRequestObject) (DeleteTaskResponseObject, error)
@@ -2068,6 +2145,37 @@ func (sh *strictHandler) GetStopwatch(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(GetStopwatchResponseObject); ok {
 		if err := validResponse.VisitGetStopwatchResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// UpdateStopwatch operation middleware
+func (sh *strictHandler) UpdateStopwatch(w http.ResponseWriter, r *http.Request) {
+	var request UpdateStopwatchRequestObject
+
+	var body UpdateStopwatchJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateStopwatch(ctx, request.(UpdateStopwatchRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateStopwatch")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(UpdateStopwatchResponseObject); ok {
+		if err := validResponse.VisitUpdateStopwatchResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

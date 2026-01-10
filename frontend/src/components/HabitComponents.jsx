@@ -37,7 +37,7 @@ function HabitControls({
   const setStopwatchHabit = () => {
     updateStopwatch({
       values: {
-        habit,
+        habit_id: habit.id,
       },
     });
     dispatch(changeTo({ type: 'stopwatch' }));

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { formatISO } from 'date-fns';
 import {
   useUpdateStopwatchMutation,
   useFinishStopwatchMutation,
@@ -52,7 +53,7 @@ export default function useStopwatch() {
       // Initiation
       updateStopwatch({
         values: {
-          start_time: Date.now(),
+          start_time: formatISO(Date.now()),
           is_initiated: true,
           is_paused: false,
         },

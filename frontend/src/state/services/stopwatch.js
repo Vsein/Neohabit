@@ -1,4 +1,4 @@
-import { isSameDay, startOfDay } from 'date-fns';
+import { isSameDay } from 'date-fns';
 import api from './api';
 import { heatmapApi } from './heatmap';
 
@@ -13,7 +13,7 @@ export const stopwatchApi = api.injectEndpoints({
       query: ({ values }) => ({
         url: 'stopwatch',
         body: values,
-        method: 'PUT',
+        method: 'PATCH',
       }),
       async onQueryStarted({ values }, { dispatch }) {
         dispatch(

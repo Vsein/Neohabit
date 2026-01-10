@@ -584,6 +584,35 @@ func (s *server) GetStopwatch(
 	return gen.GetStopwatch200JSONResponse(toAPIStopwatch(stopwatch)), nil
 }
 
+// PATCH /stopwatch
+func (s *server) UpdateStopwatch(
+	ctx context.Context,
+	request gen.UpdateStopwatchRequestObject,
+) (gen.UpdateStopwatchResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.UpdateStopwatch401Response{}, nil
+	}
+
+	stopwatch := &entity.Stopwatch{
+		UserID:        userID,
+		HabitID:       request.Body.HabitID,
+		IsInitiated:   request.Body.IsInitiated,
+		StartTime:     request.Body.StartTime,
+		Duration:      request.Body.Duration,
+		IsPaused:      request.Body.IsPaused,
+		PauseDuration: request.Body.PauseDuration,
+	}
+
+	err := s.stopwatches.Update(ctx, stopwatch)
+	if err != nil {
+		s.logger.Error("failed to update stopwatch", zap.Error(err))
+		return gen.UpdateStopwatch500JSONResponse{}, nil
+	}
+
+	return gen.UpdateStopwatch204Response{}, nil
+}
+
 // GET /settings
 func (s *server) GetSettings(
 	ctx context.Context,
@@ -746,12 +775,12 @@ func toAPIStopwatch(e *entity.Stopwatch) gen.Stopwatch {
 	return gen.Stopwatch{
 		ID:            e.ID,
 		UserID:        e.UserID,
-		HabitID:       &e.HabitID,
-		IsInitiated:   &e.IsInitiated,
-		StartTime:     &e.StartTime,
-		Duration:      &e.Duration,
-		IsPaused:      &e.IsPaused,
-		PauseDuration: &e.PauseDuration,
+		HabitID:       e.HabitID,
+		IsInitiated:   e.IsInitiated,
+		StartTime:     e.StartTime,
+		Duration:      e.Duration,
+		IsPaused:      e.IsPaused,
+		PauseDuration: e.PauseDuration,
 		CreatedAt:     &e.CreatedAt,
 		UpdatedAt:     &e.UpdatedAt,
 	}

@@ -21,7 +21,7 @@ export default function StopwatchModal({ closeOverlay }) {
     { togglePause, resetStopwatch, finishCountdown, clockify },
   ] = useStopwatch();
 
-  const habit = habits.data.find((h) => h.id === stopwatch?.data?.habit?.id) ?? {
+  const habit = habits.data.find((h) => h.id === stopwatch?.data?.habit_id) ?? {
     name: 'No habit',
     color: '#23BCDB',
   };

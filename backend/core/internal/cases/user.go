@@ -86,7 +86,7 @@ func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error
 		err = c.stopwatchRepo.Create(ctx, &entity.Stopwatch{
 			ID:        uuid.NewString(),
 			UserID:    user.ID,
-			HabitID:   habitID,
+			HabitID:   &habitID,
 			CreatedAt: user.CreatedAt,
 			UpdatedAt: user.UpdatedAt,
 		})

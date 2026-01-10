@@ -309,3 +309,6 @@ type UpdateSettingsJSONRequestBody = Settings
 
 // SignupJSONRequestBody defines body for Signup for application/json ContentType.
 type SignupJSONRequestBody SignupJSONBody
+
+// UpdateStopwatchJSONRequestBody defines body for UpdateStopwatch for application/json ContentType.
+type UpdateStopwatchJSONRequestBody = Stopwatch

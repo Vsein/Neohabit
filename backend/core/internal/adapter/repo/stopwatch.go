@@ -19,7 +19,17 @@ const (
 		INSERT INTO stopwatches (id, user_id, habit_id, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5)
 	`
-	queryUpdateStopwatch = `UPDATE stopwatches SET updated_at = $5 WHERE id = $1`
+	queryUpdateStopwatch = `
+		UPDATE stopwatches
+		SET
+			habit_id = coalesce($2,habit_id),
+			is_initiated = coalesce($3,is_initiated),
+			start_time = coalesce($4,start_time),
+			duration = coalesce($5,duration),
+			is_paused = coalesce($6,is_paused),
+			pause_duration = coalesce($7,pause_duration),
+			updated_at = $8
+		WHERE user_id = $1`
 	queryDeleteStopwatch = `DELETE FROM stopwatches WHERE user_id = $1`
 )
 
@@ -37,11 +47,10 @@ func NewStopwatchRepo(pool db.PoolTX, logger *zap.Logger) *Stopwatch {
 
 func (r *Stopwatch) Read(ctx context.Context, userID string) (*entity.Stopwatch, error) {
 	var stopwatch entity.Stopwatch
-	var habitID *string
 	err := r.pool.QueryRow(ctx, queryReadStopwatch, userID).Scan(
 		&stopwatch.ID,
 		&stopwatch.UserID,
-		&habitID,
+		&stopwatch.HabitID,
 		&stopwatch.IsInitiated,
 		&stopwatch.StartTime,
 		&stopwatch.Duration,
@@ -55,9 +64,6 @@ func (r *Stopwatch) Read(ctx context.Context, userID string) (*entity.Stopwatch,
 			return nil, repo.ErrNotFound
 		}
 		return nil, err
-	}
-	if habitID != nil {
-		stopwatch.HabitID = *habitID
 	}
 
 	return &stopwatch, nil
@@ -74,8 +80,6 @@ func (r *Stopwatch) Create(ctx context.Context, stopwatch *entity.Stopwatch) err
 		stopwatch.UpdatedAt,
 	)
 	if err != nil {
-		// Check for unique constraint violation (duplicate name, etc.)
-		// Adjust this based on your actual database constraints
 		if db.IsUniqueViolation(err) {
 			return repo.ErrAlreadyExists
 		}
@@ -88,7 +92,13 @@ func (r *Stopwatch) Update(ctx context.Context, stopwatch *entity.Stopwatch) err
 	_, err := r.pool.Exec(
 		ctx,
 		queryUpdateStopwatch,
-		stopwatch.ID,
+		stopwatch.UserID,
+		stopwatch.HabitID,
+		stopwatch.IsInitiated,
+		stopwatch.StartTime,
+		stopwatch.Duration,
+		stopwatch.IsPaused,
+		stopwatch.PauseDuration,
 		stopwatch.UpdatedAt,
 	)
 	if err != nil {
