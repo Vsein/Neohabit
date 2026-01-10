@@ -215,7 +215,7 @@ type Task struct {
 	IsImportant *bool        `json:"is_important,omitempty"`
 
 	// Name Activity name
-	Name      Name   `json:"name"`
+	Name      *Name  `json:"name,omitempty"`
 	UpdatedAt *Date  `json:"updated_at,omitempty"`
 	UserID    string `json:"user_id"`
 }
@@ -324,3 +324,6 @@ type UpdateStopwatchJSONRequestBody = Stopwatch
 
 // CreateTaskJSONRequestBody defines body for CreateTask for application/json ContentType.
 type CreateTaskJSONRequestBody CreateTaskJSONBody
+
+// UpdateTaskJSONRequestBody defines body for UpdateTask for application/json ContentType.
+type UpdateTaskJSONRequestBody = Task

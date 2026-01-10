@@ -507,6 +507,42 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
   /task/{task_id}:
+    patch:
+      summary: Update Task by ID
+      operationId: updateTask
+      tags: [Tasks]
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '204':
+          description: Task successfully modified
+        '400':
+          description: TaskID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
     delete:
       summary: Delete task
       operationId: deleteTask
@@ -842,7 +878,6 @@ components:
       required:
         - id
         - user_id
-        - name
       properties:
         id:
           type: string

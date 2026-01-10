@@ -70,6 +70,9 @@ type ServerInterface interface {
 	// Delete task
 	// (DELETE /task/{task_id})
 	DeleteTask(w http.ResponseWriter, r *http.Request, taskID string)
+	// Update Task by ID
+	// (PATCH /task/{task_id})
+	UpdateTask(w http.ResponseWriter, r *http.Request, taskID string)
 	// List tasks
 	// (GET /tasks)
 	ListTasks(w http.ResponseWriter, r *http.Request)
@@ -190,6 +193,12 @@ func (_ Unimplemented) CreateTask(w http.ResponseWriter, r *http.Request) {
 // Delete task
 // (DELETE /task/{task_id})
 func (_ Unimplemented) DeleteTask(w http.ResponseWriter, r *http.Request, taskID string) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Update Task by ID
+// (PATCH /task/{task_id})
+func (_ Unimplemented) UpdateTask(w http.ResponseWriter, r *http.Request, taskID string) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -586,6 +595,31 @@ func (siw *ServerInterfaceWrapper) DeleteTask(w http.ResponseWriter, r *http.Req
 	handler.ServeHTTP(w, r)
 }
 
+// UpdateTask operation middleware
+func (siw *ServerInterfaceWrapper) UpdateTask(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "task_id" -------------
+	var taskID string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "task_id", chi.URLParam(r, "task_id"), &taskID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "task_id", Err: err})
+		return
+	}
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateTask(w, r, taskID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // ListTasks operation middleware
 func (siw *ServerInterfaceWrapper) ListTasks(w http.ResponseWriter, r *http.Request) {
 
@@ -812,6 +846,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Delete(options.BaseURL+"/task/{task_id}", wrapper.DeleteTask)
+	})
+	r.Group(func(r chi.Router) {
+		r.Patch(options.BaseURL+"/task/{task_id}", wrapper.UpdateTask)
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/tasks", wrapper.ListTasks)
@@ -1612,6 +1649,57 @@ func (response DeleteTask500JSONResponse) VisitDeleteTaskResponse(w http.Respons
 	return json.NewEncoder(w).Encode(response)
 }
 
+type UpdateTaskRequestObject struct {
+	TaskID string `json:"task_id"`
+	Body   *UpdateTaskJSONRequestBody
+}
+
+type UpdateTaskResponseObject interface {
+	VisitUpdateTaskResponse(w http.ResponseWriter) error
+}
+
+type UpdateTask204Response struct {
+}
+
+func (response UpdateTask204Response) VisitUpdateTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type UpdateTask400Response struct {
+}
+
+func (response UpdateTask400Response) VisitUpdateTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type UpdateTask401Response struct {
+}
+
+func (response UpdateTask401Response) VisitUpdateTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type UpdateTask404JSONResponse ErrorResponse
+
+func (response UpdateTask404JSONResponse) VisitUpdateTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdateTask500JSONResponse ErrorResponse
+
+func (response UpdateTask500JSONResponse) VisitUpdateTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 type ListTasksRequestObject struct {
 }
 
@@ -1774,6 +1862,9 @@ type StrictServerInterface interface {
 	// Delete task
 	// (DELETE /task/{task_id})
 	DeleteTask(ctx context.Context, request DeleteTaskRequestObject) (DeleteTaskResponseObject, error)
+	// Update Task by ID
+	// (PATCH /task/{task_id})
+	UpdateTask(ctx context.Context, request UpdateTaskRequestObject) (UpdateTaskResponseObject, error)
 	// List tasks
 	// (GET /tasks)
 	ListTasks(ctx context.Context, request ListTasksRequestObject) (ListTasksResponseObject, error)
@@ -2314,6 +2405,39 @@ func (sh *strictHandler) DeleteTask(w http.ResponseWriter, r *http.Request, task
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(DeleteTaskResponseObject); ok {
 		if err := validResponse.VisitDeleteTaskResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// UpdateTask operation middleware
+func (sh *strictHandler) UpdateTask(w http.ResponseWriter, r *http.Request, taskID string) {
+	var request UpdateTaskRequestObject
+
+	request.TaskID = taskID
+
+	var body UpdateTaskJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateTask(ctx, request.(UpdateTaskRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateTask")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(UpdateTaskResponseObject); ok {
+		if err := validResponse.VisitUpdateTaskResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

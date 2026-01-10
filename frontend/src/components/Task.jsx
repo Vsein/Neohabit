@@ -21,11 +21,11 @@ export default function Task({ task }) {
     e.stopPropagation();
     updateTask({
       taskID: task.id,
-      values: { ...task, completed: !task.completed },
+      values: { is_completed: !task.is_completed },
     });
   };
 
-  const bg = task.completed
+  const bg = task.is_completed
     ? `radial-gradient(${habit?.color} 30%, ${habit?.color}33 40%)`
     : `${habit?.color}33`;
 

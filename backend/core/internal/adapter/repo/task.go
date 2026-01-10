@@ -20,9 +20,19 @@ const (
 		INSERT INTO tasks (id, user_id, habit_id, name, description, due_date, is_important, is_completed, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 	`
-	queryUpdateTask = `UPDATE tasks SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
+	queryUpdateTask = `
+		UPDATE tasks
+		SET
+			habit_id = coalesce($2,habit_id),
+			name = coalesce($3,name),
+			description = coalesce($4,description),
+			due_date = coalesce($5,due_date),
+			is_important = coalesce($6,is_important),
+			is_completed = coalesce($7,is_completed),
+			updated_at = $8
+		WHERE id = $1
+	`
 	queryDeleteTask = `DELETE FROM tasks WHERE id = $1`
-	// queryDeleteTaskAndItsHabits = `DELETE FROM tasks WHERE id = $1`
 )
 
 type Task struct {

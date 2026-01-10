@@ -59,6 +59,16 @@ func (c *TaskCase) List(ctx context.Context, userID string) ([]*entity.Task, err
 	return tasks, nil
 }
 
+func (c *TaskCase) Update(ctx context.Context, task *entity.Task) error {
+	task.UpdatedAt = time.Now()
+
+	err := c.taskRepo.Update(ctx, task)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *TaskCase) Delete(ctx context.Context, id string) error {
 	err := c.taskRepo.Delete(ctx, id)
 	if err != nil {

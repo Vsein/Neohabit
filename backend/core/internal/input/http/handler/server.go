@@ -516,6 +516,40 @@ func (s *server) CreateTask(
 	return gen.CreateTask201JSONResponse(id), nil
 }
 
+// PATCH /task/{task_id}
+func (s *server) UpdateTask(
+	ctx context.Context,
+	request gen.UpdateTaskRequestObject,
+) (gen.UpdateTaskResponseObject, error) {
+	if request.TaskID == "" {
+		return gen.UpdateTask400Response{}, nil
+	}
+
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.UpdateTask401Response{}, nil
+	}
+
+	task := &entity.Task{
+		ID:          request.TaskID,
+		Name:        request.Body.Name,
+		Description: request.Body.Description,
+		IsCompleted: request.Body.IsCompleted,
+		UserID:      userID,
+	}
+
+	err := s.tasks.Update(ctx, task)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.UpdateTask404JSONResponse{}, nil
+		}
+		s.logger.Error("failed to update task", zap.Error(err))
+		return gen.UpdateTask500JSONResponse{}, nil
+	}
+
+	return gen.UpdateTask204Response{}, nil
+}
+
 // DELETE /task/{task_id}
 func (s *server) DeleteTask(
 	ctx context.Context,
@@ -775,7 +809,7 @@ func toAPITask(e *entity.Task) gen.Task {
 		ID:          e.ID,
 		UserID:      e.UserID,
 		HabitID:     e.HabitID,
-		Name:        *e.Name,
+		Name:        e.Name,
 		Description: e.Description,
 		DueDate:     e.DueDate,
 		IsImportant: e.IsImportant,

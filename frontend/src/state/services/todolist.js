@@ -26,16 +26,14 @@ export const todolistApi = api.injectEndpoints({
       query: ({ taskID, values }) => ({
         url: `task/${taskID}`,
         body: values,
-        method: 'PUT',
+        method: 'PATCH',
       }),
       onQueryStarted({ taskID, values }, { dispatch }) {
         const patchResult = dispatch(
           todolistApi.util.updateQueryData('getTasks', undefined, (draft) => {
             const task = draft.find((t) => t.id === taskID);
             if (task) {
-              task.name = values.name;
-              task.description = values.description;
-              task.completed = values.completed;
+              Object.assign(task, values);
             }
           }),
         );
