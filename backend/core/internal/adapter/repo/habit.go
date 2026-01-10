@@ -31,9 +31,8 @@ const (
 		INSERT INTO habits (id, user_id, name, description, color, due_date, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
-	queryUpdateHabit  = `UPDATE habits SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
-	queryDeleteHabit  = `DELETE FROM habits WHERE id = $1`
-	queryDeleteHabit2 = `DELETE FROM habits WHERE id = $1; UPDATE projects SET habit_ids_order = array_remove(habit_ids_order, $1)`
+	queryUpdateHabit = `UPDATE habits SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
+	queryDeleteHabit = `DELETE FROM habits WHERE id = $1`
 )
 
 type Habit struct {
@@ -155,7 +154,7 @@ func (r *Habit) Update(ctx context.Context, habit *entity.Habit) error {
 func (r *Habit) Delete(ctx context.Context, id string) error {
 	_, err := r.pool.Exec(
 		ctx,
-		queryDeleteHabit2,
+		queryDeleteHabit,
 		id,
 	)
 	if err != nil {
