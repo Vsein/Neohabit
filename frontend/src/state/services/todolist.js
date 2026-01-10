@@ -17,7 +17,7 @@ export const todolistApi = api.injectEndpoints({
         const res = await queryFulfilled;
         const patchResult = dispatch(
           todolistApi.util.updateQueryData('getTasks', undefined, (draft) => {
-            draft.push(res.data);
+            draft.push({ id: res.data, ...values });
           }),
         );
       },

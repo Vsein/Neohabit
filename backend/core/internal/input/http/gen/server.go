@@ -64,6 +64,9 @@ type ServerInterface interface {
 	// Update user's stopwatch
 	// (PATCH /stopwatch)
 	UpdateStopwatch(w http.ResponseWriter, r *http.Request)
+	// Create Task
+	// (POST /task)
+	CreateTask(w http.ResponseWriter, r *http.Request)
 	// Delete task
 	// (DELETE /task/{task_id})
 	DeleteTask(w http.ResponseWriter, r *http.Request, taskID string)
@@ -175,6 +178,12 @@ func (_ Unimplemented) GetStopwatch(w http.ResponseWriter, r *http.Request) {
 // Update user's stopwatch
 // (PATCH /stopwatch)
 func (_ Unimplemented) UpdateStopwatch(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Create Task
+// (POST /task)
+func (_ Unimplemented) CreateTask(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -538,6 +547,20 @@ func (siw *ServerInterfaceWrapper) UpdateStopwatch(w http.ResponseWriter, r *htt
 	handler.ServeHTTP(w, r)
 }
 
+// CreateTask operation middleware
+func (siw *ServerInterfaceWrapper) CreateTask(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateTask(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // DeleteTask operation middleware
 func (siw *ServerInterfaceWrapper) DeleteTask(w http.ResponseWriter, r *http.Request) {
 
@@ -783,6 +806,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Patch(options.BaseURL+"/stopwatch", wrapper.UpdateStopwatch)
+	})
+	r.Group(func(r chi.Router) {
+		r.Post(options.BaseURL+"/task", wrapper.CreateTask)
 	})
 	r.Group(func(r chi.Router) {
 		r.Delete(options.BaseURL+"/task/{task_id}", wrapper.DeleteTask)
@@ -1485,6 +1511,58 @@ func (response UpdateStopwatch500JSONResponse) VisitUpdateStopwatchResponse(w ht
 	return json.NewEncoder(w).Encode(response)
 }
 
+type CreateTaskRequestObject struct {
+	Body *CreateTaskJSONRequestBody
+}
+
+type CreateTaskResponseObject interface {
+	VisitCreateTaskResponse(w http.ResponseWriter) error
+}
+
+type CreateTask201JSONResponse string
+
+func (response CreateTask201JSONResponse) VisitCreateTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateTask400JSONResponse ErrorResponse
+
+func (response CreateTask400JSONResponse) VisitCreateTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateTask401Response struct {
+}
+
+func (response CreateTask401Response) VisitCreateTaskResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type CreateTask409JSONResponse ErrorResponse
+
+func (response CreateTask409JSONResponse) VisitCreateTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(409)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateTask500JSONResponse ErrorResponse
+
+func (response CreateTask500JSONResponse) VisitCreateTaskResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 type DeleteTaskRequestObject struct {
 	TaskID string `json:"task_id"`
 }
@@ -1690,6 +1768,9 @@ type StrictServerInterface interface {
 	// Update user's stopwatch
 	// (PATCH /stopwatch)
 	UpdateStopwatch(ctx context.Context, request UpdateStopwatchRequestObject) (UpdateStopwatchResponseObject, error)
+	// Create Task
+	// (POST /task)
+	CreateTask(ctx context.Context, request CreateTaskRequestObject) (CreateTaskResponseObject, error)
 	// Delete task
 	// (DELETE /task/{task_id})
 	DeleteTask(ctx context.Context, request DeleteTaskRequestObject) (DeleteTaskResponseObject, error)
@@ -2176,6 +2257,37 @@ func (sh *strictHandler) UpdateStopwatch(w http.ResponseWriter, r *http.Request)
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(UpdateStopwatchResponseObject); ok {
 		if err := validResponse.VisitUpdateStopwatchResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateTask operation middleware
+func (sh *strictHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
+	var request CreateTaskRequestObject
+
+	var body CreateTaskJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateTask(ctx, request.(CreateTaskRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateTask")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateTaskResponseObject); ok {
+		if err := validResponse.VisitCreateTaskResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

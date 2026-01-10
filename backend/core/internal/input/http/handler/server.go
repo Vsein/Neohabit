@@ -488,6 +488,34 @@ func (s *server) ListTasks(
 	return gen.ListTasks200JSONResponse(response), nil
 }
 
+// POST /task
+func (s *server) CreateTask(
+	ctx context.Context,
+	request gen.CreateTaskRequestObject,
+) (gen.CreateTaskResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.CreateTask401Response{}, nil
+	}
+
+	task := &entity.Task{
+		Name:        &request.Body.Name,
+		Description: &request.Body.Description,
+		UserID:      userID,
+	}
+
+	id, err := s.tasks.Create(ctx, task)
+	if err != nil {
+		if errors.Is(err, cases.ErrAlreadyExists) {
+			return gen.CreateTask409JSONResponse{}, nil
+		}
+		s.logger.Error("failed to create task", zap.Error(err))
+		return gen.CreateTask500JSONResponse{}, nil
+	}
+
+	return gen.CreateTask201JSONResponse(id), nil
+}
+
 // DELETE /task/{task_id}
 func (s *server) DeleteTask(
 	ctx context.Context,
@@ -746,12 +774,12 @@ func toAPITask(e *entity.Task) gen.Task {
 	return gen.Task{
 		ID:          e.ID,
 		UserID:      e.UserID,
-		HabitID:     &e.HabitID,
-		Name:        e.Name,
-		Description: &e.Description,
-		DueDate:     &e.DueDate,
-		IsImportant: &e.IsImportant,
-		IsCompleted: &e.IsCompleted,
+		HabitID:     e.HabitID,
+		Name:        *e.Name,
+		Description: e.Description,
+		DueDate:     e.DueDate,
+		IsImportant: e.IsImportant,
+		IsCompleted: e.IsCompleted,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 	}

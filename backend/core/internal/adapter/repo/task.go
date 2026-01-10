@@ -17,8 +17,8 @@ const (
 	// queryReadTask   = `SELECT * FROM tasks WHERE id = $1`
 	queryListTasks  = `SELECT * FROM tasks WHERE user_id = $1`
 	queryCreateTask = `
-		INSERT INTO tasks (id, user_id, name, description, color, habit_ids, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO tasks (id, user_id, habit_id, name, description, due_date, is_important, is_completed, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 	`
 	queryUpdateTask = `UPDATE tasks SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
 	queryDeleteTask = `DELETE FROM tasks WHERE id = $1`

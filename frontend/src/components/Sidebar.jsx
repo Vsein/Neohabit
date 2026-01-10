@@ -47,7 +47,7 @@ export default function Sidebar({ hidden }) {
           to="/skills"
           num="2"
         />
-        <NavigationSection path={mdiClipboardCheck} title="To-do" to="/todo" num="3" />
+        <NavigationSection path={mdiClipboardCheck} title="To-do" to="/todo" status="raw" raw num="3" />
         <NavigationSection path={mdiViewDashboard} title="Overview" to="/overview" num="4" />
         <NavigationSection path={mdiPackageVariantClosed} title="Blocks" status="soon" to="/blocks" num="5" />
         <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />

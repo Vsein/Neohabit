@@ -289,6 +289,15 @@ type SignupJSONBody struct {
 	Username string `json:"username"`
 }
 
+// CreateTaskJSONBody defines parameters for CreateTask.
+type CreateTaskJSONBody struct {
+	// Description Activity description
+	Description Description `json:"description"`
+
+	// Name Activity name
+	Name Name `json:"name"`
+}
+
 // CreateHabitJSONRequestBody defines body for CreateHabit for application/json ContentType.
 type CreateHabitJSONRequestBody CreateHabitJSONBody
 
@@ -312,3 +321,6 @@ type SignupJSONRequestBody SignupJSONBody
 
 // UpdateStopwatchJSONRequestBody defines body for UpdateStopwatch for application/json ContentType.
 type UpdateStopwatchJSONRequestBody = Stopwatch
+
+// CreateTaskJSONRequestBody defines body for CreateTask for application/json ContentType.
+type CreateTaskJSONRequestBody CreateTaskJSONBody

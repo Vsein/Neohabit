@@ -316,8 +316,7 @@ paths:
     post:
       summary: Create Project
       operationId: createProject
-      tags:
-        - project
+      tags: [Projects]
       requestBody:
         required: true
         content:
@@ -461,6 +460,51 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /task:
+    post:
+      summary: Create Task
+      operationId: createTask
+      tags: [Tasks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ name, description ]
+              properties:
+                name:
+                  $ref: '#/components/schemas/Name'
+                description:
+                  $ref: '#/components/schemas/Description'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '409':
+          description: Task already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /task/{task_id}:
     delete:
