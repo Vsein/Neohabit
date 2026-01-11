@@ -56,7 +56,7 @@ const (
 	`
 	queryCreateProject = `
 		INSERT INTO projects (id, user_id, name, description, color, created_at, updated_at, order_index)
-		SELECT $1, $2, $3, $4, $5, $6, $7, COUNT(order_index)
+		SELECT $1, $2, $3, $4, $5, $6, $7, COALESCE(MAX(order_index), 0) + 1
 		FROM projects
 	`
 	queryCreateProjectHabitsOrder = `
@@ -68,7 +68,25 @@ const (
 				generate_series(1, cardinality($2)) AS order_index
 		) hi
 	`
-	queryUpdateProject            = `UPDATE projects SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
+	queryUpdateProject = `
+		UPDATE projects
+		SET
+			name = $2, description = $3, color = $4, order_index = coalesce($5,order_index), updated_at = $6 WHERE id = $1`
+	queryRemoveProjectHabitsRelations = `
+		DELETE FROM project_habits
+		WHERE project_id = $1
+			AND habit_id NOT IN (SELECT unnest($2::text[]))
+	`
+	queryUpdateProjectHabitsOrder = `
+		INSERT INTO project_habits (project_id, habit_id, order_index)
+		SELECT $1, hi.habit_id, hi.order_index
+		FROM (
+			SELECT
+				unnest($2::text[]) AS habit_id,
+				generate_series(1, cardinality($2)) AS order_index
+		) hi
+		ON CONFLICT (project_id, habit_id) DO UPDATE
+		SET order_index = EXCLUDED.order_index
 	`
 	queryDeleteProject = `DELETE FROM projects WHERE id = $1`
 )
@@ -164,10 +182,31 @@ func (r *Project) Update(ctx context.Context, project *entity.Project) error {
 		project.Name,
 		project.Description,
 		project.Color,
+		project.OrderIndex,
 		project.UpdatedAt,
 	)
 	if err != nil {
 		return fmt.Errorf("exec update project: %w", err)
+	}
+
+	_, err = r.pool.Exec(
+		ctx,
+		queryRemoveProjectHabitsRelations,
+		project.ID,
+		project.HabitIDs,
+	)
+	if err != nil {
+		return fmt.Errorf("exec remove project habits order: %w", err)
+	}
+
+	_, err = r.pool.Exec(
+		ctx,
+		queryUpdateProjectHabitsOrder,
+		project.ID,
+		project.HabitIDs,
+	)
+	if err != nil {
+		return fmt.Errorf("exec update project habits order: %w", err)
 	}
 	return nil
 }

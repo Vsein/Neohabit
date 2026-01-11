@@ -19,7 +19,8 @@ export const projectApi = api.injectEndpoints({
         const res = await queryFulfilled;
         dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            draft.push({ id: res.data, order_index: draft.length, ...values });
+            const orderIndex = draft.length > 0 ? draft[draft.length - 1].order_index + 1 : 0;
+            draft.push({ id: res.data, order_index: orderIndex, ...values });
           }),
         );
         dispatch(
@@ -32,16 +33,21 @@ export const projectApi = api.injectEndpoints({
     updateProject: builder.mutation({
       query: ({ projectID, values }) => ({
         url: `project/${projectID}`,
-        body: values,
+        body: { ...values, habits: undefined },
         method: 'PUT',
       }),
       onQueryStarted({ projectID, values }, { dispatch }) {
-        const patchResult = dispatch(
+        dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
             const project = draft.find((p) => p.id === projectID);
             if (project) {
               Object.assign(project, values);
             }
+          }),
+        );
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            filterInPlace(draft, (h) => !values.habit_ids.includes(h.id));
           }),
         );
       },

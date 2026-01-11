@@ -51,6 +51,7 @@ func toAPIProject(e *entity.Project) gen.Project {
 		Name:        e.Name,
 		Description: &e.Description,
 		Color:       &e.Color,
+		OrderIndex:  e.OrderIndex,
 		HabitIds:    &e.HabitIDs,
 		Habits:      &habits,
 		CreatedAt:   &e.CreatedAt,

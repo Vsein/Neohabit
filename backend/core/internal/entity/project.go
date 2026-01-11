@@ -8,7 +8,7 @@ type Project struct {
 	Name        string
 	Description string
 	Color       string
-	OrderIndex  int
+	OrderIndex  *int
 	HabitIDs    []string
 	Habits      []Habit
 	CreatedAt   time.Time
