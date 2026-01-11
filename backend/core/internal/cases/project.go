@@ -73,6 +73,15 @@ func (c *ProjectCase) Update(ctx context.Context, project *entity.Project) error
 	return nil
 }
 
+func (c *ProjectCase) UpdateProjectsOrder(ctx context.Context, newProjectsOrder []string) error {
+	err := c.projectRepo.UpdateProjectsOrder(ctx, newProjectsOrder)
+	if err != nil {
+		return fmt.Errorf("update projects order: %w", err)
+	}
+
+	return nil
+}
+
 func (c *ProjectCase) Delete(ctx context.Context, id string) error {
 	err := c.projectRepo.Delete(ctx, id)
 	if err != nil {

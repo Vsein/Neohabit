@@ -71,7 +71,15 @@ const (
 	queryUpdateProject = `
 		UPDATE projects
 		SET
-			name = $2, description = $3, color = $4, order_index = coalesce($5,order_index), updated_at = $6 WHERE id = $1`
+			name = $2, description = $3, color = $4, order_index = coalesce($5,order_index), updated_at = $6
+		WHERE id = $1
+	`
+	queryUpdateProjectsOrder = `
+		UPDATE projects p
+		SET order_index = pi.ordinality - 1
+		FROM unnest($1::text[]) WITH ORDINALITY AS pi(project_id, ordinality)
+		WHERE p.id = pi.project_id;
+	`
 	queryRemoveProjectHabitsRelations = `
 		DELETE FROM project_habits
 		WHERE project_id = $1
@@ -208,6 +216,19 @@ func (r *Project) Update(ctx context.Context, project *entity.Project) error {
 	if err != nil {
 		return fmt.Errorf("exec update project habits order: %w", err)
 	}
+	return nil
+}
+
+func (r *Project) UpdateProjectsOrder(ctx context.Context, newProjectsOrder []string) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryUpdateProjectsOrder,
+		newProjectsOrder,
+	)
+	if err != nil {
+		return fmt.Errorf("exec update projects order: %w", err)
+	}
+
 	return nil
 }
 

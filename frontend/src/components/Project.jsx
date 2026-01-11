@@ -4,8 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
-import { useUpdateSettingsMutation } from '../state/services/settings';
-import { useUpdateProjectMutation } from '../state/services/project';
+import { useUpdateProjectMutation, useUpdateProjectsOrderMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -27,8 +26,8 @@ export default function Project({
 }) {
   const vertical = false;
 
-  const [updateSettings] = useUpdateSettingsMutation();
   const [updateProject] = useUpdateProjectMutation();
+  const [updateProjectsOrder] = useUpdateProjectsOrderMutation();
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
@@ -72,7 +71,7 @@ export default function Project({
     e.preventDefault();
   }
 
-  const drag = (e) => {
+  const dragStart = (e) => {
     e.dataTransfer.setData("text", e.target.id);
   }
 
@@ -105,7 +104,7 @@ export default function Project({
     }
 
     const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].map(({ id }) => id);
-    updateSettings({ values: { projects_order: ids, projects_enable_order: true } })
+    updateProjectsOrder({ values: { new_projects_order: ids } });
   }
 
   return (
@@ -126,11 +125,14 @@ export default function Project({
         [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,
       }}
       onDrop={drop}
-      onDragOver={allowDrop} draggable onDragStart={drag}
+      onDragOver={allowDrop}
+      draggable
+      onDragStart={dragStart}
       id={project?.id}
     >
       <div
         className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
+        style={{ cursor: 'move' }}
       >
         {mobile ? (
           <HeaderName />

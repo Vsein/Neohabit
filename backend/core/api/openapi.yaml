@@ -449,6 +449,41 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /projects/order:
+    PUT:
+      summary: Update projects order
+      operationId: updateProjectsOrder
+      tags: [Projects]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ new_projects_order ]
+              properties:
+                new_projects_order:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '204':
+          description: Project order successfully updated
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /tasks:
     get:
       summary: List tasks

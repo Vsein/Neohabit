@@ -52,6 +52,22 @@ export const projectApi = api.injectEndpoints({
         );
       },
     }),
+    updateProjectsOrder: builder.mutation({
+      query: ({ values }) => ({
+        url: 'projects/order',
+        body: values,
+        method: 'PUT',
+      }),
+      onQueryStarted({ values }, { dispatch }) {
+        dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            draft.sort(
+              (a, b) => values.new_projects_order.indexOf(a) - values.new_projects_order.indexOf(b),
+            );
+          }),
+        );
+      },
+    }),
     deleteProject: builder.mutation({
       query: (projectID) => ({
         url: `project/${projectID}`,
@@ -74,5 +90,6 @@ export const {
   // useGetProjectQuery,
   useCreateProjectMutation,
   useUpdateProjectMutation,
+  useUpdateProjectsOrderMutation,
   useDeleteProjectMutation,
 } = projectApi;

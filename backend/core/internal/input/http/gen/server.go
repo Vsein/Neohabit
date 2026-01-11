@@ -46,6 +46,9 @@ type ServerInterface interface {
 	// List projects
 	// (GET /projects)
 	ListProjects(w http.ResponseWriter, r *http.Request)
+	// Update projects order
+	// (PUT /projects/order)
+	UpdateProjectsOrder(w http.ResponseWriter, r *http.Request)
 	// Returns user's settings
 	// (GET /settings)
 	GetSettings(w http.ResponseWriter, r *http.Request)
@@ -148,6 +151,12 @@ func (_ Unimplemented) UpdateProject(w http.ResponseWriter, r *http.Request, pro
 // List projects
 // (GET /projects)
 func (_ Unimplemented) ListProjects(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Update projects order
+// (PUT /projects/order)
+func (_ Unimplemented) UpdateProjectsOrder(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -437,6 +446,20 @@ func (siw *ServerInterfaceWrapper) ListProjects(w http.ResponseWriter, r *http.R
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.ListProjects(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// UpdateProjectsOrder operation middleware
+func (siw *ServerInterfaceWrapper) UpdateProjectsOrder(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateProjectsOrder(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -851,6 +874,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/projects", wrapper.ListProjects)
+	})
+	r.Group(func(r chi.Router) {
+		r.Put(options.BaseURL+"/projects/order", wrapper.UpdateProjectsOrder)
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/settings", wrapper.GetSettings)
@@ -1338,6 +1364,48 @@ func (response ListProjects401Response) VisitListProjectsResponse(w http.Respons
 type ListProjects500JSONResponse ErrorResponse
 
 func (response ListProjects500JSONResponse) VisitListProjectsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdateProjectsOrderRequestObject struct {
+	Body *UpdateProjectsOrderJSONRequestBody
+}
+
+type UpdateProjectsOrderResponseObject interface {
+	VisitUpdateProjectsOrderResponse(w http.ResponseWriter) error
+}
+
+type UpdateProjectsOrder204Response struct {
+}
+
+func (response UpdateProjectsOrder204Response) VisitUpdateProjectsOrderResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type UpdateProjectsOrder400JSONResponse ErrorResponse
+
+func (response UpdateProjectsOrder400JSONResponse) VisitUpdateProjectsOrderResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdateProjectsOrder401Response struct {
+}
+
+func (response UpdateProjectsOrder401Response) VisitUpdateProjectsOrderResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type UpdateProjectsOrder500JSONResponse ErrorResponse
+
+func (response UpdateProjectsOrder500JSONResponse) VisitUpdateProjectsOrderResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -1903,6 +1971,9 @@ type StrictServerInterface interface {
 	// List projects
 	// (GET /projects)
 	ListProjects(ctx context.Context, request ListProjectsRequestObject) (ListProjectsResponseObject, error)
+	// Update projects order
+	// (PUT /projects/order)
+	UpdateProjectsOrder(ctx context.Context, request UpdateProjectsOrderRequestObject) (UpdateProjectsOrderResponseObject, error)
 	// Returns user's settings
 	// (GET /settings)
 	GetSettings(ctx context.Context, request GetSettingsRequestObject) (GetSettingsResponseObject, error)
@@ -2249,6 +2320,37 @@ func (sh *strictHandler) ListProjects(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(ListProjectsResponseObject); ok {
 		if err := validResponse.VisitListProjectsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// UpdateProjectsOrder operation middleware
+func (sh *strictHandler) UpdateProjectsOrder(w http.ResponseWriter, r *http.Request) {
+	var request UpdateProjectsOrderRequestObject
+
+	var body UpdateProjectsOrderJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateProjectsOrder(ctx, request.(UpdateProjectsOrderRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateProjectsOrder")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(UpdateProjectsOrderResponseObject); ok {
+		if err := validResponse.VisitUpdateProjectsOrderResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

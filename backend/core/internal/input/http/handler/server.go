@@ -487,6 +487,25 @@ func (s *server) DeleteProject(
 	return gen.DeleteProject204Response{}, nil
 }
 
+// PUT /projects/order
+func (s *server) UpdateProjectsOrder(
+	ctx context.Context,
+	request gen.UpdateProjectsOrderRequestObject,
+) (gen.UpdateProjectsOrderResponseObject, error) {
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.UpdateProjectsOrder401Response{}, nil
+	}
+
+	err := s.projects.UpdateProjectsOrder(ctx, request.Body.NewProjectsOrder)
+	if err != nil {
+		s.logger.Error("failed to update projects order", zap.Error(err))
+		return gen.UpdateProjectsOrder500JSONResponse{}, nil
+	}
+
+	return gen.UpdateProjectsOrder204Response{}, nil
+}
+
 // Returns all tasks of the authorized user
 // GET /task
 func (s *server) ListTasks(

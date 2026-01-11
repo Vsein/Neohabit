@@ -11,5 +11,6 @@ type ProjectRepo interface {
 	List(ctx context.Context, userID string) ([]*entity.Project, error)
 	Create(ctx context.Context, project *entity.Project) error
 	Update(ctx context.Context, project *entity.Project) error
+	UpdateProjectsOrder(ctx context.Context, newProjectsOrder []string) error
 	Delete(ctx context.Context, id string) error
 }

@@ -272,6 +272,11 @@ type UpdateProjectJSONBody struct {
 	Name Name `json:"name"`
 }
 
+// UpdateProjectsOrderJSONBody defines parameters for UpdateProjectsOrder.
+type UpdateProjectsOrderJSONBody struct {
+	NewProjectsOrder []string `json:"new_projects_order"`
+}
+
 // SignupJSONBody defines parameters for Signup.
 type SignupJSONBody struct {
 	Password string `json:"password"`
@@ -301,6 +306,9 @@ type CreateProjectJSONRequestBody = Project
 
 // UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
 type UpdateProjectJSONRequestBody UpdateProjectJSONBody
+
+// UpdateProjectsOrderJSONRequestBody defines body for UpdateProjectsOrder for application/json ContentType.
+type UpdateProjectsOrderJSONRequestBody UpdateProjectsOrderJSONBody
 
 // UpdateSettingsJSONRequestBody defines body for UpdateSettings for application/json ContentType.
 type UpdateSettingsJSONRequestBody = Settings
