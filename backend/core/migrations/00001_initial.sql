@@ -73,6 +73,8 @@ CREATE TABLE IF NOT EXISTS project_habits (
     PRIMARY KEY (project_id, habit_id)
 );
 
+CREATE INDEX project_habits_project_order_idx ON project_habits(project_id, order_index);
+
 CREATE TABLE IF NOT EXISTS settings (
     id TEXT PRIMARY KEY,
     user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,

@@ -26,27 +26,31 @@ const (
 			p.order_index,
 			p.created_at,
 			p.updated_at,
-			json_agg(
-			    json_build_object(
-				'id', h.id,
-				'name', h.name,
-				'description', h.description,
-				'color', h.color,
-				'due_date', h.due_date,
-				'created_at', h.created_at,
-				'updated_at', h.updated_at,
-				'order_index', ph.order_index
-			    ) ORDER BY ph.order_index
+			COALESCE(
+				(SELECT jsonb_agg(
+					jsonb_build_object(
+						'id', h.id,
+						'name', h.name,
+						'description', h.description,
+						'color', h.color,
+						'due_date', to_char(h.due_date, 'YYYY-MM-DD"T"HH24:MI:SS"Z"'),
+						'created_at', h.created_at,
+						'updated_at', h.updated_at,
+						'order_index', ph.order_index
+					) ORDER BY ph.order_index)
+					FROM
+						project_habits ph
+					JOIN
+						habits h ON h.id = ph.habit_id
+					WHERE
+						h.user_id = $1 AND ph.project_id = p.id
+				),
+				'[]'::jsonb
 			) AS habits
 		FROM
 			projects p
-		JOIN
-			project_habits ph ON p.id = ph.project_id
-		JOIN
-			habits h ON h.id = ph.habit_id
-		WHERE p.user_id = $1
-		GROUP BY
-			p.created_at, p.id
+		WHERE
+			p.user_id = $1
 		ORDER BY
 			p.order_index
 	`
