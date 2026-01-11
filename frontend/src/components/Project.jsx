@@ -145,7 +145,7 @@ export default function Project({
             <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
           </>
         )}
-        <ProjectControls projectID={project?.id} mobile={mobile} addPeriod={addPeriod} isPastPeriod={isPastPeriod} />
+        <ProjectControls projectID={project?.id} project={project} mobile={mobile} addPeriod={addPeriod} isPastPeriod={isPastPeriod} />
       </div>
       <div
         className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
@@ -171,7 +171,7 @@ export default function Project({
             </>
           )}
           <div className="overview-habits">
-            {Habits.length === 0 && <h5 className="overview-no-habits">No habits</h5>}
+            {Habits.length === 0 && <h5 className="overview-no-habits">No habits &nbsp;&nbsp;ʕ•ᴥ•ʔ</h5>}
             {Habits}
           </div>
           {vertical && (
@@ -189,7 +189,7 @@ export default function Project({
   );
 }
 
-function ProjectControls({ projectID, mobile, addPeriod, isPastPeriod }) {
+function ProjectControls({ project, projectID, mobile, addPeriod, isPastPeriod }) {
   const dispatch = useDispatch();
 
   return (
@@ -202,14 +202,14 @@ function ProjectControls({ projectID, mobile, addPeriod, isPastPeriod }) {
         <>
           <button
             className="overview-open-settings active"
-            onClick={() => dispatch(changeTo({ projectID, type: 'project' }))}
+            onClick={() => dispatch(changeTo({ projectID, project, type: 'project' }))}
             title="Edit the project"
           >
             <Icon path={mdiPencil} className="icon small centering" />
           </button>
           <button
             className="overview-open-settings active"
-            onClick={() => dispatch(changeTo({ projectID, type: 'deleteProject' }))}
+            onClick={() => dispatch(changeTo({ projectID, project, type: 'deleteProject' }))}
             title="Delete the project"
           >
             <Icon path={mdiDelete} className="icon small centering" />

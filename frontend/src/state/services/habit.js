@@ -27,9 +27,15 @@ export const habitApi = api.injectEndpoints({
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
+        const newHabit = { id: res.data, ...values };
         dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            draft.push({ id: res.data, ...values });
+            draft.push(newHabit);
+          }),
+        );
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            draft.push(newHabit);
           }),
         );
         dispatch(
@@ -41,7 +47,7 @@ export const habitApi = api.injectEndpoints({
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
             const project = draft.find((p) => p.id === values.projectID);
             if (project) {
-              project.habits = [...project.habits, res.data.habit.id];
+              project.habits = [...project.habits, newHabit];
             }
           }),
         );

@@ -55,8 +55,9 @@ const (
 			p.order_index
 	`
 	queryCreateProject = `
-		INSERT INTO projects (id, user_id, name, description, color, order_index, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO projects (id, user_id, name, description, color, created_at, updated_at, order_index)
+		SELECT $1, $2, $3, $4, $5, $6, $7, COUNT(order_index)
+		FROM projects
 	`
 	queryCreateProjectHabitsOrder = `
 		INSERT INTO project_habits (project_id, habit_id, order_index)
@@ -132,7 +133,6 @@ func (r *Project) Create(ctx context.Context, project *entity.Project) error {
 		project.Name,
 		project.Description,
 		project.Color,
-		project.OrderIndex,
 		project.CreatedAt,
 		project.UpdatedAt,
 	)

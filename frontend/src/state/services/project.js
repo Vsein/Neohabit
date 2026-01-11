@@ -1,4 +1,6 @@
 import api from './api';
+import { habitApi } from './habit';
+import filterInPlace from '../../utils/filterInPlace';
 
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,14 +12,19 @@ export const projectApi = api.injectEndpoints({
     createProject: builder.mutation({
       query: (values) => ({
         url: 'project',
-        body: values,
+        body: { ...values, habits: undefined },
         method: 'POST',
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
         dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            draft.push(res.data);
+            draft.push({ id: res.data, order_index: draft.length, ...values });
+          }),
+        );
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            filterInPlace(draft, (h) => !values.habit_ids.includes(h.id));
           }),
         );
       },

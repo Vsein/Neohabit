@@ -411,7 +411,6 @@ func (s *server) CreateProject(
 		Description: *request.Body.Description,
 		Color:       *request.Body.Color,
 		HabitIDs:    *request.Body.HabitIds,
-		OrderIndex:  *request.Body.OrderIndex,
 		UserID:      userID,
 	}
 

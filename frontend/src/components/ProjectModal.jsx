@@ -7,72 +7,51 @@ import { mdiClose, mdiPlus } from '@mdi/js';
 import { HabitTag, HabitTagToDelete } from './UI';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import {
-  useGetProjectsQuery,
   useCreateProjectMutation,
   useUpdateProjectMutation,
 } from '../state/services/project';
-import { useGetHabitsQuery } from '../state/services/habit';
+import { useGetHabitsOutsideProjectsQuery } from '../state/services/habit';
 import { close } from '../state/features/overlay/overlaySlice';
 import useMenuToggler from '../hooks/useMenuToggler';
 import useLoaded from '../hooks/useLoaded';
 
-export default function ProjectModal({ projectID, isActive, closeOverlay }) {
+export default function ProjectModal({ projectID, project, isActive, closeOverlay }) {
   const [loaded] = useLoaded();
   const [menuOpened, { toggleMenu }] = useMenuToggler();
   const dispatch = useDispatch();
-  const projects = useGetProjectsQuery();
-  const habits = useGetHabitsQuery();
+  const habits = useGetHabitsOutsideProjectsQuery();
   const [createProject] = useCreateProjectMutation();
   const [updateProject] = useUpdateProjectMutation();
 
-  const [projectHabitList, setProjectHabitList] = useState([]);
+  const [projectHabitList, setProjectHabitList] = useState(project?.habits ?? []);
+  const [unassignedHabitList, setUnassignedHabitList] = useState([]);
 
   useEffect(() => {
-    if (!projects.isLoading) {
-      const project = projects.data.find((p) => p.id === projectID) ?? {
-        name: '',
-        color: '#1D60C1',
-        description: '',
-        habits: [],
-      };
-      setProjectHabitList(project.habits);
+    if (!habits.isLoading) {
+      setUnassignedHabitList(habits.data);
     }
   }, [projectID, isActive]);
 
-  if (habits.isLoading || projects.isLoading) return <></>;
-
-  const project = projects.data.find((p) => p.id === projectID) ?? {
-    name: '',
-    color: '#1D60C1',
-    description: '',
-    habits: [],
-  };
+  if (habits.isLoading) return <></>;
 
   const onSubmit = async (values) => {
+    const habitIDs = projectHabitList.map((habit) => habit.id);
     if (!projectID) {
-      await createProject({ ...values, habit_ids: projectHabitList, order_index: projects.data.length });
+      await createProject({ ...values, habit_ids: habitIDs, habits: projectHabitList });
     } else {
-      await updateProject({ projectID, values: { ...values, habit_ids: projectHabitList } });
+      await updateProject({ projectID, values: { ...values, habit_ids: habitIDs, habits: projectHabitList } });
     }
     setProjectHabitList([]);
     dispatch(close());
-  };
-
-  if (!project) return <div>Missing project!</div>;
-
-  const belongsToThisProject = (habitID) => {
-    const res = projectHabitList.find((projectHabitID) => projectHabitID === habitID);
-    if (res === undefined) return false;
-    return res !== -1;
   };
 
   return (
     loaded && (
       <Form
         initialValues={{
-          name: project?.name,
-          description: project?.description,
-          color: project?.color,
+          name: project?.name ?? '',
+          description: project?.description ?? '',
+          color: project?.color ?? '#1D60C1',
         }}
         onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -127,22 +106,20 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                 className={`form-habits-container ${menuOpened ? 'active' : ''}`}
                 onClick={(e) => e.stopPropagation()}
               >
-                {habits.data.map(
+                {unassignedHabitList.length ? unassignedHabitList.map(
                   (habit, i) =>
-                    !belongsToThisProject(habit.id) && (
-                      <div
-                        className="form-chooser"
-                        key={i}
-                        onClick={() => {
-                          if (!belongsToThisProject(habit.id)) {
-                            setProjectHabitList([...projectHabitList, habit.id]);
-                          }
-                        }}
-                      >
-                        <HabitTag habit={habit} />
-                      </div>
-                    ),
-                )}
+                    <div
+                      className="form-chooser"
+                      key={i}
+                      onClick={() => {
+                        setProjectHabitList([...projectHabitList, habit]);
+                        setUnassignedHabitList(unassignedHabitList.filter((h) => h.id !== habit.id));
+                      }}
+                    >
+                      <HabitTag habit={habit} />
+                    </div>
+                ) : <p>No unassigned habits</p>
+                }
               </ul>
             </div>
             {!!projectHabitList?.length && (
@@ -157,26 +134,18 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                 }}
               >
                 <div className="form-habits">
-                  {projectHabitList.map((habitID, i) => {
-                    const habit = habits.data.find((h) => h.id === habitID);
-                    return (
-                      <div
-                        className="form-chooser"
-                        key={i}
-                        onClick={() => {
-                          if (!habit || !belongsToThisProject(habit?.id)) {
-                            setProjectHabitList([...projectHabitList, habit.id]);
-                          } else {
-                            setProjectHabitList(
-                              projectHabitList.filter((id) => id !== habit.id),
-                            );
-                          }
-                        }}
-                      >
-                        <HabitTagToDelete habit={habit} />
-                      </div>
-                    );
-                  })}
+                  {projectHabitList.map((habit, i) =>
+                    <div
+                      className="form-chooser"
+                      key={i}
+                      onClick={() => {
+                        setUnassignedHabitList([...unassignedHabitList, habit]);
+                        setProjectHabitList(projectHabitList.filter((h) => h.id !== habit.id))
+                      }}
+                    >
+                      <HabitTagToDelete habit={habit} />
+                    </div>
+                  )}
                 </div>
               </div>
             )}
