@@ -1,23 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import {
-  mdiMenuLeft,
-  mdiMenuRight,
-  mdiMenuUp,
-  mdiMenuDown,
-  mdiCalendarText,
-  mdiCalendarWeekend,
-  mdiCog,
-} from '@mdi/js';
-import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
+import { mdiMenuDown, mdiCog } from '@mdi/js';
+import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
+import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
-import heatmapSort from '../utils/heatmapSort';
 
 export default function Overview({
   dateStart,
@@ -39,23 +29,20 @@ export default function Overview({
   const Habits = habits.data.flatMap((habit, i) => {
     const dataSorted = habit.data;
 
-    return (new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() &&
-      dataSorted.length !== 1) ||
-      (dataSorted.length > 2 &&
-        dataSorted[dataSorted.length - 2].is_archive &&
-        new Date(dataSorted[dataSorted.length - 3].date).getTime() < dateStart.getTime()) ? (
+    // TODO: First habit target check, check if the interval is archived
+    return differenceInDays(habit.created_at, dateStart) < 0 ?
       []
-    ) : (
-      <HabitOverview
-        key={i}
-        habit={habit}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-        heatmapData={dataSorted}
-        vertical={vertical}
-        mobile={mobile}
-      />
-    );
+      : (
+        <HabitOverview
+          key={i}
+          habit={habit}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          heatmapData={dataSorted}
+          vertical={vertical}
+          mobile={mobile}
+        />
+      )
   });
 
   return (

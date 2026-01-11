@@ -3,8 +3,6 @@ import {
   differenceInWeeks,
   startOfWeek,
   endOfWeek,
-  compareDesc,
-  endOfDay,
 } from 'date-fns';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
@@ -14,7 +12,6 @@ import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
-import heatmapSort from '../utils/heatmapSort';
 
 export default function Habit({
   heatmap,
@@ -25,8 +22,6 @@ export default function Habit({
   dateEnd,
   vertical = true,
 }) {
-  const dataSorted = heatmapSort(heatmap?.data, dateEnd);
-
   return (
     <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
       <div className={`habit-heatmap ${vertical ? 'vertical' : ''}`}>
@@ -38,7 +33,7 @@ export default function Habit({
         <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
         <Heatmap
           heatmapID={heatmap?.id}
-          heatmapData={dataSorted}
+          heatmapData={heatmap?.data}
           habit={habit}
           dateStart={dateStart}
           dateEnd={dateEnd}

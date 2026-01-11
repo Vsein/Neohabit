@@ -5,7 +5,7 @@ import { close } from '../state/features/overlay/overlaySlice';
 import Field from './FieldWrapper';
 import { requiredValidator, boundsValidator, composeValidators } from '../utils/validators';
 
-function NameField({ type }) {
+function NameField({ type, autofocus = false }) {
   const maxLength = 150;
 
   return (
@@ -15,7 +15,7 @@ function NameField({ type }) {
     >
       {({ input, meta }) => (
         <div className="form-task-name">
-          <input {...input} type="text" placeholder={`Change ${type} name`} autoFocus />
+          <input {...input} type="text" placeholder={`Change ${type} name`} autoFocus={autofocus} />
           <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}
           >{`${input?.value?.length ?? 0}/${maxLength}`}</p>
         </div>

@@ -115,7 +115,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               </button>
             </div>
             <div className="modal-details-block" style={{ height: 'min-content' }}>
-              <NameField type="habit" />
+              <NameField type="habit" autofocus={!habitID} />
             </div>
             {width >= 850 && habitID && (
               <HabitModalWrapper
