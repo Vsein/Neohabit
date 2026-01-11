@@ -26,9 +26,6 @@ export default function ProjectsPage() {
 
   const { datePeriodLength, mobile } = useGetDatePeriodLength();
 
-  const [projectsMap, setProjectsMap] = useState({});
-  const [projectsOrder, setProjectsOrder] = useState(settings.data.projects_order);
-
   const [updateProject] = useUpdateProjectMutation();
 
   const [
@@ -40,17 +37,6 @@ export default function ProjectsPage() {
   ] = useDatePeriod(datePeriodLength, true);
 
   const [defaultProject] = useDefaultProject();
-
-  const DefaultProject = defaultProject.habits.length ? (
-    <ProjectWrapper
-      key='default'
-      project={defaultProject}
-      datePeriodLength={datePeriodLength}
-      mobile={mobile}
-    />
-  ) : (
-    <></>
-  );
 
   const dragHabitToProject = async (fromProjectID, toProjectID, draggedHabitID, targetHabitID, insertAfter = false) => {
     const fromProject = structuredClone(projects.data.find((p) => p.id === fromProjectID) ?? defaultProject);
@@ -95,39 +81,28 @@ export default function ProjectsPage() {
       {!loaded || projects.isFetching || habits.isFetching || settings.isFetching ? (
         <div className="loader" />
       ) : (
-        <div className="contentlist"> {/* ProjectList */}
-          {settings.data.projects_enable_order && settings.data.projects_order && projects.data &&
-            projectsOrder.flatMap((projectID, i) => {
-              projectsMap[projectID] = true;
-
-              if (projectID === 'default') return DefaultProject;
-
-              const project = projects.data.find((projecto) => projecto.id === projectID);
-
-              if (!project) return <React.Fragment key={i}></React.Fragment>;
-
-              return <ProjectWrapper
-                key={i}
-                project={project}
-                datePeriodLength={datePeriodLength}
-                mobile={mobile}
-                dragHabitToProject={dragHabitToProject}
-              />;
-            })
-          }
-          {projects.data && projects.data.map((project, i) =>
-            projectsMap[project.id] ? <React.Fragment key={Object.keys(projectsMap).length * 10 + i}></React.Fragment> : (
+        <div className="contentlist">
+          {projects.data.map((project, i) =>
+            <ProjectWrapper
+              key={i}
+              project={project}
+              datePeriodLength={datePeriodLength}
+              mobile={mobile}
+              dragHabitToProject={dragHabitToProject}
+            />
+          )}
+          {
+            defaultProject.habits.length ? (
               <ProjectWrapper
-                key={Object.keys(projectsMap).length * 10 + i}
-                project={project}
+                key='default'
+                project={defaultProject}
                 datePeriodLength={datePeriodLength}
                 mobile={mobile}
-                dragHabitToProject={dragHabitToProject}
               />
+            ) : (
+              <></>
             )
-          )
           }
-          {projectsMap.default ? <React.Fragment key='default'></React.Fragment> : DefaultProject}
         </div>
       )}
     </>

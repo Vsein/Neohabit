@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useUpdateSettingsMutation } from '../state/services/settings';
-import { useGetHabitsQuery } from '../state/services/habit';
-import useDefaultProject from '../hooks/useDefaultProject';
+import { useGetHabitsOutsideProjectsQuery } from '../state/services/habit';
 import { HabitModalWrapper } from './Habit';
 
 const Slides = [
@@ -73,7 +72,7 @@ const Slides = [
 
 export default function Onboarding() {
   const [updateSettings] = useUpdateSettingsMutation();
-  const habits = useGetHabitsQuery();
+  const habits = useGetHabitsOutsideProjectsQuery();
   const [slide, setSlide] = useState(1);
   const slidesInTotal = Slides.length;
   const skip = () => {
@@ -82,8 +81,6 @@ export default function Onboarding() {
 
   const { width } = useWindowDimensions();
   const mobile = width < 850;
-
-  const [defaultProject] = useDefaultProject();
 
   if (habits.isLoading) return <></>;
 
@@ -95,10 +92,10 @@ export default function Onboarding() {
         </div>
         {Slides[slide - 1].content}
         <div className="contentlist end">
-          {defaultProject.habits[0] ? (
+          {habits[0] ? (
             <HabitModalWrapper
               heatmap={habits.data[0].data}
-              habit={defaultProject.habits[0]}
+              habit={habits[0]}
               onboardingSlideTag={Slides[slide - 1].tag}
               modal={true}
             />

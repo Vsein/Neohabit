@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
-import { differenceInDays, endOfDay, startOfDay } from 'date-fns';
-import { useGetHabitsQuery } from '../state/services/habit';
+import { differenceInDays } from 'date-fns';
 import { useUpdateSettingsMutation } from '../state/services/settings';
 import { useUpdateProjectMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
@@ -13,7 +12,6 @@ import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
-import heatmapSort from '../utils/heatmapSort';
 
 export default function Project({
   project,
@@ -27,15 +25,12 @@ export default function Project({
   isFuturePeriod = false,
   dragHabitToProject,
 }) {
-  const habits = useGetHabitsQuery();
   const vertical = false;
 
   const [updateSettings] = useUpdateSettingsMutation();
   const [updateProject] = useUpdateProjectMutation();
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
-
-  if (habits.isFetching) return <></>;
 
   const dragHabitInProject = async (projectID, draggedHabitID, targetHabitID, insertAfter) => {
     const projecto = structuredClone(project);
