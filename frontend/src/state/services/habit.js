@@ -9,6 +9,11 @@ export const habitApi = api.injectEndpoints({
         url: 'habits',
       }),
     }),
+    getHabitsOutsideProjects: builder.query({
+      query: () => ({
+        url: 'habits/outside_projects',
+      }),
+    }),
     // getHabit: builder.query({
     //   query: (id) => ({
     //     url: `habit/${id}`,
@@ -87,6 +92,7 @@ export const habitApi = api.injectEndpoints({
 
 export const {
   useGetHabitsQuery,
+  useGetHabitsOutsideProjectsQuery,
   // useGetHabitQuery,
   useCreateHabitMutation,
   useDeleteHabitMutation,

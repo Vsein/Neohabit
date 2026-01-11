@@ -28,6 +28,9 @@ type ServerInterface interface {
 	// List habits
 	// (GET /habits)
 	ListHabits(w http.ResponseWriter, r *http.Request)
+	// List habits without a single project related
+	// (GET /habits/outside_projects)
+	ListHabitsOutsideProjects(w http.ResponseWriter, r *http.Request)
 	// Login into existing account
 	// (POST /login)
 	Login(w http.ResponseWriter, r *http.Request)
@@ -109,6 +112,12 @@ func (_ Unimplemented) UpdateHabit(w http.ResponseWriter, r *http.Request, habit
 // List habits
 // (GET /habits)
 func (_ Unimplemented) ListHabits(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// List habits without a single project related
+// (GET /habits/outside_projects)
+func (_ Unimplemented) ListHabitsOutsideProjects(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -310,6 +319,26 @@ func (siw *ServerInterfaceWrapper) ListHabits(w http.ResponseWriter, r *http.Req
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.ListHabits(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ListHabitsOutsideProjects operation middleware
+func (siw *ServerInterfaceWrapper) ListHabitsOutsideProjects(w http.ResponseWriter, r *http.Request) {
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ListHabitsOutsideProjects(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -806,6 +835,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Get(options.BaseURL+"/habits", wrapper.ListHabits)
 	})
 	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/habits/outside_projects", wrapper.ListHabitsOutsideProjects)
+	})
+	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/login", wrapper.Login)
 	})
 	r.Group(func(r chi.Router) {
@@ -1042,6 +1074,39 @@ func (response ListHabits401Response) VisitListHabitsResponse(w http.ResponseWri
 type ListHabits500JSONResponse ErrorResponse
 
 func (response ListHabits500JSONResponse) VisitListHabitsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListHabitsOutsideProjectsRequestObject struct {
+}
+
+type ListHabitsOutsideProjectsResponseObject interface {
+	VisitListHabitsOutsideProjectsResponse(w http.ResponseWriter) error
+}
+
+type ListHabitsOutsideProjects200JSONResponse []Habit
+
+func (response ListHabitsOutsideProjects200JSONResponse) VisitListHabitsOutsideProjectsResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(200)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ListHabitsOutsideProjects401Response struct {
+}
+
+func (response ListHabitsOutsideProjects401Response) VisitListHabitsOutsideProjectsResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type ListHabitsOutsideProjects500JSONResponse ErrorResponse
+
+func (response ListHabitsOutsideProjects500JSONResponse) VisitListHabitsOutsideProjectsResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -1820,6 +1885,9 @@ type StrictServerInterface interface {
 	// List habits
 	// (GET /habits)
 	ListHabits(ctx context.Context, request ListHabitsRequestObject) (ListHabitsResponseObject, error)
+	// List habits without a single project related
+	// (GET /habits/outside_projects)
+	ListHabitsOutsideProjects(ctx context.Context, request ListHabitsOutsideProjectsRequestObject) (ListHabitsOutsideProjectsResponseObject, error)
 	// Login into existing account
 	// (POST /login)
 	Login(ctx context.Context, request LoginRequestObject) (LoginResponseObject, error)
@@ -2012,6 +2080,30 @@ func (sh *strictHandler) ListHabits(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(ListHabitsResponseObject); ok {
 		if err := validResponse.VisitListHabitsResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ListHabitsOutsideProjects operation middleware
+func (sh *strictHandler) ListHabitsOutsideProjects(w http.ResponseWriter, r *http.Request) {
+	var request ListHabitsOutsideProjectsRequestObject
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ListHabitsOutsideProjects(ctx, request.(ListHabitsOutsideProjectsRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ListHabitsOutsideProjects")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ListHabitsOutsideProjectsResponseObject); ok {
+		if err := validResponse.VisitListHabitsOutsideProjectsResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

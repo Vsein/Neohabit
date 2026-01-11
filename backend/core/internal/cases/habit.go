@@ -70,6 +70,14 @@ func (c *HabitCase) List(ctx context.Context, userID string) ([]*entity.Habit, e
 	return habits, nil
 }
 
+func (c *HabitCase) ListHabitsOutsideProjects(ctx context.Context, userID string) ([]*entity.Habit, error) {
+	habits, err := c.habitRepo.ListHabitsOutsideProjects(ctx, userID)
+	if err != nil {
+		return nil, fmt.Errorf("list projectless habits: %w", err)
+	}
+	return habits, nil
+}
+
 func (c *HabitCase) Update(ctx context.Context, habit *entity.Habit) error {
 	habit.UpdatedAt = time.Now()
 

@@ -172,6 +172,30 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /habits/outside_projects:
+    get:
+      summary: List habits without a single project related
+      operationId: listHabitsOutsideProjects
+      tags: [Habits]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's projectless habits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Habit'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
   /habit:
     post:
       summary: Create habit

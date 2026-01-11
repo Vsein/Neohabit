@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     UNIQUE(username)
 );
 
-CREATE INDEX users_lower_username_idx ON users (LOWER(username));
+CREATE INDEX users_lower_username_idx ON users(LOWER(username));
 
 CREATE TABLE IF NOT EXISTS habits (
     id TEXT PRIMARY KEY,
@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS habits (
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX habits_created_idx ON habits(created_at);
 
 CREATE TABLE IF NOT EXISTS habit_data (
     id TEXT PRIMARY KEY,

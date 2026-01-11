@@ -27,6 +27,16 @@ const (
 		WHERE h.user_id = $1
 		ORDER BY h.created_at
 	`
+	queryListHabitsOutsideProjects = `
+		SELECT *
+		FROM
+			habits h
+		LEFT JOIN
+			project_habits ph ON h.id = ph.habit_id
+		WHERE
+			h.user_id = $1 AND ph.project_id IS NULL
+		ORDER BY h.created_at
+	`
 	queryCreateHabit = `
 		INSERT INTO habits (id, user_id, name, description, color, due_date, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -94,6 +104,46 @@ func (r *Habit) List(ctx context.Context, userID string) ([]*entity.Habit, error
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
 			&habit.Data,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("scan habit: %w", err)
+		}
+		habits = append(habits, &habit)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows error: %w", err)
+	}
+
+	return habits, nil
+}
+
+func (r *Habit) ListHabitsOutsideProjects(ctx context.Context, userID string) ([]*entity.Habit, error) {
+	var rows pgx.Rows
+	var err error
+
+	rows, err = r.pool.Query(ctx, queryListHabitsOutsideProjects, userID)
+
+	if err != nil {
+		return nil, fmt.Errorf("query list habits: %w", err)
+	}
+	defer rows.Close()
+
+	var habits []*entity.Habit
+	for rows.Next() {
+		var habit entity.Habit
+		err := rows.Scan(
+			&habit.ID,
+			&habit.UserID,
+			&habit.Name,
+			&habit.Description,
+			&habit.Color,
+			&habit.DueDate,
+			&habit.CreatedAt,
+			&habit.UpdatedAt,
+			&habit.Data,
+			nil,
+			nil,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("scan habit: %w", err)

@@ -240,6 +240,30 @@ func (s *server) ListHabits(
 	return gen.ListHabits200JSONResponse(response), nil
 }
 
+// GET /habit/outside_projects
+func (s *server) ListHabitsOutsideProjects(
+	ctx context.Context,
+	request gen.ListHabitsOutsideProjectsRequestObject,
+) (gen.ListHabitsOutsideProjectsResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.ListHabitsOutsideProjects401Response{}, nil
+	}
+
+	habits, err := s.habits.ListHabitsOutsideProjects(ctx, userID)
+	if err != nil {
+		s.logger.Error("failed to list projectless habits", zap.Error(err))
+		return gen.ListHabitsOutsideProjects500JSONResponse{}, nil
+	}
+
+	response := make([]gen.Habit, 0, len(habits))
+	for _, habit := range habits {
+		response = append(response, toAPIHabit(habit))
+	}
+
+	return gen.ListHabitsOutsideProjects200JSONResponse(response), nil
+}
+
 // POST /habit
 func (s *server) CreateHabit(
 	ctx context.Context,
