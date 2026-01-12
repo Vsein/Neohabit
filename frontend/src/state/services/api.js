@@ -14,6 +14,7 @@ const api = createApi({
     },
   }),
   // tagTypes: ['Heatmaps'],
+  tagTypes: ['HabitsOutsideProjects'],
   endpoints: () => ({}),
 });
 

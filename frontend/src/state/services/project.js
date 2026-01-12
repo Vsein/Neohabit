@@ -36,6 +36,7 @@ export const projectApi = api.injectEndpoints({
         body: { ...values, habits: undefined },
         method: 'PUT',
       }),
+      invalidatesTags: ['HabitsOutsideProjects'],
       onQueryStarted({ projectID, values }, { dispatch }) {
         dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
@@ -43,11 +44,6 @@ export const projectApi = api.injectEndpoints({
             if (project) {
               Object.assign(project, values);
             }
-          }),
-        );
-        dispatch(
-          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
-            filterInPlace(draft, (h) => !values.habit_ids.includes(h.id));
           }),
         );
       },

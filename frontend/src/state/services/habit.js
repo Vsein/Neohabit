@@ -13,6 +13,7 @@ export const habitApi = api.injectEndpoints({
       query: () => ({
         url: 'habits/outside_projects',
       }),
+      providesTags: ['HabitsOutsideProjects'],
     }),
     // getHabit: builder.query({
     //   query: (id) => ({
