@@ -554,6 +554,8 @@ $cell-margin: 2px;
 }
 
 .overview-no-habits {
+  display: inline-block !important;
+  font-size: 14.5px !important;
   // grid-area: name;
   margin: auto;
   text-overflow: ellipsis;

@@ -110,7 +110,7 @@ type Project struct {
 	ID          string       `json:"id"`
 
 	// Name Activity name
-	Name       Name   `json:"name"`
+	Name       *Name  `json:"name,omitempty"`
 	OrderIndex *int   `json:"order_index,omitempty"`
 	UpdatedAt  *Date  `json:"updated_at,omitempty"`
 	UserID     string `json:"user_id"`
@@ -250,18 +250,6 @@ type LoginJSONBody struct {
 	Username string `json:"username"`
 }
 
-// UpdateProjectJSONBody defines parameters for UpdateProject.
-type UpdateProjectJSONBody struct {
-	Color *Color `json:"color,omitempty"`
-
-	// Description Activity description
-	Description Description `json:"description"`
-	HabitIds    *[]string   `json:"habit_ids,omitempty"`
-
-	// Name Activity name
-	Name Name `json:"name"`
-}
-
 // UpdateProjectsOrderJSONBody defines parameters for UpdateProjectsOrder.
 type UpdateProjectsOrderJSONBody struct {
 	NewProjectsOrder []string `json:"new_projects_order"`
@@ -295,7 +283,7 @@ type LoginJSONRequestBody LoginJSONBody
 type CreateProjectJSONRequestBody = Project
 
 // UpdateProjectJSONRequestBody defines body for UpdateProject for application/json ContentType.
-type UpdateProjectJSONRequestBody UpdateProjectJSONBody
+type UpdateProjectJSONRequestBody = Project
 
 // UpdateProjectsOrderJSONRequestBody defines body for UpdateProjectsOrder for application/json ContentType.
 type UpdateProjectsOrderJSONRequestBody UpdateProjectsOrderJSONBody

@@ -81,7 +81,11 @@ const (
 	queryUpdateProject = `
 		UPDATE projects
 		SET
-			name = $2, description = $3, color = $4, order_index = coalesce($5,order_index), updated_at = $6
+			name = coalesce($2,name),
+			description = coalesce($3,description),
+			color = coalesce($4,color),
+			order_index = coalesce($5,order_index),
+			updated_at = $6
 		WHERE id = $1
 	`
 	queryUpdateProjectsOrder = `

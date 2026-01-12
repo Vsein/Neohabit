@@ -41,13 +41,19 @@ export default function ProjectsPage() {
   const dragHabitToProject = async (fromProjectID, toProjectID, draggedHabitID, targetHabitID, insertAfter = false) => {
     const fromProject = structuredClone(projects.data.find((p) => p.id === fromProjectID) ?? defaultProject);
     const toProject = structuredClone(projects.data.find((p) => p.id === toProjectID) ?? defaultProject);
+    const draggedHabit = fromProject.habits.find((h) => h.id === draggedHabitID);
+
     if (fromProject && fromProject.habits && fromProjectID !== 'default') {
-      await updateProject({ projectID: fromProjectID, values: { habits: fromProject.habits.filter((habitID) => habitID !== draggedHabitID) } });
+      const filteredHabits = fromProject.habits.filter((h) => h.id !== draggedHabitID);
+      const filteredHabitIDs = filteredHabits.map((h) => h.id);
+      await updateProject({ projectID: fromProjectID, values: { habits: filteredHabits, habit_ids: filteredHabitIDs } });
     }
+
     if (toProject && toProject.habits && toProjectID !== 'default') {
-      const position = toProject.habits.findIndex((habit) => habit === targetHabitID);
-      toProject.habits.splice(position + insertAfter, 0, draggedHabitID);
-      await updateProject({ projectID: toProjectID, values: { habits: toProject.habits } });
+      const i = toProject.habits.findIndex((h) => h.id === targetHabitID);
+      toProject.habits.splice(i + insertAfter, 0, draggedHabit);
+      const toProjectHabitIDs = toProject.habits.map((h) => h.id);
+      await updateProject({ projectID: toProjectID, values: { habits: toProject.habits, habit_ids: toProjectHabitIDs } });
     }
   };
 
@@ -98,6 +104,7 @@ export default function ProjectsPage() {
                 project={defaultProject}
                 datePeriodLength={datePeriodLength}
                 mobile={mobile}
+                dragHabitToProject={dragHabitToProject}
               />
             ) : (
               <></>

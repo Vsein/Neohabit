@@ -13,7 +13,6 @@ import {
   mdiKeyboardReturn,
 } from '@mdi/js';
 import { useUpdateHeatmapMutation } from '../state/services/heatmap';
-import { useUpdateProjectMutation } from '../state/services/project';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
@@ -150,8 +149,7 @@ function HabitOverview({
   vertical,
   mobile,
   projectID = '',
-  dragHabitInProject,
-  dragHabitToProject,
+  dropHabitInProject,
 }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
@@ -160,42 +158,16 @@ function HabitOverview({
   }
 
   const drag = (e) => {
-    e.dataTransfer.setData("text", e.target.id);
-  }
-
-  const drop = async (e) => {
-    e.preventDefault();
-    const id = e.dataTransfer.getData("text");
-    const draggedHabit = document.getElementById(id);
-
-    if (!draggedHabit || !draggedHabit.classList.contains('overview-habit')) {
-      return;
-    };
-
-    const target = e.target.closest('.overview-habit')
-
-    if (target.id === id) {
-      return;
-    }
-
-    const draggedFromProjectID = draggedHabit.closest('.overview-centering').id;
-    const draggedToProjectID = target.closest('.overview-centering').id;
-
-    if (draggedFromProjectID === draggedToProjectID) {
-      if (draggedFromProjectID !== 'default') {
-        await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
-      }
-    } else {
-      await dragHabitToProject(draggedFromProjectID, draggedToProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
-    }
+    e.dataTransfer.setData("dragged-habit", e.target.dataset.id);
   }
 
   return (
     <div
       className="overview-habit"
-      onDrop={drop}
+      onDrop={dropHabitInProject}
       onDragOver={allowDrop} draggable onDragStart={drag}
       id={habit?.id}
+      data-id={`${projectID}_${habit?.id}`}
     >
       <NavLink
         className="overview-habit-name"

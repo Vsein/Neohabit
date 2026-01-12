@@ -34,7 +34,7 @@ export const projectApi = api.injectEndpoints({
       query: ({ projectID, values }) => ({
         url: `project/${projectID}`,
         body: { ...values, habits: undefined },
-        method: 'PUT',
+        method: 'PATCH',
       }),
       invalidatesTags: ['HabitsOutsideProjects'],
       onQueryStarted({ projectID, values }, { dispatch }) {

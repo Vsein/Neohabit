@@ -41,7 +41,7 @@ type ServerInterface interface {
 	// (DELETE /project/{project_id})
 	DeleteProject(w http.ResponseWriter, r *http.Request, projectID string)
 	// Update Project by ID
-	// (PUT /project/{project_id})
+	// (PATCH /project/{project_id})
 	UpdateProject(w http.ResponseWriter, r *http.Request, projectID string)
 	// List projects
 	// (GET /projects)
@@ -143,7 +143,7 @@ func (_ Unimplemented) DeleteProject(w http.ResponseWriter, r *http.Request, pro
 }
 
 // Update Project by ID
-// (PUT /project/{project_id})
+// (PATCH /project/{project_id})
 func (_ Unimplemented) UpdateProject(w http.ResponseWriter, r *http.Request, projectID string) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
@@ -870,7 +870,7 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Delete(options.BaseURL+"/project/{project_id}", wrapper.DeleteProject)
 	})
 	r.Group(func(r chi.Router) {
-		r.Put(options.BaseURL+"/project/{project_id}", wrapper.UpdateProject)
+		r.Patch(options.BaseURL+"/project/{project_id}", wrapper.UpdateProject)
 	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/projects", wrapper.ListProjects)
@@ -1966,7 +1966,7 @@ type StrictServerInterface interface {
 	// (DELETE /project/{project_id})
 	DeleteProject(ctx context.Context, request DeleteProjectRequestObject) (DeleteProjectResponseObject, error)
 	// Update Project by ID
-	// (PUT /project/{project_id})
+	// (PATCH /project/{project_id})
 	UpdateProject(ctx context.Context, request UpdateProjectRequestObject) (UpdateProjectResponseObject, error)
 	// List projects
 	// (GET /projects)

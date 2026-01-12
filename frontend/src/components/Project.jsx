@@ -32,17 +32,45 @@ export default function Project({
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
   const dragHabitInProject = async (projectID, draggedHabitID, targetHabitID, insertAfter) => {
-    const projecto = structuredClone(project);
-    if (projecto && projectID === projecto.id && projecto.habits) {
-      const draggedHabitPosition = projecto.habits.findIndex(
-        (habit) => habit === draggedHabitID,
-      );
-      projecto.habits.splice(draggedHabitPosition, 1);
-      const position = projecto.habits.findIndex((habit) => habit === targetHabitID);
-      projecto.habits.splice(position + insertAfter, 0, draggedHabitID);
-      await updateProject({ projectID, values: { habits: projecto.habits } });
+    const p = structuredClone(project);
+    if (p && projectID === p.id && p.habits) {
+      const i = p.habits.findIndex((h) => h.id === draggedHabitID);
+      const draggedHabit = p.habits[i];
+      p.habits.splice(i, 1);
+
+      const j = p.habits.findIndex((h) => h.id === targetHabitID);
+      p.habits.splice(j + insertAfter, 0, draggedHabit);
+
+      const habitIDs = p.habits.map((h) => h.id);
+      await updateProject({ projectID, values: { habits: p.habits, habit_ids: habitIDs } });
     }
   };
+
+  const dropHabitInProject = async (e) => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData("dragged-habit");
+    const draggedHabit = document.querySelector(`[data-id="${id}"]`);
+    if (!draggedHabit || !draggedHabit.classList.contains('overview-habit')) {
+      return;
+    };
+
+    const target = e.target.closest('.overview-habit')
+
+    if (target.id === id) {
+      return;
+    }
+
+    const draggedFromProjectID = draggedHabit.closest('.overview-centering').id;
+    const draggedToProjectID = target.closest('.overview-centering').id;
+
+    if (draggedFromProjectID === draggedToProjectID) {
+      if (draggedFromProjectID !== 'default') {
+        await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
+      }
+    } else {
+      await dragHabitToProject(draggedFromProjectID, draggedToProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
+    }
+  }
 
   const Habits =
     project.habits &&
@@ -61,8 +89,7 @@ export default function Project({
             vertical={vertical}
             mobile={mobile}
             projectID={project.id}
-            dragHabitInProject={dragHabitInProject}
-            dragHabitToProject={dragHabitToProject}
+            dropHabitInProject={dropHabitInProject}
           />
         )
     );
@@ -72,7 +99,7 @@ export default function Project({
   }
 
   const dragStart = (e) => {
-    e.dataTransfer.setData("text", e.target.id);
+    e.dataTransfer.setData("dragged-project", e.target.id);
   }
 
   const HeaderName = () =>
@@ -86,7 +113,7 @@ export default function Project({
 
   const drop = (e) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData("text");
+    const data = e.dataTransfer.getData("dragged-project");
     const draggedProject = document.getElementById(data);
 
     if (!draggedProject || !draggedProject.classList.contains('overview-centering')) {
@@ -126,13 +153,13 @@ export default function Project({
       }}
       onDrop={drop}
       onDragOver={allowDrop}
-      draggable
+      draggable={project?.id !== 'default'}
       onDragStart={dragStart}
       id={project?.id}
     >
       <div
         className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
-        style={{ cursor: 'move' }}
+        style={{ [project?.id !== 'default' ? 'cursor' : '']: 'move' }}
       >
         {mobile ? (
           <HeaderName />
@@ -174,7 +201,10 @@ export default function Project({
             </>
           )}
           <div className="overview-habits">
-            {Habits.length === 0 && <h5 className="overview-no-habits">No habits &nbsp;&nbsp;ʕ•ᴥ•ʔ</h5>}
+            {Habits.length === 0 &&
+              <h5 className="overview-no-habits overview-habit" onDrop={dropHabitInProject} onDragOver={allowDrop} >
+                No habits &nbsp;&nbsp;ʕ•ᴥ•ʔ
+              </h5>}
             {Habits}
           </div>
           {vertical && (

@@ -368,7 +368,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 
   /project/{project_id}:
-    put:
+    patch:
       summary: Update Project by ID
       operationId: updateProject
       tags: [Projects]
@@ -383,19 +383,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [ name, description ]
-              properties:
-                name:
-                  $ref: '#/components/schemas/Name'
-                description:
-                  $ref: '#/components/schemas/Description'
-                color:
-                  $ref: '#/components/schemas/Color'
-                habit_ids:
-                  type: array
-                  items:
-                    type: string
+              $ref: '#/components/schemas/Project'
       responses:
         '204':
           description: Project successfully modified
@@ -893,7 +881,6 @@ components:
       required:
         - id
         - user_id
-        - name
       properties:
         id:
           type: string

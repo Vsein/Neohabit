@@ -408,8 +408,8 @@ func (s *server) CreateProject(
 
 	project := &entity.Project{
 		Name:        request.Body.Name,
-		Description: *request.Body.Description,
-		Color:       *request.Body.Color,
+		Description: request.Body.Description,
+		Color:       request.Body.Color,
 		HabitIDs:    *request.Body.HabitIds,
 		UserID:      userID,
 	}
@@ -426,7 +426,7 @@ func (s *server) CreateProject(
 	return gen.CreateProject201JSONResponse(id), nil
 }
 
-// PUT /project/{project_id}
+// PATCH /project/{project_id}
 func (s *server) UpdateProject(
 	ctx context.Context,
 	request gen.UpdateProjectRequestObject,
@@ -444,7 +444,7 @@ func (s *server) UpdateProject(
 		ID:          request.ProjectID,
 		Name:        request.Body.Name,
 		Description: request.Body.Description,
-		Color:       *request.Body.Color,
+		Color:       request.Body.Color,
 		HabitIDs:    *request.Body.HabitIds,
 		UserID:      userID,
 	}
@@ -454,7 +454,7 @@ func (s *server) UpdateProject(
 		if errors.Is(err, cases.ErrNotFound) {
 			return gen.UpdateProject404JSONResponse{}, nil
 		}
-		s.logger.Error("failed to update habit", zap.Error(err))
+		s.logger.Error("failed to update project", zap.Error(err))
 		return gen.UpdateProject500JSONResponse{}, nil
 	}
 
