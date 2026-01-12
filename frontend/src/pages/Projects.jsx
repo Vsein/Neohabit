@@ -92,7 +92,7 @@ export default function ProjectsPage() {
             />
           )}
           {
-            defaultProject.habits.length ? (
+            defaultProject?.habits?.length ? (
               <ProjectWrapper
                 key='default'
                 project={defaultProject}

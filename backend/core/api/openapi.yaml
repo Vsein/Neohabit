@@ -208,15 +208,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [ name, description ]
-              properties:
-                name:
-                  $ref: '#/components/schemas/Name'
-                description:
-                  $ref: '#/components/schemas/Description'
-                color:
-                  $ref: '#/components/schemas/Color'
+              $ref: '#/components/schemas/Habit'
       responses:
         '201':
           description: Habit created successfully
@@ -832,6 +824,8 @@ components:
         id:
           type: string
         user_id:
+          type: string
+        project_id:
           type: string
         name:
           $ref: '#/components/schemas/Name'

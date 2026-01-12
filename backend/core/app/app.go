@@ -53,7 +53,7 @@ func Run(cfg *config.Config) error {
 	stopwatchRepo := repo.NewStopwatchRepo(pool, logger.Named("stopwatch"))
 
 	userCase := cases.NewUserCase(userRepo, habitRepo, settingsRepo, stopwatchRepo, txManager)
-	habitCase := cases.NewHabitCase(habitRepo, txManager)
+	habitCase := cases.NewHabitCase(habitRepo, projectRepo, txManager)
 	projectCase := cases.NewProjectCase(projectRepo, txManager)
 	taskCase := cases.NewTaskCase(taskRepo, txManager)
 	skilltreeCase := cases.NewSkilltreeCase(skilltreeRepo, txManager)

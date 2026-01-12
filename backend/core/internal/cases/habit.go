@@ -14,21 +14,24 @@ import (
 )
 
 type HabitCase struct {
-	habitRepo repo.HabitRepo
-	txManager port.TransactionManager
+	habitRepo   repo.HabitRepo
+	projectRepo repo.ProjectRepo
+	txManager   port.TransactionManager
 }
 
 func NewHabitCase(
 	habitRepo repo.HabitRepo,
+	projectRepo repo.ProjectRepo,
 	txManager port.TransactionManager,
 ) *HabitCase {
 	return &HabitCase{
-		habitRepo: habitRepo,
-		txManager: txManager,
+		habitRepo:   habitRepo,
+		projectRepo: projectRepo,
+		txManager:   txManager,
 	}
 }
 
-func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit) (string, error) {
+func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit, projectID *string) (string, error) {
 	habit.ID = uuid.NewString()
 	habit.CreatedAt = time.Now()
 	habit.UpdatedAt = habit.CreatedAt
@@ -41,6 +44,14 @@ func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit) (string, er
 			}
 			return nil, fmt.Errorf("create: %w", err)
 		}
+
+		if projectID != nil {
+			err = c.projectRepo.AddHabitsToProject(ctx, *projectID, []string{habit.ID})
+			if err != nil {
+				return nil, fmt.Errorf("add new habit to project: %w", err)
+			}
+		}
+
 		return nil, nil
 	})
 	if err != nil {

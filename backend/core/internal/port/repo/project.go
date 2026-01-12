@@ -12,5 +12,6 @@ type ProjectRepo interface {
 	Create(ctx context.Context, project *entity.Project) error
 	Update(ctx context.Context, project *entity.Project) error
 	UpdateProjectsOrder(ctx context.Context, newProjectsOrder []string) error
+	AddHabitsToProject(ctx context.Context, projectID string, habitIDs []string) error
 	Delete(ctx context.Context, id string) error
 }

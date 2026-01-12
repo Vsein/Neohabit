@@ -67,6 +67,7 @@ type Habit struct {
 
 	// Name Activity name
 	Name      Name           `json:"name"`
+	ProjectID *string        `json:"project_id,omitempty"`
 	Targets   *[]HabitTarget `json:"targets,omitempty"`
 	UpdatedAt *Date          `json:"updated_at,omitempty"`
 	UserID    string         `json:"user_id"`
@@ -232,17 +233,6 @@ type User struct {
 	Verified             *bool  `json:"verified,omitempty"`
 }
 
-// CreateHabitJSONBody defines parameters for CreateHabit.
-type CreateHabitJSONBody struct {
-	Color *Color `json:"color,omitempty"`
-
-	// Description Activity description
-	Description Description `json:"description"`
-
-	// Name Activity name
-	Name Name `json:"name"`
-}
-
 // UpdateHabitJSONBody defines parameters for UpdateHabit.
 type UpdateHabitJSONBody struct {
 	Color *Color `json:"color,omitempty"`
@@ -293,7 +283,7 @@ type CreateTaskJSONBody struct {
 }
 
 // CreateHabitJSONRequestBody defines body for CreateHabit for application/json ContentType.
-type CreateHabitJSONRequestBody CreateHabitJSONBody
+type CreateHabitJSONRequestBody = Habit
 
 // UpdateHabitJSONRequestBody defines body for UpdateHabit for application/json ContentType.
 type UpdateHabitJSONRequestBody UpdateHabitJSONBody

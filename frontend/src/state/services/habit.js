@@ -33,22 +33,25 @@ export const habitApi = api.injectEndpoints({
             draft.push(newHabit);
           }),
         );
-        dispatch(
-          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
-            draft.push(newHabit);
-          }),
-        );
+        if (!values.project_id) {
+          dispatch(
+            habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+              draft.push(newHabit);
+            }),
+          );
+        } else {
+          dispatch(
+            projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+              const project = draft.find((p) => p.id === values.project_id);
+              if (project) {
+                project.habits.push(newHabit);
+              }
+            }),
+          );
+        }
         dispatch(
           heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
             draft.push(res.data.heatmap);
-          }),
-        );
-        dispatch(
-          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const project = draft.find((p) => p.id === values.projectID);
-            if (project) {
-              project.habits = [...project.habits, newHabit];
-            }
           }),
         );
       },

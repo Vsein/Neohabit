@@ -276,12 +276,12 @@ func (s *server) CreateHabit(
 
 	habit := &entity.Habit{
 		Name:        request.Body.Name,
-		Description: request.Body.Description,
+		Description: *request.Body.Description,
 		Color:       *request.Body.Color,
 		UserID:      userID,
 	}
 
-	id, err := s.habits.Create(ctx, habit)
+	id, err := s.habits.Create(ctx, habit, request.Body.ProjectID)
 	if err != nil {
 		if errors.Is(err, cases.ErrAlreadyExists) {
 			return gen.CreateHabit409JSONResponse{}, nil

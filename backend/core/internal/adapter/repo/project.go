@@ -68,6 +68,16 @@ const (
 				generate_series(1, cardinality($2)) AS order_index
 		) hi
 	`
+	queryAddHabitsToProject = `
+		WITH max_order AS (
+			SELECT COALESCE(MAX(order_index), 0) AS max_order_index
+			FROM project_habits
+			WHERE project_id = $1
+		)
+		INSERT INTO project_habits (project_id, habit_id, order_index)
+		SELECT $1, habit_id, max_order_index + row_number() OVER (ORDER BY habit_id)
+		FROM unnest($2::text[]) AS habit_id, max_order
+	`
 	queryUpdateProject = `
 		UPDATE projects
 		SET
@@ -227,6 +237,20 @@ func (r *Project) UpdateProjectsOrder(ctx context.Context, newProjectsOrder []st
 	)
 	if err != nil {
 		return fmt.Errorf("exec update projects order: %w", err)
+	}
+
+	return nil
+}
+
+func (r *Project) AddHabitsToProject(ctx context.Context, projectID string, habitIDs []string) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryAddHabitsToProject,
+		projectID,
+		habitIDs,
+	)
+	if err != nil {
+		return fmt.Errorf("exec insert new habits to projects: %w", err)
 	}
 
 	return nil

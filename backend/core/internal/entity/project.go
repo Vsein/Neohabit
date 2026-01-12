@@ -5,9 +5,9 @@ import "time"
 type Project struct {
 	ID          string
 	UserID      string
-	Name        string
-	Description string
-	Color       string
+	Name        *string
+	Description *string
+	Color       *string
 	OrderIndex  *int
 	HabitIDs    []string
 	Habits      []Habit
