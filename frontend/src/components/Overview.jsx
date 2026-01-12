@@ -30,7 +30,7 @@ export default function Overview({
     const dataSorted = habit.data;
 
     // TODO: First habit target check, check if the interval is archived
-    return differenceInDays(habit.created_at, dateStart) < 0 ?
+    return differenceInDays(habit.created_at, dateEnd) > 0 ?
       []
       : (
         <HabitOverview
