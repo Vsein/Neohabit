@@ -18,7 +18,7 @@ import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 import { getUTCOffsettedDate } from '../utils/dates';
 
-import Heatmap from './Heatmap';
+import Heatmap from './Heatmap2';
 
 function HabitControls({
   habit,
