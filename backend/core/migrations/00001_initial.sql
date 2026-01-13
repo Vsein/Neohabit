@@ -39,6 +39,23 @@ CREATE TABLE IF NOT EXISTS habit_data (
 
 CREATE INDEX idx_habit_data_habit_id_created_at ON habit_data(habit_id, created_at);
 
+CREATE OR REPLACE FUNCTION get_habit_data_jsonb(h_id TEXT)
+RETURNS jsonb
+LANGUAGE sql
+STABLE
+AS $$
+SELECT COALESCE(jsonb_agg(
+    jsonb_build_object(
+        'id', hd.id,
+        'date', hd.date,
+        'value', hd.value,
+        'created_at', hd.created_at,
+        'updated_at', hd.updated_at
+    ) ORDER BY hd.created_at), '[]'::jsonb)
+FROM habit_data hd
+WHERE hd.habit_id = h_id;
+$$;
+
 CREATE TABLE IF NOT EXISTS habit_targets (
     id TEXT PRIMARY KEY,
     habit_id TEXT REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
@@ -166,6 +183,7 @@ DROP TABLE IF EXISTS project_habits;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS habit_targets;
 DROP TABLE IF EXISTS habit_data;
+DROP FUNCTION IF EXISTS get_habit_data_jsonb(TEXT);
 DROP TABLE IF EXISTS habits;
 DROP TABLE IF EXISTS users;
 -- +goose StatementEnd

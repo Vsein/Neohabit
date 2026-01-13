@@ -16,19 +16,33 @@ import (
 const (
 	// queryReadHabit   = `SELECT * FROM habits WHERE id = $1`
 	queryListHabits = `
-		SELECT *
+		SELECT
+			h.id,
+			h.user_id,
+			h.name,
+			h.description,
+			h.color,
+			h.due_date,
+			h.created_at,
+			h.updated_at,
+			get_habit_data_jsonb(h.id)
 		FROM
 			habits h
-			LEFT JOIN (
-				SELECT hd.habit_id as id, array_agg(array[date, created_at, updated_at]) as data
-				FROM habit_data hd
-				GROUP BY hd.habit_id
-			) hd USING (id)
-		WHERE h.user_id = $1
+		WHERE
+			h.user_id = $1
 		ORDER BY h.created_at
 	`
 	queryListHabitsOutsideProjects = `
-		SELECT *
+		SELECT
+			h.id,
+			h.user_id,
+			h.name,
+			h.description,
+			h.color,
+			h.due_date,
+			h.created_at,
+			h.updated_at,
+			get_habit_data_jsonb(h.id)
 		FROM
 			habits h
 		LEFT JOIN
@@ -142,8 +156,6 @@ func (r *Habit) ListHabitsOutsideProjects(ctx context.Context, userID string) ([
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
 			&habit.Data,
-			nil,
-			nil,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("scan habit: %w", err)
@@ -172,8 +184,6 @@ func (r *Habit) Create(ctx context.Context, habit *entity.Habit) error {
 		habit.UpdatedAt,
 	)
 	if err != nil {
-		// Check for unique constraint violation (duplicate name, etc.)
-		// Adjust this based on your actual database constraints
 		if db.IsUniqueViolation(err) {
 			return repo.ErrAlreadyExists
 		}

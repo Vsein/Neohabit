@@ -36,7 +36,8 @@ const (
 						'due_date', to_char(h.due_date, 'YYYY-MM-DD"T"HH24:MI:SS"Z"'),
 						'created_at', h.created_at,
 						'updated_at', h.updated_at,
-						'order_index', ph.order_index
+						'order_index', ph.order_index,
+						'data', get_habit_data_jsonb(h.id)
 					) ORDER BY ph.order_index)
 					FROM
 						project_habits ph
