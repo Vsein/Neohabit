@@ -9,11 +9,10 @@ CREATE TABLE IF NOT EXISTS users (
     verification_attempts INTEGER NOT NULL DEFAULT 0,
     verification_time TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(username)
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX users_lower_username_idx ON users(LOWER(username));
+CREATE UNIQUE INDEX ux_users_lower_username ON users(LOWER(username));
 
 CREATE TABLE IF NOT EXISTS habits (
     id TEXT PRIMARY KEY,
@@ -26,7 +25,7 @@ CREATE TABLE IF NOT EXISTS habits (
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX habits_created_idx ON habits(created_at);
+CREATE INDEX idx_habits_created_at ON habits(created_at);
 
 CREATE TABLE IF NOT EXISTS habit_data (
     id TEXT PRIMARY KEY,
@@ -37,6 +36,8 @@ CREATE TABLE IF NOT EXISTS habit_data (
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(date)
 );
+
+CREATE INDEX idx_habit_data_habit_id_created_at ON habit_data(habit_id, created_at);
 
 CREATE TABLE IF NOT EXISTS habit_targets (
     id TEXT PRIMARY KEY,
@@ -75,7 +76,7 @@ CREATE TABLE IF NOT EXISTS project_habits (
     PRIMARY KEY (project_id, habit_id)
 );
 
-CREATE INDEX project_habits_project_order_idx ON project_habits(project_id, order_index);
+CREATE INDEX idx_project_habits_project_id_order_index ON project_habits(project_id, order_index);
 
 CREATE TABLE IF NOT EXISTS settings (
     id TEXT PRIMARY KEY,
