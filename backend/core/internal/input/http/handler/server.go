@@ -33,6 +33,7 @@ type server struct {
 	address     string
 	users       *cases.UserCase
 	habits      *cases.HabitCase
+	habitData   *cases.HabitDataCase
 	projects    *cases.ProjectCase
 	tasks       *cases.TaskCase
 	skilltrees  *cases.SkilltreeCase
@@ -48,6 +49,7 @@ func NewServer(
 	address string,
 	users *cases.UserCase,
 	habits *cases.HabitCase,
+	habitData *cases.HabitDataCase,
 	projects *cases.ProjectCase,
 	tasks *cases.TaskCase,
 	skilltrees *cases.SkilltreeCase,
@@ -61,6 +63,7 @@ func NewServer(
 		address:     address,
 		users:       users,
 		habits:      habits,
+		habitData:   habitData,
 		projects:    projects,
 		tasks:       tasks,
 		skilltrees:  skilltrees,
@@ -351,6 +354,39 @@ func (s *server) DeleteHabit(
 	}
 
 	return gen.DeleteHabit204Response{}, nil
+}
+
+// POST /habit/{habit_id}/data_point
+func (s *server) CreateHabitDataPoint(
+	ctx context.Context,
+	request gen.CreateHabitDataPointRequestObject,
+) (gen.CreateHabitDataPointResponseObject, error) {
+	if request.HabitID == "" {
+		s.logger.Info("failed to create habit's data point")
+		return gen.CreateHabitDataPoint400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.CreateHabitDataPoint401Response{}, nil
+	}
+
+	habitData := &entity.HabitData{
+		HabitID: request.HabitID,
+		Date:    request.Body.Date,
+		Value:   request.Body.Value,
+	}
+
+	id, err := s.habitData.CreatePoint(ctx, habitData)
+	if err != nil {
+		if errors.Is(err, cases.ErrAlreadyExists) {
+			return gen.CreateHabitDataPoint409JSONResponse{}, nil
+		}
+		s.logger.Error("failed to create habit's data point", zap.Error(err))
+		return gen.CreateHabitDataPoint500JSONResponse{}, nil
+	}
+
+	return gen.CreateHabitDataPoint201JSONResponse(id), nil
 }
 
 // GetHabit handles GET /habit/{habitId}

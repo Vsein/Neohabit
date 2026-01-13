@@ -117,7 +117,7 @@ export default function CellTip() {
     document.addEventListener('click', unfixateAndHideCellTip);
     return () => document.removeEventListener('click', unfixateAndHideCellTip);
   });
-  const { heatmapID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
+  const { habitID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
   const [deleteCellPeriod] = useDeleteCellPeriodMutation();
   const [decreaseCellPeriod] = useDecreaseCellPeriodMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
@@ -139,7 +139,7 @@ export default function CellTip() {
             title="Delete 1 completed action in this period"
             onClick={() => {
               decreaseCellPeriod({
-                heatmapID,
+                habitID,
                 values: {
                   dateStart: getUTCOffsettedDate(dateStart),
                   dateEnd: getUTCOffsettedDate(dateEnd),
@@ -157,7 +157,7 @@ export default function CellTip() {
             onMouseLeave={(e) => e.target.blur()}
             onBlur={(e) => {
               updateHeatmap({
-                heatmapID,
+                habitID,
                 values: {
                   date: getUTCOffsettedDate(dateStart),
                   value: +e.target.value - actions,
@@ -172,7 +172,7 @@ export default function CellTip() {
             title="Add 1 completed action in this period"
             onClick={() => {
               updateHeatmap({
-                heatmapID,
+                habitID,
                 values: { date: getUTCOffsettedDate(dateStart), value: 1 },
               });
               setCellTipActions(actions + 1);
@@ -187,7 +187,7 @@ export default function CellTip() {
             style={{ marginLeft: '3px' }}
             onClick={() => {
               deleteCellPeriod({
-                heatmapID,
+                habitID,
                 values: {
                   dateStart: getUTCOffsettedDate(dateStart),
                   dateEnd: getUTCOffsettedDate(dateEnd),
@@ -209,7 +209,7 @@ export default function CellTip() {
           <div className="cell-tip-i">
             <Icon path={mdiInformation} className="icon tiny" />
             <div>
-              <p className="cell-tip-period">Click on the cell to access this window</p>
+              <p className="cell-tip-period">Click to access this window</p>
               <div className="cell-tip-i-hide">
                 <button
                   className="centering"

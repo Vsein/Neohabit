@@ -21,6 +21,7 @@ type HabitFilter struct {
 
 type HabitData struct {
 	ID        string
+	HabitID   string
 	Date      time.Time
 	Value     int
 	CreatedAt time.Time

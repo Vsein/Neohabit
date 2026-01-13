@@ -108,7 +108,7 @@ function CellFractured({
 }
 
 function CellPeriod({
-  heatmapID = '',
+  habitID = '',
   dateStart,
   dateEnd,
   color = 'transparent',
@@ -128,14 +128,14 @@ function CellPeriod({
   if (diffDays < 1) {
     return <></>;
   }
-  const tipContent = heatmapID
+  const tipContent = habitID
     ? {
-        heatmapID,
-        isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
-        dateStart: targetStart || dateStart,
-        dateEnd: targetEnd || dateEnd,
-        actions: value,
-      }
+      habitID,
+      isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
+      dateStart: targetStart || dateStart,
+      dateEnd: targetEnd || dateEnd,
+      actions: value,
+    }
     : undefined;
   if (isSameWeek(dateStart, dateEnd) || isOverview || !vertical) {
     return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (

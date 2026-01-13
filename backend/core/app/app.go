@@ -46,6 +46,7 @@ func Run(cfg *config.Config) error {
 
 	userRepo := repo.NewUserRepo(pool, logger.Named("user"))
 	habitRepo := repo.NewHabitRepo(pool, logger.Named("habit"))
+	habitDataRepo := repo.NewHabitDataRepo(pool, logger.Named("habitData"))
 	projectRepo := repo.NewProjectRepo(pool, logger.Named("project"))
 	taskRepo := repo.NewTaskRepo(pool, logger.Named("task"))
 	skilltreeRepo := repo.NewSkilltreeRepo(pool, logger.Named("skilltree"))
@@ -54,6 +55,7 @@ func Run(cfg *config.Config) error {
 
 	userCase := cases.NewUserCase(userRepo, habitRepo, settingsRepo, stopwatchRepo, txManager)
 	habitCase := cases.NewHabitCase(habitRepo, projectRepo, txManager)
+	habitDataCase := cases.NewHabitDataCase(habitDataRepo, txManager)
 	projectCase := cases.NewProjectCase(projectRepo, txManager)
 	taskCase := cases.NewTaskCase(taskRepo, txManager)
 	skilltreeCase := cases.NewSkilltreeCase(skilltreeRepo, txManager)
@@ -70,6 +72,7 @@ func Run(cfg *config.Config) error {
 		cfg.Address,
 		userCase,
 		habitCase,
+		habitDataCase,
 		projectCase,
 		taskCase,
 		skilltreeCase,

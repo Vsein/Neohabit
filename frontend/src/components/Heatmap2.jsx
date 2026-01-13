@@ -37,7 +37,6 @@ export default function Heatmap({
   habit,
   heatmapData,
   heatmapTargets = [],
-  heatmapID,
   vertical = false,
   isOverview, // NOTE: Maybe change to is2D or is1D, much more clear this way
   overridenElimination = undefined,
@@ -80,7 +79,7 @@ export default function Heatmap({
     if (b.isTarget) {
       // TODO: Handling of cycles
       const cell = { ...b, value: 0 };
-      while (j < heatmapData.length && compareAsc(b.dateStart, heatmapData[j].date) > 0) {
+      while (j < heatmapData.length && compareAsc(b.dateStart, new Date(heatmapData[j].date)) > 0) {
         cell.value += heatmapData[j].value;
         j += 1;
       }
@@ -106,7 +105,7 @@ export default function Heatmap({
         <CellPeriod
           key={i}
           dummy={c.dummy}
-          heatmapID={heatmapID}
+          habitID={habit.id}
           dateStart={startOfDay(c.dateStart)}
           dateEnd={endOfDay(c.dateEnd)}
           color={habit.color}

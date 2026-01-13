@@ -12,7 +12,7 @@ import {
   mdiPlus,
   mdiKeyboardReturn,
 } from '@mdi/js';
-import { useUpdateHeatmapMutation } from '../state/services/heatmap';
+import { useCreateHabitDataPointMutation } from '../state/services/habitData';
 import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
@@ -30,7 +30,7 @@ function HabitControls({
   habitPage = false,
 }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
-  const [updateHeatmap] = useUpdateHeatmapMutation();
+  const [createHabitDataPoint] = useCreateHabitDataPointMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const setStopwatchHabit = () => {
@@ -42,9 +42,9 @@ function HabitControls({
     dispatch(changeTo({ type: 'stopwatch' }));
   };
   const addCell = async () => {
-    await updateHeatmap({
-      heatmapID,
-      values: { value: 1, date: getUTCOffsettedDate() },
+    await createHabitDataPoint({
+      habitID: habit.id,
+      values: { value: 1, date: new Date() },
     });
   };
   const openCellAddDropdown = (e, isTarget) => {

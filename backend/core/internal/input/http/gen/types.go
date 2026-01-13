@@ -276,6 +276,9 @@ type CreateHabitJSONRequestBody = Habit
 // UpdateHabitJSONRequestBody defines body for UpdateHabit for application/json ContentType.
 type UpdateHabitJSONRequestBody UpdateHabitJSONBody
 
+// CreateHabitDataPointJSONRequestBody defines body for CreateHabitDataPoint for application/json ContentType.
+type CreateHabitDataPointJSONRequestBody = HabitData
+
 // LoginJSONRequestBody defines body for Login for application/json ContentType.
 type LoginJSONRequestBody LoginJSONBody
 
