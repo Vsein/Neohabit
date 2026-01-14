@@ -60,7 +60,7 @@ func Run(cfg *config.Config) error {
 	taskCase := cases.NewTaskCase(taskRepo, txManager)
 	skilltreeCase := cases.NewSkilltreeCase(skilltreeRepo, txManager)
 	settingsCase := cases.NewSettingsCase(settingsRepo, txManager)
-	stopwatchCase := cases.NewStopwatchCase(stopwatchRepo, txManager)
+	stopwatchCase := cases.NewStopwatchCase(stopwatchRepo, habitDataRepo, txManager)
 
 	// Initialize authentication service
 	secretProvider := secret.NewSecretProviderCache(secretTTL, secret.EnvSecretFetcher)

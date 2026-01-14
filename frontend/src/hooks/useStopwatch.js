@@ -91,7 +91,12 @@ export default function useStopwatch() {
     finishStopwatch({
       values: {
         ...stopwatch.data,
-        start_time: getUTCOffsettedDate(new Date(stopwatch.data.start_time)),
+        duration: calcCurrentDuration(),
+        pause_duration: Math.floor(
+          Math.abs(Date.now() - new Date(stopwatch.data.start_time)) / 1000 -
+            stopwatch.data.duration,
+        ),
+        start_time: new Date(stopwatch.data.start_time),
       },
     });
     setCurrentDuration(0);

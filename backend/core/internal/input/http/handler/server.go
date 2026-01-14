@@ -754,6 +754,36 @@ func (s *server) UpdateStopwatch(
 	return gen.UpdateStopwatch204Response{}, nil
 }
 
+// POST /stopwatch/finish
+func (s *server) FinishStopwatch(
+	ctx context.Context,
+	request gen.FinishStopwatchRequestObject,
+) (gen.FinishStopwatchResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.FinishStopwatch401Response{}, nil
+	}
+
+	stopwatch := &entity.Stopwatch{
+		ID:            request.Body.ID,
+		HabitID:       request.Body.HabitID,
+		IsInitiated:   request.Body.IsInitiated,
+		StartTime:     request.Body.StartTime,
+		Duration:      request.Body.Duration,
+		IsPaused:      request.Body.IsPaused,
+		PauseDuration: request.Body.PauseDuration,
+		UserID:        userID,
+	}
+
+	err := s.stopwatches.Finish(ctx, stopwatch)
+	if err != nil {
+		s.logger.Error("failed to finish stopwatch", zap.Error(err))
+		return gen.FinishStopwatch500JSONResponse{}, nil
+	}
+
+	return gen.FinishStopwatch204Response{}, nil
+}
+
 // GET /settings
 func (s *server) GetSettings(
 	ctx context.Context,

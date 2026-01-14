@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS habit_data (
     habit_id TEXT REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
     date TIMESTAMPTZ NOT NULL,
     value INTEGER NOT NULL,
+    duration BIGINT,
+    pause_duration BIGINT,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(date)
@@ -49,6 +51,8 @@ SELECT COALESCE(jsonb_agg(
         'id', hd.id,
         'date', hd.date,
         'value', hd.value,
+        'duration', hd.duration,
+        'pause_duration', hd.pause_duration,
         'created_at', hd.created_at,
         'updated_at', hd.updated_at
     ) ORDER BY hd.date), '[]'::jsonb)

@@ -20,12 +20,14 @@ type HabitFilter struct {
 }
 
 type HabitData struct {
-	ID        string
-	HabitID   string
-	Date      time.Time
-	Value     int
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID            string
+	HabitID       string
+	Date          time.Time
+	Value         int
+	Duration      *int64
+	PauseDuration *int64
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
 }
 
 type HabitTarget struct {

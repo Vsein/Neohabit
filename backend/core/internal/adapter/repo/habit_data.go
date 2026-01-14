@@ -15,8 +15,8 @@ import (
 
 const (
 	queryCreateHabitDataPoint = `
-		INSERT INTO habit_data (id, habit_id, date, value, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6)
+		INSERT INTO habit_data (id, habit_id, date, value, duration, pause_duration, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
 	queryUpdateHabitDataPoint = `
 		UPDATE habit_data
@@ -48,6 +48,8 @@ func (r *HabitData) CreatePoint(ctx context.Context, habitData *entity.HabitData
 		habitData.HabitID,
 		habitData.Date,
 		habitData.Value,
+		habitData.Duration,
+		habitData.PauseDuration,
 		habitData.CreatedAt,
 		habitData.UpdatedAt,
 	)

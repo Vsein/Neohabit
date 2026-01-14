@@ -787,6 +787,35 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /stopwatch/finish:
+    post:
+      summary: Finish stopwatch
+      operationId: finishStopwatch
+      tags: [Stopwatches]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stopwatch'
+      responses:
+        '204':
+          description: Successfully finished stopwatch
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
 components:
   securitySchemes:
     bearerAuth:

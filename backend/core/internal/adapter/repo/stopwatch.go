@@ -30,6 +30,16 @@ const (
 			pause_duration = coalesce($7,pause_duration),
 			updated_at = $8
 		WHERE user_id = $1`
+	queryFinishStopwatch = `
+		UPDATE stopwatches
+		SET
+			is_initiated = FALSE,
+			start_time = CURRENT_TIMESTAMP,
+			duration = 0,
+			is_paused = TRUE,
+			pause_duration = 0,
+			updated_at = CURRENT_TIMESTAMP
+		WHERE user_id = $1`
 	queryDeleteStopwatch = `DELETE FROM stopwatches WHERE user_id = $1`
 )
 
@@ -103,6 +113,18 @@ func (r *Stopwatch) Update(ctx context.Context, stopwatch *entity.Stopwatch) err
 	)
 	if err != nil {
 		return fmt.Errorf("exec update stopwatch: %w", err)
+	}
+	return nil
+}
+
+func (r *Stopwatch) Finish(ctx context.Context, userID string) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryFinishStopwatch,
+		userID,
+	)
+	if err != nil {
+		return fmt.Errorf("exec finish stopwatch: %w", err)
 	}
 	return nil
 }

@@ -300,6 +300,9 @@ type SignupJSONRequestBody SignupJSONBody
 // UpdateStopwatchJSONRequestBody defines body for UpdateStopwatch for application/json ContentType.
 type UpdateStopwatchJSONRequestBody = Stopwatch
 
+// FinishStopwatchJSONRequestBody defines body for FinishStopwatch for application/json ContentType.
+type FinishStopwatchJSONRequestBody = Stopwatch
+
 // CreateTaskJSONRequestBody defines body for CreateTask for application/json ContentType.
 type CreateTaskJSONRequestBody CreateTaskJSONBody
 

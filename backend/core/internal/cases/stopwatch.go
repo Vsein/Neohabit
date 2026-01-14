@@ -15,15 +15,18 @@ import (
 
 type StopwatchCase struct {
 	stopwatchRepo repo.StopwatchRepo
+	habitDataRepo repo.HabitDataRepo
 	txManager     port.TransactionManager
 }
 
 func NewStopwatchCase(
 	stopwatchRepo repo.StopwatchRepo,
+	habitDataRepo repo.HabitDataRepo,
 	txManager port.TransactionManager,
 ) *StopwatchCase {
 	return &StopwatchCase{
 		stopwatchRepo: stopwatchRepo,
+		habitDataRepo: habitDataRepo,
 		txManager:     txManager,
 	}
 }
@@ -70,5 +73,41 @@ func (c *StopwatchCase) Update(ctx context.Context, stopwatch *entity.Stopwatch)
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (c *StopwatchCase) Finish(ctx context.Context, stopwatch *entity.Stopwatch) error {
+	stopwatch.UpdatedAt = time.Now()
+
+	_, err := c.txManager.WithTx(ctx, func(ctx context.Context) (any, error) {
+		if stopwatch.HabitID != nil {
+			habitData := &entity.HabitData{
+				HabitID:       *stopwatch.HabitID,
+				Date:          *stopwatch.StartTime,
+				Value:         1,
+				Duration:      stopwatch.Duration,
+				PauseDuration: stopwatch.PauseDuration,
+			}
+			habitData.ID = uuid.NewString()
+			habitData.CreatedAt = time.Now()
+			habitData.UpdatedAt = habitData.CreatedAt
+
+			err := c.habitDataRepo.CreatePoint(ctx, habitData)
+			if err != nil {
+				return nil, fmt.Errorf("add new timed habit data point: %w", err)
+			}
+		}
+
+		err := c.stopwatchRepo.Finish(ctx, stopwatch.UserID)
+		if err != nil {
+			return nil, fmt.Errorf("finish: %w", err)
+		}
+
+		return nil, nil
+	})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
