@@ -23,15 +23,17 @@ export default function useStopwatch() {
       return stopwatch.data.duration;
     }
     return (
-      Math.floor(Math.abs((Date.now() - new Date(stopwatch.data.start_time)) / 1000)) -
+      Math.floor(Math.abs(Date.now() - new Date(stopwatch.data.start_time))) -
       stopwatch.data.pause_duration
     );
   };
 
   const [currentDuration, setCurrentDuration] = useState(calcCurrentDuration());
-  const baseDuration = 90 * 60;
+  const baseDuration = 90 * 60 * 1000;
 
-  const clockify = (time) => {
+  const clockify = (timeMillis) => {
+    const time = Math.floor(timeMillis / 1000);
+    const millis = Math.floor(timeMillis % 1000);
     const hours = Math.floor(time / 3600);
     let minutes = Math.floor((time / 60) % 60);
     let seconds = Math.floor(time % 60);
@@ -64,8 +66,7 @@ export default function useStopwatch() {
         values: {
           is_paused: false,
           pause_duration: Math.floor(
-            Math.abs(Date.now() - new Date(stopwatch.data.start_time)) / 1000 -
-              stopwatch.data.duration,
+            Math.abs(Date.now() - new Date(stopwatch.data.start_time)) - stopwatch.data.duration,
           ),
         },
       });
@@ -93,8 +94,7 @@ export default function useStopwatch() {
         ...stopwatch.data,
         duration: calcCurrentDuration(),
         pause_duration: Math.floor(
-          Math.abs(Date.now() - new Date(stopwatch.data.start_time)) / 1000 -
-            stopwatch.data.duration,
+          Math.abs(Date.now() - new Date(stopwatch.data.start_time)) - stopwatch.data.duration,
         ),
         start_time: new Date(stopwatch.data.start_time),
       },
