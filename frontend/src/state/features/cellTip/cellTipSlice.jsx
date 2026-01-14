@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const cellTipSlice = createSlice({
   name: 'cellAdd',
   initialState: {
-    heatmapID: '',
+    habitID: '',
     dateStart: '',
     dateEnd: '',
     actions: 0,
@@ -11,7 +11,7 @@ export const cellTipSlice = createSlice({
   reducers: {
     changeCellPeriodTo: (state, action) => ({
       ...state,
-      heatmapID: action.payload.heatmapID,
+      habitID: action.payload.habitID,
       dateStart: action.payload.dateStart,
       dateEnd: action.payload.dateEnd,
       actions: action.payload.actions,

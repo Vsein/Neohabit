@@ -35,13 +35,14 @@ export default function Heatmap({
   dateStart,
   dateEnd,
   habit,
-  heatmapData,
-  heatmapTargets = [],
   vertical = false,
   isOverview, // NOTE: Maybe change to is2D or is1D, much more clear this way
   overridenElimination = undefined,
   overridenNumeric = undefined,
 }) {
+  const heatmapData = habit?.data ?? [];
+  const heatmapTargets = habit?.targets ?? [];
+
   const fti = heatmapTargets.findLastIndex((t) => compareAsc(dateStart, t.date_start) >= 0);
   const lti = heatmapTargets.findLastIndex((t) => compareAsc(dateEnd, t.date_start) >= 0);
   const firstTarget = heatmapTargets[fti];

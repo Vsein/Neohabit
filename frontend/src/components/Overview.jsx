@@ -26,11 +26,9 @@ export default function Overview({
     return <div className="loader" />;
   }
 
-  const Habits = habits.data.flatMap((habit, i) => {
-    const dataSorted = habit.data;
-
+  const Habits = habits.data.flatMap((habit, i) =>
     // TODO: First habit target check, check if the interval is archived
-    return differenceInDays(habit.created_at, dateEnd) > 0 ?
+    differenceInDays(habit.created_at, dateEnd) > 0 ?
       []
       : (
         <HabitOverview
@@ -38,12 +36,11 @@ export default function Overview({
           habit={habit}
           dateStart={dateStart}
           dateEnd={dateEnd}
-          heatmapData={dataSorted}
           vertical={vertical}
           mobile={mobile}
         />
       )
-  });
+  );
 
   return (
     <div

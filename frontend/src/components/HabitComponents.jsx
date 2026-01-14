@@ -142,7 +142,6 @@ function HabitOverview({
   dateStart,
   dateEnd,
   habit,
-  heatmapData,
   vertical,
   mobile,
   projectID = '',
@@ -174,7 +173,6 @@ function HabitOverview({
         {habit.name}
       </NavLink>
       <Heatmap
-        heatmapData={heatmapData}
         habit={habit}
         dateStart={dateStart}
         dateEnd={dateEnd}

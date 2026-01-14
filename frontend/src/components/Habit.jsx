@@ -8,13 +8,12 @@ import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { DatePeriodPicker } from './DatePickers';
-import Heatmap from './Heatmap';
+import Heatmap from './Heatmap2';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
 
 export default function Habit({
-  heatmap,
   habit,
   overridenElimination = undefined,
   overridenNumeric = undefined,
@@ -32,8 +31,6 @@ export default function Habit({
         />
         <HeatmapWeekdays dateStart={dateStart} dateEnd={dateEnd} />
         <Heatmap
-          heatmapID={heatmap?.id}
-          heatmapData={heatmap?.data}
           habit={habit}
           dateStart={dateStart}
           dateEnd={dateEnd}
@@ -48,7 +45,6 @@ export default function Habit({
 }
 
 function HabitDefaultWrapper({
-  heatmap,
   habit,
   modal = false,
   habitPage = false,
@@ -89,14 +85,12 @@ function HabitDefaultWrapper({
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
         <HabitControls
           habit={habit}
-          heatmapID={heatmap?.id}
           header={true}
           modal={modal}
           habitPage={habitPage}
         />
       </div>
       <Habit
-        heatmap={heatmap}
         habit={habit}
         habitPage={true}
         dateStart={dateStart}
@@ -109,7 +103,6 @@ function HabitDefaultWrapper({
 }
 
 function HabitModalWrapper({
-  heatmap,
   habit,
   onboardingSlideTag = '',
   overridenElimination = undefined,
@@ -170,14 +163,12 @@ function HabitModalWrapper({
         />
         <HabitControls
           habit={habit}
-          heatmapID={heatmap?.id}
           header={true}
           modal={!onboardingSlideTag}
           habitPage={habitPage}
         />
       </div>
       <Habit
-        heatmap={heatmap}
         habit={habit}
         modal={true}
         overridenElimination={overridenElimination}

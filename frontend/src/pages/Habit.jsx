@@ -107,7 +107,6 @@ function Overview() {
       </div>
       <div className="contentlist">
         <HabitDefaultWrapper
-          heatmap={habit.data}
           habit={habit}
           habitPage={true}
           dateStart={dateStart}

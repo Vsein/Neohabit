@@ -119,7 +119,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             </div>
             {width >= 850 && habitID && (
               <HabitModalWrapper
-                heatmap={habit.data}
                 habit={habit}
                 overridenElimination={values.elimination}
                 overridenNumeric={values.numeric}

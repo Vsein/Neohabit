@@ -84,7 +84,6 @@ export default function Project({
             habit={habit}
             dateStart={globalDateStart}
             dateEnd={globalDateEnd}
-            heatmapData={habit.data}
             vertical={vertical}
             mobile={mobile}
             projectID={project.id}

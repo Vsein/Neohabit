@@ -1,5 +1,4 @@
 import api from './api';
-import { heatmapApi } from './heatmap';
 import { projectApi } from './project';
 
 export const habitApi = api.injectEndpoints({
@@ -50,11 +49,6 @@ export const habitApi = api.injectEndpoints({
             }),
           );
         }
-        dispatch(
-          heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            draft.push(res.data.heatmap);
-          }),
-        );
       },
     }),
     deleteHabit: builder.mutation({

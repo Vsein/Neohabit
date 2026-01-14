@@ -92,10 +92,9 @@ export default function Onboarding() {
         </div>
         {Slides[slide - 1].content}
         <div className="contentlist end">
-          {habits[0] ? (
+          {habits.data[0] ? (
             <HabitModalWrapper
-              heatmap={habits.data[0].data}
-              habit={habits[0]}
+              habit={habits.data[0]}
               onboardingSlideTag={Slides[slide - 1].tag}
               modal={true}
             />
