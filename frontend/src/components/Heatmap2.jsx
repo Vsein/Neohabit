@@ -14,6 +14,7 @@ import {
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { areAscending } from '../utils/dates';
 
 function getWindowDateStart(dateStart, firstTarget) {
   if (firstTarget) {
@@ -43,8 +44,8 @@ export default function Heatmap({
   const heatmapData = habit?.data ?? [];
   const heatmapTargets = habit?.targets ?? [];
 
-  const fti = heatmapTargets.findLastIndex((t) => compareAsc(dateStart, t.date_start) >= 0);
-  const lti = heatmapTargets.findLastIndex((t) => compareAsc(dateEnd, t.date_start) >= 0);
+  const fti = heatmapTargets.findLastIndex((t) => areAscending(t.date_start, dateStart));
+  const lti = heatmapTargets.findLastIndex((t) => areAscending(t.date_start, dateEnd));
   const firstTarget = heatmapTargets[fti];
   const lastTarget = heatmapTargets[lti];
 
@@ -62,49 +63,92 @@ export default function Heatmap({
 
   // XXX: Must add a wrapping [], or just flatMap the buckets or something
   const firstDummyBucket = daysToHabitStart > 0 ? { dateStart, dateEnd: subMilliseconds(startOfDay(habitStartDate), 1), value: 0, dummy: true } : [];
-  const lastBucket = { dateStart: habitStartDate, dateEnd: min([dateEnd, windowDateEnd].filter((d) => isValid(d))), value: 0 };
+  const lastBucket = { dateStart: startOfDay(habitStartDate), dateEnd: min([dateEnd, windowDateEnd].filter((d) => isValid(d))), value: 0 };
   // console.log(daysToHabitStart, firstDummyBucket);
 
   const buckets = [firstDummyBucket,
     ...heatmapTargets.slice(fti, lti + 1).flatMap((t) => []),
     lastBucket].flatMap(b => b);
-  // console.log(buckets, habitCreatedAt, habit.name);
+  // console.log("buckets: ", buckets, habitCreatedAt, habit.name);
 
   // TODO: I want to get rid of it tbh
   const elimination = overridenElimination ?? habit?.elimination;
   const numeric = overridenNumeric ?? habit?.numeric;
 
-  // Populating buckets with data and turn them into cells
-  let j = 0;
+  const firstDataIndex = heatmapData.findIndex((d) => areAscending(windowDateStart || dateStart, d.date));
+  let j = firstDataIndex === -1 ? heatmapData.length : firstDataIndex;
+  console.log("First data index: ", firstDataIndex, "][ Start from element: ", j);
+  // let j = 0;
+
+  const hasNextDataPoint = (bucket) => j < heatmapData.length ?
+    areAscending(bucket.dateStart, new Date(heatmapData[j].date), bucket.dateEnd)
+    : undefined;
+
+  // Populating buckets with data and turning them into cells
   const Cells = buckets.map((b, i) => {
+
+    // Case 1. Handle <target cells> that already have a determined dateStart, dateEnd and targetValue
     if (b.isTarget) {
       // TODO: Handling of cycles
       const cell = { ...b, value: 0 };
-      while (j < heatmapData.length && compareAsc(b.dateStart, new Date(heatmapData[j].date)) > 0) {
+      while (hasNextDataPoint(b)) {
         cell.value += heatmapData[j].value;
         j += 1;
       }
       return <CellPeriod key={i} />
     }
 
-    let cell = { dateStart: b.dateStart, value: 0, dummy: b.dummy };
+    // Case 2. Handle <bucketed cells>
+    let cell = { dateStart: max([b.dateStart, dateStart]), value: 0, dummy: b.dummy };
     const cells = [];
-    while (j < heatmapData.length && compareAsc(b.dateStart, heatmapData[j].date) > 0) {
-      const date = startOfDay(new Date(heatmapData[j].date));
-      cell.dateEnd = date;
-      cells.push(cell);
-      cell = { dateStart: date, value: heatmapData[j].value };
-      j += 1;
+
+    let date;
+    let bucketHasDataPoints = false;
+    while (hasNextDataPoint(b)) {
+      date = startOfDay(new Date(heatmapData[j].date));
+
+      // Handle the [previous period], up to the # data point:  [----]# or [#----]# or [#]#
+      if (differenceInDays(date, cell.dateStart) >= 1) {
+
+        // Handle {data cell}:   [{#}----]# or [{#}]#
+        if (cell.value) {
+          cell.dateEnd = endOfDay(cell.dateStart);
+          cells.push(cell);
+          cell = { dateStart: addDays(cell.dateStart, 1), value: 0 };
+        }
+
+        // Handle {empty period}:  [#{----}]# or [{----}]#
+        if (differenceInDays(date, cell.dateStart) >= 1) {
+          cell.dateEnd = subMilliseconds(date, 1);
+          cells.push(cell);
+          cell = { dateStart: date, value: 0 };
+        }
+      }
+
+      cell.value += heatmapData[j].value;
+      cell.dateEnd = endOfDay(date);
+      j += 1; bucketHasDataPoints = true;
     }
-    cell.dateEnd = b.dateEnd;
-    // console.log(cell);
-    cells.push(cell);
-    // console.log(cells);
+
+    if (bucketHasDataPoints) {
+      // Handle the last data point # and the ---- empty period after (if it exists):  [#] and [#----]
+      cells.push(cell);
+      cell = { dateStart: addDays(date, 1), dateEnd: b.dateEnd, value: 0 };
+      if (areAscending(cell.dateStart, cell.dateEnd)) {
+        cells.push(cell);
+      }
+    } else {
+      // Handle only the empty period:  [----]
+      cell.dateEnd = b.dateEnd;
+      cells.push(cell);
+    }
+
+    console.log(cells, i, habit.name);
 
     return <React.Fragment key={i}>
-      {cells.map((c) =>
+      {cells.map((c, k) =>
         <CellPeriod
-          key={i}
+          key={`${i}-${k}`}
           dummy={c.dummy}
           habitID={habit.id}
           dateStart={startOfDay(c.dateStart)}
