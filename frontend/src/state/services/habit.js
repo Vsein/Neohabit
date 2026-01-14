@@ -27,7 +27,7 @@ export const habitApi = api.injectEndpoints({
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
-        const newHabit = { id: res.data, ...values };
+        const newHabit = { ...values, id: res.data, data: [], targets: [], created_at: new Date() };
         dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
             draft.push(newHabit);
@@ -57,19 +57,29 @@ export const habitApi = api.injectEndpoints({
         method: 'DELETE',
       }),
       async onQueryStarted(habitID, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
+        await queryFulfilled;
+        const optimisticallyDelete = (habits) => {
+          const index = habits.findIndex((h) => h.id === habitID);
+          if (index !== -1) {
+            habits.splice(index, 1);
+          }
+        };
+
         dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            const index = draft.findIndex((habit) => habit.id === habitID);
-            draft.splice(index, 1);
+            optimisticallyDelete(draft);
           }),
         );
+
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            optimisticallyDelete(draft);
+          }),
+        );
+
         dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const Projects = draft.filter((project) => project.habits.includes(habitID));
-            Projects.forEach((Project) => {
-              Project.habits = Project.habits.filter((ID) => ID !== habitID);
-            });
+            draft.forEach((p) => optimisticallyDelete(p.habits));
           }),
         );
       },
@@ -81,12 +91,25 @@ export const habitApi = api.injectEndpoints({
         method: 'PUT',
       }),
       onQueryStarted({ habitID, values }, { dispatch }) {
-        const patchResult = dispatch(
+        const optimisticallyUpdate = (habit) => habit && Object.assign(habit, values);
+
+        dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            draft.forEach((p) => {
+              optimisticallyUpdate(p.habits.find((h) => h.id === habitID));
+            });
+          }),
+        );
+
+        dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            const habit = draft.find((h) => h.id === habitID);
-            if (habit) {
-              Object.assign(habit, values);
-            }
+            optimisticallyUpdate(draft.find((h) => h.id === habitID));
+          }),
+        );
+
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            optimisticallyUpdate(draft.find((h) => h.id === habitID));
           }),
         );
       },

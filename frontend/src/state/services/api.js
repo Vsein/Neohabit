@@ -5,7 +5,7 @@ const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       process.env.REACT_APP_STAGE === 'dev' ? 'http://localhost:9000/' : 'https://neohabit.app/api',
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);

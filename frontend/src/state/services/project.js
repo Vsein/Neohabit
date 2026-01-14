@@ -70,7 +70,7 @@ export const projectApi = api.injectEndpoints({
         method: 'DELETE',
       }),
       onQueryStarted(projectID, { dispatch }) {
-        const patchResult = dispatch(
+        dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
             const index = draft.findIndex((p) => p.id === projectID);
             draft.splice(index, 1);
