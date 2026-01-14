@@ -13,16 +13,14 @@ import {
   mdiKeyboardReturn,
 } from '@mdi/js';
 import { useCreateHabitDataPointMutation } from '../state/services/habitData';
-import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
+import { changeHabitTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
-import { getUTCOffsettedDate } from '../utils/dates';
 
 import Heatmap from './Heatmap2';
 
 function HabitControls({
   habit,
-  heatmapID,
   header,
   mobile,
   projectID = '',
@@ -49,7 +47,7 @@ function HabitControls({
   };
   const openCellAddDropdown = (e, isTarget) => {
     e.stopPropagation();
-    dispatch(changeHeatmapTo({ heatmapID, isActive: true, isTarget }));
+    dispatch(changeHabitTo({ habitID: habit.id, isActive: true, isTarget }));
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     cellAddDropdown.classList.toggle('hidden');
     const cell = e.target;
@@ -145,7 +143,6 @@ function HabitOverview({
   dateEnd,
   habit,
   heatmapData,
-  heatmapID,
   vertical,
   mobile,
   projectID = '',
@@ -178,14 +175,13 @@ function HabitOverview({
       </NavLink>
       <Heatmap
         heatmapData={heatmapData}
-        heatmapID={heatmapID}
         habit={habit}
         dateStart={dateStart}
         dateEnd={dateEnd}
         vertical={vertical}
         isOverview={true}
       />
-      <HabitControls habit={habit} heatmapID={heatmapID} mobile={mobile} projectID={projectID} />
+      <HabitControls habit={habit} mobile={mobile} projectID={projectID} />
     </div>
   );
 }

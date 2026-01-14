@@ -14,6 +14,7 @@ import {
   useDecreaseCellPeriodMutation,
   useUpdateHeatmapMutation,
 } from '../state/services/heatmap';
+import { useCreateHabitDataPointMutation } from '../state/services/habitData';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings'
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
 import { getUTCOffsettedDate } from '../utils/dates';
@@ -121,6 +122,7 @@ export default function CellTip() {
   const [deleteCellPeriod] = useDeleteCellPeriodMutation();
   const [decreaseCellPeriod] = useDecreaseCellPeriodMutation();
   const [updateHeatmap] = useUpdateHeatmapMutation();
+  const [createHabitDataPoint] = useCreateHabitDataPointMutation();
   const settings = useGetSettingsQuery();
   const hintHidden = settings.data.hide_cell_hint;
   const [updateSettings] = useUpdateSettingsMutation();
@@ -171,9 +173,9 @@ export default function CellTip() {
             className="centering"
             title="Add 1 completed action in this period"
             onClick={() => {
-              updateHeatmap({
+              createHabitDataPoint({
                 habitID,
-                values: { date: getUTCOffsettedDate(dateStart), value: 1 },
+                values: { date: new Date(dateStart), value: 1 },
               });
               setCellTipActions(actions + 1);
               dispatch(changeCellActions({ actions: actions + 1 }));
