@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS habit_data (
     UNIQUE(date)
 );
 
-CREATE INDEX idx_habit_data_habit_id_created_at ON habit_data(habit_id, created_at);
+CREATE INDEX idx_habit_data_habit_id_date ON habit_data(habit_id, date);
 
 CREATE OR REPLACE FUNCTION get_habit_data_jsonb(h_id TEXT)
 RETURNS jsonb
@@ -51,7 +51,7 @@ SELECT COALESCE(jsonb_agg(
         'value', hd.value,
         'created_at', hd.created_at,
         'updated_at', hd.updated_at
-    ) ORDER BY hd.created_at), '[]'::jsonb)
+    ) ORDER BY hd.date), '[]'::jsonb)
 FROM habit_data hd
 WHERE hd.habit_id = h_id;
 $$;
