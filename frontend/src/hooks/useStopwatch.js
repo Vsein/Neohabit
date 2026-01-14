@@ -94,7 +94,7 @@ export default function useStopwatch() {
         ...stopwatch.data,
         duration: calcCurrentDuration(),
         pause_duration: Math.floor(
-          Math.abs(Date.now() - new Date(stopwatch.data.start_time)) - stopwatch.data.duration,
+          Math.abs(Date.now() - new Date(stopwatch.data.start_time)) - calcCurrentDuration(),
         ),
         start_time: new Date(stopwatch.data.start_time),
       },
