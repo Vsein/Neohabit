@@ -38,7 +38,8 @@ const (
 						'created_at', h.created_at,
 						'updated_at', h.updated_at,
 						'order_index', ph.order_index,
-						'data', get_habit_data_jsonb(h.id)
+						'data', get_habit_data_jsonb(h.id),
+						'targets', get_habit_targets_jsonb(h.id)
 					) ORDER BY ph.order_index)
 					FROM
 						project_habits ph

@@ -26,7 +26,8 @@ const (
 			h.due_date,
 			h.created_at,
 			h.updated_at,
-			get_habit_data_jsonb(h.id)
+			get_habit_data_jsonb(h.id),
+			get_habit_targets_jsonb(h.id)
 		FROM
 			habits h
 		WHERE
@@ -43,7 +44,8 @@ const (
 			h.due_date,
 			h.created_at,
 			h.updated_at,
-			get_habit_data_jsonb(h.id)
+			get_habit_data_jsonb(h.id),
+			get_habit_targets_jsonb(h.id)
 		FROM
 			habits h
 		LEFT JOIN
@@ -119,6 +121,7 @@ func (r *Habit) List(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, er
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
 			&habit.Data,
+			&habit.Targets,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("scan habit: %w", err)
@@ -157,6 +160,7 @@ func (r *Habit) ListHabitsOutsideProjects(ctx context.Context, userID uuid.UUID)
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
 			&habit.Data,
+			&habit.Targets,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("scan habit: %w", err)

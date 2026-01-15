@@ -74,9 +74,29 @@ CREATE TABLE IF NOT EXISTS habit_targets (
     is_numeric BOOLEAN NOT NULL DEFAULT FALSE,
     more_is_bad BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(date_start)
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
+
+-- TODO: UNIQUE, maybe ? Or just allow it and show those targets as inactive? The latter is probably easier
+CREATE INDEX idx_habit_targets_habit_id_date_start ON habit_targets(habit_id, date_start);
+
+CREATE OR REPLACE FUNCTION get_habit_targets_jsonb(h_id UUID)
+RETURNS jsonb
+LANGUAGE sql
+STABLE
+AS $$
+SELECT COALESCE(jsonb_agg(
+    jsonb_build_object(
+        'id', ht.id,
+        'date_start', ht.date_start,
+        'value', ht.value,
+        'period', ht.period,
+        'created_at', ht.created_at,
+        'updated_at', ht.updated_at
+    ) ORDER BY ht.date_start), '[]'::jsonb)
+FROM habit_targets ht
+WHERE ht.habit_id = h_id;
+$$;
 
 CREATE TABLE IF NOT EXISTS projects (
     id UUID PRIMARY KEY,
