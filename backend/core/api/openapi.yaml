@@ -921,7 +921,6 @@ components:
           $ref: '#/components/schemas/Date'
         value:
           type: integer
-          format: uint8
           description: "How many times the activity was completed this day"
 
     HabitTarget:

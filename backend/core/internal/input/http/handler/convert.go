@@ -32,7 +32,7 @@ func toAPIHabit(e *entity.Habit) gen.Habit {
 		Name:        e.Name,
 		Description: &e.Description,
 		Color:       &e.Color,
-		DueDate:     &e.DueDate,
+		DueDate:     e.DueDate,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 		Data:        &data,
