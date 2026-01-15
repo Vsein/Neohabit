@@ -18,22 +18,25 @@ import { areAscending } from '../utils/dates';
 
 function getWindowDateStart(dateStart, firstTarget) {
   if (firstTarget) {
-    const diffInCycles = Math.floor(differenceInDays(dateStart, firstTarget) / firstTarget.period);
-    return addDays(firstTarget.date, diffInCycles * firstTarget.period);
+    const diffInCycles = Math.floor(differenceInDays(dateStart, firstTarget.date_start) / firstTarget.period);
+    return addDays(firstTarget.date_start, diffInCycles * firstTarget.period);
   }
   return undefined;
 }
 
 function getWindowDateEnd(dateEnd, lastTarget) {
+  console.log(dateEnd, lastTarget);
   if (lastTarget) {
-    const diffInCycles = Math.ceil(differenceInDays(dateEnd, lastTarget) / lastTarget.period);
-    return addDays(lastTarget.date, diffInCycles * lastTarget.period);
+    const diffInCycles = Math.ceil(differenceInDays(dateEnd, lastTarget.date_start) / lastTarget.period);
+    return addDays(lastTarget.date_start, diffInCycles * lastTarget.period + 1);
   }
   return undefined;
 }
 
 export default function Heatmap({
   dateStart,
+  // FIX: I'm sending dateEnd as start of the last day in the useDatePeriod,
+  //      which kind of messes with my mind
   dateEnd,
   habit,
   vertical = false,
@@ -43,33 +46,53 @@ export default function Heatmap({
 }) {
   const heatmapData = habit?.data ?? [];
   const heatmapTargets = habit?.targets ?? [];
+  console.log("NEW HEATMAP STARTS HERE ====================== ", heatmapTargets);
+  console.log(dateEnd);
 
-  const fti = heatmapTargets.findLastIndex((t) => areAscending(t.date_start, dateStart));
-  const lti = heatmapTargets.findLastIndex((t) => areAscending(t.date_start, dateEnd));
+  const fti = heatmapTargets.findLastIndex((t) => areAscending(new Date(t.date_start), dateStart));
+  const lti = heatmapTargets.findLastIndex((t) => areAscending(new Date(t.date_start), dateEnd));
   const firstTarget = heatmapTargets[fti];
   const lastTarget = heatmapTargets[lti];
+  // console.log("targets: ", firstTarget, lastTarget);
 
   const windowDateStart = getWindowDateStart(dateStart, firstTarget);
   const windowDateEnd = getWindowDateEnd(dateEnd, lastTarget);
-  // console.log(windowDateStart, windowDateEnd);
+  // console.log("windows: ", windowDateStart, windowDateEnd);
+  // console.log("last target date_start: ", lastTarget?.date_start);
 
   const habitCreatedAt = new Date(habit.created_at);
-  const habitStartDate = min([habitCreatedAt, windowDateStart].filter((d) => isValid(d)));
+  const habitStartDate = min([habitCreatedAt, windowDateStart, new Date(lastTarget?.date_start)].filter((d) => isValid(d)));
   // console.log(habitStartDate);
   const daysToHabitStart = differenceInDays(habitStartDate, dateStart);
+  console.log(habitStartDate);
 
   // Calculate buckets
   // TODO: Maybe remake CellPeriods to have [ ) type constaints, I'm tired of subtracting a millisecond each time
 
   // XXX: Must add a wrapping [], or just flatMap the buckets or something
   const firstDummyBucket = daysToHabitStart > 0 ? { dateStart, dateEnd: subMilliseconds(startOfDay(habitStartDate), 1), value: 0, dummy: true } : [];
-  const lastBucket = { dateStart: startOfDay(habitStartDate), dateEnd: min([dateEnd, windowDateEnd].filter((d) => isValid(d))), value: 0 };
+  const lastBucket = !lastTarget ? { dateStart: startOfDay(habitStartDate), dateEnd: min([dateEnd, windowDateEnd].filter((d) => isValid(d))), value: 0 } : [];
   // console.log(daysToHabitStart, firstDummyBucket);
+  const bucketBeforeTargetBucket = differenceInDays(heatmapTargets.length && heatmapTargets[0]?.date_start, habitCreatedAt) > 0 ? { dateStart: habitCreatedAt, dateEnd: subMilliseconds(new Date(heatmapTargets[0]?.date_start), 1), value: 0 } : [];
+  const targetBuckets = heatmapTargets.slice(Math.max(fti, 0), lti + 1).flatMap((t, i, ts) => {
+    const bucketsDateStart = new Date(t.date_start);
+    const nextTarget = i + 1 < lti + 1 ? ts[i + 1] : undefined;
+    const bucketsDateEnd = min([new Date(t.date_end), new Date(nextTarget?.date_start), max([windowDateEnd, dateStart].filter((d) => isValid(d)))].filter((d) => isValid(d)));
+    // console.log("TARGET ===========", t);
+    // console.log("target bucket period: ", i, bucketsDateStart, bucketsDateEnd);
+    const diffInCycles = Math.floor(differenceInDays(bucketsDateEnd, new Date(t.date_start)) / t.period);
+    console.log("diff in Cycles -> ", diffInCycles, bucketsDateEnd, t.date_start);
 
-  const buckets = [firstDummyBucket,
-    ...heatmapTargets.slice(fti, lti + 1).flatMap((t) => []),
-    lastBucket].flatMap(b => b);
-  // console.log("buckets: ", buckets, habitCreatedAt, habit.name);
+    return diffInCycles > 0 ? Array.from(new Array(diffInCycles)).map((_, j) => ({
+      targetIndex: i + Math.max(fti, 0),
+      dateStart: addDays(bucketsDateStart, t.period * j),
+      dateEnd: min([subMilliseconds(addDays(bucketsDateStart, t.period * (j + 1)), 1), bucketsDateEnd]),
+    })) : [];
+  })
+  console.log("target buckets: ", targetBuckets);
+
+  const buckets = [firstDummyBucket, bucketBeforeTargetBucket, targetBuckets, lastBucket].flatMap(b => b);
+  console.log("buckets: ", buckets, habitCreatedAt, habit.name);
 
   // TODO: I want to get rid of it tbh
   const elimination = overridenElimination ?? habit?.elimination;
@@ -88,7 +111,7 @@ export default function Heatmap({
   const Cells = buckets.map((b, i) => {
 
     // Case 1. Handle <target cells> that already have a determined dateStart, dateEnd and targetValue
-    if (b.isTarget) {
+    if (b.isTarget) { // typeof b.targetIndex === 'number'
       // TODO: Handling of cycles
       const cell = { ...b, value: 0 };
       while (hasNextDataPoint(b)) {
@@ -97,6 +120,7 @@ export default function Heatmap({
       }
       return <CellPeriod key={i} />
     }
+
 
     // Case 2. Handle <bucketed cells>
     let cell = { dateStart: max([b.dateStart, dateStart]), value: 0, dummy: b.dummy };

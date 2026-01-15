@@ -34,8 +34,8 @@ type HabitData struct {
 type HabitTarget struct {
 	ID          uuid.UUID
 	HabitID     uuid.UUID
-	DateStart   time.Time
-	DateEnd     time.Time
+	DateStart   time.Time `json:"date_start"`
+	DateEnd     time.Time `json:"date_end"`
 	Value       int
 	Period      int
 	ValueUnit   string
