@@ -11,6 +11,7 @@ import (
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
 	"neohabit/core/internal/port/repo"
+	"neohabit/core/pkg/id"
 )
 
 type HabitDataCase struct {
@@ -28,17 +29,17 @@ func NewHabitDataCase(
 	}
 }
 
-func (c *HabitDataCase) CreatePoint(ctx context.Context, habitData *entity.HabitData) (string, error) {
-	habitData.ID = uuid.NewString()
+func (c *HabitDataCase) CreatePoint(ctx context.Context, habitData *entity.HabitData) (uuid.UUID, error) {
+	habitData.ID = id.New()
 	habitData.CreatedAt = time.Now()
 	habitData.UpdatedAt = habitData.CreatedAt
 
 	err := c.habitDataRepo.CreatePoint(ctx, habitData)
 	if err != nil {
 		if errors.Is(err, repo.ErrAlreadyExists) {
-			return "", ErrAlreadyExists
+			return uuid.Nil, ErrAlreadyExists
 		}
-		return "", fmt.Errorf("create: %w", err)
+		return uuid.Nil, fmt.Errorf("create: %w", err)
 	}
 
 	return habitData.ID, nil
@@ -58,7 +59,7 @@ func (c *HabitDataCase) UpdatePoint(ctx context.Context, habitData *entity.Habit
 	return nil
 }
 
-func (c *HabitDataCase) DeletePoint(ctx context.Context, id string) error {
+func (c *HabitDataCase) DeletePoint(ctx context.Context, id uuid.UUID) error {
 	err := c.habitDataRepo.DeletePoint(ctx, id)
 	if err != nil {
 		return fmt.Errorf("delete: %w", err)

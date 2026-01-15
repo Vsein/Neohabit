@@ -43,7 +43,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
 
   const onSubmit = async (values) => {
     if (!habitID) {
-      await createHabit({ ...values, project_id: projectID !== 'default' ? projectID : undefined });
+      await createHabit({ ...values, project_id: projectID !== 'default' && projectID ? projectID : undefined });
     } else {
       await updateHabit({ habitID, values });
     }

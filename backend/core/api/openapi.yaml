@@ -245,7 +245,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       requestBody:
         required: true
         content:
@@ -289,7 +289,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '204':
           description: Successfully deleted the habit
@@ -317,7 +317,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       requestBody:
         required: true
         content:
@@ -419,7 +419,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       requestBody:
         required: true
         content:
@@ -455,7 +455,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '204':
           description: Successfully deleted the project
@@ -487,7 +487,7 @@ paths:
                 new_projects_order:
                   type: array
                   items:
-                    type: string
+                    $ref: '#/components/schemas/UUID'
       responses:
         '204':
           description: Project order successfully updated
@@ -585,7 +585,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       requestBody:
         required: true
         content:
@@ -621,7 +621,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '204':
           description: Successfully deleted the task
@@ -671,7 +671,7 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/UUID'
       responses:
         '204':
           description: Successfully deleted the skilltree
@@ -824,6 +824,10 @@ components:
       bearerFormat: JWT
 
   schemas:
+    UUID: # UUIDv7 to be exact
+      type: string
+      format: uuid
+
     Name:
       type: string
       maxLength: 150
@@ -858,7 +862,7 @@ components:
         - username
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         username:
           type: string
         verified:
@@ -881,11 +885,11 @@ components:
         - name
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         user_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         project_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         name:
           $ref: '#/components/schemas/Name'
         description:
@@ -929,7 +933,7 @@ components:
         - is_archive
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         date_start:
           $ref: '#/components/schemas/Date'
         date_end:
@@ -954,9 +958,9 @@ components:
         - user_id
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         user_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         name:
           $ref: '#/components/schemas/Name'
         description:
@@ -968,7 +972,7 @@ components:
         habit_ids:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/UUID'
         habits:
           type: array
           items:
@@ -985,11 +989,11 @@ components:
         - user_id
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         user_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         habit_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         name:
           $ref: '#/components/schemas/Name'
         description:
@@ -1013,13 +1017,13 @@ components:
         - name
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         user_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         project_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         habit_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         name:
           $ref: '#/components/schemas/Name'
         description:
@@ -1046,9 +1050,9 @@ components:
         - name
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         parent_skill_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         is_root_skill:
           type: boolean
         name:
@@ -1070,11 +1074,11 @@ components:
         - user_id
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         user_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         habit_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         is_initiated:
           type: boolean
         start_time:
@@ -1101,9 +1105,9 @@ components:
         - user_id
       properties:
         id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         user_id:
-          type: string
+          $ref: '#/components/schemas/UUID'
         theme:
           type: string
           enum: ["dark", "light"]

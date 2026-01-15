@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
@@ -55,7 +56,7 @@ func NewStopwatchRepo(pool db.PoolTX, logger *zap.Logger) *Stopwatch {
 	}
 }
 
-func (r *Stopwatch) Read(ctx context.Context, userID string) (*entity.Stopwatch, error) {
+func (r *Stopwatch) Read(ctx context.Context, userID uuid.UUID) (*entity.Stopwatch, error) {
 	var stopwatch entity.Stopwatch
 	err := r.pool.QueryRow(ctx, queryReadStopwatch, userID).Scan(
 		&stopwatch.ID,
@@ -117,7 +118,7 @@ func (r *Stopwatch) Update(ctx context.Context, stopwatch *entity.Stopwatch) err
 	return nil
 }
 
-func (r *Stopwatch) Finish(ctx context.Context, userID string) error {
+func (r *Stopwatch) Finish(ctx context.Context, userID uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryFinishStopwatch,
@@ -129,7 +130,7 @@ func (r *Stopwatch) Finish(ctx context.Context, userID string) error {
 	return nil
 }
 
-func (r *Stopwatch) Delete(ctx context.Context, userID string) error {
+func (r *Stopwatch) Delete(ctx context.Context, userID uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteStopwatch,

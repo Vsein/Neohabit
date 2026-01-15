@@ -11,6 +11,7 @@ import (
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
 	"neohabit/core/internal/port/repo"
+	"neohabit/core/pkg/id"
 )
 
 type StopwatchCase struct {
@@ -31,8 +32,8 @@ func NewStopwatchCase(
 	}
 }
 
-func (c *StopwatchCase) Create(ctx context.Context, stopwatch *entity.Stopwatch) (string, error) {
-	stopwatch.ID = uuid.NewString()
+func (c *StopwatchCase) Create(ctx context.Context, stopwatch *entity.Stopwatch) (uuid.UUID, error) {
+	stopwatch.ID = id.New()
 	stopwatch.CreatedAt = time.Now()
 	stopwatch.UpdatedAt = stopwatch.CreatedAt
 	stopwatch.StartTime = &stopwatch.CreatedAt
@@ -48,13 +49,13 @@ func (c *StopwatchCase) Create(ctx context.Context, stopwatch *entity.Stopwatch)
 		return nil, nil
 	})
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	return stopwatch.ID, nil
 }
 
-func (c *StopwatchCase) Read(ctx context.Context, userID string) (*entity.Stopwatch, error) {
+func (c *StopwatchCase) Read(ctx context.Context, userID uuid.UUID) (*entity.Stopwatch, error) {
 	stopwatch, err := c.stopwatchRepo.Read(ctx, userID)
 	if err != nil {
 		if errors.Is(err, repo.ErrNotFound) {
@@ -88,7 +89,7 @@ func (c *StopwatchCase) Finish(ctx context.Context, stopwatch *entity.Stopwatch)
 				Duration:      stopwatch.Duration,
 				PauseDuration: stopwatch.PauseDuration,
 			}
-			habitData.ID = uuid.NewString()
+			habitData.ID = id.New()
 			habitData.CreatedAt = time.Now()
 			habitData.UpdatedAt = habitData.CreatedAt
 

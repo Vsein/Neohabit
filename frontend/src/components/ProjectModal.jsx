@@ -89,7 +89,7 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
               </button>
             </div>
             <div className="modal-details-block" style={{ height: 'min-content' }}>
-              <NameField type="project" />
+              <NameField type="project" autofocus={!projectID} />
             </div>
             <div className="modal-header habit-mode">
               <p>Habits:</p>

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 
@@ -293,7 +294,7 @@ func (s *server) CreateHabit(
 		return gen.CreateHabit500JSONResponse{}, nil
 	}
 
-	return gen.CreateHabit201JSONResponse(id), nil
+	return gen.CreateHabit201JSONResponse(id.String()), nil
 }
 
 // PUT /habit/{habit_id}
@@ -301,7 +302,7 @@ func (s *server) UpdateHabit(
 	ctx context.Context,
 	request gen.UpdateHabitRequestObject,
 ) (gen.UpdateHabitResponseObject, error) {
-	if request.HabitID == "" {
+	if request.HabitID == uuid.Nil {
 		return gen.UpdateHabit400Response{}, nil
 	}
 
@@ -335,7 +336,7 @@ func (s *server) DeleteHabit(
 	ctx context.Context,
 	request gen.DeleteHabitRequestObject,
 ) (gen.DeleteHabitResponseObject, error) {
-	if request.HabitID == "" {
+	if request.HabitID == uuid.Nil {
 		return gen.DeleteHabit400Response{}, nil
 	}
 
@@ -361,7 +362,7 @@ func (s *server) CreateHabitDataPoint(
 	ctx context.Context,
 	request gen.CreateHabitDataPointRequestObject,
 ) (gen.CreateHabitDataPointResponseObject, error) {
-	if request.HabitID == "" {
+	if request.HabitID == uuid.Nil {
 		s.logger.Info("failed to create habit's data point")
 		return gen.CreateHabitDataPoint400Response{}, nil
 	}
@@ -386,7 +387,7 @@ func (s *server) CreateHabitDataPoint(
 		return gen.CreateHabitDataPoint500JSONResponse{}, nil
 	}
 
-	return gen.CreateHabitDataPoint201JSONResponse(id), nil
+	return gen.CreateHabitDataPoint201JSONResponse(id.String()), nil
 }
 
 // GetHabit handles GET /habit/{habitId}
@@ -459,7 +460,7 @@ func (s *server) CreateProject(
 		return gen.CreateProject500JSONResponse{}, nil
 	}
 
-	return gen.CreateProject201JSONResponse(id), nil
+	return gen.CreateProject201JSONResponse(id.String()), nil
 }
 
 // PATCH /project/{project_id}
@@ -467,7 +468,7 @@ func (s *server) UpdateProject(
 	ctx context.Context,
 	request gen.UpdateProjectRequestObject,
 ) (gen.UpdateProjectResponseObject, error) {
-	if request.ProjectID == "" {
+	if request.ProjectID == uuid.Nil {
 		return gen.UpdateProject400Response{}, nil
 	}
 
@@ -502,7 +503,7 @@ func (s *server) DeleteProject(
 	ctx context.Context,
 	request gen.DeleteProjectRequestObject,
 ) (gen.DeleteProjectResponseObject, error) {
-	if request.ProjectID == "" {
+	if request.ProjectID == uuid.Nil {
 		return gen.DeleteProject400Response{}, nil
 	}
 
@@ -592,7 +593,7 @@ func (s *server) CreateTask(
 		return gen.CreateTask500JSONResponse{}, nil
 	}
 
-	return gen.CreateTask201JSONResponse(id), nil
+	return gen.CreateTask201JSONResponse(id.String()), nil
 }
 
 // PATCH /task/{task_id}
@@ -600,7 +601,7 @@ func (s *server) UpdateTask(
 	ctx context.Context,
 	request gen.UpdateTaskRequestObject,
 ) (gen.UpdateTaskResponseObject, error) {
-	if request.TaskID == "" {
+	if request.TaskID == uuid.Nil {
 		return gen.UpdateTask400Response{}, nil
 	}
 
@@ -634,7 +635,7 @@ func (s *server) DeleteTask(
 	ctx context.Context,
 	request gen.DeleteTaskRequestObject,
 ) (gen.DeleteTaskResponseObject, error) {
-	if request.TaskID == "" {
+	if request.TaskID == uuid.Nil {
 		return gen.DeleteTask400Response{}, nil
 	}
 
@@ -685,7 +686,7 @@ func (s *server) DeleteSkilltree(
 	ctx context.Context,
 	request gen.DeleteSkilltreeRequestObject,
 ) (gen.DeleteSkilltreeResponseObject, error) {
-	if request.SkilltreeID == "" {
+	if request.SkilltreeID == uuid.Nil {
 		return gen.DeleteSkilltree400Response{}, nil
 	}
 

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
@@ -38,7 +39,7 @@ func NewSkilltreeRepo(pool db.PoolTX, logger *zap.Logger) *Skilltree {
 }
 
 // List retrieves Skilltrees of the logged in user from the database
-func (r *Skilltree) List(ctx context.Context, userID string) ([]*entity.Skilltree, error) {
+func (r *Skilltree) List(ctx context.Context, userID uuid.UUID) ([]*entity.Skilltree, error) {
 	var rows pgx.Rows
 	var err error
 
@@ -119,7 +120,7 @@ func (r *Skilltree) Update(ctx context.Context, skilltree *entity.Skilltree) err
 	return nil
 }
 
-func (r *Skilltree) Delete(ctx context.Context, id string) error {
+func (r *Skilltree) Delete(ctx context.Context, id uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteSkilltree,

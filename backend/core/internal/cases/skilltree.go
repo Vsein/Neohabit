@@ -11,6 +11,7 @@ import (
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
 	"neohabit/core/internal/port/repo"
+	"neohabit/core/pkg/id"
 )
 
 type SkilltreeCase struct {
@@ -28,8 +29,8 @@ func NewSkilltreeCase(
 	}
 }
 
-func (c *SkilltreeCase) Create(ctx context.Context, skilltree *entity.Skilltree) (string, error) {
-	skilltree.ID = uuid.NewString()
+func (c *SkilltreeCase) Create(ctx context.Context, skilltree *entity.Skilltree) (uuid.UUID, error) {
+	skilltree.ID = id.New()
 	skilltree.CreatedAt = time.Now()
 	skilltree.UpdatedAt = skilltree.CreatedAt
 
@@ -44,14 +45,14 @@ func (c *SkilltreeCase) Create(ctx context.Context, skilltree *entity.Skilltree)
 		return nil, nil
 	})
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	return skilltree.ID, nil
 }
 
 // List retrieves all Skilltrees of a user
-func (c *SkilltreeCase) List(ctx context.Context, userID string) ([]*entity.Skilltree, error) {
+func (c *SkilltreeCase) List(ctx context.Context, userID uuid.UUID) ([]*entity.Skilltree, error) {
 	skilltrees, err := c.skilltreeRepo.List(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
@@ -59,7 +60,7 @@ func (c *SkilltreeCase) List(ctx context.Context, userID string) ([]*entity.Skil
 	return skilltrees, nil
 }
 
-func (c *SkilltreeCase) Delete(ctx context.Context, id string) error {
+func (c *SkilltreeCase) Delete(ctx context.Context, id uuid.UUID) error {
 	err := c.skilltreeRepo.Delete(ctx, id)
 	if err != nil {
 		return fmt.Errorf("delete: %w", err)

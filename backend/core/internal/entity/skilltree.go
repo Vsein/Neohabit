@@ -1,12 +1,13 @@
 package entity
 
 import "time"
+import "github.com/google/uuid"
 
 type Skilltree struct {
-	ID          string
-	UserID      string
-	ProjectID   string
-	HabitID     string
+	ID          uuid.UUID
+	UserID      uuid.UUID
+	ProjectID   *uuid.UUID
+	HabitID     *uuid.UUID
 	SkillIDs    []string
 	Name        string
 	Description string
@@ -16,8 +17,8 @@ type Skilltree struct {
 }
 
 type Skills struct {
-	ID            string
-	ParentSkillID string
+	ID            *uuid.UUID
+	ParentSkillID *uuid.UUID
 	Name          string
 	Description   string
 	Status        string

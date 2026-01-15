@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
@@ -81,7 +82,7 @@ func (r *User) GetByUsername(ctx context.Context, username string) (*entity.User
 	return &user, nil
 }
 
-func (r *User) GetByID(ctx context.Context, userID string) (*entity.User, error) {
+func (r *User) GetByID(ctx context.Context, userID uuid.UUID) (*entity.User, error) {
 	var user entity.User
 	err := r.pool.QueryRow(ctx, queryGetUserByID, userID).Scan(
 		&user.ID,
@@ -103,7 +104,7 @@ func (r *User) GetByID(ctx context.Context, userID string) (*entity.User, error)
 	return &user, nil
 }
 
-func (r *User) Delete(ctx context.Context, userID string) error {
+func (r *User) Delete(ctx context.Context, userID uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteUser,

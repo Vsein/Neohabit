@@ -11,6 +11,7 @@ import (
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
 	"neohabit/core/internal/port/repo"
+	"neohabit/core/pkg/id"
 )
 
 type ProjectCase struct {
@@ -28,8 +29,8 @@ func NewProjectCase(
 	}
 }
 
-func (c *ProjectCase) Create(ctx context.Context, project *entity.Project) (string, error) {
-	project.ID = uuid.NewString()
+func (c *ProjectCase) Create(ctx context.Context, project *entity.Project) (uuid.UUID, error) {
+	project.ID = id.New()
 	project.CreatedAt = time.Now()
 	project.UpdatedAt = project.CreatedAt
 
@@ -44,14 +45,14 @@ func (c *ProjectCase) Create(ctx context.Context, project *entity.Project) (stri
 		return nil, nil
 	})
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	return project.ID, nil
 }
 
 // List retrieves all Projects of a user
-func (c *ProjectCase) List(ctx context.Context, userID string) ([]*entity.Project, error) {
+func (c *ProjectCase) List(ctx context.Context, userID uuid.UUID) ([]*entity.Project, error) {
 	projects, err := c.projectRepo.List(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
@@ -73,7 +74,7 @@ func (c *ProjectCase) Update(ctx context.Context, project *entity.Project) error
 	return nil
 }
 
-func (c *ProjectCase) UpdateProjectsOrder(ctx context.Context, newProjectsOrder []string) error {
+func (c *ProjectCase) UpdateProjectsOrder(ctx context.Context, newProjectsOrder []uuid.UUID) error {
 	err := c.projectRepo.UpdateProjectsOrder(ctx, newProjectsOrder)
 	if err != nil {
 		return fmt.Errorf("update projects order: %w", err)
@@ -82,7 +83,7 @@ func (c *ProjectCase) UpdateProjectsOrder(ctx context.Context, newProjectsOrder 
 	return nil
 }
 
-func (c *ProjectCase) Delete(ctx context.Context, id string) error {
+func (c *ProjectCase) Delete(ctx context.Context, id uuid.UUID) error {
 	err := c.projectRepo.Delete(ctx, id)
 	if err != nil {
 		return fmt.Errorf("delete: %w", err)

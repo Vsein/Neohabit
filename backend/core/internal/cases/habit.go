@@ -11,6 +11,7 @@ import (
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
 	"neohabit/core/internal/port/repo"
+	"neohabit/core/pkg/id"
 )
 
 type HabitCase struct {
@@ -31,8 +32,8 @@ func NewHabitCase(
 	}
 }
 
-func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit, projectID *string) (string, error) {
-	habit.ID = uuid.NewString()
+func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit, projectID *uuid.UUID) (uuid.UUID, error) {
+	habit.ID = id.New()
 	habit.CreatedAt = time.Now()
 	habit.UpdatedAt = habit.CreatedAt
 
@@ -46,7 +47,7 @@ func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit, projectID *
 		}
 
 		if projectID != nil {
-			err = c.projectRepo.AddHabitsToProject(ctx, *projectID, []string{habit.ID})
+			err = c.projectRepo.AddHabitsToProject(ctx, *projectID, []uuid.UUID{habit.ID})
 			if err != nil {
 				return nil, fmt.Errorf("add new habit to project: %w", err)
 			}
@@ -55,7 +56,7 @@ func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit, projectID *
 		return nil, nil
 	})
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	return habit.ID, nil
@@ -73,7 +74,7 @@ func (c *HabitCase) Create(ctx context.Context, habit *entity.Habit, projectID *
 // }
 
 // List retrieves all Habits of a user
-func (c *HabitCase) List(ctx context.Context, userID string) ([]*entity.Habit, error) {
+func (c *HabitCase) List(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, error) {
 	habits, err := c.habitRepo.List(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
@@ -81,7 +82,7 @@ func (c *HabitCase) List(ctx context.Context, userID string) ([]*entity.Habit, e
 	return habits, nil
 }
 
-func (c *HabitCase) ListHabitsOutsideProjects(ctx context.Context, userID string) ([]*entity.Habit, error) {
+func (c *HabitCase) ListHabitsOutsideProjects(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, error) {
 	habits, err := c.habitRepo.ListHabitsOutsideProjects(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list projectless habits: %w", err)
@@ -103,7 +104,7 @@ func (c *HabitCase) Update(ctx context.Context, habit *entity.Habit) error {
 	return nil
 }
 
-func (c *HabitCase) Delete(ctx context.Context, id string) error {
+func (c *HabitCase) Delete(ctx context.Context, id uuid.UUID) error {
 	err := c.habitRepo.Delete(ctx, id)
 	if err != nil {
 		return fmt.Errorf("delete: %w", err)

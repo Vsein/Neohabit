@@ -1,11 +1,12 @@
 package entity
 
 import "time"
+import "github.com/google/uuid"
 
 type Stopwatch struct {
-	ID            string
-	UserID        string
-	HabitID       *string
+	ID            uuid.UUID
+	UserID        uuid.UUID
+	HabitID       *uuid.UUID
 	IsInitiated   *bool
 	StartTime     *time.Time
 	Duration      *int64

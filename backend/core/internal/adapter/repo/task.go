@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
@@ -48,7 +49,7 @@ func NewTaskRepo(pool db.PoolTX, logger *zap.Logger) *Task {
 }
 
 // List retrieves Tasks of the logged in user from the database
-func (r *Task) List(ctx context.Context, userID string) ([]*entity.Task, error) {
+func (r *Task) List(ctx context.Context, userID uuid.UUID) ([]*entity.Task, error) {
 	var rows pgx.Rows
 	var err error
 
@@ -132,7 +133,7 @@ func (r *Task) Update(ctx context.Context, task *entity.Task) error {
 	return nil
 }
 
-func (r *Task) Delete(ctx context.Context, id string) error {
+func (r *Task) Delete(ctx context.Context, id uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteTask,

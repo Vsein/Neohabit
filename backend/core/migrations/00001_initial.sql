@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS users (
-    id TEXT PRIMARY KEY,
+    id UUID PRIMARY KEY,
     username TEXT NOT NULL,
     email TEXT DEFAULT '',
     password TEXT NOT NULL,
@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE UNIQUE INDEX ux_users_lower_username ON users(LOWER(username));
 
 CREATE TABLE IF NOT EXISTS habits (
-    id TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
     name TEXT NOT NULL,
     description TEXT,
     color TEXT NOT NULL DEFAULT '#23BCDB',
@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS habits (
 CREATE INDEX idx_habits_created_at ON habits(created_at);
 
 CREATE TABLE IF NOT EXISTS habit_data (
-    id TEXT PRIMARY KEY,
-    habit_id TEXT REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
+    id UUID PRIMARY KEY,
+    habit_id UUID REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
     date TIMESTAMPTZ NOT NULL,
     value INTEGER NOT NULL,
     duration BIGINT,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS habit_data (
 
 CREATE INDEX idx_habit_data_habit_id_date ON habit_data(habit_id, date);
 
-CREATE OR REPLACE FUNCTION get_habit_data_jsonb(h_id TEXT)
+CREATE OR REPLACE FUNCTION get_habit_data_jsonb(h_id UUID)
 RETURNS jsonb
 LANGUAGE sql
 STABLE
@@ -61,8 +61,8 @@ WHERE hd.habit_id = h_id;
 $$;
 
 CREATE TABLE IF NOT EXISTS habit_targets (
-    id TEXT PRIMARY KEY,
-    habit_id TEXT REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
+    id UUID PRIMARY KEY,
+    habit_id UUID REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
     date_start TEXT NOT NULL,
     date_end TEXT,
     value INTEGER NOT NULL,
@@ -80,8 +80,8 @@ CREATE TABLE IF NOT EXISTS habit_targets (
 );
 
 CREATE TABLE IF NOT EXISTS projects (
-    id TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
     name TEXT NOT NULL,
     description TEXT,
     color TEXT NOT NULL DEFAULT '#1D60C1',
@@ -91,8 +91,8 @@ CREATE TABLE IF NOT EXISTS projects (
 );
 
 CREATE TABLE IF NOT EXISTS project_habits (
-    project_id TEXT REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
-    habit_id TEXT REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
+    project_id UUID REFERENCES projects(id) ON DELETE CASCADE NOT NULL,
+    habit_id UUID REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
     order_index INT NOT NULL,
     PRIMARY KEY (project_id, habit_id)
 );
@@ -100,8 +100,8 @@ CREATE TABLE IF NOT EXISTS project_habits (
 CREATE INDEX idx_project_habits_project_id_order_index ON project_habits(project_id, order_index);
 
 CREATE TABLE IF NOT EXISTS settings (
-    id TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
     theme SMALLINT NOT NULL DEFAULT 0,
     read_settings_from_config_file BOOLEAN NOT NULL DEFAULT FALSE,
     cell_height_multiplier SMALLINT DEFAULT 1,
@@ -126,9 +126,9 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 
 CREATE TABLE IF NOT EXISTS stopwatches (
-    id TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-    habit_id TEXT REFERENCES habits(id) ON DELETE SET NULL,
+    id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    habit_id UUID REFERENCES habits(id) ON DELETE SET NULL,
     is_initiated BOOLEAN DEFAULT FALSE,
     start_time TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     duration BIGINT DEFAULT 0,
@@ -139,8 +139,8 @@ CREATE TABLE IF NOT EXISTS stopwatches (
 );
 
 CREATE TABLE IF NOT EXISTS skills (
-    id TEXT PRIMARY KEY,
-    parent_skill_id TEXT REFERENCES skills(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY,
+    parent_skill_id UUID REFERENCES skills(id) ON DELETE CASCADE,
     is_root_skill BOOLEAN NOT NULL DEFAULT FALSE,
     name TEXT NOT NULL,
     description TEXT,
@@ -150,10 +150,10 @@ CREATE TABLE IF NOT EXISTS skills (
 );
 
 CREATE TABLE IF NOT EXISTS skilltrees (
-    id TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-    project_id TEXT REFERENCES projects(id) ON DELETE SET NULL,
-    habit_id TEXT REFERENCES habits(id) ON DELETE SET NULL,
+    id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
+    habit_id UUID REFERENCES habits(id) ON DELETE SET NULL,
     skill_ids TEXT[],
     name TEXT NOT NULL,
     description TEXT,
@@ -163,9 +163,9 @@ CREATE TABLE IF NOT EXISTS skilltrees (
 );
 
 CREATE TABLE IF NOT EXISTS tasks (
-    id TEXT PRIMARY KEY,
-    user_id TEXT REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-    habit_id TEXT REFERENCES habits(id) ON DELETE SET NULL,
+    id UUID PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
+    habit_id UUID REFERENCES habits(id) ON DELETE SET NULL,
     name TEXT NOT NULL,
     description TEXT,
     due_date TIMESTAMPTZ,

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 
 	"neohabit/core/internal/port/repo"
 )
@@ -36,9 +37,9 @@ func NewAuthCase(secretProvider repo.SecretProvider) *AuthCase {
 	}
 }
 
-func (r *AuthCase) GetUserID(ctx context.Context) (string, bool) {
+func (r *AuthCase) GetUserID(ctx context.Context) (uuid.UUID, bool) {
 	userID, ok := ctx.Value(UserIDKey).(string)
-	return userID, ok
+	return uuid.MustParse(userID), ok
 }
 
 func (r *AuthCase) StoreUserID(ctx context.Context, userID string) context.Context {
@@ -76,9 +77,9 @@ func (r *AuthCase) AuthenticateWithAccessToken(ctx context.Context, token string
 	return claims.UserID, true, nil
 }
 
-func (r *AuthCase) IssueAccessToken(ctx context.Context, userID string) (string, error) {
+func (r *AuthCase) IssueAccessToken(ctx context.Context, userID uuid.UUID) (string, error) {
 	claims := &AuthClaims{
-		UserID: userID,
+		UserID: userID.String(),
 	}
 
 	secret, err := r.secretProvider.GetJWTSecret()

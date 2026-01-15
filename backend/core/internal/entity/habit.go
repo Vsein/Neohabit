@@ -1,10 +1,11 @@
 package entity
 
 import "time"
+import "github.com/google/uuid"
 
 type Habit struct {
-	ID          string
-	UserID      string
+	ID          uuid.UUID
+	UserID      uuid.UUID
 	Name        string
 	Description string
 	Color       string
@@ -20,8 +21,8 @@ type HabitFilter struct {
 }
 
 type HabitData struct {
-	ID            string
-	HabitID       string
+	ID            uuid.UUID
+	HabitID       uuid.UUID
 	Date          time.Time
 	Value         int
 	Duration      *int64
@@ -31,7 +32,7 @@ type HabitData struct {
 }
 
 type HabitTarget struct {
-	ID          string
+	ID          uuid.UUID
 	DateStart   time.Time
 	DateEnd     time.Time
 	Value       int

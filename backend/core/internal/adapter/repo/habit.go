@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
@@ -72,7 +73,7 @@ func NewHabitRepo(pool db.PoolTX, logger *zap.Logger) *Habit {
 }
 
 // XXX: Unneccessary, thus untested and unused
-// func (r *Habit) Read(ctx context.Context, id string) (*entity.Habit, error) {
+// func (r *Habit) Read(ctx context.Context, id uuid.UUID) (*entity.Habit, error) {
 // 	var habit entity.Habit
 // 	err := r.pool.QueryRow(ctx, queryReadHabit, id).Scan(
 // 		&habit.ID,
@@ -94,7 +95,7 @@ func NewHabitRepo(pool db.PoolTX, logger *zap.Logger) *Habit {
 // }
 
 // List retrieves Habits of the logged in user from the database
-func (r *Habit) List(ctx context.Context, userID string) ([]*entity.Habit, error) {
+func (r *Habit) List(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, error) {
 	var rows pgx.Rows
 	var err error
 
@@ -132,7 +133,7 @@ func (r *Habit) List(ctx context.Context, userID string) ([]*entity.Habit, error
 	return habits, nil
 }
 
-func (r *Habit) ListHabitsOutsideProjects(ctx context.Context, userID string) ([]*entity.Habit, error) {
+func (r *Habit) ListHabitsOutsideProjects(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, error) {
 	var rows pgx.Rows
 	var err error
 
@@ -211,7 +212,7 @@ func (r *Habit) Update(ctx context.Context, habit *entity.Habit) error {
 	return nil
 }
 
-func (r *Habit) Delete(ctx context.Context, id string) error {
+func (r *Habit) Delete(ctx context.Context, id uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteHabit,

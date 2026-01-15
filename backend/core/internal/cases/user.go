@@ -12,6 +12,7 @@ import (
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
 	"neohabit/core/internal/port/repo"
+	"neohabit/core/pkg/id"
 )
 
 type UserCase struct {
@@ -38,13 +39,13 @@ func NewUserCase(
 	}
 }
 
-func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error) {
+func (c *UserCase) Create(ctx context.Context, user *entity.User) (uuid.UUID, error) {
 	password, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
 	if err != nil {
-		return "", fmt.Errorf("bcrypt password generation: %w", err)
+		return uuid.Nil, fmt.Errorf("bcrypt password generation: %w", err)
 	}
 
-	user.ID = uuid.NewString()
+	user.ID = id.New()
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = user.CreatedAt
 	user.Verified = true
@@ -60,7 +61,7 @@ func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error
 			return nil, fmt.Errorf("create user: %w", err)
 		}
 
-		habitID := uuid.NewString()
+		habitID := id.New()
 		err = c.habitRepo.Create(ctx, &entity.Habit{
 			ID:        habitID,
 			UserID:    user.ID,
@@ -74,7 +75,7 @@ func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error
 		}
 
 		err = c.settingsRepo.Create(ctx, &entity.Settings{
-			ID:        uuid.NewString(),
+			ID:        id.New(),
 			UserID:    user.ID,
 			CreatedAt: user.CreatedAt,
 			UpdatedAt: user.UpdatedAt,
@@ -84,7 +85,7 @@ func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error
 		}
 
 		err = c.stopwatchRepo.Create(ctx, &entity.Stopwatch{
-			ID:        uuid.NewString(),
+			ID:        id.New(),
 			UserID:    user.ID,
 			HabitID:   &habitID,
 			CreatedAt: user.CreatedAt,
@@ -97,7 +98,7 @@ func (c *UserCase) Create(ctx context.Context, user *entity.User) (string, error
 		return nil, nil
 	})
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	return user.ID, nil
@@ -115,7 +116,7 @@ func (c *UserCase) GetByUsername(ctx context.Context, username string) (*entity.
 	return user, nil
 }
 
-func (c *UserCase) GetByID(ctx context.Context, userID string) (*entity.User, error) {
+func (c *UserCase) GetByID(ctx context.Context, userID uuid.UUID) (*entity.User, error) {
 	user, err := c.userRepo.GetByID(ctx, userID)
 	if err != nil {
 		if errors.Is(err, repo.ErrNotFound) {
@@ -127,7 +128,7 @@ func (c *UserCase) GetByID(ctx context.Context, userID string) (*entity.User, er
 	return user, nil
 }
 
-func (c *UserCase) Delete(ctx context.Context, userID string) error {
+func (c *UserCase) Delete(ctx context.Context, userID uuid.UUID) error {
 	err := c.userRepo.Delete(ctx, userID)
 	if err != nil {
 		return fmt.Errorf("delete: %w", err)

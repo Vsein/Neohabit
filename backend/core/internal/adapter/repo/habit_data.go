@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
@@ -78,7 +79,7 @@ func (r *HabitData) UpdatePoint(ctx context.Context, habitData *entity.HabitData
 	return nil
 }
 
-func (r *HabitData) DeletePoint(ctx context.Context, id string) error {
+func (r *HabitData) DeletePoint(ctx context.Context, id uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteHabitDataPoint,

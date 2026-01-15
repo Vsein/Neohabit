@@ -21,13 +21,13 @@ type ServerInterface interface {
 	CreateHabit(w http.ResponseWriter, r *http.Request)
 	// Delete habit
 	// (DELETE /habit/{habit_id})
-	DeleteHabit(w http.ResponseWriter, r *http.Request, habitID string)
+	DeleteHabit(w http.ResponseWriter, r *http.Request, habitID UUID)
 	// Update Habit by ID
 	// (PUT /habit/{habit_id})
-	UpdateHabit(w http.ResponseWriter, r *http.Request, habitID string)
+	UpdateHabit(w http.ResponseWriter, r *http.Request, habitID UUID)
 	// Create a data point
 	// (POST /habit/{habit_id}/data_point)
-	CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID string)
+	CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID UUID)
 	// List habits
 	// (GET /habits)
 	ListHabits(w http.ResponseWriter, r *http.Request)
@@ -42,10 +42,10 @@ type ServerInterface interface {
 	CreateProject(w http.ResponseWriter, r *http.Request)
 	// Delete project
 	// (DELETE /project/{project_id})
-	DeleteProject(w http.ResponseWriter, r *http.Request, projectID string)
+	DeleteProject(w http.ResponseWriter, r *http.Request, projectID UUID)
 	// Update Project by ID
 	// (PATCH /project/{project_id})
-	UpdateProject(w http.ResponseWriter, r *http.Request, projectID string)
+	UpdateProject(w http.ResponseWriter, r *http.Request, projectID UUID)
 	// List projects
 	// (GET /projects)
 	ListProjects(w http.ResponseWriter, r *http.Request)
@@ -63,7 +63,7 @@ type ServerInterface interface {
 	Signup(w http.ResponseWriter, r *http.Request)
 	// Delete skilltree
 	// (DELETE /skilltree/{skilltree_id})
-	DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID string)
+	DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID UUID)
 	// List skilltrees
 	// (GET /skilltrees)
 	ListSkilltrees(w http.ResponseWriter, r *http.Request)
@@ -81,10 +81,10 @@ type ServerInterface interface {
 	CreateTask(w http.ResponseWriter, r *http.Request)
 	// Delete task
 	// (DELETE /task/{task_id})
-	DeleteTask(w http.ResponseWriter, r *http.Request, taskID string)
+	DeleteTask(w http.ResponseWriter, r *http.Request, taskID UUID)
 	// Update Task by ID
 	// (PATCH /task/{task_id})
-	UpdateTask(w http.ResponseWriter, r *http.Request, taskID string)
+	UpdateTask(w http.ResponseWriter, r *http.Request, taskID UUID)
 	// List tasks
 	// (GET /tasks)
 	ListTasks(w http.ResponseWriter, r *http.Request)
@@ -108,19 +108,19 @@ func (_ Unimplemented) CreateHabit(w http.ResponseWriter, r *http.Request) {
 
 // Delete habit
 // (DELETE /habit/{habit_id})
-func (_ Unimplemented) DeleteHabit(w http.ResponseWriter, r *http.Request, habitID string) {
+func (_ Unimplemented) DeleteHabit(w http.ResponseWriter, r *http.Request, habitID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Update Habit by ID
 // (PUT /habit/{habit_id})
-func (_ Unimplemented) UpdateHabit(w http.ResponseWriter, r *http.Request, habitID string) {
+func (_ Unimplemented) UpdateHabit(w http.ResponseWriter, r *http.Request, habitID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Create a data point
 // (POST /habit/{habit_id}/data_point)
-func (_ Unimplemented) CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID string) {
+func (_ Unimplemented) CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -150,13 +150,13 @@ func (_ Unimplemented) CreateProject(w http.ResponseWriter, r *http.Request) {
 
 // Delete project
 // (DELETE /project/{project_id})
-func (_ Unimplemented) DeleteProject(w http.ResponseWriter, r *http.Request, projectID string) {
+func (_ Unimplemented) DeleteProject(w http.ResponseWriter, r *http.Request, projectID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Update Project by ID
 // (PATCH /project/{project_id})
-func (_ Unimplemented) UpdateProject(w http.ResponseWriter, r *http.Request, projectID string) {
+func (_ Unimplemented) UpdateProject(w http.ResponseWriter, r *http.Request, projectID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -192,7 +192,7 @@ func (_ Unimplemented) Signup(w http.ResponseWriter, r *http.Request) {
 
 // Delete skilltree
 // (DELETE /skilltree/{skilltree_id})
-func (_ Unimplemented) DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID string) {
+func (_ Unimplemented) DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -228,13 +228,13 @@ func (_ Unimplemented) CreateTask(w http.ResponseWriter, r *http.Request) {
 
 // Delete task
 // (DELETE /task/{task_id})
-func (_ Unimplemented) DeleteTask(w http.ResponseWriter, r *http.Request, taskID string) {
+func (_ Unimplemented) DeleteTask(w http.ResponseWriter, r *http.Request, taskID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Update Task by ID
 // (PATCH /task/{task_id})
-func (_ Unimplemented) UpdateTask(w http.ResponseWriter, r *http.Request, taskID string) {
+func (_ Unimplemented) UpdateTask(w http.ResponseWriter, r *http.Request, taskID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -291,7 +291,7 @@ func (siw *ServerInterfaceWrapper) DeleteHabit(w http.ResponseWriter, r *http.Re
 	var err error
 
 	// ------------- Path parameter "habit_id" -------------
-	var habitID string
+	var habitID UUID
 
 	err = runtime.BindStyledParameterWithOptions("simple", "habit_id", chi.URLParam(r, "habit_id"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -316,7 +316,7 @@ func (siw *ServerInterfaceWrapper) UpdateHabit(w http.ResponseWriter, r *http.Re
 	var err error
 
 	// ------------- Path parameter "habit_id" -------------
-	var habitID string
+	var habitID UUID
 
 	err = runtime.BindStyledParameterWithOptions("simple", "habit_id", chi.URLParam(r, "habit_id"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -341,7 +341,7 @@ func (siw *ServerInterfaceWrapper) CreateHabitDataPoint(w http.ResponseWriter, r
 	var err error
 
 	// ------------- Path parameter "habit_id" -------------
-	var habitID string
+	var habitID UUID
 
 	err = runtime.BindStyledParameterWithOptions("simple", "habit_id", chi.URLParam(r, "habit_id"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -440,7 +440,7 @@ func (siw *ServerInterfaceWrapper) DeleteProject(w http.ResponseWriter, r *http.
 	var err error
 
 	// ------------- Path parameter "project_id" -------------
-	var projectID string
+	var projectID UUID
 
 	err = runtime.BindStyledParameterWithOptions("simple", "project_id", chi.URLParam(r, "project_id"), &projectID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -465,7 +465,7 @@ func (siw *ServerInterfaceWrapper) UpdateProject(w http.ResponseWriter, r *http.
 	var err error
 
 	// ------------- Path parameter "project_id" -------------
-	var projectID string
+	var projectID UUID
 
 	err = runtime.BindStyledParameterWithOptions("simple", "project_id", chi.URLParam(r, "project_id"), &projectID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -578,7 +578,7 @@ func (siw *ServerInterfaceWrapper) DeleteSkilltree(w http.ResponseWriter, r *htt
 	var err error
 
 	// ------------- Path parameter "skilltree_id" -------------
-	var skilltreeID string
+	var skilltreeID UUID
 
 	err = runtime.BindStyledParameterWithOptions("simple", "skilltree_id", chi.URLParam(r, "skilltree_id"), &skilltreeID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -697,7 +697,7 @@ func (siw *ServerInterfaceWrapper) DeleteTask(w http.ResponseWriter, r *http.Req
 	var err error
 
 	// ------------- Path parameter "task_id" -------------
-	var taskID string
+	var taskID UUID
 
 	err = runtime.BindStyledParameterWithOptions("simple", "task_id", chi.URLParam(r, "task_id"), &taskID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -722,7 +722,7 @@ func (siw *ServerInterfaceWrapper) UpdateTask(w http.ResponseWriter, r *http.Req
 	var err error
 
 	// ------------- Path parameter "task_id" -------------
-	var taskID string
+	var taskID UUID
 
 	err = runtime.BindStyledParameterWithOptions("simple", "task_id", chi.URLParam(r, "task_id"), &taskID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
 	if err != nil {
@@ -1049,7 +1049,7 @@ func (response CreateHabit500JSONResponse) VisitCreateHabitResponse(w http.Respo
 }
 
 type DeleteHabitRequestObject struct {
-	HabitID string `json:"habit_id"`
+	HabitID UUID `json:"habit_id"`
 }
 
 type DeleteHabitResponseObject interface {
@@ -1098,7 +1098,7 @@ func (response DeleteHabit500JSONResponse) VisitDeleteHabitResponse(w http.Respo
 }
 
 type UpdateHabitRequestObject struct {
-	HabitID string `json:"habit_id"`
+	HabitID UUID `json:"habit_id"`
 	Body    *UpdateHabitJSONRequestBody
 }
 
@@ -1149,7 +1149,7 @@ func (response UpdateHabit500JSONResponse) VisitUpdateHabitResponse(w http.Respo
 }
 
 type CreateHabitDataPointRequestObject struct {
-	HabitID string `json:"habit_id"`
+	HabitID UUID `json:"habit_id"`
 	Body    *CreateHabitDataPointJSONRequestBody
 }
 
@@ -1365,7 +1365,7 @@ func (response CreateProject500JSONResponse) VisitCreateProjectResponse(w http.R
 }
 
 type DeleteProjectRequestObject struct {
-	ProjectID string `json:"project_id"`
+	ProjectID UUID `json:"project_id"`
 }
 
 type DeleteProjectResponseObject interface {
@@ -1414,7 +1414,7 @@ func (response DeleteProject500JSONResponse) VisitDeleteProjectResponse(w http.R
 }
 
 type UpdateProjectRequestObject struct {
-	ProjectID string `json:"project_id"`
+	ProjectID UUID `json:"project_id"`
 	Body      *UpdateProjectJSONRequestBody
 }
 
@@ -1652,7 +1652,7 @@ func (response Signup500JSONResponse) VisitSignupResponse(w http.ResponseWriter)
 }
 
 type DeleteSkilltreeRequestObject struct {
-	SkilltreeID string `json:"skilltree_id"`
+	SkilltreeID UUID `json:"skilltree_id"`
 }
 
 type DeleteSkilltreeResponseObject interface {
@@ -1903,7 +1903,7 @@ func (response CreateTask500JSONResponse) VisitCreateTaskResponse(w http.Respons
 }
 
 type DeleteTaskRequestObject struct {
-	TaskID string `json:"task_id"`
+	TaskID UUID `json:"task_id"`
 }
 
 type DeleteTaskResponseObject interface {
@@ -1952,7 +1952,7 @@ func (response DeleteTask500JSONResponse) VisitDeleteTaskResponse(w http.Respons
 }
 
 type UpdateTaskRequestObject struct {
-	TaskID string `json:"task_id"`
+	TaskID UUID `json:"task_id"`
 	Body   *UpdateTaskJSONRequestBody
 }
 
@@ -2251,7 +2251,7 @@ func (sh *strictHandler) CreateHabit(w http.ResponseWriter, r *http.Request) {
 }
 
 // DeleteHabit operation middleware
-func (sh *strictHandler) DeleteHabit(w http.ResponseWriter, r *http.Request, habitID string) {
+func (sh *strictHandler) DeleteHabit(w http.ResponseWriter, r *http.Request, habitID UUID) {
 	var request DeleteHabitRequestObject
 
 	request.HabitID = habitID
@@ -2277,7 +2277,7 @@ func (sh *strictHandler) DeleteHabit(w http.ResponseWriter, r *http.Request, hab
 }
 
 // UpdateHabit operation middleware
-func (sh *strictHandler) UpdateHabit(w http.ResponseWriter, r *http.Request, habitID string) {
+func (sh *strictHandler) UpdateHabit(w http.ResponseWriter, r *http.Request, habitID UUID) {
 	var request UpdateHabitRequestObject
 
 	request.HabitID = habitID
@@ -2310,7 +2310,7 @@ func (sh *strictHandler) UpdateHabit(w http.ResponseWriter, r *http.Request, hab
 }
 
 // CreateHabitDataPoint operation middleware
-func (sh *strictHandler) CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID string) {
+func (sh *strictHandler) CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID UUID) {
 	var request CreateHabitDataPointRequestObject
 
 	request.HabitID = habitID
@@ -2453,7 +2453,7 @@ func (sh *strictHandler) CreateProject(w http.ResponseWriter, r *http.Request) {
 }
 
 // DeleteProject operation middleware
-func (sh *strictHandler) DeleteProject(w http.ResponseWriter, r *http.Request, projectID string) {
+func (sh *strictHandler) DeleteProject(w http.ResponseWriter, r *http.Request, projectID UUID) {
 	var request DeleteProjectRequestObject
 
 	request.ProjectID = projectID
@@ -2479,7 +2479,7 @@ func (sh *strictHandler) DeleteProject(w http.ResponseWriter, r *http.Request, p
 }
 
 // UpdateProject operation middleware
-func (sh *strictHandler) UpdateProject(w http.ResponseWriter, r *http.Request, projectID string) {
+func (sh *strictHandler) UpdateProject(w http.ResponseWriter, r *http.Request, projectID UUID) {
 	var request UpdateProjectRequestObject
 
 	request.ProjectID = projectID
@@ -2653,7 +2653,7 @@ func (sh *strictHandler) Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 // DeleteSkilltree operation middleware
-func (sh *strictHandler) DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID string) {
+func (sh *strictHandler) DeleteSkilltree(w http.ResponseWriter, r *http.Request, skilltreeID UUID) {
 	var request DeleteSkilltreeRequestObject
 
 	request.SkilltreeID = skilltreeID
@@ -2820,7 +2820,7 @@ func (sh *strictHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 }
 
 // DeleteTask operation middleware
-func (sh *strictHandler) DeleteTask(w http.ResponseWriter, r *http.Request, taskID string) {
+func (sh *strictHandler) DeleteTask(w http.ResponseWriter, r *http.Request, taskID UUID) {
 	var request DeleteTaskRequestObject
 
 	request.TaskID = taskID
@@ -2846,7 +2846,7 @@ func (sh *strictHandler) DeleteTask(w http.ResponseWriter, r *http.Request, task
 }
 
 // UpdateTask operation middleware
-func (sh *strictHandler) UpdateTask(w http.ResponseWriter, r *http.Request, taskID string) {
+func (sh *strictHandler) UpdateTask(w http.ResponseWriter, r *http.Request, taskID UUID) {
 	var request UpdateTaskRequestObject
 
 	request.TaskID = taskID

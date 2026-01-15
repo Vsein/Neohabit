@@ -128,7 +128,7 @@ export default function Project({
       projectsContainer.insertBefore(draggedProject, dropTo);
     }
 
-    const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].map(({ id }) => id);
+    const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].flatMap(({ id }) => id !== 'default' ? id : []);
     updateProjectsOrder({ values: { new_projects_order: ids } });
   }
 

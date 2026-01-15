@@ -56,6 +56,7 @@ export const habitApi = api.injectEndpoints({
         url: `habit/${habitID}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['HabitsOutsideProjects'],
       async onQueryStarted(habitID, { dispatch, queryFulfilled }) {
         await queryFulfilled;
         const optimisticallyDelete = (habits) => {

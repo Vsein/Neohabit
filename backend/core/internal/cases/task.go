@@ -11,6 +11,7 @@ import (
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
 	"neohabit/core/internal/port/repo"
+	"neohabit/core/pkg/id"
 )
 
 type TaskCase struct {
@@ -28,8 +29,8 @@ func NewTaskCase(
 	}
 }
 
-func (c *TaskCase) Create(ctx context.Context, task *entity.Task) (string, error) {
-	task.ID = uuid.NewString()
+func (c *TaskCase) Create(ctx context.Context, task *entity.Task) (uuid.UUID, error) {
+	task.ID = id.New()
 	task.CreatedAt = time.Now()
 	task.UpdatedAt = task.CreatedAt
 
@@ -44,14 +45,14 @@ func (c *TaskCase) Create(ctx context.Context, task *entity.Task) (string, error
 		return nil, nil
 	})
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	return task.ID, nil
 }
 
 // List retrieves all Tasks of a user
-func (c *TaskCase) List(ctx context.Context, userID string) ([]*entity.Task, error) {
+func (c *TaskCase) List(ctx context.Context, userID uuid.UUID) ([]*entity.Task, error) {
 	tasks, err := c.taskRepo.List(ctx, userID)
 	if err != nil {
 		return nil, fmt.Errorf("list: %w", err)
@@ -69,7 +70,7 @@ func (c *TaskCase) Update(ctx context.Context, task *entity.Task) error {
 	return nil
 }
 
-func (c *TaskCase) Delete(ctx context.Context, id string) error {
+func (c *TaskCase) Delete(ctx context.Context, id uuid.UUID) error {
 	err := c.taskRepo.Delete(ctx, id)
 	if err != nil {
 		return fmt.Errorf("delete: %w", err)

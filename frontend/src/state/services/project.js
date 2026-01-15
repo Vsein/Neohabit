@@ -69,6 +69,7 @@ export const projectApi = api.injectEndpoints({
         url: `project/${projectID}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['HabitsOutsideProjects'],
       onQueryStarted(projectID, { dispatch }) {
         dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {

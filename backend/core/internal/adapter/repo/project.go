@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 
@@ -65,7 +66,7 @@ const (
 		SELECT $1, hi.habit_id, hi.order_index
 		FROM (
 			SELECT
-				unnest($2::text[]) AS habit_id,
+				unnest($2::uuid[]) AS habit_id,
 				generate_series(1, cardinality($2)) AS order_index
 		) hi
 	`
@@ -77,7 +78,7 @@ const (
 		)
 		INSERT INTO project_habits (project_id, habit_id, order_index)
 		SELECT $1, habit_id, max_order_index + row_number() OVER (ORDER BY habit_id)
-		FROM unnest($2::text[]) AS habit_id, max_order
+		FROM unnest($2::uuid[]) AS habit_id, max_order
 	`
 	queryUpdateProject = `
 		UPDATE projects
@@ -92,20 +93,20 @@ const (
 	queryUpdateProjectsOrder = `
 		UPDATE projects p
 		SET order_index = pi.ordinality - 1
-		FROM unnest($1::text[]) WITH ORDINALITY AS pi(project_id, ordinality)
+		FROM unnest($1::uuid[]) WITH ORDINALITY AS pi(project_id, ordinality)
 		WHERE p.id = pi.project_id;
 	`
 	queryRemoveProjectHabitsRelations = `
 		DELETE FROM project_habits
 		WHERE project_id = $1
-			AND habit_id NOT IN (SELECT unnest($2::text[]))
+			AND habit_id NOT IN (SELECT unnest($2::uuid[]))
 	`
 	queryUpdateProjectHabitsOrder = `
 		INSERT INTO project_habits (project_id, habit_id, order_index)
 		SELECT $1, hi.habit_id, hi.order_index
 		FROM (
 			SELECT
-				unnest($2::text[]) AS habit_id,
+				unnest($2::uuid[]) AS habit_id,
 				generate_series(1, cardinality($2)) AS order_index
 		) hi
 		ON CONFLICT (project_id, habit_id) DO UPDATE
@@ -127,7 +128,7 @@ func NewProjectRepo(pool db.PoolTX, logger *zap.Logger) *Project {
 }
 
 // List retrieves Projects of the logged in user from the database
-func (r *Project) List(ctx context.Context, userID string) ([]*entity.Project, error) {
+func (r *Project) List(ctx context.Context, userID uuid.UUID) ([]*entity.Project, error) {
 	var rows pgx.Rows
 	var err error
 
@@ -234,7 +235,7 @@ func (r *Project) Update(ctx context.Context, project *entity.Project) error {
 	return nil
 }
 
-func (r *Project) UpdateProjectsOrder(ctx context.Context, newProjectsOrder []string) error {
+func (r *Project) UpdateProjectsOrder(ctx context.Context, newProjectsOrder []uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryUpdateProjectsOrder,
@@ -247,7 +248,7 @@ func (r *Project) UpdateProjectsOrder(ctx context.Context, newProjectsOrder []st
 	return nil
 }
 
-func (r *Project) AddHabitsToProject(ctx context.Context, projectID string, habitIDs []string) error {
+func (r *Project) AddHabitsToProject(ctx context.Context, projectID uuid.UUID, habitIDs []uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryAddHabitsToProject,
@@ -261,7 +262,7 @@ func (r *Project) AddHabitsToProject(ctx context.Context, projectID string, habi
 	return nil
 }
 
-func (r *Project) Delete(ctx context.Context, id string) error {
+func (r *Project) Delete(ctx context.Context, id uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
 		queryDeleteProject,

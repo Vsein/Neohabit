@@ -11,6 +11,7 @@ import (
 	"neohabit/core/internal/entity"
 	"neohabit/core/internal/port"
 	"neohabit/core/internal/port/repo"
+	"neohabit/core/pkg/id"
 )
 
 type SettingsCase struct {
@@ -28,8 +29,8 @@ func NewSettingsCase(
 	}
 }
 
-func (c *SettingsCase) Create(ctx context.Context, settings *entity.Settings) (string, error) {
-	settings.ID = uuid.NewString()
+func (c *SettingsCase) Create(ctx context.Context, settings *entity.Settings) (uuid.UUID, error) {
+	settings.ID = id.New()
 	settings.CreatedAt = time.Now()
 	settings.UpdatedAt = settings.CreatedAt
 
@@ -44,13 +45,13 @@ func (c *SettingsCase) Create(ctx context.Context, settings *entity.Settings) (s
 		return nil, nil
 	})
 	if err != nil {
-		return "", err
+		return uuid.Nil, err
 	}
 
 	return settings.ID, nil
 }
 
-func (c *SettingsCase) Read(ctx context.Context, settings_id string) (*entity.Settings, error) {
+func (c *SettingsCase) Read(ctx context.Context, settings_id uuid.UUID) (*entity.Settings, error) {
 	settings, err := c.settingsRepo.Read(ctx, settings_id)
 	if err != nil {
 		if errors.Is(err, repo.ErrNotFound) {

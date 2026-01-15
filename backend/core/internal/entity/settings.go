@@ -1,10 +1,11 @@
 package entity
 
 import "time"
+import "github.com/google/uuid"
 
 type Settings struct {
-	ID                         string
-	UserID                     string
+	ID                         uuid.UUID
+	UserID                     uuid.UUID
 	Theme                      *SettingsTheme
 	ReadSettingsFromConfigFile *bool
 	CellHeightMultiplier       *uint8

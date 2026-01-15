@@ -5,6 +5,8 @@ package gen
 
 import (
 	"time"
+
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 const (
@@ -63,14 +65,14 @@ type Habit struct {
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
 	DueDate     *Date        `json:"due_date,omitempty"`
-	ID          string       `json:"id"`
+	ID          UUID         `json:"id"`
 
 	// Name Activity name
 	Name      Name           `json:"name"`
-	ProjectID *string        `json:"project_id,omitempty"`
+	ProjectID *UUID          `json:"project_id,omitempty"`
 	Targets   *[]HabitTarget `json:"targets,omitempty"`
 	UpdatedAt *Date          `json:"updated_at,omitempty"`
-	UserID    string         `json:"user_id"`
+	UserID    UUID           `json:"user_id"`
 }
 
 // HabitData defines model for HabitData.
@@ -83,10 +85,10 @@ type HabitData struct {
 
 // HabitTarget defines model for HabitTarget.
 type HabitTarget struct {
-	DateEnd   *Date   `json:"date_end,omitempty"`
-	DateStart Date    `json:"date_start"`
-	ID        *string `json:"id,omitempty"`
-	IsArchive bool    `json:"is_archive"`
+	DateEnd   *Date `json:"date_end,omitempty"`
+	DateStart Date  `json:"date_start"`
+	ID        *UUID `json:"id,omitempty"`
+	IsArchive bool  `json:"is_archive"`
 
 	// Period How many days you have to complete the activity
 	Period uint8 `json:"period"`
@@ -105,15 +107,15 @@ type Project struct {
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	HabitIds    *[]string    `json:"habit_ids,omitempty"`
+	HabitIds    *[]UUID      `json:"habit_ids,omitempty"`
 	Habits      *[]Habit     `json:"habits,omitempty"`
-	ID          string       `json:"id"`
+	ID          UUID         `json:"id"`
 
 	// Name Activity name
-	Name       *Name  `json:"name,omitempty"`
-	OrderIndex *int   `json:"order_index,omitempty"`
-	UpdatedAt  *Date  `json:"updated_at,omitempty"`
-	UserID     string `json:"user_id"`
+	Name       *Name `json:"name,omitempty"`
+	OrderIndex *int  `json:"order_index,omitempty"`
+	UpdatedAt  *Date `json:"updated_at,omitempty"`
+	UserID     UUID  `json:"user_id"`
 }
 
 // Settings defines model for Settings.
@@ -126,7 +128,7 @@ type Settings struct {
 	HabitHeatmapsOverride        *bool                            `json:"habit_heatmaps_override,omitempty"`
 	HideCellHint                 *bool                            `json:"hide_cell_hint,omitempty"`
 	HideOnboarding               *bool                            `json:"hide_onboarding,omitempty"`
-	ID                           string                           `json:"id"`
+	ID                           UUID                             `json:"id"`
 	OverviewApplyLimit           *bool                            `json:"overview_apply_limit,omitempty"`
 	OverviewCurrentDay           *SettingsOverviewCurrentDay      `json:"overview_current_day,omitempty"`
 	OverviewDuration             *uint8                           `json:"overview_duration,omitempty"`
@@ -138,7 +140,7 @@ type Settings struct {
 	ShowStopwatchTimeInPageTitle *bool                            `json:"show_stopwatch_time_in_page_title,omitempty"`
 	Theme                        *SettingsTheme                   `json:"theme,omitempty"`
 	UpdatedAt                    *Date                            `json:"updated_at,omitempty"`
-	UserID                       string                           `json:"user_id"`
+	UserID                       UUID                             `json:"user_id"`
 }
 
 // SettingsHabitHeatmapsCurrentDay defines model for Settings.HabitHeatmapsCurrentDay.
@@ -175,15 +177,15 @@ type Skilltree struct {
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	HabitID     *string      `json:"habit_id,omitempty"`
-	ID          string       `json:"id"`
+	HabitID     *UUID        `json:"habit_id,omitempty"`
+	ID          UUID         `json:"id"`
 
 	// Name Activity name
 	Name      Name      `json:"name"`
-	ProjectID *string   `json:"project_id,omitempty"`
+	ProjectID *UUID     `json:"project_id,omitempty"`
 	SkillIds  *[]string `json:"skill_ids,omitempty"`
 	UpdatedAt *Date     `json:"updated_at,omitempty"`
-	UserID    string    `json:"user_id"`
+	UserID    UUID      `json:"user_id"`
 }
 
 // Stopwatch defines model for Stopwatch.
@@ -191,17 +193,17 @@ type Stopwatch struct {
 	CreatedAt *Date `json:"created_at,omitempty"`
 
 	// Duration Stopwatch duration in milliseconds
-	Duration    *int64  `json:"duration,omitempty"`
-	HabitID     *string `json:"habit_id,omitempty"`
-	ID          string  `json:"id"`
-	IsInitiated *bool   `json:"is_initiated,omitempty"`
-	IsPaused    *bool   `json:"is_paused,omitempty"`
+	Duration    *int64 `json:"duration,omitempty"`
+	HabitID     *UUID  `json:"habit_id,omitempty"`
+	ID          UUID   `json:"id"`
+	IsInitiated *bool  `json:"is_initiated,omitempty"`
+	IsPaused    *bool  `json:"is_paused,omitempty"`
 
 	// PauseDuration Stopwatch pause duration in milliseconds
 	PauseDuration *int64 `json:"pause_duration,omitempty"`
 	StartTime     *Date  `json:"start_time,omitempty"`
 	UpdatedAt     *Date  `json:"updated_at,omitempty"`
-	UserID        string `json:"user_id"`
+	UserID        UUID   `json:"user_id"`
 }
 
 // Task defines model for Task.
@@ -211,21 +213,24 @@ type Task struct {
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
 	DueDate     *Date        `json:"due_date,omitempty"`
-	HabitID     *string      `json:"habit_id,omitempty"`
-	ID          string       `json:"id"`
+	HabitID     *UUID        `json:"habit_id,omitempty"`
+	ID          UUID         `json:"id"`
 	IsCompleted *bool        `json:"is_completed,omitempty"`
 	IsImportant *bool        `json:"is_important,omitempty"`
 
 	// Name Activity name
-	Name      *Name  `json:"name,omitempty"`
-	UpdatedAt *Date  `json:"updated_at,omitempty"`
-	UserID    string `json:"user_id"`
+	Name      *Name `json:"name,omitempty"`
+	UpdatedAt *Date `json:"updated_at,omitempty"`
+	UserID    UUID  `json:"user_id"`
 }
+
+// UUID defines model for UUID.
+type UUID = openapi_types.UUID
 
 // User defines model for User.
 type User struct {
 	CreatedAt            *Date  `json:"created_at,omitempty"`
-	ID                   string `json:"id"`
+	ID                   UUID   `json:"id"`
 	UpdatedAt            *Date  `json:"updated_at,omitempty"`
 	Username             string `json:"username"`
 	VerificationAttempts *uint8 `json:"verification_attempts,omitempty"`
@@ -252,7 +257,7 @@ type LoginJSONBody struct {
 
 // UpdateProjectsOrderJSONBody defines parameters for UpdateProjectsOrder.
 type UpdateProjectsOrderJSONBody struct {
-	NewProjectsOrder []string `json:"new_projects_order"`
+	NewProjectsOrder []UUID `json:"new_projects_order"`
 }
 
 // SignupJSONBody defines parameters for Signup.

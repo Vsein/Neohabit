@@ -1,9 +1,10 @@
 package entity
 
 import "time"
+import "github.com/google/uuid"
 
 type User struct {
-	ID                   string
+	ID                   uuid.UUID
 	Username             string
 	Email                string
 	Password             string
