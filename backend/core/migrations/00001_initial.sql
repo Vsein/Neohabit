@@ -35,8 +35,7 @@ CREATE TABLE IF NOT EXISTS habit_data (
     duration BIGINT,
     pause_duration BIGINT,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(date)
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_habit_data_habit_id_date ON habit_data(habit_id, date);
