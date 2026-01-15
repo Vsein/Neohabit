@@ -33,6 +33,7 @@ type HabitData struct {
 
 type HabitTarget struct {
 	ID          uuid.UUID
+	HabitID     uuid.UUID
 	DateStart   time.Time
 	DateEnd     time.Time
 	Value       int

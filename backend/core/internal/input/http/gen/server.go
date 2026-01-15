@@ -28,6 +28,9 @@ type ServerInterface interface {
 	// Create a data point
 	// (POST /habit/{habit_id}/data_point)
 	CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID UUID)
+	// Create a habit target
+	// (POST /habit/{habit_id}/target)
+	CreateHabitTarget(w http.ResponseWriter, r *http.Request, habitID UUID)
 	// List habits
 	// (GET /habits)
 	ListHabits(w http.ResponseWriter, r *http.Request)
@@ -121,6 +124,12 @@ func (_ Unimplemented) UpdateHabit(w http.ResponseWriter, r *http.Request, habit
 // Create a data point
 // (POST /habit/{habit_id}/data_point)
 func (_ Unimplemented) CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID UUID) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Create a habit target
+// (POST /habit/{habit_id}/target)
+func (_ Unimplemented) CreateHabitTarget(w http.ResponseWriter, r *http.Request, habitID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -357,6 +366,37 @@ func (siw *ServerInterfaceWrapper) CreateHabitDataPoint(w http.ResponseWriter, r
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreateHabitDataPoint(w, r, habitID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CreateHabitTarget operation middleware
+func (siw *ServerInterfaceWrapper) CreateHabitTarget(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "habit_id" -------------
+	var habitID UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "habit_id", chi.URLParam(r, "habit_id"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "habit_id", Err: err})
+		return
+	}
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateHabitTarget(w, r, habitID)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -927,6 +967,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Post(options.BaseURL+"/habit/{habit_id}/data_point", wrapper.CreateHabitDataPoint)
 	})
 	r.Group(func(r chi.Router) {
+		r.Post(options.BaseURL+"/habit/{habit_id}/target", wrapper.CreateHabitTarget)
+	})
+	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/habits", wrapper.ListHabits)
 	})
 	r.Group(func(r chi.Router) {
@@ -1194,6 +1237,58 @@ func (response CreateHabitDataPoint409JSONResponse) VisitCreateHabitDataPointRes
 type CreateHabitDataPoint500JSONResponse ErrorResponse
 
 func (response CreateHabitDataPoint500JSONResponse) VisitCreateHabitDataPointResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateHabitTargetRequestObject struct {
+	HabitID UUID `json:"habit_id"`
+	Body    *CreateHabitTargetJSONRequestBody
+}
+
+type CreateHabitTargetResponseObject interface {
+	VisitCreateHabitTargetResponse(w http.ResponseWriter) error
+}
+
+type CreateHabitTarget201JSONResponse string
+
+func (response CreateHabitTarget201JSONResponse) VisitCreateHabitTargetResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateHabitTarget400Response struct {
+}
+
+func (response CreateHabitTarget400Response) VisitCreateHabitTargetResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type CreateHabitTarget401Response struct {
+}
+
+func (response CreateHabitTarget401Response) VisitCreateHabitTargetResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type CreateHabitTarget409JSONResponse ErrorResponse
+
+func (response CreateHabitTarget409JSONResponse) VisitCreateHabitTargetResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(409)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateHabitTarget500JSONResponse ErrorResponse
+
+func (response CreateHabitTarget500JSONResponse) VisitCreateHabitTargetResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -2122,6 +2217,9 @@ type StrictServerInterface interface {
 	// Create a data point
 	// (POST /habit/{habit_id}/data_point)
 	CreateHabitDataPoint(ctx context.Context, request CreateHabitDataPointRequestObject) (CreateHabitDataPointResponseObject, error)
+	// Create a habit target
+	// (POST /habit/{habit_id}/target)
+	CreateHabitTarget(ctx context.Context, request CreateHabitTargetRequestObject) (CreateHabitTargetResponseObject, error)
 	// List habits
 	// (GET /habits)
 	ListHabits(ctx context.Context, request ListHabitsRequestObject) (ListHabitsResponseObject, error)
@@ -2335,6 +2433,39 @@ func (sh *strictHandler) CreateHabitDataPoint(w http.ResponseWriter, r *http.Req
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(CreateHabitDataPointResponseObject); ok {
 		if err := validResponse.VisitCreateHabitDataPointResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateHabitTarget operation middleware
+func (sh *strictHandler) CreateHabitTarget(w http.ResponseWriter, r *http.Request, habitID UUID) {
+	var request CreateHabitTargetRequestObject
+
+	request.HabitID = habitID
+
+	var body CreateHabitTargetJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateHabitTarget(ctx, request.(CreateHabitTargetRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateHabitTarget")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateHabitTargetResponseObject); ok {
+		if err := validResponse.VisitCreateHabitTargetResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

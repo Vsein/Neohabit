@@ -31,18 +31,19 @@ var _ gen.StrictServerInterface = (*server)(nil)
 
 // server implements the HTTP handlers for the API
 type server struct {
-	address     string
-	users       *cases.UserCase
-	habits      *cases.HabitCase
-	habitData   *cases.HabitDataCase
-	projects    *cases.ProjectCase
-	tasks       *cases.TaskCase
-	skilltrees  *cases.SkilltreeCase
-	settings    *cases.SettingsCase
-	stopwatches *cases.StopwatchCase
-	auth        *cases.AuthCase
-	logger      *zap.Logger
-	debug       bool
+	address      string
+	users        *cases.UserCase
+	habits       *cases.HabitCase
+	habitData    *cases.HabitDataCase
+	habitTargets *cases.HabitTargetCase
+	projects     *cases.ProjectCase
+	tasks        *cases.TaskCase
+	skilltrees   *cases.SkilltreeCase
+	settings     *cases.SettingsCase
+	stopwatches  *cases.StopwatchCase
+	auth         *cases.AuthCase
+	logger       *zap.Logger
+	debug        bool
 }
 
 // NewServer creates a new HTTP server instance
@@ -51,6 +52,7 @@ func NewServer(
 	users *cases.UserCase,
 	habits *cases.HabitCase,
 	habitData *cases.HabitDataCase,
+	habitTargets *cases.HabitTargetCase,
 	projects *cases.ProjectCase,
 	tasks *cases.TaskCase,
 	skilltrees *cases.SkilltreeCase,
@@ -61,18 +63,19 @@ func NewServer(
 	debug bool,
 ) *server {
 	return &server{
-		address:     address,
-		users:       users,
-		habits:      habits,
-		habitData:   habitData,
-		projects:    projects,
-		tasks:       tasks,
-		skilltrees:  skilltrees,
-		settings:    settings,
-		stopwatches: stopwatches,
-		auth:        auth,
-		logger:      logger,
-		debug:       debug,
+		address:      address,
+		users:        users,
+		habits:       habits,
+		habitData:    habitData,
+		habitTargets: habitTargets,
+		projects:     projects,
+		tasks:        tasks,
+		skilltrees:   skilltrees,
+		settings:     settings,
+		stopwatches:  stopwatches,
+		auth:         auth,
+		logger:       logger,
+		debug:        debug,
 	}
 }
 
@@ -388,6 +391,40 @@ func (s *server) CreateHabitDataPoint(
 	}
 
 	return gen.CreateHabitDataPoint201JSONResponse(id.String()), nil
+}
+
+// POST /habit/{habit_id}/data_point
+func (s *server) CreateHabitTarget(
+	ctx context.Context,
+	request gen.CreateHabitTargetRequestObject,
+) (gen.CreateHabitTargetResponseObject, error) {
+	if request.HabitID == uuid.Nil {
+		s.logger.Info("failed to create habit's data point")
+		return gen.CreateHabitTarget400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.CreateHabitTarget401Response{}, nil
+	}
+
+	habitTarget := &entity.HabitTarget{
+		HabitID:   request.HabitID,
+		DateStart: request.Body.DateStart,
+		Value:     request.Body.Value,
+		Period:    request.Body.Period,
+	}
+
+	id, err := s.habitTargets.CreateTarget(ctx, habitTarget)
+	if err != nil {
+		if errors.Is(err, cases.ErrAlreadyExists) {
+			return gen.CreateHabitTarget409JSONResponse{}, nil
+		}
+		s.logger.Error("failed to create habit's data point", zap.Error(err))
+		return gen.CreateHabitTarget500JSONResponse{}, nil
+	}
+
+	return gen.CreateHabitTarget201JSONResponse(id.String()), nil
 }
 
 // GetHabit handles GET /habit/{habitId}

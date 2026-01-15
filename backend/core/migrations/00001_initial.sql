@@ -62,8 +62,8 @@ $$;
 CREATE TABLE IF NOT EXISTS habit_targets (
     id UUID PRIMARY KEY,
     habit_id UUID REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
-    date_start TEXT NOT NULL,
-    date_end TEXT,
+    date_start TIMESTAMPTZ NOT NULL,
+    date_end TIMESTAMPTZ,
     value INTEGER NOT NULL,
     period INTEGER NOT NULL,
     -- period_unit ? m y d - if you want it to happen EXACTLY on 17th of the month

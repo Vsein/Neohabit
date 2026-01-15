@@ -5,12 +5,14 @@ import { Form } from 'react-final-form';
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useCreateHabitDataPointMutation } from '../state/services/habitData';
+import { useCreateHabitTargetMutation } from '../state/services/habitTarget';
 import { close } from '../state/features/cellAdd/cellAddSlice';
 import { DateField, ActionsField, PeriodField } from './CellAddFields';
 
 export default function CellAdd() {
   const dispatch = useDispatch();
   const [createHabitDataPoint] = useCreateHabitDataPointMutation();
+  const [createHabitTarget] = useCreateHabitTargetMutation();
   const { habitID, isTarget, isActive } = useSelector((state) => state.cellAdd);
   const closeDropdown = () => {
     dispatch(close());
@@ -24,11 +26,21 @@ export default function CellAdd() {
       document.removeEventListener('click', closeDropdown);
     };
   });
-  const onSubmit = async (values) => {
+  const onSubmit = (values) => {
     if (!values.is_target) {
-      await createHabitDataPoint({
+      createHabitDataPoint({
         habitID,
         values: { value: +values.value, date: new Date(values.date) },
+      });
+    } else {
+      createHabitTarget({
+        habitID,
+        values: {
+          is_target: true,
+          value: +values.value,
+          period: +values.period,
+          date_start: new Date(values.date)
+        },
       });
     }
     closeDropdown();

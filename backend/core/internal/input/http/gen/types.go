@@ -91,10 +91,10 @@ type HabitTarget struct {
 	IsArchive bool  `json:"is_archive"`
 
 	// Period How many days you have to complete the activity
-	Period uint8 `json:"period"`
+	Period int `json:"period"`
 
 	// Value How many times the activity has to be completed in the specified Period
-	Value uint8 `json:"value"`
+	Value int `json:"value"`
 }
 
 // Name Activity name
@@ -283,6 +283,9 @@ type UpdateHabitJSONRequestBody UpdateHabitJSONBody
 
 // CreateHabitDataPointJSONRequestBody defines body for CreateHabitDataPoint for application/json ContentType.
 type CreateHabitDataPointJSONRequestBody = HabitData
+
+// CreateHabitTargetJSONRequestBody defines body for CreateHabitTarget for application/json ContentType.
+type CreateHabitTargetJSONRequestBody = HabitTarget
 
 // LoginJSONRequestBody defines body for Login for application/json ContentType.
 type LoginJSONRequestBody LoginJSONBody
