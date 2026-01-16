@@ -11,6 +11,7 @@ import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
+import { minValidDate } from '../utils/dates';
 
 export default function Project({
   project,
@@ -76,7 +77,7 @@ export default function Project({
     project.habits &&
     project.habits.flatMap((habit, i) =>
       // TODO: First habit target check, check if the interval is archived
-      differenceInDays(habit.created_at, globalDateEnd) > 0 ?
+      differenceInDays(minValidDate(new Date(habit.created_at), habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start)), globalDateEnd) > 0 ?
         [] :
         (
           <HabitOverview

@@ -8,6 +8,7 @@ import useLoaded from '../hooks/useLoaded';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
+import { minValidDate } from '../utils/dates';
 
 export default function Overview({
   dateStart,
@@ -28,7 +29,7 @@ export default function Overview({
 
   const Habits = habits.data.flatMap((habit, i) =>
     // TODO: First habit target check, check if the interval is archived
-    differenceInDays(habit.created_at, dateEnd) > 0 ?
+    differenceInDays(minValidDate(new Date(habit.created_at), habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start)), dateEnd) > 0 ?
       []
       : (
         <HabitOverview

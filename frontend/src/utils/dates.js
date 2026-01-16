@@ -1,4 +1,4 @@
-import { formatISO, addDays, compareDesc } from 'date-fns';
+import { formatISO, addDays, compareDesc, min, max, isValid } from 'date-fns';
 
 function getISODate(date) {
   return formatISO(date, { representation: 'date' });
@@ -17,4 +17,12 @@ function areAscending(...dates) {
   );
 }
 
-export { getISODate, getUTCOffsettedDate, areAscending };
+function minValidDate(...dates) {
+  return min(dates.filter((d) => isValid(d)));
+}
+
+function maxValidDate(...dates) {
+  return max(dates.filter((d) => isValid(d)));
+}
+
+export { getISODate, getUTCOffsettedDate, areAscending, minValidDate, maxValidDate };

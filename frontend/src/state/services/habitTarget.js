@@ -13,10 +13,10 @@ export const habitTargetApi = api.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted({ habitID, values }, { dispatch }) {
-        const isAfterTarget = (target) => areAscending(values.date, target.date);
+        const isAfterTarget = (target) => areAscending(values.date_start, target.date_start);
         const addTargetToHabit = (habit) => {
           if (habit) {
-            const i = findFirstIndexBsearch(habit.data, isAfterTarget);
+            const i = findFirstIndexBsearch(habit.targets, isAfterTarget);
             if (i !== -1) {
               habit.targets.splice(i, 0, values);
             } else {
