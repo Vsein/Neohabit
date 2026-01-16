@@ -31,6 +31,13 @@ type HabitData struct {
 	UpdatedAt     time.Time
 }
 
+type HabitDataPeriod struct {
+	HabitID     uuid.UUID
+	PeriodStart time.Time
+	PeriodEnd   time.Time
+	Amount      int
+}
+
 type HabitTarget struct {
 	ID          uuid.UUID
 	HabitID     uuid.UUID

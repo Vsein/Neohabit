@@ -347,6 +347,84 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /habit/{habit_id}/data_points/reduce_period:
+    post:
+      summary: Reduce sum total of habit data points of the specified period by amount
+      operationId: reduceHabitDataPointsBetweenDatesByAmount
+      tags: [HabitData]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ period_start, period_end, amount ]
+              properties:
+                period_start:
+                  $ref: '#/components/schemas/Date'
+                period_end:
+                  $ref: '#/components/schemas/Date'
+                amount:
+                  type: integer
+      responses:
+        '204':
+          description: Data points reduced successfully
+        '400':
+          description: Invalid request data
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habit/{habit_id}/data_points/delete_period:
+    delete:
+      summary: Delete all habit data points of the specified period
+      operationId: deleteAllHabitDataPointsBetweenDates
+      tags: [HabitData]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ period_start, period_end ]
+              properties:
+                period_start:
+                  $ref: '#/components/schemas/Date'
+                period_end:
+                  $ref: '#/components/schemas/Date'
+      responses:
+        '204':
+          description: Data points deleted successfully
+        '400':
+          description: Invalid request data
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
   /habit/{habit_id}/target:
     post:
       summary: Create a habit target

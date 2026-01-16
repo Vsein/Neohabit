@@ -46,7 +46,105 @@ export const habitDataApi = api.injectEndpoints({
         );
       },
     }),
+    reduceHabitDataPointsBetweenDatesByAmount: builder.mutation({
+      query: ({ habitID, values }) => ({
+        url: `habit/${habitID}/data_points/reduce_period`,
+        body: values,
+        method: 'POST',
+      }),
+      async onQueryStarted({ habitID, values }, { dispatch }) {
+        const isAfterPeriodStart = (dataPoint) => areAscending(values.period_start, dataPoint.date);
+        const isAfterPeriodEnd = (dataPoint) => areAscending(values.period_end, dataPoint.date);
+        const reduceDataPointsBetweenDatesByAmount = (habit) => {
+          if (habit) {
+            const i = findFirstIndexBsearch(habit.data, isAfterPeriodStart);
+            const j = findFirstIndexBsearch(habit.data, isAfterPeriodEnd);
+            let remainingAmount = values.amount;
+            if (i !== -1) {
+              for (let k = i; k <= (j !== -1 ? j : habit.data.length - 1); k += 1) {
+                const d = habit.data[k];
+                if (d.value <= remainingAmount) {
+                  remainingAmount -= d.value;
+                  d.value = 0;
+                } else {
+                  d.value -= remainingAmount;
+                  remainingAmount = 0;
+                }
+              }
+            }
+          }
+        };
+
+        dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            draft.forEach((project) => {
+              reduceDataPointsBetweenDatesByAmount(project.habits.find((h) => h.id === habitID));
+            });
+          }),
+        );
+
+        dispatch(
+          habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
+            reduceDataPointsBetweenDatesByAmount(draft.find((h) => h.id === habitID));
+          }),
+        );
+
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            reduceDataPointsBetweenDatesByAmount(draft.find((h) => h.id === habitID));
+          }),
+        );
+      },
+    }),
+    deleteAllHabitDataPointsBetweenDates: builder.mutation({
+      query: ({ habitID, values }) => ({
+        url: `habit/${habitID}/data_points/delete_period`,
+        body: values,
+        method: 'DELETE',
+      }),
+      async onQueryStarted({ habitID, values }, { dispatch }) {
+        const isAfterPeriodStart = (dataPoint) => areAscending(values.period_start, dataPoint.date);
+        const isAfterPeriodEnd = (dataPoint) => areAscending(values.period_end, dataPoint.date);
+        const deleteAllDataPointsBetweenDates = (habit) => {
+          if (habit) {
+            const i = findFirstIndexBsearch(habit.data, isAfterPeriodStart);
+            const j = findFirstIndexBsearch(habit.data, isAfterPeriodEnd);
+            if (i !== -1) {
+              if (j !== -1) {
+                habit.data.splice(i, j - i);
+              } else {
+                habit.data.splice(i);
+              }
+            }
+          }
+        };
+
+        dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            draft.forEach((project) => {
+              deleteAllDataPointsBetweenDates(project.habits.find((h) => h.id === habitID));
+            });
+          }),
+        );
+
+        dispatch(
+          habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
+            deleteAllDataPointsBetweenDates(draft.find((h) => h.id === habitID));
+          }),
+        );
+
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            deleteAllDataPointsBetweenDates(draft.find((h) => h.id === habitID));
+          }),
+        );
+      },
+    }),
   }),
 });
 
-export const { useCreateHabitDataPointMutation } = habitDataApi;
+export const {
+  useCreateHabitDataPointMutation,
+  useDeleteAllHabitDataPointsBetweenDatesMutation,
+  useReduceHabitDataPointsBetweenDatesByAmountMutation,
+} = habitDataApi;

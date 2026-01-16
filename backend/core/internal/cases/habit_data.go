@@ -59,10 +59,27 @@ func (c *HabitDataCase) UpdatePoint(ctx context.Context, habitData *entity.Habit
 	return nil
 }
 
+func (c *HabitDataCase) ReducePointsBetweenDatesByAmount(ctx context.Context, habitDataPeriod *entity.HabitDataPeriod) error {
+	err := c.habitDataRepo.ReducePointsBetweenDatesByAmount(ctx, habitDataPeriod)
+	if err != nil {
+		return fmt.Errorf("reduce habit points between dates: %w", err)
+	}
+
+	return nil
+}
+
 func (c *HabitDataCase) DeletePoint(ctx context.Context, id uuid.UUID) error {
 	err := c.habitDataRepo.DeletePoint(ctx, id)
 	if err != nil {
 		return fmt.Errorf("delete: %w", err)
+	}
+	return nil
+}
+
+func (c *HabitDataCase) DeleteAllPointsBetweenDates(ctx context.Context, habitDataPeriod *entity.HabitDataPeriod) error {
+	err := c.habitDataRepo.DeleteAllPointsBetweenDates(ctx, habitDataPeriod)
+	if err != nil {
+		return fmt.Errorf("delete all habit points between dates: %w", err)
 	}
 	return nil
 }

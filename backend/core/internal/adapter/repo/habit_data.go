@@ -27,7 +27,38 @@ const (
 			updated_at = $4
 		WHERE id = $1
 	`
-	queryDeleteHabitDataPoint = `DELETE FROM habit_data WHERE id = $1`
+	queryReduceHabitDataPointsBetweenDatesByAmount = `
+		WITH data_period AS (
+			SELECT
+				id,
+				value,
+				SUM(value) OVER (ORDER BY date DESC, id DESC) AS running_sum
+			FROM habit_data
+		    	WHERE habit_id = $1 AND date BETWEEN $2 AND $3
+		),
+		updated AS (
+			UPDATE habit_data hd
+			SET value =
+				CASE
+					WHEN data_period.running_sum <= $4 THEN 0
+					WHEN data_period.running_sum - data_period.value < $4
+					     THEN data_period.running_sum - $4
+					ELSE hd.value
+				END
+			FROM data_period
+			WHERE hd.id = data_period.id
+			RETURNING hd.id, hd.value
+		)
+		DELETE FROM habit_data
+		WHERE value = 0 AND habit_id = $1;
+	`
+	queryDeleteHabitDataPoint                 = `DELETE FROM habit_data WHERE id = $1`
+	queryDeleteAllHabitDataPointsBetweenDates = `
+		DELETE FROM habit_data
+		WHERE
+			habit_id = $1
+			AND date BETWEEN $2 AND $3
+	`
 )
 
 type HabitData struct {
@@ -79,6 +110,21 @@ func (r *HabitData) UpdatePoint(ctx context.Context, habitData *entity.HabitData
 	return nil
 }
 
+func (r *HabitData) ReducePointsBetweenDatesByAmount(ctx context.Context, habitDataPeriod *entity.HabitDataPeriod) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryReduceHabitDataPointsBetweenDatesByAmount,
+		habitDataPeriod.HabitID,
+		habitDataPeriod.PeriodStart,
+		habitDataPeriod.PeriodEnd,
+		habitDataPeriod.Amount,
+	)
+	if err != nil {
+		return fmt.Errorf("exec reduce habit data points period: %w", err)
+	}
+	return nil
+}
+
 func (r *HabitData) DeletePoint(ctx context.Context, id uuid.UUID) error {
 	_, err := r.pool.Exec(
 		ctx,
@@ -90,6 +136,20 @@ func (r *HabitData) DeletePoint(ctx context.Context, id uuid.UUID) error {
 			return repo.ErrNotFound
 		}
 		return fmt.Errorf("exec delete habit data point: %w", err)
+	}
+	return nil
+}
+
+func (r *HabitData) DeleteAllPointsBetweenDates(ctx context.Context, habitDataPeriod *entity.HabitDataPeriod) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryDeleteAllHabitDataPointsBetweenDates,
+		habitDataPeriod.HabitID,
+		habitDataPeriod.PeriodStart,
+		habitDataPeriod.PeriodEnd,
+	)
+	if err != nil {
+		return fmt.Errorf("exec delete habit data points period: %w", err)
 	}
 	return nil
 }

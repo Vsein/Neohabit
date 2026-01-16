@@ -10,14 +10,12 @@ import {
   mdiInformation,
 } from '@mdi/js';
 import {
-  useDeleteCellPeriodMutation,
-  useDecreaseCellPeriodMutation,
-  useUpdateHeatmapMutation,
-} from '../state/services/heatmap';
-import { useCreateHabitDataPointMutation } from '../state/services/habitData';
+  useCreateHabitDataPointMutation,
+  useDeleteAllHabitDataPointsBetweenDatesMutation,
+  useReduceHabitDataPointsBetweenDatesByAmountMutation,
+} from '../state/services/habitData';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings'
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
-import { getUTCOffsettedDate } from '../utils/dates';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -119,9 +117,8 @@ export default function CellTip() {
     return () => document.removeEventListener('click', unfixateAndHideCellTip);
   });
   const { habitID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
-  const [deleteCellPeriod] = useDeleteCellPeriodMutation();
-  const [decreaseCellPeriod] = useDecreaseCellPeriodMutation();
-  const [updateHeatmap] = useUpdateHeatmapMutation();
+  const [deleteAllHabitDataPointsBetweenDates] = useDeleteAllHabitDataPointsBetweenDatesMutation();
+  const [reduceHabitDataPointsBetweenDatesByAmount] = useReduceHabitDataPointsBetweenDatesByAmountMutation();
   const [createHabitDataPoint] = useCreateHabitDataPointMutation();
   const settings = useGetSettingsQuery();
   const hintHidden = settings.data.hide_cell_hint;
@@ -140,13 +137,16 @@ export default function CellTip() {
             className="centering"
             title="Delete 1 completed action in this period"
             onClick={() => {
-              decreaseCellPeriod({
-                habitID,
-                values: {
-                  dateStart: getUTCOffsettedDate(dateStart),
-                  dateEnd: getUTCOffsettedDate(dateEnd),
-                },
-              });
+              if (actions > 0) {
+                reduceHabitDataPointsBetweenDatesByAmount({
+                  habitID,
+                  values: {
+                    period_start: new Date(dateStart),
+                    period_end: new Date(dateEnd),
+                    amount: 1,
+                  },
+                });
+              }
               setCellTipActions(Math.max(actions - 1, 0));
               dispatch(changeCellActions({ actions: Math.max(actions - 1, 0) }));
             }}
@@ -155,16 +155,27 @@ export default function CellTip() {
           </button>
           <input
             id="cell-tip-actions-counter"
-            size="1"
+            size="3"
+            type="number"
+            min="0"
             onMouseLeave={(e) => e.target.blur()}
             onBlur={(e) => {
-              updateHeatmap({
-                habitID,
-                values: {
-                  date: getUTCOffsettedDate(dateStart),
-                  value: +e.target.value - actions,
-                },
-              });
+              const diff = +e.target.value - actions;
+              if (diff > 0) {
+                createHabitDataPoint({
+                  habitID,
+                  values: { date: new Date(dateStart), value: diff },
+                });
+              } else if (diff < 0) {
+                reduceHabitDataPointsBetweenDatesByAmount({
+                  habitID,
+                  values: {
+                    period_start: new Date(dateStart),
+                    period_end: new Date(dateEnd),
+                    amount: -diff,
+                  },
+                });
+              }
               setCellTipActions(+e.target.value);
               dispatch(changeCellActions({ actions: +e.target.value }));
             }}
@@ -188,12 +199,11 @@ export default function CellTip() {
             title="Delete all actions in this period"
             style={{ marginLeft: '3px' }}
             onClick={() => {
-              deleteCellPeriod({
+              deleteAllHabitDataPointsBetweenDates({
                 habitID,
                 values: {
-                  dateStart: getUTCOffsettedDate(dateStart),
-                  dateEnd: getUTCOffsettedDate(dateEnd),
-                  actions,
+                  period_start: new Date(dateStart),
+                  period_end: new Date(dateEnd),
                 },
               });
               setCellTipActions(0);

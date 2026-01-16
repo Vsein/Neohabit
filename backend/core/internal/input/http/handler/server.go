@@ -366,7 +366,7 @@ func (s *server) CreateHabitDataPoint(
 	request gen.CreateHabitDataPointRequestObject,
 ) (gen.CreateHabitDataPointResponseObject, error) {
 	if request.HabitID == uuid.Nil {
-		s.logger.Info("failed to create habit's data point")
+		s.logger.Info("no valid habitID provided")
 		return gen.CreateHabitDataPoint400Response{}, nil
 	}
 
@@ -393,7 +393,68 @@ func (s *server) CreateHabitDataPoint(
 	return gen.CreateHabitDataPoint201JSONResponse(id.String()), nil
 }
 
-// POST /habit/{habit_id}/data_point
+// POST /habit/{habit_id}/data_point/reduce_period
+func (s *server) ReduceHabitDataPointsBetweenDatesByAmount(
+	ctx context.Context,
+	request gen.ReduceHabitDataPointsBetweenDatesByAmountRequestObject,
+) (gen.ReduceHabitDataPointsBetweenDatesByAmountResponseObject, error) {
+	if request.HabitID == uuid.Nil {
+		s.logger.Info("no valid habitID provided")
+		return gen.ReduceHabitDataPointsBetweenDatesByAmount400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.ReduceHabitDataPointsBetweenDatesByAmount401Response{}, nil
+	}
+
+	habitDataPeriod := &entity.HabitDataPeriod{
+		HabitID:     request.HabitID,
+		PeriodStart: request.Body.PeriodStart,
+		PeriodEnd:   request.Body.PeriodEnd,
+		Amount:      request.Body.Amount,
+	}
+
+	err := s.habitData.ReducePointsBetweenDatesByAmount(ctx, habitDataPeriod)
+	if err != nil {
+		s.logger.Error("failed to create habit's data point", zap.Error(err))
+		return gen.ReduceHabitDataPointsBetweenDatesByAmount500JSONResponse{}, nil
+	}
+
+	return gen.ReduceHabitDataPointsBetweenDatesByAmount204Response{}, nil
+}
+
+// DELETE /habit/{habit_id}/data_point/delete_period
+func (s *server) DeleteAllHabitDataPointsBetweenDates(
+	ctx context.Context,
+	request gen.DeleteAllHabitDataPointsBetweenDatesRequestObject,
+) (gen.DeleteAllHabitDataPointsBetweenDatesResponseObject, error) {
+	if request.HabitID == uuid.Nil {
+		s.logger.Info("no valid habitID provided")
+		return gen.DeleteAllHabitDataPointsBetweenDates400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.DeleteAllHabitDataPointsBetweenDates401Response{}, nil
+	}
+
+	habitDataPeriod := &entity.HabitDataPeriod{
+		HabitID:     request.HabitID,
+		PeriodStart: request.Body.PeriodStart,
+		PeriodEnd:   request.Body.PeriodEnd,
+	}
+
+	err := s.habitData.DeleteAllPointsBetweenDates(ctx, habitDataPeriod)
+	if err != nil {
+		s.logger.Error("failed to create habit's data point", zap.Error(err))
+		return gen.DeleteAllHabitDataPointsBetweenDates500JSONResponse{}, nil
+	}
+
+	return gen.DeleteAllHabitDataPointsBetweenDates204Response{}, nil
+}
+
+// POST /habit/{habit_id}/target
 func (s *server) CreateHabitTarget(
 	ctx context.Context,
 	request gen.CreateHabitTargetRequestObject,

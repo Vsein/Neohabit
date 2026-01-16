@@ -28,6 +28,12 @@ type ServerInterface interface {
 	// Create a data point
 	// (POST /habit/{habit_id}/data_point)
 	CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID UUID)
+	// Delete all habit data points of the specified period
+	// (DELETE /habit/{habit_id}/data_points/delete_period)
+	DeleteAllHabitDataPointsBetweenDates(w http.ResponseWriter, r *http.Request, habitID UUID)
+	// Reduce sum total of habit data points of the specified period by amount
+	// (POST /habit/{habit_id}/data_points/reduce_period)
+	ReduceHabitDataPointsBetweenDatesByAmount(w http.ResponseWriter, r *http.Request, habitID UUID)
 	// Create a habit target
 	// (POST /habit/{habit_id}/target)
 	CreateHabitTarget(w http.ResponseWriter, r *http.Request, habitID UUID)
@@ -124,6 +130,18 @@ func (_ Unimplemented) UpdateHabit(w http.ResponseWriter, r *http.Request, habit
 // Create a data point
 // (POST /habit/{habit_id}/data_point)
 func (_ Unimplemented) CreateHabitDataPoint(w http.ResponseWriter, r *http.Request, habitID UUID) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Delete all habit data points of the specified period
+// (DELETE /habit/{habit_id}/data_points/delete_period)
+func (_ Unimplemented) DeleteAllHabitDataPointsBetweenDates(w http.ResponseWriter, r *http.Request, habitID UUID) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Reduce sum total of habit data points of the specified period by amount
+// (POST /habit/{habit_id}/data_points/reduce_period)
+func (_ Unimplemented) ReduceHabitDataPointsBetweenDatesByAmount(w http.ResponseWriter, r *http.Request, habitID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -366,6 +384,68 @@ func (siw *ServerInterfaceWrapper) CreateHabitDataPoint(w http.ResponseWriter, r
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreateHabitDataPoint(w, r, habitID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteAllHabitDataPointsBetweenDates operation middleware
+func (siw *ServerInterfaceWrapper) DeleteAllHabitDataPointsBetweenDates(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "habit_id" -------------
+	var habitID UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "habit_id", chi.URLParam(r, "habit_id"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "habit_id", Err: err})
+		return
+	}
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteAllHabitDataPointsBetweenDates(w, r, habitID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// ReduceHabitDataPointsBetweenDatesByAmount operation middleware
+func (siw *ServerInterfaceWrapper) ReduceHabitDataPointsBetweenDatesByAmount(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "habit_id" -------------
+	var habitID UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "habit_id", chi.URLParam(r, "habit_id"), &habitID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "habit_id", Err: err})
+		return
+	}
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.ReduceHabitDataPointsBetweenDatesByAmount(w, r, habitID)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -967,6 +1047,12 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Post(options.BaseURL+"/habit/{habit_id}/data_point", wrapper.CreateHabitDataPoint)
 	})
 	r.Group(func(r chi.Router) {
+		r.Delete(options.BaseURL+"/habit/{habit_id}/data_points/delete_period", wrapper.DeleteAllHabitDataPointsBetweenDates)
+	})
+	r.Group(func(r chi.Router) {
+		r.Post(options.BaseURL+"/habit/{habit_id}/data_points/reduce_period", wrapper.ReduceHabitDataPointsBetweenDatesByAmount)
+	})
+	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/habit/{habit_id}/target", wrapper.CreateHabitTarget)
 	})
 	r.Group(func(r chi.Router) {
@@ -1237,6 +1323,90 @@ func (response CreateHabitDataPoint409JSONResponse) VisitCreateHabitDataPointRes
 type CreateHabitDataPoint500JSONResponse ErrorResponse
 
 func (response CreateHabitDataPoint500JSONResponse) VisitCreateHabitDataPointResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteAllHabitDataPointsBetweenDatesRequestObject struct {
+	HabitID UUID `json:"habit_id"`
+	Body    *DeleteAllHabitDataPointsBetweenDatesJSONRequestBody
+}
+
+type DeleteAllHabitDataPointsBetweenDatesResponseObject interface {
+	VisitDeleteAllHabitDataPointsBetweenDatesResponse(w http.ResponseWriter) error
+}
+
+type DeleteAllHabitDataPointsBetweenDates204Response struct {
+}
+
+func (response DeleteAllHabitDataPointsBetweenDates204Response) VisitDeleteAllHabitDataPointsBetweenDatesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type DeleteAllHabitDataPointsBetweenDates400Response struct {
+}
+
+func (response DeleteAllHabitDataPointsBetweenDates400Response) VisitDeleteAllHabitDataPointsBetweenDatesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type DeleteAllHabitDataPointsBetweenDates401Response struct {
+}
+
+func (response DeleteAllHabitDataPointsBetweenDates401Response) VisitDeleteAllHabitDataPointsBetweenDatesResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type DeleteAllHabitDataPointsBetweenDates500JSONResponse ErrorResponse
+
+func (response DeleteAllHabitDataPointsBetweenDates500JSONResponse) VisitDeleteAllHabitDataPointsBetweenDatesResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type ReduceHabitDataPointsBetweenDatesByAmountRequestObject struct {
+	HabitID UUID `json:"habit_id"`
+	Body    *ReduceHabitDataPointsBetweenDatesByAmountJSONRequestBody
+}
+
+type ReduceHabitDataPointsBetweenDatesByAmountResponseObject interface {
+	VisitReduceHabitDataPointsBetweenDatesByAmountResponse(w http.ResponseWriter) error
+}
+
+type ReduceHabitDataPointsBetweenDatesByAmount204Response struct {
+}
+
+func (response ReduceHabitDataPointsBetweenDatesByAmount204Response) VisitReduceHabitDataPointsBetweenDatesByAmountResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type ReduceHabitDataPointsBetweenDatesByAmount400Response struct {
+}
+
+func (response ReduceHabitDataPointsBetweenDatesByAmount400Response) VisitReduceHabitDataPointsBetweenDatesByAmountResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type ReduceHabitDataPointsBetweenDatesByAmount401Response struct {
+}
+
+func (response ReduceHabitDataPointsBetweenDatesByAmount401Response) VisitReduceHabitDataPointsBetweenDatesByAmountResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type ReduceHabitDataPointsBetweenDatesByAmount500JSONResponse ErrorResponse
+
+func (response ReduceHabitDataPointsBetweenDatesByAmount500JSONResponse) VisitReduceHabitDataPointsBetweenDatesByAmountResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -2217,6 +2387,12 @@ type StrictServerInterface interface {
 	// Create a data point
 	// (POST /habit/{habit_id}/data_point)
 	CreateHabitDataPoint(ctx context.Context, request CreateHabitDataPointRequestObject) (CreateHabitDataPointResponseObject, error)
+	// Delete all habit data points of the specified period
+	// (DELETE /habit/{habit_id}/data_points/delete_period)
+	DeleteAllHabitDataPointsBetweenDates(ctx context.Context, request DeleteAllHabitDataPointsBetweenDatesRequestObject) (DeleteAllHabitDataPointsBetweenDatesResponseObject, error)
+	// Reduce sum total of habit data points of the specified period by amount
+	// (POST /habit/{habit_id}/data_points/reduce_period)
+	ReduceHabitDataPointsBetweenDatesByAmount(ctx context.Context, request ReduceHabitDataPointsBetweenDatesByAmountRequestObject) (ReduceHabitDataPointsBetweenDatesByAmountResponseObject, error)
 	// Create a habit target
 	// (POST /habit/{habit_id}/target)
 	CreateHabitTarget(ctx context.Context, request CreateHabitTargetRequestObject) (CreateHabitTargetResponseObject, error)
@@ -2433,6 +2609,72 @@ func (sh *strictHandler) CreateHabitDataPoint(w http.ResponseWriter, r *http.Req
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(CreateHabitDataPointResponseObject); ok {
 		if err := validResponse.VisitCreateHabitDataPointResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteAllHabitDataPointsBetweenDates operation middleware
+func (sh *strictHandler) DeleteAllHabitDataPointsBetweenDates(w http.ResponseWriter, r *http.Request, habitID UUID) {
+	var request DeleteAllHabitDataPointsBetweenDatesRequestObject
+
+	request.HabitID = habitID
+
+	var body DeleteAllHabitDataPointsBetweenDatesJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteAllHabitDataPointsBetweenDates(ctx, request.(DeleteAllHabitDataPointsBetweenDatesRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteAllHabitDataPointsBetweenDates")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteAllHabitDataPointsBetweenDatesResponseObject); ok {
+		if err := validResponse.VisitDeleteAllHabitDataPointsBetweenDatesResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// ReduceHabitDataPointsBetweenDatesByAmount operation middleware
+func (sh *strictHandler) ReduceHabitDataPointsBetweenDatesByAmount(w http.ResponseWriter, r *http.Request, habitID UUID) {
+	var request ReduceHabitDataPointsBetweenDatesByAmountRequestObject
+
+	request.HabitID = habitID
+
+	var body ReduceHabitDataPointsBetweenDatesByAmountJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.ReduceHabitDataPointsBetweenDatesByAmount(ctx, request.(ReduceHabitDataPointsBetweenDatesByAmountRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "ReduceHabitDataPointsBetweenDatesByAmount")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(ReduceHabitDataPointsBetweenDatesByAmountResponseObject); ok {
+		if err := validResponse.VisitReduceHabitDataPointsBetweenDatesByAmountResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

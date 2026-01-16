@@ -249,6 +249,19 @@ type UpdateHabitJSONBody struct {
 	Name Name `json:"name"`
 }
 
+// DeleteAllHabitDataPointsBetweenDatesJSONBody defines parameters for DeleteAllHabitDataPointsBetweenDates.
+type DeleteAllHabitDataPointsBetweenDatesJSONBody struct {
+	PeriodEnd   Date `json:"period_end"`
+	PeriodStart Date `json:"period_start"`
+}
+
+// ReduceHabitDataPointsBetweenDatesByAmountJSONBody defines parameters for ReduceHabitDataPointsBetweenDatesByAmount.
+type ReduceHabitDataPointsBetweenDatesByAmountJSONBody struct {
+	Amount      int  `json:"amount"`
+	PeriodEnd   Date `json:"period_end"`
+	PeriodStart Date `json:"period_start"`
+}
+
 // LoginJSONBody defines parameters for Login.
 type LoginJSONBody struct {
 	Password string `json:"password"`
@@ -283,6 +296,12 @@ type UpdateHabitJSONRequestBody UpdateHabitJSONBody
 
 // CreateHabitDataPointJSONRequestBody defines body for CreateHabitDataPoint for application/json ContentType.
 type CreateHabitDataPointJSONRequestBody = HabitData
+
+// DeleteAllHabitDataPointsBetweenDatesJSONRequestBody defines body for DeleteAllHabitDataPointsBetweenDates for application/json ContentType.
+type DeleteAllHabitDataPointsBetweenDatesJSONRequestBody DeleteAllHabitDataPointsBetweenDatesJSONBody
+
+// ReduceHabitDataPointsBetweenDatesByAmountJSONRequestBody defines body for ReduceHabitDataPointsBetweenDatesByAmount for application/json ContentType.
+type ReduceHabitDataPointsBetweenDatesByAmountJSONRequestBody ReduceHabitDataPointsBetweenDatesByAmountJSONBody
 
 // CreateHabitTargetJSONRequestBody defines body for CreateHabitTarget for application/json ContentType.
 type CreateHabitTargetJSONRequestBody = HabitTarget
