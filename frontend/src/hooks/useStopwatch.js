@@ -89,6 +89,7 @@ export default function useStopwatch() {
   };
 
   const finishCountdown = () => {
+    const duration = calcCurrentDuration();
     finishStopwatch({
       values: {
         ...stopwatch.data,
@@ -96,7 +97,7 @@ export default function useStopwatch() {
         pause_duration: Math.floor(
           Math.abs(Date.now() - new Date(stopwatch.data.start_time)) - calcCurrentDuration(),
         ),
-        start_time: new Date(stopwatch.data.start_time),
+        start_time: duration > 0 ? new Date(stopwatch.data.start_time) : new Date(),
       },
     });
     setCurrentDuration(0);

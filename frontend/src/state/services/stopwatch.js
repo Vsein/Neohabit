@@ -1,6 +1,8 @@
-import { isSameDay } from 'date-fns';
 import api from './api';
-import { heatmapApi } from './heatmap';
+import { habitApi } from './habit';
+import { projectApi } from './project';
+import { findFirstIndexBsearch } from '../../utils/binarySearch';
+import { areAscending } from '../../utils/dates';
 
 export const stopwatchApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -41,25 +43,41 @@ export const stopwatchApi = api.injectEndpoints({
             Object.assign(draft, resettedValues);
           }),
         );
-        dispatch(
-          heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            const Heatmap = draft.find((heatmap) => heatmap.habit.id === values.habit.id);
-            const index = Heatmap.data.findIndex(
-              (point) =>
-                isSameDay(new Date(point.date), new Date(values.start_time)) && !point.is_target,
-            );
-            if (index !== -1) {
-              Heatmap.data = Heatmap.data.map((point) =>
-                isSameDay(new Date(point.date), new Date(values.start_time)) && !point.is_target
-                  ? { ...point, value: +point.value + +1 }
-                  : point,
-              );
-            } else {
-              Heatmap.data.push({ date: values.start_time, value: 1 });
+
+        if (values.habit_id) {
+          const isAfterDataPoint = (dataPoint) => areAscending(values.start_time, dataPoint.date);
+          const addDataPointToHabit = (habit) => {
+            if (habit) {
+              const i = findFirstIndexBsearch(habit.data, isAfterDataPoint);
+              const newDataPoint = { date: values.start_time, value: 1 };
+              if (i !== -1) {
+                habit.data.splice(i, 0, newDataPoint);
+              } else {
+                habit.data.push(newDataPoint);
+              }
             }
-            Heatmap.data.sort((a, b) => a.date - b.date);
-          }),
-        );
+          };
+
+          dispatch(
+            projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+              draft.forEach((project) => {
+                addDataPointToHabit(project.habits.find((h) => h.id === values.habit_id));
+              });
+            }),
+          );
+
+          dispatch(
+            habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
+              addDataPointToHabit(draft.find((h) => h.id === values.habit_id));
+            }),
+          );
+
+          dispatch(
+            habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+              addDataPointToHabit(draft.find((h) => h.id === values.habit_id));
+            }),
+          );
+        }
       },
     }),
   }),
