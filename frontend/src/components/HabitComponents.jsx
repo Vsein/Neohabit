@@ -17,7 +17,7 @@ import { changeHabitTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
 
-import Heatmap from './Heatmap2';
+import Heatmap from './Heatmap';
 
 function HabitControls({
   habit,

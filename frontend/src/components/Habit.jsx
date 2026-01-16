@@ -8,7 +8,7 @@ import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { DatePeriodPicker } from './DatePickers';
-import Heatmap from './Heatmap2';
+import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';

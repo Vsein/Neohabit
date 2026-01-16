@@ -2,295 +2,214 @@ import React from 'react';
 import {
   differenceInDays,
   addDays,
-  compareDesc,
   startOfDay,
   endOfDay,
-  startOfWeek,
   min,
   max,
   subMilliseconds,
+  isValid,
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { areAscending, minValidDate, maxValidDate } from '../utils/dates';
+
+function getWindowDateStart(dateStart, firstTarget) {
+  if (firstTarget) {
+    const diffInCycles = Math.floor(differenceInDays(dateStart, firstTarget.date_start) / firstTarget.period);
+    return addDays(firstTarget.date_start, diffInCycles * firstTarget.period);
+  }
+  return undefined;
+}
+
+function getWindowDateEnd(dateEnd, lastTarget) {
+  if (lastTarget) {
+    const diffInCycles = Math.ceil(differenceInDays(dateEnd, lastTarget.date_start) / lastTarget.period);
+    return addDays(lastTarget.date_start, diffInCycles * lastTarget.period + 1);
+  }
+  return undefined;
+}
 
 export default function Heatmap({
   dateStart,
+  // FIX: I'm sending dateEnd as start of the last day in the useDatePeriod,
+  //      which kind of messes with my mind
+  // TODO: Maybe remake CellPeriods to have [ ) type constaints, I'm tired of subtracting a millisecond each time
   dateEnd,
   habit,
-  heatmapData,
-  heatmapID,
   vertical = false,
-  isOverview,
+  isOverview, // NOTE: Maybe change to is2D or is1D, much more clear this way
   overridenElimination = undefined,
   overridenNumeric = undefined,
 }) {
-  const current = { date: dateStart, values: [0] };
-  // current.date === current Target Period Start if period is defined,
-  // otherwise it's the current date
-  // current.values always has one value if it's not a sequence
-  // otherwise it's an array of the amount of items in a sequence
-  const target = { start: undefined, period: undefined, value: 1, sequence: [] };
-  const getCellPositionInSequence = (mod) => {
-    if (!target.sequence.length) return 0;
-    let curMod = mod;
-    let index = 0;
-    for (let i = 0; i < target.sequence.length; i++) {
-      const currentTarget = target.sequence[i];
-      if (curMod > currentTarget.duration) {
-        curMod -= currentTarget.duration;
-        index += Math.floor(currentTarget.duration / currentTarget.period);
-        continue;
-      }
-      index += Math.floor(curMod / currentTarget.period);
-      break;
-    }
-    return index;
-  };
-  const setNewTarget = (point, date) => {
-    target.period = point.period;
-    target.value = point.value;
-    target.start = date;
-    target.sequence = [];
-    current.date = date;
-    current.values = target.sequence.length
-      ? new Array(getCellPositionInSequence(target.period)).fill(0)
-      : [0];
-  };
-  let passed = false;
-  let firstPassed = false;
-  let archived = false;
+  const data = habit?.data ?? [];
+  const targets = habit?.targets ?? [];
 
-  const dateCreation = startOfDay(new Date(habit?.date_of_creation ?? dateStart));
+  const fti = targets.findLastIndex((t) => areAscending(new Date(t.date_start), dateStart));
+  const lti = targets.findLastIndex((t) => areAscending(new Date(t.date_start), dateEnd));
+  const firstTarget = targets[fti];
+  const lastTarget = targets[lti];
+
+  const windowDateStart = getWindowDateStart(dateStart, firstTarget);
+  const windowDateEnd = getWindowDateEnd(dateEnd, lastTarget);
+
+  const habitCreatedAt = new Date(habit.created_at);
+  const habitStartDate = minValidDate(habitCreatedAt, windowDateStart, targets.length > 0 && new Date(targets.length > 0 && targets[0]?.date_start));
+  const daysToHabitStart = differenceInDays(habitStartDate, dateStart);
+
+  // Calculate buckets
+  const firstDummyBucket =
+    daysToHabitStart > 0 ? {
+      dateStart,
+      dateEnd: subMilliseconds(startOfDay(habitStartDate), 1),
+      value: 0,
+      dummy: true
+    } : [];
+
+  const lastBucket =
+    !lastTarget ? {
+      dateStart: startOfDay(habitStartDate),
+      dateEnd: minValidDate(dateEnd, windowDateEnd),
+      value: 0
+    } : [];
+
+  const bucketBeforeTargetBucket =
+    differenceInDays(targets.length && targets[0]?.date_start, habitCreatedAt) > 0 ? {
+      dateStart: startOfDay(habitCreatedAt),
+      dateEnd: subMilliseconds(new Date(targets[0]?.date_start), 1),
+      value: 0
+    } : [];
+
+  const targetBuckets = targets.slice(Math.max(fti, 0), lti + 1).flatMap((t, i, ts) => {
+    const bucketsDateStart = new Date(t.date_start);
+    const nextTarget = i + 1 < lti + 1 ? ts[i + 1] : undefined;
+    const bucketsDateEnd = minValidDate(new Date(t.date_end), new Date(nextTarget?.date_start), maxValidDate(windowDateEnd, dateStart));
+
+    const daysUntilEnd = differenceInDays(bucketsDateEnd, new Date(t.date_start));
+    let diffInCycles = Math.floor(daysUntilEnd / t.period);
+    const hasFractionedCycle = daysUntilEnd % t.period;
+    diffInCycles += !!hasFractionedCycle;
+
+    return diffInCycles > 0 ? Array.from(new Array(diffInCycles)).map((_, j) => ({
+      targetIndex: i + Math.max(fti, 0),
+      dateStart: addDays(bucketsDateStart, t.period * j),
+      dateEnd: subMilliseconds(minValidDate(addDays(bucketsDateStart, t.period * (j + 1)), new Date(nextTarget?.date_start)), 1),
+    })) : [];
+  })
+
+  const buckets = [firstDummyBucket, bucketBeforeTargetBucket, targetBuckets, lastBucket].flatMap(b => b);
 
   const elimination = overridenElimination ?? habit?.elimination;
   const numeric = overridenNumeric ?? habit?.numeric;
+
+  const firstDataIndex = data.findIndex((d) => areAscending(windowDateStart || dateStart, d.date));
+  let j = firstDataIndex === -1 ? data.length : firstDataIndex;
+
+  const hasNextDataPoint = (bucket) => j < data.length ?
+    areAscending(bucket.dateStart, new Date(data[j].date), bucket.dateEnd)
+    : undefined;
+
+  // Populating buckets with data and turning them into cells
+  const Cells = buckets.map((b, i) => {
+
+    // Case 1. Handle <target cells> that already have a determined dateStart, dateEnd and targetValue
+    if (typeof b.targetIndex === 'number') {
+      // TODO: Handling of sequences
+      let value = 0;
+      while (hasNextDataPoint(b)) {
+        value += data[j].value;
+        j += 1;
+      }
+      return <CellPeriod
+        key={i}
+        dummy={!!targets[b.targetIndex]?.isArchiving}
+        habitID={habit.id}
+        targetStart={b.dateStart}
+        targetEnd={b.dateEnd}
+        dateStart={startOfDay(max([b.dateStart, dateStart]))}
+        dateEnd={endOfDay(min([b.dateEnd, dateEnd]))}
+        color={habit.color}
+        value={value}
+        targetValue={targets[b.targetIndex].value}
+        basePeriod={24}
+        vertical={vertical}
+        elimination={elimination}
+        numeric={numeric}
+        isOverview={isOverview}
+      />
+    }
+
+
+    // Case 2. Handle <bucketed cells>
+    let cell = { dateStart: max([b.dateStart, dateStart]), value: 0, dummy: b.dummy };
+    const cells = [];
+
+    let date;
+    let bucketHasDataPoints = false;
+    while (hasNextDataPoint(b)) {
+      date = startOfDay(new Date(data[j].date));
+
+      // Handle the [previous period], up to the # data point:  [----]# or [#----]# or [#]#
+      if (differenceInDays(date, cell.dateStart) >= 1) {
+
+        // Handle {data cell}:   [{#}----]# or [{#}]#
+        if (cell.value) {
+          cell.dateEnd = endOfDay(cell.dateStart);
+          cells.push(cell);
+          cell = { dateStart: addDays(cell.dateStart, 1), value: 0 };
+        }
+
+        // Handle {empty period}:  [#{----}]# or [{----}]#
+        if (differenceInDays(date, cell.dateStart) >= 1) {
+          cell.dateEnd = subMilliseconds(date, 1);
+          cells.push(cell);
+          cell = { dateStart: date, value: 0 };
+        }
+      }
+
+      cell.value += data[j].value;
+      cell.dateEnd = endOfDay(date);
+      j += 1; bucketHasDataPoints = true;
+    }
+
+    if (bucketHasDataPoints) {
+      // Handle the last data point # and the ---- empty period after (if it exists):  [#] and [#----]
+      cells.push(cell);
+      cell = { dateStart: addDays(date, 1), dateEnd: b.dateEnd, value: 0 };
+      if (areAscending(cell.dateStart, cell.dateEnd)) {
+        cells.push(cell);
+      }
+    } else {
+      // Handle only the empty period:  [----]
+      cell.dateEnd = b.dateEnd;
+      cells.push(cell);
+    }
+
+    return <React.Fragment key={i}>
+      {cells.map((c, k) =>
+        <CellPeriod
+          key={`${i}-${k}`}
+          dummy={c.dummy}
+          habitID={habit.id}
+          dateStart={startOfDay(c.dateStart)}
+          dateEnd={endOfDay(c.dateEnd)}
+          color={habit.color}
+          value={c.value}
+          basePeriod={24}
+          vertical={vertical}
+          elimination={elimination}
+          numeric={numeric}
+          isOverview={isOverview}
+        />
+      )}
+    </React.Fragment>
+  });
 
   return (
     <div
       className={`overview-habit-cells ${isOverview ? '' : 'weekly'}`}
       style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
     >
-      {heatmapData &&
-        heatmapData.flatMap((point, index) => {
-          const date = startOfDay(new Date(point.date));
-          if (compareDesc(dateEnd, date) === 1 && !passed) {
-            return [];
-          }
-          if (compareDesc(date, dateStart) === 1) {
-            if (point?.is_target) {
-              setNewTarget(point, date);
-            } else if (target.period) {
-              const diffInPeriods = Math.floor(
-                differenceInDays(date, current.date) / target.period,
-              );
-              const valueIndex = getCellPositionInSequence(
-                differenceInDays(date, current.date) % target.period,
-              );
-              if (diffInPeriods === 0) {
-                current.values[valueIndex] += point.value;
-              } else {
-                current.date = addDays(current.date, diffInPeriods * target.period);
-                current.values[valueIndex] = point.value;
-              }
-            }
-            return [];
-          }
-          // if (index === heatmapData.length - 2 && point.is_archive) {
-          //   current.date = dateEnd;
-          //   return [];
-          // }
-          let gap;
-          if (index === 0 && compareDesc(dateStart, date) === 1) {
-            const dateOfFirstEntry = min([dateCreation, date]);
-            gap = Math.max(differenceInDays(dateOfFirstEntry, dateStart), 0);
-            current.date = dateOfFirstEntry;
-          }
-          let firstVerticalDummy;
-          if (!firstPassed && vertical) {
-            const hiddenDateStart = max([addDays(current.date, -gap || 0), dateStart]);
-            firstVerticalDummy = differenceInDays(hiddenDateStart, startOfWeek(hiddenDateStart));
-          }
-          if (target.period === undefined) {
-            const dateNowTmp = current.date;
-            if (point?.is_target) {
-              if (index === heatmapData.length - 2 && point.is_archive) {
-                archived = true;
-              }
-              setNewTarget(point, date);
-            } else {
-              current.date = addDays(date, 1);
-            }
-            firstPassed = true;
-            return (
-              <React.Fragment key={index}>
-                {!!firstVerticalDummy && (
-                  <CellDummy length={firstVerticalDummy} vertical={vertical} />
-                )}
-                {gap > 0 &&
-                  (isOverview ? (
-                    <CellDummy length={gap} vertical={vertical} />
-                  ) : (
-                    <CellPeriod
-                      dateStart={addDays(dateNowTmp, -gap)}
-                      dateEnd={subMilliseconds(dateNowTmp, 1)}
-                      dummy
-                    />
-                  ))}
-                {(differenceInDays(date, dateNowTmp) > 0 ||
-                  (point?.isLast && compareDesc(dateNowTmp, date) >= 0 && !gap)) && (
-                    <CellPeriod
-                      heatmapID={heatmapID}
-                      dateStart={max([dateNowTmp, dateStart])}
-                      dateEnd={subMilliseconds(addDays(date, point?.isLast || 0), 1)}
-                      color="transparent"
-                      value={0}
-                      vertical={vertical}
-                      elimination={elimination}
-                      numeric={numeric}
-                      isOverview={isOverview}
-                    />
-                  )}
-                {!point?.isLast && !point.is_target && (
-                  <CellPeriod
-                    heatmapID={heatmapID}
-                    dateStart={date}
-                    dateEnd={endOfDay(date)}
-                    color={habit.color}
-                    value={point.value}
-                    basePeriod={24}
-                    vertical={vertical}
-                    elimination={elimination}
-                    numeric={numeric}
-                    isOverview={isOverview}
-                  />
-                )}
-              </React.Fragment>
-            );
-          }
-          const periodsToStart = Math.floor(
-            differenceInDays(dateStart, current.date) / target.period,
-          );
-          if (periodsToStart > 0) {
-            current.date = addDays(current.date, periodsToStart * target.period);
-            current.values[0] = 0;
-          }
-          const previous = { ...current, values: current.values.slice() };
-          const previousTarget = {
-            ...target,
-            sequence: target.sequence.length
-              ? target.sequence.slice()
-              : [{ ...target, duration: target.period, start: 0 }],
-          };
-          let diffInPeriods = Math.floor(differenceInDays(date, current.date) / target.period);
-          const valueIndex = getCellPositionInSequence(
-            differenceInDays(date, current.date) % target.period,
-          );
-          if (passed && index === heatmapData.length - 1) {
-            passed = false;
-            diffInPeriods = 1;
-            if (compareDesc(date, addDays(current.date, target.period)) === 1) {
-              previous.values[valueIndex] += point.value;
-            }
-          }
-          if (index === heatmapData.length - 2 && point.is_archive) {
-            // current.date = dateEnd;
-            archived = true;
-          }
-          if (passed && compareDesc(addDays(current.date, target.period), date) === 1) {
-            passed = false;
-            diffInPeriods = 1;
-          }
-          if (passed && diffInPeriods) {
-            passed = false;
-          }
-          if (point?.isLast) {
-            if (archived) {
-              diffInPeriods = 1;
-              previousTarget.period = differenceInDays(date, previous.date);
-              return isOverview ? (
-                <CellDummy key={index} length={gap} vertical={vertical} />
-              ) : (
-                <CellPeriod key={index} dateStart={previous.date} dateEnd={date} dummy />
-              );
-            }
-            if (index === heatmapData.length - 1) {
-              diffInPeriods += 1;
-            } else {
-              passed = true;
-            }
-          }
-          if (point?.is_target) {
-            if (differenceInDays(date, current.date) % target.period) {
-              diffInPeriods += 1;
-            }
-            setNewTarget(point, date);
-          } else if (diffInPeriods === 0) {
-            current.values[valueIndex] += point.value;
-            return <React.Fragment key={index}> </React.Fragment>;
-          } else {
-            current.date = addDays(current.date, diffInPeriods * target.period);
-            current.values[valueIndex] = point.value;
-          }
-          firstPassed = true;
-          return (
-            <React.Fragment key={index}>
-              {!!firstVerticalDummy && (
-                <CellDummy length={firstVerticalDummy} vertical={vertical} />
-              )}
-              {Array.from(new Array(diffInPeriods)).map((_, Index) => (
-                <React.Fragment key={`${index}-${Index}`}>
-                  {Array.from(new Array(previousTarget.sequence.length)).map(
-                    (__, sequenceIndex) => {
-                      const sequenceTarget = previousTarget.sequence[sequenceIndex];
-                      return (
-                        <React.Fragment key={`${index}-${Index}-${sequenceIndex}`}>
-                          {Array.from(
-                            new Array(Math.floor(sequenceTarget.duration / sequenceTarget.period)),
-                          ).map((___, sequencePeriodIndex) => {
-                            const targetStart = addDays(
-                              previous.date,
-                              previousTarget.period * Index +
-                              sequenceTarget.start +
-                              sequenceTarget.period * sequencePeriodIndex,
-                            );
-                            const targetEnd = addDays(
-                              previous.date,
-                              previousTarget.period * Index +
-                              sequenceTarget.start +
-                              sequenceTarget.period * (sequencePeriodIndex + 1),
-                            );
-                            return (
-                              <CellPeriod
-                                heatmapID={heatmapID}
-                                key={`${index}-${Index}-${sequenceIndex}-${sequencePeriodIndex}`}
-                                targetStart={targetStart}
-                                targetEnd={subMilliseconds(targetEnd, 1)}
-                                dateStart={max([targetStart, dateStart])}
-                                dateEnd={subMilliseconds(
-                                  min([targetEnd, addDays(dateEnd, 1), current.date]),
-                                  1,
-                                )}
-                                color={Index || !previous.values[0] ? 'transparent' : habit.color}
-                                value={Index ? 0 : previous.values[0]}
-                                basePeriod={24}
-                                vertical={vertical}
-                                elimination={elimination}
-                                numeric={numeric}
-                                targetValue={sequenceTarget.value}
-                                isOverview={isOverview}
-                                dummy={!sequenceTarget.value}
-                              />
-                            );
-                          })}
-                        </React.Fragment>
-                      );
-                    },
-                  )}
-                </React.Fragment>
-              ))}
-            </React.Fragment>
-          );
-        })}
+      {Cells}
     </div>
   );
 }
