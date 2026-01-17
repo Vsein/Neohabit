@@ -35,7 +35,7 @@ export default function Habit({
           dateStart={dateStart}
           dateEnd={dateEnd}
           vertical={vertical}
-          isOverview={false}
+          is2D
           overridenElimination={overridenElimination}
           overridenNumeric={overridenNumeric}
         />

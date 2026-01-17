@@ -121,7 +121,7 @@ function CellPeriod({
   targetEnd = undefined,
   elimination = false,
   numeric = false,
-  isOverview = false,
+  is2D = false,
 }) {
   const dispatch = useDispatch();
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
@@ -137,7 +137,7 @@ function CellPeriod({
       actions: value,
     }
     : undefined;
-  if (isSameWeek(dateStart, dateEnd) || isOverview || !vertical) {
+  if (isSameWeek(dateStart, dateEnd) || !is2D || !vertical) {
     return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (
       <Cell
         color={color}

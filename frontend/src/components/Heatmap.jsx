@@ -36,7 +36,7 @@ export default function Heatmap({
   dateEnd,
   habit,
   vertical = false,
-  isOverview, // NOTE: Maybe change to is2D or is1D, much more clear this way
+  is2D = false,
   overridenElimination = undefined,
   overridenNumeric = undefined,
 }) {
@@ -133,7 +133,7 @@ export default function Heatmap({
         vertical={vertical}
         elimination={elimination}
         numeric={numeric}
-        isOverview={isOverview}
+        is2D={is2D}
       />
     }
 
@@ -197,7 +197,7 @@ export default function Heatmap({
           vertical={vertical}
           elimination={elimination}
           numeric={numeric}
-          isOverview={isOverview}
+          is2D={is2D}
         />
       )}
     </React.Fragment>
@@ -205,7 +205,7 @@ export default function Heatmap({
 
   return (
     <div
-      className={`overview-habit-cells ${isOverview ? '' : 'weekly'}`}
+      className={`overview-habit-cells ${is2D ? 'weekly' : ''}`}
       style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
     >
       {Cells}
