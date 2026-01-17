@@ -24,6 +24,8 @@ const (
 			h.description,
 			h.color,
 			h.due_date,
+			h.is_numeric,
+			h.more_is_bad,
 			h.created_at,
 			h.updated_at,
 			get_habit_data_jsonb(h.id),
@@ -42,6 +44,8 @@ const (
 			h.description,
 			h.color,
 			h.due_date,
+			h.is_numeric,
+			h.more_is_bad,
 			h.created_at,
 			h.updated_at,
 			get_habit_data_jsonb(h.id),
@@ -55,10 +59,10 @@ const (
 		ORDER BY h.created_at
 	`
 	queryCreateHabit = `
-		INSERT INTO habits (id, user_id, name, description, color, due_date, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO habits (id, user_id, name, description, color, due_date, is_numeric, more_is_bad, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 	`
-	queryUpdateHabit = `UPDATE habits SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
+	queryUpdateHabit = `UPDATE habits SET name = $2, description = $3, color = $4, is_numeric = $5, more_is_bad = $6, updated_at = $7 WHERE id = $1`
 	queryDeleteHabit = `DELETE FROM habits WHERE id = $1`
 )
 
@@ -118,6 +122,8 @@ func (r *Habit) List(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, er
 			&habit.Description,
 			&habit.Color,
 			&habit.DueDate,
+			&habit.IsNumeric,
+			&habit.MoreIsBad,
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
 			&habit.Data,
@@ -157,6 +163,8 @@ func (r *Habit) ListHabitsOutsideProjects(ctx context.Context, userID uuid.UUID)
 			&habit.Description,
 			&habit.Color,
 			&habit.DueDate,
+			&habit.IsNumeric,
+			&habit.MoreIsBad,
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
 			&habit.Data,
@@ -185,6 +193,8 @@ func (r *Habit) Create(ctx context.Context, habit *entity.Habit) error {
 		habit.Description,
 		habit.Color,
 		habit.DueDate,
+		habit.IsNumeric,
+		habit.MoreIsBad,
 		habit.CreatedAt,
 		habit.UpdatedAt,
 	)
@@ -205,6 +215,8 @@ func (r *Habit) Update(ctx context.Context, habit *entity.Habit) error {
 		habit.Name,
 		habit.Description,
 		habit.Color,
+		habit.IsNumeric,
+		habit.MoreIsBad,
 		habit.UpdatedAt,
 	)
 	if err != nil {

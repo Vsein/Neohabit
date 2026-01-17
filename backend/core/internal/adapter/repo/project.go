@@ -35,6 +35,8 @@ const (
 						'description', h.description,
 						'color', h.color,
 						'due_date', to_char(h.due_date, 'YYYY-MM-DD"T"HH24:MI:SS"Z"'),
+						'is_numeric', h.is_numeric,
+						'more_is_bad', h.more_is_bad,
 						'created_at', h.created_at,
 						'updated_at', h.updated_at,
 						'order_index', ph.order_index,

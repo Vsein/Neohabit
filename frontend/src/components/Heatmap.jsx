@@ -7,7 +7,6 @@ import {
   min,
   max,
   subMilliseconds,
-  isValid,
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
@@ -98,8 +97,8 @@ export default function Heatmap({
 
   const buckets = [firstDummyBucket, bucketBeforeTargetBucket, targetBuckets, lastBucket].flatMap(b => b);
 
-  const elimination = overridenElimination ?? habit?.elimination;
-  const numeric = overridenNumeric ?? habit?.numeric;
+  const elimination = overridenElimination ?? habit?.more_is_bad;
+  const numeric = overridenNumeric ?? habit?.is_numeric;
 
   const firstDataIndex = data.findIndex((d) => areAscending(windowDateStart || dateStart, d.date));
   let j = firstDataIndex === -1 ? data.length : firstDataIndex;

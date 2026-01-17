@@ -285,6 +285,8 @@ func (s *server) CreateHabit(
 		Name:        request.Body.Name,
 		Description: *request.Body.Description,
 		Color:       *request.Body.Color,
+		IsNumeric:   request.Body.IsNumeric,
+		MoreIsBad:   request.Body.MoreIsBad,
 		UserID:      userID,
 	}
 
@@ -317,8 +319,10 @@ func (s *server) UpdateHabit(
 	habit := &entity.Habit{
 		ID:          request.HabitID,
 		Name:        request.Body.Name,
-		Description: request.Body.Description,
+		Description: *request.Body.Description,
 		Color:       *request.Body.Color,
+		IsNumeric:   request.Body.IsNumeric,
+		MoreIsBad:   request.Body.MoreIsBad,
 		UserID:      userID,
 	}
 

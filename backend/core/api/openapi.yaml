@@ -252,15 +252,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required: [ name, description ]
-              properties:
-                name:
-                  $ref: '#/components/schemas/Name'
-                description:
-                  $ref: '#/components/schemas/Description'
-                color:
-                  $ref: '#/components/schemas/Color'
+              $ref: '#/components/schemas/Habit'
       responses:
         '204':
           description: Habit successfully modified
@@ -1026,6 +1018,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/HabitTarget'
+        is_numeric:
+          type: boolean
+        more_is_bad:
+          type: boolean
         created_at:
           $ref: '#/components/schemas/Date'
         updated_at:
@@ -1065,7 +1061,7 @@ components:
           type: integer
           description: "How many days you have to complete the activity"
           example: 1
-        is_archive:
+        is_archiving:
           type: boolean
 
     Project:

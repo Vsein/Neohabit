@@ -42,6 +42,8 @@ func toAPIHabit(e *entity.Habit) gen.Habit {
 		Description: &e.Description,
 		Color:       &e.Color,
 		DueDate:     e.DueDate,
+		IsNumeric:   e.IsNumeric,
+		MoreIsBad:   e.MoreIsBad,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 		Data:        &data,

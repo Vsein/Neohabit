@@ -11,6 +11,8 @@ type Habit struct {
 	Color       string
 	Data        []HabitData
 	Targets     []HabitTarget
+	IsNumeric   *bool
+	MoreIsBad   *bool
 	DueDate     *time.Time `json:"due_date"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`

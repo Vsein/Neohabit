@@ -61,8 +61,8 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
           name: habit?.name,
           description: habit?.description,
           color: habit?.color,
-          elimination: habit?.elimination,
-          numeric: habit?.numeric,
+          is_numeric: habit?.is_numeric,
+          more_is_bad: habit?.more_is_bad,
         }}
         onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -120,8 +120,8 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             {width >= 850 && habitID && (
               <HabitModalWrapper
                 habit={habit}
-                overridenElimination={values.elimination}
-                overridenNumeric={values.numeric}
+                overridenElimination={values.more_is_bad}
+                overridenNumeric={values.is_numeric}
               />
             )}
             <div className="modal-details-habit-wrapper">
@@ -131,7 +131,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               <div className="modal-details-block mode-area">
                 <div className="form-task-description">
                   <Field
-                    name="elimination"
+                    name="more_is_bad"
                     component="input"
                     type="checkbox"
                     className="checkbox"
@@ -139,7 +139,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   <label>Exceeding targets</label>
                 </div>
                 <div className="form-task-description">
-                  <Field name="numeric" component="input" type="checkbox" className="checkbox" />
+                  <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
                   <label>Show as numbers</label>
                 </div>
               </div>

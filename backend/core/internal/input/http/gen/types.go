@@ -66,6 +66,8 @@ type Habit struct {
 	Description *Description `json:"description,omitempty"`
 	DueDate     *Date        `json:"due_date,omitempty"`
 	ID          UUID         `json:"id"`
+	IsNumeric   *bool        `json:"is_numeric,omitempty"`
+	MoreIsBad   *bool        `json:"more_is_bad,omitempty"`
 
 	// Name Activity name
 	Name      Name           `json:"name"`
@@ -85,10 +87,10 @@ type HabitData struct {
 
 // HabitTarget defines model for HabitTarget.
 type HabitTarget struct {
-	DateEnd   *Date `json:"date_end,omitempty"`
-	DateStart Date  `json:"date_start"`
-	ID        *UUID `json:"id,omitempty"`
-	IsArchive bool  `json:"is_archive"`
+	DateEnd     *Date `json:"date_end,omitempty"`
+	DateStart   Date  `json:"date_start"`
+	ID          *UUID `json:"id,omitempty"`
+	IsArchiving *bool `json:"is_archiving,omitempty"`
 
 	// Period How many days you have to complete the activity
 	Period int `json:"period"`
@@ -238,17 +240,6 @@ type User struct {
 	Verified             *bool  `json:"verified,omitempty"`
 }
 
-// UpdateHabitJSONBody defines parameters for UpdateHabit.
-type UpdateHabitJSONBody struct {
-	Color *Color `json:"color,omitempty"`
-
-	// Description Activity description
-	Description Description `json:"description"`
-
-	// Name Activity name
-	Name Name `json:"name"`
-}
-
 // DeleteAllHabitDataPointsBetweenDatesJSONBody defines parameters for DeleteAllHabitDataPointsBetweenDates.
 type DeleteAllHabitDataPointsBetweenDatesJSONBody struct {
 	PeriodEnd   Date `json:"period_end"`
@@ -292,7 +283,7 @@ type CreateTaskJSONBody struct {
 type CreateHabitJSONRequestBody = Habit
 
 // UpdateHabitJSONRequestBody defines body for UpdateHabit for application/json ContentType.
-type UpdateHabitJSONRequestBody UpdateHabitJSONBody
+type UpdateHabitJSONRequestBody = Habit
 
 // CreateHabitDataPointJSONRequestBody defines body for CreateHabitDataPoint for application/json ContentType.
 type CreateHabitDataPointJSONRequestBody = HabitData
