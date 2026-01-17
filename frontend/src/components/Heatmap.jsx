@@ -7,6 +7,7 @@ import {
   min,
   max,
   subMilliseconds,
+  addMilliseconds,
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
@@ -23,7 +24,7 @@ function getWindowDateStart(dateStart, firstTarget) {
 function getWindowDateEnd(dateEnd, lastTarget) {
   if (lastTarget) {
     const diffInCycles = Math.ceil(differenceInDays(dateEnd, lastTarget.date_start) / lastTarget.period);
-    return addDays(lastTarget.date_start, diffInCycles * lastTarget.period + 1);
+    return endOfDay(addDays(lastTarget.date_start, diffInCycles * lastTarget.period + 1));
   }
   return undefined;
 }
@@ -52,14 +53,14 @@ export default function Heatmap({
   const windowDateEnd = getWindowDateEnd(dateEnd, lastTarget);
 
   const habitCreatedAt = startOfDay(new Date(habit.created_at));
-  const habitStartDate = minValidDate(habitCreatedAt, windowDateStart, targets.length > 0 && new Date(targets.length > 0 && targets[0]?.date_start));
+  const habitStartDate = minValidDate(habitCreatedAt, windowDateStart, targets.length > 0 && new Date(targets[0]?.date_start), data.length > 0 && new Date(data[0]?.date));
   const daysToHabitStart = differenceInDays(habitStartDate, dateStart);
 
   // Calculate buckets
   const firstDummyBucket =
     daysToHabitStart > 0 ? {
       dateStart,
-      dateEnd: subMilliseconds(startOfDay(habitStartDate), 1),
+      dateEnd: subMilliseconds(minValidDate(startOfDay(habitStartDate), endOfDay(dateEnd)), 1),
       value: 0,
       dummy: true
     } : [];
@@ -72,18 +73,20 @@ export default function Heatmap({
     } : [];
 
   const bucketBeforeTargetBucket =
-    differenceInDays(targets.length && targets[0]?.date_start, habitCreatedAt) > 0 ? {
-      dateStart: habitCreatedAt,
-      dateEnd: subMilliseconds(new Date(targets[0]?.date_start), 1),
-      value: 0
-    } : [];
+    differenceInDays(targets.length && targets[0]?.date_start, habitStartDate) > 0
+      && differenceInDays(dateEnd, targets.length && targets[0]?.date_start) > 0
+      ? {
+        dateStart: startOfDay(habitStartDate),
+        dateEnd: subMilliseconds(startOfDay(new Date(targets[0]?.date_start)), 1),
+        value: 0
+      } : [];
 
   const targetBuckets = targets.slice(Math.max(fti, 0), lti + 1).flatMap((t, i, ts) => {
-    const bucketsDateStart = new Date(t.date_start);
+    const bucketsDateStart = startOfDay(new Date(t.date_start));
     const nextTarget = i + 1 < lti + 1 ? ts[i + 1] : undefined;
-    const bucketsDateEnd = minValidDate(new Date(t.date_end), new Date(nextTarget?.date_start), maxValidDate(windowDateEnd, dateStart));
+    const bucketsDateEnd = minValidDate(endOfDay(new Date(t.date_end)), startOfDay(new Date(nextTarget?.date_start)), maxValidDate(windowDateEnd, dateStart));
 
-    const daysUntilEnd = differenceInDays(bucketsDateEnd, new Date(t.date_start));
+    const daysUntilEnd = differenceInDays(addMilliseconds(bucketsDateEnd, 1), bucketsDateStart);
     let diffInCycles = Math.floor(daysUntilEnd / t.period);
     const hasFractionedCycle = daysUntilEnd % t.period;
     diffInCycles += !!hasFractionedCycle;
