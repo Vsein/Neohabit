@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery, useUpdateProjectMutation } from '../state/services/project';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
@@ -15,7 +14,6 @@ export default function ProjectsPage() {
   useTitle('Projects | Neohabit');
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
-  const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
 
@@ -84,7 +82,7 @@ export default function ProjectsPage() {
           isFuturePeriod={isFuturePeriod}
         />
       </div>
-      {!loaded || projects.isFetching || habits.isFetching || settings.isFetching ? (
+      {!loaded || projects.isFetching || settings.isFetching ? (
         <div className="loader" />
       ) : (
         <div className="contentlist">

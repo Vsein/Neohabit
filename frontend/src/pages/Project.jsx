@@ -10,7 +10,7 @@ import { DatePeriodPicker } from '../components/DatePickers';
 import { generateShades } from '../hooks/usePaletteGenerator';
 
 export default function ProjectPage() {
-  useTitle('Habit | Neohabit');
+  useTitle('Project | Neohabit');
 
   return (
     <Routes>

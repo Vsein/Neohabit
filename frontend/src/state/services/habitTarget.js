@@ -1,3 +1,4 @@
+import { isSameSecond } from 'date-fns';
 import api from './api';
 import { habitApi } from './habit';
 import { projectApi } from './project';
@@ -13,7 +14,9 @@ export const habitTargetApi = api.injectEndpoints({
         method: 'POST',
       }),
       async onQueryStarted({ habitID, values }, { dispatch }) {
-        const isAfterTarget = (target) => areAscending(values.date_start, target.date_start);
+        const isAfterTarget = (target) =>
+          areAscending(values.date_start, target.date_start) &&
+          !isSameSecond(values.date_start, target.date_start);
         const addTargetToHabit = (habit) => {
           if (habit) {
             const i = findFirstIndexBsearch(habit.targets, isAfterTarget);

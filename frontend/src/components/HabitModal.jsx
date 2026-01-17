@@ -129,16 +129,22 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <DescriptionField rows="10" />
               </div>
               <div className="modal-details-block mode-area">
-                <div className="form-task-description">
+                <div
+                  className="form-task-description"
+                  title="Darkens the cells if they exceed the target"
+                >
                   <Field
                     name="more_is_bad"
                     component="input"
                     type="checkbox"
                     className="checkbox"
                   />
-                  <label>Exceeding targets</label>
+                  <label>More is bad</label>
                 </div>
-                <div className="form-task-description">
+                <div
+                  className="form-task-description"
+                  title="Shows numbers instead of cells"
+                >
                   <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
                   <label>Show as numbers</label>
                 </div>

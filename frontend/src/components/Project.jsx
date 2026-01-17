@@ -76,7 +76,7 @@ export default function Project({
   const Habits =
     project.habits &&
     project.habits.flatMap((habit, i) =>
-      // TODO: First habit target check, check if the interval is archived
+      // TODO: Check if the interval is archived
       differenceInDays(minValidDate(new Date(habit.created_at), habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start)), globalDateEnd) > 0 ?
         [] :
         (

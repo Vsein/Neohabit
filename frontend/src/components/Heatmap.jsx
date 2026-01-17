@@ -51,7 +51,7 @@ export default function Heatmap({
   const windowDateStart = getWindowDateStart(dateStart, firstTarget);
   const windowDateEnd = getWindowDateEnd(dateEnd, lastTarget);
 
-  const habitCreatedAt = new Date(habit.created_at);
+  const habitCreatedAt = startOfDay(new Date(habit.created_at));
   const habitStartDate = minValidDate(habitCreatedAt, windowDateStart, targets.length > 0 && new Date(targets.length > 0 && targets[0]?.date_start));
   const daysToHabitStart = differenceInDays(habitStartDate, dateStart);
 
@@ -73,7 +73,7 @@ export default function Heatmap({
 
   const bucketBeforeTargetBucket =
     differenceInDays(targets.length && targets[0]?.date_start, habitCreatedAt) > 0 ? {
-      dateStart: startOfDay(habitCreatedAt),
+      dateStart: habitCreatedAt,
       dateEnd: subMilliseconds(new Date(targets[0]?.date_start), 1),
       value: 0
     } : [];
