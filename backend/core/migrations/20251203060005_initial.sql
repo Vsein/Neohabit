@@ -207,6 +207,7 @@ DROP TABLE IF EXISTS settings;
 DROP TABLE IF EXISTS project_habits;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS habit_targets;
+DROP FUNCTION IF EXISTS get_habit_targets_jsonb(TEXT);
 DROP TABLE IF EXISTS habit_data;
 DROP FUNCTION IF EXISTS get_habit_data_jsonb(TEXT);
 DROP TABLE IF EXISTS habits;
