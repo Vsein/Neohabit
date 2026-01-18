@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
@@ -25,9 +25,9 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
 
   const onSubmit = async (values) => {
     if (!skillID) {
-      await addSkill({ skilltreeID, skillparentID, values });
+      await addSkill({ ...values, skilltree_id: skilltreeID, parent_skill_id: skillparentID });
     } else {
-      await editSkill({ skilltreeID, skillID, values });
+      await editSkill({ skillID, values: { ...values, skilltree_id: skilltreeID } });
     }
     dispatch(close());
   };

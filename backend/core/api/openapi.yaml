@@ -811,7 +811,13 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                type: object
+                required: [ skilltree_id, skill_id ]
+                properties:
+                  skilltree_id:
+                    type: string
+                  skill_id:
+                    type: string
         '400':
           description: Invalid request data
           content:
@@ -890,6 +896,110 @@ paths:
           description: Unauthorized
         '404':
           description: Skilltree not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /skill:
+    post:
+      summary: Create a new skill
+      operationId: createSkill
+      tags: [Skills]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skill'
+      responses:
+        '201':
+          description: Skill created successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: Unauthorized
+        '409':
+          description: Skill already exists
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /skill/{skill_id}:
+    put:
+      summary: Update skill by ID
+      operationId: updateSkill
+      tags: [Skills]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: skill_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skill'
+      responses:
+        '204':
+          description: Skill successfully modified
+        '400':
+          description: SkillID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Skill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete skill (and its child skills will be automatically deleted)
+      operationId: deleteSkill
+      tags: [Skills]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: skill_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Successfully deleted the skill(s)
+        '400':
+          description: SkillID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Skill not found
         '500':
           description: Unexpected error
           content:
@@ -1244,10 +1354,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Skill'
-        skill_ids:
-          type: array
-          items:
-            $ref: '#/components/schemas/UUID'
         created_at:
           $ref: '#/components/schemas/Date'
         updated_at:
@@ -1258,7 +1364,6 @@ components:
       required:
         - id
         - is_root_skill
-        - name
       properties:
         id:
           $ref: '#/components/schemas/UUID'

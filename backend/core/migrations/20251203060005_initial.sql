@@ -173,15 +173,17 @@ CREATE TABLE IF NOT EXISTS skilltrees (
 
 CREATE TABLE IF NOT EXISTS skills (
     id UUID PRIMARY KEY,
-    skilltree_id UUID REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
+    skilltree_id UUID REFERENCES skilltrees(id) ON DELETE CASCADE NOT NULL,
     parent_skill_id UUID REFERENCES skills(id) ON DELETE CASCADE,
     is_root_skill BOOLEAN NOT NULL DEFAULT FALSE,
-    name TEXT NOT NULL,
+    name TEXT,
     description TEXT,
-    status TEXT,
+    status SMALLINT NOT NULL DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX idx_skills_skilltree_id_parent_skill_id ON skills(skilltree_id, parent_skill_id);
 
 CREATE TABLE IF NOT EXISTS tasks (
     id UUID PRIMARY KEY,
@@ -200,8 +202,8 @@ CREATE TABLE IF NOT EXISTS tasks (
 -- +goose Down
 -- +goose StatementBegin
 DROP TABLE IF EXISTS tasks;
-DROP TABLE IF EXISTS skilltrees;
 DROP TABLE IF EXISTS skills;
+DROP TABLE IF EXISTS skilltrees;
 DROP TABLE IF EXISTS stopwatches;
 DROP TABLE IF EXISTS settings;
 DROP TABLE IF EXISTS project_habits;

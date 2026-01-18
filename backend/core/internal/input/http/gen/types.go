@@ -164,7 +164,7 @@ type Skill struct {
 	IsRootSkill bool         `json:"is_root_skill"`
 
 	// Name Activity name
-	Name          Name         `json:"name"`
+	Name          *Name        `json:"name,omitempty"`
 	ParentSkillID *UUID        `json:"parent_skill_id,omitempty"`
 	Skills        *[]Skill     `json:"skills,omitempty"`
 	SkilltreeID   *UUID        `json:"skilltree_id,omitempty"`
@@ -188,7 +188,6 @@ type Skilltree struct {
 	// Name Activity name
 	Name      Name     `json:"name"`
 	ProjectID *UUID    `json:"project_id,omitempty"`
-	SkillIds  *[]UUID  `json:"skill_ids,omitempty"`
 	Skills    *[]Skill `json:"skills,omitempty"`
 	UpdatedAt *Date    `json:"updated_at,omitempty"`
 	UserID    UUID     `json:"user_id"`
@@ -318,6 +317,12 @@ type UpdateSettingsJSONRequestBody = Settings
 
 // SignupJSONRequestBody defines body for Signup for application/json ContentType.
 type SignupJSONRequestBody SignupJSONBody
+
+// CreateSkillJSONRequestBody defines body for CreateSkill for application/json ContentType.
+type CreateSkillJSONRequestBody = Skill
+
+// UpdateSkillJSONRequestBody defines body for UpdateSkill for application/json ContentType.
+type UpdateSkillJSONRequestBody = Skill
 
 // CreateSkilltreeJSONRequestBody defines body for CreateSkilltree for application/json ContentType.
 type CreateSkilltreeJSONRequestBody = Skilltree

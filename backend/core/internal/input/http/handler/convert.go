@@ -100,12 +100,21 @@ func toAPISkill(e *entity.Skill) gen.Skill {
 		ParentSkillID: e.ParentSkillID,
 		IsRootSkill:   e.IsRootSkill,
 		Name:          e.Name,
-		Description:   &e.Description,
+		Description:   e.Description,
 		Status:        &status,
 		Skills:        &skills,
 		CreatedAt:     &e.CreatedAt,
 		UpdatedAt:     &e.UpdatedAt,
 	}
+}
+
+func toEntitySkillStatus(skillStatus *gen.SkillStatus) entity.SkillStatus {
+	return entity.SkillStatus(map[gen.SkillStatus]int{
+		"idle":        0,
+		"in-progress": 1,
+		"completed":   2,
+		"disregarded": 3,
+	}[*skillStatus])
 }
 
 func toAPISkilltree(e *entity.Skilltree) gen.Skilltree {
@@ -122,7 +131,6 @@ func toAPISkilltree(e *entity.Skilltree) gen.Skilltree {
 		Name:        e.Name,
 		Description: &e.Description,
 		Color:       &e.Color,
-		SkillIds:    &e.SkillIDs,
 		Skills:      &skills,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,

@@ -39,6 +39,7 @@ type server struct {
 	projects     *cases.ProjectCase
 	tasks        *cases.TaskCase
 	skilltrees   *cases.SkilltreeCase
+	skills       *cases.SkillCase
 	settings     *cases.SettingsCase
 	stopwatches  *cases.StopwatchCase
 	auth         *cases.AuthCase
@@ -56,6 +57,7 @@ func NewServer(
 	projects *cases.ProjectCase,
 	tasks *cases.TaskCase,
 	skilltrees *cases.SkilltreeCase,
+	skills *cases.SkillCase,
 	settings *cases.SettingsCase,
 	stopwatches *cases.StopwatchCase,
 	auth *cases.AuthCase,
@@ -71,6 +73,7 @@ func NewServer(
 		projects:     projects,
 		tasks:        tasks,
 		skilltrees:   skilltrees,
+		skills:       skills,
 		settings:     settings,
 		stopwatches:  stopwatches,
 		auth:         auth,
@@ -800,7 +803,7 @@ func (s *server) CreateSkilltree(
 		UserID:      userID,
 	}
 
-	id, err := s.skilltrees.Create(ctx, skilltree)
+	skilltreeID, skillID, err := s.skilltrees.Create(ctx, skilltree)
 	if err != nil {
 		if errors.Is(err, cases.ErrAlreadyExists) {
 			return gen.CreateSkilltree409JSONResponse{}, nil
@@ -809,7 +812,10 @@ func (s *server) CreateSkilltree(
 		return gen.CreateSkilltree500JSONResponse{}, nil
 	}
 
-	return gen.CreateSkilltree201JSONResponse(id.String()), nil
+	return gen.CreateSkilltree201JSONResponse{
+		SkilltreeID: skilltreeID.String(),
+		SkillID:     skillID.String(),
+	}, nil
 }
 
 // PUT /skilltree/{skilltree_id}
@@ -869,6 +875,102 @@ func (s *server) DeleteSkilltree(
 	}
 
 	return gen.DeleteSkilltree204Response{}, nil
+}
+
+// POST /skill
+func (s *server) CreateSkill(
+	ctx context.Context,
+	request gen.CreateSkillRequestObject,
+) (gen.CreateSkillResponseObject, error) {
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.CreateSkill401Response{}, nil
+	}
+
+	skill := &entity.Skill{
+		Name:          request.Body.Name,
+		Description:   request.Body.Description,
+		SkilltreeID:   *request.Body.SkilltreeID,
+		ParentSkillID: request.Body.ParentSkillID,
+	}
+
+	if request.Body.Status != nil {
+		skill.Status = toEntitySkillStatus(request.Body.Status)
+	}
+
+	id, err := s.skills.Create(ctx, skill)
+	if err != nil {
+		if errors.Is(err, cases.ErrAlreadyExists) {
+			return gen.CreateSkill409JSONResponse{}, nil
+		}
+		s.logger.Error("failed to create subskill", zap.Error(err))
+		return gen.CreateSkill500JSONResponse{}, nil
+	}
+
+	return gen.CreateSkill201JSONResponse(id.String()), nil
+}
+
+// PUT /skill/{skill_id}
+func (s *server) UpdateSkill(
+	ctx context.Context,
+	request gen.UpdateSkillRequestObject,
+) (gen.UpdateSkillResponseObject, error) {
+	if request.SkillID == uuid.Nil {
+		return gen.UpdateSkill400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.UpdateSkill401Response{}, nil
+	}
+
+	skill := &entity.Skill{
+		ID:            request.SkillID,
+		ParentSkillID: request.Body.ParentSkillID,
+		Name:          request.Body.Name,
+		Description:   request.Body.Description,
+	}
+
+	if request.Body.Status != nil {
+		skill.Status = toEntitySkillStatus(request.Body.Status)
+	}
+
+	err := s.skills.Update(ctx, skill)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.UpdateSkill404JSONResponse{}, nil
+		}
+		s.logger.Error("failed to update skill", zap.Error(err))
+		return gen.UpdateSkill500JSONResponse{}, nil
+	}
+
+	return gen.UpdateSkill204Response{}, nil
+}
+
+// DELETE /skill/{skill_id}
+func (s *server) DeleteSkill(
+	ctx context.Context,
+	request gen.DeleteSkillRequestObject,
+) (gen.DeleteSkillResponseObject, error) {
+	if request.SkillID == uuid.Nil {
+		return gen.DeleteSkill400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.DeleteSkill401Response{}, nil
+	}
+
+	err := s.skills.Delete(ctx, request.SkillID)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.DeleteSkill404Response{}, nil
+		}
+		s.logger.Error("failed to delete skill", zap.Error(err))
+		return gen.DeleteSkill500JSONResponse{}, nil
+	}
+
+	return gen.DeleteSkill204Response{}, nil
 }
 
 // GET /stopwatch

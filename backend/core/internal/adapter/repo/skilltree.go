@@ -15,7 +15,32 @@ import (
 )
 
 const (
-	queryListSkilltrees  = `SELECT * FROM skilltrees WHERE user_id = $1`
+	queryListSkilltrees = `
+		SELECT
+			st.id,
+			st.user_id,
+			st.project_id,
+			st.habit_id,
+			st.name,
+			st.description,
+			st.color,
+			st.created_at,
+			st.updated_at,
+			jsonb_agg(
+				jsonb_build_object(
+					'id', s.id,
+					'parent_skill_id', s.parent_skill_id,
+					'is_root_skill', s.is_root_skill,
+					'name', s.name,
+					'description', s.description,
+					'status', s.status
+				) ORDER BY s.created_at
+			) AS skills
+		FROM skilltrees st
+		JOIN skills s ON s.skilltree_id = st.id
+		WHERE user_id = $1
+		GROUP BY st.id;
+	`
 	queryCreateSkilltree = `
 		INSERT INTO skilltrees (id, user_id, project_id, habit_id, name, description, color, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -62,12 +87,12 @@ func (r *Skilltree) List(ctx context.Context, userID uuid.UUID) ([]*entity.Skill
 			&skilltree.UserID,
 			&skilltree.ProjectID,
 			&skilltree.HabitID,
-			&skilltree.SkillIDs,
 			&skilltree.Name,
 			&skilltree.Description,
 			&skilltree.Color,
 			&skilltree.CreatedAt,
 			&skilltree.UpdatedAt,
+			&skilltree.Skills,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("scan skilltree: %w", err)

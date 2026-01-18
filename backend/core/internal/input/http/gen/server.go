@@ -70,6 +70,15 @@ type ServerInterface interface {
 	// Create a new account
 	// (POST /signup)
 	Signup(w http.ResponseWriter, r *http.Request)
+	// Create a new skill
+	// (POST /skill)
+	CreateSkill(w http.ResponseWriter, r *http.Request)
+	// Delete skill (and its child skills will be automatically deleted)
+	// (DELETE /skill/{skill_id})
+	DeleteSkill(w http.ResponseWriter, r *http.Request, skillID UUID)
+	// Update skill by ID
+	// (PUT /skill/{skill_id})
+	UpdateSkill(w http.ResponseWriter, r *http.Request, skillID UUID)
 	// Create skilltree
 	// (POST /skilltree)
 	CreateSkilltree(w http.ResponseWriter, r *http.Request)
@@ -220,6 +229,24 @@ func (_ Unimplemented) UpdateSettings(w http.ResponseWriter, r *http.Request) {
 // Create a new account
 // (POST /signup)
 func (_ Unimplemented) Signup(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Create a new skill
+// (POST /skill)
+func (_ Unimplemented) CreateSkill(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Delete skill (and its child skills will be automatically deleted)
+// (DELETE /skill/{skill_id})
+func (_ Unimplemented) DeleteSkill(w http.ResponseWriter, r *http.Request, skillID UUID) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Update skill by ID
+// (PUT /skill/{skill_id})
+func (_ Unimplemented) UpdateSkill(w http.ResponseWriter, r *http.Request, skillID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -746,6 +773,88 @@ func (siw *ServerInterfaceWrapper) Signup(w http.ResponseWriter, r *http.Request
 	handler.ServeHTTP(w, r)
 }
 
+// CreateSkill operation middleware
+func (siw *ServerInterfaceWrapper) CreateSkill(w http.ResponseWriter, r *http.Request) {
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateSkill(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteSkill operation middleware
+func (siw *ServerInterfaceWrapper) DeleteSkill(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "skill_id" -------------
+	var skillID UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "skill_id", chi.URLParam(r, "skill_id"), &skillID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "skill_id", Err: err})
+		return
+	}
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteSkill(w, r, skillID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// UpdateSkill operation middleware
+func (siw *ServerInterfaceWrapper) UpdateSkill(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "skill_id" -------------
+	var skillID UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "skill_id", chi.URLParam(r, "skill_id"), &skillID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "skill_id", Err: err})
+		return
+	}
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.UpdateSkill(w, r, skillID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
 // CreateSkilltree operation middleware
 func (siw *ServerInterfaceWrapper) CreateSkilltree(w http.ResponseWriter, r *http.Request) {
 
@@ -1216,6 +1325,15 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/signup", wrapper.Signup)
+	})
+	r.Group(func(r chi.Router) {
+		r.Post(options.BaseURL+"/skill", wrapper.CreateSkill)
+	})
+	r.Group(func(r chi.Router) {
+		r.Delete(options.BaseURL+"/skill/{skill_id}", wrapper.DeleteSkill)
+	})
+	r.Group(func(r chi.Router) {
+		r.Put(options.BaseURL+"/skill/{skill_id}", wrapper.UpdateSkill)
 	})
 	r.Group(func(r chi.Router) {
 		r.Post(options.BaseURL+"/skilltree", wrapper.CreateSkilltree)
@@ -2051,6 +2169,158 @@ func (response Signup500JSONResponse) VisitSignupResponse(w http.ResponseWriter)
 	return json.NewEncoder(w).Encode(response)
 }
 
+type CreateSkillRequestObject struct {
+	Body *CreateSkillJSONRequestBody
+}
+
+type CreateSkillResponseObject interface {
+	VisitCreateSkillResponse(w http.ResponseWriter) error
+}
+
+type CreateSkill201JSONResponse string
+
+func (response CreateSkill201JSONResponse) VisitCreateSkillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateSkill400JSONResponse ErrorResponse
+
+func (response CreateSkill400JSONResponse) VisitCreateSkillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateSkill401Response struct {
+}
+
+func (response CreateSkill401Response) VisitCreateSkillResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type CreateSkill409JSONResponse ErrorResponse
+
+func (response CreateSkill409JSONResponse) VisitCreateSkillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(409)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type CreateSkill500JSONResponse ErrorResponse
+
+func (response CreateSkill500JSONResponse) VisitCreateSkillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteSkillRequestObject struct {
+	SkillID UUID `json:"skill_id"`
+}
+
+type DeleteSkillResponseObject interface {
+	VisitDeleteSkillResponse(w http.ResponseWriter) error
+}
+
+type DeleteSkill204Response struct {
+}
+
+func (response DeleteSkill204Response) VisitDeleteSkillResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type DeleteSkill400Response struct {
+}
+
+func (response DeleteSkill400Response) VisitDeleteSkillResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type DeleteSkill401Response struct {
+}
+
+func (response DeleteSkill401Response) VisitDeleteSkillResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type DeleteSkill404Response struct {
+}
+
+func (response DeleteSkill404Response) VisitDeleteSkillResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteSkill500JSONResponse ErrorResponse
+
+func (response DeleteSkill500JSONResponse) VisitDeleteSkillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdateSkillRequestObject struct {
+	SkillID UUID `json:"skill_id"`
+	Body    *UpdateSkillJSONRequestBody
+}
+
+type UpdateSkillResponseObject interface {
+	VisitUpdateSkillResponse(w http.ResponseWriter) error
+}
+
+type UpdateSkill204Response struct {
+}
+
+func (response UpdateSkill204Response) VisitUpdateSkillResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type UpdateSkill400Response struct {
+}
+
+func (response UpdateSkill400Response) VisitUpdateSkillResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type UpdateSkill401Response struct {
+}
+
+func (response UpdateSkill401Response) VisitUpdateSkillResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type UpdateSkill404JSONResponse ErrorResponse
+
+func (response UpdateSkill404JSONResponse) VisitUpdateSkillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(404)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type UpdateSkill500JSONResponse ErrorResponse
+
+func (response UpdateSkill500JSONResponse) VisitUpdateSkillResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
 type CreateSkilltreeRequestObject struct {
 	Body *CreateSkilltreeJSONRequestBody
 }
@@ -2059,7 +2329,10 @@ type CreateSkilltreeResponseObject interface {
 	VisitCreateSkilltreeResponse(w http.ResponseWriter) error
 }
 
-type CreateSkilltree201JSONResponse string
+type CreateSkilltree201JSONResponse struct {
+	SkillID     string `json:"skill_id"`
+	SkilltreeID string `json:"skilltree_id"`
+}
 
 func (response CreateSkilltree201JSONResponse) VisitCreateSkilltreeResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
@@ -2667,6 +2940,15 @@ type StrictServerInterface interface {
 	// Create a new account
 	// (POST /signup)
 	Signup(ctx context.Context, request SignupRequestObject) (SignupResponseObject, error)
+	// Create a new skill
+	// (POST /skill)
+	CreateSkill(ctx context.Context, request CreateSkillRequestObject) (CreateSkillResponseObject, error)
+	// Delete skill (and its child skills will be automatically deleted)
+	// (DELETE /skill/{skill_id})
+	DeleteSkill(ctx context.Context, request DeleteSkillRequestObject) (DeleteSkillResponseObject, error)
+	// Update skill by ID
+	// (PUT /skill/{skill_id})
+	UpdateSkill(ctx context.Context, request UpdateSkillRequestObject) (UpdateSkillResponseObject, error)
 	// Create skilltree
 	// (POST /skilltree)
 	CreateSkilltree(ctx context.Context, request CreateSkilltreeRequestObject) (CreateSkilltreeResponseObject, error)
@@ -3262,6 +3544,96 @@ func (sh *strictHandler) Signup(w http.ResponseWriter, r *http.Request) {
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(SignupResponseObject); ok {
 		if err := validResponse.VisitSignupResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// CreateSkill operation middleware
+func (sh *strictHandler) CreateSkill(w http.ResponseWriter, r *http.Request) {
+	var request CreateSkillRequestObject
+
+	var body CreateSkillJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.CreateSkill(ctx, request.(CreateSkillRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "CreateSkill")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(CreateSkillResponseObject); ok {
+		if err := validResponse.VisitCreateSkillResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteSkill operation middleware
+func (sh *strictHandler) DeleteSkill(w http.ResponseWriter, r *http.Request, skillID UUID) {
+	var request DeleteSkillRequestObject
+
+	request.SkillID = skillID
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteSkill(ctx, request.(DeleteSkillRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteSkill")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteSkillResponseObject); ok {
+		if err := validResponse.VisitDeleteSkillResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// UpdateSkill operation middleware
+func (sh *strictHandler) UpdateSkill(w http.ResponseWriter, r *http.Request, skillID UUID) {
+	var request UpdateSkillRequestObject
+
+	request.SkillID = skillID
+
+	var body UpdateSkillJSONRequestBody
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		sh.options.RequestErrorHandlerFunc(w, r, fmt.Errorf("can't decode JSON body: %w", err))
+		return
+	}
+	request.Body = &body
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.UpdateSkill(ctx, request.(UpdateSkillRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "UpdateSkill")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(UpdateSkillResponseObject); ok {
+		if err := validResponse.VisitUpdateSkillResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

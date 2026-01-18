@@ -11,7 +11,6 @@ type Skilltree struct {
 	Name        string
 	Description string
 	Color       string
-	SkillIDs    []uuid.UUID
 	Skills      []Skill
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
@@ -20,14 +19,14 @@ type Skilltree struct {
 type Skill struct {
 	ID            uuid.UUID
 	SkilltreeID   uuid.UUID
-	ParentSkillID *uuid.UUID
-	IsRootSkill   bool
-	Name          string
-	Description   string
+	ParentSkillID *uuid.UUID `json:"parent_skill_id"`
+	IsRootSkill   bool       `json:"is_root_skill"`
+	Name          *string
+	Description   *string
 	Status        SkillStatus
 	Skills        []Skill
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
 }
 
 type SkillStatus uint8

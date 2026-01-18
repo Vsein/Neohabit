@@ -16,23 +16,27 @@ import (
 
 type SkilltreeCase struct {
 	skilltreeRepo repo.SkilltreeRepo
+	skillRepo     repo.SkillRepo
 	txManager     port.TransactionManager
 }
 
 func NewSkilltreeCase(
 	skilltreeRepo repo.SkilltreeRepo,
+	skillRepo repo.SkillRepo,
 	txManager port.TransactionManager,
 ) *SkilltreeCase {
 	return &SkilltreeCase{
 		skilltreeRepo: skilltreeRepo,
+		skillRepo:     skillRepo,
 		txManager:     txManager,
 	}
 }
 
-func (c *SkilltreeCase) Create(ctx context.Context, skilltree *entity.Skilltree) (uuid.UUID, error) {
+func (c *SkilltreeCase) Create(ctx context.Context, skilltree *entity.Skilltree) (uuid.UUID, uuid.UUID, error) {
 	skilltree.ID = id.New()
 	skilltree.CreatedAt = time.Now()
 	skilltree.UpdatedAt = skilltree.CreatedAt
+	skillID := id.New()
 
 	_, err := c.txManager.WithTx(ctx, func(ctx context.Context) (any, error) {
 		err := c.skilltreeRepo.Create(ctx, skilltree)
@@ -42,13 +46,26 @@ func (c *SkilltreeCase) Create(ctx context.Context, skilltree *entity.Skilltree)
 			}
 			return nil, fmt.Errorf("create: %w", err)
 		}
+
+		err = c.skillRepo.Create(ctx, &entity.Skill{
+			ID:          skillID,
+			SkilltreeID: skilltree.ID,
+			IsRootSkill: true,
+			Name:        &skilltree.Name,
+			Status:      2,
+			CreatedAt:   skilltree.CreatedAt,
+			UpdatedAt:   skilltree.UpdatedAt,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("create root skill: %w", err)
+		}
 		return nil, nil
 	})
 	if err != nil {
-		return uuid.Nil, err
+		return uuid.Nil, uuid.Nil, err
 	}
 
-	return skilltree.ID, nil
+	return skilltree.ID, skillID, nil
 }
 
 // List retrieves all Skilltrees of a user

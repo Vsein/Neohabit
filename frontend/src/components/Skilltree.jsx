@@ -19,8 +19,8 @@ function processSkilltree(skilltreeProvided) {
       (skills[i].children.reduce((cur, skill) => Math.max(cur, skill.width), 0) || 0) + 1;
     skills[i].height = skills[i].children.reduce((cur, skill) => cur + skill.height, 0) || 1;
     skills[i].children.reverse();
-    if (skills[i].parent_skill) {
-      skills[vertices.get(skills[i].parent_skill)].children.push(skills[i]);
+    if (skills[i].parent_skill_id) {
+      skills[vertices.get(skills[i].parent_skill_id)].children.push(skills[i]);
     }
   }
   return skills[0];
