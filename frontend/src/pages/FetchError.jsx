@@ -9,7 +9,7 @@ export default function FetchError() {
   const navigate = useNavigate();
 
   const logout = () => {
-    localStorage.clear();
+    localStorage.removeItem('token');
     dispatch({ type: 'RESET' });
     navigate('/login');
   };

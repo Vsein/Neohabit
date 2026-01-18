@@ -112,7 +112,7 @@ const PrivateRoutes = (params) => {
   // if (!isPWA()) {
   if (settings?.error || self?.error || stopwatch?.error) {
     if (settings?.error?.originalStatus === 401) {
-      localStorage.clear();
+      localStorage.removeItem('token');
       return <Navigate to="/login" replace state={{ from: location }} />;
     }
     return <FetchError />;

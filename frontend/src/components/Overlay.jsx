@@ -67,7 +67,7 @@ export default function Overlay() {
           title="your account"
           deleteOnClick={async () => {
             await deleteSelf();
-            localStorage.clear();
+            localStorage.removeItem('token');
             dispatch({ type: 'RESET' });
             navigate('/login');
           }}

@@ -6,7 +6,7 @@ export default function useLogout() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    localStorage.clear();
+    localStorage.removeItem('token');
     dispatch({ type: 'RESET' });
     setLoggedOut(true);
   }, []);
