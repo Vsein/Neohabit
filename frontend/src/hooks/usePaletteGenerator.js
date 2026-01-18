@@ -58,7 +58,7 @@ function generatePalette(base, goal) {
   return palette;
 }
 
-function getNumericTextColor(color) {
+function getNumericTextColor(color = '#23BCDB') {
   if (contrast(hexToRgb(color), hexToRgb('#efefef')) > 1.95) {
     return '#efefef';
   }

@@ -10,13 +10,12 @@ import {
   mdiInformation,
 } from '@mdi/js';
 import {
-  useDeleteCellPeriodMutation,
-  useDecreaseCellPeriodMutation,
-  useUpdateHeatmapMutation,
-} from '../state/services/heatmap';
+  useCreateHabitDataPointMutation,
+  useDeleteAllHabitDataPointsBetweenDatesMutation,
+  useReduceHabitDataPointsBetweenDatesByAmountMutation,
+} from '../state/services/habitData';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings'
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
-import { getUTCOffsettedDate } from '../utils/dates';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -117,10 +116,10 @@ export default function CellTip() {
     document.addEventListener('click', unfixateAndHideCellTip);
     return () => document.removeEventListener('click', unfixateAndHideCellTip);
   });
-  const { heatmapID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
-  const [deleteCellPeriod] = useDeleteCellPeriodMutation();
-  const [decreaseCellPeriod] = useDecreaseCellPeriodMutation();
-  const [updateHeatmap] = useUpdateHeatmapMutation();
+  const { habitID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
+  const [deleteAllHabitDataPointsBetweenDates] = useDeleteAllHabitDataPointsBetweenDatesMutation();
+  const [reduceHabitDataPointsBetweenDatesByAmount] = useReduceHabitDataPointsBetweenDatesByAmountMutation();
+  const [createHabitDataPoint] = useCreateHabitDataPointMutation();
   const settings = useGetSettingsQuery();
   const hintHidden = settings.data.hide_cell_hint;
   const [updateSettings] = useUpdateSettingsMutation();
@@ -138,13 +137,16 @@ export default function CellTip() {
             className="centering"
             title="Delete 1 completed action in this period"
             onClick={() => {
-              decreaseCellPeriod({
-                heatmapID,
-                values: {
-                  dateStart: getUTCOffsettedDate(dateStart),
-                  dateEnd: getUTCOffsettedDate(dateEnd),
-                },
-              });
+              if (actions > 0) {
+                reduceHabitDataPointsBetweenDatesByAmount({
+                  habitID,
+                  values: {
+                    period_start: new Date(dateStart),
+                    period_end: new Date(dateEnd),
+                    amount: 1,
+                  },
+                });
+              }
               setCellTipActions(Math.max(actions - 1, 0));
               dispatch(changeCellActions({ actions: Math.max(actions - 1, 0) }));
             }}
@@ -153,16 +155,27 @@ export default function CellTip() {
           </button>
           <input
             id="cell-tip-actions-counter"
-            size="1"
+            size="3"
+            type="number"
+            min="0"
             onMouseLeave={(e) => e.target.blur()}
             onBlur={(e) => {
-              updateHeatmap({
-                heatmapID,
-                values: {
-                  date: getUTCOffsettedDate(dateStart),
-                  value: +e.target.value - actions,
-                },
-              });
+              const diff = +e.target.value - actions;
+              if (diff > 0) {
+                createHabitDataPoint({
+                  habitID,
+                  values: { date: new Date(dateStart), value: diff },
+                });
+              } else if (diff < 0) {
+                reduceHabitDataPointsBetweenDatesByAmount({
+                  habitID,
+                  values: {
+                    period_start: new Date(dateStart),
+                    period_end: new Date(dateEnd),
+                    amount: -diff,
+                  },
+                });
+              }
               setCellTipActions(+e.target.value);
               dispatch(changeCellActions({ actions: +e.target.value }));
             }}
@@ -171,9 +184,9 @@ export default function CellTip() {
             className="centering"
             title="Add 1 completed action in this period"
             onClick={() => {
-              updateHeatmap({
-                heatmapID,
-                values: { date: getUTCOffsettedDate(dateStart), value: 1 },
+              createHabitDataPoint({
+                habitID,
+                values: { date: new Date(dateStart), value: 1 },
               });
               setCellTipActions(actions + 1);
               dispatch(changeCellActions({ actions: actions + 1 }));
@@ -186,12 +199,11 @@ export default function CellTip() {
             title="Delete all actions in this period"
             style={{ marginLeft: '3px' }}
             onClick={() => {
-              deleteCellPeriod({
-                heatmapID,
+              deleteAllHabitDataPointsBetweenDates({
+                habitID,
                 values: {
-                  dateStart: getUTCOffsettedDate(dateStart),
-                  dateEnd: getUTCOffsettedDate(dateEnd),
-                  actions,
+                  period_start: new Date(dateStart),
+                  period_end: new Date(dateEnd),
                 },
               });
               setCellTipActions(0);
@@ -209,7 +221,7 @@ export default function CellTip() {
           <div className="cell-tip-i">
             <Icon path={mdiInformation} className="icon tiny" />
             <div>
-              <p className="cell-tip-period">Click on the cell to access this window</p>
+              <p className="cell-tip-period">Click to access this window</p>
               <div className="cell-tip-i-hide">
                 <button
                   className="centering"

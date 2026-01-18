@@ -1,5 +1,4 @@
 import api from './api';
-import { heatmapApi } from './heatmap';
 import { projectApi } from './project';
 
 export const habitApi = api.injectEndpoints({
@@ -9,11 +8,17 @@ export const habitApi = api.injectEndpoints({
         url: 'habits',
       }),
     }),
-    getHabit: builder.query({
-      query: (id) => ({
-        url: `habit/${id}`,
+    getHabitsOutsideProjects: builder.query({
+      query: () => ({
+        url: 'habits/outside_projects',
       }),
+      providesTags: ['HabitsOutsideProjects'],
     }),
+    // getHabit: builder.query({
+    //   query: (id) => ({
+    //     url: `habit/${id}`,
+    //   }),
+    // }),
     createHabit: builder.mutation({
       query: (values) => ({
         url: 'habit',
@@ -22,24 +27,28 @@ export const habitApi = api.injectEndpoints({
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
+        const newHabit = { ...values, id: res.data, data: [], targets: [], created_at: new Date() };
         dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            draft.push(res.data.habit);
+            draft.push(newHabit);
           }),
         );
-        dispatch(
-          heatmapApi.util.updateQueryData('getHeatmaps', undefined, (draft) => {
-            draft.push(res.data.heatmap);
-          }),
-        );
-        dispatch(
-          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const project = draft.find((projecto) => projecto._id === values.projectID);
-            if (project) {
-              project.habits = [ ...project.habits, res.data.habit._id ];
-            }
-          }),
-        );
+        if (!values.project_id) {
+          dispatch(
+            habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+              draft.push(newHabit);
+            }),
+          );
+        } else {
+          dispatch(
+            projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+              const project = draft.find((p) => p.id === values.project_id);
+              if (project) {
+                project.habits.push(newHabit);
+              }
+            }),
+          );
+        }
       },
     }),
     deleteHabit: builder.mutation({
@@ -47,20 +56,31 @@ export const habitApi = api.injectEndpoints({
         url: `habit/${habitID}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['HabitsOutsideProjects'],
       async onQueryStarted(habitID, { dispatch, queryFulfilled }) {
-        const res = await queryFulfilled;
+        await queryFulfilled;
+        const optimisticallyDelete = (habits) => {
+          const index = habits.findIndex((h) => h.id === habitID);
+          if (index !== -1) {
+            habits.splice(index, 1);
+          }
+        };
+
         dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            const index = draft.findIndex((habit) => habit._id == habitID);
-            draft.splice(index, 1);
+            optimisticallyDelete(draft);
           }),
         );
+
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            optimisticallyDelete(draft);
+          }),
+        );
+
         dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const Projects = draft.filter((project) => project.habits.includes(habitID));
-            Projects.forEach((Project) => {
-              Project.habits = Project.habits.filter((ID) => ID !== habitID);
-            });
+            draft.forEach((p) => optimisticallyDelete(p.habits));
           }),
         );
       },
@@ -72,12 +92,25 @@ export const habitApi = api.injectEndpoints({
         method: 'PUT',
       }),
       onQueryStarted({ habitID, values }, { dispatch }) {
-        const patchResult = dispatch(
+        const optimisticallyUpdate = (habit) => habit && Object.assign(habit, values);
+
+        dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            draft.forEach((p) => {
+              optimisticallyUpdate(p.habits.find((h) => h.id === habitID));
+            });
+          }),
+        );
+
+        dispatch(
           habitApi.util.updateQueryData('getHabits', undefined, (draft) => {
-            const habit = draft.find((habit) => habit._id == habitID);
-            if (habit) {
-              Object.assign(habit, values);
-            }
+            optimisticallyUpdate(draft.find((h) => h.id === habitID));
+          }),
+        );
+
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            optimisticallyUpdate(draft.find((h) => h.id === habitID));
           }),
         );
       },
@@ -87,7 +120,8 @@ export const habitApi = api.injectEndpoints({
 
 export const {
   useGetHabitsQuery,
-  useGetHabitQuery,
+  useGetHabitsOutsideProjectsQuery,
+  // useGetHabitQuery,
   useCreateHabitMutation,
   useDeleteHabitMutation,
   useUpdateHabitMutation,

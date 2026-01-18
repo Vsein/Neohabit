@@ -3,14 +3,14 @@ import { createSlice } from '@reduxjs/toolkit';
 export const cellAddSlice = createSlice({
   name: 'cellAdd',
   initialState: {
-    heatmapID: '',
+    habitID: '',
     isTarget: false,
     isActive: false,
   },
   reducers: {
-    changeHeatmapTo: (state, action) => ({
+    changeHabitTo: (state, action) => ({
       ...state,
-      heatmapID: action.payload.heatmapID,
+      habitID: action.payload.habitID,
       isTarget: action.payload.isTarget,
       isActive: action.payload.isActive,
     }),
@@ -22,6 +22,6 @@ export const cellAddSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeHeatmapTo, close } = cellAddSlice.actions;
+export const { changeHabitTo, close } = cellAddSlice.actions;
 
 export default cellAddSlice.reducer;

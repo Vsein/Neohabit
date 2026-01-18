@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import useTitle from '../hooks/useTitle';
 import useDefaultProject from '../hooks/useDefaultProject';
-import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery } from '../state/services/project';
 import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import { ReturnButton } from '../components/HabitComponents';
@@ -11,7 +10,7 @@ import { DatePeriodPicker } from '../components/DatePickers';
 import { generateShades } from '../hooks/usePaletteGenerator';
 
 export default function ProjectPage() {
-  useTitle('Habit | Neohabit');
+  useTitle('Project | Neohabit');
 
   return (
     <Routes>
@@ -26,7 +25,6 @@ export default function ProjectPage() {
 function ProjectPageLayout() {
   const navigate = useNavigate();
   const projects = useGetProjectsQuery();
-  const habits = useGetHabitsQuery();
   const { projectID } = useParams();
   const vertical = false;
 
@@ -42,17 +40,15 @@ function ProjectPageLayout() {
 
   const [defaultProject] = useDefaultProject();
 
-  if (projects.isFetching || habits.isFetching) {
+  if (projects.isFetching) {
     return <div className="loader" />;
   }
 
-  const project = projects.data.find((projecto) => projecto._id === projectID) ?? defaultProject;
+  const project = projects.data.find((p) => p.id === projectID) ?? defaultProject;
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
-  return projects.isFetching || habits.isFetching ? (
-    <div className="loader" />
-  ) : (
+  return (
     <>
       <div
         className="contentlist-controls"
@@ -69,7 +65,6 @@ function ProjectPageLayout() {
             className={`overview-habit-add standalone topbar ${vertical ? 'vertical' : ''}`}
             onClick={() => navigate(-1)}
             style={{ gridTemplateColumns: 'min-content 150px' }}
-            title="Add a new habit [A]"
           >
             <ReturnButton />
             <p>Return</p>

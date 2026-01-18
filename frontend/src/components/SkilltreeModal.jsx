@@ -20,7 +20,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
 
   if (skilltrees.isLoading) return <></>;
 
-  const skilltree = skilltrees.data.find((skilltreo) => skilltreo._id === skilltreeID);
+  const skilltree = skilltrees.data.find((s) => s.id === skilltreeID);
 
   const onSubmit = async (values) => {
     if (!skilltree) {
@@ -64,7 +64,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
             </button>
           </div>
           <div className="modal-details-block" style={{ height: 'min-content' }}>
-            <NameField type="skilltree" />
+            <NameField type="skilltree" autofocus={!skilltreeID} />
           </div>
           <div className="modal-details-project-wrapper">
             {skilltree ? (
@@ -80,7 +80,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
               <ColorPicker />
             </div>
           </div>
-          <ModalButtons disabled={submitting || !values?.name} isNew={!skilltreeID} type="skilltree" />
+          <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!skilltreeID} type="skilltree" />
         </form>
       )}
     />

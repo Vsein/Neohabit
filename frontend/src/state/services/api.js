@@ -4,10 +4,8 @@ const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
     baseUrl:
-      process.env.REACT_APP_STAGE === 'dev'
-        ? 'http://localhost:9000/private/'
-        : 'https://neohabit.app/api/private',
-    prepareHeaders: (headers, { getState }) => {
+      process.env.REACT_APP_STAGE === 'dev' ? 'http://localhost:9000/' : 'https://neohabit.app/api',
+    prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -15,7 +13,8 @@ const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Heatmaps'],
+  // tagTypes: ['Heatmaps'],
+  tagTypes: ['HabitsOutsideProjects'],
   endpoints: () => ({}),
 });
 

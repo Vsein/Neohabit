@@ -1,0 +1,244 @@
+package repo
+
+import (
+	"context"
+	"errors"
+	"fmt"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
+	"go.uber.org/zap"
+
+	"neohabit/core/internal/adapter/repo/db"
+	"neohabit/core/internal/entity"
+	"neohabit/core/internal/port/repo"
+)
+
+const (
+	// queryReadHabit   = `SELECT * FROM habits WHERE id = $1`
+	queryListHabits = `
+		SELECT
+			h.id,
+			h.user_id,
+			h.name,
+			h.description,
+			h.color,
+			h.due_date,
+			h.is_numeric,
+			h.more_is_bad,
+			h.created_at,
+			h.updated_at,
+			get_habit_data_jsonb(h.id),
+			get_habit_targets_jsonb(h.id)
+		FROM
+			habits h
+		WHERE
+			h.user_id = $1
+		ORDER BY h.created_at
+	`
+	queryListHabitsOutsideProjects = `
+		SELECT
+			h.id,
+			h.user_id,
+			h.name,
+			h.description,
+			h.color,
+			h.due_date,
+			h.is_numeric,
+			h.more_is_bad,
+			h.created_at,
+			h.updated_at,
+			get_habit_data_jsonb(h.id),
+			get_habit_targets_jsonb(h.id)
+		FROM
+			habits h
+		LEFT JOIN
+			project_habits ph ON h.id = ph.habit_id
+		WHERE
+			h.user_id = $1 AND ph.project_id IS NULL
+		ORDER BY h.created_at
+	`
+	queryCreateHabit = `
+		INSERT INTO habits (id, user_id, name, description, color, due_date, is_numeric, more_is_bad, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+	`
+	queryUpdateHabit = `UPDATE habits SET name = $2, description = $3, color = $4, is_numeric = $5, more_is_bad = $6, updated_at = $7 WHERE id = $1`
+	queryDeleteHabit = `DELETE FROM habits WHERE id = $1`
+)
+
+type Habit struct {
+	pool   db.PoolTX
+	logger *zap.Logger
+}
+
+func NewHabitRepo(pool db.PoolTX, logger *zap.Logger) *Habit {
+	return &Habit{
+		pool:   pool,
+		logger: logger,
+	}
+}
+
+// XXX: Unneccessary, thus untested and unused
+// func (r *Habit) Read(ctx context.Context, id uuid.UUID) (*entity.Habit, error) {
+// 	var habit entity.Habit
+// 	err := r.pool.QueryRow(ctx, queryReadHabit, id).Scan(
+// 		&habit.ID,
+// 		&habit.UserID,
+// 		&habit.Name,
+// 		&habit.Description,
+// 		&habit.Color,
+// 		&habit.DueDate,
+// 		&habit.CreatedAt,
+// 		&habit.UpdatedAt,
+// 	)
+// 	if err != nil {
+// 		if errors.Is(err, pgx.ErrNoRows) {
+// 			return nil, repo.ErrNotFound
+// 		}
+// 		return nil, fmt.Errorf("query row read habit: %w", err)
+// 	}
+// 	return &habit, nil
+// }
+
+// List retrieves Habits of the logged in user from the database
+func (r *Habit) List(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, error) {
+	var rows pgx.Rows
+	var err error
+
+	rows, err = r.pool.Query(ctx, queryListHabits, userID)
+
+	if err != nil {
+		return nil, fmt.Errorf("query list habits: %w", err)
+	}
+	defer rows.Close()
+
+	var habits []*entity.Habit
+	for rows.Next() {
+		var habit entity.Habit
+		err := rows.Scan(
+			&habit.ID,
+			&habit.UserID,
+			&habit.Name,
+			&habit.Description,
+			&habit.Color,
+			&habit.DueDate,
+			&habit.IsNumeric,
+			&habit.MoreIsBad,
+			&habit.CreatedAt,
+			&habit.UpdatedAt,
+			&habit.Data,
+			&habit.Targets,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("scan habit: %w", err)
+		}
+		habits = append(habits, &habit)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows error: %w", err)
+	}
+
+	return habits, nil
+}
+
+func (r *Habit) ListHabitsOutsideProjects(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, error) {
+	var rows pgx.Rows
+	var err error
+
+	rows, err = r.pool.Query(ctx, queryListHabitsOutsideProjects, userID)
+
+	if err != nil {
+		return nil, fmt.Errorf("query list habits: %w", err)
+	}
+	defer rows.Close()
+
+	var habits []*entity.Habit
+	for rows.Next() {
+		var habit entity.Habit
+		err := rows.Scan(
+			&habit.ID,
+			&habit.UserID,
+			&habit.Name,
+			&habit.Description,
+			&habit.Color,
+			&habit.DueDate,
+			&habit.IsNumeric,
+			&habit.MoreIsBad,
+			&habit.CreatedAt,
+			&habit.UpdatedAt,
+			&habit.Data,
+			&habit.Targets,
+		)
+		if err != nil {
+			return nil, fmt.Errorf("scan habit: %w", err)
+		}
+		habits = append(habits, &habit)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows error: %w", err)
+	}
+
+	return habits, nil
+}
+
+func (r *Habit) Create(ctx context.Context, habit *entity.Habit) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryCreateHabit,
+		habit.ID,
+		habit.UserID,
+		habit.Name,
+		habit.Description,
+		habit.Color,
+		habit.DueDate,
+		habit.IsNumeric,
+		habit.MoreIsBad,
+		habit.CreatedAt,
+		habit.UpdatedAt,
+	)
+	if err != nil {
+		if db.IsUniqueViolation(err) {
+			return repo.ErrAlreadyExists
+		}
+		return fmt.Errorf("exec create habit: %w", err)
+	}
+	return nil
+}
+
+func (r *Habit) Update(ctx context.Context, habit *entity.Habit) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryUpdateHabit,
+		habit.ID,
+		habit.Name,
+		habit.Description,
+		habit.Color,
+		habit.IsNumeric,
+		habit.MoreIsBad,
+		habit.UpdatedAt,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return repo.ErrNotFound
+		}
+		return fmt.Errorf("exec update habit: %w", err)
+	}
+	return nil
+}
+
+func (r *Habit) Delete(ctx context.Context, id uuid.UUID) error {
+	_, err := r.pool.Exec(
+		ctx,
+		queryDeleteHabit,
+		id,
+	)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return repo.ErrNotFound
+		}
+		return fmt.Errorf("exec delete habit: %w", err)
+	}
+	return nil
+}

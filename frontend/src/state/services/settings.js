@@ -9,14 +9,12 @@ export const settingsApi = api.injectEndpoints({
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
-        const newTheme = res.data.prefer_dark ? 'dark' : 'light';
-        changeTheme(newTheme);
-        // dispatch(changeTo(newTheme));
+        changeTheme(res.data.theme);
       },
     }),
     getSelf: builder.query({
       query: () => ({
-        url: 'user/im',
+        url: 'user',
       }),
     }),
     getVerified: builder.query({
@@ -51,7 +49,7 @@ export const settingsApi = api.injectEndpoints({
     }),
     deleteSelf: builder.mutation({
       query: () => ({
-        url: 'user/im',
+        url: 'user',
         method: 'DELETE',
       }),
     }),
@@ -59,12 +57,11 @@ export const settingsApi = api.injectEndpoints({
       query: ({ values }) => ({
         url: 'settings',
         body: values,
-        method: 'PUT',
+        method: 'PATCH',
       }),
       async onQueryStarted({ values }, { dispatch }) {
-        if (values.prefer_dark !== undefined) {
-          const newTheme = values.prefer_dark ? 'dark' : 'light';
-          changeTheme(newTheme);
+        if (values.theme !== undefined) {
+          changeTheme(values.theme);
         }
         dispatch(
           settingsApi.util.updateQueryData('getSettings', undefined, (draft) => {

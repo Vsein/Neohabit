@@ -1,24 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
-import {
-  mdiMenuLeft,
-  mdiMenuRight,
-  mdiMenuUp,
-  mdiMenuDown,
-  mdiCalendarText,
-  mdiCalendarWeekend,
-  mdiCog,
-} from '@mdi/js';
-import { differenceInDays, compareDesc, endOfDay } from 'date-fns';
+import { mdiMenuDown, mdiCog } from '@mdi/js';
+import { differenceInDays } from 'date-fns';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import { useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
-import { YearPicker, OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
+import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
-import heatmapSort from '../utils/heatmapSort';
+import { minValidDate } from '../utils/dates';
 
 export default function Overview({
   dateStart,
@@ -31,36 +21,27 @@ export default function Overview({
 }) {
   const [loaded] = useLoaded();
   const habits = useGetHabitsQuery();
-  const heatmaps = useGetHeatmapsQuery();
   const vertical = false;
 
-  if (!loaded || habits.isLoading || heatmaps.isLoading) {
+  if (!loaded || habits.isLoading) {
     return <div className="loader" />;
   }
 
-  const Habits = habits.data.flatMap((habit, i) => {
-    const heatmap = heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id);
-    const dataSorted = heatmapSort(heatmap?.data, dateEnd);
-
-    return (new Date(dataSorted[0].date).getTime() === endOfDay(dateEnd).getTime() &&
-      dataSorted.length !== 1) ||
-      (dataSorted.length > 2 &&
-        dataSorted[dataSorted.length - 2].is_archive &&
-        new Date(dataSorted[dataSorted.length - 3].date).getTime() < dateStart.getTime()) ? (
+  const Habits = habits.data.flatMap((habit, i) =>
+    // TODO: Check if the interval is archived
+    differenceInDays(minValidDate(new Date(habit.created_at), habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start), habit?.data?.length > 0 && new Date(habit?.data[0]?.date)), dateEnd) > 0 ?
       []
-    ) : (
-      <HabitOverview
-        key={i}
-        habit={habit}
-        dateStart={dateStart}
-        dateEnd={dateEnd}
-        heatmapData={dataSorted}
-        heatmapID={heatmap?._id}
-        vertical={vertical}
-        mobile={mobile}
-      />
-    );
-  });
+      : (
+        <HabitOverview
+          key={i}
+          habit={habit}
+          dateStart={dateStart}
+          dateEnd={dateEnd}
+          vertical={vertical}
+          mobile={mobile}
+        />
+      )
+  );
 
   return (
     <div
@@ -76,9 +57,8 @@ export default function Overview({
       }}
     >
       <div
-        className={`overview-header ${vertical ? 'vertical' : ''} ${
-          mobile ? 'small' : ''
-        } singular`}
+        className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''
+          } singular`}
       >
         {mobile ? (
           <h3>Overview</h3>
@@ -118,6 +98,10 @@ export default function Overview({
             </>
           )}
           <div className="overview-habits">
+            {Habits.length === 0 &&
+              <h5 className="overview-no-habits overview-habit" >
+                No habits &nbsp;&nbsp;ʕ•ᴥ•ʔ
+              </h5>}
             {Habits}
           </div>
           {vertical && (

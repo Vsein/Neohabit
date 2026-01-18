@@ -18,7 +18,7 @@ import StopwatchModal from './StopwatchModal';
 export default function Overlay() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { type, isActive, taskID, habitID, projectID, skilltreeID, skillID, skillparentID } =
+  const { type, isActive, taskID, habitID, projectID, project, skilltreeID, skillID, skillparentID } =
     useSelector((state) => state.overlay);
 
   const [deleteProject] = useDeleteProjectMutation();
@@ -49,7 +49,7 @@ export default function Overlay() {
         <TaskModal taskID={taskID} habitID={habitID} closeOverlay={closeOverlay} />
       )}
       {type === 'project' && (
-        <ProjectModal isActive={isActive} projectID={projectID} closeOverlay={closeOverlay} />
+        <ProjectModal isActive={isActive} projectID={projectID} project={project} closeOverlay={closeOverlay} />
       )}
       {type === 'skilltree' && (
         <SkilltreeModal skilltreeID={skilltreeID} closeOverlay={closeOverlay} />
@@ -67,9 +67,8 @@ export default function Overlay() {
           title="your account"
           deleteOnClick={async () => {
             await deleteSelf();
-            closeOverlay();
-            dispatch({ type: 'RESET' });
             localStorage.clear();
+            dispatch({ type: 'RESET' });
             navigate('/login');
           }}
           closeOverlay={closeOverlay}

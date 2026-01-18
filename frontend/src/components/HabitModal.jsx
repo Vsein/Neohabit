@@ -15,39 +15,35 @@ import {
   useCreateHabitMutation,
   useUpdateHabitMutation,
 } from '../state/services/habit';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
 import { close } from '../state/features/overlay/overlaySlice';
 
 export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const dispatch = useDispatch();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
-  const heatmaps = useGetHeatmapsQuery();
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
 
   const { width } = useWindowDimensions();
 
-  if (habits.isLoading || projects.isLoading || heatmaps.isLoading) return <></>;
+  if (habits.isLoading || projects.isLoading) return <></>;
 
-  const project = projects.data.find((projecto) => projecto._id === projectID) ?? {
+  const project = projects.data.find((p) => p.id === projectID) ?? {
     name: 'Default',
     color: '#23BCDB',
     description: '',
     habits: [],
   };
 
-  const habit = habits.data.find((habito) => habito._id === habitID) ?? {
+  const habit = habits.data.find((h) => h.id === habitID) ?? {
     name: '',
     color: '#23BCDB',
     description: '',
   };
 
-  const heatmap = useGetHeatmapsQuery().data.find((heatmapo) => heatmapo.habit._id === habitID);
-
   const onSubmit = async (values) => {
-    if (habit.name === '') {
-      await createHabit({ ...values, projectID });
+    if (!habitID) {
+      await createHabit({ ...values, project_id: projectID !== 'default' && projectID ? projectID : undefined });
     } else {
       await updateHabit({ habitID, values });
     }
@@ -65,8 +61,8 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
           name: habit?.name,
           description: habit?.description,
           color: habit?.color,
-          elimination: habit?.elimination,
-          numeric: habit?.numeric,
+          is_numeric: habit?.is_numeric,
+          more_is_bad: habit?.more_is_bad,
         }}
         onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -90,7 +86,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     <NavLink
                       className="tag"
                       onClick={closeOverlay}
-                      to={`../project/${project?._id}`}
+                      to={`../project/${project?.id}`}
                       title={project.name}
                     >
                       <HabitTag habit={project} />
@@ -104,7 +100,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     <NavLink
                       className="tag"
                       onClick={closeOverlay}
-                      to={`../habit/${habit?._id}`}
+                      to={`../habit/${habit?.id}`}
                       title={habit.name}
                     >
                       <HabitTag habit={habit} />
@@ -119,14 +115,13 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               </button>
             </div>
             <div className="modal-details-block" style={{ height: 'min-content' }}>
-              <NameField type="habit" />
+              <NameField type="habit" autofocus={!habitID} />
             </div>
             {width >= 850 && habitID && (
               <HabitModalWrapper
-                heatmap={heatmap}
                 habit={habit}
-                overridenElimination={values.elimination}
-                overridenNumeric={values.numeric}
+                overridenElimination={values.more_is_bad}
+                overridenNumeric={values.is_numeric}
               />
             )}
             <div className="modal-details-habit-wrapper">
@@ -134,17 +129,23 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <DescriptionField rows="10" />
               </div>
               <div className="modal-details-block mode-area">
-                <div className="form-task-description">
+                <div
+                  className="form-task-description"
+                  title="Darkens the cells if they exceed the target"
+                >
                   <Field
-                    name="elimination"
+                    name="more_is_bad"
                     component="input"
                     type="checkbox"
                     className="checkbox"
                   />
-                  <label>Exceeding targets</label>
+                  <label>More is bad</label>
                 </div>
-                <div className="form-task-description">
-                  <Field name="numeric" component="input" type="checkbox" className="checkbox" />
+                <div
+                  className="form-task-description"
+                  title="Shows numbers instead of cells"
+                >
+                  <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
                   <label>Show as numbers</label>
                 </div>
               </div>
@@ -152,7 +153,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <ColorPicker />
               </div>
             </div>
-            <ModalButtons disabled={submitting || !values?.name} isNew={!habitID} type="habit" />
+            <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!habitID} type="habit" />
           </form>
         )}
       />

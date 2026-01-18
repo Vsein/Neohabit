@@ -15,13 +15,15 @@ const onlyLatinAndNumbersValidator = (value) => {
   return 'Only latin and numbers';
 };
 
-const simpleEmailValidator = (value) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? undefined : 'Please enter valid email';
+const simpleEmailValidator = (value) => {
+  if (!value) return undefined;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? undefined : 'Please enter valid email';
+}
 
 const composeValidators =
   (...validators) =>
   (value) =>
-    validators.reduce((error, validator) => error || validator(value), undefined);
+    validators.reduce((error, validator) => validator && (error || validator(value)), undefined);
 
 export {
   requiredValidator,

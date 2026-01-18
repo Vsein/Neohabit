@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetProjectsQuery, useUpdateProjectMutation } from '../state/services/project';
 import { useGetSettingsQuery } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
@@ -15,7 +14,6 @@ export default function ProjectsPage() {
   useTitle('Projects | Neohabit');
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
-  const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
 
@@ -25,9 +23,6 @@ export default function ProjectsPage() {
   };
 
   const { datePeriodLength, mobile } = useGetDatePeriodLength();
-
-  const [projectsMap, setProjectsMap] = useState({});
-  const [projectsOrder, setProjectsOrder] = useState(settings.data.projects_order);
 
   const [updateProject] = useUpdateProjectMutation();
 
@@ -41,27 +36,22 @@ export default function ProjectsPage() {
 
   const [defaultProject] = useDefaultProject();
 
-  const DefaultProject = defaultProject.habits.length ? (
-    <ProjectWrapper
-      key='default'
-      project={defaultProject}
-      datePeriodLength={datePeriodLength}
-      mobile={mobile}
-    />
-  ) : (
-      <></>
-    );
+  const dragHabitToProject = (fromProjectID, toProjectID, draggedHabitID, targetHabitID, insertAfter = false) => {
+    const fromProject = structuredClone(projects.data.find((p) => p.id === fromProjectID) ?? defaultProject);
+    const toProject = structuredClone(projects.data.find((p) => p.id === toProjectID) ?? defaultProject);
+    const draggedHabit = fromProject.habits.find((h) => h.id === draggedHabitID);
 
-  const dragHabitToProject = async (fromProjectID, toProjectID, draggedHabitID, targetHabitID, insertAfter = false) => {
-    const fromProject = structuredClone(projects.data.find((projecto) => projecto._id === fromProjectID) ?? defaultProject);
-    const toProject = structuredClone(projects.data.find((projecto) => projecto._id === toProjectID) ?? defaultProject);
     if (fromProject && fromProject.habits && fromProjectID !== 'default') {
-      await updateProject({projectID: fromProjectID, values: { habits: fromProject.habits.filter((habitID) => habitID !== draggedHabitID)}});
+      const filteredHabits = fromProject.habits.filter((h) => h.id !== draggedHabitID);
+      const filteredHabitIDs = filteredHabits.map((h) => h.id);
+      updateProject({ projectID: fromProjectID, values: { habits: filteredHabits, habit_ids: filteredHabitIDs } });
     }
+
     if (toProject && toProject.habits && toProjectID !== 'default') {
-      const position = toProject.habits.findIndex((habit) => habit === targetHabitID);
-      toProject.habits.splice(position + insertAfter, 0, draggedHabitID);
-      await updateProject({projectID: toProjectID, values: { habits: toProject.habits}});
+      const i = toProject.habits.findIndex((h) => h.id === targetHabitID);
+      toProject.habits.splice(i + insertAfter, 0, draggedHabit);
+      const toProjectHabitIDs = toProject.habits.map((h) => h.id);
+      updateProject({ projectID: toProjectID, values: { habits: toProject.habits, habit_ids: toProjectHabitIDs } });
     }
   };
 
@@ -92,42 +82,32 @@ export default function ProjectsPage() {
           isFuturePeriod={isFuturePeriod}
         />
       </div>
-      {!loaded || projects.isFetching || habits.isFetching || settings.isFetching ? (
+      {!loaded || projects.isFetching || settings.isFetching ? (
         <div className="loader" />
       ) : (
-        <div className="contentlist"> {/* ProjectList */}
-            {settings.data.projects_enable_order && settings.data.projects_order && projects.data &&
-                projectsOrder.flatMap((projectID, i) => {
-                  projectsMap[projectID] = true;
-
-                  if (projectID === 'default') return DefaultProject;
-
-                  const project = projects.data.find((projecto) => projecto._id === projectID);
-
-                  if (!project) return <React.Fragment key={i}></React.Fragment>;
-
-                  return <ProjectWrapper
-                    key={i}
-                    project={project}
-                    datePeriodLength={datePeriodLength}
-                    mobile={mobile}
-                    dragHabitToProject={dragHabitToProject}
-                  />;
-                })
-            }
-            {projects.data && projects.data.map((project, i) =>
-                projectsMap[project._id] ? <React.Fragment key={Object.keys(projectsMap).length * 10 + i}></React.Fragment> : (
-                  <ProjectWrapper
-                    key={Object.keys(projectsMap).length * 10 + i}
-                    project={project}
-                    datePeriodLength={datePeriodLength}
-                    mobile={mobile}
-                    dragHabitToProject={dragHabitToProject}
-                  />
-                )
-              )
-            }
-            {projectsMap.default ? <React.Fragment key='default'></React.Fragment> : DefaultProject}
+        <div className="contentlist">
+          {projects.data.map((project, i) =>
+            <ProjectWrapper
+              key={i}
+              project={project}
+              datePeriodLength={datePeriodLength}
+              mobile={mobile}
+              dragHabitToProject={dragHabitToProject}
+            />
+          )}
+          {
+            defaultProject?.habits?.length ? (
+              <ProjectWrapper
+                key='default'
+                project={defaultProject}
+                datePeriodLength={datePeriodLength}
+                mobile={mobile}
+                dragHabitToProject={dragHabitToProject}
+              />
+            ) : (
+              <></>
+            )
+          }
         </div>
       )}
     </>

@@ -23,7 +23,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
 
   if (habits.isLoading || tasks.isLoading) return <></>;
 
-  const task = tasks.data.find((task1) => task1._id === taskID);
+  const task = tasks.data.find((t) => t.id === taskID);
 
   const onSubmit = async (values) => {
     if (task) {
@@ -34,7 +34,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
     dispatch(close());
   };
 
-  const habit = habits.data.find((habito) => habito._id === habitID) ?? {
+  const habit = habits.data.find((h) => h.id === habitID) ?? {
     name: 'Default',
     color: '#8a8a8a',
   };
@@ -42,10 +42,10 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
   return (
     <Form
       initialValues={{
-        completed: task?.completed ?? false,
+        is_completed: task?.is_completed ?? false,
         name: task?.name ?? '',
         description: task?.description ?? '',
-        habitID: task?.habit?._id ?? habit?._id,
+        habitID: task?.habit_id ?? habit?.id,
       }}
       onSubmit={onSubmit}
       render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -65,13 +65,13 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
               <Icon path={mdiClose} />
             </button>
           </div>
-          <div className="modal-details-block" style={{ height: 'min-content'}}>
+          <div className="modal-details-block" style={{ height: 'min-content' }}>
             <NameField type="task" />
           </div>
           <div className="modal-details-block">
             <DescriptionField rows="9" />
           </div>
-          <ModalButtons disabled={submitting | !values?.name} isNew={!taskID} type="task" />
+          <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!taskID} type="task" />
         </form>
       )}
     />

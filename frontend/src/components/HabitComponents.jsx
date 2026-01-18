@@ -12,18 +12,15 @@ import {
   mdiPlus,
   mdiKeyboardReturn,
 } from '@mdi/js';
-import { useUpdateHeatmapMutation } from '../state/services/heatmap';
-import { useUpdateProjectMutation } from '../state/services/project';
-import { changeHeatmapTo } from '../state/features/cellAdd/cellAddSlice';
+import { useCreateHabitDataPointMutation } from '../state/services/habitData';
+import { changeHabitTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
-import { getUTCOffsettedDate } from '../utils/dates';
 
 import Heatmap from './Heatmap';
 
 function HabitControls({
   habit,
-  heatmapID,
   header,
   mobile,
   projectID = '',
@@ -31,26 +28,26 @@ function HabitControls({
   habitPage = false,
 }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
-  const [updateHeatmap] = useUpdateHeatmapMutation();
+  const [createHabitDataPoint] = useCreateHabitDataPointMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const setStopwatchHabit = () => {
     updateStopwatch({
       values: {
-        habit,
+        habit_id: habit.id,
       },
     });
     dispatch(changeTo({ type: 'stopwatch' }));
   };
   const addCell = async () => {
-    await updateHeatmap({
-      heatmapID,
-      values: { value: 1, date: getUTCOffsettedDate() },
+    await createHabitDataPoint({
+      habitID: habit.id,
+      values: { value: 1, date: new Date() },
     });
   };
   const openCellAddDropdown = (e, isTarget) => {
     e.stopPropagation();
-    dispatch(changeHeatmapTo({ heatmapID, isActive: true, isTarget }));
+    dispatch(changeHabitTo({ habitID: habit.id, isActive: true, isTarget }));
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     cellAddDropdown.classList.toggle('hidden');
     const cell = e.target;
@@ -117,7 +114,7 @@ function HabitControls({
       {!modal && (
         <button
           className="overview-habit-button"
-          onClick={() => dispatch(changeTo({ habitID: habit._id, projectID, type: 'habit' }))}
+          onClick={() => dispatch(changeTo({ habitID: habit.id, projectID, type: 'habit' }))}
           title="Edit habit"
           type="button"
         >
@@ -127,7 +124,7 @@ function HabitControls({
       <button
         className="overview-habit-button"
         onClick={() => {
-          dispatch(changeTo({ habitID: habit._id, projectID, type: 'deleteHabit' }));
+          dispatch(changeTo({ habitID: habit.id, projectID, type: 'deleteHabit' }));
           if (habitPage) {
             navigate('/projects');
           }
@@ -145,13 +142,10 @@ function HabitOverview({
   dateStart,
   dateEnd,
   habit,
-  heatmapData,
-  heatmapID,
   vertical,
   mobile,
   projectID = '',
-  dragHabitInProject,
-  dragHabitToProject,
+  dropHabitInProject,
 }) {
   const linkify = (str) => str.replace(/\s+/g, '-').toLowerCase();
 
@@ -160,60 +154,32 @@ function HabitOverview({
   }
 
   const drag = (e) => {
-    e.dataTransfer.setData("text", e.target.id);
-  }
-
-  const drop = async (e) => {
-    e.preventDefault();
-    const id = e.dataTransfer.getData("text");
-    const draggedHabit = document.getElementById(id);
-
-    if (!draggedHabit || !draggedHabit.classList.contains('overview-habit')) {
-      return;
-    };
-
-    const target = e.target.closest('.overview-habit')
-
-    if (target.id === id) {
-      return;
-    }
-
-    const draggedFromProjectID = draggedHabit.closest('.overview-centering').id;
-    const draggedToProjectID = target.closest('.overview-centering').id;
-
-    if (draggedFromProjectID === draggedToProjectID) {
-      if (draggedFromProjectID !== 'default') {
-        await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
-      }
-    } else {
-      await dragHabitToProject(draggedFromProjectID, draggedToProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
-    }
+    e.dataTransfer.setData("dragged-habit", e.target.dataset.id);
   }
 
   return (
     <div
       className="overview-habit"
-      onDrop={drop}
+      onDrop={dropHabitInProject}
       onDragOver={allowDrop} draggable onDragStart={drag}
-      id={habit?._id}
+      id={habit?.id}
+      data-id={`${projectID}_${habit?.id}`}
     >
       <NavLink
         className="overview-habit-name"
-        to={`../habit/${linkify(habit._id)}`}
+        to={`../habit/${linkify(habit.id)}`}
         title={habit.name}
       >
         {habit.name}
       </NavLink>
       <Heatmap
-        heatmapData={heatmapData}
-        heatmapID={heatmapID}
         habit={habit}
         dateStart={dateStart}
         dateEnd={dateEnd}
         vertical={vertical}
-        isOverview={true}
+        is2D={false}
       />
-      <HabitControls habit={habit} heatmapID={heatmapID} mobile={mobile} projectID={projectID} />
+      <HabitControls habit={habit} mobile={mobile} projectID={projectID} />
     </div>
   );
 }

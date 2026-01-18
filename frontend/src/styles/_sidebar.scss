@@ -36,6 +36,7 @@
   gap: 5px;
   justify-content: space-between;
   align-items: center;
+  border-radius: 10px;
 }
 
 .navigation {
@@ -92,6 +93,12 @@
 .sidebar-project {
   @include sidebar-item;
   padding-left: 10px;
+  border-radius: 10px;
+
+  &.active,
+  &:hover {
+    background-color: var(--sidebar-dim-color);
+  }
 }
 
 .filter {
@@ -108,15 +115,16 @@
   @include sidebar-item;
   padding-inline: 9px;
   height: 35px;
-  margin-left: 13px;
+  margin-left: 6px;
   margin-block: 3px;
   gap: 20px;
-  width: 207px;
+  width: 213px;
   overflow: hidden;
+  border-radius: 10px;
 
   &.active,
   &:hover {
-    background-color: var(--transparent-bg-color);
+    background-color: var(--sidebar-muted-color);
   }
 }
 
@@ -161,30 +169,24 @@
   @include dropdown.dropdown;
   @include dropdown.dropdown-arrow;
   @include dropdown.dropdown-collapse;
-
-  &-container.active {
-    gap: 5px;
-    top: 40px;
-  }
 }
 
 .sidebar-habits {
   @include dropdown.dropdown;
   @include dropdown.dropdown-arrow;
   @include dropdown.dropdown-collapse;
-  padding: 2px;
+  padding-inline: 2px;
+  margin-block: 10px;
+  border-left: 3px solid var(--sidebar-main-color);
 
   &-arrow {
     color: var(--contrast-text-color);
+    background-color: var(--sidebar-main-color);
   }
 
   &-header {
-    gap: 5px;
-    padding-left: 15px;
-  }
-
-  &-container.active {
-    top: 40px;
+    gap: 10px;
+    padding-left: 8px;
   }
 }
 

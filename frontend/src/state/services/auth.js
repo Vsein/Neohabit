@@ -24,6 +24,7 @@ const authApi = createApi({
         try {
           const res = await queryFulfilled;
           localStorage.setItem('token', res.data.token);
+          window.dispatchEvent(new Event('storage'));
         } catch (err) {
           console.log('Login failed');
         }

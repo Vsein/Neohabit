@@ -1,0 +1,1498 @@
+openapi: '3.0.0'
+info:
+  version: 0.0.0
+  title: Neohabit API
+  description: |
+    REST API for Neohabit's backend, rewritten in go
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: Auth
+  - name: Users
+  - name: Habits
+  - name: HabitData
+  - name: HabitTargets
+  - name: Projects
+  - name: Skilltrees
+  - name: Skills
+  - name: Tasks
+  - name: Settings
+  - name: Stopwatches
+
+paths:
+  /signup:
+    post:
+      summary: Create a new account
+      operationId: signup
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ username, password ]
+              properties:
+                username:
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                  example: "Vsein"
+                password:
+                  type: string
+                  maxLength: 100
+      responses:
+        '201':
+          description: New user created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '409':
+          description: Username already exists
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /login:
+    post:
+      summary: Login into existing account
+      operationId: login
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ username, password ]
+              properties:
+                username:
+                  type: string
+                  minLength: 1
+                  maxLength: 32
+                  example: "Vsein"
+                password:
+                  type: string
+                  maxLength: 100
+      responses:
+        '200':
+          description: Logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /user:
+    get:
+      summary: Get authorized user's info
+      operationId: getUser
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+    delete:
+      summary: Delete authorized user and all related data
+      operationId: deleteUser
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Successfully deleted the user
+        '401':
+          description: Unauthorized
+        '404':
+          description: User not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habits:
+    get:
+      summary: List habits
+      operationId: listHabits
+      tags: [Habits]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's habits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Habit'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habits/outside_projects:
+    get:
+      summary: List habits without a single project related
+      operationId: listHabitsOutsideProjects
+      tags: [Habits]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's projectless habits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Habit'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habit:
+    post:
+      summary: Create habit
+      operationId: createHabit
+      tags: [Habits]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Habit'
+      responses:
+        '201':
+          description: Habit created successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: Unauthorized
+        '409':
+          description: Habit already exists
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habit/{habit_id}:
+    put:
+      summary: Update Habit by ID
+      operationId: updateHabit
+      tags: [Habits]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Habit'
+      responses:
+        '204':
+          description: Habit successfully modified
+        '400':
+          description: HabitID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Habit not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete habit
+      operationId: deleteHabit
+      tags: [Habits]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Successfully deleted the habit
+        '400':
+          description: HabitID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Habit not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habit/{habit_id}/data_point:
+    post:
+      summary: Create a data point
+      operationId: createHabitDataPoint
+      tags: [HabitData]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HabitData'
+      responses:
+        '201':
+          description: Data point created successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request data
+        '401':
+          description: Unauthorized
+        '409':
+          description: Data point already exists
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habit/{habit_id}/data_points/reduce_period:
+    post:
+      summary: Reduce sum total of habit data points of the specified period by amount
+      operationId: reduceHabitDataPointsBetweenDatesByAmount
+      tags: [HabitData]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ period_start, period_end, amount ]
+              properties:
+                period_start:
+                  $ref: '#/components/schemas/Date'
+                period_end:
+                  $ref: '#/components/schemas/Date'
+                amount:
+                  type: integer
+      responses:
+        '204':
+          description: Data points reduced successfully
+        '400':
+          description: Invalid request data
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habit/{habit_id}/data_points/delete_period:
+    delete:
+      summary: Delete all habit data points of the specified period
+      operationId: deleteAllHabitDataPointsBetweenDates
+      tags: [HabitData]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ period_start, period_end ]
+              properties:
+                period_start:
+                  $ref: '#/components/schemas/Date'
+                period_end:
+                  $ref: '#/components/schemas/Date'
+      responses:
+        '204':
+          description: Data points deleted successfully
+        '400':
+          description: Invalid request data
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /habit/{habit_id}/target:
+    post:
+      summary: Create a habit target
+      operationId: createHabitTarget
+      tags: [HabitTargets]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HabitTarget'
+      responses:
+        '201':
+          description: Habit target created successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request data
+        '401':
+          description: Unauthorized
+        '409':
+          description: Habit target already exists
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /projects:
+    get:
+      summary: List projects
+      operationId: listProjects
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /project:
+    post:
+      summary: Create Project
+      operationId: createProject
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '201':
+          description: Project created successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '409':
+          description: Project already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /project/{project_id}:
+    patch:
+      summary: Update Project by ID
+      operationId: updateProject
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '204':
+          description: Project successfully modified
+        '400':
+          description: ProjectID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete project
+      operationId: deleteProject
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Successfully deleted the project
+        '400':
+          description: ProjectID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Project not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /projects/order:
+    PUT:
+      summary: Update projects order
+      operationId: updateProjectsOrder
+      tags: [Projects]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ new_projects_order ]
+              properties:
+                new_projects_order:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Project order successfully updated
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /tasks:
+    get:
+      summary: List tasks
+      operationId: listTasks
+      tags: [Tasks]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /task:
+    post:
+      summary: Create Task
+      operationId: createTask
+      tags: [Tasks]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ name, description ]
+              properties:
+                name:
+                  $ref: '#/components/schemas/Name'
+                description:
+                  $ref: '#/components/schemas/Description'
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+        '409':
+          description: Task already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /task/{task_id}:
+    patch:
+      summary: Update Task by ID
+      operationId: updateTask
+      tags: [Tasks]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        '204':
+          description: Task successfully modified
+        '400':
+          description: TaskID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete task
+      operationId: deleteTask
+      tags: [Tasks]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Successfully deleted the task
+        '400':
+          description: TaskID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Task not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /skilltrees:
+    get:
+      summary: List skilltrees
+      operationId: listSkilltrees
+      tags: [Skilltrees]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's skilltrees
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Skilltree'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /skilltree:
+    post:
+      summary: Create skilltree
+      operationId: createSkilltree
+      tags: [Skilltrees]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skilltree'
+      responses:
+        '201':
+          description: Skilltree created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ skilltree_id, skill_id ]
+                properties:
+                  skilltree_id:
+                    type: string
+                  skill_id:
+                    type: string
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: Unauthorized
+        '409':
+          description: Skilltree already exists
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /skilltree/{skilltree_id}:
+    put:
+      summary: Update Skilltree by ID
+      operationId: updateSkilltree
+      tags: [Skilltrees]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: skilltree_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skilltree'
+      responses:
+        '204':
+          description: Skilltree successfully modified
+        '400':
+          description: SkilltreeID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Skilltree not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete skilltree
+      operationId: deleteSkilltree
+      tags: [Skilltrees]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: skilltree_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Successfully deleted the skilltree
+        '400':
+          description: SkilltreeID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Skilltree not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /skill:
+    post:
+      summary: Create a new skill
+      operationId: createSkill
+      tags: [Skills]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skill'
+      responses:
+        '201':
+          description: Skill created successfully
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: Unauthorized
+        '409':
+          description: Skill already exists
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /skill/{skill_id}:
+    put:
+      summary: Update skill by ID
+      operationId: updateSkill
+      tags: [Skills]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: skill_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skill'
+      responses:
+        '204':
+          description: Skill successfully modified
+        '400':
+          description: SkillID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Skill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete skill (and its child skills will be automatically deleted)
+      operationId: deleteSkill
+      tags: [Skills]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: skill_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Successfully deleted the skill(s)
+        '400':
+          description: SkillID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Skill not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /settings:
+    get:
+      summary: Returns user's settings
+      operationId: getSettings
+      tags: [Settings]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Settings'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+    patch:
+      summary: Update user's settings
+      operationId: updateSettings
+      tags: [Settings]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Settings'
+      responses:
+        '204':
+          description: Successfully updated user's settings
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /stopwatch:
+    get:
+      summary: Returns user's stopwatch
+      operationId: getStopwatch
+      tags: [Stopwatches]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully fetched user's stopwatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stopwatch'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+    patch:
+      summary: Update user's stopwatch
+      operationId: updateStopwatch
+      tags: [Stopwatches]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stopwatch'
+      responses:
+        '204':
+          description: Successfully updated user's stopwatch
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /stopwatch/finish:
+    post:
+      summary: Finish stopwatch
+      operationId: finishStopwatch
+      tags: [Stopwatches]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stopwatch'
+      responses:
+        '204':
+          description: Successfully finished stopwatch
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    UUID: # UUIDv7 to be exact
+      type: string
+      format: uuid
+
+    Name:
+      type: string
+      maxLength: 150
+      description: Activity name
+      example: "Sample activity (project, habit, skill)"
+
+    Description:
+      type: string
+      maxLength: 3000
+      description: Activity description
+      example: "This is a sample activity"
+
+    Color:
+      type: string
+      maxLength: 50
+      example: "#23BCDB"
+
+    Date:
+      type: string
+      format: date-time
+
+    DateInt:
+      type: integer
+      format: int64
+      description: Unix timestamp (milliseconds)
+      example: 1609459200000
+
+    User:
+      type: object
+      required:
+        - id
+        - username
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        username:
+          type: string
+        verified:
+          type: boolean
+        verification_attempts:
+          type: integer
+          format: uint8
+        verification_time:
+          $ref: '#/components/schemas/Date'
+        created_at:
+          $ref: '#/components/schemas/Date'
+        updated_at:
+          $ref: '#/components/schemas/Date'
+
+    Habit:
+      type: object
+      required:
+        - id
+        - user_id
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        project_id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        color:
+          $ref: '#/components/schemas/Color'
+        due_date:
+          $ref: '#/components/schemas/Date'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HabitData'
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/HabitTarget'
+        is_numeric:
+          type: boolean
+        more_is_bad:
+          type: boolean
+        created_at:
+          $ref: '#/components/schemas/Date'
+        updated_at:
+          $ref: '#/components/schemas/Date'
+
+    HabitData:
+      type: object
+      required:
+        - date
+        - value
+      properties:
+        date:
+          $ref: '#/components/schemas/Date'
+        value:
+          type: integer
+          description: "How many times the activity was completed this day"
+
+    HabitTarget:
+      type: object
+      required:
+        - date_start
+        - value
+        - period
+        - is_archive
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        date_start:
+          $ref: '#/components/schemas/Date'
+        date_end:
+          $ref: '#/components/schemas/Date'
+        value:
+          type: integer
+          description: "How many times the activity has to be completed in the specified Period"
+          example: 2
+        period:
+          type: integer
+          description: "How many days you have to complete the activity"
+          example: 1
+        is_archiving:
+          type: boolean
+
+    Project:
+      type: object
+      required:
+        - id
+        - user_id
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        color:
+          $ref: '#/components/schemas/Color'
+        order_index:
+          type: integer
+        habit_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/UUID'
+        habits:
+          type: array
+          items:
+            $ref: '#/components/schemas/Habit'
+        created_at:
+          $ref: '#/components/schemas/Date'
+        updated_at:
+          $ref: '#/components/schemas/Date'
+
+    Task:
+      type: object
+      required:
+        - id
+        - user_id
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        habit_id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        due_date:
+          $ref: '#/components/schemas/Date'
+        is_important:
+          type: boolean
+        is_completed:
+          type: boolean
+        created_at:
+          $ref: '#/components/schemas/Date'
+        updated_at:
+          $ref: '#/components/schemas/Date'
+
+    Skilltree:
+      type: object
+      required:
+        - id
+        - user_id
+        - name
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        project_id:
+          $ref: '#/components/schemas/UUID'
+        habit_id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        color:
+          $ref: '#/components/schemas/Color'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        created_at:
+          $ref: '#/components/schemas/Date'
+        updated_at:
+          $ref: '#/components/schemas/Date'
+
+    Skill:
+      type: object
+      required:
+        - id
+        - is_root_skill
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        skilltree_id:
+          $ref: '#/components/schemas/UUID'
+        parent_skill_id:
+          $ref: '#/components/schemas/UUID'
+        is_root_skill:
+          type: boolean
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        status:
+          type: string
+          enum: [completed, idle, in-progress, disregarded]
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        created_at:
+          $ref: '#/components/schemas/Date'
+        updated_at:
+          $ref: '#/components/schemas/Date'
+
+    Stopwatch:
+      type: object
+      required:
+        - id
+        - user_id
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        habit_id:
+          $ref: '#/components/schemas/UUID'
+        is_initiated:
+          type: boolean
+        start_time:
+          $ref: '#/components/schemas/Date'
+        duration:
+          type: integer
+          format: int64
+          description: Stopwatch duration in milliseconds
+        is_paused:
+          type: boolean
+        pause_duration:
+          type: integer
+          format: int64
+          description: Stopwatch pause duration in milliseconds
+        created_at:
+          $ref: '#/components/schemas/Date'
+        updated_at:
+          $ref: '#/components/schemas/Date'
+
+    Settings:
+      type: object
+      required:
+        - id
+        - user_id
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        user_id:
+          $ref: '#/components/schemas/UUID'
+        theme:
+          type: string
+          enum: ["dark", "light"]
+        read_settings_from_config_file:
+          type: boolean
+        cell_height_multiplier:
+          type: integer
+          format: uint8
+        cell_width_multiplier:
+          type: integer
+          format: uint8
+        overview_vertical:
+          type: boolean
+        overview_current_day:
+          type: string
+          enum: ["end", "middle", "start"]
+        overview_offset:
+          type: integer
+          format: uint8
+
+        # Want to deprecate
+        overview_duration:
+          type: integer
+          format: uint8
+        overview_apply_limit:
+          type: boolean
+        overview_duration_limit:
+          type: integer
+          format: uint8
+        #######################
+
+        allow_horizontal_scrolling:
+          type: boolean
+
+        # Want to deprecate
+        habit_heatmaps_override:
+          type: boolean
+        habit_heatmaps_current_day:
+          type: string
+          enum: ["end", "middle", "start"]
+        #######################
+
+        show_stopwatch_time_in_page_title:
+          type: boolean
+        hide_cell_hint:
+          type: boolean
+        hide_onboarding:
+          type: boolean
+
+        projects_enable_custom_order:
+          type: boolean
+
+        created_at:
+          $ref: '#/components/schemas/Date'
+        updated_at:
+          $ref: '#/components/schemas/Date'
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: "Habit not found"

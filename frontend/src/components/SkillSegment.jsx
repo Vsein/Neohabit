@@ -1,17 +1,4 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Icon } from '@mdi/react';
-import {
-  mdiPause,
-  mdiPlus,
-  mdiPlay,
-  mdiRestart,
-  mdiFlagCheckered,
-  mdiPencil,
-  mdiDelete,
-} from '@mdi/js';
-import { changeTo } from '../state/features/overlay/overlaySlice';
-import { useEditSkillMutation } from '../state/services/skilltree';
+import React from 'react';
 import SkillNode from './SkillNode';
 
 export default function SkillSegment({ skilltreeID, skill, color }) {
@@ -22,9 +9,9 @@ export default function SkillSegment({ skilltreeID, skill, color }) {
       {skill.children ? (
         <div className="skill-segments-wrapper">
           {
-        skill.children.map((skillChild, i) => (
-          <SkillSegment key={i} skilltreeID={skilltreeID} skill={skillChild} color={color} />
-        ))
+            skill.children.map((skillChild, i) => (
+              <SkillSegment key={i} skilltreeID={skilltreeID} skill={skillChild} color={color} />
+            ))
           }
         </div>
       ) : (

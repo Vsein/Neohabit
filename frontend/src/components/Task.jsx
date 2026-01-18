@@ -14,23 +14,23 @@ export default function Task({ task }) {
 
   const deleteThisTask = (e) => {
     e.stopPropagation();
-    deleteTask(task._id);
+    deleteTask(task.id);
   };
 
   const completeTask = (e) => {
     e.stopPropagation();
     updateTask({
-      taskID: task._id,
-      values: { ...task, completed: !task.completed },
+      taskID: task.id,
+      values: { is_completed: !task.is_completed },
     });
   };
 
-  const bg = task.completed
+  const bg = task.is_completed
     ? `radial-gradient(${habit?.color} 30%, ${habit?.color}33 40%)`
     : `${habit?.color}33`;
 
   const openOverlay = (e) => {
-    dispatch(changeTo({ taskID: task._id, habitID: habit?._id, type: 'task' }));
+    dispatch(changeTo({ taskID: task.id, habitID: habit?.id, type: 'task' }));
   };
 
   return (

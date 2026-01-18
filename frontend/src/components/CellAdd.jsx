@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { formatISO, addDays } from 'date-fns';
+import { formatISO } from 'date-fns';
 import { Form } from 'react-final-form';
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
-import { useUpdateHeatmapMutation } from '../state/services/heatmap';
+import { useCreateHabitDataPointMutation } from '../state/services/habitData';
+import { useCreateHabitTargetMutation } from '../state/services/habitTarget';
 import { close } from '../state/features/cellAdd/cellAddSlice';
 import { DateField, ActionsField, PeriodField } from './CellAddFields';
-import { getUTCOffsettedDate } from '../utils/dates';
 
 export default function CellAdd() {
   const dispatch = useDispatch();
-  const [updateHeatmap] = useUpdateHeatmapMutation();
-  const { heatmapID, isTarget, isActive } = useSelector((state) => state.cellAdd);
+  const [createHabitDataPoint] = useCreateHabitDataPointMutation();
+  const [createHabitTarget] = useCreateHabitTargetMutation();
+  const { habitID, isTarget, isActive } = useSelector((state) => state.cellAdd);
   const closeDropdown = () => {
     dispatch(close());
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
@@ -25,17 +26,23 @@ export default function CellAdd() {
       document.removeEventListener('click', closeDropdown);
     };
   });
-  const onSubmit = async (values) => {
-    await updateHeatmap({
-      heatmapID,
-      values: {
-        ...values,
-        is_archive: +values.value === 0 && values.is_target,
-        date: getUTCOffsettedDate(
-          addDays(new Date(values.date), new Date().getTimezoneOffset() > 0 * 1),
-        ),
-      },
-    });
+  const onSubmit = (values) => {
+    if (!values.is_target) {
+      createHabitDataPoint({
+        habitID,
+        values: { value: +values.value, date: new Date(values.date) },
+      });
+    } else {
+      createHabitTarget({
+        habitID,
+        values: {
+          is_target: true,
+          value: +values.value,
+          period: +values.period,
+          date_start: new Date(values.date)
+        },
+      });
+    }
     closeDropdown();
   };
 

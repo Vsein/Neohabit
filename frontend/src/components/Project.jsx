@@ -3,18 +3,15 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
-import { differenceInDays, endOfDay, startOfDay } from 'date-fns';
-import { useGetHabitsQuery } from '../state/services/habit';
-import { useGetHeatmapsQuery } from '../state/services/heatmap';
-import { useUpdateSettingsMutation } from '../state/services/settings';
-import { useUpdateProjectMutation } from '../state/services/project';
+import { differenceInDays } from 'date-fns';
+import { useUpdateProjectMutation, useUpdateProjectsOrderMutation } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
 import { generateShades } from '../hooks/usePaletteGenerator';
-import heatmapSort from '../utils/heatmapSort';
+import { minValidDate } from '../utils/dates';
 
 export default function Project({
   project,
@@ -24,88 +21,98 @@ export default function Project({
   singular = false,
   globalDateStart = null,
   globalDateEnd = null,
-  onboardingSlide = 0,
   isPastPeriod = false,
   isFuturePeriod = false,
   dragHabitToProject,
 }) {
-  const heatmaps = useGetHeatmapsQuery();
-  const habits = useGetHabitsQuery();
   const vertical = false;
 
-  const [updateSettings] = useUpdateSettingsMutation();
   const [updateProject] = useUpdateProjectMutation();
+  const [updateProjectsOrder] = useUpdateProjectsOrderMutation();
 
   const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(project.color);
 
-  if (heatmaps.isFetching || habits.isFetching) return <></>;
-
   const dragHabitInProject = async (projectID, draggedHabitID, targetHabitID, insertAfter) => {
-    const projecto = structuredClone(project);
-    if (projecto && projectID === projecto._id && projecto.habits) {
-      const draggedHabitPosition = projecto.habits.findIndex(
-        (habit) => habit === draggedHabitID,
-      );
-      projecto.habits.splice(draggedHabitPosition, 1);
-      const position = projecto.habits.findIndex((habit) => habit === targetHabitID);
-      projecto.habits.splice(position + insertAfter, 0, draggedHabitID);
-      await updateProject({projectID, values: { habits: projecto.habits }});
+    const p = structuredClone(project);
+    if (p && projectID === p.id && p.habits) {
+      const i = p.habits.findIndex((h) => h.id === draggedHabitID);
+      const draggedHabit = p.habits[i];
+      p.habits.splice(i, 1);
+
+      const j = p.habits.findIndex((h) => h.id === targetHabitID);
+      p.habits.splice(j + insertAfter, 0, draggedHabit);
+
+      const habitIDs = p.habits.map((h) => h.id);
+      await updateProject({ projectID, values: { habits: p.habits, habit_ids: habitIDs } });
     }
   };
 
+  const dropHabitInProject = async (e) => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData("dragged-habit");
+    const draggedHabit = document.querySelector(`[data-id="${id}"]`);
+    if (!draggedHabit || !draggedHabit.classList.contains('overview-habit')) {
+      return;
+    };
+
+    const target = e.target.closest('.overview-habit')
+
+    if (target.id === id) {
+      return;
+    }
+
+    const draggedFromProjectID = draggedHabit.closest('.overview-centering').id;
+    const draggedToProjectID = target.closest('.overview-centering').id;
+
+    if (draggedFromProjectID === draggedToProjectID) {
+      if (draggedFromProjectID !== 'default') {
+        await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
+      }
+    } else {
+      await dragHabitToProject(draggedFromProjectID, draggedToProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
+    }
+  }
+
   const Habits =
     project.habits &&
-    project.habits.flatMap((habito, i) => {
-      // check if the habit ID was listed, not the habit itself
-      const habit = habito?._id ? habito : habits.data.find((habitoo) => habitoo._id === habito);
-      const heatmap = habit?._id
-        ? heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit._id)
-        : heatmaps.data.find((heatmapo) => heatmapo.habit._id === habit);
-      const dataSorted = heatmapSort(heatmap?.data, globalDateEnd);
-
-      return (new Date(dataSorted[0].date).getTime() === endOfDay(globalDateEnd).getTime() &&
-        dataSorted.length !== 1) ||
-        (dataSorted.length > 2 &&
-          dataSorted[dataSorted.length - 2].is_archive &&
-          startOfDay(new Date(dataSorted[dataSorted.length - 2].date).getTime()) <= globalDateStart.getTime()) ? (
-        []
-      ) : (
-        <HabitOverview
-          key={i}
-          habit={habit}
-          dateStart={globalDateStart}
-          dateEnd={globalDateEnd}
-          heatmapData={dataSorted}
-          heatmapID={heatmap?._id}
-          vertical={vertical}
-          mobile={mobile}
-          projectID={project._id}
-          dragHabitInProject={dragHabitInProject}
-          dragHabitToProject={dragHabitToProject}
-        />
-      );
-    });
+    project.habits.flatMap((habit, i) =>
+      // TODO: Check if the interval is archived
+      differenceInDays(minValidDate(new Date(habit.created_at), habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start), habit?.data?.length > 0 && new Date(habit?.data[0]?.date)), globalDateEnd) > 0 ?
+        [] :
+        (
+          <HabitOverview
+            key={i}
+            habit={habit}
+            dateStart={globalDateStart}
+            dateEnd={globalDateEnd}
+            vertical={vertical}
+            mobile={mobile}
+            projectID={project.id}
+            dropHabitInProject={dropHabitInProject}
+          />
+        )
+    );
 
   const allowDrop = (e) => {
     e.preventDefault();
   }
 
-  const drag = (e) => {
-    e.dataTransfer.setData("text", e.target.id);
+  const dragStart = (e) => {
+    e.dataTransfer.setData("dragged-project", e.target.id);
   }
 
   const HeaderName = () =>
     singular ? (
       <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
     ) : (
-      <NavLink to={`../project/${project?._id}`} title={project.name}>
+      <NavLink to={`../project/${project?.id}`} title={project.name}>
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{project?.name}</h3>
       </NavLink>
     );
 
   const drop = (e) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData("text");
+    const data = e.dataTransfer.getData("dragged-project");
     const draggedProject = document.getElementById(data);
 
     if (!draggedProject || !draggedProject.classList.contains('overview-centering')) {
@@ -122,13 +129,13 @@ export default function Project({
       projectsContainer.insertBefore(draggedProject, dropTo);
     }
 
-    const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].map(({ id }) => id);
-    updateSettings({ values: { projects_order: ids, projects_enable_order: true } })
+    const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].flatMap(({ id }) => id !== 'default' ? id : []);
+    updateProjectsOrder({ values: { new_projects_order: ids } });
   }
 
   return (
     <div
-      className={`overview-centering ${mobile ? 'mobile' : ''} slide-${onboardingSlide}`}
+      className={`overview-centering ${mobile ? 'mobile' : ''}`}
       style={{
         '--habits': Habits.length,
         '--length': differenceInDays(globalDateEnd, globalDateStart) + 1,
@@ -144,71 +151,77 @@ export default function Project({
         [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,
       }}
       onDrop={drop}
-      onDragOver={allowDrop} draggable onDragStart={drag}
-      id={project?._id}
+      onDragOver={allowDrop}
+      draggable={project?.id !== 'default'}
+      onDragStart={dragStart}
+      id={project?.id}
     >
-        <div
-          className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
-        >
-          {mobile ? (
+      <div
+        className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''} ${singular ? 'singular' : ''}`}
+        style={{ [project?.id !== 'default' ? 'cursor' : '']: 'move' }}
+      >
+        {mobile ? (
+          <HeaderName />
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
             <HeaderName />
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
-              <HeaderName />
-              <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} isFuturePeriod={isFuturePeriod} />
-            </div>
-          )}
-          {!mobile && (
+            <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} isFuturePeriod={isFuturePeriod} />
+          </div>
+        )}
+        {!mobile && (
+          <>
+            <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
+            <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
+          </>
+        )}
+        <ProjectControls projectID={project?.id} project={project} mobile={mobile} addPeriod={addPeriod} isPastPeriod={isPastPeriod} />
+      </div>
+      <div
+        className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
+      >
+        <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
+          {mobile && (
             <>
+              <div className="overview-topbar-left">
+                {/* {!vertical && ( */}
+                {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
+                {/* )} */}
+                <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} isFuturePeriod={isFuturePeriod} />
+              </div>
               <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
               <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
+              <OverviewTopbarRight
+                vertical={vertical}
+                dateStart={globalDateStart}
+                // {/* subYear={subYear} */}
+                // {/* addYear={addYear} */}
+                addMonth={addPeriod}
+              />
             </>
           )}
-          <ProjectControls projectID={project?._id} mobile={mobile} addPeriod={addPeriod} isPastPeriod={isPastPeriod} />
-        </div>
-        <div
-          className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
-        >
-          <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
-            {mobile && (
-              <>
-                <div className="overview-topbar-left">
-                  {/* {!vertical && ( */}
-                  {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
-                  {/* )} */}
-                  <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} isFuturePeriod={isFuturePeriod} />
-                </div>
-                <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
-                <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
-                <OverviewTopbarRight
-                  vertical={vertical}
-                  dateStart={globalDateStart}
-                  // {/* subYear={subYear} */}
-                  // {/* addYear={addYear} */}
-                  addMonth={addPeriod}
-                />
-              </>
-            )}
-            <div className="overview-habits">
-              {Habits.length === 0 && <h5 className="overview-no-habits">No habits</h5>}
-              {Habits}
-            </div>
-            {vertical && (
-              <button
-                className="overview-period-move-down"
-                onClick={addPeriod}
-                title="Next period [L]"
-              >
-                <Icon path={mdiMenuDown} className="icon" />
-              </button>
-            )}
+          <div className="overview-habits">
+            {Habits.length === 0 &&
+              <h5 className="overview-no-habits overview-habit" onDrop={dropHabitInProject} onDragOver={allowDrop} >
+                No habits &nbsp;&nbsp;ʕ•ᴥ•ʔ
+              </h5>}
+            {Habits}
           </div>
+          {vertical && (
+            <button
+              className="overview-period-move-down"
+              onClick={addPeriod}
+              title="Next period [L]"
+            >
+              <Icon path={mdiMenuDown} className="icon" />
+            </button>
+          )}
         </div>
       </div>
+    </div>
   );
 }
 
-function ProjectControls({ projectID, mobile, addPeriod, isPastPeriod }) {
+function ProjectControls({ project, projectID, mobile, addPeriod, isPastPeriod }) {
   const dispatch = useDispatch();
 
   return (
@@ -221,14 +234,14 @@ function ProjectControls({ projectID, mobile, addPeriod, isPastPeriod }) {
         <>
           <button
             className="overview-open-settings active"
-            onClick={() => dispatch(changeTo({ projectID, type: 'project' }))}
+            onClick={() => dispatch(changeTo({ projectID, project, type: 'project' }))}
             title="Edit the project"
           >
             <Icon path={mdiPencil} className="icon small centering" />
           </button>
           <button
             className="overview-open-settings active"
-            onClick={() => dispatch(changeTo({ projectID, type: 'deleteProject' }))}
+            onClick={() => dispatch(changeTo({ projectID, project, type: 'deleteProject' }))}
             title="Delete the project"
           >
             <Icon path={mdiDelete} className="icon small centering" />

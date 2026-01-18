@@ -15,9 +15,22 @@ export const skilltreeApi = api.injectEndpoints({
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
+        const newSkilltree = {
+          ...values,
+          id: res.data.skilltree_id,
+          skills: [
+            {
+              id: res.data.skill_id,
+              skilltree_id: res.data.skilltree_id,
+              is_root_skill: true,
+              name: values.name,
+              status: 'completed',
+            },
+          ],
+        };
         dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            draft.push(res.data);
+            draft.push(newSkilltree);
           }),
         );
       },
@@ -31,7 +44,7 @@ export const skilltreeApi = api.injectEndpoints({
       onQueryStarted({ skilltreeID, values }, { dispatch }) {
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
+            const skilltree = draft.find((s) => s.id === skilltreeID);
             if (skilltree) {
               skilltree.name = values.name;
               skilltree.color = values.color;
@@ -41,56 +54,56 @@ export const skilltreeApi = api.injectEndpoints({
       },
     }),
     addSkill: builder.mutation({
-      query: ({ skilltreeID, skillparentID, values }) => ({
-        url: `skilltree/${skilltreeID}/${skillparentID}`,
+      query: (values) => ({
+        url: 'skill',
         body: values,
         method: 'POST',
       }),
-      async onQueryStarted({ skilltreeID, skillparentID, values }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
+            const skilltree = draft.find((s) => s.id === values.skilltree_id);
             if (skilltree) {
-              const { skills } = skilltree;
-              skills.push(res.data);
+              const newSkill = { ...values, id: res.data, skills: [] };
+              skilltree.skills.push(newSkill);
             }
           }),
         );
       },
     }),
     editSkill: builder.mutation({
-      query: ({ skilltreeID, skillID, values }) => ({
-        url: `skilltree/${skilltreeID}/${skillID}`,
+      query: ({ skillID, values }) => ({
+        url: `skill/${skillID}`,
         body: values,
         method: 'PUT',
       }),
-      async onQueryStarted({ skilltreeID, skillID, values }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ skillID, values }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
+            const skilltree = draft.find((s) => s.id === values.skilltree_id);
             if (skilltree) {
               const { skills } = skilltree;
-              const skill = skills.find((skillo) => skillo._id === skillID);
+              const skill = skills.find((s) => s.id === skillID);
               Object.assign(skill, values);
             }
           }),
         );
       },
     }),
-    deleteSkills: builder.mutation({
-      query: ({ skilltreeID, values }) => ({
-        url: `skilltree/${skilltreeID}/skills_group`,
+    deleteSkill: builder.mutation({
+      query: ({ skillID, values }) => ({
+        url: `skill/${skillID}`,
         body: values,
         method: 'DELETE',
       }),
-      async onQueryStarted({ skilltreeID, values }, { dispatch }) {
+      async onQueryStarted({ skillID, values }, { dispatch }) {
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const skilltree = draft.find((skilltreo) => skilltreo._id == skilltreeID);
-            skilltree.skills = skilltree.skills.filter((skill) => {
-              return values.ids.findIndex((id) => skill._id === id) === -1;
-            });
+            const skilltree = draft.find((s) => s.id === values.skilltree_id);
+            skilltree.skills = skilltree.skills.filter(
+              (skill) => values.ids.findIndex((id) => skill.id === id) === -1,
+            );
           }),
         );
       },
@@ -103,7 +116,7 @@ export const skilltreeApi = api.injectEndpoints({
       onQueryStarted(skilltreeID, { dispatch }) {
         const patchResult = dispatch(
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
-            const index = draft.findIndex((skilltree) => skilltree._id === skilltreeID);
+            const index = draft.findIndex((skilltree) => skilltree.id === skilltreeID);
             draft.splice(index, 1);
           }),
         );
@@ -118,6 +131,6 @@ export const {
   useUpdateSkilltreeMutation,
   useAddSkillMutation,
   useEditSkillMutation,
-  useDeleteSkillsMutation,
+  useDeleteSkillMutation,
   useDeleteSkilltreeMutation,
 } = skilltreeApi;

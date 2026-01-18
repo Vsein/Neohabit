@@ -12,7 +12,7 @@ export default function Tasklist(params) {
   const dispatch = useDispatch();
 
   const isInThisCategory = (task) => {
-    if (list === 'habit') return task?.habit?._id === habitID;
+    if (list === 'habit') return task?.habit?.id === habitID;
     if (list === 'this-week') return false;
     if (list === 'today') return false;
     return true;
@@ -37,7 +37,7 @@ export default function Tasklist(params) {
         {tasks
           .filter((task) => isInThisCategory(task))
           .map((task) => (
-            <li key={task._id}>
+            <li key={task.id}>
               <Task task={task} habit={task?.habit} />
             </li>
           ))}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
@@ -20,14 +20,14 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
 
   if (skilltrees.isLoading) return <></>;
 
-  const skilltree = skilltrees.data.find((skilltreo) => skilltreo._id === skilltreeID);
-  const skill = skillID ? skilltree.skills.find((skillo) => skillo._id === skillID) : {};
+  const skilltree = skilltrees.data.find((s) => s.id === skilltreeID);
+  const skill = skillID ? skilltree.skills.find((s) => s.id === skillID) : {};
 
   const onSubmit = async (values) => {
     if (!skillID) {
-      await addSkill({ skilltreeID, skillparentID, values });
+      await addSkill({ ...values, skilltree_id: skilltreeID, parent_skill_id: skillparentID });
     } else {
-      await editSkill({ skilltreeID, skillID, values });
+      await editSkill({ skillID, values: { ...values, skilltree_id: skilltreeID } });
     }
     dispatch(close());
   };
@@ -59,13 +59,13 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
               <Icon path={mdiClose} />
             </button>
           </div>
-          <div className="modal-details-block" style={{ height: 'min-content'}}>
-            <NameField type="skill" />
+          <div className="modal-details-block" style={{ height: 'min-content' }}>
+            <NameField type="skill" autofocus={!skillID} />
           </div>
           <div className="modal-details-block">
             <DescriptionField rows="9" />
           </div>
-          <ModalButtons disabled={submitting || !values?.name} isNew={!skillID} type="skill" />
+          <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!skillID} type="skill" />
         </form>
       )}
     />

@@ -65,7 +65,7 @@ export default function Landing() {
               </Link>
             </li>
             <li>
-              <NavLink to="/login">Login</NavLink>
+              <NavLink to="/login">Log in</NavLink>
             </li>
           </ul>
           <DropdownMenu />

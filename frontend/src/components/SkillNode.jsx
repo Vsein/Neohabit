@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import {
@@ -12,50 +12,52 @@ import {
   mdiCancel,
 } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import { useEditSkillMutation, useDeleteSkillsMutation } from '../state/services/skilltree';
+import { useEditSkillMutation, useDeleteSkillMutation } from '../state/services/skilltree';
 
 export default function SkillNode({ skilltreeID, skill, color }) {
   const dispatch = useDispatch();
-  const isDisabled = skill.is_root;
+  const isDisabled = skill.is_root_skill;
   const isCompleted = skill.status === 'completed';
   const isDisregarded = skill.status === 'disregarded';
   const [editSkill] = useEditSkillMutation();
-  const [deleteSkills] = useDeleteSkillsMutation();
+  const [deleteSkill] = useDeleteSkillMutation();
   // const hasChildren = !!skill.ski.length;
 
   const openAddSkillMenu = () => {
-    dispatch(changeTo({ skilltreeID, skillparentID: skill._id, type: 'skillNode' }));
+    dispatch(changeTo({ skilltreeID, skillparentID: skill.id, type: 'skillNode' }));
   };
 
   const openEditSkillMenu = () => {
-    dispatch(changeTo({ skilltreeID, skillID: skill._id, type: 'skillNode' }));
+    dispatch(changeTo({ skilltreeID, skillID: skill.id, type: 'skillNode' }));
   };
 
   const pauseSkillAcquirement = () => {
-    editSkill({ skilltreeID, skillID: skill._id, values: { status: 'idle' } });
+    editSkill({ skillID: skill.id, values: { skilltree_id: skilltreeID, status: 'idle' } });
   };
 
   const startSkillAcquirement = () => {
-    editSkill({ skilltreeID, skillID: skill._id, values: { status: 'in-progress' } });
+    editSkill({ skillID: skill.id, values: { skilltree_id: skilltreeID, status: 'in-progress' } });
   };
 
   const finishSkillAcquirement = () => {
     editSkill({
-      skilltreeID,
-      skillID: skill._id,
-      values: { status: isCompleted || isDisregarded ? 'idle' : 'completed' },
+      skillID: skill.id,
+      values: {
+        skilltree_id: skilltreeID,
+        status: isCompleted || isDisregarded ? 'idle' : 'completed'
+      },
     });
   };
 
   const disregardSkill = () => {
-    editSkill({ skilltreeID, skillID: skill._id, values: { status: 'disregarded' } });
+    editSkill({ skillID: skill.id, values: { skilltree_id: skilltreeID, status: 'disregarded' } });
   };
 
-  const getAllChildrenIDs = (skilly) => {
-    const ids = [skilly._id];
-    if (skilly.children) {
-      skilly.children.forEach((skillo) => {
-        const childrenIDs = getAllChildrenIDs(skillo);
+  const getAllChildrenIDs = (parentSkill) => {
+    const ids = [parentSkill.id];
+    if (parentSkill.children) {
+      parentSkill.children.forEach((childSkill) => {
+        const childrenIDs = getAllChildrenIDs(childSkill);
         ids.push(...childrenIDs);
       });
     }
@@ -64,13 +66,13 @@ export default function SkillNode({ skilltreeID, skill, color }) {
 
   const deleteAllChildrenSkills = () => {
     const ids = getAllChildrenIDs(skill);
-    deleteSkills({ skilltreeID, values: { ids } });
+    deleteSkill({ skillID: skill.id, values: { ids, skilltree_id: skilltreeID } });
   };
 
   return (
     <div className={`skill-node ${skill.status}`} style={{ '--shadow-box-color': color }}>
       <h4>{skill.name}</h4>
-      {skill.parent_skill ? <div className="skill-node-edge-to" /> : <></>}
+      {skill.parent_skill_id ? <div className="skill-node-edge-to" /> : <></>}
       {skill.children.length ? (
         <div
           className="skill-node-edge-from"

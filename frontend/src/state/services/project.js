@@ -1,4 +1,6 @@
 import api from './api';
+import { habitApi } from './habit';
+import filterInPlace from '../../utils/filterInPlace';
 
 export const projectApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -10,14 +12,20 @@ export const projectApi = api.injectEndpoints({
     createProject: builder.mutation({
       query: (values) => ({
         url: 'project',
-        body: values,
+        body: { ...values, habits: undefined },
         method: 'POST',
       }),
       async onQueryStarted(values, { dispatch, queryFulfilled }) {
         const res = await queryFulfilled;
         dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            draft.push(res.data);
+            const orderIndex = draft.length > 0 ? draft[draft.length - 1].order_index + 1 : 0;
+            draft.push({ id: res.data, order_index: orderIndex, ...values });
+          }),
+        );
+        dispatch(
+          habitApi.util.updateQueryData('getHabitsOutsideProjects', undefined, (draft) => {
+            filterInPlace(draft, (h) => !values.habit_ids.includes(h.id));
           }),
         );
       },
@@ -25,16 +33,33 @@ export const projectApi = api.injectEndpoints({
     updateProject: builder.mutation({
       query: ({ projectID, values }) => ({
         url: `project/${projectID}`,
-        body: values,
-        method: 'PUT',
+        body: { ...values, habits: undefined },
+        method: 'PATCH',
       }),
+      invalidatesTags: ['HabitsOutsideProjects'],
       onQueryStarted({ projectID, values }, { dispatch }) {
-        const patchResult = dispatch(
+        dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const project = draft.find((projecto) => projecto._id == projectID);
+            const project = draft.find((p) => p.id === projectID);
             if (project) {
               Object.assign(project, values);
             }
+          }),
+        );
+      },
+    }),
+    updateProjectsOrder: builder.mutation({
+      query: ({ values }) => ({
+        url: 'projects/order',
+        body: values,
+        method: 'PUT',
+      }),
+      onQueryStarted({ values }, { dispatch }) {
+        dispatch(
+          projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
+            draft.sort(
+              (a, b) => values.new_projects_order.indexOf(a) - values.new_projects_order.indexOf(b),
+            );
           }),
         );
       },
@@ -44,10 +69,11 @@ export const projectApi = api.injectEndpoints({
         url: `project/${projectID}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['HabitsOutsideProjects'],
       onQueryStarted(projectID, { dispatch }) {
-        const patchResult = dispatch(
+        dispatch(
           projectApi.util.updateQueryData('getProjects', undefined, (draft) => {
-            const index = draft.findIndex((project) => project._id === projectID);
+            const index = draft.findIndex((p) => p.id === projectID);
             draft.splice(index, 1);
           }),
         );
@@ -58,8 +84,9 @@ export const projectApi = api.injectEndpoints({
 
 export const {
   useGetProjectsQuery,
-  useGetProjectQuery,
+  // useGetProjectQuery,
   useCreateProjectMutation,
-  useDeleteProjectMutation,
   useUpdateProjectMutation,
+  useUpdateProjectsOrderMutation,
+  useDeleteProjectMutation,
 } = projectApi;

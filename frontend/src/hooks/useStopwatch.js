@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { formatISO } from 'date-fns';
 import {
   useUpdateStopwatchMutation,
   useFinishStopwatchMutation,
@@ -21,15 +22,17 @@ export default function useStopwatch() {
       return stopwatch.data.duration;
     }
     return (
-      Math.floor(Math.abs((Date.now() - new Date(stopwatch.data.start_time)) / 1000)) -
+      Math.floor(Math.abs(Date.now() - new Date(stopwatch.data.start_time))) -
       stopwatch.data.pause_duration
     );
   };
 
   const [currentDuration, setCurrentDuration] = useState(calcCurrentDuration());
-  const baseDuration = 90 * 60;
+  const baseDuration = 90 * 60 * 1000;
 
-  const clockify = (time) => {
+  const clockify = (timeMillis) => {
+    const time = Math.floor(timeMillis / 1000);
+    const millis = Math.floor(timeMillis % 1000);
     const hours = Math.floor(time / 3600);
     let minutes = Math.floor((time / 60) % 60);
     let seconds = Math.floor(time % 60);
@@ -51,7 +54,7 @@ export default function useStopwatch() {
       // Initiation
       updateStopwatch({
         values: {
-          start_time: Date.now(),
+          start_time: formatISO(Date.now()),
           is_initiated: true,
           is_paused: false,
         },
@@ -62,8 +65,7 @@ export default function useStopwatch() {
         values: {
           is_paused: false,
           pause_duration: Math.floor(
-            Math.abs(Date.now() - new Date(stopwatch.data.start_time)) / 1000 -
-              stopwatch.data.duration,
+            Math.abs(Date.now() - new Date(stopwatch.data.start_time)) - stopwatch.data.duration,
           ),
         },
       });
@@ -80,20 +82,25 @@ export default function useStopwatch() {
       },
     });
     setCurrentDuration(0);
-    if (settings.data?.stopwatch_title ?? true) {
+    if (settings.data?.show_stopwatch_time_in_page_title ?? true) {
       document.title = '0:00:00 | Neohabit';
     }
   };
 
   const finishCountdown = () => {
+    const duration = calcCurrentDuration();
     finishStopwatch({
       values: {
         ...stopwatch.data,
-        start_time: getUTCOffsettedDate(new Date(stopwatch.data.start_time)),
+        duration: calcCurrentDuration(),
+        pause_duration: Math.floor(
+          Math.abs(Date.now() - new Date(stopwatch.data.start_time)) - calcCurrentDuration(),
+        ),
+        start_time: duration > 0 ? new Date(stopwatch.data.start_time) : new Date(),
       },
     });
     setCurrentDuration(0);
-    if (settings.data?.stopwatch_title ?? true) {
+    if (settings.data?.show_stopwatch_time_in_page_title ?? true) {
       document.title = '0:00:00 | Neohabit';
     }
   };
@@ -103,7 +110,7 @@ export default function useStopwatch() {
       const timerInterval = setInterval(() => {
         const recalc = calcCurrentDuration();
         setCurrentDuration(recalc);
-        if (settings.data?.stopwatch_title ?? true) {
+        if (settings.data?.show_stopwatch_time_in_page_title ?? true) {
           document.title = `${clockify(recalc)} | Neohabit`;
         }
       }, 1000);

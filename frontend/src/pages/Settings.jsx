@@ -67,7 +67,7 @@ export default function Settings() {
                 <h3 className="settings-name ribbon ribbon-top"
                   style={{ opacity: 0.5, position: 'relative', width: 'min-content', whiteSpace: 'nowrap' }}
                 >
-                  <span style={{ borderRadius: '10px 10px 0px 0px'}}>soon</span>
+                  <span style={{ borderRadius: '10px 10px 0px 0px' }}>soon</span>
                   Change password
                 </h3>
               </div>
@@ -81,11 +81,11 @@ export default function Settings() {
               <SettingsButtonOption
                 name="Preferred theme"
                 cssName="theme"
-                curState={settings.data.prefer_dark}
-                update={(state) => updateSettings({ values: { prefer_dark: state } })}
+                curState={settings.data.theme}
+                update={(state) => updateSettings({ values: { theme: state } })}
                 choices={[
-                  { name: 'Dark', state: true },
-                  { name: 'Light', state: false },
+                  { name: 'Dark', state: 'dark' },
+                  { name: 'Light', state: 'light' },
                 ]}
               />
               <SettingsButtonOption
@@ -114,14 +114,14 @@ export default function Settings() {
               {/* /> */}
               <SettingsButtonOption
                 name="Behavior when whole period doesn't fit"
-                curState={settings.data.overview_adaptive ?? true}
-                update={(state) => updateSettings({ values: { overview_adaptive: state } })}
+                curState={settings.data.allow_horizontal_scrolling ?? true}
+                update={(state) => updateSettings({ values: { allow_horizontal_scrolling: state } })}
                 choices={[
                   { name: 'Adaptive', state: true },
                   { name: 'Rigid', state: false },
                 ]}
               />
-              {settings.data.overview_adaptive ? (
+              {settings.data.allow_horizontal_scrolling ? (
                 <SettingsButtonOption
                   name="Limit the adaptive period duration?"
                   curState={settings.data.overview_apply_limit ?? true}
@@ -140,7 +140,7 @@ export default function Settings() {
                   max="365"
                 />
               )}
-              {settings.data.overview_adaptive && settings.data?.overview_apply_limit && (
+              {settings.data.allow_horizontal_scrolling && settings.data?.overview_apply_limit && (
                 <SettingsNumberOption
                   name="Period duration limit"
                   curState={settings.data?.overview_duration_limit ?? 32}
@@ -207,8 +207,8 @@ export default function Settings() {
               <SettingsButtonOption
                 name="Show stopwatch time in the page title"
                 cssName="orientation"
-                curState={settings.data.stopwatch_title ?? true}
-                update={(state) => updateSettings({ values: { stopwatch_title: state } })}
+                curState={settings.data.show_stopwatch_time_in_page_title ?? true}
+                update={(state) => updateSettings({ values: { show_stopwatch_time_in_page_title: state } })}
                 choices={[
                   { name: 'On', state: true },
                   { name: 'Off', state: false },
@@ -284,9 +284,8 @@ function SettingsButtonOption({ name, cssName, update, choices, curState = undef
         {choices.map((choice, index) => (
           <button
             key={index}
-            className={`button-default muted stretch ${choice.state} ${
-              choice.state === curState ? 'active' : ''
-            }`}
+            className={`button-default muted stretch ${choice.state} ${choice.state === curState ? 'active' : ''
+              }`}
             onClick={() => update(choice.state)}
           >
             {choice.name}
