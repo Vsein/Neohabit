@@ -51,6 +51,10 @@ textarea {
   background-color: inherit;
 }
 
+input, textarea {
+  outline: none;
+}
+
 textarea {
   resize: none;
 }
