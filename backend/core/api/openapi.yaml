@@ -242,6 +242,8 @@ paths:
       summary: Update Habit by ID
       operationId: updateHabit
       tags: [Habits]
+      security:
+        - bearerAuth: []
       parameters:
         - name: habit_id
           in: path
@@ -278,6 +280,8 @@ paths:
       summary: Delete habit
       operationId: deleteHabit
       tags: [Habits]
+      security:
+        - bearerAuth: []
       parameters:
         - name: habit_id
           in: path
@@ -488,6 +492,8 @@ paths:
       summary: Create Project
       operationId: createProject
       tags: [Projects]
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -527,6 +533,8 @@ paths:
       summary: Update Project by ID
       operationId: updateProject
       tags: [Projects]
+      security:
+        - bearerAuth: []
       parameters:
         - name: project_id
           in: path
@@ -563,6 +571,8 @@ paths:
       summary: Delete project
       operationId: deleteProject
       tags: [Projects]
+      security:
+        - bearerAuth: []
       parameters:
         - name: project_id
           in: path
@@ -589,6 +599,8 @@ paths:
       summary: Update projects order
       operationId: updateProjectsOrder
       tags: [Projects]
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -648,6 +660,8 @@ paths:
       summary: Create Task
       operationId: createTask
       tags: [Tasks]
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -693,6 +707,8 @@ paths:
       summary: Update Task by ID
       operationId: updateTask
       tags: [Tasks]
+      security:
+        - bearerAuth: []
       parameters:
         - name: task_id
           in: path
@@ -729,6 +745,8 @@ paths:
       summary: Delete task
       operationId: deleteTask
       tags: [Tasks]
+      security:
+        - bearerAuth: []
       parameters:
         - name: task_id
           in: path
@@ -817,6 +835,8 @@ paths:
       summary: Update Skilltree by ID
       operationId: updateSkilltree
       tags: [Skilltrees]
+      security:
+        - bearerAuth: []
       parameters:
         - name: skilltree_id
           in: path
@@ -853,6 +873,8 @@ paths:
       summary: Delete skilltree
       operationId: deleteSkilltree
       tags: [Skilltrees]
+      security:
+        - bearerAuth: []
       parameters:
         - name: skilltree_id
           in: path
