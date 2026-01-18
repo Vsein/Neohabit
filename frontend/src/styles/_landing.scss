@@ -517,6 +517,7 @@ $cell-weekdays-width: 33px;
   display: grid;
   grid-template-rows: 17px;
   row-gap: 2px;
+  padding-top: 5px;
 
   .landing-habit {
     display: grid;
@@ -533,7 +534,8 @@ $cell-weekdays-width: 33px;
     }
 
     &-name {
-      line-height: 17px;
+      line-height: 15px;
+      height: 17px;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -559,7 +561,6 @@ $cell-weekdays-width: 33px;
       --cell-width: 15px;
       height: var(--cell-height);
       display: flex;
-      align-self: center;
 
       @media (max-width: 550px) {
         --cell-height: 13px;
