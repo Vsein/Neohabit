@@ -8,6 +8,7 @@
 <p align="center">
   <a href="#installation">Install</a> •
   <a href="#features">Features preview</a> •
+  <a href="https://discord.gg/uQ4XdE6raR">Discord</a> •
   <a href="#donations">Donations</a>
 </p>
 
