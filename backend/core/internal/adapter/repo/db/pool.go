@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"strings"
@@ -9,9 +10,12 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"go.uber.org/zap"
 
 	"neohabit/core/config"
+	migrations "neohabit/core/migrations"
+	log "neohabit/core/pkg/logger"
 )
 
 // PoolTX is an interface that both pgxpool.Pool and pgx.Tx implement
@@ -30,6 +34,20 @@ var (
 
 // NewPostgresPool creates a new PostgreSQL connection pool
 func NewPostgresPool(ctx context.Context, cfg config.PGConfig, logger *zap.Logger) (*pgxpool.Pool, error) {
+	// Automatic PG database migration
+	db, err := sql.Open("pgx", cfg.DSN)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open database: %w", err)
+	}
+
+	if err := migrations.Migrate(db, log.NewWrapper(logger)); err != nil {
+		return nil, fmt.Errorf("failed to migrate database: %w", err)
+	}
+
+	if err = db.Close(); err != nil {
+		return nil, fmt.Errorf("failed to close database: %w", err)
+	}
+
 	poolConfig, err := pgxpool.ParseConfig(cfg.DSN)
 	if err != nil {
 		return nil, fmt.Errorf("parse postgres config: %w", err)
