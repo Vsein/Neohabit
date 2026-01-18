@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import useKeyPress from './useKeyPress';
+import { useHotkeys } from 'react-hotkeys-hook'
 
 export default function useMenuToggler() {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -9,7 +9,7 @@ export default function useMenuToggler() {
     setMenuOpened(!menuOpened);
   };
 
-  useKeyPress(['i'], toggleMenu);
+  useHotkeys('i', toggleMenu);
 
   const closeMenu = () => {
     setMenuOpened(false);

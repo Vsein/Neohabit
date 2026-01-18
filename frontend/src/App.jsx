@@ -6,8 +6,9 @@ import {
   Navigate,
   Outlet,
   useLocation,
-  NavLink,
+  Link,
 } from 'react-router-dom';
+import { useHotkeys } from 'react-hotkeys-hook'
 // import Dashboard from './pages/Dashboard';
 import Landing from './pages/Landing';
 import Signup from './pages/Signup';
@@ -36,8 +37,9 @@ import CellAdd from './components/CellAdd';
 import { useGetSettingsQuery, useGetSelfQuery } from './state/services/settings';
 import { useGetStopwatchQuery } from './state/services/stopwatch';
 import SidebarMobile from './components/SidebarMobile';
+import { ProfilePicture } from './components/UI';
 import { hasJWT } from './state/services/auth';
-import useKeyPress from './hooks/useKeyPress';
+import { useMediaColorScheme } from './hooks/useMediaColorScheme';
 import isPWA from './utils/pwa';
 
 const App = () => {
@@ -60,7 +62,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/" element={<AuthRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
-          <Route path="/signup/" element={<Signup />} />
+          {/* <Route path="/signup/" element={<Signup />} /> */}
           <Route path="/login/" element={<Login />} />
         </Route>
         {loggedIn && <Route path="/" element={<Suspense fallback={<></>}><PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} /></Suspense>}>
@@ -95,7 +97,7 @@ const PrivateRoutes = (params) => {
     setSidebarHidden(!sidebarHidden);
   };
 
-  useKeyPress(['s'], toggleSidebar);
+  useHotkeys('0', toggleSidebar)
 
   useEffect(() => {
     changeAuth(hasJWT());
@@ -154,6 +156,8 @@ const AuthRoutes = (params) => {
   const { loggedIn, changeAuth } = params;
   const location = useLocation();
 
+  useMediaColorScheme();
+
   useEffect(() => {
     changeAuth(hasJWT());
   }, [location.pathname]);
@@ -164,30 +168,47 @@ const AuthRoutes = (params) => {
     <div id="content-auth">
       <div className="sidebar-auth">
         <h1 className="sidebar-auth-header">
-          <div className="neohabit" />
+          <Link
+            tabIndex="0"
+            to="/"
+            style={{ display: 'flex', gap: '20px', alignItems: 'center' }}
+          >
+            <ProfilePicture type="small" />
+            <div className="neohabit" />
+          </Link>
         </h1>
       </div>
       <main className="registration-container">
         <section className="auth-intro">
           <p className="paragraph">
-            If you were ever frustrated with calendars, schedules, and over-optimization, then{' '}
-            <span className="neohabit" /> will give you a way to track progress without any
-            unnecessary fluff.
-          </p>
-          <p className="paragraph">
-            You know what to do, <span className="neohabit" /> will just help you actualize it.
+            Because <span className="neohabit" /> is currently in beta, some functionality is not completely implemented. Feel free to report any bugs on{' '}
+            <Link to="https://github.com/Vsein/neohabit/issues" target="_blank">
+              github issues
+            </Link>, or write directly to{' '}
+            <Link to="https://www.reddit.com/user/VseinSama/" target="_blank">
+              me on reddit
+            </Link> if you want to suggest anything.
           </p>
         </section>
         <Outlet />
-        {location.pathname === '/login' ? (
-          <p className="login-ref">
-            Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink>
-          </p>
-        ) : (
-          <p className="login-ref">
-            Already have an account? <NavLink to="/login">Log in</NavLink>
-          </p>
-        )}
+        <p className="login-ref">
+          By default, there&apos;s only one account created - the one you specified in the config when starting the app.
+          <br />
+          <br />
+          Currently, new account creation is available only through direct access to the db.
+          <Link to="https://github.com/Vsein/neohabit#new-account-creation" target="_blank">
+            See documentation
+          </Link>
+        </p>
+        {/* {location.pathname === '/login' ? ( */}
+        {/*   <p className="login-ref"> */}
+        {/*     Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink> */}
+        {/*   </p> */}
+        {/* ) : ( */}
+        {/*   <p className="login-ref"> */}
+        {/*     Already have an account? <NavLink to="/login">Log in</NavLink> */}
+        {/*   </p> */}
+        {/* )} */}
       </main>
     </div>
   );

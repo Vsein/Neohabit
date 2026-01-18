@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { useHotkeys } from 'react-hotkeys-hook'
 import { Icon } from '@mdi/react';
 import {
   mdiCog,
@@ -9,6 +10,7 @@ import {
   mdiBell,
   mdiMoonWaxingCrescent,
   mdiWhiteBalanceSunny,
+  mdiGithub,
 } from '@mdi/js';
 import { AccountInfo, ProfilePicture } from './UI';
 import useMenuToggler from '../hooks/useMenuToggler';
@@ -26,16 +28,22 @@ export default function MainMenu({ toggleSidebar }) {
       >
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
       </button>
-      <h2 className="logo neohabit"></h2>
+      <Link
+        tabIndex="0"
+        to="/"
+        target="_blank"
+      >
+        <h2 className="neohabit logo"></h2>
+      </Link>
       {/* <Icon path={mdiApps} className="icon" /> */}
       {/* </button> */}
-      <button className="logo-section">
-        <Icon path={mdiBell} alt="bell" className="icon right" />
-      </button>
+      {/* <button className="logo-section"> */}
+      {/*   <Icon path={mdiBell} alt="bell" className="icon right" /> */}
+      {/* </button> */}
       <button
         className={`logo-section right menu-toggle ${menuOpened ? 'active' : ''}`}
         onClick={toggleMenu}
-        title="Toggle menu [I]"
+        title="Toggle menu [i]"
       >
         <ProfilePicture type="tiny" />
       </button>
@@ -57,9 +65,27 @@ export default function MainMenu({ toggleSidebar }) {
         </li>
         <ThemeToggle />
         <MenuSection path={mdiCog} title="Settings" to="/settings" />
+        <GithubLink />
+        <hr />
         <MenuSection path={mdiLogoutVariant} title="Log out" to="/logout" />
       </ul>
     </nav>
+  );
+}
+
+function GithubLink() {
+  return (
+    <li>
+      <Link
+        className="menu-section"
+        tabIndex="0"
+        target="_blank"
+        to="https://github.com/Vsein/neohabit"
+      >
+        <Icon path={mdiGithub} className="icon" />
+        <p className="link">Github</p>
+      </Link>
+    </li>
   );
 }
 
@@ -82,9 +108,12 @@ function ThemeToggle() {
   const [updateSettings] = useUpdateSettingsMutation();
   const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
+  const toggleTheme = () => updateSettings({ values: { prefer_dark: theme !== 'dark' } });
+  useHotkeys('shift+t', toggleTheme);
+
   return (
     <li>
-      <a
+      <button
         className="menu-section"
         onClick={() => updateSettings({ values: { theme: theme === 'dark' ? 'light' : 'dark' } })}
       >
@@ -93,7 +122,9 @@ function ThemeToggle() {
           className="icon"
         />
         <p className="link">{`Theme: ${theme}`}</p>
-      </a>
+      </button>
     </li>
   );
 }
+
+export { MenuSection, GithubLink };

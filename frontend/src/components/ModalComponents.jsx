@@ -53,7 +53,7 @@ function ModalButtons({ disabled, isNew, type, unnamed }) {
         type="button"
         className="button-default stretch cancel"
         onClick={closeOverlay}
-        title="Cancel [c]"
+        title="Cancel [esc / c]"
       >
         Cancel
       </button>

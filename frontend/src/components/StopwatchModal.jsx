@@ -46,7 +46,7 @@ export default function StopwatchModal({ closeOverlay }) {
           className="icon small"
           onClick={closeOverlay}
           type="button"
-          title="Close [C]"
+          title="Close [esc / c]"
         >
           <Icon path={mdiClose} />
         </button>

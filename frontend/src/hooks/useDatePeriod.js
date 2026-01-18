@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useHotkeys } from 'react-hotkeys-hook'
 import {
   startOfDay,
   isFirstDayOfMonth,
@@ -16,7 +17,6 @@ import {
   compareDesc,
 } from 'date-fns';
 import { useGetSettingsQuery } from '../state/services/settings';
-import useKeyPress from './useKeyPress';
 import useWindowDimensions from './useWindowDimensions';
 import { getUTCOffsettedDate } from '../utils/dates';
 import useValidatedDatePeriodParams from './useValidatedDatePeriodParams';
@@ -249,11 +249,11 @@ export default function useDatePeriod(
   };
 
   if (global) {
-    useKeyPress(['r'], reset);
-    useKeyPress(['H'], subMonth);
-    useKeyPress(['L'], addMonth);
-    useKeyPress(['h'], subPeriod);
-    useKeyPress(['l'], addPeriod);
+    useHotkeys('r', reset);
+    useHotkeys('shift+h', subMonth);
+    useHotkeys('shift+l', addMonth);
+    useHotkeys('h', subPeriod);
+    useHotkeys('l', addPeriod);
   }
 
   useEffect(() => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook'
 import { close } from '../state/features/overlay/overlaySlice';
-import useKeyPress from '../hooks/useKeyPress';
 import HabitModal from './HabitModal';
 import TaskModal from './TaskModal';
 import ProjectModal from './ProjectModal';
@@ -33,7 +33,7 @@ export default function Overlay() {
     dispatch(close());
   };
 
-  useKeyPress(['c'], closeOverlay);
+  useHotkeys('esc, c', closeOverlay);
 
   if (!isActive) return <></>;
 

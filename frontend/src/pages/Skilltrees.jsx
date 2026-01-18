@@ -1,12 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook'
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useGetSkilltreesQuery } from '../state/services/skilltree';
-import { changeTo } from '../state/features/overlay/overlaySlice';
+import { changeTo, close } from '../state/features/overlay/overlaySlice';
 import useLoaded from '../hooks/useLoaded';
 import Skilltree from '../components/Skilltree';
-import useKeyPress from '../hooks/useKeyPress';
 import useTitle from '../hooks/useTitle';
 
 export default function SkillsPage() {
@@ -16,10 +16,16 @@ export default function SkillsPage() {
   const skilltrees = useGetSkilltreesQuery();
   const vertical = false;
 
+  const { type, isActive } = useSelector((state) => state.overlay);
   const dispatch = useDispatch();
-  const openOverlay = () => {
-    dispatch(changeTo({ projectID: '', skilltreeID: '', type: 'skilltree' }));
+  const toggleSkilltreeOverlay = () => {
+    if (type === 'skilltree' && isActive) {
+      dispatch(close());
+    } else {
+      dispatch(changeTo({ projectID: '', skilltreeID: '', type: 'skilltree' }));
+    }
   };
+  useHotkeys('shift+s', toggleSkilltreeOverlay);
 
   if (!loaded || skilltrees.isFetching) {
     return <div className="loader" />;
@@ -33,8 +39,8 @@ export default function SkillsPage() {
       <div className="overview-centering" style={{ '--length': 47 }}>
         <button
           className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
-          onClick={openOverlay}
-          title="Add a new skilltree [A]"
+          onClick={toggleSkilltreeOverlay}
+          title="Add a new skilltree [S]"
         >
           <Icon className="icon small" path={mdiPlus} />
           <p>Add a new skilltree</p>

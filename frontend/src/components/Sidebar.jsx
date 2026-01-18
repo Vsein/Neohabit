@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook'
 import { Icon } from '@mdi/react';
 import {
   mdiFamilyTree,
@@ -15,8 +16,7 @@ import {
 import { useGetProjectsQuery } from '../state/services/project';
 import { useGetHabitsOutsideProjectsQuery } from '../state/services/habit';
 import { HabitTag } from './UI';
-import { changeTo } from '../state/features/overlay/overlaySlice';
-import useKeyPress from '../hooks/useKeyPress';
+import { changeTo, close } from '../state/features/overlay/overlaySlice';
 import useDefaultProject from '../hooks/useDefaultProject';
 
 export default function Sidebar({ hidden }) {
@@ -29,11 +29,15 @@ export default function Sidebar({ hidden }) {
     setProjectsCollapsed(!projectsCollapsed);
   };
 
+  const { type, isActive } = useSelector((state) => state.overlay);
   const openOverlay = () => {
-    dispatch(changeTo({ projectID: '', habitID: '', type: 'project' }));
+    if (type === 'project' && isActive) {
+      dispatch(close());
+    } else {
+      dispatch(changeTo({ projectID: '', habitID: '', type: 'project' }));
+    }
   };
-
-  useKeyPress(['a'], openOverlay);
+  useHotkeys('shift+p', openOverlay);
 
   const [defaultProject] = useDefaultProject();
 
@@ -88,7 +92,7 @@ export default function Sidebar({ hidden }) {
 function NavigationSection({ path, to, title, status, raw, num }) {
   const navigate = useNavigate();
 
-  useKeyPress([num], () => navigate(to));
+  useHotkeys(num, () => navigate(to));
 
   return (
     <li>
