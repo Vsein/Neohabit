@@ -60,12 +60,12 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
             </button>
           </div>
           <div className="modal-details-block" style={{ height: 'min-content' }}>
-            <NameField type="skill" />
+            <NameField type="skill" autofocus={!skillID} />
           </div>
           <div className="modal-details-block">
             <DescriptionField rows="9" />
           </div>
-          <ModalButtons disabled={submitting || !values?.name} isNew={!skillID} type="skill" />
+          <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!skillID} type="skill" />
         </form>
       )}
     />

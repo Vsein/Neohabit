@@ -159,26 +159,26 @@ CREATE TABLE IF NOT EXISTS stopwatches (
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS skills (
-    id UUID PRIMARY KEY,
-    parent_skill_id UUID REFERENCES skills(id) ON DELETE CASCADE,
-    is_root_skill BOOLEAN NOT NULL DEFAULT FALSE,
-    name TEXT NOT NULL,
-    description TEXT,
-    status TEXT,
-    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE IF NOT EXISTS skilltrees (
     id UUID PRIMARY KEY,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
     project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
     habit_id UUID REFERENCES habits(id) ON DELETE SET NULL,
-    skill_ids TEXT[],
     name TEXT NOT NULL,
     description TEXT,
     color TEXT NOT NULL DEFAULT '#1D60C1',
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS skills (
+    id UUID PRIMARY KEY,
+    skilltree_id UUID REFERENCES habits(id) ON DELETE CASCADE NOT NULL,
+    parent_skill_id UUID REFERENCES skills(id) ON DELETE CASCADE,
+    is_root_skill BOOLEAN NOT NULL DEFAULT FALSE,
+    name TEXT NOT NULL,
+    description TEXT,
+    status TEXT,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );

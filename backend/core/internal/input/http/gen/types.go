@@ -160,12 +160,14 @@ type Skill struct {
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
-	ID          string       `json:"id"`
-	IsRootSkill *bool        `json:"is_root_skill,omitempty"`
+	ID          UUID         `json:"id"`
+	IsRootSkill bool         `json:"is_root_skill"`
 
 	// Name Activity name
 	Name          Name         `json:"name"`
-	ParentSkillID *string      `json:"parent_skill_id,omitempty"`
+	ParentSkillID *UUID        `json:"parent_skill_id,omitempty"`
+	Skills        *[]Skill     `json:"skills,omitempty"`
+	SkilltreeID   *UUID        `json:"skilltree_id,omitempty"`
 	Status        *SkillStatus `json:"status,omitempty"`
 	UpdatedAt     *Date        `json:"updated_at,omitempty"`
 }
@@ -175,7 +177,8 @@ type SkillStatus string
 
 // Skilltree defines model for Skilltree.
 type Skilltree struct {
-	CreatedAt *Date `json:"created_at,omitempty"`
+	Color     *Color `json:"color,omitempty"`
+	CreatedAt *Date  `json:"created_at,omitempty"`
 
 	// Description Activity description
 	Description *Description `json:"description,omitempty"`
@@ -183,11 +186,12 @@ type Skilltree struct {
 	ID          UUID         `json:"id"`
 
 	// Name Activity name
-	Name      Name      `json:"name"`
-	ProjectID *UUID     `json:"project_id,omitempty"`
-	SkillIds  *[]string `json:"skill_ids,omitempty"`
-	UpdatedAt *Date     `json:"updated_at,omitempty"`
-	UserID    UUID      `json:"user_id"`
+	Name      Name     `json:"name"`
+	ProjectID *UUID    `json:"project_id,omitempty"`
+	SkillIds  *[]UUID  `json:"skill_ids,omitempty"`
+	Skills    *[]Skill `json:"skills,omitempty"`
+	UpdatedAt *Date    `json:"updated_at,omitempty"`
+	UserID    UUID     `json:"user_id"`
 }
 
 // Stopwatch defines model for Stopwatch.
@@ -314,6 +318,12 @@ type UpdateSettingsJSONRequestBody = Settings
 
 // SignupJSONRequestBody defines body for Signup for application/json ContentType.
 type SignupJSONRequestBody SignupJSONBody
+
+// CreateSkilltreeJSONRequestBody defines body for CreateSkilltree for application/json ContentType.
+type CreateSkilltreeJSONRequestBody = Skilltree
+
+// UpdateSkilltreeJSONRequestBody defines body for UpdateSkilltree for application/json ContentType.
+type UpdateSkilltreeJSONRequestBody = Skilltree
 
 // UpdateStopwatchJSONRequestBody defines body for UpdateStopwatch for application/json ContentType.
 type UpdateStopwatchJSONRequestBody = Stopwatch

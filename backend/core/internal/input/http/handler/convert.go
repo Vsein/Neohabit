@@ -86,7 +86,34 @@ func toAPITask(e *entity.Task) gen.Task {
 	}
 }
 
+func toAPISkill(e *entity.Skill) gen.Skill {
+	skills := make([]gen.Skill, 0, len(e.Skills))
+	for _, skill := range e.Skills {
+		skills = append(skills, toAPISkill(&skill))
+	}
+
+	status := gen.SkillStatus(e.Status.String())
+
+	return gen.Skill{
+		ID:            e.ID,
+		SkilltreeID:   &e.SkilltreeID,
+		ParentSkillID: e.ParentSkillID,
+		IsRootSkill:   e.IsRootSkill,
+		Name:          e.Name,
+		Description:   &e.Description,
+		Status:        &status,
+		Skills:        &skills,
+		CreatedAt:     &e.CreatedAt,
+		UpdatedAt:     &e.UpdatedAt,
+	}
+}
+
 func toAPISkilltree(e *entity.Skilltree) gen.Skilltree {
+	skills := make([]gen.Skill, 0, len(e.Skills))
+	for _, skill := range e.Skills {
+		skills = append(skills, toAPISkill(&skill))
+	}
+
 	return gen.Skilltree{
 		ID:          e.ID,
 		UserID:      e.UserID,
@@ -94,7 +121,9 @@ func toAPISkilltree(e *entity.Skilltree) gen.Skilltree {
 		HabitID:     e.HabitID,
 		Name:        e.Name,
 		Description: &e.Description,
+		Color:       &e.Color,
 		SkillIds:    &e.SkillIDs,
+		Skills:      &skills,
 		CreatedAt:   &e.CreatedAt,
 		UpdatedAt:   &e.UpdatedAt,
 	}

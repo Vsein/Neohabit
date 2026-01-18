@@ -60,6 +60,20 @@ func (c *SkilltreeCase) List(ctx context.Context, userID uuid.UUID) ([]*entity.S
 	return skilltrees, nil
 }
 
+func (c *SkilltreeCase) Update(ctx context.Context, skilltree *entity.Skilltree) error {
+	skilltree.UpdatedAt = time.Now()
+
+	err := c.skilltreeRepo.Update(ctx, skilltree)
+	if err != nil {
+		if errors.Is(err, repo.ErrNotFound) {
+			return ErrNotFound
+		}
+		return fmt.Errorf("update: %w", err)
+	}
+
+	return nil
+}
+
 func (c *SkilltreeCase) Delete(ctx context.Context, id uuid.UUID) error {
 	err := c.skilltreeRepo.Delete(ctx, id)
 	if err != nil {

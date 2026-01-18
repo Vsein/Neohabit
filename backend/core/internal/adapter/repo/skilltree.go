@@ -15,15 +15,20 @@ import (
 )
 
 const (
-	// queryReadSkilltree   = `SELECT * FROM skilltrees WHERE id = $1`
 	queryListSkilltrees  = `SELECT * FROM skilltrees WHERE user_id = $1`
 	queryCreateSkilltree = `
-		INSERT INTO skilltrees (id, user_id, name, description, color, skill_ids, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO skilltrees (id, user_id, project_id, habit_id, name, description, color, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
-	queryUpdateSkilltree = `UPDATE skilltrees SET name = $2, description = $3, color = $4, updated_at = $5 WHERE id = $1`
+	queryUpdateSkilltree = `
+		UPDATE skilltrees
+		SET
+			name = $2,
+			description = $3,
+			color = $4,
+			updated_at = $5
+		WHERE id = $1`
 	queryDeleteSkilltree = `DELETE FROM skilltrees WHERE id = $1`
-	// queryDeleteSkilltreeAndItsHabits = `DELETE FROM skilltrees WHERE id = $1`
 )
 
 type Skilltree struct {
@@ -38,7 +43,6 @@ func NewSkilltreeRepo(pool db.PoolTX, logger *zap.Logger) *Skilltree {
 	}
 }
 
-// List retrieves Skilltrees of the logged in user from the database
 func (r *Skilltree) List(ctx context.Context, userID uuid.UUID) ([]*entity.Skilltree, error) {
 	var rows pgx.Rows
 	var err error
@@ -86,7 +90,6 @@ func (r *Skilltree) Create(ctx context.Context, skilltree *entity.Skilltree) err
 		skilltree.UserID,
 		skilltree.ProjectID,
 		skilltree.HabitID,
-		skilltree.SkillIDs,
 		skilltree.Name,
 		skilltree.Description,
 		skilltree.Color,
@@ -94,8 +97,6 @@ func (r *Skilltree) Create(ctx context.Context, skilltree *entity.Skilltree) err
 		skilltree.UpdatedAt,
 	)
 	if err != nil {
-		// Check for unique constraint violation (duplicate name, etc.)
-		// Adjust this based on your actual database constraints
 		if db.IsUniqueViolation(err) {
 			return repo.ErrAlreadyExists
 		}

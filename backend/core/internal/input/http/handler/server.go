@@ -783,6 +783,68 @@ func (s *server) ListSkilltrees(
 	return gen.ListSkilltrees200JSONResponse(response), nil
 }
 
+// POST /skilltree
+func (s *server) CreateSkilltree(
+	ctx context.Context,
+	request gen.CreateSkilltreeRequestObject,
+) (gen.CreateSkilltreeResponseObject, error) {
+	userID, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.CreateSkilltree401Response{}, nil
+	}
+
+	skilltree := &entity.Skilltree{
+		Name:        request.Body.Name,
+		Description: *request.Body.Description,
+		Color:       *request.Body.Color,
+		UserID:      userID,
+	}
+
+	id, err := s.skilltrees.Create(ctx, skilltree)
+	if err != nil {
+		if errors.Is(err, cases.ErrAlreadyExists) {
+			return gen.CreateSkilltree409JSONResponse{}, nil
+		}
+		s.logger.Error("failed to create skilltree", zap.Error(err))
+		return gen.CreateSkilltree500JSONResponse{}, nil
+	}
+
+	return gen.CreateSkilltree201JSONResponse(id.String()), nil
+}
+
+// PUT /skilltree/{skilltree_id}
+func (s *server) UpdateSkilltree(
+	ctx context.Context,
+	request gen.UpdateSkilltreeRequestObject,
+) (gen.UpdateSkilltreeResponseObject, error) {
+	if request.SkilltreeID == uuid.Nil {
+		return gen.UpdateSkilltree400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.UpdateSkilltree401Response{}, nil
+	}
+
+	skilltree := &entity.Skilltree{
+		ID:          request.SkilltreeID,
+		Name:        request.Body.Name,
+		Description: *request.Body.Description,
+		Color:       *request.Body.Color,
+	}
+
+	err := s.skilltrees.Update(ctx, skilltree)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.UpdateSkilltree404JSONResponse{}, nil
+		}
+		s.logger.Error("failed to update skilltree", zap.Error(err))
+		return gen.UpdateSkilltree500JSONResponse{}, nil
+	}
+
+	return gen.UpdateSkilltree204Response{}, nil
+}
+
 // DELETE /skilltree/{skilltree_id}
 func (s *server) DeleteSkilltree(
 	ctx context.Context,
