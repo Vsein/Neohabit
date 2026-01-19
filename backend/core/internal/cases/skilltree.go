@@ -47,12 +47,13 @@ func (c *SkilltreeCase) Create(ctx context.Context, skilltree *entity.Skilltree)
 			return nil, fmt.Errorf("create: %w", err)
 		}
 
+		skillStatus := entity.SkillStatus(2)
 		err = c.skillRepo.Create(ctx, &entity.Skill{
 			ID:          skillID,
 			SkilltreeID: skilltree.ID,
 			IsRootSkill: true,
 			Name:        &skilltree.Name,
-			Status:      2,
+			Status:      &skillStatus,
 			CreatedAt:   skilltree.CreatedAt,
 			UpdatedAt:   skilltree.UpdatedAt,
 		})

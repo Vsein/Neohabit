@@ -23,7 +23,7 @@ type Skill struct {
 	IsRootSkill   bool       `json:"is_root_skill"`
 	Name          *string
 	Description   *string
-	Status        SkillStatus
+	Status        *SkillStatus
 	Skills        []Skill
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
