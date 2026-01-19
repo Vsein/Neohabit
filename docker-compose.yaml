@@ -1,0 +1,61 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-neohabit}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-neohabit}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    volumes:
+      - postgres:/var/lib/postgresql
+    ports:
+      # Exposes port 5433 just in case postgres is already running outside docker
+      - "127.0.0.1:5433:5432"
+    networks:
+      - app-network
+
+  backend:
+    restart: unless-stopped
+    build: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    container_name: backend
+    environment:
+      PG_DSN: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-neohabit}?sslmode=disable
+      PG_MAX_OPEN_CONNS: ${PG_MAX_OPEN_CONNS:-10}
+      PG_MAX_LIFETIME: ${PG_MAX_LIFETIME:-1h}
+      PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-1h}
+      # ADDRESS: 0.0.0.0:9000
+      ADDRESS: ":9000"
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      JWT_SECRET: ${JWT_SECRET:-please_DONT_leave_blank}
+    ports:
+      - "127.0.0.1:9000:9000"
+      # - "9000:9000"
+    networks:
+      - app-network
+
+  frontend:
+    restart: unless-stopped
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "127.0.0.1:8080:80"
+      # - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres:
