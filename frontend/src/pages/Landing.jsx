@@ -57,7 +57,7 @@ export default function Landing() {
             </li>
             <li>
               <Link
-                to="https://github.com/Vsein/neohabit"
+                to="https://github.com/Vsein/Neohabit"
                 target="_blank"
                 className="landing-header-links-button centering"
               >
@@ -649,7 +649,7 @@ function SelfhostedSection() {
         <div className="landing-lastcall-header">
           <h1 className="landing-lastcall-title">Self-host</h1>
           <Link
-            to="https://github.com/Vsein/neohabit"
+            to="https://github.com/Vsein/Neohabit"
             target="_blank"
             style={{ width: '100%' }}
           >
@@ -684,7 +684,7 @@ function SignupSection() {
               <img src={Reddit} className="icon big circle" />
             </Link>
             <Link
-              to="https://github.com/Vsein/neohabit"
+              to="https://github.com/Vsein/Neohabit"
               target="_blank"
             >
               <Icon className="icon big circle" path={mdiGithub} />

@@ -80,7 +80,7 @@ function GithubLink() {
         className="menu-section"
         tabIndex="0"
         target="_blank"
-        to="https://github.com/Vsein/neohabit"
+        to="https://github.com/Vsein/Neohabit"
       >
         <Icon path={mdiGithub} className="icon" />
         <p className="link">Github</p>

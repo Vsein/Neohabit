@@ -41,7 +41,7 @@ export default function FetchError() {
           </p>
           <p className="back-ref" style={{ width: 'min(100%, 800px)' }}>
             Lastly, if the error persists, check what the console in the devtools (F12) tells you,
-            and <Link className="inline" to="https://github.com/Vsein/neohabit/issues">
+            and <Link className="inline" to="https://github.com/Vsein/Neohabit/issues">
               submit a bug report</Link>.
           </p>
         </>

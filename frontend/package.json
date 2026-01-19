@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Vsein/neohabit.git"
+    "url": "git+https://github.com/Vsein/Neohabit.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Vsein/neohabit/issues"
+    "url": "https://github.com/Vsein/Neohabit/issues"
   },
-  "homepage": "https://github.com/Vsein/neohabit#readme",
+  "homepage": "https://github.com/Vsein/Neohabit#readme",
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@vite-pwa/assets-generator": "^1.0.2",

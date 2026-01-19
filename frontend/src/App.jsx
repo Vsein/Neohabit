@@ -182,7 +182,7 @@ const AuthRoutes = (params) => {
         <section className="auth-intro">
           <p className="paragraph">
             Because <span className="neohabit" /> is currently in beta, some functionality is not completely implemented. Feel free to report any bugs on{' '}
-            <Link to="https://github.com/Vsein/neohabit/issues" target="_blank">
+            <Link to="https://github.com/Vsein/Neohabit/issues" target="_blank">
               github issues
             </Link>, or write directly to{' '}
             <Link to="https://www.reddit.com/user/VseinSama/" target="_blank">
@@ -199,7 +199,7 @@ const AuthRoutes = (params) => {
           <br />
           <br />
           Currently, new account creation is available only through direct access to the db.
-          <Link to="https://github.com/Vsein/neohabit#new-account-creation" target="_blank">
+          <Link to="https://github.com/Vsein/Neohabit#new-account-creation" target="_blank">
             See documentation
           </Link>
         </p>
