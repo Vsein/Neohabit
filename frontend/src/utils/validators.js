@@ -15,10 +15,18 @@ const onlyLatinAndNumbersValidator = (value) => {
   return 'Only latin and numbers';
 };
 
+const passwordSymbolsValidator = (value) => {
+  const fullAllowedRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{}|;:'",.<>?/`~]+$/;
+  if (fullAllowedRegex.test(value)) {
+    return undefined;
+  }
+  return 'Only common symbols';
+};
+
 const simpleEmailValidator = (value) => {
   if (!value) return undefined;
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? undefined : 'Please enter valid email';
-}
+};
 
 const composeValidators =
   (...validators) =>
@@ -30,6 +38,7 @@ export {
   boundsValidator,
   numberBoundsValidator,
   onlyLatinAndNumbersValidator,
+  passwordSymbolsValidator,
   simpleEmailValidator,
   composeValidators,
 };

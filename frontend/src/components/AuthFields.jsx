@@ -8,6 +8,7 @@ import {
   onlyLatinAndNumbersValidator,
   simpleEmailValidator,
   composeValidators,
+  passwordSymbolsValidator,
 } from '../utils/validators';
 
 function UsernameField({ showAsterisk = false }) {
@@ -75,7 +76,7 @@ function PasswordField({ type, signup }) {
       name={type === 'confirm' ? 'password_confirm' : 'password'}
       minLength="0"
       maxLength="100"
-      validate={composeValidators(strictFields && signup && requiredValidator, signup && boundsValidator(strictFields ? 8 : 0, 100))}
+      validate={composeValidators(strictFields && signup && requiredValidator, signup && boundsValidator(strictFields ? 8 : 0, 100), passwordSymbolsValidator)}
       // onChange="onChange()"
       autoComplete="new-password"
     >
