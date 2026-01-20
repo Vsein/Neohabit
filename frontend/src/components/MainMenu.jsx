@@ -108,14 +108,14 @@ function ThemeToggle() {
   const [updateSettings] = useUpdateSettingsMutation();
   const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
-  const toggleTheme = () => updateSettings({ values: { prefer_dark: theme !== 'dark' } });
+  const toggleTheme = () => updateSettings({ values: { theme: theme === 'dark' ? 'light' : 'dark' } });
   useHotkeys('shift+t', toggleTheme);
 
   return (
     <li>
       <button
         className="menu-section"
-        onClick={() => updateSettings({ values: { theme: theme === 'dark' ? 'light' : 'dark' } })}
+        onClick={toggleTheme}
       >
         <Icon
           path={theme === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
