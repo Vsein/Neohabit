@@ -50,7 +50,7 @@ You can see the features overview with examples on the
 
 ## Installation
 
-Choose one of the following methods:
+Currently, there are two methods available:
 
 <details>
 <summary><strong>Docker compose (recommended)</strong></summary>
@@ -152,9 +152,25 @@ go run core/cmd/main.go -config core/config/config.yaml
 
 <hr>
 </details>
-
-
 <br>
+
+<details>
+<summary><strong>Note</strong></summary>
+<br>
+Given the nature of deploying projects, there's a hundred other ways of
+installing I haven't covered. Despite Neohabit being somewhat mature in terms of
+features, it's still a young self-hosted tool that I've only recently
+open-sourced.
+<br>
+<br>
+It's possible for something not to run as I intended, and if it wastes your
+time, I'm sorry. If you figured out how to deploy Neohabit in, say k8s, or your
+preferred deployment tool, feel free to propose an installation guide -- a pull
+request or just a discord message is fine.
+
+<hr>
+</details>
+
 
 ## Ultimate vision
 
