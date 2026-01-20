@@ -8,8 +8,6 @@ export default defineConfig({
     process: {
       env: {
         REACT_APP_STAGE: process.env.REACT_APP_STAGE,
-        STRICT_USER_FIELDS: false,
-        REQUIRE_EMAIL: false,
       },
     },
   },

@@ -47,8 +47,8 @@ function SignupForm() {
         if (!values.username) {
           errors.username = 'Required';
         }
-        if (process.env.STRICT_USER_FIELDS) {
-          if (process.env.REQUIRE_EMAIL && !values.email) {
+        if (window.APP_CONFIG.STRICT_USER_FIELDS) {
+          if (window.APP_CONFIG.REQUIRE_EMAIL && !values.email) {
             errors.email = 'Required';
           }
           if (!values.password) {

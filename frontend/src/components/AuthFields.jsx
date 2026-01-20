@@ -46,7 +46,7 @@ function EmailField({ signup = false }) {
     <Field
       name="email"
       validate={
-        signup ? composeValidators(process.env.REQUIRE_EMAIL && requiredValidator, simpleEmailValidator) : requiredValidator
+        signup ? composeValidators(window.APP_CONFIG.REQUIRE_EMAIL && requiredValidator, simpleEmailValidator) : requiredValidator
       }
     >
       {({ input, meta }) => (
@@ -67,7 +67,7 @@ function EmailField({ signup = false }) {
 function PasswordField({ type, signup }) {
   const [passwordHidden, setPasswordHidden] = useState(true);
   const togglePasswordVisibility = () => setPasswordHidden(!passwordHidden);
-  const strictFields = process.env.STRICT_USER_FIELDS;
+  const strictFields = window.APP_CONFIG.STRICT_USER_FIELDS;
 
   return (
     <Field
