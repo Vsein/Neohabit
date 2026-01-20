@@ -44,6 +44,9 @@ You can see the features overview with examples on the
 
 ### Other things you might find useful
 - [Keybindings](/docs/keybindings.md) for common actions
+- Two themes available: light and dark
+- Desktop-focused
+- A working mobile interface (browser-only, no app)
 
 ## Installation
 
