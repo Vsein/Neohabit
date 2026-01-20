@@ -197,7 +197,10 @@ const AuthRoutes = (params) => {
         <Outlet />
         {window.APP_CONFIG.DISABLE_SIGNUP ?
           <p className="login-ref">
-            With the DISABLE_SIGNUP option enabled, new account creation is unavailable. You can still log into the accounts you created before enabling it. Or set it to false temporarily, create an account, and set it back to true once you did.
+            With the DISABLE_SIGNUP option enabled, new account creation is unavailable. You can
+            still log into the accounts you created before enabling it. Or you can set it to false
+            temporarily, restart docker compose, create an account, set it back to true once you
+            did, and restart once again.
             {/* <Link to="https://github.com/Vsein/Neohabit#new-account-creation" target="_blank"> */}
             {/*   See documentation */}
             {/* </Link> */}
