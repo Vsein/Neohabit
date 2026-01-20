@@ -42,6 +42,9 @@ You can see the features overview with examples on the
   </picture>
 </div>
 
+### Other things you might find useful
+- [Keybindings](/docs/keybindings.md) for common actions
+
 ## Installation
 
 Choose one of the following methods:
