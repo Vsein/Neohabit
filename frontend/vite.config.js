@@ -8,14 +8,21 @@ export default defineConfig({
     process: {
       env: {
         REACT_APP_STAGE: process.env.REACT_APP_STAGE,
-        STRICT_USER_FIELDS: false,
-        REQUIRE_EMAIL: false,
       },
     },
   },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        globIgnores: ['**/runtime-config.js'],
+        runtimeCaching: [
+          {
+            urlPattern: /\/runtime-config\.js$/,
+            handler: 'NetworkOnly',
+          },
+        ],
+      },
       manifest: {
         includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png'],
         name: 'Neohabit',

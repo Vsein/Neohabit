@@ -1,0 +1,8 @@
+pg:
+  dsn: ${PG_DSN}
+  max_open_conns: ${PG_MAX_OPEN_CONNS:-10}
+  max_lifetime: ${PG_MAX_LIFETIME:-1h}
+  max_idle_time: ${PG_MAX_IDLE_TIME:-1h}
+log:
+  level: ${LOG_LEVEL:-info}   # debug, info, warn, error, fatal, panic
+address: ${ADDRESS:-localhost:9000}

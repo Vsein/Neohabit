@@ -7,6 +7,7 @@ import {
   Outlet,
   useLocation,
   Link,
+  NavLink,
 } from 'react-router-dom';
 import { useHotkeys } from 'react-hotkeys-hook'
 // import Dashboard from './pages/Dashboard';
@@ -62,7 +63,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/" element={<AuthRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />}>
-          {/* <Route path="/signup/" element={<Signup />} /> */}
+          {!window.APP_CONFIG.DISABLE_SIGNUP && <Route path="/signup/" element={<Signup />} />}
           <Route path="/login/" element={<Login />} />
         </Route>
         {loggedIn && <Route path="/" element={<Suspense fallback={<></>}><PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} /></Suspense>}>
@@ -194,24 +195,26 @@ const AuthRoutes = (params) => {
           </p>
         </section>
         <Outlet />
-        <p className="login-ref">
-          By default, there&apos;s only one account created - the one you specified in the config when starting the app.
-          <br />
-          <br />
-          Currently, new account creation is available only through direct access to the db.
-          <Link to="https://github.com/Vsein/Neohabit#new-account-creation" target="_blank">
-            See documentation
-          </Link>
-        </p>
-        {/* {location.pathname === '/login' ? ( */}
-        {/*   <p className="login-ref"> */}
-        {/*     Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink> */}
-        {/*   </p> */}
-        {/* ) : ( */}
-        {/*   <p className="login-ref"> */}
-        {/*     Already have an account? <NavLink to="/login">Log in</NavLink> */}
-        {/*   </p> */}
-        {/* )} */}
+        {window.APP_CONFIG.DISABLE_SIGNUP ?
+          <p className="login-ref">
+            With the DISABLE_SIGNUP option enabled, new account creation is unavailable. You can
+            still log into the accounts you created before enabling it. Or you can set it to false
+            temporarily, restart docker compose, create an account, set it back to true once you
+            did, and restart once again.
+            {/* <Link to="https://github.com/Vsein/Neohabit#new-account-creation" target="_blank"> */}
+            {/*   See documentation */}
+            {/* </Link> */}
+          </p> : <></>}
+        {!window.APP_CONFIG.DISABLE_SIGNUP && location.pathname === '/login' ? (
+          <p className="login-ref">
+            Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink>
+          </p>
+        ) : <></>}
+        {!window.APP_CONFIG.DISABLE_SIGNUP && location.pathname === '/signup' ? (
+          <p className="login-ref">
+            Already have an account? <NavLink to="/login">Log in</NavLink>
+          </p>
+        ) : <></>}
       </main>
     </div>
   );

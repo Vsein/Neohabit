@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-// LogLevel represents the logging level
 type LogLevel int8
 
 const (
@@ -18,7 +17,6 @@ const (
 	FatalLevel
 )
 
-// UnmarshalYAML implements yaml.Unmarshaler for LogLevel
 func (l *LogLevel) UnmarshalYAML(unmarshal func(any) error) error {
 	var s string
 	if err := unmarshal(&s); err != nil {
@@ -46,7 +44,6 @@ func (l *LogLevel) UnmarshalYAML(unmarshal func(any) error) error {
 	return nil
 }
 
-// LogConfig represents logging configuration
 type LogConfig struct {
 	Level            LogLevel `yaml:"level"`
 	Format           string   `yaml:"format"`

@@ -44,7 +44,111 @@ You can see the features overview with examples on the
 
 ## Installation
 
-TODO
+Choose one of the following methods:
+
+<details>
+<summary><strong>Docker compose (recommended)</strong></summary>
+<br>
+
+Clone this repo and change to the cloned directory:
+
+```bash
+git clone https://github.com/Vsein/Neohabit.git && cd Neohabit
+```
+
+Copy `.env.example` into `.env`
+
+```bash
+cp .env.example .env
+```
+
+After that, edit the following files as desired:
+
+* `.env` to change the db/backend settings, and in-app settings like login behavior
+* `docker-compose.yaml` to configure the ports, volumes and other containery things
+* `frontend/nginx.conf` to adjust the servername in case you will be web-hosting
+
+When ready, run:
+
+```bash
+docker compose up -d
+```
+
+In ~30 seconds, head to `http://127.0.0.1:8080` (default) and check if
+everything's up and running.
+
+If you encounter any issues, you can check the logs by running:
+
+```bash
+docker compose logs
+```
+
+<hr>
+</details>
+
+<details>
+<summary><strong>Build and serve everything manually</strong></summary>
+<br>
+
+Requirements:
+- go
+- postgresql
+- npm
+- python or nginx (for serving the static files)
+
+### Setting up frontend
+
+Change into the `frontend` directory and install dependencies:
+
+```bash
+cd frontend && npm ci
+```
+
+- Build static files:
+
+  ```bash
+  npm run build
+  ```
+
+  Serve the static files in `/dist`, for example with python:
+
+  ```bash
+  python -m http.server 8080
+  ```
+
+- Or, run in development mode:
+
+  ```bash
+  npm start
+  ```
+
+### Setting up backend
+
+Change into the `backend` directory and install go packages
+
+```bash
+go mod download
+```
+
+Create a new Postgres database:
+
+```bash
+createdb neohabit_database
+```
+
+And modify the env vars before finally running:
+
+```bash
+JWT_SECRET="SuperSecretWOWBaz0nga5" \
+PG_DSN="postgres://user:password@localhost:5432/neohabit_database?sslmode=disable" \
+go run core/cmd/main.go -config core/config/config.yaml
+```
+
+<hr>
+</details>
+
+
+<br>
 
 ## Ultimate vision
 

@@ -43,9 +43,6 @@ function LoginForm() {
         if (!values.username) {
           errors.username = 'Required';
         }
-        if (process.env.STRICT_USER_FIELDS && !values.password) {
-          errors.password = 'Required';
-        }
         return errors;
       }}
       render={({ submitError, handleSubmit, form, submitting, pristine, values }) => (
