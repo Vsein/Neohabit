@@ -53,6 +53,7 @@ function EmailField({ signup = false }) {
         <div>
           <label htmlFor="email">
             E-mail
+            {window.APP_CONFIG.REQUIRE_EMAIL ? '*' : ''}
             {(meta.error || (meta.submitError && !meta.dirtySinceLastSubmit)) && meta.touched && (
               <span className="registration-error">{meta.error || meta.submitError}</span>
             )}
@@ -74,7 +75,7 @@ function PasswordField({ type, signup }) {
       name={type === 'confirm' ? 'password_confirm' : 'password'}
       minLength="0"
       maxLength="100"
-      validate={composeValidators(strictFields && requiredValidator, boundsValidator(strictFields ? 8 : 0, 100))}
+      validate={composeValidators(strictFields && signup && requiredValidator, signup && boundsValidator(strictFields ? 8 : 0, 100))}
       // onChange="onChange()"
       autoComplete="new-password"
     >
