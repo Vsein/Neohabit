@@ -1,0 +1,7 @@
+// docker-compose template for runtime-config
+window.APP_CONFIG = {
+  API_URL: '$API_URL',
+  DISABLE_SIGNUP: $DISABLE_SIGNUP,
+  STRICT_USER_FIELDS: $STRICT_USER_FIELDS,
+  REQUIRE_EMAIL: $REQUIRE_EMAIL,
+};

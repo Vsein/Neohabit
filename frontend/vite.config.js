@@ -14,6 +14,15 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        globIgnores: ['**/runtime-config.js'],
+        runtimeCaching: [
+          {
+            urlPattern: /\/runtime-config\.js$/,
+            handler: 'NetworkOnly',
+          },
+        ],
+      },
       manifest: {
         includeAssets: ['favicon.svg', 'apple-touch-icon-180x180.png'],
         name: 'Neohabit',

@@ -37,7 +37,6 @@ services:
       JWT_SECRET: ${JWT_SECRET:-please_DONT_leave_blank}
     ports:
       - "127.0.0.1:9000:9000"
-      # - "9000:9000"
     networks:
       - app-network
 
@@ -45,9 +44,13 @@ services:
     restart: unless-stopped
     build: ./frontend
     container_name: frontend
+    environment:
+      API_URL: ${API_URL:-http://localhost:9000/api}
+      DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
+      STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
+      REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
     ports:
       - "127.0.0.1:8080:80"
-      # - "8080:80"
     depends_on:
       - backend
     networks:
