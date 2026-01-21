@@ -22,7 +22,7 @@ function HabitTagToDelete({ habit }) {
           className="habit-circle to-delete centering"
           style={{ '--signature-color': habit.color }}
         >
-          <Icon path={mdiClose} className="icon small" style={{marginLeft: '-6px' }}/>
+          <Icon path={mdiClose} className="icon small" style={{ marginLeft: '-6px' }} />
         </div>
       </div>
       <p>{habit.name}</p>
@@ -46,9 +46,9 @@ function AccountInfo() {
 
 function ProfilePicture({ type }) {
   return (
-    <a tabIndex="0" className="centering">
+    <div className="centering">
       <img alt="profile pic" className={`pfp ${type}`} />
-    </a>
+    </div>
   );
 }
 
