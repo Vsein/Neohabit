@@ -84,7 +84,8 @@ export default function Heatmap({
   const targetBuckets = targets.slice(Math.max(fti, 0), lti + 1).flatMap((t, i, ts) => {
     const bucketsDateStart = startOfDay(new Date(t.date_start));
     const nextTarget = i + 1 < lti + 1 ? ts[i + 1] : undefined;
-    const bucketsDateEnd = minValidDate(endOfDay(new Date(t.date_end)), startOfDay(new Date(nextTarget?.date_start)), maxValidDate(windowDateEnd, dateStart));
+    const nextTargetDateStart = startOfDay(new Date(nextTarget?.date_start));
+    const bucketsDateEnd = minValidDate(endOfDay(new Date(t.date_end)), nextTargetDateStart, maxValidDate(windowDateEnd, dateStart));
 
     const daysUntilEnd = differenceInDays(addMilliseconds(bucketsDateEnd, 1), bucketsDateStart);
     let diffInCycles = Math.floor(daysUntilEnd / t.period);
@@ -94,7 +95,7 @@ export default function Heatmap({
     return diffInCycles > 0 ? Array.from(new Array(diffInCycles)).map((_, j) => ({
       targetIndex: i + Math.max(fti, 0),
       dateStart: addDays(bucketsDateStart, t.period * j),
-      dateEnd: subMilliseconds(minValidDate(addDays(bucketsDateStart, t.period * (j + 1)), new Date(nextTarget?.date_start)), 1),
+      dateEnd: subMilliseconds(minValidDate(addDays(bucketsDateStart, t.period * (j + 1)), nextTargetDateStart), 1),
     })) : [];
   })
 
