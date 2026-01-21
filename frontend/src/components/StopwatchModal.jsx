@@ -42,12 +42,7 @@ export default function StopwatchModal({ closeOverlay }) {
         >
           <HabitTag habit={habit} />
         </NavLink>
-        <button
-          className="icon small"
-          onClick={closeOverlay}
-          type="button"
-          title="Close [esc / c]"
-        >
+        <button className="icon small" onClick={closeOverlay} type="button" title="Close [esc / c]">
           <Icon path={mdiClose} />
         </button>
       </div>
@@ -60,10 +55,7 @@ export default function StopwatchModal({ closeOverlay }) {
             '--progress': `${(currentDuration / baseDuration) * 100}%`,
           }}
         >
-          <h3
-            className="progressbar-circle-projectname"
-            style={{ color: habit?.color }}
-          >
+          <h3 className="progressbar-circle-projectname" style={{ color: habit?.color }}>
             {habit?.name}
           </h3>
           <h1 className="progressbar-circle-countdown">{clockify(currentDuration)}</h1>
@@ -73,21 +65,14 @@ export default function StopwatchModal({ closeOverlay }) {
               onClick={resetStopwatch}
               title="Reset [R]"
             >
-              <Icon
-                path={mdiRestart}
-                style={{ marginTop: '3px' }}
-                className="icon medium"
-              />
+              <Icon path={mdiRestart} style={{ marginTop: '3px' }} className="icon medium" />
             </button>
             <button
               className="logo-section centering stopwatch-icon"
               onClick={togglePause}
               title={stopwatch.data.is_paused ? 'Start timer [P]' : 'Pause [P]'}
             >
-              <Icon
-                path={stopwatch.data.is_paused ? mdiPlay : mdiPause}
-                className="icon big"
-              />
+              <Icon path={stopwatch.data.is_paused ? mdiPlay : mdiPause} className="icon big" />
             </button>
             <button
               className="logo-section centering stopwatch-icon"
@@ -95,11 +80,7 @@ export default function StopwatchModal({ closeOverlay }) {
               title="Finish [F]"
               disabled={!habit?.id}
             >
-              <Icon
-                path={mdiFlagCheckered}
-                style={{ marginTop: '-1px' }}
-                className="icon medium"
-              />
+              <Icon path={mdiFlagCheckered} style={{ marginTop: '-1px' }} className="icon medium" />
             </button>
           </div>
         </div>

@@ -43,7 +43,10 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
 
   const onSubmit = async (values) => {
     if (!habitID) {
-      await createHabit({ ...values, project_id: projectID !== 'default' && projectID ? projectID : undefined });
+      await createHabit({
+        ...values,
+        project_id: projectID !== 'default' && projectID ? projectID : undefined,
+      });
     } else {
       await updateHabit({ habitID, values });
     }
@@ -74,7 +77,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             onClick={(e) => {
               const cellAddDropdown = document.querySelector('.cell-add-dropdown');
               cellAddDropdown.classList.add('hidden');
-              e.stopPropagation()
+              e.stopPropagation();
             }}
             onMouseDown={(e) => e.stopPropagation()}
           >
@@ -110,7 +113,12 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   <div className="tag-wrapper">New habit</div>
                 )}
               </div>
-              <button className="icon small" onClick={closeOverlay} type="button" title="Close [esc / c]">
+              <button
+                className="icon small"
+                onClick={closeOverlay}
+                type="button"
+                title="Close [esc / c]"
+              >
                 <Icon path={mdiClose} />
               </button>
             </div>
@@ -141,10 +149,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   />
                   <label>More is bad</label>
                 </div>
-                <div
-                  className="form-task-description"
-                  title="Shows numbers instead of cells"
-                >
+                <div className="form-task-description" title="Shows numbers instead of cells">
                   <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
                   <label>Show as numbers</label>
                 </div>
@@ -153,7 +158,12 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <ColorPicker />
               </div>
             </div>
-            <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!habitID} type="habit" />
+            <ModalButtons
+              disabled={submitting}
+              unnamed={!values?.name}
+              isNew={!habitID}
+              type="habit"
+            />
           </form>
         )}
       />

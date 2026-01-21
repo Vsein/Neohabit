@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useHotkeys } from 'react-hotkeys-hook'
+import { useHotkeys } from 'react-hotkeys-hook';
 import {
   startOfDay,
   isFirstDayOfMonth,

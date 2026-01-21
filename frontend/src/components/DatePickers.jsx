@@ -134,9 +134,7 @@ function OverviewTopbarRight({
       {isHeatmap && vertical && (
         <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} />
       )}
-      {isHeatmap && !vertical && (
-        <NextPeriodButton onClick={addMonth} />
-      )}
+      {isHeatmap && !vertical && <NextPeriodButton onClick={addMonth} />}
     </div>
   );
 }
@@ -200,4 +198,11 @@ function PreviousPeriodButton({ onClick, alignRight, vertical, style, isFuturePe
   );
 }
 
-export { YearPicker, DatePeriodPicker, DatePeriodControls, OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton };
+export {
+  YearPicker,
+  DatePeriodPicker,
+  DatePeriodControls,
+  OverviewTopbarRight,
+  NextPeriodButton,
+  PreviousPeriodButton,
+};

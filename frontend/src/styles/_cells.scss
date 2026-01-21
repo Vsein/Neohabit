@@ -96,7 +96,8 @@ $cell-margin: 2px;
       --height-fractions-calc: 2;
     }
 
-    &.f3, &.f4 {
+    &.f3,
+    &.f4 {
       --height-fractions-calc: 2;
       --width-fractions-calc: 2;
 
@@ -105,7 +106,8 @@ $cell-margin: 2px;
       }
     }
 
-    &.f5, &.f6 {
+    &.f5,
+    &.f6 {
       --height-fractions-calc: 2;
       --width-fractions-calc: 3;
 
@@ -114,21 +116,28 @@ $cell-margin: 2px;
       }
     }
 
-    &.f7, &.f8, &.f9 {
+    &.f7,
+    &.f8,
+    &.f9 {
       --height-fractions-calc: 3;
       --width-fractions-calc: 3;
       --gap-decrement-column: 1;
       --gap-decrement-row: 1;
     }
 
-    &.f10, &.f11, &.f12 {
+    &.f10,
+    &.f11,
+    &.f12 {
       --height-fractions-calc: 3;
       --width-fractions-calc: 4;
       --gap-decrement-column: 1;
       --gap-decrement-row: 1;
     }
 
-    &.f13, &.f14, &.f15, &.f16 {
+    &.f13,
+    &.f14,
+    &.f15,
+    &.f16 {
       --height-fractions-calc: 4;
       --width-fractions-calc: 4;
       --gap-decrement-column: 1;
@@ -162,13 +171,15 @@ $cell-margin: 2px;
     (
         var(--total-height) * (var(--cell-height) + 4px) - 4px - var(--row-gap) *
           (var(--height-fractions) - 1)
-      ) / var(--height-fractions)
+      ) /
+      var(--height-fractions)
   );
   width: calc(
     (
         var(--total-width) * (var(--cell-width) + 4px) - 4px - var(--column-gap) *
           (var(--width-fractions) - 1)
-      ) / var(--width-fractions)
+      ) /
+      var(--width-fractions)
   );
   border-radius: 1px;
   border: 1px solid var(--cell-border-color);

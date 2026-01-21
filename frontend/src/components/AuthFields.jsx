@@ -47,7 +47,12 @@ function EmailField({ signup = false }) {
     <Field
       name="email"
       validate={
-        signup ? composeValidators(window.APP_CONFIG.REQUIRE_EMAIL && requiredValidator, simpleEmailValidator) : requiredValidator
+        signup
+          ? composeValidators(
+              window.APP_CONFIG.REQUIRE_EMAIL && requiredValidator,
+              simpleEmailValidator,
+            )
+          : requiredValidator
       }
     >
       {({ input, meta }) => (
@@ -76,7 +81,11 @@ function PasswordField({ type, signup }) {
       name={type === 'confirm' ? 'password_confirm' : 'password'}
       minLength="0"
       maxLength="100"
-      validate={composeValidators(strictFields && signup && requiredValidator, signup && boundsValidator(strictFields ? 8 : 0, 100), passwordSymbolsValidator)}
+      validate={composeValidators(
+        strictFields && signup && requiredValidator,
+        signup && boundsValidator(strictFields ? 8 : 0, 100),
+        passwordSymbolsValidator,
+      )}
       // onChange="onChange()"
       autoComplete="new-password"
     >

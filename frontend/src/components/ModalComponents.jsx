@@ -9,14 +9,12 @@ function NameField({ type, autofocus = false }) {
   const maxLength = 150;
 
   return (
-    <Field
-      name="name"
-      validate={boundsValidator(0, maxLength)}
-    >
+    <Field name="name" validate={boundsValidator(0, maxLength)}>
       {({ input, meta }) => (
         <div className="form-task-name">
           <input {...input} type="text" placeholder={`Change ${type} name`} autoFocus={autofocus} />
-          <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}
+          <p
+            className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}
           >{`${input?.value?.length ?? 0}/${maxLength}`}</p>
         </div>
       )}
@@ -32,8 +30,9 @@ function DescriptionField({ rows }) {
       {({ input, meta }) => (
         <div className="form-task-description">
           <textarea {...input} type="text" placeholder="Change description" rows={rows} />
-          <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}>{`${input?.value?.length ?? 0
-            }/${maxLength}`}</p>
+          <p className={`form-field-length ${input?.value?.length > maxLength ? 'error' : ''}`}>{`${
+            input?.value?.length ?? 0
+          }/${maxLength}`}</p>
         </div>
       )}
     </Field>

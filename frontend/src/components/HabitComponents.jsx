@@ -151,17 +151,19 @@ function HabitOverview({
 
   const allowDrop = (e) => {
     e.preventDefault();
-  }
+  };
 
   const drag = (e) => {
-    e.dataTransfer.setData("dragged-habit", e.target.dataset.id);
-  }
+    e.dataTransfer.setData('dragged-habit', e.target.dataset.id);
+  };
 
   return (
     <div
       className="overview-habit"
       onDrop={dropHabitInProject}
-      onDragOver={allowDrop} draggable onDragStart={drag}
+      onDragOver={allowDrop}
+      draggable
+      onDragStart={drag}
       id={habit?.id}
       data-id={`${projectID}_${habit?.id}`}
     >

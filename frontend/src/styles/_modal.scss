@@ -150,8 +150,7 @@
   gap: 10px;
   grid-template-columns: 3fr 1fr;
   grid-template-rows: min-content;
-  grid-template-areas:
-    'description color';
+  grid-template-areas: 'description color';
 }
 
 .form-field-length {
@@ -270,7 +269,6 @@
     text-rendering: auto;
     overflow: hidden;
   }
-
 
   @media (max-width: 330px) {
     &.add {

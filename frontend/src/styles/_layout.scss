@@ -9,7 +9,7 @@
 
 #content {
   min-height: 100vh;
-  @supports(min-height: 100dvh) {
+  @supports (min-height: 100dvh) {
     min-height: 100dvh;
   }
   width: 100%;
@@ -23,21 +23,21 @@
   // background-color: #efefef;
 
   @media (max-width: 800px) {
-  min-height: calc(100vh);
-    @supports(min-height: 100dvh) {
+    min-height: calc(100vh);
+    @supports (min-height: 100dvh) {
       min-height: calc(100dvh);
     }
   }
 
   @media (max-width: 550px) {
     min-height: calc(100vh - 50px);
-    @supports(min-height: 100dvh) {
+    @supports (min-height: 100dvh) {
       min-height: calc(100dvh - 50px);
     }
     grid-template-areas:
-    'menu    menu'
-    'main main'
-    'stopwatch stopwatch';
+      'menu    menu'
+      'main main'
+      'stopwatch stopwatch';
     grid-template-rows: 50px 1fr;
     .sidebar {
       @include sidebar-hidden;

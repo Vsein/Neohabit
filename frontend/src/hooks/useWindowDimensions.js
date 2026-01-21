@@ -13,7 +13,7 @@ function getScrollbarWidth() {
   outer.appendChild(inner);
 
   // Calculating difference between container's full width and the child width
-  const scrollbarWidth = (outer.offsetWidth - inner.offsetWidth);
+  const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
 
   // Removing temporary elements from the DOM
   outer.parentNode.removeChild(outer);
@@ -28,7 +28,7 @@ function getWindowDimensions() {
   const width = document.body.offsetWidth - scrollBarWidth;
   return {
     width,
-    height
+    height,
   };
 }
 

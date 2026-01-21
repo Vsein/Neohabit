@@ -64,8 +64,14 @@ export default function Settings() {
                 </div>
               </div>
               <div className="settings-option simple">
-                <h3 className="settings-name ribbon ribbon-top"
-                  style={{ opacity: 0.5, position: 'relative', width: 'min-content', whiteSpace: 'nowrap' }}
+                <h3
+                  className="settings-name ribbon ribbon-top"
+                  style={{
+                    opacity: 0.5,
+                    position: 'relative',
+                    width: 'min-content',
+                    whiteSpace: 'nowrap',
+                  }}
                 >
                   <span style={{ borderRadius: '10px 10px 0px 0px' }}>soon</span>
                   Change password
@@ -115,7 +121,9 @@ export default function Settings() {
               <SettingsButtonOption
                 name="Behavior when whole period doesn't fit"
                 curState={settings.data.allow_horizontal_scrolling ?? true}
-                update={(state) => updateSettings({ values: { allow_horizontal_scrolling: state } })}
+                update={(state) =>
+                  updateSettings({ values: { allow_horizontal_scrolling: state } })
+                }
                 choices={[
                   { name: 'Adaptive', state: true },
                   { name: 'Rigid', state: false },
@@ -190,7 +198,9 @@ export default function Settings() {
                 cssName="first-day"
                 disabled={!settings.data.habit_heatmaps_override}
                 curState={settings.data.habit_heatmaps_current_day ?? 'middle'}
-                update={(state) => updateSettings({ values: { habit_heatmaps_current_day: state } })}
+                update={(state) =>
+                  updateSettings({ values: { habit_heatmaps_current_day: state } })
+                }
                 choices={[
                   { name: 'End', state: 'end' },
                   { name: 'Middle', state: 'middle' },
@@ -208,7 +218,9 @@ export default function Settings() {
                 name="Show stopwatch time in the page title"
                 cssName="orientation"
                 curState={settings.data.show_stopwatch_time_in_page_title ?? true}
-                update={(state) => updateSettings({ values: { show_stopwatch_time_in_page_title: state } })}
+                update={(state) =>
+                  updateSettings({ values: { show_stopwatch_time_in_page_title: state } })
+                }
                 choices={[
                   { name: 'On', state: true },
                   { name: 'Off', state: false },
@@ -276,7 +288,14 @@ function SettingsSection({ name, id = '', elements }) {
   );
 }
 
-function SettingsButtonOption({ name, cssName, update, choices, curState = undefined, disabled = false }) {
+function SettingsButtonOption({
+  name,
+  cssName,
+  update,
+  choices,
+  curState = undefined,
+  disabled = false,
+}) {
   return (
     <div className={`settings-option ${cssName} ${disabled ? 'disabled' : ''}`}>
       <h3 className="settings-name">{name}</h3>
@@ -284,8 +303,9 @@ function SettingsButtonOption({ name, cssName, update, choices, curState = undef
         {choices.map((choice, index) => (
           <button
             key={index}
-            className={`button-default muted stretch ${choice.state} ${choice.state === curState ? 'active' : ''
-              }`}
+            className={`button-default muted stretch ${choice.state} ${
+              choice.state === curState ? 'active' : ''
+            }`}
             onClick={() => update(choice.state)}
           >
             {choice.name}

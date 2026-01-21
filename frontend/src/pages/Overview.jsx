@@ -13,7 +13,17 @@ export default function OverviewPage() {
     setDateEnd,
     dateStart,
     setDateStart,
-    { subYear, addYear, subPeriod, addPeriod, setToPast, setToFuture, reset, isPastPeriod, isFuturePeriod },
+    {
+      subYear,
+      addYear,
+      subPeriod,
+      addPeriod,
+      setToPast,
+      setToFuture,
+      reset,
+      isPastPeriod,
+      isFuturePeriod,
+    },
   ] = useDatePeriod(datePeriodLength, true);
 
   return (

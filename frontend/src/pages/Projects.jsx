@@ -36,22 +36,38 @@ export default function ProjectsPage() {
 
   const [defaultProject] = useDefaultProject();
 
-  const dragHabitToProject = (fromProjectID, toProjectID, draggedHabitID, targetHabitID, insertAfter = false) => {
-    const fromProject = structuredClone(projects.data.find((p) => p.id === fromProjectID) ?? defaultProject);
-    const toProject = structuredClone(projects.data.find((p) => p.id === toProjectID) ?? defaultProject);
+  const dragHabitToProject = (
+    fromProjectID,
+    toProjectID,
+    draggedHabitID,
+    targetHabitID,
+    insertAfter = false,
+  ) => {
+    const fromProject = structuredClone(
+      projects.data.find((p) => p.id === fromProjectID) ?? defaultProject,
+    );
+    const toProject = structuredClone(
+      projects.data.find((p) => p.id === toProjectID) ?? defaultProject,
+    );
     const draggedHabit = fromProject.habits.find((h) => h.id === draggedHabitID);
 
     if (fromProject && fromProject.habits && fromProjectID !== 'default') {
       const filteredHabits = fromProject.habits.filter((h) => h.id !== draggedHabitID);
       const filteredHabitIDs = filteredHabits.map((h) => h.id);
-      updateProject({ projectID: fromProjectID, values: { habits: filteredHabits, habit_ids: filteredHabitIDs } });
+      updateProject({
+        projectID: fromProjectID,
+        values: { habits: filteredHabits, habit_ids: filteredHabitIDs },
+      });
     }
 
     if (toProject && toProject.habits && toProjectID !== 'default') {
       const i = toProject.habits.findIndex((h) => h.id === targetHabitID);
       toProject.habits.splice(i + insertAfter, 0, draggedHabit);
       const toProjectHabitIDs = toProject.habits.map((h) => h.id);
-      updateProject({ projectID: toProjectID, values: { habits: toProject.habits, habit_ids: toProjectHabitIDs } });
+      updateProject({
+        projectID: toProjectID,
+        values: { habits: toProject.habits, habit_ids: toProjectHabitIDs },
+      });
     }
   };
 
@@ -86,7 +102,7 @@ export default function ProjectsPage() {
         <div className="loader" />
       ) : (
         <div className="contentlist">
-          {projects.data.map((project, i) =>
+          {projects.data.map((project, i) => (
             <ProjectWrapper
               key={i}
               project={project}
@@ -94,20 +110,18 @@ export default function ProjectsPage() {
               mobile={mobile}
               dragHabitToProject={dragHabitToProject}
             />
+          ))}
+          {defaultProject?.habits?.length ? (
+            <ProjectWrapper
+              key="default"
+              project={defaultProject}
+              datePeriodLength={datePeriodLength}
+              mobile={mobile}
+              dragHabitToProject={dragHabitToProject}
+            />
+          ) : (
+            <></>
           )}
-          {
-            defaultProject?.habits?.length ? (
-              <ProjectWrapper
-                key='default'
-                project={defaultProject}
-                datePeriodLength={datePeriodLength}
-                mobile={mobile}
-                dragHabitToProject={dragHabitToProject}
-              />
-            ) : (
-              <></>
-            )
-          }
         </div>
       )}
     </>

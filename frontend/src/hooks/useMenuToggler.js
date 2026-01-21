@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHotkeys } from 'react-hotkeys-hook'
+import { useHotkeys } from 'react-hotkeys-hook';
 
 export default function useMenuToggler() {
   const [menuOpened, setMenuOpened] = useState(false);

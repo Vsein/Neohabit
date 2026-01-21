@@ -74,7 +74,12 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
               <ColorPicker />
             </div>
           </div>
-          <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!skilltreeID} type="skilltree" />
+          <ModalButtons
+            disabled={submitting}
+            unnamed={!values?.name}
+            isNew={!skilltreeID}
+            type="skilltree"
+          />
         </form>
       )}
     />

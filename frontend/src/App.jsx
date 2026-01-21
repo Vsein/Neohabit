@@ -9,7 +9,7 @@ import {
   Link,
   NavLink,
 } from 'react-router-dom';
-import { useHotkeys } from 'react-hotkeys-hook'
+import { useHotkeys } from 'react-hotkeys-hook';
 // import Dashboard from './pages/Dashboard';
 import Landing from './pages/Landing';
 import Signup from './pages/Signup';
@@ -49,7 +49,7 @@ const App = () => {
   useEffect(() => {
     const checkJWT = () => {
       setLoggedIn(hasJWT());
-    }
+    };
     window.addEventListener('storage', checkJWT);
     return () => window.removeEventListener('storage', checkJWT);
   }, []);
@@ -66,19 +66,28 @@ const App = () => {
           {!window.APP_CONFIG.DISABLE_SIGNUP && <Route path="/signup/" element={<Signup />} />}
           <Route path="/login/" element={<Login />} />
         </Route>
-        {loggedIn && <Route path="/" element={<Suspense fallback={<></>}><PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} /></Suspense>}>
-          <Route path="*" element={<NotFound />} />
-          <Route path="/verification/:token" element={<Verification />} />
-          <Route path="/blocks/*" element={<Blocks />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/projects/*" element={<Projects />} />
-          <Route path="/skills/*" element={<Skilltrees />} />
-          <Route path="/todo/*" element={<ToDoList />} />
-          <Route path="/overview/" element={<Overview />} />
-          <Route path="/habit/:habitID/*" element={<Habit />} />
-          <Route path="/project/:projectID/*" element={<Project />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>}
+        {loggedIn && (
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<></>}>
+                <PrivateRoutes loggedIn={loggedIn} changeAuth={setLoggedIn} />
+              </Suspense>
+            }
+          >
+            <Route path="*" element={<NotFound />} />
+            <Route path="/verification/:token" element={<Verification />} />
+            <Route path="/blocks/*" element={<Blocks />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/projects/*" element={<Projects />} />
+            <Route path="/skills/*" element={<Skilltrees />} />
+            <Route path="/todo/*" element={<ToDoList />} />
+            <Route path="/overview/" element={<Overview />} />
+            <Route path="/habit/:habitID/*" element={<Habit />} />
+            <Route path="/project/:projectID/*" element={<Project />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+        )}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
@@ -98,7 +107,7 @@ const PrivateRoutes = (params) => {
     setSidebarHidden(!sidebarHidden);
   };
 
-  useHotkeys('0', toggleSidebar)
+  useHotkeys('0', toggleSidebar);
 
   useEffect(() => {
     changeAuth(hasJWT());
@@ -148,7 +157,7 @@ const PrivateRoutes = (params) => {
       <CellAdd />
       <SidebarMobile />
       <Overlay />
-      {settings?.data?.hide_onboarding ?? false ? <></> : <Onboarding />}
+      {(settings?.data?.hide_onboarding ?? false) ? <></> : <Onboarding />}
     </>
   );
 };
@@ -169,11 +178,7 @@ const AuthRoutes = (params) => {
     <div id="content-auth">
       <div className="sidebar-auth">
         <h1 className="sidebar-auth-header">
-          <Link
-            tabIndex="0"
-            to="/"
-            style={{ display: 'flex', gap: '20px', alignItems: 'center' }}
-          >
+          <Link tabIndex="0" to="/" style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
             <ProfilePicture type="small" />
             <div className="neohabit" />
           </Link>
@@ -182,20 +187,24 @@ const AuthRoutes = (params) => {
       <main className="registration-container">
         <section className="auth-intro">
           <p className="paragraph">
-            Because <span className="neohabit" /> is currently in beta, some functionality is not completely implemented. Feel free to report any bugs on{' '}
+            Because <span className="neohabit" /> is currently in beta, some functionality is not
+            completely implemented. Feel free to report any bugs on{' '}
             <Link to="https://github.com/Vsein/Neohabit/issues" target="_blank">
               github issues
-            </Link>, or write directly to{' '}
+            </Link>
+            , or write directly to{' '}
             <Link to="https://www.reddit.com/user/VseinSama/" target="_blank">
               me on reddit
-            </Link> or{' '}
+            </Link>{' '}
+            or{' '}
             <Link to="https://discord.gg/uQ4XdE6raR" target="_blank">
               discord
-            </Link> if you want to suggest anything.
+            </Link>{' '}
+            if you want to suggest anything.
           </p>
         </section>
         <Outlet />
-        {window.APP_CONFIG.DISABLE_SIGNUP ?
+        {window.APP_CONFIG.DISABLE_SIGNUP ? (
           <p className="login-ref">
             With the DISABLE_SIGNUP option enabled, new account creation is unavailable. You can
             still log into the accounts you created before enabling it. Or you can set it to false
@@ -204,17 +213,24 @@ const AuthRoutes = (params) => {
             {/* <Link to="https://github.com/Vsein/Neohabit#new-account-creation" target="_blank"> */}
             {/*   See documentation */}
             {/* </Link> */}
-          </p> : <></>}
+          </p>
+        ) : (
+          <></>
+        )}
         {!window.APP_CONFIG.DISABLE_SIGNUP && location.pathname === '/login' ? (
           <p className="login-ref">
             Don&apos;t have an account? <NavLink to="/signup">Sign up</NavLink>
           </p>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
         {!window.APP_CONFIG.DISABLE_SIGNUP && location.pathname === '/signup' ? (
           <p className="login-ref">
             Already have an account? <NavLink to="/login">Log in</NavLink>
           </p>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </main>
     </div>
   );

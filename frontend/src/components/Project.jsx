@@ -4,7 +4,10 @@ import { NavLink } from 'react-router-dom';
 import { Icon } from '@mdi/react';
 import { mdiMenuDown, mdiPencil, mdiDelete } from '@mdi/js';
 import { differenceInDays } from 'date-fns';
-import { useUpdateProjectMutation, useUpdateProjectsOrderMutation } from '../state/services/project';
+import {
+  useUpdateProjectMutation,
+  useUpdateProjectsOrderMutation,
+} from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
@@ -49,13 +52,13 @@ export default function Project({
 
   const dropHabitInProject = async (e) => {
     e.preventDefault();
-    const id = e.dataTransfer.getData("dragged-habit");
+    const id = e.dataTransfer.getData('dragged-habit');
     const draggedHabit = document.querySelector(`[data-id="${id}"]`);
     if (!draggedHabit || !draggedHabit.classList.contains('overview-habit')) {
       return;
-    };
+    }
 
-    const target = e.target.closest('.overview-habit')
+    const target = e.target.closest('.overview-habit');
 
     if (target.id === id) {
       return;
@@ -66,40 +69,58 @@ export default function Project({
 
     if (draggedFromProjectID === draggedToProjectID) {
       if (draggedFromProjectID !== 'default') {
-        await dragHabitInProject(draggedFromProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
+        await dragHabitInProject(
+          draggedFromProjectID,
+          draggedHabit.id,
+          target.id,
+          target.offsetTop >= draggedHabit.offsetTop,
+        );
       }
     } else {
-      await dragHabitToProject(draggedFromProjectID, draggedToProjectID, draggedHabit.id, target.id, target.offsetTop >= draggedHabit.offsetTop);
+      await dragHabitToProject(
+        draggedFromProjectID,
+        draggedToProjectID,
+        draggedHabit.id,
+        target.id,
+        target.offsetTop >= draggedHabit.offsetTop,
+      );
     }
-  }
+  };
 
   const Habits =
     project.habits &&
     project.habits.flatMap((habit, i) =>
       // TODO: Check if the interval is archived
-      differenceInDays(minValidDate(new Date(habit.created_at), habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start), habit?.data?.length > 0 && new Date(habit?.data[0]?.date)), globalDateEnd) > 0 ?
-        [] :
-        (
-          <HabitOverview
-            key={i}
-            habit={habit}
-            dateStart={globalDateStart}
-            dateEnd={globalDateEnd}
-            vertical={vertical}
-            mobile={mobile}
-            projectID={project.id}
-            dropHabitInProject={dropHabitInProject}
-          />
-        )
+      differenceInDays(
+        minValidDate(
+          new Date(habit.created_at),
+          habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start),
+          habit?.data?.length > 0 && new Date(habit?.data[0]?.date),
+        ),
+        globalDateEnd,
+      ) > 0 ? (
+        []
+      ) : (
+        <HabitOverview
+          key={i}
+          habit={habit}
+          dateStart={globalDateStart}
+          dateEnd={globalDateEnd}
+          vertical={vertical}
+          mobile={mobile}
+          projectID={project.id}
+          dropHabitInProject={dropHabitInProject}
+        />
+      ),
     );
 
   const allowDrop = (e) => {
     e.preventDefault();
-  }
+  };
 
   const dragStart = (e) => {
-    e.dataTransfer.setData("dragged-project", e.target.id);
-  }
+    e.dataTransfer.setData('dragged-project', e.target.id);
+  };
 
   const HeaderName = () =>
     singular ? (
@@ -112,15 +133,15 @@ export default function Project({
 
   const drop = (e) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData("dragged-project");
+    const data = e.dataTransfer.getData('dragged-project');
     const draggedProject = document.getElementById(data);
 
     if (!draggedProject || !draggedProject.classList.contains('overview-centering')) {
       return;
-    };
+    }
 
     const projectsContainer = draggedProject.parentNode;
-    const target = e.target.closest('.overview-centering')
+    const target = e.target.closest('.overview-centering');
 
     if (target.offsetTop < draggedProject.offsetTop) {
       projectsContainer.insertBefore(draggedProject, target);
@@ -129,9 +150,11 @@ export default function Project({
       projectsContainer.insertBefore(draggedProject, dropTo);
     }
 
-    const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].flatMap(({ id }) => id !== 'default' ? id : []);
+    const ids = [...document.querySelectorAll('.contentlist > .overview-centering')].flatMap(
+      ({ id }) => (id !== 'default' ? id : []),
+    );
     updateProjectsOrder({ values: { new_projects_order: ids } });
-  }
+  };
 
   return (
     <div
@@ -165,7 +188,13 @@ export default function Project({
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
             <HeaderName />
-            <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} isFuturePeriod={isFuturePeriod} />
+            <PreviousPeriodButton
+              onClick={subPeriod}
+              alignRight
+              vertical={vertical}
+              style={{ transform: 'translateX(-4px)' }}
+              isFuturePeriod={isFuturePeriod}
+            />
           </div>
         )}
         {!mobile && (
@@ -174,11 +203,15 @@ export default function Project({
             <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
           </>
         )}
-        <ProjectControls projectID={project?.id} project={project} mobile={mobile} addPeriod={addPeriod} isPastPeriod={isPastPeriod} />
+        <ProjectControls
+          projectID={project?.id}
+          project={project}
+          mobile={mobile}
+          addPeriod={addPeriod}
+          isPastPeriod={isPastPeriod}
+        />
       </div>
-      <div
-        className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}
-      >
+      <div className={`overview-container ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
         <div className={`overview ${vertical ? 'vertical' : ''} ${mobile ? 'mobile' : ''}`}>
           {mobile && (
             <>
@@ -186,7 +219,12 @@ export default function Project({
                 {/* {!vertical && ( */}
                 {/*   <YearPicker subYear={subYear} addYear={addYear} dateStart={dateStart} /> */}
                 {/* )} */}
-                <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} isFuturePeriod={isFuturePeriod} />
+                <PreviousPeriodButton
+                  onClick={subPeriod}
+                  alignRight
+                  vertical={vertical}
+                  isFuturePeriod={isFuturePeriod}
+                />
               </div>
               <HeatmapMonthsDaily dateStart={globalDateStart} dateEnd={globalDateEnd} />
               <HeatmapDays dateStart={globalDateStart} dateEnd={globalDateEnd} />
@@ -200,10 +238,15 @@ export default function Project({
             </>
           )}
           <div className="overview-habits">
-            {Habits.length === 0 &&
-              <h5 className="overview-no-habits overview-habit" onDrop={dropHabitInProject} onDragOver={allowDrop} >
+            {Habits.length === 0 && (
+              <h5
+                className="overview-no-habits overview-habit"
+                onDrop={dropHabitInProject}
+                onDragOver={allowDrop}
+              >
                 No habits &nbsp;&nbsp;ʕ•ᴥ•ʔ
-              </h5>}
+              </h5>
+            )}
             {Habits}
           </div>
           {vertical && (
@@ -227,7 +270,12 @@ function ProjectControls({ project, projectID, mobile, addPeriod, isPastPeriod }
   return (
     <div className="overview-settings" style={{ [mobile ? 'width' : '']: '102px' }}>
       {!mobile && (
-        <NextPeriodButton onClick={addPeriod} alignLeft style={{ transform: 'translateX(-6px)' }} isPastPeriod={isPastPeriod} />
+        <NextPeriodButton
+          onClick={addPeriod}
+          alignLeft
+          style={{ transform: 'translateX(-6px)' }}
+          isPastPeriod={isPastPeriod}
+        />
       )}
       <HabitAddButton projectID={projectID} standalone={projectID === 'default'} />
       {projectID !== 'default' && (
@@ -252,14 +300,14 @@ function ProjectControls({ project, projectID, mobile, addPeriod, isPastPeriod }
   );
 }
 
-function ProjectWrapper({
-  project,
-  datePeriodLength,
-  mobile,
-  dragHabitToProject,
-}) {
-  const [dateEnd, setDateEnd, dateStart, setDateStart, { subPeriod, addPeriod, isPastPeriod, isFuturePeriod }] =
-    useDatePeriod(datePeriodLength);
+function ProjectWrapper({ project, datePeriodLength, mobile, dragHabitToProject }) {
+  const [
+    dateEnd,
+    setDateEnd,
+    dateStart,
+    setDateStart,
+    { subPeriod, addPeriod, isPastPeriod, isFuturePeriod },
+  ] = useDatePeriod(datePeriodLength);
 
   return (
     <Project
