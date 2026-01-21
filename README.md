@@ -51,11 +51,23 @@ You can see the features overview with examples on the
   </picture>
 </div>
 
+### Skilltrees
+
+Excellent for planning/tracking progressions:
+
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-skilltrees-dark.png" />
+    <img src="frontend/src/assets/neohabit-readme-skilltrees-light.png" />
+  </picture>
+</div>
+
 ### Other things you might find useful
 - [Keybindings](/docs/keybindings.md) for common actions
 - Two themes available: light and dark
 - Desktop-focused
 - A working mobile interface (browser-only, no app)
+- Possible to create multiple accounts
 
 ## Installation
 
