@@ -42,6 +42,15 @@ You can see the features overview with examples on the
   </picture>
 </div>
 
+### Combine habits into projects
+
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-projects-dark.png" />
+    <img src="frontend/src/assets/neohabit-readme-projects-light.png" />
+  </picture>
+</div>
+
 ### Other things you might find useful
 - [Keybindings](/docs/keybindings.md) for common actions
 - Two themes available: light and dark
