@@ -36,7 +36,7 @@ export default function SkillsPage() {
       {skilltrees.data && skilltrees.data.map((skilltree, i) => (
         <Skilltree key={i} skilltree={skilltree} />
       ))}
-      <div className="overview-centering" style={{ '--length': 47 }}>
+      <div className="skilltree-centering" style={{ '--length': 47, alignItems: 'initial' }}>
         <button
           className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}
           onClick={toggleSkilltreeOverlay}

@@ -26,7 +26,17 @@
   background-color: var(--main-background-color);
   border-radius: 10px;
   border: 1px solid var(--border-color);
-  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
+  width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, calc(100%));
+
+  @media (max-width: 550px) {
+    width: calc(100% - 15px);
+  }
+
+  & .overview-header {
+    width: 100%;
+    grid-template-areas: name settings;
+    grid-template-columns: 1fr min-content;
+  }
 }
 
 .skilltree-container {
