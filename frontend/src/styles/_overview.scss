@@ -113,7 +113,6 @@ $cell-margin: 2px;
 }
 
 .overview-container {
-  transition: 1s;
   @include scrollbar.scrollbar;
   --negate-margin-block: calc(2 - 2 * var(--vertical));
   position: relative;
