@@ -16,6 +16,7 @@ const onlyLatinAndNumbersValidator = (value) => {
 };
 
 const passwordSymbolsValidator = (value) => {
+  if (value.length === 0) return undefined;
   const fullAllowedRegex = /^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{}|;:'",.<>?/`~]+$/;
   if (fullAllowedRegex.test(value)) {
     return undefined;
