@@ -44,8 +44,7 @@ $cell-margin: 2px;
 
   @media (max-width: 800px) {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      'date';
+    grid-template-areas: 'date';
     justify-items: center;
 
     &:not(.only-datepicker) {
@@ -58,14 +57,13 @@ $cell-margin: 2px;
 
   @media (max-width: 480px) {
     grid-template-columns: 1fr;
-    grid-template-areas:
-      'date';
+    grid-template-areas: 'date';
 
     &:not(.only-datepicker) {
       grid-template-columns: 1fr min-content;
       grid-template-areas:
-      '. topbar-right'
-      'date date';
+        '. topbar-right'
+        'date date';
       padding-inline: 5px;
     }
   }
@@ -298,7 +296,10 @@ $cell-margin: 2px;
   border-radius: 0px 0px 10px 10px;
   display: grid;
   grid-template-columns: 30px 1fr 30px;
-  width: min(calc(var(--length) * 19px + var(--habit-name-width) + var(--habit-controls-width)), 100%);
+  width: min(
+    calc(var(--length) * 19px + var(--habit-name-width) + var(--habit-controls-width)),
+    100%
+  );
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -363,7 +364,10 @@ $cell-margin: 2px;
   grid-template-rows: 15px 15px;
   // justify-content: space-between;
   align-items: center;
-  width: min(calc(var(--length) * 19px + var(--habit-name-width) + var(--habit-controls-width)), 100%);
+  width: min(
+    calc(var(--length) * 19px + var(--habit-name-width) + var(--habit-controls-width)),
+    100%
+  );
 
   @media (min-width: 850px) {
     // &.singular {
@@ -373,7 +377,8 @@ $cell-margin: 2px;
     // }
   }
 
-  & > a, & > h3 {
+  & > a,
+  & > h3 {
     grid-area: name;
   }
 
@@ -403,15 +408,16 @@ $cell-margin: 2px;
     grid-template-areas: 'name settings';
 
     &.small {
-      grid-template-areas: 'name'
-      'settings';
+      grid-template-areas:
+        'name'
+        'settings';
       justify-items: center;
     }
 
-//     @media (max-width: 950px) {
-//       gap: 0px;
-//       grid-template-columns: 190px min-content 170px;
-//     }
+    //     @media (max-width: 950px) {
+    //       gap: 0px;
+    //       grid-template-columns: 190px min-content 170px;
+    //     }
   }
 
   &.modal-mode {

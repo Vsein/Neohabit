@@ -130,12 +130,12 @@ function CellPeriod({
   }
   const tipContent = habitID
     ? {
-      habitID,
-      isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
-      dateStart: targetStart || dateStart,
-      dateEnd: targetEnd || dateEnd,
-      actions: value,
-    }
+        habitID,
+        isPeriod: diffDays > 1 || differenceInHours(targetEnd, targetStart) > 24,
+        dateStart: targetStart || dateStart,
+        dateEnd: targetEnd || dateEnd,
+        actions: value,
+      }
     : undefined;
   if (isSameWeek(dateStart, dateEnd) || !is2D || !vertical) {
     return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (

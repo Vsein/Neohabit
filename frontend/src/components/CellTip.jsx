@@ -14,7 +14,7 @@ import {
   useDeleteAllHabitDataPointsBetweenDatesMutation,
   useReduceHabitDataPointsBetweenDatesByAmountMutation,
 } from '../state/services/habitData';
-import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings'
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
 
 function formatDate(date) {
@@ -118,7 +118,8 @@ export default function CellTip() {
   });
   const { habitID, dateStart, dateEnd, actions } = useSelector((state) => state.cellTip);
   const [deleteAllHabitDataPointsBetweenDates] = useDeleteAllHabitDataPointsBetweenDatesMutation();
-  const [reduceHabitDataPointsBetweenDatesByAmount] = useReduceHabitDataPointsBetweenDatesByAmountMutation();
+  const [reduceHabitDataPointsBetweenDatesByAmount] =
+    useReduceHabitDataPointsBetweenDatesByAmountMutation();
   const [createHabitDataPoint] = useCreateHabitDataPointMutation();
   const settings = useGetSettingsQuery();
   const hintHidden = settings.data.hide_cell_hint;

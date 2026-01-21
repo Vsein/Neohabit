@@ -110,8 +110,9 @@
 
   @media (max-width: 400px) {
     &.simple {
-      grid-template-areas: 'name'
-      'chooser';
+      grid-template-areas:
+        'name'
+        'chooser';
       grid-template-columns: 1fr;
       grid-auto-flow: row;
     }

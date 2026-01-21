@@ -39,7 +39,7 @@ export default function CellAdd() {
           is_target: true,
           value: +values.value,
           period: +values.period,
-          date_start: new Date(values.date)
+          date_start: new Date(values.date),
         },
       });
     }

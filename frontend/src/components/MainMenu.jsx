@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { useHotkeys } from 'react-hotkeys-hook'
+import { useHotkeys } from 'react-hotkeys-hook';
 import { Icon } from '@mdi/react';
 import {
   mdiCog,
@@ -28,11 +28,7 @@ export default function MainMenu({ toggleSidebar }) {
       >
         <Icon path={mdiMenu} className="icon sidebar-toggle" />
       </button>
-      <Link
-        tabIndex="0"
-        to="/"
-        target="_blank"
-      >
+      <Link tabIndex="0" to="/" target="_blank">
         <h2 className="neohabit logo"></h2>
       </Link>
       {/* <Icon path={mdiApps} className="icon" /> */}
@@ -54,11 +50,7 @@ export default function MainMenu({ toggleSidebar }) {
         <AccountInfo />
         <hr />
         <li>
-          <Link
-            className="menu-section"
-            tabIndex="0"
-            to="/settings#profile"
-          >
+          <Link className="menu-section" tabIndex="0" to="/settings#profile">
             <Icon path={mdiAccount} className="icon" />
             <p className="link">Profile</p>
           </Link>
@@ -108,15 +100,13 @@ function ThemeToggle() {
   const [updateSettings] = useUpdateSettingsMutation();
   const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
-  const toggleTheme = () => updateSettings({ values: { theme: theme === 'dark' ? 'light' : 'dark' } });
+  const toggleTheme = () =>
+    updateSettings({ values: { theme: theme === 'dark' ? 'light' : 'dark' } });
   useHotkeys('shift+t', toggleTheme);
 
   return (
     <li>
-      <button
-        className="menu-section"
-        onClick={toggleTheme}
-      >
+      <button className="menu-section" onClick={toggleTheme}>
         <Icon
           path={theme === 'dark' ? mdiMoonWaxingCrescent : mdiWhiteBalanceSunny}
           className="icon"

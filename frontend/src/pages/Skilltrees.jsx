@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHotkeys } from 'react-hotkeys-hook'
+import { useHotkeys } from 'react-hotkeys-hook';
 import { Icon } from '@mdi/react';
 import { mdiPlus } from '@mdi/js';
 import { useGetSkilltreesQuery } from '../state/services/skilltree';
@@ -33,9 +33,8 @@ export default function SkillsPage() {
 
   return (
     <div className="contentlist">
-      {skilltrees.data && skilltrees.data.map((skilltree, i) => (
-        <Skilltree key={i} skilltree={skilltree} />
-      ))}
+      {skilltrees.data &&
+        skilltrees.data.map((skilltree, i) => <Skilltree key={i} skilltree={skilltree} />)}
       <div className="skilltree-centering" style={{ '--length': 47, alignItems: 'initial' }}>
         <button
           className={`overview-habit-add standalone ${vertical ? 'vertical' : ''}`}

@@ -89,9 +89,7 @@ function generateShades(color) {
 
 export default function usePaletteGenerator(color) {
   const preferDark = document.documentElement.classList.contains('dark');
-  const themeRgb = preferDark
-    ? { r: 36, g: 36, b: 36 }
-    : { r: 239, g: 239, b: 239 };
+  const themeRgb = preferDark ? { r: 36, g: 36, b: 36 } : { r: 239, g: 239, b: 239 };
 
   const colorRgb = hexToRgb(color);
   const palette = generatePalette(themeRgb, colorRgb);

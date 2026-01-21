@@ -36,9 +36,9 @@ export default function Landing() {
   const [exampleValues3, setExampleValues3] = useState(
     [...Array(10)].map((e) => ~~(Math.random() * 3)),
   );
-  const firstPaneColor = "#43d64e";
-  const secondPaneColor = "#1D60C1";
-  const thirdPaneColor = "#CE0705";
+  const firstPaneColor = '#43d64e';
+  const secondPaneColor = '#1D60C1';
+  const thirdPaneColor = '#CE0705';
 
   return (
     <div id="content-landing">
@@ -81,9 +81,7 @@ export default function Landing() {
             {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
             <h3 className="landing-features-title">New approach to habit-building</h3>
             <p>In a regular habit-tracker, you would probably have something like this:</p>
-            <div
-              className="overview-habit-cells landing-cells"
-            >
+            <div className="overview-habit-cells landing-cells">
               {exampleValues.map((exampleValue, Index) => (
                 <CellPeriod
                   key={`habit-example-${Index}`}
@@ -100,9 +98,7 @@ export default function Landing() {
               Why not start small? For example, once in 4 days at the beginning. And you can change
               it as you get comfortable:
             </p>
-            <div
-              className="overview-habit-cells landing-cells"
-            >
+            <div className="overview-habit-cells landing-cells">
               {exampleValues2.map(
                 (exampleValue, Index) =>
                   Index < 2 && (
@@ -169,9 +165,7 @@ export default function Landing() {
               Doing something once a day (or one hour a day) is rarely all that&apos;s required. So,
               once 1 hour becomes comfortable, make 2 the new standard:
             </p>
-            <div
-              className="overview-habit-cells landing-cells"
-            >
+            <div className="overview-habit-cells landing-cells">
               {exampleValues3.map(
                 (exampleValue, Index) =>
                   Index < 8 && (
@@ -217,9 +211,7 @@ export default function Landing() {
               )}
             </div>
             <p>The same principle can be used in reverse for dropping addictions:</p>
-            <div
-              className="overview-habit-cells landing-cells"
-            >
+            <div className="overview-habit-cells landing-cells">
               {exampleValues3.map(
                 (exampleValue, Index) =>
                   Index >= 5 &&
@@ -266,7 +258,8 @@ export default function Landing() {
             </div>
             <p>
               {' '}
-              It can be anything - hours wasted on social media, alcohol, packs of cigarettes...{' '}
+              It can be anything - hours wasted on social media, alcohol, packs of
+              cigarettes...{' '}
             </p>
           </div>
         </section>
@@ -334,7 +327,9 @@ export default function Landing() {
                   {/* <li className="landing-li">are good to use in the background</li> */}
                   <li className="landing-li">usually lead to over-optimization</li>
                   <li className="landing-li">require to start and end each entry</li>
-                  <li className="landing-li">are hard to automate for anything, except screen time</li>
+                  <li className="landing-li">
+                    are hard to automate for anything, except screen time
+                  </li>
                 </ul>
               </div>
             </div>
@@ -376,7 +371,7 @@ export default function Landing() {
       </main>
       <footer className="landing-footer-container">
         <div className="landing-footer">
-          <h3> Copyright @ 2023 - {getYear(new Date)}</h3>
+          <h3> Copyright @ 2023 - {getYear(new Date())}</h3>
         </div>
       </footer>
     </div>
@@ -384,7 +379,7 @@ export default function Landing() {
 }
 
 function ThemeToggle() {
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
 
   return (
     <button
@@ -408,7 +403,7 @@ function ThemeToggle() {
 }
 
 function ThemeToggleMenu() {
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer((x) => x + 1, 0);
   const theme = getPreferredTheme();
 
   return (
@@ -459,11 +454,11 @@ function DropdownMenu() {
 function FeaturesSection() {
   const [value, setValue] = useState(0);
   const preferDark = document.documentElement.classList.contains('dark');
-  const color = preferDark ? "#1D93FF" : "#8FE9EF";
+  const color = preferDark ? '#1D93FF' : '#8FE9EF';
 
   useEffect(() => {
     const timerInterval = setInterval(() => {
-      setValue((prev) => prev >= 16 ? 0 : prev + 1);
+      setValue((prev) => (prev >= 16 ? 0 : prev + 1));
     }, 1000);
     return () => clearInterval(timerInterval);
   }, []);
@@ -472,7 +467,10 @@ function FeaturesSection() {
     <section className="landing-features-content">
       <div className="landing-features-container">
         <h3 className="landing-features-title">Features you won&apos;t find anywhere else</h3>
-        <div className="landing-features" style={{ marginBlock: 'auto', '--numeric-text-color': getNumericTextColor(color) }}>
+        <div
+          className="landing-features"
+          style={{ marginBlock: 'auto', '--numeric-text-color': getNumericTextColor(color) }}
+        >
           <div className="landing-feature-container">
             <div className="landing-feature centering">
               <div className="landing-cell-container">
@@ -581,12 +579,14 @@ function FeaturesSection() {
 
 function MockProjectSection({ name }) {
   return (
-    <div className="landing-habits" >
+    <div className="landing-habits">
       {mockProjectsData[name].map((habit, index) => (
-        <div key={index} className="landing-habit" style={{ '--length': 16, '--numeric-text-color': getNumericTextColor(habit.color) }}>
-          <div className="landing-habit-name">
-            {habit.name}
-          </div>
+        <div
+          key={index}
+          className="landing-habit"
+          style={{ '--length': 16, '--numeric-text-color': getNumericTextColor(habit.color) }}
+        >
+          <div className="landing-habit-name">{habit.name}</div>
           <div className="landing-habit-cells">
             {habit.data.map((value, Index) => (
               <CellPeriod
@@ -598,7 +598,7 @@ function MockProjectSection({ name }) {
                 dateEnd={endOfDay(addDays(new Date(), Index + habit.cell_length[Index] - 1))}
                 vertical={false}
                 numeric={habit.numeric}
-                dummy={habit?.is_dummy && habit.is_dummy[Index] || false}
+                dummy={(habit?.is_dummy && habit.is_dummy[Index]) || false}
               />
             ))}
           </div>
@@ -619,13 +619,12 @@ function PrecursorSection() {
         {/*   one way or another? */}
         {/* </p> */}
         <p>
-          In the lifting communitiy, progressive overload is a concept where you try to go
-          slightly further each week, while still remaining comfortable.
+          In the lifting communitiy, progressive overload is a concept where you try to go slightly
+          further each week, while still remaining comfortable.
         </p>
         <p>
           Why won't habit-trackers incorporate that principle for building habits? Why would you
-          focus on streaks and doing something daily from the very start, instead of starting
-          small?
+          focus on streaks and doing something daily from the very start, instead of starting small?
         </p>
         <p>
           Why is it so hard to see the correlations between different habits/addictions on those
@@ -648,11 +647,7 @@ function SelfhostedSection() {
       <div className="landing-lastcall-container">
         <div className="landing-lastcall-header">
           <h1 className="landing-lastcall-title">Self-host</h1>
-          <Link
-            to="https://github.com/Vsein/Neohabit"
-            target="_blank"
-            style={{ width: '100%' }}
-          >
+          <Link to="https://github.com/Vsein/Neohabit" target="_blank" style={{ width: '100%' }}>
             <button className="landing-lastcall-social-links button-default stretch big centering">
               Installation guide
               <Icon className="icon medium" path={mdiGithub} />
@@ -677,16 +672,10 @@ function SignupSection() {
         <div className="landing-lastcall-social">
           <h3 className="landing-lastcall-social-header">And stay tuned for the latest updates:</h3>
           <div className="landing-lastcall-social-links">
-            <Link
-              to="https://www.reddit.com/user/VseinSama/"
-              target="_blank"
-            >
+            <Link to="https://www.reddit.com/user/VseinSama/" target="_blank">
               <img src={Reddit} className="icon big circle" />
             </Link>
-            <Link
-              to="https://github.com/Vsein/Neohabit"
-              target="_blank"
-            >
+            <Link to="https://github.com/Vsein/Neohabit" target="_blank">
               <Icon className="icon big circle" path={mdiGithub} />
             </Link>
             {/* <Link */}

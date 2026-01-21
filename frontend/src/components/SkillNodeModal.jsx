@@ -25,7 +25,12 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
 
   const onSubmit = async (values) => {
     if (!skillID) {
-      await addSkill({ ...values, skilltree_id: skilltreeID, parent_skill_id: skillparentID, status: 'idle' });
+      await addSkill({
+        ...values,
+        skilltree_id: skilltreeID,
+        parent_skill_id: skillparentID,
+        status: 'idle',
+      });
     } else {
       await editSkill({ skillID, values: { ...values, skilltree_id: skilltreeID } });
     }
@@ -65,7 +70,12 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
           <div className="modal-details-block">
             <DescriptionField rows="9" />
           </div>
-          <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!skillID} type="skill" />
+          <ModalButtons
+            disabled={submitting}
+            unnamed={!values?.name}
+            isNew={!skillID}
+            type="skill"
+          />
         </form>
       )}
     />

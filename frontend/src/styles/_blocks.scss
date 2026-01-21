@@ -66,9 +66,7 @@
 
   &-day {
     line-height: 100%;
-    font-size: calc(
-      11px * var(--multiplier) + 11px * 2 * (var(--multiplier) - 1) + 1px
-    );
+    font-size: calc(11px * var(--multiplier) + 11px * 2 * (var(--multiplier) - 1) + 1px);
     text-align: center;
     padding-block: 2px;
     border-radius: 3px;
@@ -158,7 +156,7 @@
   50% {
     // The color itself doesn't matter, it won't appear as white/black.
     // the resulting effect is transition to 0 background opacity
-    background-color: rgb(255, 255, 255, 0);;
+    background-color: rgb(255, 255, 255, 0);
   }
   100% {
     background-color: var(--calm-signature-color);
@@ -167,8 +165,8 @@
 
 .overview-centering.slide_date-indicators {
   .dates-container > button > .icon {
-      border-radius: 50%;
-      animation: glow 3s linear infinite;
+    border-radius: 50%;
+    animation: glow 3s linear infinite;
   }
   & .overview-habit-button {
     pointer-events: none;

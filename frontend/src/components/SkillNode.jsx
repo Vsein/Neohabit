@@ -44,7 +44,7 @@ export default function SkillNode({ skilltreeID, skill, color }) {
       skillID: skill.id,
       values: {
         skilltree_id: skilltreeID,
-        status: isCompleted || isDisregarded ? 'idle' : 'completed'
+        status: isCompleted || isDisregarded ? 'idle' : 'completed',
       },
     });
   };

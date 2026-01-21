@@ -12,7 +12,20 @@ import {
   isSameWeek,
 } from 'date-fns';
 
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+const monthNames = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 function MonthWeekly({ dateStart, index, length }) {
   const date = addWeeks(dateStart, index);
@@ -72,7 +85,11 @@ const DayNames = {
 
 function Weekday({ index }) {
   const sameWeekday = getDay(new Date()) === index;
-  return <div className={`heatmap-weekdays-weekday ${sameWeekday ? 'same-weekday' : ''}`}>{(!!(index % 2) || sameWeekday) && DayNames[index]}</div>;
+  return (
+    <div className={`heatmap-weekdays-weekday ${sameWeekday ? 'same-weekday' : ''}`}>
+      {(!!(index % 2) || sameWeekday) && DayNames[index]}
+    </div>
+  );
 }
 
 function HeatmapWeekdays({ dateStart }) {

@@ -47,7 +47,10 @@
   padding-right: 5px;
   padding-top: 3px;
   width: min(calc(var(--length) * 19px) + 200px + 90px + 35px, 100%);
-  height: max(50px, calc(30px + (var(--skill-node-height) + 2 * var(--skill-node-margin)) * var(--height) - 10px));
+  height: max(
+    50px,
+    calc(30px + (var(--skill-node-height) + 2 * var(--skill-node-margin)) * var(--height) - 10px)
+  );
 }
 
 .skill-node {
@@ -139,8 +142,9 @@
   }
 
   &.disregarded {
-    &::before, &::after {
-      content: "";
+    &::before,
+    &::after {
+      content: '';
       position: absolute;
       background: var(--shadow-box-color);
       width: 105%;
@@ -248,9 +252,15 @@
   &::after {
     position: absolute;
     content: '';
-    height: calc((var(--height) - var(--offset-top) - var(--offset-bottom)) * (var(--skill-node-height) + var(--skill-node-margin) * 2) + 1px);
+    height: calc(
+      (var(--height) - var(--offset-top) - var(--offset-bottom)) *
+        (var(--skill-node-height) + var(--skill-node-margin) * 2) + 1px
+    );
     width: 1px;
-    top: calc((var(--height) / 2 - var(--offset-top)) * (var(--skill-node-height) + var(--skill-node-margin) * 2) * -1);
+    top: calc(
+      (var(--height) / 2 - var(--offset-top)) *
+        (var(--skill-node-height) + var(--skill-node-margin) * 2) * -1
+    );
     right: 0px;
     background-color: var(--border-color);
   }
@@ -261,7 +271,10 @@
   display: grid;
   justify-content: start;
   align-items: center;
-  height: max(50px, calc(30px + (var(--skill-node-height) + var(--skill-node-margin) * 2) * var(--height) - 20px));
+  height: max(
+    50px,
+    calc(30px + (var(--skill-node-height) + var(--skill-node-margin) * 2) * var(--height) - 20px)
+  );
   width: calc(var(--width) * 240px);
 }
 

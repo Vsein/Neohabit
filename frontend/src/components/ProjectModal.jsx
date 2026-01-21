@@ -6,10 +6,7 @@ import { Icon } from '@mdi/react';
 import { mdiClose, mdiPlus } from '@mdi/js';
 import { HabitTag, HabitTagToDelete } from './UI';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
-import {
-  useCreateProjectMutation,
-  useUpdateProjectMutation,
-} from '../state/services/project';
+import { useCreateProjectMutation, useUpdateProjectMutation } from '../state/services/project';
 import { useGetHabitsOutsideProjectsQuery } from '../state/services/habit';
 import { close } from '../state/features/overlay/overlaySlice';
 import useMenuToggler from '../hooks/useMenuToggler';
@@ -39,7 +36,10 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
     if (!projectID) {
       await createProject({ ...values, habit_ids: habitIDs, habits: projectHabitList });
     } else {
-      await updateProject({ projectID, values: { ...values, habit_ids: habitIDs, habits: projectHabitList } });
+      await updateProject({
+        projectID,
+        values: { ...values, habit_ids: habitIDs, habits: projectHabitList },
+      });
     }
     setProjectHabitList([]);
     dispatch(close());
@@ -84,7 +84,12 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
                   New project
                 </div>
               )}
-              <button className="icon small" onClick={closeOverlay} type="button" title="Close [esc / c]">
+              <button
+                className="icon small"
+                onClick={closeOverlay}
+                type="button"
+                title="Close [esc / c]"
+              >
                 <Icon path={mdiClose} />
               </button>
             </div>
@@ -106,20 +111,24 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
                 className={`form-habits-container ${menuOpened ? 'active' : ''}`}
                 onClick={(e) => e.stopPropagation()}
               >
-                {unassignedHabitList.length ? unassignedHabitList.map(
-                  (habit, i) =>
+                {unassignedHabitList.length ? (
+                  unassignedHabitList.map((habit, i) => (
                     <div
                       className="form-chooser"
                       key={i}
                       onClick={() => {
                         setProjectHabitList([...projectHabitList, habit]);
-                        setUnassignedHabitList(unassignedHabitList.filter((h) => h.id !== habit.id));
+                        setUnassignedHabitList(
+                          unassignedHabitList.filter((h) => h.id !== habit.id),
+                        );
                       }}
                     >
                       <HabitTag habit={habit} />
                     </div>
-                ) : <p>No unassigned habits</p>
-                }
+                  ))
+                ) : (
+                  <p>No unassigned habits</p>
+                )}
               </ul>
             </div>
             {!!projectHabitList?.length && (
@@ -134,18 +143,18 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
                 }}
               >
                 <div className="form-habits">
-                  {projectHabitList.map((habit, i) =>
+                  {projectHabitList.map((habit, i) => (
                     <div
                       className="form-chooser"
                       key={i}
                       onClick={() => {
                         setUnassignedHabitList([...unassignedHabitList, habit]);
-                        setProjectHabitList(projectHabitList.filter((h) => h.id !== habit.id))
+                        setProjectHabitList(projectHabitList.filter((h) => h.id !== habit.id));
                       }}
                     >
                       <HabitTagToDelete habit={habit} />
                     </div>
-                  )}
+                  ))}
                 </div>
               </div>
             )}

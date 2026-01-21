@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  differenceInWeeks,
-  startOfWeek,
-  endOfWeek,
-} from 'date-fns';
+import { differenceInWeeks, startOfWeek, endOfWeek } from 'date-fns';
 import useLoaded from '../hooks/useLoaded';
 import useDatePeriod, { getAdaptivePeriodLength } from '../hooks/useDatePeriod';
 import useWindowDimensions from '../hooks/useWindowDimensions';
@@ -79,16 +75,12 @@ function HabitDefaultWrapper({
       }}
     >
       <div
-        className={`overview-header ${mobile ? 'small' : ''} ${modal ? 'modal-mode' : ''
-          } singular habit-mode`}
+        className={`overview-header ${mobile ? 'small' : ''} ${
+          modal ? 'modal-mode' : ''
+        } singular habit-mode`}
       >
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
-        <HabitControls
-          habit={habit}
-          header={true}
-          modal={modal}
-          habitPage={habitPage}
-        />
+        <HabitControls habit={habit} header={true} modal={modal} habitPage={habitPage} />
       </div>
       <Habit
         habit={habit}
@@ -146,7 +138,9 @@ function HabitModalWrapper({
         margin: 'auto',
       }}
     >
-      <div className={`overview-header ${mobile ? 'small' : ''} ${onboardingSlideTag ? 'slide-mode' : ''} modal-mode singular habit-mode`}>
+      <div
+        className={`overview-header ${mobile ? 'small' : ''} ${onboardingSlideTag ? 'slide-mode' : ''} modal-mode singular habit-mode`}
+      >
         <DatePeriodPicker
           dateStart={dateStart}
           setDateStart={setDateStart}

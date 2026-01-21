@@ -63,6 +63,7 @@ Excellent for planning and tracking progressions:
 </div>
 
 ### Other things you might find useful
+
 - [Keybindings](/docs/keybindings.md) for common actions
 - Two themes available: light and dark
 - Desktop-focused
@@ -91,9 +92,9 @@ cp .env.example .env
 
 After that, edit the following files as desired:
 
-* `.env` to change the db/backend settings, and in-app settings like login behavior
-* `docker-compose.yaml` to configure the ports, volumes and other containery things
-* `frontend/nginx.conf` to adjust the servername in case you will be web-hosting
+- `.env` to change the db/backend settings, and in-app settings like login behavior
+- `docker-compose.yaml` to configure the ports, volumes and other containery things
+- `frontend/nginx.conf` to adjust the servername in case you will be web-hosting
 
 When ready, run:
 
@@ -118,6 +119,7 @@ docker compose logs
 <br>
 
 Requirements:
+
 - go
 - postgresql
 - npm
@@ -192,7 +194,6 @@ request or just a discord message is fine.
 <hr>
 </details>
 
-
 ## Ultimate vision
 
 My ultimate vision for Neohabit is to have a public, community-driven archive of
@@ -202,6 +203,7 @@ I've implemented the core feature - the habit-tracking part, but the rest of it
 still needs some time to come together.
 
 For example:
+
 - There's the tasklist section that I want to integrate with habits, so you can
   see which habits are due today (currently the tasks are dangling in their own
   section, and weren't my development focus)

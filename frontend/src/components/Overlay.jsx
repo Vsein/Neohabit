@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHotkeys } from 'react-hotkeys-hook'
+import { useHotkeys } from 'react-hotkeys-hook';
 import { close } from '../state/features/overlay/overlaySlice';
 import HabitModal from './HabitModal';
 import TaskModal from './TaskModal';
@@ -18,8 +18,17 @@ import StopwatchModal from './StopwatchModal';
 export default function Overlay() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { type, isActive, taskID, habitID, projectID, project, skilltreeID, skillID, skillparentID } =
-    useSelector((state) => state.overlay);
+  const {
+    type,
+    isActive,
+    taskID,
+    habitID,
+    projectID,
+    project,
+    skilltreeID,
+    skillID,
+    skillparentID,
+  } = useSelector((state) => state.overlay);
 
   const [deleteProject] = useDeleteProjectMutation();
   const [deleteHabit] = useDeleteHabitMutation();
@@ -49,7 +58,12 @@ export default function Overlay() {
         <TaskModal taskID={taskID} habitID={habitID} closeOverlay={closeOverlay} />
       )}
       {type === 'project' && (
-        <ProjectModal isActive={isActive} projectID={projectID} project={project} closeOverlay={closeOverlay} />
+        <ProjectModal
+          isActive={isActive}
+          projectID={projectID}
+          project={project}
+          closeOverlay={closeOverlay}
+        />
       )}
       {type === 'skilltree' && (
         <SkilltreeModal skilltreeID={skilltreeID} closeOverlay={closeOverlay} />

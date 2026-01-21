@@ -29,18 +29,25 @@ export default function Overview({
 
   const Habits = habits.data.flatMap((habit, i) =>
     // TODO: Check if the interval is archived
-    differenceInDays(minValidDate(new Date(habit.created_at), habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start), habit?.data?.length > 0 && new Date(habit?.data[0]?.date)), dateEnd) > 0 ?
+    differenceInDays(
+      minValidDate(
+        new Date(habit.created_at),
+        habit?.targets?.length > 0 && new Date(habit?.targets[0].date_start),
+        habit?.data?.length > 0 && new Date(habit?.data[0]?.date),
+      ),
+      dateEnd,
+    ) > 0 ? (
       []
-      : (
-        <HabitOverview
-          key={i}
-          habit={habit}
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          vertical={vertical}
-          mobile={mobile}
-        />
-      )
+    ) : (
+      <HabitOverview
+        key={i}
+        habit={habit}
+        dateStart={dateStart}
+        dateEnd={dateEnd}
+        vertical={vertical}
+        mobile={mobile}
+      />
+    ),
   );
 
   return (
@@ -57,15 +64,21 @@ export default function Overview({
       }}
     >
       <div
-        className={`overview-header ${vertical ? 'vertical' : ''} ${mobile ? 'small' : ''
-          } singular`}
+        className={`overview-header ${vertical ? 'vertical' : ''} ${
+          mobile ? 'small' : ''
+        } singular`}
       >
         {mobile ? (
           <h3>Overview</h3>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 20px', gridArea: 'name' }}>
             <h3>Overview</h3>
-            <PreviousPeriodButton onClick={subPeriod} alignRight vertical={vertical} style={{ transform: 'translateX(-4px)' }} />
+            <PreviousPeriodButton
+              onClick={subPeriod}
+              alignRight
+              vertical={vertical}
+              style={{ transform: 'translateX(-4px)' }}
+            />
           </div>
         )}
         {!mobile && (
@@ -98,10 +111,9 @@ export default function Overview({
             </>
           )}
           <div className="overview-habits">
-            {Habits.length === 0 &&
-              <h5 className="overview-no-habits overview-habit" >
-                No habits &nbsp;&nbsp;ʕ•ᴥ•ʔ
-              </h5>}
+            {Habits.length === 0 && (
+              <h5 className="overview-no-habits overview-habit">No habits &nbsp;&nbsp;ʕ•ᴥ•ʔ</h5>
+            )}
             {Habits}
           </div>
           {vertical && (
@@ -139,8 +151,7 @@ function OverviewControls({ vertical, mobile, addPeriod }) {
       {/*   <Icon path={mdiCalendarWeekend} className="icon small centering" /> */}
       {/* </button> */}
       {!mobile && (
-        <NextPeriodButton onClick={addPeriod} alignLeft style={{ transform: 'translateX(-6px)' }}
-        />
+        <NextPeriodButton onClick={addPeriod} alignLeft style={{ transform: 'translateX(-6px)' }} />
       )}
       <HabitAddButton />
       <NavLink

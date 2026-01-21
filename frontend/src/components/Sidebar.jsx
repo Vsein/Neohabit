@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHotkeys } from 'react-hotkeys-hook'
+import { useHotkeys } from 'react-hotkeys-hook';
 import { Icon } from '@mdi/react';
 import {
   mdiFamilyTree,
@@ -51,9 +51,22 @@ export default function Sidebar({ hidden }) {
           to="/skills"
           num="2"
         />
-        <NavigationSection path={mdiClipboardCheck} title="To-do" to="/todo" status="raw" raw num="3" />
+        <NavigationSection
+          path={mdiClipboardCheck}
+          title="To-do"
+          to="/todo"
+          status="raw"
+          raw
+          num="3"
+        />
         <NavigationSection path={mdiViewDashboard} title="Overview" to="/overview" num="4" />
-        <NavigationSection path={mdiPackageVariantClosed} title="Blocks" status="soon" to="/blocks" num="5" />
+        <NavigationSection
+          path={mdiPackageVariantClosed}
+          title="Blocks"
+          status="soon"
+          to="/blocks"
+          num="5"
+        />
         <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
       </ul>
       <hr />
@@ -123,16 +136,20 @@ function ProjectSidebar({ project }) {
   };
 
   return (
-    <ul className="sidebar-habits" style={{
-      '--sidebar-main-color': project.color,
-      '--sidebar-dim-color': `${project.color}40`,
-      '--sidebar-muted-color': `${project.color}40`
-    }}>
+    <ul
+      className="sidebar-habits"
+      style={{
+        '--sidebar-main-color': project.color,
+        '--sidebar-dim-color': `${project.color}40`,
+        '--sidebar-muted-color': `${project.color}40`,
+      }}
+    >
       <li className="sidebar-habits-header">
         <button className="centering" onClick={toggleHabitsCollapsed}>
           <Icon
-            className={`icon small habit-circle sidebar-habits-arrow ${habitsCollapsed ? '' : 'active'
-              }`}
+            className={`icon small habit-circle sidebar-habits-arrow ${
+              habitsCollapsed ? '' : 'active'
+            }`}
             path={mdiChevronDown}
           />
         </button>
@@ -146,16 +163,11 @@ function ProjectSidebar({ project }) {
       </li>
       <ul className={`sidebar-habits-container ${habitsCollapsed ? '' : 'active'}`}>
         {project.habits &&
-          project.habits.map((habit, i) =>
-            <NavLink
-              key={i}
-              className="habit"
-              to={`habit/${linkify(habit.id)}`}
-              title={habit.name}
-            >
+          project.habits.map((habit, i) => (
+            <NavLink key={i} className="habit" to={`habit/${linkify(habit.id)}`} title={habit.name}>
               <HabitTag key={i} habit={habit} />
             </NavLink>
-          )}
+          ))}
       </ul>
     </ul>
   );

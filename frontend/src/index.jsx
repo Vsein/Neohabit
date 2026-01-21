@@ -20,11 +20,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 //     </React.StrictMode>,
 //   );
 // } else {
-  root.render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </React.StrictMode>,
-  );
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+);
 // }
