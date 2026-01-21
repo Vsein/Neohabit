@@ -53,7 +53,7 @@ You can see the features overview with examples on the
 
 ### Skilltrees
 
-Excellent for planning/tracking progressions:
+Excellent for planning and tracking progressions:
 
 <div align="center">
   <picture>
