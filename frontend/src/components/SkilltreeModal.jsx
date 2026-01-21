@@ -35,7 +35,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
     <Form
       initialValues={{
         name: skilltree?.name,
-        description: '',
+        description: skilltree?.description,
         color: skilltree?.color || '#1D60C1',
       }}
       onSubmit={onSubmit}
@@ -67,15 +67,9 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
             <NameField type="skilltree" autofocus={!skilltreeID} />
           </div>
           <div className="modal-details-project-wrapper">
-            {skilltree ? (
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <p>You can change the skilltree description from the root skill</p>
-              </div>
-            ) : (
-              <div className="modal-details-block description-area">
-                <DescriptionField rows="9" />
-              </div>
-            )}
+            <div className="modal-details-block description-area">
+              <DescriptionField rows="9" />
+            </div>
             <div className="modal-details-block color-area">
               <ColorPicker />
             </div>
