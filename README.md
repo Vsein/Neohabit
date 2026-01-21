@@ -201,6 +201,17 @@ For example:
   just be a link to a website with all the archived skilltrees/habits.
 - Contribution guides and community support/groups
 
+## License
+
+This project is licensed under the **GNU Affero General Public License v3.0** (AGPL-3.0).
+
+The AGPL-3.0 applies to the entire repository, including all historical commits.
+Any modified versions - especially when offered as a network service or SaaS -
+must comply with its copyleft terms.
+
+This license is chosen specifically so that Neohabit remains open-source
+forever.
+
 ## Donations
 
 BTC: bc1qkt9xge2a8h3zt65ju7qkyvh6z6qjn6kdz8tm4a
