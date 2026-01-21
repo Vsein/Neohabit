@@ -25,7 +25,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
 
   const onSubmit = async (values) => {
     if (!skillID) {
-      await addSkill({ ...values, skilltree_id: skilltreeID, parent_skill_id: skillparentID });
+      await addSkill({ ...values, skilltree_id: skilltreeID, parent_skill_id: skillparentID, status: 'idle' });
     } else {
       await editSkill({ skillID, values: { ...values, skilltree_id: skilltreeID } });
     }
