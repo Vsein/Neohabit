@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook';
 import { Icon } from '@mdi/react';
 import { mdiSortVariant } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
@@ -86,6 +87,15 @@ export default function ProjectsPage() {
     }
   };
 
+  const toggleOverviewMode = () =>
+    updateSettings({
+      values: {
+        projects_enable_overview_mode: !settings.data.projects_enable_overview_mode,
+      },
+    });
+
+  useHotkeys('shift+o', toggleOverviewMode);
+
   return (
     <>
       <div className="contentlist-controls">
@@ -114,14 +124,8 @@ export default function ProjectsPage() {
         />
         <button
           className={`sort-button centering ${settings.data.projects_enable_overview_mode ? 'active' : ''}`}
-          onClick={() =>
-            updateSettings({
-              values: {
-                projects_enable_overview_mode: !settings.data.projects_enable_overview_mode,
-              },
-            })
-          }
-          title="Display all habits in the order they were created"
+          onClick={toggleOverviewMode}
+          title="Display all habits in the order they were created [O]"
         >
           <Icon path={mdiSortVariant} className="icon mirror" />
           <p>Overview mode</p>

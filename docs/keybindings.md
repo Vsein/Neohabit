@@ -28,6 +28,7 @@ quickly adding new stuff
 ## Projects/habit page
 | Key | Action                                                                   |
 |-----|--------------------------------------------------------------------------|
+| `O` | Toggle overview mode                                                     |
 | `r` | Reset to the default period                                              |
 | `h` | Move to the left period (equivalent to pressing a datepicker arrow)      |
 | `l` | Move to the right period                                                 |
