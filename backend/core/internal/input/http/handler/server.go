@@ -798,7 +798,7 @@ func (s *server) CreateSkilltree(
 
 	skilltree := &entity.Skilltree{
 		Name:        request.Body.Name,
-		Description: *request.Body.Description,
+		Description: request.Body.Description,
 		Color:       *request.Body.Color,
 		UserID:      userID,
 	}
@@ -835,7 +835,7 @@ func (s *server) UpdateSkilltree(
 	skilltree := &entity.Skilltree{
 		ID:          request.SkilltreeID,
 		Name:        request.Body.Name,
-		Description: *request.Body.Description,
+		Description: request.Body.Description,
 		Color:       *request.Body.Color,
 	}
 

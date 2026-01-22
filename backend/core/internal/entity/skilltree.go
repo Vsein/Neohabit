@@ -9,7 +9,7 @@ type Skilltree struct {
 	ProjectID   *uuid.UUID
 	HabitID     *uuid.UUID
 	Name        string
-	Description string
+	Description *string
 	Color       string
 	Skills      []Skill
 	CreatedAt   time.Time

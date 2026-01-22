@@ -130,7 +130,7 @@ func toAPISkilltree(e *entity.Skilltree) gen.Skilltree {
 		ProjectID:   e.HabitID,
 		HabitID:     e.HabitID,
 		Name:        e.Name,
-		Description: &e.Description,
+		Description: e.Description,
 		Color:       &e.Color,
 		Skills:      &skills,
 		CreatedAt:   &e.CreatedAt,
