@@ -299,30 +299,3 @@ function ProjectControls({ project, projectID, mobile, addPeriod, isPastPeriod }
     </div>
   );
 }
-
-function ProjectWrapper({ project, datePeriodLength, mobile, dragHabitToProject }) {
-  const [
-    dateEnd,
-    setDateEnd,
-    dateStart,
-    setDateStart,
-    { subPeriod, addPeriod, isPastPeriod, isFuturePeriod },
-  ] = useDatePeriod(datePeriodLength);
-
-  return (
-    <Project
-      project={project}
-      datePeriodLength={datePeriodLength}
-      mobile={mobile}
-      globalDateStart={dateStart}
-      globalDateEnd={dateEnd}
-      subPeriod={subPeriod}
-      addPeriod={addPeriod}
-      isPastPeriod={isPastPeriod}
-      isFuturePeriod={isFuturePeriod}
-      dragHabitToProject={dragHabitToProject}
-    />
-  );
-}
-
-export { ProjectWrapper };

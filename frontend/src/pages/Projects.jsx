@@ -142,28 +142,42 @@ export default function ProjectsPage() {
       {!loaded || projects.isFetching || settings.isFetching ? (
         <div className="loader" />
       ) : (
-        <div className="contentlist">
-          {projects.data.map((project, i) => (
-            <ProjectWrapper
-              key={i}
-              project={project}
-              datePeriodLength={datePeriodLength}
-              mobile={mobile}
-              dragHabitToProject={dragHabitToProject}
-            />
-          ))}
-          {defaultProject?.habits?.length ? (
-            <ProjectWrapper
-              key="default"
-              project={defaultProject}
-              datePeriodLength={datePeriodLength}
-              mobile={mobile}
-              dragHabitToProject={dragHabitToProject}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
+        !settings.data.projects_enable_overview_mode && (
+          <div className="contentlist">
+            {projects.data.map((project, i) => (
+              <Project
+                key={i}
+                project={project}
+                datePeriodLength={datePeriodLength}
+                mobile={mobile}
+                globalDateStart={dateStart}
+                globalDateEnd={dateEnd}
+                subPeriod={subPeriod}
+                addPeriod={addPeriod}
+                isPastPeriod={isPastPeriod}
+                isFuturePeriod={isFuturePeriod}
+                dragHabitToProject={dragHabitToProject}
+              />
+            ))}
+            {defaultProject?.habits?.length ? (
+              <Project
+                key="default"
+                project={defaultProject}
+                datePeriodLength={datePeriodLength}
+                mobile={mobile}
+                globalDateStart={dateStart}
+                globalDateEnd={dateEnd}
+                subPeriod={subPeriod}
+                addPeriod={addPeriod}
+                isPastPeriod={isPastPeriod}
+                isFuturePeriod={isFuturePeriod}
+                dragHabitToProject={dragHabitToProject}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+        )
       )}
     </>
   );
