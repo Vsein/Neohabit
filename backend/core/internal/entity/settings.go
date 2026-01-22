@@ -39,6 +39,7 @@ type Settings struct {
 	HideCellHint                 *bool
 	HideOnboarding               *bool
 	ProjectsEnableCustomOrder    *bool
+	ProjectsEnableOverviewMode   *bool
 	CreatedAt                    time.Time
 	UpdatedAt                    time.Time
 }
