@@ -4,11 +4,11 @@ import { Icon } from '@mdi/react';
 import { mdiSortVariant } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useGetProjectsQuery, useUpdateProjectMutation } from '../state/services/project';
+import { useGetHabitsQuery } from '../state/services/habit';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDefaultProject from '../hooks/useDefaultProject';
 import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
-import Overview from '../components/Overview';
 import { DatePeriodPicker } from '../components/DatePickers';
 import Project from '../components/Project';
 import useTitle from '../hooks/useTitle';
@@ -17,6 +17,7 @@ export default function ProjectsPage() {
   useTitle('Projects | Neohabit');
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
 
@@ -126,18 +127,25 @@ export default function ProjectsPage() {
           <p>Overview mode</p>
         </button>
       </div>
-      {settings.data.projects_enable_overview_mode && (
-        <div className="contentlist">
-          <Overview
-            dateStart={dateStart}
-            dateEnd={dateEnd}
-            mobile={mobile}
-            addPeriod={addPeriod}
-            subPeriod={subPeriod}
-            addYear={addYear}
-            subYear={subYear}
-          />
-        </div>
+      {!loaded || habits.isFetching ? (
+        <div className="loader" />
+      ) : (
+        settings.data.projects_enable_overview_mode && (
+          <div className="contentlist">
+            <Project
+              key="overview"
+              project={{ name: 'Overview', color: '#8a8a8a', id: 'default', habits: habits.data }}
+              mobile={mobile}
+              globalDateStart={dateStart}
+              globalDateEnd={dateEnd}
+              addPeriod={addPeriod}
+              subPeriod={subPeriod}
+              isPastPeriod={isPastPeriod}
+              isFuturePeriod={isFuturePeriod}
+              singular
+            />
+          </div>
+        )
       )}
       {!loaded || projects.isFetching || settings.isFetching ? (
         <div className="loader" />
@@ -148,7 +156,6 @@ export default function ProjectsPage() {
               <Project
                 key={i}
                 project={project}
-                datePeriodLength={datePeriodLength}
                 mobile={mobile}
                 globalDateStart={dateStart}
                 globalDateEnd={dateEnd}
@@ -163,7 +170,6 @@ export default function ProjectsPage() {
               <Project
                 key="default"
                 project={defaultProject}
-                datePeriodLength={datePeriodLength}
                 mobile={mobile}
                 globalDateStart={dateStart}
                 globalDateEnd={dateEnd}

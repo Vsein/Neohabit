@@ -9,7 +9,6 @@ import {
   useUpdateProjectsOrderMutation,
 } from '../state/services/project';
 import { changeTo } from '../state/features/overlay/overlaySlice';
-import useDatePeriod from '../hooks/useDatePeriod';
 import { HeatmapMonthsDaily, HeatmapDays } from './HeatmapDateAxes';
 import { OverviewTopbarRight, NextPeriodButton, PreviousPeriodButton } from './DatePickers';
 import { HabitOverview, HabitAddButton } from './HabitComponents';
@@ -156,6 +155,14 @@ export default function Project({
     updateProjectsOrder({ values: { new_projects_order: ids } });
   };
 
+  const projectColors = {
+    '--datepicker-text-color': textColor,
+    '--datepicker-calm-text-color': calmTextColor,
+    '--signature-color': colorShade,
+    '--bright-signature-color': colorShade,
+    '--calm-signature-color': `${colorShade}55`,
+  };
+
   return (
     <div
       className={`overview-centering ${mobile ? 'mobile' : ''}`}
@@ -167,11 +174,7 @@ export default function Project({
         '--multiplier': 1,
         '--cell-height': '15px',
         '--cell-width': '15px',
-        '--datepicker-text-color': textColor,
-        '--datepicker-calm-text-color': calmTextColor,
-        [project.color !== '#8a8a8a' ? '--signature-color' : '']: colorShade,
-        [project.color !== '#8a8a8a' ? '--bright-signature-color' : '']: colorShade,
-        [project.color !== '#8a8a8a' ? '--calm-signature-color' : '']: `${colorShade}55`,
+        ...(project.id !== 'default' ? projectColors : {}),
       }}
       onDrop={drop}
       onDragOver={allowDrop}
