@@ -69,7 +69,7 @@ function changeCellOffset(e, tipContent, actions, override = false) {
   cellTip.firstChild.nextSibling.textContent = `Period: ${period}`;
   cellTip.classList.remove('hidden');
   cellTip.style.top = `${
-    window.pageYOffset + rect.y - 51 - 42 * !cellTip.classList.contains('hint-hidden')
+    window.pageYOffset + rect.y - 53 - 42 * !cellTip.classList.contains('hint-hidden')
   }px`;
 
   adjustTooltip(cellTip, rect, rectParent);
