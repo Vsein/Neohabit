@@ -10,7 +10,6 @@ import {
   mdiCog,
   mdiChevronDown,
   mdiPlus,
-  mdiViewDashboard,
   mdiClipboardCheck,
 } from '@mdi/js';
 import { useGetProjectsQuery } from '../state/services/project';
@@ -59,15 +58,14 @@ export default function Sidebar({ hidden }) {
           raw
           num="3"
         />
-        <NavigationSection path={mdiViewDashboard} title="Overview" to="/overview" num="4" />
         <NavigationSection
           path={mdiPackageVariantClosed}
           title="Blocks"
           status="soon"
           to="/blocks"
-          num="5"
+          num="4"
         />
-        <NavigationSection path={mdiCog} title="Settings" to="/settings" num="6" />
+        <NavigationSection path={mdiCog} title="Settings" to="/settings" num="5" />
       </ul>
       <hr />
       <ul className="sidebar-projects">

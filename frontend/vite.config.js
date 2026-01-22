@@ -43,14 +43,8 @@ export default defineConfig({
           {
             name: 'Projects',
             url: '/projects',
-            description: 'Your projects',
+            description: 'Your projects and habits',
             icons: [{ src: 'trending-up-custom.png', sizes: '192x192' }],
-          },
-          {
-            name: 'Overview',
-            url: '/overview',
-            description: 'Your habits',
-            icons: [{ src: 'view-dashboard-custom.png', sizes: '192x192' }],
           },
         ],
         categories: ['health', 'productivity', 'utilities', 'lifestyle'],

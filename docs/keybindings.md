@@ -6,9 +6,8 @@
 | `1`                    | Projects page                                         |
 | `2`                    | Skills page                                           |
 | `3`                    | To-do-list page                                       |
-| `4`                    | Overview page                                         |
-| `5`                    | Blocks page                                           |
-| `6`                    | Settings page                                         |
+| `4`                    | Blocks page                                           |
+| `5`                    | Settings page                                         |
 | `0`                    | Toggle sidebar                                        |
 | `i`                    | Toggle the menu                                       |
 | `T`                    | Switch theme                                          |
