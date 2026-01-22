@@ -1,13 +1,16 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { Icon } from '@mdi/react';
+import { mdiSortVariant } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useGetProjectsQuery, useUpdateProjectMutation } from '../state/services/project';
-import { useGetSettingsQuery } from '../state/services/settings';
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDefaultProject from '../hooks/useDefaultProject';
 import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
+import Overview from '../components/Overview';
 import { DatePeriodPicker } from '../components/DatePickers';
-import { ProjectWrapper } from '../components/Project';
+import Project from '../components/Project';
 import useTitle from '../hooks/useTitle';
 
 export default function ProjectsPage() {
@@ -25,13 +28,24 @@ export default function ProjectsPage() {
   const { datePeriodLength, mobile } = useGetDatePeriodLength();
 
   const [updateProject] = useUpdateProjectMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
 
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
-    { subPeriod, addPeriod, setToPast, setToFuture, reset, isPastPeriod, isFuturePeriod },
+    {
+      subYear,
+      addYear,
+      subPeriod,
+      addPeriod,
+      setToPast,
+      setToFuture,
+      reset,
+      isPastPeriod,
+      isFuturePeriod,
+    },
   ] = useDatePeriod(datePeriodLength, true);
 
   const [defaultProject] = useDefaultProject();
@@ -97,7 +111,34 @@ export default function ProjectsPage() {
           isPastPeriod={isPastPeriod}
           isFuturePeriod={isFuturePeriod}
         />
+        <button
+          className={`sort-button centering ${settings.data.projects_enable_overview_mode ? 'active' : ''}`}
+          onClick={() =>
+            updateSettings({
+              values: {
+                projects_enable_overview_mode: !settings.data.projects_enable_overview_mode,
+              },
+            })
+          }
+          title="Display all habits in the order they were created"
+        >
+          <Icon path={mdiSortVariant} className="icon mirror" />
+          <p>Overview mode</p>
+        </button>
       </div>
+      {settings.data.projects_enable_overview_mode && (
+        <div className="contentlist">
+          <Overview
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            mobile={mobile}
+            addPeriod={addPeriod}
+            subPeriod={subPeriod}
+            addYear={addYear}
+            subYear={subYear}
+          />
+        </div>
+      )}
       {!loaded || projects.isFetching || settings.isFetching ? (
         <div className="loader" />
       ) : (

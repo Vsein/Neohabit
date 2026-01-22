@@ -36,7 +36,9 @@ $cell-margin: 2px;
 
   @media (max-width: 900px) {
     grid-template-columns: 180px 1fr;
-    grid-template-areas: '. date';
+    grid-template-areas:
+      '. date'
+      'topbar-right topbar-right';
     // position: sticky;
     // top: 0;
     // z-index: 2;
