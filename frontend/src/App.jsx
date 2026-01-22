@@ -22,6 +22,7 @@ import Verification from './pages/Verification';
 
 import Projects from './pages/Projects';
 import Skilltrees from './pages/Skilltrees';
+import SkillTip from './components/SkillTip';
 import ToDoList from './pages/ToDoList';
 import Habit from './pages/Habit';
 import Project from './pages/Project';
@@ -153,6 +154,7 @@ const PrivateRoutes = (params) => {
       />
       <CellTip />
       <CellAdd />
+      <SkillTip />
       <SidebarMobile />
       <Overlay />
       {(settings?.data?.hide_onboarding ?? false) ? <></> : <Onboarding />}

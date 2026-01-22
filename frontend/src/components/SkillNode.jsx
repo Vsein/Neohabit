@@ -13,6 +13,7 @@ import {
 } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useEditSkillMutation, useDeleteSkillMutation } from '../state/services/skilltree';
+import { changeSkillTipOffset, hideSkillTip } from './SkillTip';
 
 export default function SkillNode({ skilltreeID, skill, color }) {
   const dispatch = useDispatch();
@@ -70,7 +71,15 @@ export default function SkillNode({ skilltreeID, skill, color }) {
   };
 
   return (
-    <div className={`skill-node ${skill.status}`} style={{ '--shadow-box-color': color }}>
+    <div
+      className={`skill-node ${skill.status}`}
+      style={{ '--shadow-box-color': color }}
+      onMouseEnter={(e) =>
+        skill?.description &&
+        changeSkillTipOffset(e, skill?.description, skill.status === 'in-progress')
+      }
+      onMouseLeave={(e) => skill?.description && hideSkillTip()}
+    >
       <h4>{skill.name}</h4>
       {skill.parent_skill_id ? <div className="skill-node-edge-to" /> : <></>}
       {skill.children.length ? (
@@ -85,7 +94,6 @@ export default function SkillNode({ skilltreeID, skill, color }) {
       ) : (
         <></>
       )}
-      {skill?.description ? <div className="skill-node-info">{skill.description}</div> : <></>}
       <div className="skill-node-controls-bottom">
         {skill.status === 'in-progress' ? (
           <button

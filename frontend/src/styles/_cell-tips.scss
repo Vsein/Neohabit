@@ -16,10 +16,6 @@
   flex-direction: column;
   gap: 4px;
 
-  @media (max-width: 550px) {
-    gap: 0px;
-  }
-
   &.hidden {
     top: -50px;
     visibility: hidden;
@@ -52,9 +48,10 @@
       align-items: center;
       align-self: center;
       gap: 1px;
+      max-height: 18px;
 
       @media (max-width: 850px) {
-        gap: 15px;
+        gap: 20px;
 
         & .icon.tiny {
           height: 20px;

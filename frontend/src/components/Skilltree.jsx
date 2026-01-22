@@ -56,18 +56,18 @@ export default function Skilltree({ skilltree }) {
           datePeriodLength < 14 ? 'small' : ''
         }`}
       >
-        <NavLink to={`../skilltree/${skilltree?.id}`} title={skilltree.name}>
-          <h3
-            style={{
-              color: colorShade,
-              textAlign: 'center',
-              whiteSpace: 'nowrap',
-              marginLeft: '5px',
-            }}
-          >
-            {skilltree?.name}
-          </h3>
-        </NavLink>
+        {/* <NavLink to={`../skilltree/${skilltree?.id}`} title={skilltree.name}> */}
+        <h3
+          style={{
+            color: colorShade,
+            textAlign: 'center',
+            whiteSpace: 'nowrap',
+            marginLeft: '5px',
+          }}
+        >
+          {skilltree?.name}
+        </h3>
+        {/* </NavLink> */}
         <SkilltreeControls skilltreeID={skilltree?.id} />
       </div>
       <div className="skilltree-container">

@@ -16,6 +16,7 @@ import {
 } from '../state/services/habitData';
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
+import adjustTooltip from '../utils/adjustTooltip';
 
 function formatDate(date) {
   return date.toLocaleString('en-US', {
@@ -68,25 +69,10 @@ function changeCellOffset(e, tipContent, actions, override = false) {
   cellTip.firstChild.nextSibling.textContent = `Period: ${period}`;
   cellTip.classList.remove('hidden');
   cellTip.style.top = `${
-    window.pageYOffset + rect.y - 51 - 42 * !cellTip.classList.contains('hint-hidden')
+    window.pageYOffset + rect.y - 53 - 42 * !cellTip.classList.contains('hint-hidden')
   }px`;
 
-  const tipWidth = cellTip.getBoundingClientRect().width;
-  cellTip.style.left = `${rect.x + rect.width / 2 - tipWidth / 2}px`;
-  const leftBorder = rect.x + window.scrollX + rect.width / 2 - tipWidth / 2;
-  const rightBorder = leftBorder + tipWidth;
-  if (leftBorder < rectParent.x) {
-    cellTip.style.left = `${rectParent.x + 10}px`;
-  }
-  if (rightBorder > rectParent.x + rectParent.width) {
-    cellTip.style.left = `${rectParent.x + rectParent.width - tipWidth - 10}px`;
-  }
-  if (rectParent.width < tipWidth + 10) {
-    cellTip.style.left = `${rectParent.x + rectParent.width / 2 - tipWidth / 2}px`;
-  }
-  if (window.scrollX) {
-    cellTip.style.left = `${window.scrollX + rect.x + rect.width / 2 - tipWidth / 2}px`;
-  }
+  adjustTooltip(cellTip, rect, rectParent);
   return 0;
 }
 
