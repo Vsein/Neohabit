@@ -138,6 +138,7 @@ type Settings struct {
 	OverviewOffset               *uint8                           `json:"overview_offset,omitempty"`
 	OverviewVertical             *bool                            `json:"overview_vertical,omitempty"`
 	ProjectsEnableCustomOrder    *bool                            `json:"projects_enable_custom_order,omitempty"`
+	ProjectsEnableOverviewMode   *bool                            `json:"projects_enable_overview_mode,omitempty"`
 	ReadSettingsFromConfigFile   *bool                            `json:"read_settings_from_config_file,omitempty"`
 	ShowStopwatchTimeInPageTitle *bool                            `json:"show_stopwatch_time_in_page_title,omitempty"`
 	Theme                        *SettingsTheme                   `json:"theme,omitempty"`

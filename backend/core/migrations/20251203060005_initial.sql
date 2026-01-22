@@ -141,6 +141,7 @@ CREATE TABLE IF NOT EXISTS settings (
     hide_onboarding BOOLEAN DEFAULT FALSE,
 
     projects_enable_custom_order BOOLEAN DEFAULT TRUE,
+    projects_enable_overview_mode BOOLEAN DEFAULT FALSE,
 
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP

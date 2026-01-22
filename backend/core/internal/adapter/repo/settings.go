@@ -40,7 +40,8 @@ const (
 			hide_cell_hint = coalesce($16,hide_cell_hint),
 			hide_onboarding = coalesce($17,hide_onboarding),
 			projects_enable_custom_order = coalesce($18,projects_enable_custom_order),
-			updated_at = $19
+			projects_enable_overview_mode = coalesce($19,projects_enable_overview_mode),
+			updated_at = $20
 		WHERE user_id = $1`
 	queryDeleteSettings = `DELETE FROM settings WHERE user_id = $1`
 )
@@ -79,6 +80,7 @@ func (r *Settings) Read(ctx context.Context, userID uuid.UUID) (*entity.Settings
 		&settings.HideCellHint,
 		&settings.HideOnboarding,
 		&settings.ProjectsEnableCustomOrder,
+		&settings.ProjectsEnableOverviewMode,
 		&settings.CreatedAt,
 		&settings.UpdatedAt,
 	)
@@ -131,6 +133,7 @@ func (r *Settings) Update(ctx context.Context, settings *entity.Settings) error 
 		settings.HideCellHint,
 		settings.HideOnboarding,
 		settings.ProjectsEnableCustomOrder,
+		settings.ProjectsEnableOverviewMode,
 		settings.UpdatedAt,
 	)
 	if err != nil {

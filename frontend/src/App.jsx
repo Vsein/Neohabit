@@ -23,7 +23,6 @@ import Verification from './pages/Verification';
 import Projects from './pages/Projects';
 import Skilltrees from './pages/Skilltrees';
 import ToDoList from './pages/ToDoList';
-import Overview from './pages/Overview';
 import Habit from './pages/Habit';
 import Project from './pages/Project';
 import NotFound from './pages/404';
@@ -82,7 +81,6 @@ const App = () => {
             <Route path="/projects/*" element={<Projects />} />
             <Route path="/skills/*" element={<Skilltrees />} />
             <Route path="/todo/*" element={<ToDoList />} />
-            <Route path="/overview/" element={<Overview />} />
             <Route path="/habit/:habitID/*" element={<Habit />} />
             <Route path="/project/:projectID/*" element={<Project />} />
             <Route path="/settings" element={<Settings />} />

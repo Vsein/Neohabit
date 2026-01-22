@@ -1096,6 +1096,7 @@ func (s *server) UpdateSettings(
 		HideCellHint:                 request.Body.HideCellHint,
 		HideOnboarding:               request.Body.HideOnboarding,
 		ProjectsEnableCustomOrder:    request.Body.ProjectsEnableCustomOrder,
+		ProjectsEnableOverviewMode:   request.Body.ProjectsEnableOverviewMode,
 	}
 
 	if request.Body.Theme != nil {

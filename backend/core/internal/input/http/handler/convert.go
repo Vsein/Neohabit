@@ -178,6 +178,7 @@ func toAPISettings(e *entity.Settings) gen.Settings {
 		HideCellHint:                 e.HideCellHint,
 		HideOnboarding:               e.HideOnboarding,
 		ProjectsEnableCustomOrder:    e.ProjectsEnableCustomOrder,
+		ProjectsEnableOverviewMode:   e.ProjectsEnableOverviewMode,
 		CreatedAt:                    &e.CreatedAt,
 		UpdatedAt:                    &e.UpdatedAt,
 	}

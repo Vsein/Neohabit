@@ -1,19 +1,24 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useHotkeys } from 'react-hotkeys-hook';
+import { Icon } from '@mdi/react';
+import { mdiSortVariant } from '@mdi/js';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useGetProjectsQuery, useUpdateProjectMutation } from '../state/services/project';
-import { useGetSettingsQuery } from '../state/services/settings';
+import { useGetHabitsQuery } from '../state/services/habit';
+import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import useLoaded from '../hooks/useLoaded';
 import useDefaultProject from '../hooks/useDefaultProject';
 import useDatePeriod, { useGetDatePeriodLength } from '../hooks/useDatePeriod';
 import { DatePeriodPicker } from '../components/DatePickers';
-import { ProjectWrapper } from '../components/Project';
+import Project from '../components/Project';
 import useTitle from '../hooks/useTitle';
 
 export default function ProjectsPage() {
   useTitle('Projects | Neohabit');
   const [loaded] = useLoaded();
   const projects = useGetProjectsQuery();
+  const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
   const vertical = false;
 
@@ -25,13 +30,24 @@ export default function ProjectsPage() {
   const { datePeriodLength, mobile } = useGetDatePeriodLength();
 
   const [updateProject] = useUpdateProjectMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
 
   const [
     dateEnd,
     setDateEnd,
     dateStart,
     setDateStart,
-    { subPeriod, addPeriod, setToPast, setToFuture, reset, isPastPeriod, isFuturePeriod },
+    {
+      subYear,
+      addYear,
+      subPeriod,
+      addPeriod,
+      setToPast,
+      setToFuture,
+      reset,
+      isPastPeriod,
+      isFuturePeriod,
+    },
   ] = useDatePeriod(datePeriodLength, true);
 
   const [defaultProject] = useDefaultProject();
@@ -71,6 +87,15 @@ export default function ProjectsPage() {
     }
   };
 
+  const toggleOverviewMode = () =>
+    updateSettings({
+      values: {
+        projects_enable_overview_mode: !settings.data.projects_enable_overview_mode,
+      },
+    });
+
+  useHotkeys('shift+o', toggleOverviewMode);
+
   return (
     <>
       <div className="contentlist-controls">
@@ -97,32 +122,72 @@ export default function ProjectsPage() {
           isPastPeriod={isPastPeriod}
           isFuturePeriod={isFuturePeriod}
         />
+        <button
+          className={`sort-button centering ${settings.data.projects_enable_overview_mode ? 'active' : ''}`}
+          onClick={toggleOverviewMode}
+          title="Display all habits in the order they were created [O]"
+        >
+          <Icon path={mdiSortVariant} className="icon mirror" />
+          <p>Overview mode</p>
+        </button>
       </div>
+      {!loaded || habits.isFetching ? (
+        <div className="loader" />
+      ) : (
+        settings.data.projects_enable_overview_mode && (
+          <div className="contentlist">
+            <Project
+              key="overview"
+              project={{ name: 'Overview', color: '#8a8a8a', id: 'default', habits: habits.data }}
+              mobile={mobile}
+              globalDateStart={dateStart}
+              globalDateEnd={dateEnd}
+              addPeriod={addPeriod}
+              subPeriod={subPeriod}
+              isPastPeriod={isPastPeriod}
+              isFuturePeriod={isFuturePeriod}
+              singular
+            />
+          </div>
+        )
+      )}
       {!loaded || projects.isFetching || settings.isFetching ? (
         <div className="loader" />
       ) : (
-        <div className="contentlist">
-          {projects.data.map((project, i) => (
-            <ProjectWrapper
-              key={i}
-              project={project}
-              datePeriodLength={datePeriodLength}
-              mobile={mobile}
-              dragHabitToProject={dragHabitToProject}
-            />
-          ))}
-          {defaultProject?.habits?.length ? (
-            <ProjectWrapper
-              key="default"
-              project={defaultProject}
-              datePeriodLength={datePeriodLength}
-              mobile={mobile}
-              dragHabitToProject={dragHabitToProject}
-            />
-          ) : (
-            <></>
-          )}
-        </div>
+        !settings.data.projects_enable_overview_mode && (
+          <div className="contentlist">
+            {projects.data.map((project, i) => (
+              <Project
+                key={i}
+                project={project}
+                mobile={mobile}
+                globalDateStart={dateStart}
+                globalDateEnd={dateEnd}
+                subPeriod={subPeriod}
+                addPeriod={addPeriod}
+                isPastPeriod={isPastPeriod}
+                isFuturePeriod={isFuturePeriod}
+                dragHabitToProject={dragHabitToProject}
+              />
+            ))}
+            {defaultProject?.habits?.length || projects.data.length === 0 ? (
+              <Project
+                key="default"
+                project={defaultProject}
+                mobile={mobile}
+                globalDateStart={dateStart}
+                globalDateEnd={dateEnd}
+                subPeriod={subPeriod}
+                addPeriod={addPeriod}
+                isPastPeriod={isPastPeriod}
+                isFuturePeriod={isFuturePeriod}
+                dragHabitToProject={dragHabitToProject}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+        )
       )}
     </>
   );

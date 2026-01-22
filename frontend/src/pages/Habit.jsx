@@ -16,12 +16,12 @@ export default function HabitPage() {
   return (
     <Routes>
       <Route element={<HabitLayout />}>
-        <Route index element={<Overview />} />
-        <Route path="overview" element={<Overview />} />
-        <Route path="heatmap" element={<Overview />} />
-        <Route path="skill-tree" element={<Overview />} />
-        <Route path="to-do" element={<Overview />} />
-        <Route path="notes" element={<Overview />} />
+        <Route index element={<HabitOverview />} />
+        <Route path="overview" element={<HabitOverview />} />
+        <Route path="heatmap" element={<HabitOverview />} />
+        <Route path="skill-tree" element={<HabitOverview />} />
+        <Route path="to-do" element={<HabitOverview />} />
+        <Route path="notes" element={<HabitOverview />} />
       </Route>
     </Routes>
   );
@@ -41,7 +41,7 @@ function HabitLayout() {
   );
 }
 
-function Overview() {
+function HabitOverview() {
   const navigate = useNavigate();
   const tasks = useGetTasksQuery();
   const habits = useGetHabitsQuery();
