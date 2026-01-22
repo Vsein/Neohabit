@@ -63,7 +63,7 @@ export default function Sidebar({ hidden }) {
         <NavigationSection
           path={mdiPackageVariantClosed}
           title="Blocks"
-          status="soon"
+          status="ultimate"
           to="/blocks"
           num="5"
         />
