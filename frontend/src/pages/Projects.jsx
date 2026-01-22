@@ -166,7 +166,7 @@ export default function ProjectsPage() {
                 dragHabitToProject={dragHabitToProject}
               />
             ))}
-            {defaultProject?.habits?.length ? (
+            {defaultProject?.habits?.length || projects.data.length === 0 ? (
               <Project
                 key="default"
                 project={defaultProject}
