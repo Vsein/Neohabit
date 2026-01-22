@@ -9,7 +9,7 @@ function changeSkillTipOffset(e, skillDescription, isInProgress) {
   const rectParent = parent.getBoundingClientRect();
   skillTip.textContent = skillDescription;
   skillTip.classList.remove('hidden');
-  skillTip.style.top = `${window.pageYOffset + rect.y + 90 + 5 * isInProgress}px`;
+  skillTip.style.top = `${window.pageYOffset + rect.y + 89 + 5 * isInProgress}px`;
 
   adjustTooltip(skillTip, rect, rectParent);
   const skillTipRect = skillTip.getBoundingClientRect();
