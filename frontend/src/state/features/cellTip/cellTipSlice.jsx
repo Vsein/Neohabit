@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const cellTipSlice = createSlice({
-  name: 'cellAdd',
+  name: 'cellTip',
   initialState: {
     habitID: '',
     dateStart: '',
