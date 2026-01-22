@@ -237,6 +237,12 @@ input[type='checkbox']:checked.checkbox {
   grid-area: topbar-right;
   margin-left: auto;
 
+  @media (max-width: 900px) {
+    p {
+      display: none;
+    }
+  }
+
   &.active {
     box-shadow: 0px 0px 4px 2px var(--signature-color);
   }

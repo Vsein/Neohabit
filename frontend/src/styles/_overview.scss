@@ -34,14 +34,12 @@ $cell-margin: 2px;
   height: 50px;
   padding-inline: 20px;
 
+  @media (max-width: 1150px) {
+    grid-template-columns: 180px 1fr 180px;
+  }
+
   @media (max-width: 900px) {
-    grid-template-columns: 180px 1fr;
-    grid-template-areas:
-      '. date'
-      'topbar-right topbar-right';
-    // position: sticky;
-    // top: 0;
-    // z-index: 2;
+    grid-template-columns: 180px 1fr 50px;
   }
 
   @media (max-width: 800px) {
@@ -50,7 +48,7 @@ $cell-margin: 2px;
     justify-items: center;
 
     &:not(.only-datepicker) {
-      height: 80px;
+      height: 100px;
       grid-template-areas:
         '. topbar-right'
         'date topbar-right';
