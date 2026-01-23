@@ -142,11 +142,12 @@ export default function CellTip() {
           </button>
           <input
             id="cell-tip-actions-counter"
-            size="6"
             type="number"
             min="0"
+            max="2000000000"
             onMouseLeave={(e) => e.target.blur()}
             onBlur={(e) => {
+              if (+e.target.value > 2e9) return;
               const diff = +e.target.value - actions;
               if (diff > 0) {
                 createHabitDataPoint({
