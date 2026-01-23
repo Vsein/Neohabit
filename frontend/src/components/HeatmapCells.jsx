@@ -247,32 +247,40 @@ function CellPeriod({
   );
 }
 
-function CellNumericText({ support = false, wide = false, small = false, value, targetValue }) {
-  const getHundredStyle = (displayedValue) => {
-    if (!small || displayedValue < 100) return {};
-    const stringValue = displayedValue.toString();
-    const without1 = stringValue.indexOf('1') === -1;
-    const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
-    return {
-      paddingTop: '2px',
-      '--font-size-minus': '1px',
-      [without1 ? 'marginLeft' : '']: '-1.75px',
-      [without1 ? 'letterSpacing' : '']: '-0.75px',
-      [single1 ? 'marginLeft' : '']: '-1.25px',
-      [wide ? 'marginLeft' : '']: '-1.25px',
-      [support ? 'marginLeft' : '']: '-0.5px',
-    };
   };
 
+const getHundredStyle = (displayedValue, small, wide, support) => {
+  // if (!small) return { '--font-size-minus': '-1px' };
+  const stringValue = displayedValue.toString();
+  const without1 = stringValue.indexOf('1') === -1;
+  const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
+  return {
+    paddingTop: '2px',
+    '--font-size-minus': '1px',
+    [without1 ? 'marginLeft' : '']: '-1.75px',
+    [without1 ? 'letterSpacing' : '']: '-0.75px',
+    [single1 ? 'marginLeft' : '']: '-1.25px',
+    [wide ? 'marginLeft' : '']: '-1.25px',
+    [support ? 'marginLeft' : '']: '-0.5px',
+  };
+};
+
+function CellNumericText({ support = false, wide = false, small = false, value, targetValue }) {
   if (value) {
     return (
-      <p className="cell-numeric" style={getHundredStyle(value)}>
+      <p
+        className="cell-numeric"
+        style={value >= 100 ? getHundredStyle(value, small, support, wide) : {}}
+      >
         {value}
       </p>
     );
   }
   return targetValue > 1 ? (
-    <p className="cell-numeric target" style={getHundredStyle(targetValue)}>
+    <p
+      className="cell-numeric target"
+      style={targetValue >= 100 ? getHundredStyle(targetValue, small, support, wide) : {}}
+    >
       {targetValue}
     </p>
   ) : (
