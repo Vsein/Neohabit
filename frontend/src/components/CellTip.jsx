@@ -142,7 +142,7 @@ export default function CellTip() {
           </button>
           <input
             id="cell-tip-actions-counter"
-            size="3"
+            size="6"
             type="number"
             min="0"
             onMouseLeave={(e) => e.target.blur()}
