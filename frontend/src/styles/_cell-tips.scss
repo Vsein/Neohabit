@@ -5,8 +5,8 @@
   text-align: left;
   font-size: 12px;
   line-height: 14px;
-  background-color: #545454;
-  color: white;
+  background-color: var(--cell-tooltip-bg-color);
+  color: var(--cell-tooltip-text-color);
   z-index: 5;
   border-radius: 10px;
   visibility: visible;
@@ -27,12 +27,12 @@
     text-align: center;
     display: grid;
     width: min-content;
-    background-color: #777;
+    background-color: var(--cell-tooltip-counter-color);
     border-radius: 3px;
     line-height: 14px;
 
     &:focus {
-      background-color: #3c3c3c;
+      background-color: var(--cell-tooltip-counter-focus-color);
     }
   }
 
