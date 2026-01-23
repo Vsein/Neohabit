@@ -55,7 +55,7 @@ function Cell({
       }}
     >
       {numeric && (
-        <CellNumericText small={vertical || length === 1} value={value} targetValue={targetValue} />
+        <CellNumericText width={vertical ? 1 : length} value={value} targetValue={targetValue} />
       )}
     </div>
   );
@@ -216,16 +216,16 @@ function CellPeriod({
         }}
       >
         {displayNumeric && !!width && (
-          <CellNumericText wide={true} small={width <= 1} value={value} targetValue={targetValue} />
+          <CellNumericText wide width={width} value={value} targetValue={targetValue} />
         )}
         <div className="cell-period-before centering" style={styleBefore}>
           {!width && diffDays <= 7 && displayNumeric && (
-            <CellNumericText support={true} small={true} value={value} targetValue={targetValue} />
+            <CellNumericText support width={1} value={value} targetValue={targetValue} />
           )}
         </div>
         <div className="cell-period-after centering" style={styleAfter}>
           {!width && diffDays <= 7 && displayNumeric && (
-            <CellNumericText support={true} small={true} value={value} targetValue={targetValue} />
+            <CellNumericText support width={1} value={value} targetValue={targetValue} />
           )}
         </div>
         {diffDays > 7 && !width && (
@@ -237,7 +237,7 @@ function CellPeriod({
             }}
           >
             {!width && displayNumeric && (
-              <CellNumericText value={value} targetValue={targetValue} />
+              <CellNumericText width={1} value={value} targetValue={targetValue} />
             )}
           </div>
         )}
@@ -249,8 +249,8 @@ function CellPeriod({
 
   };
 
-const getHundredStyle = (displayedValue, small, wide, support) => {
-  // if (!small) return { '--font-size-minus': '-1px' };
+const getHundredStyle = (displayedValue, width, wide, support) => {
+  // if (width > 1) return { '--font-size-minus': '-1px' };
   const stringValue = displayedValue.toString();
   const without1 = stringValue.indexOf('1') === -1;
   const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
@@ -265,12 +265,12 @@ const getHundredStyle = (displayedValue, small, wide, support) => {
   };
 };
 
-function CellNumericText({ support = false, wide = false, small = false, value, targetValue }) {
+function CellNumericText({ support = false, wide = false, value, targetValue, width = 1 }) {
   if (value) {
     return (
       <p
         className="cell-numeric"
-        style={value >= 100 ? getHundredStyle(value, small, support, wide) : {}}
+        style={value >= 100 ? getHundredStyle(value, width, support, wide) : {}}
       >
         {value}
       </p>
@@ -279,7 +279,7 @@ function CellNumericText({ support = false, wide = false, small = false, value, 
   return targetValue > 1 ? (
     <p
       className="cell-numeric target"
-      style={targetValue >= 100 ? getHundredStyle(targetValue, small, support, wide) : {}}
+      style={targetValue >= 100 ? getHundredStyle(targetValue, width, support, wide) : {}}
     >
       {targetValue}
     </p>
