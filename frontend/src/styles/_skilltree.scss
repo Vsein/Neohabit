@@ -209,12 +209,18 @@
   padding: 10px 5px;
   width: 250px;
   height: min-content;
-  max-height: 300px;
+  max-height: 305px;
   background-color: var(--description-tooltip-bg-color);
   z-index: 3;
   border: 1px solid var(--description-tooltip-border-color);
   border-radius: 10px;
+
   white-space: pre-wrap;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 12;
+  line-clamp: 12;
 
   &.hidden {
     top: -50px;

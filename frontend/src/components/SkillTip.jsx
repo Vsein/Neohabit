@@ -13,8 +13,11 @@ function changeSkillTipOffset(e, skillDescription, isInProgress) {
 
   adjustTooltip(skillTip, rect, rectParent);
   const skillTipRect = skillTip.getBoundingClientRect();
-  if (rect.y + 100 + skillTipRect.height > window.innerHeight) {
-    skillTip.style.height = `${window.innerHeight - rect.y - 100}px`;
+  if (rect.y + 96 + skillTipRect.height > window.innerHeight) {
+    const height = window.innerHeight - rect.y - 96;
+    const linesVisible = Math.floor((height - 22) / 24);
+    skillTip.style.height = `${linesVisible * 24 + 15}px`;
+    skillTip.style.webkitLineClamp = `${linesVisible}`;
   }
   return 0;
 }
@@ -24,6 +27,8 @@ function hideSkillTip() {
   skillTip.classList.add('hidden');
   skillTip.style.top = '0px';
   skillTip.style.height = '';
+  skillTip.style.webkitLineClamp = '';
+  skillTip.style.lineClamp = '';
   return 0;
 }
 
