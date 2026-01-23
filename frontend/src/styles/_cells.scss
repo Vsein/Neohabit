@@ -190,15 +190,14 @@ $cell-margin: 2px;
 
 .cell-numeric {
   --font-size-minus: 0px;
-  padding-top: 1px;
+  padding-top: 0;
+  margin-top: 1px;
   font-size: calc(
     var(--cell-height) - max(var(--font-size-minus), var(--cell-height) - 30px) - 4px
   );
+
   text-align: center;
-  height: min-content;
-  width: min-content;
   font-weight: 600;
-  vertical-align: middle;
   color: var(--numeric-text-color);
   z-index: 1;
   cursor: default;

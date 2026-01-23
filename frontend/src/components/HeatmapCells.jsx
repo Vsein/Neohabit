@@ -35,7 +35,7 @@ function Cell({
 
   return (
     <div
-      className={`cell centering ${dummy ? 'dummy' : ''} ${
+      className={`cell centering-flex ${dummy ? 'dummy' : ''} ${
         value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
       } ${value ? 'nonzero' : ''}`}
       style={style}
@@ -197,7 +197,7 @@ function CellPeriod({
   return (
     <>
       <div
-        className={`cell-period centering ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
+        className={`cell-period centering-flex ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
           value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
         } ${value ? 'nonzero' : ''}`}
         style={style}
@@ -218,19 +218,19 @@ function CellPeriod({
         {displayNumeric && !!width && (
           <CellNumericText wide width={width} value={value} targetValue={targetValue} />
         )}
-        <div className="cell-period-before centering" style={styleBefore}>
+        <div className="cell-period-before centering-flex" style={styleBefore}>
           {!width && diffDays <= 7 && displayNumeric && (
             <CellNumericText support width={1} value={value} targetValue={targetValue} />
           )}
         </div>
-        <div className="cell-period-after centering" style={styleAfter}>
+        <div className="cell-period-after centering-flex" style={styleAfter}>
           {!width && diffDays <= 7 && displayNumeric && (
             <CellNumericText support width={1} value={value} targetValue={targetValue} />
           )}
         </div>
         {diffDays > 7 && !width && (
           <div
-            className="cell-period-connector centering"
+            className="cell-period-connector centering-flex"
             style={{
               '--height': afterHeight - (7 - beforeHeight),
               '--offset-top': 7 - beforeHeight,
@@ -250,16 +250,16 @@ function CellPeriod({
   };
 
 const getHundredStyle = (displayedValue, width, wide, support) => {
-  // if (width > 1) return { '--font-size-minus': '-1px' };
+  if (width > 1) return { '--font-size-minus': '-1px' };
   const stringValue = displayedValue.toString();
   const without1 = stringValue.indexOf('1') === -1;
   const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
   return {
-    paddingTop: '2px',
+    marginTop: '2px',
     '--font-size-minus': '1px',
     [without1 ? 'marginLeft' : '']: '-1.75px',
     [without1 ? 'letterSpacing' : '']: '-0.75px',
-    [single1 ? 'marginLeft' : '']: '-1.25px',
+    [single1 ? 'marginLeft' : '']: '1px',
     [wide ? 'marginLeft' : '']: '-1.25px',
     [support ? 'marginLeft' : '']: '-0.5px',
   };
