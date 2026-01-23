@@ -24,6 +24,11 @@ import { ProfilePicture } from '../components/UI';
 import mockProjectsData from '../assets/mockProjectsData';
 import Reddit from '../logos/reddit.svg';
 
+const progression = [
+  0, 1, 2, 5, 10, 20, 50, 100, 500, 1_000, 5_000, 10_000, 100_000, 1_000_000, 10_000_000,
+  100_000_000, 1_000_000_000,
+];
+
 export default function Landing() {
   useTitle('Neohabit | A self-hosted, periodic habit-tracker');
   useMediaColorScheme();
@@ -534,23 +539,23 @@ function FeaturesSection() {
               <div className="landing-cell-container">
                 <CellPeriod
                   color={color}
-                  value={value}
-                  targetValue={16}
+                  value={progression[value]}
+                  targetValue={1e9}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
                   numeric={true}
                 />
               </div>
             </div>
-            <p>Track any numeric values, i.e. workout reps, hours of sleep, or even test scores</p>
+            <p>Track any numeric values, i.e. scores, spendings, calories or workout reps</p>
           </div>
           <div className="landing-feature-container">
             <div className="landing-feature centering">
               <div className="landing-cell-container" style={{ '--total-width': 3 }}>
                 <CellPeriod
                   color={color}
-                  value={value}
-                  targetValue={16}
+                  value={progression[value]}
+                  targetValue={1e9}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(addDays(new Date(), 2))}
                   numeric={true}
@@ -560,8 +565,7 @@ function FeaturesSection() {
               <div className="landing-cell-container" style={{ '--total-width': 3 }}>
                 <CellPeriod
                   color={color}
-                  value={value % 3}
-                  targetValue={2}
+                  value={value}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(addDays(new Date(), 2))}
                   vertical={false}
