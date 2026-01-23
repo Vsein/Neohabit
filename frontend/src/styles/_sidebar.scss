@@ -17,7 +17,7 @@
   z-index: 3;
 
   & p {
-    line-height: 20px;
+    line-height: 30px;
   }
 }
 
@@ -52,7 +52,7 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    border-radius: 5px;
+    border-radius: 10px;
     padding-inline: 5px;
     cursor: pointer;
 
@@ -94,6 +94,13 @@
   @include sidebar-item;
   padding-left: 10px;
   border-radius: 10px;
+  overflow: hidden;
+
+  & p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 
   &.active,
   &:hover {
@@ -113,14 +120,20 @@
 
 .habit {
   @include sidebar-item;
-  padding-inline: 9px;
+  padding-left: 9px;
   height: 35px;
   margin-left: 6px;
   margin-block: 3px;
   gap: 20px;
-  width: 213px;
+  width: calc(100% - 6px);
   overflow: hidden;
   border-radius: 10px;
+
+  & p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 
   &.active,
   &:hover {
