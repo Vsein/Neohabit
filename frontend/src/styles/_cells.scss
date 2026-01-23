@@ -201,6 +201,7 @@ $cell-margin: 2px;
   vertical-align: middle;
   color: var(--numeric-text-color);
   z-index: 1;
+  cursor: default;
 
   &.target {
     color: var(--text-color);
