@@ -294,20 +294,18 @@ function nFormatter(num, length) {
     .concat(item.symbol);
 }
 
-const getThousandStyle = (displayedValue, width, wide, support) => {
+const getThousandStyle = (displayedValue, width) => {
   if (width > 2 && displayedValue > 1e6) return { '--font-size-minus': '-2px' };
   if (width > 1 && displayedValue > 1e3) return { '--font-size-minus': '-1px' };
   const stringValue = displayedValue.toString();
   const stringValueLength = stringValue.toString().length;
-  // const without1 = stringValue.indexOf('1') === -1;
-  // const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
+
   const hasKDecimals =
     displayedValue >= 1000 && displayedValue <= 10_000 && (displayedValue / 100) % 10;
   const hundredK = displayedValue >= 100_000 && displayedValue < 1_000_000;
   const hasMAnd1Digit = displayedValue >= 1_000_000 && displayedValue < 100_000_000;
   const hasMAnd2Digits = displayedValue >= 10_000_000 && displayedValue < 100_000_000;
-  // const hasMDecimals =
-  //   displayedValue >= 1e6 && displayedValue <= 1e7 && (displayedValue / 1e5) % 10;
+  const millionAsBDecimal = displayedValue >= 1e8 && displayedValue < 1e9;
 
   return {
     [displayedValue % 1000 >= 1 && displayedValue % 1000 < 100 ? 'marginLeft' : '']: '1px',
@@ -315,7 +313,7 @@ const getThousandStyle = (displayedValue, width, wide, support) => {
     [displayedValue >= 1000 && stringValueLength % 3 === 1 ? '--font-size-minus' : '']: '-2px',
     [displayedValue >= 1000 && stringValueLength % 3 === 2 ? '--font-size-minus' : '']: '1.5px',
     [hasMAnd1Digit ? '--font-size-minus' : '']: '5%',
-    ...(hasMAnd2Digits || hundredK || hasKDecimals
+    ...(hasMAnd2Digits || hundredK || hasKDecimals || millionAsBDecimal
       ? {
           marginTop: '3px',
           '--font-size-minus': '20%',
@@ -326,7 +324,7 @@ const getThousandStyle = (displayedValue, width, wide, support) => {
 };
 
 const getHundredStyle = (displayedValue, width, wide, support) => {
-  if (displayedValue >= 1000) return getThousandStyle(displayedValue, width, wide, support);
+  if (displayedValue >= 1000) return getThousandStyle(displayedValue, width);
   if (width > 1) return { '--font-size-minus': '-1px' };
   const stringValue = displayedValue.toString();
   const without1 = stringValue.indexOf('1') === -1;
