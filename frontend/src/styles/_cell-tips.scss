@@ -34,6 +34,10 @@
     &:focus {
       background-color: var(--cell-tooltip-counter-focus-color);
     }
+
+    &:invalid {
+      color: red;
+    }
   }
 
   &-actions {
@@ -70,8 +74,8 @@
 
     input[type='number'] {
       -moz-appearance: textfield;
-      min-width: 0;
-      max-width: 6em;
+      min-width: 6em;
+      max-width: 8em;
     }
   }
 }

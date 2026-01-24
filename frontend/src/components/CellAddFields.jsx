@@ -25,12 +25,12 @@ function ActionsField() {
   return (
     <Field
       name="value"
-      validate={composeValidators(requiredValidator, numberBoundsValidator(0, 999))}
+      validate={composeValidators(requiredValidator, numberBoundsValidator(0, 2e9))}
     >
       {({ input, meta }) => (
         <div
           className={`habit-form-counter
-${input?.value < 0 || input?.value >= 1000 ? 'error' : ''}
+${input?.value < 0 || input?.value >= 2e9 ? 'error' : ''}
                 `}
         >
           <label htmlFor="date-name"> </label>

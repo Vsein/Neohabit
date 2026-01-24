@@ -95,6 +95,16 @@
   width: min-content;
 }
 
+.centering-flex {
+  display: flex;
+  justify-items: center;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  height: min-content;
+  width: min-content;
+}
+
 .habit-circle {
   height: 12px;
   width: 12px;
