@@ -299,15 +299,15 @@ const getThousandStyle = (displayedValue, width, wide, support) => {
   if (width > 1 && displayedValue > 1e3) return { '--font-size-minus': '-1px' };
   const stringValue = displayedValue.toString();
   const stringValueLength = stringValue.toString().length;
-  const without1 = stringValue.indexOf('1') === -1;
-  const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
+  // const without1 = stringValue.indexOf('1') === -1;
+  // const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
   const hasKDecimals =
     displayedValue >= 1000 && displayedValue <= 10_000 && (displayedValue / 100) % 10;
   const hundredK = displayedValue >= 100_000 && displayedValue < 1_000_000;
   const hasMAnd1Digit = displayedValue >= 1_000_000 && displayedValue < 100_000_000;
   const hasMAnd2Digits = displayedValue >= 10_000_000 && displayedValue < 100_000_000;
-  const hasMDecimals =
-    displayedValue >= 1e6 && displayedValue <= 1e7 && (displayedValue / 1e5) % 10;
+  // const hasMDecimals =
+  //   displayedValue >= 1e6 && displayedValue <= 1e7 && (displayedValue / 1e5) % 10;
 
   return {
     [displayedValue % 1000 >= 1 && displayedValue % 1000 < 100 ? 'marginLeft' : '']: '1px',
@@ -315,8 +315,12 @@ const getThousandStyle = (displayedValue, width, wide, support) => {
     [displayedValue >= 1000 && stringValueLength % 3 === 1 ? '--font-size-minus' : '']: '-2px',
     [displayedValue >= 1000 && stringValueLength % 3 === 2 ? '--font-size-minus' : '']: '1.5px',
     [hasMAnd1Digit ? '--font-size-minus' : '']: '5%',
-    [hasKDecimals ? '--font-size-minus' : '']: '10%',
-    [hasMAnd2Digits || hundredK || hasMDecimals ? '--font-size-minus' : '']: '20%',
+    ...(hasMAnd2Digits || hundredK || hasKDecimals
+      ? {
+          marginTop: '3px',
+          '--font-size-minus': '20%',
+        }
+      : {}),
     [displayedValue >= 100000 ? 'fontWeight' : '']: '2px',
   };
 };
