@@ -546,6 +546,7 @@ $cell-margin: 2px;
 }
 
 .overview-habit-cells {
+  --is-big: 0;
   height: var(--cell-height);
   display: flex;
   align-self: center;

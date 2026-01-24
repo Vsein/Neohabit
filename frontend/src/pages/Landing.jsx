@@ -536,7 +536,7 @@ function FeaturesSection() {
           </div>
           <div className="landing-feature-container">
             <div className="landing-feature centering">
-              <div className="landing-cell-container">
+              <div className="landing-cell-container" style={{ '--is-big': 1 }}>
                 <CellPeriod
                   color={color}
                   value={progression[value]}
@@ -551,7 +551,7 @@ function FeaturesSection() {
           </div>
           <div className="landing-feature-container">
             <div className="landing-feature centering">
-              <div className="landing-cell-container" style={{ '--total-width': 3 }}>
+              <div className="landing-cell-container" style={{ '--total-width': 3, '--is-big': 1 }}>
                 <CellPeriod
                   color={color}
                   value={progression[value]}
