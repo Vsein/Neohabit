@@ -247,9 +247,78 @@ function CellPeriod({
   );
 }
 
+const toNDigits = (number, digits) => Math.trunc(number * 10 ** digits) / 10 ** digits;
+
+const suffixes = [
+  { value: 1, symbol: '' },
+  { value: 1e3, symbol: 'k' },
+  { value: 1e6, symbol: 'M' },
+  { value: 1e9, symbol: 'B' },
+];
+
+function nFormatter(num, length) {
+  const numDigitsN = num.toString().length;
+  if (length === 2) {
+    if (num >= 10_000 && num < 1e6) return `${toNDigits(num / 1000, 6 - numDigitsN).toString()}k`;
+    if (num >= 1e6 && num < 1e7) return `${toNDigits(num / 1000, 7 - numDigitsN).toString()}k`;
+    if (num >= 1e7 && num < 1e9) return `${toNDigits(num / 1e6, 9 - numDigitsN).toString()}M`;
+  }
+  if (num >= 1_000_000 && num < 1e9 && length === 3) {
+    return `${toNDigits(num / 1e6, 10 - numDigitsN).toString()}M`;
+  }
+  if (num < 1e6 && numDigitsN <= 3 + 2 * (length - 1))
+    return Intl.NumberFormat('en-US').format(num);
+
+  const isAboveHundred = Number(num >= 1e5 && numDigitsN % 3 === 0);
+  const i = suffixes.findLastIndex((s) => num >= s.value) + isAboveHundred;
+  const item = suffixes[i];
+
+  if (num < 1e4) {
+    return toNDigits(num / item.value, 1)
+      .toString()
+      .concat(item.symbol);
+  }
+
+  if (num < 1e5) {
+    return toNDigits(num / item.value, 0)
+      .toString()
+      .concat(item.symbol);
+  }
+
+  return toNDigits(num / item.value, isAboveHundred)
+    .toString()
+    .concat(item.symbol);
+}
+
+const getThousandStyle = (displayedValue, width, wide, support) => {
+  if (width > 2 && displayedValue > 1e6) return { '--font-size-minus': '-2px' };
+  if (width > 1 && displayedValue > 1e3) return { '--font-size-minus': '-1px' };
+  const stringValue = displayedValue.toString();
+  const stringValueLength = stringValue.toString().length;
+  const without1 = stringValue.indexOf('1') === -1;
+  const single1 = !without1 && stringValue.indexOf('1') === stringValue.lastIndexOf('1');
+  const hasKDecimals =
+    displayedValue >= 1000 && displayedValue <= 10_000 && (displayedValue / 100) % 10;
+  const hundredK = displayedValue >= 100_000 && displayedValue < 1_000_000;
+  const hasMAnd1Digit = displayedValue >= 1_000_000 && displayedValue < 100_000_000;
+  const hasMAnd2Digits = displayedValue >= 10_000_000 && displayedValue < 100_000_000;
+  const hasMDecimals =
+    displayedValue >= 1e6 && displayedValue <= 1e7 && (displayedValue / 1e5) % 10;
+
+  return {
+    [displayedValue % 1000 >= 1 && displayedValue % 1000 < 100 ? 'marginLeft' : '']: '1px',
+    [displayedValue >= 100_000 && stringValueLength % 3 === 0 ? '--font-size-minus' : '']: '2.5px',
+    [displayedValue >= 1000 && stringValueLength % 3 === 1 ? '--font-size-minus' : '']: '-2px',
+    [displayedValue >= 1000 && stringValueLength % 3 === 2 ? '--font-size-minus' : '']: '1.5px',
+    [hasMAnd1Digit ? '--font-size-minus' : '']: '5%',
+    [hasKDecimals ? '--font-size-minus' : '']: '10%',
+    [hasMAnd2Digits || hundredK || hasMDecimals ? '--font-size-minus' : '']: '20%',
+    [displayedValue >= 100000 ? 'fontWeight' : '']: '2px',
   };
+};
 
 const getHundredStyle = (displayedValue, width, wide, support) => {
+  if (displayedValue >= 1000) return getThousandStyle(displayedValue, width, wide, support);
   if (width > 1) return { '--font-size-minus': '-1px' };
   const stringValue = displayedValue.toString();
   const without1 = stringValue.indexOf('1') === -1;
@@ -272,7 +341,7 @@ function CellNumericText({ support = false, wide = false, value, targetValue, wi
         className="cell-numeric"
         style={value >= 100 ? getHundredStyle(value, width, support, wide) : {}}
       >
-        {value}
+        {nFormatter(value, width)}
       </p>
     );
   }
@@ -281,7 +350,7 @@ function CellNumericText({ support = false, wide = false, value, targetValue, wi
       className="cell-numeric target"
       style={targetValue >= 100 ? getHundredStyle(targetValue, width, support, wide) : {}}
     >
-      {targetValue}
+      {nFormatter(targetValue, width)}
     </p>
   ) : (
     <></>
