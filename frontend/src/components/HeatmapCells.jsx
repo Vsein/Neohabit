@@ -262,9 +262,13 @@ function nFormatter(num, length) {
     if (num >= 10_000 && num < 1e6) return `${toNDigits(num / 1000, 6 - numDigitsN).toString()}k`;
     if (num >= 1e6 && num < 1e7) return `${toNDigits(num / 1000, 7 - numDigitsN).toString()}k`;
     if (num >= 1e7 && num < 1e9) return `${toNDigits(num / 1e6, 9 - numDigitsN).toString()}M`;
+    if (num >= 1e9) return `${toNDigits(num / 1e9, 12 - numDigitsN).toString()}B`;
   }
-  if (num >= 1_000_000 && num < 1e9 && length === 3) {
+  if (num >= 1_000_000 && num < 1e9 && length >= 3) {
     return `${toNDigits(num / 1e6, 10 - numDigitsN).toString()}M`;
+  }
+  if (num >= 1e9 && length >= 3) {
+    return `${toNDigits(num / 1e9, 13 - numDigitsN).toString()}B`;
   }
   if (num < 1e6 && numDigitsN <= 3 + 2 * (length - 1))
     return Intl.NumberFormat('en-US').format(num);
