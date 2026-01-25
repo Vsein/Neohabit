@@ -140,7 +140,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               </div>
               <div className="modal-details-block mode-area">
                 <div
-                  className="form-task-description"
+                  className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
                   title="Shows numbers inside of cells, or default to this if target > 16"
                 >
                   <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
@@ -159,7 +159,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   <label>Monochromatic</label>
                 </div>
                 <div
-                  className="form-task-description"
+                  className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
                   title="Darkens the cells if they exceed the target"
                 >
                   <Field

@@ -193,6 +193,10 @@
   & > textarea:focus ~ .form-field-length {
     display: block;
   }
+
+  &.overriden {
+    opacity: 0.4;
+  }
 }
 
 .form-split {
