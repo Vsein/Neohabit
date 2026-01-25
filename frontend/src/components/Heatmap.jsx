@@ -44,10 +44,11 @@ export default function Heatmap({
   is2D = false,
   overridenElimination = undefined,
   overridenNumeric = undefined,
+  overridenMonochromatic = undefined,
 }) {
   const elimination = overridenElimination ?? habit?.more_is_bad;
   const numeric = overridenNumeric ?? habit?.is_numeric;
-  const monochromatic = true; // overridenMonochromatic ?? habit?.is_monochromatic;
+  const monochromatic = overridenMonochromatic ?? habit?.is_monochromatic;
 
   const data = habit?.data ?? [];
   const targets = habit?.targets ?? [];

@@ -4,18 +4,19 @@ import "time"
 import "github.com/google/uuid"
 
 type Habit struct {
-	ID          uuid.UUID
-	UserID      uuid.UUID
-	Name        string
-	Description string
-	Color       string
-	Data        []HabitData
-	Targets     []HabitTarget
-	IsNumeric   *bool      `json:"is_numeric"`
-	MoreIsBad   *bool      `json:"more_is_bad"`
-	DueDate     *time.Time `json:"due_date"`
-	CreatedAt   time.Time  `json:"created_at"`
-	UpdatedAt   time.Time  `json:"updated_at"`
+	ID              uuid.UUID
+	UserID          uuid.UUID
+	Name            string
+	Description     string
+	Color           string
+	Data            []HabitData
+	Targets         []HabitTarget
+	IsNumeric       *bool      `json:"is_numeric"`
+	IsMonochromatic *bool      `json:"is_monochromatic"`
+	MoreIsBad       *bool      `json:"more_is_bad"`
+	DueDate         *time.Time `json:"due_date"`
+	CreatedAt       time.Time  `json:"created_at"`
+	UpdatedAt       time.Time  `json:"updated_at"`
 }
 
 type HabitFilter struct {
@@ -41,21 +42,22 @@ type HabitDataPeriod struct {
 }
 
 type HabitTarget struct {
-	ID          uuid.UUID
-	HabitID     uuid.UUID
-	DateStart   time.Time `json:"date_start"`
-	DateEnd     time.Time `json:"date_end"`
-	Value       int
-	Period      int
-	ValueUnit   string
-	PeriodUnit  PeriodUnit
-	IsASequence bool
-	Sequence    []int
-	IsArchiving bool
-	IsNumeric   bool
-	MoreIsBad   bool
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID              uuid.UUID
+	HabitID         uuid.UUID
+	DateStart       time.Time `json:"date_start"`
+	DateEnd         time.Time `json:"date_end"`
+	Value           int
+	Period          int
+	ValueUnit       string
+	PeriodUnit      PeriodUnit
+	IsASequence     bool
+	Sequence        []int
+	IsArchiving     bool
+	IsNumeric       bool
+	IsMonochromatic bool
+	MoreIsBad       bool
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 }
 
 type PeriodUnit uint8

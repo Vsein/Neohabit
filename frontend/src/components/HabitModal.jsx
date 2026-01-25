@@ -65,6 +65,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
           description: habit?.description,
           color: habit?.color,
           is_numeric: habit?.is_numeric,
+          is_monochromatic: habit?.is_monochromatic,
           more_is_bad: habit?.more_is_bad,
         }}
         onSubmit={onSubmit}
@@ -130,6 +131,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 habit={habit}
                 overridenElimination={values.more_is_bad}
                 overridenNumeric={values.is_numeric}
+                overridenMonochromatic={values.is_monochromatic}
               />
             )}
             <div className="modal-details-habit-wrapper">
@@ -137,6 +139,25 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <DescriptionField rows="10" />
               </div>
               <div className="modal-details-block mode-area">
+                <div
+                  className="form-task-description"
+                  title="Shows numbers inside of cells, or default to this if target > 16"
+                >
+                  <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
+                  <label>Show as numbers</label>
+                </div>
+                <div
+                  className="form-task-description"
+                  title="Similar to github/anki style heatmaps"
+                >
+                  <Field
+                    name="is_monochromatic"
+                    component="input"
+                    type="checkbox"
+                    className="checkbox"
+                  />
+                  <label>Monochromatic</label>
+                </div>
                 <div
                   className="form-task-description"
                   title="Darkens the cells if they exceed the target"
@@ -148,13 +169,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     className="checkbox"
                   />
                   <label>More is bad</label>
-                </div>
-                <div
-                  className="form-task-description"
-                  title="Shows numbers inside of cells, or default to this if target > 16"
-                >
-                  <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
-                  <label>Show as numbers</label>
                 </div>
               </div>
               <div className="modal-details-block color-area">
