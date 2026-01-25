@@ -45,6 +45,10 @@ export default function Heatmap({
   overridenElimination = undefined,
   overridenNumeric = undefined,
 }) {
+  const elimination = overridenElimination ?? habit?.more_is_bad;
+  const numeric = overridenNumeric ?? habit?.is_numeric;
+  const monochromatic = true; // overridenMonochromatic ?? habit?.is_monochromatic;
+
   const data = habit?.data ?? [];
   const targets = habit?.targets ?? [];
 
@@ -125,9 +129,6 @@ export default function Heatmap({
     (b) => b,
   );
 
-  const elimination = overridenElimination ?? habit?.more_is_bad;
-  const numeric = overridenNumeric ?? habit?.is_numeric;
-
   const firstDataIndex = data.findIndex((d) => areAscending(windowDateStart || dateStart, d.date));
   let j = firstDataIndex === -1 ? data.length : firstDataIndex;
 
@@ -137,6 +138,7 @@ export default function Heatmap({
       : undefined;
 
   // Populating buckets with data and turning them into cells
+  let maxValue = 0;
   const Cells = buckets.map((b, i) => {
     // Case 1. Handle <target cells> that already have a determined dateStart, dateEnd and targetValue
     if (typeof b.targetIndex === 'number') {
@@ -146,6 +148,7 @@ export default function Heatmap({
         value += data[j].value;
         j += 1;
       }
+      maxValue = Math.max(maxValue, value);
       return (
         <CellPeriod
           key={i}
@@ -162,6 +165,7 @@ export default function Heatmap({
           vertical={vertical}
           elimination={elimination}
           numeric={numeric}
+          monochromatic={monochromatic}
           is2D={is2D}
         />
       );
@@ -195,6 +199,7 @@ export default function Heatmap({
 
       cell.value += data[j].value;
       cell.dateEnd = endOfDay(date);
+      maxValue = Math.max(maxValue, cell.value);
       j += 1;
       bucketHasDataPoints = true;
     }
@@ -227,6 +232,7 @@ export default function Heatmap({
             vertical={vertical}
             elimination={elimination}
             numeric={numeric}
+            monochromatic={monochromatic}
             is2D={is2D}
           />
         ))}
@@ -237,7 +243,7 @@ export default function Heatmap({
   return (
     <div
       className={`overview-habit-cells ${is2D ? 'weekly' : ''}`}
-      style={{ '--numeric-text-color': getNumericTextColor(habit.color) }}
+      style={{ '--numeric-text-color': getNumericTextColor(habit.color), '--max-value': maxValue }}
     >
       {Cells}
     </div>

@@ -49,6 +49,22 @@ $cell-margin: 2px;
   @include cell-common;
   margin-block: calc(2px - var(--negate-margin-block));
 
+  &.monochromatic {
+    --hue: round(up, calc(var(--value) / var(--max-value) * 100%), 5%);
+    --hue-bg: calc(100% - var(--hue) - 60%);
+    --blank-cell-color: color-mix(
+      in oklab,
+      var(--monochromatic-color) var(--hue),
+      var(--monochromatic-base-color) var(--hue-bg)
+    );
+    --cell-border-color: color-mix(
+      in srgb,
+      white calc(var(--dark) * 10%),
+      black calc((1 - var(--dark)) * 15%)
+    );
+    --cell-shadow-color: transparent;
+  }
+
   &.dotted {
     background: repeating-conic-gradient(var(--color) 0% 27%, transparent 0% 100%) 50% / 3px 3px;
   }

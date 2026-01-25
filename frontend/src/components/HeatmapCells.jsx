@@ -22,13 +22,20 @@ function Cell({
   numeric,
   targetValue = 1,
   elimination,
+  monochromatic,
   dummy = false,
 }) {
   const trueColor =
     numeric && elimination && value > targetValue ? getEliminationColor(color) : color;
   const dispatch = useDispatch();
   const style = {
-    [value ? '--blank-cell-color' : '']: trueColor,
+    ...(value &&
+      (!monochromatic
+        ? { '--blank-cell-color': trueColor }
+        : {
+            '--monochromatic-color': trueColor,
+            '--value': value,
+          })),
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
@@ -36,8 +43,8 @@ function Cell({
   return (
     <div
       className={`cell centering-flex ${dummy ? 'dummy' : ''} ${
-        value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
-      } ${value ? 'nonzero' : ''}`}
+        (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
+      } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}`}
       style={style}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
       onMouseLeave={(e) => tipContent && hideTip()}
@@ -54,7 +61,7 @@ function Cell({
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      {numeric && (
+      {!monochromatic && numeric && (
         <CellNumericText width={vertical ? 1 : length} value={value} targetValue={targetValue} />
       )}
     </div>
@@ -120,6 +127,7 @@ function CellPeriod({
   targetStart = undefined,
   targetEnd = undefined,
   elimination = false,
+  monochromatic = false,
   numeric = false,
   is2D = false,
 }) {
@@ -138,16 +146,21 @@ function CellPeriod({
       }
     : undefined;
   if (isSameWeek(dateStart, dateEnd) || !is2D || !vertical) {
-    return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (
+    return numeric ||
+      monochromatic ||
+      value > 16 ||
+      (value <= 1 && targetValue === 1) ||
+      targetValue > 16 ? (
       <Cell
         color={color}
         tipContent={tipContent}
         value={value}
         length={diffDays}
         vertical={vertical}
-        numeric={numeric || value > 16 || (value === 0 && targetValue > 16)}
+        numeric={numeric || ((value > 16 || (value === 0 && targetValue > 16)) && !monochromatic)}
         targetValue={targetValue}
         elimination={elimination}
+        monochromatic={monochromatic}
         dummy={dummy}
       />
     ) : (
@@ -173,7 +186,13 @@ function CellPeriod({
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    [value ? '--blank-cell-color' : '']: trueColor,
+    ...(value &&
+      (!monochromatic
+        ? { '--blank-cell-color': trueColor }
+        : {
+            '--monochromatic-color': trueColor,
+            '--value': value,
+          })),
     '--height': 7,
     '--width': width,
   };
@@ -192,13 +211,14 @@ function CellPeriod({
     '--width': 1,
     visibility: afterHeight !== 0 ? 'visible' : 'hidden',
   };
-  const displayNumeric = value > 1 || (value === 0 && targetValue > 1) || numeric;
+  const displayNumeric =
+    (value > 1 || (value === 0 && targetValue > 1) || numeric) && !monochromatic;
 
   return (
     <>
       <div
         className={`cell-period centering-flex ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
-          value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
+          (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
         } ${value ? 'nonzero' : ''}`}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
