@@ -63,11 +63,12 @@ type Habit struct {
 	Data      *[]HabitData `json:"data,omitempty"`
 
 	// Description Activity description
-	Description *Description `json:"description,omitempty"`
-	DueDate     *Date        `json:"due_date,omitempty"`
-	ID          UUID         `json:"id"`
-	IsNumeric   *bool        `json:"is_numeric,omitempty"`
-	MoreIsBad   *bool        `json:"more_is_bad,omitempty"`
+	Description     *Description `json:"description,omitempty"`
+	DueDate         *Date        `json:"due_date,omitempty"`
+	ID              UUID         `json:"id"`
+	IsMonochromatic *bool        `json:"is_monochromatic,omitempty"`
+	IsNumeric       *bool        `json:"is_numeric,omitempty"`
+	MoreIsBad       *bool        `json:"more_is_bad,omitempty"`
 
 	// Name Activity name
 	Name      Name           `json:"name"`

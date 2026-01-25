@@ -11,7 +11,6 @@ import {
 } from 'date-fns';
 import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
-import { getEliminationColor } from '../hooks/usePaletteGenerator';
 
 function Cell({
   color,
@@ -22,13 +21,19 @@ function Cell({
   numeric,
   targetValue = 1,
   elimination,
+  monochromatic,
   dummy = false,
 }) {
-  const trueColor =
-    numeric && elimination && value > targetValue ? getEliminationColor(color) : color;
+  const applyEliminationColor = numeric && elimination && value > targetValue;
   const dispatch = useDispatch();
   const style = {
-    [value ? '--blank-cell-color' : '']: trueColor,
+    ...(value &&
+      (!monochromatic
+        ? { [applyEliminationColor ? '--base-color' : '--blank-cell-color']: color }
+        : {
+            '--monochromatic-color': color,
+            '--value': value,
+          })),
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
@@ -36,8 +41,10 @@ function Cell({
   return (
     <div
       className={`cell centering-flex ${dummy ? 'dummy' : ''} ${
-        value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
-      } ${value ? 'nonzero' : ''}`}
+        (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
+      } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}
+      ${applyEliminationColor ? 'elimination' : ''}
+      `}
       style={style}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
       onMouseLeave={(e) => tipContent && hideTip()}
@@ -93,13 +100,14 @@ function CellFractured({
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      {[...Array(+fractions)].map((point, index) => (
+      {[...Array(+fractions)].map((_, index) => (
         <div
           key={index}
-          className={`cell-fraction ${index < value ? 'nonzero' : ''}`}
+          className={`cell-fraction ${index < value ? 'nonzero' : ''} ${index >= targetValue && elimination ? 'elimination' : ''}`}
           style={{
-            [index < value ? 'backgroundColor' : '']:
-              index >= targetValue && elimination ? getEliminationColor(color) : color,
+            [index >= targetValue && elimination
+              ? '--base-color'
+              : index < value && '--blank-cell-color']: color,
           }}
         />
       ))}
@@ -120,6 +128,7 @@ function CellPeriod({
   targetStart = undefined,
   targetEnd = undefined,
   elimination = false,
+  monochromatic = false,
   numeric = false,
   is2D = false,
 }) {
@@ -137,17 +146,19 @@ function CellPeriod({
         actions: value,
       }
     : undefined;
+  const showNumberInCell = !monochromatic && (numeric || value > 16 || targetValue > 16);
   if (isSameWeek(dateStart, dateEnd) || !is2D || !vertical) {
-    return numeric || value > 16 || (value <= 1 && targetValue === 1) || targetValue > 16 ? (
+    return showNumberInCell || monochromatic ? (
       <Cell
         color={color}
         tipContent={tipContent}
         value={value}
         length={diffDays}
         vertical={vertical}
-        numeric={numeric || value > 16 || (value === 0 && targetValue > 16)}
+        numeric={showNumberInCell}
         targetValue={targetValue}
         elimination={elimination}
+        monochromatic={monochromatic}
         dummy={dummy}
       />
     ) : (
@@ -164,16 +175,20 @@ function CellPeriod({
     );
   }
 
-  const trueColor =
-    (value > 1 || numeric) && !dummy && elimination && value > targetValue
-      ? getEliminationColor(color)
-      : color;
+  const applyEliminationColor =
+    (value > 1 || numeric) && !dummy && elimination && value > targetValue;
 
   let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    [value ? '--blank-cell-color' : '']: trueColor,
+    ...(value &&
+      (!monochromatic
+        ? { [applyEliminationColor ? '--base-color' : '--blank-cell-color']: color }
+        : {
+            '--monochromatic-color': color,
+            '--value': value,
+          })),
     '--height': 7,
     '--width': width,
   };
@@ -192,14 +207,16 @@ function CellPeriod({
     '--width': 1,
     visibility: afterHeight !== 0 ? 'visible' : 'hidden',
   };
-  const displayNumeric = value > 1 || (value === 0 && targetValue > 1) || numeric;
+
+  const showNumberInCellPeriod =
+    !monochromatic && (showNumberInCell || value > 1 || (value === 0 && targetValue > 1));
 
   return (
     <>
       <div
         className={`cell-period centering-flex ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
-          value >= 100 || (value === 0 && targetValue >= 100) ? 'hundred' : ''
-        } ${value ? 'nonzero' : ''}`}
+          (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
+        } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}`}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
         onMouseLeave={hideTip}
@@ -215,16 +232,16 @@ function CellPeriod({
           changeCellOffset(e, tipContent, value, true);
         }}
       >
-        {displayNumeric && !!width && (
+        {showNumberInCellPeriod && !!width && (
           <CellNumericText wide width={width} value={value} targetValue={targetValue} />
         )}
         <div className="cell-period-before centering-flex" style={styleBefore}>
-          {!width && diffDays <= 7 && displayNumeric && (
+          {!width && diffDays <= 7 && showNumberInCellPeriod && (
             <CellNumericText support width={1} value={value} targetValue={targetValue} />
           )}
         </div>
         <div className="cell-period-after centering-flex" style={styleAfter}>
-          {!width && diffDays <= 7 && displayNumeric && (
+          {!width && diffDays <= 7 && showNumberInCellPeriod && (
             <CellNumericText support width={1} value={value} targetValue={targetValue} />
           )}
         </div>
@@ -236,7 +253,7 @@ function CellPeriod({
               '--offset-top': 7 - beforeHeight,
             }}
           >
-            {!width && displayNumeric && (
+            {!width && showNumberInCellPeriod && (
               <CellNumericText width={1} value={value} targetValue={targetValue} />
             )}
           </div>

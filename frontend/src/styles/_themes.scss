@@ -1,5 +1,6 @@
 :root.light {
   color-scheme: light;
+  --dark: 0;
   --signature-color: #1d60c1;
   --bright-signature-color: #2375ea;
   --signature-color-transparent: #1d60c133;
@@ -10,6 +11,7 @@
   --secondary-background-color: #f6f8fa;
   --chooser-bg-color: #f6f8fa;
   --support-background-color: #efefef;
+  --monochromatic-base-color: #e2e2e2;
   --blank-cell-color: #e2e2e2;
   --blank-cell-color-rgb: rgb(239, 239, 239);
   --cell-shadow-color: transparent;
@@ -76,6 +78,7 @@
 
 :root {
   color-scheme: dark;
+  --dark: 1;
   --signature-color: #00c4cd;
   --bright-signature-color: #00c4cd;
   --signature-color-transparent: #00c4cd33;
@@ -86,6 +89,7 @@
   --secondary-background-color: #22272e;
   --chooser-bg-color: #444;
   --support-background-color: #1c2128;
+  --monochromatic-base-color: #1c2128;
   --blank-cell-color: #242424;
   --blank-cell-color-rgb: rgb(36, 36, 36);
   --cell-shadow-color: #3c3c3c;

@@ -25,6 +25,7 @@ const (
 			h.color,
 			h.due_date,
 			h.is_numeric,
+			h.is_monochromatic,
 			h.more_is_bad,
 			h.created_at,
 			h.updated_at,
@@ -45,6 +46,7 @@ const (
 			h.color,
 			h.due_date,
 			h.is_numeric,
+			h.is_monochromatic,
 			h.more_is_bad,
 			h.created_at,
 			h.updated_at,
@@ -59,10 +61,10 @@ const (
 		ORDER BY h.created_at
 	`
 	queryCreateHabit = `
-		INSERT INTO habits (id, user_id, name, description, color, due_date, is_numeric, more_is_bad, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+		INSERT INTO habits (id, user_id, name, description, color, due_date, is_numeric, is_monochromatic, more_is_bad, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 	`
-	queryUpdateHabit = `UPDATE habits SET name = $2, description = $3, color = $4, is_numeric = $5, more_is_bad = $6, updated_at = $7 WHERE id = $1`
+	queryUpdateHabit = `UPDATE habits SET name = $2, description = $3, color = $4, is_numeric = $5, is_monochromatic = $6, more_is_bad = $7, updated_at = $8 WHERE id = $1`
 	queryDeleteHabit = `DELETE FROM habits WHERE id = $1`
 )
 
@@ -123,6 +125,7 @@ func (r *Habit) List(ctx context.Context, userID uuid.UUID) ([]*entity.Habit, er
 			&habit.Color,
 			&habit.DueDate,
 			&habit.IsNumeric,
+			&habit.IsMonochromatic,
 			&habit.MoreIsBad,
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
@@ -164,6 +167,7 @@ func (r *Habit) ListHabitsOutsideProjects(ctx context.Context, userID uuid.UUID)
 			&habit.Color,
 			&habit.DueDate,
 			&habit.IsNumeric,
+			&habit.IsMonochromatic,
 			&habit.MoreIsBad,
 			&habit.CreatedAt,
 			&habit.UpdatedAt,
@@ -194,6 +198,7 @@ func (r *Habit) Create(ctx context.Context, habit *entity.Habit) error {
 		habit.Color,
 		habit.DueDate,
 		habit.IsNumeric,
+		habit.IsMonochromatic,
 		habit.MoreIsBad,
 		habit.CreatedAt,
 		habit.UpdatedAt,
@@ -216,6 +221,7 @@ func (r *Habit) Update(ctx context.Context, habit *entity.Habit) error {
 		habit.Description,
 		habit.Color,
 		habit.IsNumeric,
+		habit.IsMonochromatic,
 		habit.MoreIsBad,
 		habit.UpdatedAt,
 	)

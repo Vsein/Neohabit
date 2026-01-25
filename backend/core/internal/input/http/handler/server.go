@@ -285,12 +285,13 @@ func (s *server) CreateHabit(
 	}
 
 	habit := &entity.Habit{
-		Name:        request.Body.Name,
-		Description: *request.Body.Description,
-		Color:       *request.Body.Color,
-		IsNumeric:   request.Body.IsNumeric,
-		MoreIsBad:   request.Body.MoreIsBad,
-		UserID:      userID,
+		Name:            request.Body.Name,
+		Description:     *request.Body.Description,
+		Color:           *request.Body.Color,
+		IsNumeric:       request.Body.IsNumeric,
+		IsMonochromatic: request.Body.IsMonochromatic,
+		MoreIsBad:       request.Body.MoreIsBad,
+		UserID:          userID,
 	}
 
 	id, err := s.habits.Create(ctx, habit, request.Body.ProjectID)
@@ -320,13 +321,14 @@ func (s *server) UpdateHabit(
 	}
 
 	habit := &entity.Habit{
-		ID:          request.HabitID,
-		Name:        request.Body.Name,
-		Description: *request.Body.Description,
-		Color:       *request.Body.Color,
-		IsNumeric:   request.Body.IsNumeric,
-		MoreIsBad:   request.Body.MoreIsBad,
-		UserID:      userID,
+		ID:              request.HabitID,
+		Name:            request.Body.Name,
+		Description:     *request.Body.Description,
+		Color:           *request.Body.Color,
+		IsNumeric:       request.Body.IsNumeric,
+		IsMonochromatic: request.Body.IsMonochromatic,
+		MoreIsBad:       request.Body.MoreIsBad,
+		UserID:          userID,
 	}
 
 	err := s.habits.Update(ctx, habit)

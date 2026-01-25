@@ -1227,6 +1227,8 @@ components:
             $ref: '#/components/schemas/HabitTarget'
         is_numeric:
           type: boolean
+        is_monochromatic:
+          type: boolean
         more_is_bad:
           type: boolean
         created_at:

@@ -13,6 +13,7 @@ export default function Habit({
   habit,
   overridenElimination = undefined,
   overridenNumeric = undefined,
+  overridenMonochromatic = undefined,
   dateStart,
   dateEnd,
   vertical = true,
@@ -34,6 +35,7 @@ export default function Habit({
           is2D
           overridenElimination={overridenElimination}
           overridenNumeric={overridenNumeric}
+          overridenMonochromatic={overridenMonochromatic}
         />
       </div>
     </div>
@@ -99,6 +101,7 @@ function HabitModalWrapper({
   onboardingSlideTag = '',
   overridenElimination = undefined,
   overridenNumeric = undefined,
+  overridenMonochromatic = undefined,
   habitPage = false,
 }) {
   const [loaded] = useLoaded();
@@ -167,6 +170,7 @@ function HabitModalWrapper({
         modal={true}
         overridenElimination={overridenElimination}
         overridenNumeric={overridenNumeric}
+        overridenMonochromatic={overridenMonochromatic}
         dateStart={dateStart}
         dateEnd={dateEnd}
         mobile={mobile}
