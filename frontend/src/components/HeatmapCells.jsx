@@ -61,7 +61,7 @@ function Cell({
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      {!monochromatic && numeric && (
+      {numeric && (
         <CellNumericText width={vertical ? 1 : length} value={value} targetValue={targetValue} />
       )}
     </div>
@@ -146,19 +146,16 @@ function CellPeriod({
         actions: value,
       }
     : undefined;
+  const showNumberInCell = !monochromatic && (numeric || value > 16 || targetValue > 16);
   if (isSameWeek(dateStart, dateEnd) || !is2D || !vertical) {
-    return numeric ||
-      monochromatic ||
-      value > 16 ||
-      (value <= 1 && targetValue === 1) ||
-      targetValue > 16 ? (
+    return showNumberInCell || monochromatic ? (
       <Cell
         color={color}
         tipContent={tipContent}
         value={value}
         length={diffDays}
         vertical={vertical}
-        numeric={numeric || ((value > 16 || (value === 0 && targetValue > 16)) && !monochromatic)}
+        numeric={showNumberInCell}
         targetValue={targetValue}
         elimination={elimination}
         monochromatic={monochromatic}
@@ -210,8 +207,8 @@ function CellPeriod({
     '--width': 1,
     visibility: afterHeight !== 0 ? 'visible' : 'hidden',
   };
-  const displayNumeric =
-    (value > 1 || (value === 0 && targetValue > 1) || numeric) && !monochromatic;
+
+  const showNumberInCellPeriod = showNumberInCell || value > 1 || (value === 0 && targetValue > 1);
 
   return (
     <>
@@ -234,16 +231,16 @@ function CellPeriod({
           changeCellOffset(e, tipContent, value, true);
         }}
       >
-        {displayNumeric && !!width && (
+        {showNumberInCellPeriod && !!width && (
           <CellNumericText wide width={width} value={value} targetValue={targetValue} />
         )}
         <div className="cell-period-before centering-flex" style={styleBefore}>
-          {!width && diffDays <= 7 && displayNumeric && (
+          {!width && diffDays <= 7 && showNumberInCellPeriod && (
             <CellNumericText support width={1} value={value} targetValue={targetValue} />
           )}
         </div>
         <div className="cell-period-after centering-flex" style={styleAfter}>
-          {!width && diffDays <= 7 && displayNumeric && (
+          {!width && diffDays <= 7 && showNumberInCellPeriod && (
             <CellNumericText support width={1} value={value} targetValue={targetValue} />
           )}
         </div>
@@ -255,7 +252,7 @@ function CellPeriod({
               '--offset-top': 7 - beforeHeight,
             }}
           >
-            {!width && displayNumeric && (
+            {!width && showNumberInCellPeriod && (
               <CellNumericText width={1} value={value} targetValue={targetValue} />
             )}
           </div>

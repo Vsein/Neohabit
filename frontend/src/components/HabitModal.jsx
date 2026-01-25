@@ -149,7 +149,10 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   />
                   <label>More is bad</label>
                 </div>
-                <div className="form-task-description" title="Shows numbers instead of cells">
+                <div
+                  className="form-task-description"
+                  title="Shows numbers inside of cells, or default to this if target > 16"
+                >
                   <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
                   <label>Show as numbers</label>
                 </div>
