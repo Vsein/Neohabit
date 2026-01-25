@@ -43,11 +43,6 @@ $cell-margin: 2px;
     color: var(--text-color);
     opacity: 1;
   }
-}
-
-.cell {
-  @include cell-common;
-  margin-block: calc(2px - var(--negate-margin-block));
 
   &.monochromatic {
     --hue: round(up, calc(var(--value) / var(--max-value) * 100%), 5%);
@@ -64,6 +59,11 @@ $cell-margin: 2px;
     );
     --cell-shadow-color: transparent;
   }
+}
+
+.cell {
+  @include cell-common;
+  margin-block: calc(2px - var(--negate-margin-block));
 
   &.elimination {
     --blank-cell-color: color-mix(in srgb, black 40%, var(--base-color));

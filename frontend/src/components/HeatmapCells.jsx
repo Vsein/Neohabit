@@ -208,14 +208,15 @@ function CellPeriod({
     visibility: afterHeight !== 0 ? 'visible' : 'hidden',
   };
 
-  const showNumberInCellPeriod = showNumberInCell || value > 1 || (value === 0 && targetValue > 1);
+  const showNumberInCellPeriod =
+    !monochromatic && (showNumberInCell || value > 1 || (value === 0 && targetValue > 1));
 
   return (
     <>
       <div
         className={`cell-period centering-flex ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
           (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
-        } ${value ? 'nonzero' : ''}`}
+        } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}`}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
         onMouseLeave={hideTip}
