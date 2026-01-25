@@ -65,6 +65,10 @@ $cell-margin: 2px;
     --cell-shadow-color: transparent;
   }
 
+  &.elimination {
+    --blank-cell-color: color-mix(in srgb, black 40%, var(--base-color));
+  }
+
   &.dotted {
     background: repeating-conic-gradient(var(--color) 0% 27%, transparent 0% 100%) 50% / 3px 3px;
   }
@@ -202,6 +206,10 @@ $cell-margin: 2px;
   position: relative;
   background-color: var(--blank-cell-color);
   margin: 0;
+
+  &.elimination {
+    --blank-cell-color: color-mix(in srgb, black 40%, var(--base-color));
+  }
 }
 
 .cell-numeric {

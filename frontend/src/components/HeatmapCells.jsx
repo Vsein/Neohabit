@@ -11,7 +11,6 @@ import {
 } from 'date-fns';
 import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
-import { getEliminationColor } from '../hooks/usePaletteGenerator';
 
 function Cell({
   color,
@@ -25,15 +24,14 @@ function Cell({
   monochromatic,
   dummy = false,
 }) {
-  const trueColor =
-    numeric && elimination && value > targetValue ? getEliminationColor(color) : color;
+  const applyEliminationColor = numeric && elimination && value > targetValue;
   const dispatch = useDispatch();
   const style = {
     ...(value &&
       (!monochromatic
-        ? { '--blank-cell-color': trueColor }
+        ? { [applyEliminationColor ? '--base-color' : '--blank-cell-color']: color }
         : {
-            '--monochromatic-color': trueColor,
+            '--monochromatic-color': color,
             '--value': value,
           })),
     [vertical ? '--width' : '--height']: 1,
@@ -44,7 +42,9 @@ function Cell({
     <div
       className={`cell centering-flex ${dummy ? 'dummy' : ''} ${
         (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
-      } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}`}
+      } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}
+      ${applyEliminationColor ? 'elimination' : ''}
+      `}
       style={style}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
       onMouseLeave={(e) => tipContent && hideTip()}
@@ -100,13 +100,14 @@ function CellFractured({
         changeCellOffset(e, tipContent, value, true);
       }}
     >
-      {[...Array(+fractions)].map((point, index) => (
+      {[...Array(+fractions)].map((_, index) => (
         <div
           key={index}
-          className={`cell-fraction ${index < value ? 'nonzero' : ''}`}
+          className={`cell-fraction ${index < value ? 'nonzero' : ''} ${index >= targetValue && elimination ? 'elimination' : ''}`}
           style={{
-            [index < value ? 'backgroundColor' : '']:
-              index >= targetValue && elimination ? getEliminationColor(color) : color,
+            [index >= targetValue && elimination
+              ? '--base-color'
+              : index < value && '--blank-cell-color']: color,
           }}
         />
       ))}
@@ -177,10 +178,8 @@ function CellPeriod({
     );
   }
 
-  const trueColor =
-    (value > 1 || numeric) && !dummy && elimination && value > targetValue
-      ? getEliminationColor(color)
-      : color;
+  const applyEliminationColor =
+    (value > 1 || numeric) && !dummy && elimination && value > targetValue;
 
   let width = differenceInCalendarWeeks(dateEnd, dateStart) - 1;
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
@@ -188,9 +187,9 @@ function CellPeriod({
   const style = {
     ...(value &&
       (!monochromatic
-        ? { '--blank-cell-color': trueColor }
+        ? { [applyEliminationColor ? '--base-color' : '--blank-cell-color']: color }
         : {
-            '--monochromatic-color': trueColor,
+            '--monochromatic-color': color,
             '--value': value,
           })),
     '--height': 7,
