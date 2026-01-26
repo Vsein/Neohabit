@@ -110,7 +110,10 @@ export default function Heatmap({
       : [];
 
   const targetBuckets = targets.slice(Math.max(fti, 0), lti + 1).flatMap((t, i, ts) => {
-    const bucketsDateStart = maxValidDate(startOfDay(new Date(t.date_start)), windowDateStart);
+    const bucketsDateStart = maxValidDate(
+      startOfDay(new Date(t.date_start)),
+      startOfDay(windowDateStart),
+    );
     const nextTarget = i + 1 < lti + 1 ? ts[i + 1] : undefined;
     const nextTargetDateStart = startOfDay(new Date(nextTarget?.date_start));
     const bucketsDateEnd = minValidDate(
