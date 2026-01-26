@@ -514,6 +514,7 @@ $cell-weekdays-width: 33px;
 }
 
 .landing-habits {
+  --is-big: 0;
   display: grid;
   grid-template-rows: 17px;
   row-gap: 2px;
