@@ -33,7 +33,7 @@ You can see the features overview with examples on the
 - Ability to set targets, and change them on the go
 - Tracking numeric values and setting numeric targets
 
-### Custom heatmaps, with all the features above
+### Custom heatmaps, with all the above features
 
 #### Monochromatic (github/anki-style)
 
