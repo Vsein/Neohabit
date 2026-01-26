@@ -149,6 +149,7 @@ Excellent for planning and tracking progressions:
 - Desktop-focused
 - A working mobile interface (browser-only, no app)
 - Possible to create multiple accounts
+- Drag and drop projects or habits to rearrange their order
 - Tooltips with the selected period's information (available when you hover on cells)
 - Habit and project names are clickable and lead to their individual pages (all links
   also available in the sidebar)
