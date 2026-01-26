@@ -31,7 +31,7 @@ You can see the features overview with examples on the
 - Intutive design for habits that happen more than once a day
 - Habits happen X times in Y days, where X and Y are positive integers
 - Ability to set targets, and change them on the go
-- Tracking numeric values and setting numeric targets
+- Tracking numeric values (up to 2 billion) and setting numeric targets
 
 ### Custom heatmaps, with all the above features
 
@@ -63,7 +63,10 @@ You can see the features overview with examples on the
   </picture>
 </p>
 
-#### Fractured, designed specifically to track how many times a habit has to be done (goes up to 16)
+#### Fractured
+
+Designed specifically to track habits that have to happen many times a day
+(available up to 16, then defaults to numeric):
 
 <p float="left">
   <picture>
@@ -77,7 +80,7 @@ You can see the features overview with examples on the
   </picture>
 </p>
 
-#### Once in a blue moon:
+#### Or track habits that happen once in a blue moon:
 
 <p float="left">
   <picture>
@@ -119,6 +122,9 @@ Excellent for planning and tracking progressions:
 - Desktop-focused
 - A working mobile interface (browser-only, no app)
 - Possible to create multiple accounts
+- Tooltips with the selected period's information (available when you hover on cells)
+- Habit and project names are clickable and lead to their individual pages (all links
+  also available in the sidebar)
 
 ## Installation
 
