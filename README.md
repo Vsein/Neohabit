@@ -37,50 +37,62 @@ You can see the features overview with examples on the
 
 #### Monochromatic (github/anki-style)
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-dark.png" />
-  <img src="frontend/src/assets/heatmap-monochromatic-default-light.png" width="49%" style="margin-right: 1%" />
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-dark.png" />
-  <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" width="49%"/>
-</picture>
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-dark.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-default-light.png" width="49%"/>
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-dark.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" width="49%"/>
+  </picture>
+</p>
 
 #### Numeric
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
-  <img src="frontend/src/assets/heatmap-numeric-default-light.png" width="49%" style="margin-right: 1%" />
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-dark.png" />
-  <img src="frontend/src/assets/heatmap-numeric-custom-light.png" width="49%"/>
-</picture>
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-default-light.png" width="49%"/>
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-custom-light.png" width="49%"/>
+  </picture>
+</p>
 
 #### Fractured
 
 Designed specifically to track habits that have to happen many times a day
 (available up to 16, then defaults to numeric):
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-dark.png" />
-  <img src="frontend/src/assets/heatmap-fractured-default-light.png" width="49%" style="margin-right: 1%" />
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dark.png" />
-  <img src="frontend/src/assets/heatmap-fractured-custom-light.png" width="49%"/>
-</picture>
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-dark.png" />
+    <img src="frontend/src/assets/heatmap-fractured-default-light.png" width="49%"/>
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dark.png" />
+    <img src="frontend/src/assets/heatmap-fractured-custom-light.png" width="49%"/>
+  </picture>
+</p>
 
 #### Or track habits that happen once in a blue moon:
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" />
-  <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" width="49%" style="margin-right: 1%" />
-</picture>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-45-days-dark.png" />
-  <img src="frontend/src/assets/heatmap-45-days-light.png" width="49%"/>
-</picture>
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" width="49%"/>
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-45-days-dark.png" />
+    <img src="frontend/src/assets/heatmap-45-days-light.png" width="49%"/>
+  </picture>
+</p>
 
 ### Combine habits into projects
 
