@@ -318,7 +318,7 @@ const getThousandStyle = (displayedValue, width) => {
   const stringValueLength = stringValue.toString().length;
 
   const hasKDecimals =
-    displayedValue >= 1000 && displayedValue <= 10_000 && (displayedValue / 100) % 10;
+    displayedValue >= 1000 && displayedValue <= 10_000 && Math.floor((displayedValue / 100) % 10);
   const hundredK = displayedValue >= 100_000 && displayedValue < 1_000_000;
   const hasMAnd1Digit = displayedValue >= 1_000_000 && displayedValue < 100_000_000;
   const hasMAnd2Digits = displayedValue >= 10_000_000 && displayedValue < 100_000_000;
@@ -333,7 +333,7 @@ const getThousandStyle = (displayedValue, width) => {
     ...(hasMAnd2Digits || hundredK || hasKDecimals || millionAsBDecimal
       ? {
           marginTop: '3px',
-          '--font-size-minus': '20%',
+          '--font-size-minus': '15%',
         }
       : {}),
     [displayedValue >= 100000 ? 'fontWeight' : '']: '2px',
