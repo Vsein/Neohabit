@@ -33,17 +33,68 @@ You can see the features overview with examples on the
 - Ability to set targets, and change them on the go
 - Tracking numeric values and setting numeric targets
 
-### Github/Anki-style heatmaps, with all the above features
+### Custom heatmaps, with all the features above
 
-<div align="center">
+#### Monochromatic (github/anki-style)
+
+<p float="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-heatmaps-dark.png" />
-    <img src="frontend/src/assets/neohabit-readme-heatmaps-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-dark.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-default-light.png" />
   </picture>
-</div>
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-dark.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" />
+  </picture>
+</p>
+
+#### Numeric
+
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-default-light.png" />
+  </picture>
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-custom-light.png" />
+  </picture>
+</p>
+
+#### Fractured, designed specifically to track how many times a habit has to be done (goes up to 16)
+
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-dark.png" />
+    <img src="frontend/src/assets/heatmap-fractured-default-light.png" />
+  </picture>
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dark.png" />
+    <img src="frontend/src/assets/heatmap-fractured-custom-light.png" />
+  </picture>
+</p>
+
+#### Once in a blue moon:
+
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" />
+  </picture>
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-45-days-dark.png" />
+    <img src="frontend/src/assets/heatmap-45-days-light.png" />
+  </picture>
+</p>
+<br>
 
 ### Combine habits into projects
 
+All displayed in a 1-dimensional mode, which is more suitable for day-to-day tracking:
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-projects-dark.png" />
