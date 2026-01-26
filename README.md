@@ -28,8 +28,8 @@
 You can see the features overview with examples on the
 [landing](https://vsein.github.io/neohabit). The list below repeats its contents:
 
+- Habits that happen any amount of times in any amount of days
 - Intutive design for habits that happen more than once a day
-- Habits happen X times in Y days, where X and Y are positive integers
 - Ability to set targets, and change them on the go
 - Tracking numeric values (up to 2 billion) and setting numeric targets
 
