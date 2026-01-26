@@ -53,8 +53,8 @@ You can see the features overview with examples on the
 
 <p float="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-default-light.png" width="49%"/>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-blue-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-default-blue-light.png" width="49%"/>
   </picture>
   &nbsp;
   <picture>
