@@ -58,8 +58,8 @@ You can see the features overview with examples on the
   </picture>
   &nbsp;
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-true-blue-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-custom-true-blue-light.png" width="49%"/>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-deep-blue-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-custom-deep-blue-light.png" width="49%"/>
   </picture>
 </p>
 
