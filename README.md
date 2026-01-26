@@ -97,12 +97,39 @@ Designed specifically to track habits that have to happen many times a day
 ### Combine habits into projects
 
 All displayed in a 1-dimensional mode, which is more suitable for day-to-day tracking:
-<div align="center">
+<p float="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-projects-dark.png" />
-    <img src="frontend/src/assets/neohabit-readme-projects-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-languages-dark.png" />
+    <img src="frontend/src/assets/project-languages-light.png" width="49%"/>
   </picture>
-</div>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-fitness-dark.png" />
+    <img src="frontend/src/assets/project-fitness-light.png" width="49%"/>
+  </picture>
+</p>
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-worklife-dark.png" />
+    <img src="frontend/src/assets/project-worklife-light.png" width="49%"/>
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-social-dark.png" />
+    <img src="frontend/src/assets/project-social-light.png" width="49%"/>
+  </picture>
+</p>
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-cleaning-dark.png" />
+    <img src="frontend/src/assets/project-cleaning-light.png" width="49%"/>
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-meds-dark.png" />
+    <img src="frontend/src/assets/project-meds-light.png" width="49%"/>
+  </picture>
+</p>
 
 ### Skilltrees
 
