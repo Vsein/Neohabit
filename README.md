@@ -40,12 +40,12 @@ You can see the features overview with examples on the
 <p float="left">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-default-light.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-default-light.png" width="49%"/>
   </picture>
-  &nbsp; &nbsp;
+  &nbsp;
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" width="49%"/>
   </picture>
 </p>
 
@@ -54,12 +54,12 @@ You can see the features overview with examples on the
 <p float="left">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-default-light.png" />
+    <img src="frontend/src/assets/heatmap-numeric-default-light.png" width="49%"/>
   </picture>
-  &nbsp; &nbsp;
+  &nbsp;
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-custom-light.png" />
+    <img src="frontend/src/assets/heatmap-numeric-custom-light.png" width="49%"/>
   </picture>
 </p>
 
@@ -68,12 +68,12 @@ You can see the features overview with examples on the
 <p float="left">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-fractured-default-light.png" />
+    <img src="frontend/src/assets/heatmap-fractured-default-light.png" width="49%"/>
   </picture>
-  &nbsp; &nbsp;
+  &nbsp;
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-fractured-custom-light.png" />
+    <img src="frontend/src/assets/heatmap-fractured-custom-light.png" width="49%"/>
   </picture>
 </p>
 
@@ -82,12 +82,12 @@ You can see the features overview with examples on the
 <p float="left">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" />
+    <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" width="49%"/>
   </picture>
-  &nbsp; &nbsp;
+  &nbsp;
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-45-days-dark.png" />
-    <img src="frontend/src/assets/heatmap-45-days-light.png" />
+    <img src="frontend/src/assets/heatmap-45-days-light.png" width="49%"/>
   </picture>
 </p>
 
