@@ -75,8 +75,8 @@ Designed specifically to track habits that have to happen many times a day
   </picture>
   &nbsp;
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-fractured-custom-light.png" width="49%"/>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-sky-blue-dark.png" />
+    <img src="frontend/src/assets/heatmap-fractured-custom-sky-blue-light.png" width="49%"/>
   </picture>
 </p>
 
