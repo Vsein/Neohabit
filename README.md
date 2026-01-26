@@ -80,6 +80,19 @@ You can see the features overview with examples on the
   </tr>
 </table>
 
+<div style="display: flex; flex-wrap: wrap; gap: 3rem; justify-content: center;">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-default-light.png"
+         style="max-width: 100%; width: 49%; height: auto; object-fit: contain;"/>
+  </picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-custom-light.png" 
+         style="max-width: 100%; width: 49%; height: auto; object-fit: contain;"/>
+  </picture>
+</div>
+
 #### Fractured
 
 Designed specifically to track habits that have to happen many times a day
