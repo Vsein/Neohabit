@@ -4,6 +4,7 @@ import {
   addDays,
   startOfDay,
   endOfDay,
+  startOfWeek,
   min,
   max,
   subMilliseconds,
@@ -81,6 +82,15 @@ export default function Heatmap({
         }
       : [];
 
+  const firstVerticalDummyBucket = is2D
+    ? {
+        dateStart: startOfWeek(dateStart),
+        dateEnd: subMilliseconds(dateStart, 1),
+        value: 0,
+        dummy: true,
+      }
+    : [];
+
   const lastBucket = !lastTarget
     ? {
         dateStart: startOfDay(habitStartDate),
@@ -126,9 +136,13 @@ export default function Heatmap({
       : [];
   });
 
-  const buckets = [firstDummyBucket, bucketBeforeTargetBucket, targetBuckets, lastBucket].flatMap(
-    (b) => b,
-  );
+  const buckets = [
+    firstDummyBucket,
+    firstVerticalDummyBucket,
+    bucketBeforeTargetBucket,
+    targetBuckets,
+    lastBucket,
+  ].flatMap((b) => b);
 
   const firstDataIndex = data.findIndex((d) => areAscending(windowDateStart || dateStart, d.date));
   let j = firstDataIndex === -1 ? data.length : firstDataIndex;
@@ -173,7 +187,11 @@ export default function Heatmap({
     }
 
     // Case 2. Handle <bucketed cells>
-    let cell = { dateStart: max([b.dateStart, dateStart]), value: 0, dummy: b.dummy };
+    let cell = {
+      dateStart: !b.dummy && !is2D ? max([b.dateStart, dateStart]) : b.dateStart,
+      value: 0,
+      dummy: b.dummy,
+    };
     const cells = [];
 
     let date;
