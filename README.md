@@ -70,8 +70,8 @@ Designed specifically to track habits that have to happen many times a day
 
 <p float="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-fractured-default-light.png" width="49%"/>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" />
+    <img src="frontend/src/assets/heatmap-fractured-default-bluer-light.png" width="49%"/>
   </picture>
   &nbsp;
   <picture>
