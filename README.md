@@ -54,7 +54,7 @@ You can see the features overview with examples on the
 <p float="left">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-default-light.png" width="455"/>
+    <img src="frontend/src/assets/heatmap-numeric-default-light.png" width="450"/>
   </picture>
   &nbsp;
   <picture>
@@ -62,6 +62,23 @@ You can see the features overview with examples on the
     <img src="frontend/src/assets/heatmap-numeric-custom-light.png" width="455"/>
   </picture>
 </p>
+
+<table>
+  <tr>
+    <td align="center">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
+        <img src="frontend/src/assets/heatmap-numeric-default-light.png" width="100%"/>
+      </picture>
+    </td>
+    <td align="center">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-dark.png" />
+        <img src="frontend/src/assets/heatmap-numeric-custom-light.png" width="100%"/>
+      </picture>
+    </td>
+  </tr>
+</table>
 
 #### Fractured
 
