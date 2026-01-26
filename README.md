@@ -84,13 +84,13 @@ You can see the features overview with examples on the
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
     <img src="frontend/src/assets/heatmap-numeric-default-light.png"
-         style="flex: 1 0 300px; max-width: 100%; height: auto; object-fit: contain;"/>
+         style="flex: 1 0 300px; max-width: 410px; height: auto; object-fit: contain;"/>
   </picture>
   &nbsp;
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-dark.png" />
     <img src="frontend/src/assets/heatmap-numeric-custom-light.png" 
-         style="flex: 1 0 300px; max-width: 100%; height: auto; object-fit: contain;"/>
+         style="flex: 1 0 300px; max-width: 410px; height: auto; object-fit: contain;"/>
   </picture>
 </div>
 
