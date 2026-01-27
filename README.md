@@ -137,8 +137,8 @@ Excellent for planning and tracking progressions:
 
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-skilltrees-dark.png" />
-    <img src="frontend/src/assets/neohabit-readme-skilltrees-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/skilltree-cyan-dark.png" />
+    <img src="frontend/src/assets/skilltree-cyan-light.png" />
   </picture>
 </div>
 
