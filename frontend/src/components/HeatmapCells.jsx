@@ -13,7 +13,6 @@ import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
 
 function Cell({
-  color,
   tipContent = undefined,
   value,
   length,
@@ -27,13 +26,7 @@ function Cell({
   const applyEliminationColor = numeric && elimination && value > targetValue;
   const dispatch = useDispatch();
   const style = {
-    ...(value &&
-      (!monochromatic
-        ? { [applyEliminationColor ? '--base-color' : '--blank-cell-color']: color }
-        : {
-            '--monochromatic-color': color,
-            '--value': value,
-          })),
+    [value && monochromatic ? '--value' : '']: value,
     [vertical ? '--width' : '--height']: 1,
     [vertical ? '--height' : '--width']: length,
   };
@@ -69,7 +62,6 @@ function Cell({
 }
 
 function CellFractured({
-  color,
   tipContent = undefined,
   value,
   targetValue,
@@ -84,7 +76,7 @@ function CellFractured({
   return (
     <div
       className={`cell fractured f${fractions} ${dummy ? 'dummy' : ''} ${length > 1 ? 'long' : ''} ${vertical ? 'vertical' : ''}`}
-      style={{ '--color': color, '--length': length }}
+      style={{ '--length': length }}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
       onMouseLeave={(e) => tipContent && hideTip()}
       onClick={(e) => {
@@ -104,11 +96,6 @@ function CellFractured({
         <div
           key={index}
           className={`cell-fraction ${index < value ? 'nonzero' : ''} ${index >= targetValue && elimination ? 'elimination' : ''}`}
-          style={{
-            [index >= targetValue && elimination
-              ? '--base-color'
-              : index < value && '--blank-cell-color']: color,
-          }}
         />
       ))}
     </div>
@@ -119,7 +106,6 @@ function CellPeriod({
   habitID = '',
   dateStart,
   dateEnd,
-  color = 'transparent',
   dummy = false,
   value = 0,
   basePeriod = 24,
@@ -150,7 +136,6 @@ function CellPeriod({
   if (isSameWeek(dateStart, dateEnd) || !is2D || !vertical) {
     return showNumberInCell || monochromatic ? (
       <Cell
-        color={color}
         tipContent={tipContent}
         value={value}
         length={diffDays}
@@ -163,7 +148,6 @@ function CellPeriod({
       />
     ) : (
       <CellFractured
-        color={color}
         tipContent={tipContent}
         value={value}
         targetValue={targetValue}
@@ -182,13 +166,7 @@ function CellPeriod({
   width += dateStart.getTime() === startOfWeek(dateStart).getTime();
   width += dateEnd.getTime() === endOfWeek(dateEnd).getTime();
   const style = {
-    ...(value &&
-      (!monochromatic
-        ? { [applyEliminationColor ? '--base-color' : '--blank-cell-color']: color }
-        : {
-            '--monochromatic-color': color,
-            '--value': value,
-          })),
+    [value && monochromatic ? '--value' : '']: value,
     '--height': 7,
     '--width': width,
   };
@@ -216,7 +194,9 @@ function CellPeriod({
       <div
         className={`cell-period centering-flex ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
           (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
-        } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}`}
+        } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}
+      ${applyEliminationColor ? 'elimination' : ''}
+    `}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
         onMouseLeave={hideTip}
