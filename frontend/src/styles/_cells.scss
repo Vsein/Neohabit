@@ -49,11 +49,15 @@ $cell-margin: 2px;
 
   &.monochromatic {
     --hue: round(up, calc(var(--value) / var(--max-value) * 100%), 5%);
-    --hue-bg: calc(100% - var(--hue) - 60%);
-    --cell-background-color: color-mix(
-      in oklab,
-      var(--habit-color) var(--hue),
-      var(--monochromatic-base-color) var(--hue-bg)
+    --hue-bg: calc(100% - var(--hue));
+    --cell-background-color: rgb(
+      from
+        color-mix(
+          in srgb,
+          var(--habit-color) var(--hue),
+          var(--monochromatic-base-color) var(--hue-bg)
+        )
+        r g b / 1
     );
     --cell-border-color: color-mix(
       in srgb,
