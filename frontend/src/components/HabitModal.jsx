@@ -15,14 +15,17 @@ import {
   useCreateHabitMutation,
   useUpdateHabitMutation,
 } from '../state/services/habit';
+import { useUpdateSettingsMutation, useGetSettingsQuery } from '../state/services/settings';
 import { close } from '../state/features/overlay/overlaySlice';
 
 export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const dispatch = useDispatch();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
+  const settings = useGetSettingsQuery();
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
 
   const { width } = useWindowDimensions();
 
@@ -55,7 +58,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
 
   if (!habitID && !project) return <div>Missing habit!</div>;
 
-  return habits.isFetching || projects.isFetching ? (
+  return habits.isFetching || projects.isFetching || settings.isFetching ? (
     <> </>
   ) : (
     <>
@@ -67,7 +70,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
           is_numeric: habit?.is_numeric,
           is_monochromatic: habit?.is_monochromatic,
           more_is_bad: habit?.more_is_bad,
-          show_color_changes: true,
         }}
         onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -134,7 +136,9 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 overridenNumeric={values.is_numeric}
                 overridenMonochromatic={values.is_monochromatic}
                 overridenColor={
-                  values.show_color_changes && values.color.length === 7 ? values.color : undefined
+                  settings.data.modals_show_color_changes && values.color.length === 7
+                    ? values.color
+                    : undefined
                 }
               />
             )}
@@ -177,11 +181,18 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               </div>
               <div className="modal-details-block color-area centering">
                 <div className="form-task-description" title="Dynamically show color changes">
-                  <Field
+                  <input
                     name="show_color_changes"
-                    component="input"
                     type="checkbox"
                     className="checkbox square"
+                    checked={settings.data.modals_show_color_changes}
+                    onClick={() =>
+                      updateSettings({
+                        values: {
+                          modals_show_color_changes: !settings.data.modals_show_color_changes,
+                        },
+                      })
+                    }
                   />
                   <label>Dynamic colors</label>
                 </div>

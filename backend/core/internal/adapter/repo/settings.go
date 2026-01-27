@@ -15,7 +15,33 @@ import (
 )
 
 const (
-	queryReadSettings   = `SELECT * FROM settings WHERE user_id = $1`
+	queryReadSettings = `
+		SELECT
+			s.id,
+			s.user_id,
+			s.theme,
+			s.read_settings_from_config_file,
+			s.cell_height_multiplier,
+			s.cell_width_multiplier,
+			s.overview_vertical,
+			s.overview_current_day,
+			s.overview_offset,
+			s.overview_duration,
+			s.overview_apply_limit,
+			s.overview_duration_limit,
+			s.allow_horizontal_scrolling,
+			s.habit_heatmaps_override,
+			s.habit_heatmaps_current_day,
+			s.show_stopwatch_time_in_page_title,
+			s.hide_cell_hint,
+			s.hide_onboarding,
+			s.projects_enable_custom_order,
+			s.projects_enable_overview_mode,
+			s.modals_show_color_changes,
+			s.updated_at,
+			s.created_at
+		FROM settings s
+		WHERE user_id = $1`
 	queryCreateSettings = `
 		INSERT INTO settings (id, user_id, created_at, updated_at)
 		VALUES ($1, $2, $3, $4)
@@ -41,7 +67,8 @@ const (
 			hide_onboarding = coalesce($17,hide_onboarding),
 			projects_enable_custom_order = coalesce($18,projects_enable_custom_order),
 			projects_enable_overview_mode = coalesce($19,projects_enable_overview_mode),
-			updated_at = $20
+			modals_show_color_changes = coalesce($20,modals_show_color_changes),
+			updated_at = $21
 		WHERE user_id = $1`
 	queryDeleteSettings = `DELETE FROM settings WHERE user_id = $1`
 )
@@ -81,6 +108,7 @@ func (r *Settings) Read(ctx context.Context, userID uuid.UUID) (*entity.Settings
 		&settings.HideOnboarding,
 		&settings.ProjectsEnableCustomOrder,
 		&settings.ProjectsEnableOverviewMode,
+		&settings.ModalsShowColorChanges,
 		&settings.CreatedAt,
 		&settings.UpdatedAt,
 	)
@@ -134,6 +162,7 @@ func (r *Settings) Update(ctx context.Context, settings *entity.Settings) error 
 		settings.HideOnboarding,
 		settings.ProjectsEnableCustomOrder,
 		settings.ProjectsEnableOverviewMode,
+		settings.ModalsShowColorChanges,
 		settings.UpdatedAt,
 	)
 	if err != nil {

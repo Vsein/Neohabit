@@ -40,6 +40,7 @@ type Settings struct {
 	HideOnboarding               *bool
 	ProjectsEnableCustomOrder    *bool
 	ProjectsEnableOverviewMode   *bool
+	ModalsShowColorChanges       *bool
 	CreatedAt                    time.Time
 	UpdatedAt                    time.Time
 }
