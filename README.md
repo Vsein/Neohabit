@@ -44,8 +44,8 @@ You can see the features overview with examples on the
   </picture>
   &nbsp;
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" width="49%"/>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-cyan-dark.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-custom-cyan-light.png" width="49%"/>
   </picture>
 </p>
 
