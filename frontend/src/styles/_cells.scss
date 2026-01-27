@@ -41,7 +41,6 @@ $cell-margin: 2px;
   width: calc(var(--width) * (var(--cell-width) + 4px) - 4px);
   margin: $cell-margin;
   background-color: var(--cell-background-color);
-  background-color: var(--blank-cell-color);
 
   &:hover .cell-numeric.target {
     color: var(--text-color);
@@ -54,11 +53,6 @@ $cell-margin: 2px;
     --cell-background-color: color-mix(
       in oklab,
       var(--habit-color) var(--hue),
-      var(--monochromatic-base-color) var(--hue-bg)
-    );
-    --blank-cell-color: color-mix(
-      in oklab,
-      var(--monochromatic-color) var(--hue),
       var(--monochromatic-base-color) var(--hue-bg)
     );
     --cell-border-color: color-mix(
@@ -87,10 +81,6 @@ $cell-margin: 2px;
     box-shadow:
       0px 0px 0px 1px var(--cell-border-color),
       0px 0px 0px 1px var(--cell-background-color),
-      0 0 0 2px var(--cell-shadow-color);
-    box-shadow:
-      0px 0px 0px 1px var(--cell-border-color),
-      0px 0px 0px 1px var(--blank-cell-color),
       0 0 0 2px var(--cell-shadow-color);
     border-color: transparent;
   }
@@ -201,8 +191,8 @@ $cell-margin: 2px;
 }
 
 .cell.elimination,
-.cell-fraction.elimination {
-  --blank-cell-color: color-mix(in srgb, black 40%, var(--base-color));
+.cell-fraction.elimination,
+.cell-period.elimination {
   --cell-background-color: color-mix(in srgb, black 40%, var(--habit-color));
 }
 
@@ -225,7 +215,6 @@ $cell-margin: 2px;
   border: 1px solid var(--cell-border-color);
   position: relative;
   background-color: var(--cell-background-color);
-  background-color: var(--blank-cell-color);
   margin: 0;
 }
 
@@ -269,7 +258,7 @@ $cell-margin: 2px;
 
   @mixin shadow-fix {
     display: block;
-    background-color: var(--blank-cell-color);
+    background-color: var(--cell-background-color);
     width: 2px;
     height: calc(100% + 1px);
     content: ' ';
@@ -412,9 +401,6 @@ $cell-margin: 2px;
       box-shadow:
         0px 0px 0px 1px var(--cell-background-color),
         0 0 0 2px var(--cell-shadow-color);
-      box-shadow:
-        0px 0px 0px 1px var(--blank-cell-color),
-        0 0 0 2px var(--cell-shadow-color);
     }
 
     &.nonzero.wide {
@@ -439,9 +425,6 @@ $cell-margin: 2px;
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
         0px 0px 0px 1px var(--cell-background-color);
-      box-shadow:
-        0px 0px 0px 1px var(--cell-border-color),
-        0px 0px 0px 1px var(--blank-cell-color);
       border-color: transparent;
       &:before {
         @include shadow-fix;
@@ -474,10 +457,6 @@ $cell-margin: 2px;
         0px 0px 0px 1px var(--cell-border-color),
         0px 0px 0px 1px var(--cell-background-color),
         0 0 0 2px var(--cell-shadow-color);
-      box-shadow:
-        0px 0px 0px 1px var(--cell-border-color),
-        0px 0px 0px 1px var(--blank-cell-color),
-        0 0 0 2px var(--cell-shadow-color);
       border-color: transparent;
 
       & .cell-period-before,
@@ -485,9 +464,6 @@ $cell-margin: 2px;
         box-shadow:
           0px 0px 0px 1px var(--cell-border-color),
           0px 0px 0px 1px var(--cell-background-color);
-        box-shadow:
-          0px 0px 0px 1px var(--cell-border-color),
-          0px 0px 0px 1px var(--blank-cell-color);
         border-color: transparent;
       }
       & .cell-period-before:after {
@@ -509,10 +485,6 @@ $cell-margin: 2px;
         box-shadow:
           0px 0px 0px 1px var(--cell-border-color),
           0px 0px 0px 1px var(--cell-background-color),
-          0 0 0 2px var(--cell-shadow-color);
-        box-shadow:
-          0px 0px 0px 1px var(--cell-border-color),
-          0px 0px 0px 1px var(--blank-cell-color),
           0 0 0 2px var(--cell-shadow-color);
         border-color: transparent;
       }

@@ -176,7 +176,6 @@ export default function Heatmap({
           targetEnd={b.dateEnd}
           dateStart={startOfDay(max([b.dateStart, dateStart]))}
           dateEnd={endOfDay(min([b.dateEnd, dateEnd]))}
-          color={habit.color}
           value={value}
           targetValue={targets[b.targetIndex].value}
           basePeriod={24}
@@ -248,7 +247,6 @@ export default function Heatmap({
             habitID={habit.id}
             dateStart={startOfDay(c.dateStart)}
             dateEnd={endOfDay(c.dateEnd)}
-            color={habit.color}
             value={c.value}
             basePeriod={24}
             vertical={vertical}
@@ -265,7 +263,11 @@ export default function Heatmap({
   return (
     <div
       className={`overview-habit-cells ${is2D ? 'weekly' : ''}`}
-      style={{ '--numeric-text-color': getNumericTextColor(habit.color), '--max-value': maxValue }}
+      style={{
+        '--numeric-text-color': getNumericTextColor(habit.color),
+        '--max-value': maxValue,
+        '--habit-color': habit.color,
+      }}
     >
       {Cells}
     </div>
