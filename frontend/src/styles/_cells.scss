@@ -58,6 +58,10 @@ $cell-margin: 2px;
       black calc((1 - var(--dark)) * 15%)
     );
     --cell-shadow-color: transparent;
+
+    &:hover {
+      --cell-border-color: var(--hover-cell-border-color);
+    }
   }
 }
 
