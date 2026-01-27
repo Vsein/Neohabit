@@ -67,6 +67,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
           is_numeric: habit?.is_numeric,
           is_monochromatic: habit?.is_monochromatic,
           more_is_bad: habit?.more_is_bad,
+          show_color_changes: true,
         }}
         onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -132,6 +133,9 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 overridenElimination={values.more_is_bad}
                 overridenNumeric={values.is_numeric}
                 overridenMonochromatic={values.is_monochromatic}
+                overridenColor={
+                  values.show_color_changes && values.color.length === 7 ? values.color : undefined
+                }
               />
             )}
             <div className="modal-details-habit-wrapper">
@@ -171,12 +175,21 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   <label>More is bad</label>
                 </div>
               </div>
-              <div className="modal-details-block color-area">
+              <div className="modal-details-block color-area centering">
+                <div className="form-task-description" title="Dynamically show color changes">
+                  <Field
+                    name="show_color_changes"
+                    component="input"
+                    type="checkbox"
+                    className="checkbox square"
+                  />
+                  <label>Dynamic colors</label>
+                </div>
                 <ColorPicker />
               </div>
             </div>
             <ModalButtons
-              disabled={submitting}
+              disabled={submitting || pristine}
               unnamed={!values?.name}
               isNew={!habitID}
               type="habit"

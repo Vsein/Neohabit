@@ -14,6 +14,7 @@ export default function Habit({
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
+  overridenColor = undefined,
   dateStart,
   dateEnd,
   vertical = true,
@@ -36,6 +37,7 @@ export default function Habit({
           overridenElimination={overridenElimination}
           overridenNumeric={overridenNumeric}
           overridenMonochromatic={overridenMonochromatic}
+          overridenColor={overridenColor}
         />
       </div>
     </div>
@@ -102,6 +104,7 @@ function HabitModalWrapper({
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
+  overridenColor = undefined,
   habitPage = false,
 }) {
   const [loaded] = useLoaded();
@@ -120,7 +123,9 @@ function HabitModalWrapper({
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habit.color);
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(
+    overridenColor ?? habit.color,
+  );
 
   return (
     <div
@@ -171,6 +176,7 @@ function HabitModalWrapper({
         overridenElimination={overridenElimination}
         overridenNumeric={overridenNumeric}
         overridenMonochromatic={overridenMonochromatic}
+        overridenColor={overridenColor}
         dateStart={dateStart}
         dateEnd={dateEnd}
         mobile={mobile}
