@@ -65,7 +65,7 @@ You can see the features overview with examples on the
 
 #### Fractured
 
-Designed specifically to track habits that have to happen many times a day
+Designed specifically to track habits that have to happen many times per period
 (available up to 16, then defaults to numeric):
 
 <p float="left">
