@@ -121,8 +121,7 @@
   background-color: var(--signature-color-transparent);
   flex: 0 0 20px;
 
-  &.square {
-    border-radius: 0px;
+  &.muted {
     border: 2px solid var(--text-color);
     background-color: var(--transparent-bg-color);
   }
@@ -131,7 +130,7 @@
 input[type='checkbox']:checked.checkbox {
   background: radial-gradient(var(--signature-color) 30%, var(--signature-color-transparent) 40%);
 
-  &.square {
+  &.muted {
     background: radial-gradient(var(--text-color) 30%, var(--transparent-bg-color) 40%);
   }
 }

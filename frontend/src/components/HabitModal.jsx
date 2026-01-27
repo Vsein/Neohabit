@@ -184,7 +184,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   <input
                     name="show_color_changes"
                     type="checkbox"
-                    className="checkbox square"
+                    className="checkbox muted"
                     checked={settings.data.modals_show_color_changes}
                     onClick={() =>
                       updateSettings({
