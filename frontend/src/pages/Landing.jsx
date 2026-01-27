@@ -82,7 +82,10 @@ export default function Landing() {
         </section>
         <FeaturesSection />
         <section className="landing-features-content">
-          <div className="landing-features-container" style={{ minHeight: 'auto' }}>
+          <div
+            className="landing-features-container"
+            style={{ minHeight: 'auto', '--habit-color': firstPaneColor }}
+          >
             {/* <h2 className="landing-about-text-header">What those features allow you to do</h2> */}
             <h3 className="landing-features-title">New approach to habit-building</h3>
             <p>In a regular habit-tracker, you would probably have something like this:</p>
@@ -90,7 +93,6 @@ export default function Landing() {
               {exampleValues.map((exampleValue, Index) => (
                 <CellPeriod
                   key={`habit-example-${Index}`}
-                  color={firstPaneColor}
                   value={exampleValue}
                   targetValue={1}
                   dateStart={startOfDay(addDays(new Date(), Index))}
@@ -109,7 +111,6 @@ export default function Landing() {
                   Index < 2 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={firstPaneColor}
                       value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 3))}
@@ -124,7 +125,6 @@ export default function Landing() {
                   Index < 5 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={firstPaneColor}
                       value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index * 1))}
@@ -139,7 +139,6 @@ export default function Landing() {
                   Index < 10 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={firstPaneColor}
                       value={1}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -170,13 +169,15 @@ export default function Landing() {
               Doing something once a day (or one hour a day) is rarely all that&apos;s required. So,
               once 1 hour becomes comfortable, make 2 the new standard:
             </p>
-            <div className="overview-habit-cells landing-cells">
+            <div
+              className="overview-habit-cells landing-cells"
+              style={{ '--habit-color': secondPaneColor }}
+            >
               {exampleValues3.map(
                 (exampleValue, Index) =>
                   Index < 8 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={secondPaneColor}
                       value={Math.min(exampleValue + 1, 1)}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -190,7 +191,6 @@ export default function Landing() {
                   Index < 6 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={secondPaneColor}
                       value={Math.min(exampleValue + 2, 2)}
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -205,7 +205,6 @@ export default function Landing() {
                   Index < 10 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={secondPaneColor}
                       value={Math.min(exampleValue + 2, 3)}
                       targetValue={3}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -216,14 +215,16 @@ export default function Landing() {
               )}
             </div>
             <p>The same principle can be used in reverse for dropping addictions:</p>
-            <div className="overview-habit-cells landing-cells">
+            <div
+              className="overview-habit-cells landing-cells"
+              style={{ '--habit-color': thirdPaneColor }}
+            >
               {exampleValues3.map(
                 (exampleValue, Index) =>
                   Index >= 5 &&
                   Index < 10 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={thirdPaneColor}
                       value={Math.min(exampleValue + 2, 3)}
                       targetValue={3}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -237,7 +238,6 @@ export default function Landing() {
                   Index < 6 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={thirdPaneColor}
                       value={Math.min(exampleValue + 1, 2)}
                       targetValue={2}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -251,7 +251,6 @@ export default function Landing() {
                   Index < 8 && (
                     <CellPeriod
                       key={`habit-example-${Index}`}
-                      color={thirdPaneColor}
                       value={Math.min(exampleValue, 1)}
                       targetValue={1}
                       dateStart={startOfDay(addDays(new Date(), Index))}
@@ -474,13 +473,16 @@ function FeaturesSection() {
         <h3 className="landing-features-title">Features you won&apos;t find anywhere else</h3>
         <div
           className="landing-features"
-          style={{ marginBlock: 'auto', '--numeric-text-color': getNumericTextColor(color) }}
+          style={{
+            marginBlock: 'auto',
+            '--numeric-text-color': getNumericTextColor(color),
+            '--habit-color': color,
+          }}
         >
           <div className="landing-feature-container">
             <div className="landing-feature centering">
               <div className="landing-cell-container">
                 <CellPeriod
-                  color={color}
                   value={value}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(new Date())}
@@ -493,7 +495,6 @@ function FeaturesSection() {
             <div className="landing-feature centering">
               <div className="landing-cell-container">
                 <CellPeriod
-                  color={color}
                   value={value % 3}
                   targetValue={2}
                   dateStart={startOfDay(new Date())}
@@ -503,7 +504,6 @@ function FeaturesSection() {
               </div>
               <div className="landing-cell-container">
                 <CellPeriod
-                  color={color}
                   value={value % 5}
                   targetValue={4}
                   dateStart={startOfDay(new Date())}
@@ -513,7 +513,6 @@ function FeaturesSection() {
               </div>
               <div className="landing-cell-container">
                 <CellPeriod
-                  color={color}
                   value={value % 10}
                   targetValue={9}
                   dateStart={startOfDay(new Date())}
@@ -523,7 +522,6 @@ function FeaturesSection() {
               </div>
               <div className="landing-cell-container">
                 <CellPeriod
-                  color={color}
                   value={value}
                   targetValue={16}
                   dateStart={startOfDay(new Date())}
@@ -538,7 +536,6 @@ function FeaturesSection() {
             <div className="landing-feature centering">
               <div className="landing-cell-container" style={{ '--total-width': 3 }}>
                 <CellPeriod
-                  color={color}
                   value={value}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(addDays(new Date(), 2))}
@@ -550,7 +547,6 @@ function FeaturesSection() {
                 style={{ '--total-width': 3, '--max-value': 16 }}
               >
                 <CellPeriod
-                  color={color}
                   value={value}
                   dateStart={startOfDay(new Date())}
                   dateEnd={endOfDay(addDays(new Date(), 2))}
@@ -565,7 +561,6 @@ function FeaturesSection() {
             <div className="landing-feature centering">
               <div className="landing-cell-container" style={{ '--total-width': 3, '--is-big': 1 }}>
                 <CellPeriod
-                  color={color}
                   value={progression[value]}
                   targetValue={1e9}
                   dateStart={startOfDay(new Date())}
@@ -576,7 +571,6 @@ function FeaturesSection() {
               </div>
               <div className="landing-cell-container" style={{ '--is-big': 1 }}>
                 <CellPeriod
-                  color={color}
                   value={progression[value]}
                   targetValue={1e9}
                   dateStart={startOfDay(new Date())}
@@ -601,14 +595,17 @@ function MockProjectSection({ name }) {
         <div
           key={index}
           className="landing-habit"
-          style={{ '--length': 16, '--numeric-text-color': getNumericTextColor(habit.color) }}
+          style={{
+            '--length': 16,
+            '--numeric-text-color': getNumericTextColor(habit.color),
+            '--habit-color': habit.color,
+          }}
         >
           <div className="landing-habit-name">{habit.name}</div>
           <div className="landing-habit-cells">
             {habit.data.map((value, Index) => (
               <CellPeriod
                 key={`habit-example-${Index}`}
-                color={habit.color}
                 value={value}
                 targetValue={habit.target[Index]}
                 dateStart={startOfDay(addDays(new Date(), Index))}
