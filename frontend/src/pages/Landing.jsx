@@ -536,18 +536,30 @@ function FeaturesSection() {
           </div>
           <div className="landing-feature-container">
             <div className="landing-feature centering">
-              <div className="landing-cell-container" style={{ '--is-big': 1 }}>
+              <div className="landing-cell-container" style={{ '--total-width': 3 }}>
                 <CellPeriod
                   color={color}
-                  value={progression[value]}
-                  targetValue={1e9}
+                  value={value}
                   dateStart={startOfDay(new Date())}
-                  dateEnd={endOfDay(new Date())}
-                  numeric={true}
+                  dateEnd={endOfDay(addDays(new Date(), 2))}
+                  vertical={false}
+                />
+              </div>
+              <div
+                className="landing-cell-container"
+                style={{ '--total-width': 3, '--max-value': 16 }}
+              >
+                <CellPeriod
+                  color={color}
+                  value={value}
+                  dateStart={startOfDay(new Date())}
+                  dateEnd={endOfDay(addDays(new Date(), 2))}
+                  vertical={false}
+                  monochromatic
                 />
               </div>
             </div>
-            <p>Track any numeric values, i.e. scores, spendings, calories or workout reps</p>
+            <p>Set date periods for habits (weekly, monthly, once in X days/weeks)</p>
           </div>
           <div className="landing-feature-container">
             <div className="landing-feature centering">
@@ -562,17 +574,18 @@ function FeaturesSection() {
                   vertical={false}
                 />
               </div>
-              <div className="landing-cell-container" style={{ '--total-width': 3 }}>
+              <div className="landing-cell-container" style={{ '--is-big': 1 }}>
                 <CellPeriod
                   color={color}
-                  value={value}
+                  value={progression[value]}
+                  targetValue={1e9}
                   dateStart={startOfDay(new Date())}
-                  dateEnd={endOfDay(addDays(new Date(), 2))}
-                  vertical={false}
+                  dateEnd={endOfDay(new Date())}
+                  numeric={true}
                 />
               </div>
             </div>
-            <p>Set date periods for habits (weekly, monthly, once in X days/weeks)</p>
+            <p>Track any numeric values, i.e. scores, spendings, calories or workout reps</p>
           </div>
         </div>
         {/* Skill trees, habits, heatmaps */}

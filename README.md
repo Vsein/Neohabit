@@ -28,10 +28,10 @@
 You can see the features overview with examples on the
 [landing](https://vsein.github.io/neohabit). The list below repeats its contents:
 
+- Habits that happen any amount of times in any amount of days
 - Intutive design for habits that happen more than once a day
-- Habits happen X times in Y days, where X and Y are positive integers
 - Ability to set targets, and change them on the go
-- Tracking numeric values and setting numeric targets
+- Tracking numeric values (up to 2 billion) and setting numeric targets
 
 ### Custom heatmaps, with all the above features
 
@@ -40,12 +40,12 @@ You can see the features overview with examples on the
 <p float="left">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-default-light.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-default-light.png" width="49%"/>
   </picture>
-  &nbsp; &nbsp;
+  &nbsp;
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" width="49%"/>
   </picture>
 </p>
 
@@ -53,53 +53,83 @@ You can see the features overview with examples on the
 
 <p float="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-default-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-blue-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-default-blue-light.png" width="49%"/>
   </picture>
-  &nbsp; &nbsp;
+  &nbsp;
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-custom-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-deep-blue-dark.png" />
+    <img src="frontend/src/assets/heatmap-numeric-custom-deep-blue-light.png" width="49%"/>
   </picture>
 </p>
 
-#### Fractured, designed specifically to track how many times a habit has to be done (goes up to 16)
+#### Fractured
+
+Designed specifically to track habits that have to happen many times per period
+(available up to 16, then defaults to numeric):
 
 <p float="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-fractured-default-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" />
+    <img src="frontend/src/assets/heatmap-fractured-default-bluer-light.png" width="49%"/>
   </picture>
-  &nbsp; &nbsp;
+  &nbsp;
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-fractured-custom-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dodger-blue-dark.png" />
+    <img src="frontend/src/assets/heatmap-fractured-custom-dodger-blue-light.png" width="49%"/>
   </picture>
 </p>
 
-#### Once in a blue moon:
+#### Or track habits that happen once in a blue moon:
 
 <p float="left">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" />
+    <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" width="49%"/>
   </picture>
-  &nbsp; &nbsp;
+  &nbsp;
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-45-days-dark.png" />
-    <img src="frontend/src/assets/heatmap-45-days-light.png" />
+    <img src="frontend/src/assets/heatmap-45-days-light.png" width="49%"/>
   </picture>
 </p>
 
 ### Combine habits into projects
 
 All displayed in a 1-dimensional mode, which is more suitable for day-to-day tracking:
-<div align="center">
+<p float="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-projects-dark.png" />
-    <img src="frontend/src/assets/neohabit-readme-projects-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-languages-dark.png" />
+    <img src="frontend/src/assets/project-languages-light.png" width="49%"/>
   </picture>
-</div>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-fitness-dark.png" />
+    <img src="frontend/src/assets/project-fitness-light.png" width="49%"/>
+  </picture>
+</p>
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-worklife-dark.png" />
+    <img src="frontend/src/assets/project-worklife-light.png" width="49%"/>
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-social-dark.png" />
+    <img src="frontend/src/assets/project-social-light.png" width="49%"/>
+  </picture>
+</p>
+<p float="left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-cleaning-dark.png" />
+    <img src="frontend/src/assets/project-cleaning-light.png" width="49%"/>
+  </picture>
+  &nbsp;
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-meds-dark.png" />
+    <img src="frontend/src/assets/project-meds-light.png" width="49%"/>
+  </picture>
+</p>
 
 ### Skilltrees
 
@@ -119,6 +149,10 @@ Excellent for planning and tracking progressions:
 - Desktop-focused
 - A working mobile interface (browser-only, no app)
 - Possible to create multiple accounts
+- Drag and drop projects or habits to rearrange their order
+- Tooltips with the selected period's information (available when you hover on cells)
+- Habit and project names are clickable and lead to their individual pages (all links
+  also available in the sidebar)
 
 ## Installation
 
