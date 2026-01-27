@@ -136,7 +136,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 overridenNumeric={values.is_numeric}
                 overridenMonochromatic={values.is_monochromatic}
                 overridenColor={
-                  settings.data.modals_show_color_changes && values.color.length === 7
+                  settings.data.modals_live_color_preview && values.color.length === 7
                     ? values.color
                     : undefined
                 }
@@ -185,16 +185,16 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     name="show_color_changes"
                     type="checkbox"
                     className="checkbox muted"
-                    checked={settings.data.modals_show_color_changes}
+                    checked={settings.data.modals_live_color_preview}
                     onClick={() =>
                       updateSettings({
                         values: {
-                          modals_show_color_changes: !settings.data.modals_show_color_changes,
+                          modals_live_color_preview: !settings.data.modals_live_color_preview,
                         },
                       })
                     }
                   />
-                  <label>Dynamic colors</label>
+                  <label>Live color preview</label>
                 </div>
                 <ColorPicker />
               </div>

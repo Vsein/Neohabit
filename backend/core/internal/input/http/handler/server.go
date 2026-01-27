@@ -1099,7 +1099,7 @@ func (s *server) UpdateSettings(
 		HideOnboarding:               request.Body.HideOnboarding,
 		ProjectsEnableCustomOrder:    request.Body.ProjectsEnableCustomOrder,
 		ProjectsEnableOverviewMode:   request.Body.ProjectsEnableOverviewMode,
-		ModalsShowColorChanges:       request.Body.ModalsShowColorChanges,
+		ModalsLiveColorPreview:       request.Body.ModalsLiveColorPreview,
 	}
 
 	if request.Body.Theme != nil {

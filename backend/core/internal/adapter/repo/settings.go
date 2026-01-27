@@ -37,7 +37,7 @@ const (
 			s.hide_onboarding,
 			s.projects_enable_custom_order,
 			s.projects_enable_overview_mode,
-			s.modals_show_color_changes,
+			s.modals_live_color_preview,
 			s.updated_at,
 			s.created_at
 		FROM settings s
@@ -67,7 +67,7 @@ const (
 			hide_onboarding = coalesce($17,hide_onboarding),
 			projects_enable_custom_order = coalesce($18,projects_enable_custom_order),
 			projects_enable_overview_mode = coalesce($19,projects_enable_overview_mode),
-			modals_show_color_changes = coalesce($20,modals_show_color_changes),
+			modals_live_color_preview = coalesce($20,modals_live_color_preview),
 			updated_at = $21
 		WHERE user_id = $1`
 	queryDeleteSettings = `DELETE FROM settings WHERE user_id = $1`
@@ -108,7 +108,7 @@ func (r *Settings) Read(ctx context.Context, userID uuid.UUID) (*entity.Settings
 		&settings.HideOnboarding,
 		&settings.ProjectsEnableCustomOrder,
 		&settings.ProjectsEnableOverviewMode,
-		&settings.ModalsShowColorChanges,
+		&settings.ModalsLiveColorPreview,
 		&settings.CreatedAt,
 		&settings.UpdatedAt,
 	)
@@ -162,7 +162,7 @@ func (r *Settings) Update(ctx context.Context, settings *entity.Settings) error 
 		settings.HideOnboarding,
 		settings.ProjectsEnableCustomOrder,
 		settings.ProjectsEnableOverviewMode,
-		settings.ModalsShowColorChanges,
+		settings.ModalsLiveColorPreview,
 		settings.UpdatedAt,
 	)
 	if err != nil {

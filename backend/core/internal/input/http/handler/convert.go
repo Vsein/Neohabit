@@ -180,7 +180,7 @@ func toAPISettings(e *entity.Settings) gen.Settings {
 		HideOnboarding:               e.HideOnboarding,
 		ProjectsEnableCustomOrder:    e.ProjectsEnableCustomOrder,
 		ProjectsEnableOverviewMode:   e.ProjectsEnableOverviewMode,
-		ModalsShowColorChanges:       e.ModalsShowColorChanges,
+		ModalsLiveColorPreview:       e.ModalsLiveColorPreview,
 		CreatedAt:                    &e.CreatedAt,
 		UpdatedAt:                    &e.UpdatedAt,
 	}

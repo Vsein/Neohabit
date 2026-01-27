@@ -1486,7 +1486,7 @@ components:
         projects_enable_overview_mode:
           type: boolean
 
-        modals_show_color_changes:
+        modals_live_color_preview:
           type: boolean
 
         created_at:
