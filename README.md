@@ -39,13 +39,13 @@ You can see the features overview with examples on the
 
 <p float="left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-default-light.png" width="49%"/>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-srgb-dark.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-default-srgb-light.png" width="49%"/>
   </picture>
   &nbsp;
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-custom-light.png" width="49%"/>
+    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-srgb-dark.png" />
+    <img src="frontend/src/assets/heatmap-monochromatic-custom-srgb-light.png" width="49%"/>
   </picture>
 </p>
 
