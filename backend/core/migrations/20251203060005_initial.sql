@@ -142,6 +142,8 @@ CREATE TABLE IF NOT EXISTS settings (
     projects_enable_custom_order BOOLEAN DEFAULT TRUE,
     projects_enable_overview_mode BOOLEAN DEFAULT FALSE,
 
+    modals_live_color_preview BOOLEAN DEFAULT TRUE,
+
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );

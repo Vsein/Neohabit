@@ -1486,6 +1486,9 @@ components:
         projects_enable_overview_mode:
           type: boolean
 
+        modals_live_color_preview:
+          type: boolean
+
         created_at:
           $ref: '#/components/schemas/Date'
         updated_at:

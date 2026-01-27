@@ -15,14 +15,17 @@ import {
   useCreateHabitMutation,
   useUpdateHabitMutation,
 } from '../state/services/habit';
+import { useUpdateSettingsMutation, useGetSettingsQuery } from '../state/services/settings';
 import { close } from '../state/features/overlay/overlaySlice';
 
 export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const dispatch = useDispatch();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
+  const settings = useGetSettingsQuery();
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
+  const [updateSettings] = useUpdateSettingsMutation();
 
   const { width } = useWindowDimensions();
 
@@ -55,7 +58,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
 
   if (!habitID && !project) return <div>Missing habit!</div>;
 
-  return habits.isFetching || projects.isFetching ? (
+  return habits.isFetching || projects.isFetching || settings.isFetching ? (
     <> </>
   ) : (
     <>
@@ -132,6 +135,11 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 overridenElimination={values.more_is_bad}
                 overridenNumeric={values.is_numeric}
                 overridenMonochromatic={values.is_monochromatic}
+                overridenColor={
+                  settings.data.modals_live_color_preview && values.color.length === 7
+                    ? values.color
+                    : undefined
+                }
               />
             )}
             <div className="modal-details-habit-wrapper">
@@ -171,12 +179,28 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   <label>More is bad</label>
                 </div>
               </div>
-              <div className="modal-details-block color-area">
+              <div className="modal-details-block color-area centering">
+                <div className="form-task-description" title="Dynamically show color changes">
+                  <input
+                    name="show_color_changes"
+                    type="checkbox"
+                    className="checkbox muted"
+                    checked={settings.data.modals_live_color_preview}
+                    onClick={() =>
+                      updateSettings({
+                        values: {
+                          modals_live_color_preview: !settings.data.modals_live_color_preview,
+                        },
+                      })
+                    }
+                  />
+                  <label>Live color preview</label>
+                </div>
                 <ColorPicker />
               </div>
             </div>
             <ModalButtons
-              disabled={submitting}
+              disabled={submitting || pristine}
               unnamed={!values?.name}
               isNew={!habitID}
               type="habit"

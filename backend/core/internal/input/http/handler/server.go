@@ -1099,6 +1099,7 @@ func (s *server) UpdateSettings(
 		HideOnboarding:               request.Body.HideOnboarding,
 		ProjectsEnableCustomOrder:    request.Body.ProjectsEnableCustomOrder,
 		ProjectsEnableOverviewMode:   request.Body.ProjectsEnableOverviewMode,
+		ModalsLiveColorPreview:       request.Body.ModalsLiveColorPreview,
 	}
 
 	if request.Body.Theme != nil {

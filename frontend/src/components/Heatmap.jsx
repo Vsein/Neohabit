@@ -46,10 +46,12 @@ export default function Heatmap({
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
+  overridenColor = undefined,
 }) {
   const elimination = overridenElimination ?? habit?.more_is_bad;
   const numeric = overridenNumeric ?? habit?.is_numeric;
   const monochromatic = overridenMonochromatic ?? habit?.is_monochromatic;
+  const habitColor = overridenColor ?? habit?.color;
 
   const data = habit?.data ?? [];
   const targets = habit?.targets ?? [];
@@ -264,9 +266,9 @@ export default function Heatmap({
     <div
       className={`overview-habit-cells ${is2D ? 'weekly' : ''}`}
       style={{
-        '--numeric-text-color': getNumericTextColor(habit.color),
+        '--numeric-text-color': getNumericTextColor(habitColor),
         '--max-value': maxValue,
-        '--habit-color': habit.color,
+        '--habit-color': habitColor,
       }}
     >
       {Cells}

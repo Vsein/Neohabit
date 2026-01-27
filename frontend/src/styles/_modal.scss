@@ -119,7 +119,9 @@
     &.color-area {
       grid-area: color;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: start;
+      gap: 5px;
     }
   }
 

@@ -132,6 +132,7 @@ type Settings struct {
 	HideCellHint                 *bool                            `json:"hide_cell_hint,omitempty"`
 	HideOnboarding               *bool                            `json:"hide_onboarding,omitempty"`
 	ID                           UUID                             `json:"id"`
+	ModalsLiveColorPreview       *bool                            `json:"modals_live_color_preview,omitempty"`
 	OverviewApplyLimit           *bool                            `json:"overview_apply_limit,omitempty"`
 	OverviewCurrentDay           *SettingsOverviewCurrentDay      `json:"overview_current_day,omitempty"`
 	OverviewDuration             *uint8                           `json:"overview_duration,omitempty"`
