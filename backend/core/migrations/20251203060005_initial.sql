@@ -69,8 +69,6 @@ CREATE TABLE IF NOT EXISTS habit_targets (
     date_end TIMESTAMPTZ,
     value INTEGER NOT NULL,
     period INTEGER NOT NULL,
-    -- period_unit ? m y d - if you want it to happen EXACTLY on 17th of the month
-    -- fractions are prohibited by the period
     is_a_sequence BOOLEAN NOT NULL DEFAULT FALSE,
     sequence INTEGER[],
     is_archiving BOOLEAN NOT NULL DEFAULT FALSE,
@@ -81,7 +79,6 @@ CREATE TABLE IF NOT EXISTS habit_targets (
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
--- TODO: UNIQUE, maybe ? Or just allow it and show those targets as inactive? The latter is probably easier
 CREATE INDEX idx_habit_targets_habit_id_date_start ON habit_targets(habit_id, date_start);
 
 CREATE OR REPLACE FUNCTION get_habit_targets_jsonb(h_id UUID)
