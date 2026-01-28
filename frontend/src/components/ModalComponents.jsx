@@ -70,14 +70,14 @@ function ColorPicker() {
         <div className="form-task-name" style={{ color: input.value }}>
           <HexColorPicker
             color={input.value}
-            onChange={(coloro) => {
-              input.onChange(coloro);
+            onChange={(color) => {
+              input.onChange(color);
             }}
           />
           <HexColorInput
             color={input.value}
-            onChange={(coloro) => {
-              input.onChange(coloro);
+            onChange={(color) => {
+              input.onChange(color);
             }}
             prefixed
           />
