@@ -212,11 +212,10 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               <div className="modal-details-block color-area centering">
                 <div className="form-task-description" title="Dynamically show color changes">
                   <input
-                    name="show_color_changes"
                     type="checkbox"
                     className="checkbox muted"
                     checked={settings.data.modals_live_color_preview}
-                    onClick={() =>
+                    onChange={() =>
                       updateSettings({
                         values: {
                           modals_live_color_preview: !settings.data.modals_live_color_preview,
