@@ -7,14 +7,13 @@ import { DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
-import { generateShades } from '../hooks/usePaletteGenerator';
+import { generateShades, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function Habit({
   habit,
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
-  overridenColor = undefined,
   dateStart,
   dateEnd,
   vertical = true,
@@ -37,7 +36,6 @@ export default function Habit({
           overridenElimination={overridenElimination}
           overridenNumeric={overridenNumeric}
           overridenMonochromatic={overridenMonochromatic}
-          overridenColor={overridenColor}
         />
       </div>
     </div>
@@ -75,6 +73,8 @@ function HabitDefaultWrapper({
         '--calm-signature-color': `${colorShade}55`,
         '--datepicker-text-color': textColor,
         '--datepicker-calm-text-color': calmTextColor,
+        '--habit-color': habit.color,
+        '--numeric-text-color': getNumericTextColor(habit.color),
         margin: 'auto',
       }}
     >
@@ -123,9 +123,9 @@ function HabitModalWrapper({
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(
-    overridenColor ?? habit.color,
-  );
+  const habitColor = overridenColor ?? habit.color;
+
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habitColor);
 
   return (
     <div
@@ -143,6 +143,8 @@ function HabitModalWrapper({
         '--calm-signature-color': `${colorShade}55`,
         '--datepicker-text-color': textColor,
         '--datepicker-calm-text-color': calmTextColor,
+        '--habit-color': habitColor,
+        '--numeric-text-color': getNumericTextColor(habitColor),
         margin: 'auto',
       }}
     >
@@ -176,7 +178,6 @@ function HabitModalWrapper({
         overridenElimination={overridenElimination}
         overridenNumeric={overridenNumeric}
         overridenMonochromatic={overridenMonochromatic}
-        overridenColor={overridenColor}
         dateStart={dateStart}
         dateEnd={dateEnd}
         mobile={mobile}

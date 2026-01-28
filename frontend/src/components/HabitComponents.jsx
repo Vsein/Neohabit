@@ -16,6 +16,7 @@ import { useCreateHabitDataPointMutation } from '../state/services/habitData';
 import { changeHabitTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
+import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 import Heatmap from './Heatmap';
 
@@ -64,7 +65,7 @@ function HabitControls({
   };
 
   return mobile ? (
-    <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
+    <div className={`habit-controls ${header ? 'header' : ''}`}>
       <button
         className="overview-habit-button"
         onClick={addCell}
@@ -75,10 +76,7 @@ function HabitControls({
       </button>
     </div>
   ) : (
-    <div
-      className={`habit-controls right ${header ? 'header' : ''}`}
-      style={{ '--color': habit.color }}
-    >
+    <div className={`habit-controls right ${header ? 'header' : ''}`}>
       <button
         className="overview-habit-button"
         onClick={addCell}
@@ -166,6 +164,10 @@ function HabitOverview({
       onDragStart={drag}
       id={habit?.id}
       data-id={`${projectID}_${habit?.id}`}
+      style={{
+        '--habit-color': habit.color,
+        '--numeric-text-color': getNumericTextColor(habit.color),
+      }}
     >
       <NavLink
         className="overview-habit-name"
