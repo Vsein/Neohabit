@@ -148,13 +148,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               </div>
               <div className="modal-details-block mode-area">
                 <div
-                  className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
-                  title="Shows numbers inside of cells, or default to this if target > 16"
-                >
-                  <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
-                  <label>Show as numbers</label>
-                </div>
-                <div
                   className="form-task-description"
                   title="Similar to github/anki style heatmaps"
                 >
@@ -165,6 +158,13 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     className="checkbox"
                   />
                   <label>Monochromatic</label>
+                </div>
+                <div
+                  className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
+                  title="Shows numbers inside of cells, or default to this if target > 16"
+                >
+                  <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
+                  <label>Show as numbers</label>
                 </div>
                 <div
                   className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
