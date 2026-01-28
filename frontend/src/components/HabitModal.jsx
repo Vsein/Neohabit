@@ -250,17 +250,26 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             )}
             {currentTab === 'targets' ? (
               <div className="modal-details-habit-targets-wrapper">
-                {habit.targets.map((target, i) => (
-                  <div key={i} className="modal-details-block centering">
-                    <p>
-                      {i + 1}. <span style={{ fontWeight: 'bold' }}>Start date:</span>{' '}
-                      {formatDate(new Date(target.date_start))}.{' '}
-                      <span style={{ fontWeight: 'bold' }}>Target:</span> {target.value} in{' '}
-                      {target.period} day
-                      {target.period > 1 && 's'}
-                    </p>
-                  </div>
-                ))}
+                {habit.targets.length ? (
+                  habit.targets.map((target, i) => (
+                    <div key={i} className="modal-details-block centering">
+                      <p>
+                        {i + 1}. <span style={{ fontWeight: 'bold' }}>Start date:</span>{' '}
+                        {formatDate(new Date(target.date_start))}.{' '}
+                        <span style={{ fontWeight: 'bold' }}>Target:</span> {target.value} in{' '}
+                        {target.period} day
+                        {target.period > 1 && 's'}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <h4
+                    className="modal-details-block centering"
+                    style={{ justifyContent: 'center' }}
+                  >
+                    No targets &nbsp;&nbsp;ʕ•ᴥ•ʔ
+                  </h4>
+                )}
               </div>
             ) : (
               <></>
