@@ -1,5 +1,18 @@
 import { formatISO, addDays, compareDesc, min, max, isValid } from 'date-fns';
 
+function formatDate(date) {
+  return date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    // The below are needed only for dev stage, I'm thinking of hiding
+    // the time and whatnot if the period starts exactly at 0:00.
+    // And it's also kinda sucky to use US locale. With all those AMs
+    // ans PMs it gets pretty ambiguous quickly.
+    weekday: 'short',
+  });
+}
+
 function getISODate(date) {
   return formatISO(date, { representation: 'date' });
 }
@@ -25,4 +38,4 @@ function maxValidDate(...dates) {
   return max(dates.filter((d) => isValid(d)));
 }
 
-export { getISODate, getUTCOffsettedDate, areAscending, minValidDate, maxValidDate };
+export { formatDate, getISODate, getUTCOffsettedDate, areAscending, minValidDate, maxValidDate };
