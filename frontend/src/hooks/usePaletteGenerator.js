@@ -58,12 +58,27 @@ function generatePalette(base, goal) {
   return palette;
 }
 
+function isShadeOfRedRgb(r, g, b, strict = false) {
+  if (r < 100) return false;
+
+  const redDominance = r > g * 1.3 && r > b * 1.3;
+
+  if (strict) {
+    return redDominance && g < r * 0.6 && b < r * 0.7;
+  }
+
+  return redDominance;
+}
+
 function getNumericTextColor(color = '#23BCDB') {
-  if (contrast(hexToRgb(color), hexToRgb('#efefef')) > 1.95) {
+  const rgbColor = hexToRgb(color);
+  if (
+    contrast(rgbColor, hexToRgb('#efefef')) > 1.95 &&
+    !isShadeOfRedRgb(rgbColor.r, rgbColor.g, rgbColor.b)
+  ) {
     return '#efefef';
   }
-  return contrast(hexToRgb(color), hexToRgb('#efefef')) >
-    contrast(hexToRgb(color), hexToRgb('#000000'))
+  return contrast(rgbColor, hexToRgb('#efefef')) > contrast(rgbColor, hexToRgb('#000000'))
     ? '#efefef'
     : '#000000';
 }
