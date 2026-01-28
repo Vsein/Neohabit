@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
-import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
@@ -16,11 +15,9 @@ import {
   useUpdateHabitMutation,
 } from '../state/services/habit';
 import { useUpdateSettingsMutation, useGetSettingsQuery } from '../state/services/settings';
-import { close } from '../state/features/overlay/overlaySlice';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function HabitModal({ habitID, projectID, closeOverlay }) {
-  const dispatch = useDispatch();
   const projects = useGetProjectsQuery();
   const habits = useGetHabitsQuery();
   const settings = useGetSettingsQuery();
@@ -52,10 +49,10 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
         ...values,
         project_id: projectID !== 'default' && projectID ? projectID : undefined,
       });
+      closeOverlay();
     } else {
       await updateHabit({ habitID, values });
     }
-    dispatch(close());
   };
 
   const getButtonStyle = (color) => {

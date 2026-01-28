@@ -36,7 +36,7 @@ export default function Overlay() {
   const [deleteSelf] = useDeleteSelfMutation();
 
   const closeOverlay = (e) => {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     cellAddDropdown.classList.add('hidden');
     dispatch(close());

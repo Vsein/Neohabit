@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form } from 'react-final-form';
-import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { HabitTag } from './UI';
@@ -10,10 +9,8 @@ import {
   useCreateSkilltreeMutation,
   useUpdateSkilltreeMutation,
 } from '../state/services/skilltree';
-import { close } from '../state/features/overlay/overlaySlice';
 
 export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
-  const dispatch = useDispatch();
   const skilltrees = useGetSkilltreesQuery();
   const [createSkilltree] = useCreateSkilltreeMutation();
   const [updateSkilltree] = useUpdateSkilltreeMutation();
@@ -25,10 +22,10 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
   const onSubmit = async (values) => {
     if (!skilltree) {
       await createSkilltree(values);
+      closeOverlay();
     } else {
       await updateSkilltree({ skilltreeID, values });
     }
-    dispatch(close());
   };
 
   return (
