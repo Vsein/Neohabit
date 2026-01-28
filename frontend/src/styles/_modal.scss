@@ -109,6 +109,10 @@
       grid-area: description;
     }
 
+    &.name-area {
+      grid-area: name;
+    }
+
     &.mode-area {
       grid-area: mode;
       display: flex;
@@ -137,12 +141,46 @@
   }
 }
 
+.habit-navigation {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  height: 35px;
+  width: 100%;
+
+  & .filters {
+    justify-content: space-around;
+    justify-items: center;
+    width: 100%;
+    border-radius: 10px;
+    gap: 5px;
+
+    & li {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background-color: var(--button-bg-color);
+      color: var(--support-color);
+
+      &:hover:not(.active) {
+        background-color: color-mix(in srgb, var(--button-bg-color) 60%, transparent);
+      }
+    }
+
+    & li.active {
+      color: var(--active-text-color);
+      background-color: color-mix(in srgb, var(--signature-color) 60%, transparent);
+    }
+  }
+}
+
 .modal-details-habit-wrapper {
   display: grid;
   gap: 10px;
   grid-template-columns: 3fr 1fr;
   grid-template-rows: min-content min-content;
   grid-template-areas:
+    'name mode'
     'description mode'
     'description color';
 }

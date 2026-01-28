@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { useDispatch } from 'react-redux';
@@ -17,6 +17,7 @@ import {
 } from '../state/services/habit';
 import { useUpdateSettingsMutation, useGetSettingsQuery } from '../state/services/settings';
 import { close } from '../state/features/overlay/overlaySlice';
+import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
   const [updateSettings] = useUpdateSettingsMutation();
+  const [currentTab, setCurrentTab] = useState('general');
 
   const { width } = useWindowDimensions();
 
@@ -54,6 +56,14 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
       await updateHabit({ habitID, values });
     }
     dispatch(close());
+  };
+
+  const getButtonStyle = (color) => {
+    const numericTextColor = getNumericTextColor(color);
+    return {
+      '--signature-color': color,
+      '--active-text-color': numericTextColor !== '#000000' ? '#ffffff' : '#000000',
+    };
   };
 
   if (!habitID && !project) return <div>Missing habit!</div>;
@@ -126,9 +136,29 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <Icon path={mdiClose} />
               </button>
             </div>
-            <div className="modal-details-block" style={{ height: 'min-content' }}>
-              <NameField type="habit" autofocus={!habitID} />
-            </div>
+            <nav
+              className="habit-navigation"
+              style={getButtonStyle(
+                settings.data.modals_live_color_preview && values.color.length === 7
+                  ? values.color
+                  : habit.color,
+              )}
+            >
+              <ul className="filters">
+                <li
+                  className={`centering ${currentTab === 'general' ? 'active' : ''}`}
+                  onClick={() => setCurrentTab('general')}
+                >
+                  General
+                </li>
+                <li
+                  className={`centering ${currentTab === 'targets' ? 'active' : ''}`}
+                  onClick={() => setCurrentTab('targets')}
+                >
+                  Targets
+                </li>
+              </ul>
+            </nav>
             {width >= 850 && habitID && (
               <HabitModalWrapper
                 habit={habit}
@@ -143,8 +173,11 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
               />
             )}
             <div className="modal-details-habit-wrapper">
+              <div className="modal-details-block name-area" style={{ height: 'min-content' }}>
+                <NameField type="habit" autofocus={!habitID} />
+              </div>
               <div className="modal-details-block description-area">
-                <DescriptionField rows="10" />
+                <DescriptionField rows="12" />
               </div>
               <div className="modal-details-block mode-area">
                 <div
