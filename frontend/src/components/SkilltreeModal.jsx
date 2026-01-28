@@ -72,7 +72,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
             </div>
           </div>
           <ModalButtons
-            disabled={submitting}
+            disabled={submitting || pristine}
             unnamed={!values?.name}
             isNew={!skilltreeID}
             type="skilltree"

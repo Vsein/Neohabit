@@ -164,7 +164,11 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
               </div>
             </div>
             <ModalButtons
-              disabled={submitting}
+              disabled={
+                submitting ||
+                (pristine &&
+                  JSON.stringify(project?.habits ?? []) === JSON.stringify(projectHabitList))
+              }
               unnamed={!values?.name}
               isNew={!projectID}
               type="project"

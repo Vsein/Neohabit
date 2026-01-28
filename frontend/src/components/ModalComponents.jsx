@@ -56,7 +56,7 @@ function ModalButtons({ disabled, isNew, type, unnamed }) {
       >
         Cancel
       </button>
-      <button className="button-default stretch border" type="submit" disabled={disabled}>
+      <button className="button-default stretch border" type="submit" disabled={disabled && !isNew}>
         {isNew ? `Add ${unnamed ? 'unnamed ' : ''}${type}` : 'Save'}
       </button>
     </div>
