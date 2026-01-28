@@ -16,6 +16,7 @@ import {
 } from '../state/services/habit';
 import { useUpdateSettingsMutation, useGetSettingsQuery } from '../state/services/settings';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { formatDate } from '../utils/dates';
 
 export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const projects = useGetProjectsQuery();
@@ -133,29 +134,31 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 <Icon path={mdiClose} />
               </button>
             </div>
-            <nav
-              className="habit-navigation"
-              style={getButtonStyle(
-                settings.data.modals_live_color_preview && values.color.length === 7
-                  ? values.color
-                  : habit.color,
-              )}
-            >
-              <ul className="filters">
-                <li
-                  className={`centering ${currentTab === 'general' ? 'active' : ''}`}
-                  onClick={() => setCurrentTab('general')}
-                >
-                  General
-                </li>
-                <li
-                  className={`centering ${currentTab === 'targets' ? 'active' : ''}`}
-                  onClick={() => setCurrentTab('targets')}
-                >
-                  Targets
-                </li>
-              </ul>
-            </nav>
+            {habitID && (
+              <nav
+                className="habit-navigation"
+                style={getButtonStyle(
+                  settings.data.modals_live_color_preview && values.color.length === 7
+                    ? values.color
+                    : habit.color,
+                )}
+              >
+                <ul className="filters">
+                  <li
+                    className={`centering ${currentTab === 'general' ? 'active' : ''}`}
+                    onClick={() => setCurrentTab('general')}
+                  >
+                    General
+                  </li>
+                  <li
+                    className={`centering ${currentTab === 'targets' ? 'active' : ''}`}
+                    onClick={() => setCurrentTab('targets')}
+                  >
+                    Targets
+                  </li>
+                </ul>
+              </nav>
+            )}
             {width >= 850 && habitID && (
               <HabitModalWrapper
                 habit={habit}
@@ -169,71 +172,99 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 }
               />
             )}
-            <div className="modal-details-habit-wrapper">
-              <div className="modal-details-block name-area" style={{ height: 'min-content' }}>
-                <NameField type="habit" autofocus={!habitID} />
-              </div>
-              <div className="modal-details-block description-area">
-                <DescriptionField rows="12" />
-              </div>
-              <div className="modal-details-block mode-area">
-                <div
-                  className="form-task-description"
-                  title="Similar to github/anki style heatmaps"
-                >
-                  <Field
-                    name="is_monochromatic"
-                    component="input"
-                    type="checkbox"
-                    className="checkbox"
-                  />
-                  <label>Monochromatic</label>
+            {currentTab === 'general' ? (
+              <>
+                <div className="modal-details-habit-wrapper">
+                  <div className="modal-details-block name-area" style={{ height: 'min-content' }}>
+                    <NameField type="habit" autofocus={!habitID} />
+                  </div>
+                  <div className="modal-details-block description-area">
+                    <DescriptionField rows="12" />
+                  </div>
+                  <div className="modal-details-block mode-area">
+                    <div
+                      className="form-task-description"
+                      title="Similar to github/anki style heatmaps"
+                    >
+                      <Field
+                        name="is_monochromatic"
+                        component="input"
+                        type="checkbox"
+                        className="checkbox"
+                      />
+                      <label>Monochromatic</label>
+                    </div>
+                    <div
+                      className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
+                      title="Shows numbers inside of cells, or default to this if target > 16"
+                    >
+                      <Field
+                        name="is_numeric"
+                        component="input"
+                        type="checkbox"
+                        className="checkbox"
+                      />
+                      <label>Show as numbers</label>
+                    </div>
+                    <div
+                      className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
+                      title="Darkens the cells if they exceed the target"
+                    >
+                      <Field
+                        name="more_is_bad"
+                        component="input"
+                        type="checkbox"
+                        className="checkbox"
+                      />
+                      <label>More is bad</label>
+                    </div>
+                  </div>
+                  <div className="modal-details-block color-area centering">
+                    <div className="form-task-description" title="Dynamically show color changes">
+                      <input
+                        type="checkbox"
+                        className="checkbox muted"
+                        checked={settings.data.modals_live_color_preview}
+                        onChange={() =>
+                          updateSettings({
+                            values: {
+                              modals_live_color_preview: !settings.data.modals_live_color_preview,
+                            },
+                          })
+                        }
+                      />
+                      <label>Live color preview</label>
+                    </div>
+                    <ColorPicker />
+                  </div>
                 </div>
-                <div
-                  className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
-                  title="Shows numbers inside of cells, or default to this if target > 16"
-                >
-                  <Field name="is_numeric" component="input" type="checkbox" className="checkbox" />
-                  <label>Show as numbers</label>
-                </div>
-                <div
-                  className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
-                  title="Darkens the cells if they exceed the target"
-                >
-                  <Field
-                    name="more_is_bad"
-                    component="input"
-                    type="checkbox"
-                    className="checkbox"
-                  />
-                  <label>More is bad</label>
-                </div>
+                <ModalButtons
+                  disabled={submitting || pristine}
+                  unnamed={!values?.name}
+                  isNew={!habitID}
+                  type="habit"
+                />
+              </>
+            ) : (
+              <></>
+            )}
+            {currentTab === 'targets' ? (
+              <div className="modal-details-habit-targets-wrapper">
+                {habit.targets.map((target, i) => (
+                  <div key={i} className="modal-details-block centering">
+                    <p>
+                      {i + 1}. <span style={{ fontWeight: 'bold' }}>Start date:</span>{' '}
+                      {formatDate(new Date(target.date_start))}.{' '}
+                      <span style={{ fontWeight: 'bold' }}>Target:</span> {target.value} in{' '}
+                      {target.period} day
+                      {target.period > 1 && 's'}
+                    </p>
+                  </div>
+                ))}
               </div>
-              <div className="modal-details-block color-area centering">
-                <div className="form-task-description" title="Dynamically show color changes">
-                  <input
-                    type="checkbox"
-                    className="checkbox muted"
-                    checked={settings.data.modals_live_color_preview}
-                    onChange={() =>
-                      updateSettings({
-                        values: {
-                          modals_live_color_preview: !settings.data.modals_live_color_preview,
-                        },
-                      })
-                    }
-                  />
-                  <label>Live color preview</label>
-                </div>
-                <ColorPicker />
-              </div>
-            </div>
-            <ModalButtons
-              disabled={submitting || pristine}
-              unnamed={!values?.name}
-              isNew={!habitID}
-              type="habit"
-            />
+            ) : (
+              <></>
+            )}
           </form>
         )}
       />
