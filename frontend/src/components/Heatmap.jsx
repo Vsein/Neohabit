@@ -98,15 +98,14 @@ export default function Heatmap({
       }
     : [];
 
-  const bucketBeforeTargetBucket =
-    differenceInDays(targets.length && targets[0]?.date_start, habitStartDate) > 0 &&
-    differenceInDays(dateEnd, targets.length && targets[0]?.date_start) > 0
-      ? {
-          dateStart: startOfDay(habitStartDate),
-          dateEnd: subMilliseconds(startOfDay(new Date(targets[0]?.date_start)), 1),
-          value: 0,
-        }
-      : [];
+  const firstTargetDateStart = startOfDay(targets.length && targets[0]?.date_start);
+  const bucketBeforeTargetBucket = areAscending(dateStart, firstTargetDateStart, dateEnd)
+    ? {
+        dateStart: max([startOfDay(habitStartDate), dateStart]),
+        dateEnd: subMilliseconds(firstTargetDateStart, 1),
+        value: 0,
+      }
+    : [];
 
   const targetBuckets = targets.slice(Math.max(fti, 0), lti + 1).flatMap((t, i, ts) => {
     const bucketsDateStart = maxValidDate(
