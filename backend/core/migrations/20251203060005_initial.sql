@@ -92,6 +92,7 @@ SELECT COALESCE(jsonb_agg(
         'date_start', ht.date_start,
         'value', ht.value,
         'period', ht.period,
+        'is_archiving', ht.is_archiving,
         'created_at', ht.created_at,
         'updated_at', ht.updated_at
     ) ORDER BY ht.date_start), '[]'::jsonb)

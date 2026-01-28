@@ -1254,7 +1254,7 @@ components:
         - date_start
         - value
         - period
-        - is_archive
+        - is_archiving
       properties:
         id:
           $ref: '#/components/schemas/UUID'

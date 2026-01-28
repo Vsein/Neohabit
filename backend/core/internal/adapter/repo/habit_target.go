@@ -16,8 +16,8 @@ import (
 
 const (
 	queryCreateHabitTarget = `
-		INSERT INTO habit_targets (id, habit_id, date_start, value, period, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO habit_targets (id, habit_id, date_start, value, period, is_archiving, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	`
 	queryUpdateHabitTarget = `
 		UPDATE habit_targets
@@ -50,6 +50,7 @@ func (r *HabitTarget) CreateTarget(ctx context.Context, habitTarget *entity.Habi
 		habitTarget.DateStart,
 		habitTarget.Value,
 		habitTarget.Period,
+		habitTarget.IsArchiving,
 		habitTarget.CreatedAt,
 		habitTarget.UpdatedAt,
 	)

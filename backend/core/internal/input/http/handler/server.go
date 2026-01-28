@@ -479,10 +479,11 @@ func (s *server) CreateHabitTarget(
 	}
 
 	habitTarget := &entity.HabitTarget{
-		HabitID:   request.HabitID,
-		DateStart: request.Body.DateStart,
-		Value:     request.Body.Value,
-		Period:    request.Body.Period,
+		HabitID:     request.HabitID,
+		DateStart:   request.Body.DateStart,
+		Value:       request.Body.Value,
+		Period:      request.Body.Period,
+		IsArchiving: request.Body.IsArchiving,
 	}
 
 	id, err := s.habitTargets.CreateTarget(ctx, habitTarget)
