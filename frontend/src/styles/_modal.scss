@@ -203,11 +203,17 @@
 
   & .modal-details-block {
     height: 100%;
-    padding-inline: 15px;
+    padding-left: 15px;
+    padding-right: 25px;
     border: 1px solid transparent;
     display: grid;
     align-items: center;
-    grid-template-columns: 50px 200px 100px 80px 100px;
+    grid-template-columns: 50px 200px 100px 80px 100px 1fr;
+
+    & button {
+      border-radius: 5px;
+      color: var(--text-color);
+    }
 
     &.header {
       background: none;
@@ -220,7 +226,8 @@
     }
 
     &.inactive {
-      opacity: 0.45;
+      background-color: color-mix(in srgb, var(--main-background-color) 45%, transparent);
+      color: color-mix(in srgb, var(--text-color) 50%, transparent);
     }
   }
 }

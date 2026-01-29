@@ -498,6 +498,33 @@ func (s *server) CreateHabitTarget(
 	return gen.CreateHabitTarget201JSONResponse(id.String()), nil
 }
 
+// DELETE /habit_target/{habit_target_id}
+func (s *server) DeleteHabitTarget(
+	ctx context.Context,
+	request gen.DeleteHabitTargetRequestObject,
+) (gen.DeleteHabitTargetResponseObject, error) {
+	if request.HabitTargetID == uuid.Nil {
+		s.logger.Info("no valid habitTargetID provided")
+		return gen.DeleteHabitTarget400Response{}, nil
+	}
+
+	_, ok := s.auth.GetUserID(ctx)
+	if !ok {
+		return gen.DeleteHabitTarget401Response{}, nil
+	}
+
+	err := s.habitTargets.DeleteTarget(ctx, request.HabitTargetID)
+	if err != nil {
+		if errors.Is(err, cases.ErrNotFound) {
+			return gen.DeleteHabitTarget404Response{}, nil
+		}
+		s.logger.Error("failed to create habit's data point", zap.Error(err))
+		return gen.DeleteHabitTarget500JSONResponse{}, nil
+	}
+
+	return gen.DeleteHabitTarget204Response{}, nil
+}
+
 // GetHabit handles GET /habit/{habitId}
 // func (s *server) GetHabit(
 // 	ctx context.Context,

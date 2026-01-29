@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { isSameDay } from 'date-fns';
 import { Icon } from '@mdi/react';
-import { mdiClose } from '@mdi/js';
+import { mdiClose, mdiDelete } from '@mdi/js';
 import Field from './FieldWrapper';
 import { HabitTag } from './UI';
 import { HabitModalWrapper } from './Habit';
@@ -15,6 +15,7 @@ import {
   useCreateHabitMutation,
   useUpdateHabitMutation,
 } from '../state/services/habit';
+import { useDeleteHabitTargetMutation } from '../state/services/habitTarget';
 import { useUpdateSettingsMutation, useGetSettingsQuery } from '../state/services/settings';
 import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 import { formatDate } from '../utils/dates';
@@ -26,6 +27,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const [createHabit] = useCreateHabitMutation();
   const [updateHabit] = useUpdateHabitMutation();
   const [updateSettings] = useUpdateSettingsMutation();
+  const [deleteHabitTarget] = useDeleteHabitTargetMutation();
   const [currentTab, setCurrentTab] = useState('general');
 
   const { width } = useWindowDimensions();
@@ -292,6 +294,14 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                             {target.period} day{target.period > 1 && 's'}{' '}
                           </p>
                           <p>{overriden ? 'overriden' : ''}</p>
+                          <button
+                            className="centering right"
+                            onClick={() => deleteHabitTarget({ habitTargetID: target.id, habitID })}
+                            title="Delete this target"
+                            type="button"
+                          >
+                            <Icon path={mdiDelete} className="icon small" />
+                          </button>
                         </div>
                       );
                     })}

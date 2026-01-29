@@ -29,6 +29,7 @@ func toAPIHabit(e *entity.Habit) gen.Habit {
 	targets := make([]gen.HabitTarget, 0, len(e.Targets))
 	for _, target := range e.Targets {
 		targets = append(targets, gen.HabitTarget{
+			ID:          &target.ID,
 			DateStart:   target.DateStart,
 			Value:       target.Value,
 			Period:      target.Period,
