@@ -331,6 +331,7 @@ $cell-margin: 2px;
     }
 
     &.nonzero:not(.hundred),
+    &.hover:not(.hundred),
     &:hover:not(.hundred) {
       border: 1px solid var(--cell-border-color);
 
@@ -425,6 +426,7 @@ $cell-margin: 2px;
     }
 
     &.nonzero .cell-period-connector,
+    &.hover .cell-period-connector,
     &:hover .cell-period-connector {
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
@@ -456,6 +458,7 @@ $cell-margin: 2px;
     }
 
     &.nonzero.wide,
+    &.hover.wide,
     &:hover:is(.wide) {
       box-shadow:
         0px 0px 0px 1px var(--cell-border-color),
@@ -483,6 +486,7 @@ $cell-margin: 2px;
     }
 
     &.nonzero.hollow,
+    &.hover.hollow,
     &:hover:is(.hollow) {
       & .cell-period-before,
       & .cell-period-after {

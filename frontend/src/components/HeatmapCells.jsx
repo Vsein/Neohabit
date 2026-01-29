@@ -18,6 +18,7 @@ function Cell({
   length,
   vertical = true,
   numeric,
+  targetIndex = null,
   targetValue = 1,
   elimination,
   monochromatic,
@@ -36,7 +37,7 @@ function Cell({
       className={`cell centering-flex ${dummy ? 'dummy' : ''} ${
         (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
       } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}
-      ${applyEliminationColor ? 'elimination' : ''}
+      ${applyEliminationColor ? 'elimination' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}
       `}
       style={style}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
@@ -64,6 +65,7 @@ function Cell({
 function CellFractured({
   tipContent = undefined,
   value,
+  targetIndex = null,
   targetValue,
   length,
   vertical = true,
@@ -75,7 +77,7 @@ function CellFractured({
 
   return (
     <div
-      className={`cell fractured f${fractions} ${dummy ? 'dummy' : ''} ${length > 1 ? 'long' : ''} ${vertical ? 'vertical' : ''}`}
+      className={`cell fractured f${fractions} ${dummy ? 'dummy' : ''} ${length > 1 ? 'long' : ''} ${vertical ? 'vertical' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}`}
       style={{ '--length': length }}
       onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
       onMouseLeave={(e) => tipContent && hideTip()}
@@ -110,6 +112,7 @@ function CellPeriod({
   value = 0,
   basePeriod = 24,
   vertical = true,
+  targetIndex = null,
   targetValue = 1,
   targetStart = undefined,
   targetEnd = undefined,
@@ -142,6 +145,7 @@ function CellPeriod({
         vertical={vertical}
         numeric={showNumberInCell}
         targetValue={targetValue}
+        targetIndex={targetIndex}
         elimination={elimination}
         monochromatic={monochromatic}
         dummy={dummy}
@@ -151,6 +155,7 @@ function CellPeriod({
         tipContent={tipContent}
         value={value}
         targetValue={targetValue}
+        targetIndex={targetIndex}
         length={diffDays}
         vertical={vertical}
         elimination={elimination}
@@ -195,7 +200,7 @@ function CellPeriod({
         className={`cell-period centering-flex ${width ? 'wide' : 'hollow'} ${dummy ? 'dummy' : ''} ${
           (value >= 100 || (value === 0 && targetValue >= 100)) && !monochromatic ? 'hundred' : ''
         } ${value ? 'nonzero' : ''} ${monochromatic && value ? 'monochromatic' : ''}
-      ${applyEliminationColor ? 'elimination' : ''}
+      ${applyEliminationColor ? 'elimination' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}
     `}
         style={style}
         onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}

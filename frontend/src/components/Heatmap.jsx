@@ -170,6 +170,7 @@ export default function Heatmap({
           key={i}
           dummy={!!targets[b.targetIndex]?.isArchiving}
           habitID={habit.id}
+          targetIndex={b.targetIndex}
           targetStart={b.dateStart}
           targetEnd={b.dateEnd}
           dateStart={startOfDay(max([b.dateStart, dateStart]))}

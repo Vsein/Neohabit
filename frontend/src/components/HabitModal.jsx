@@ -255,7 +255,22 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   habit.targets.map((target, i, ts) => (
                     <div
                       key={i}
-                      className={`modal-details-block centering ${i < ts.length - 1 && isSameDay(ts[i + 1].date_start, target.date_start) ? 'inactive' : ''}`}
+                      className={`modal-details-block centering target-${i} ${i < ts.length - 1 && isSameDay(ts[i + 1].date_start, target.date_start) ? 'inactive' : ''}`}
+                      // TODO: this is a quickfix for .cell-period, need to refactor to pure css
+                      onMouseEnter={() => {
+                        if (target.period > 1) {
+                          document
+                            .querySelectorAll(`.modal-habit .target-${i}.cell-period`)
+                            .forEach((el) => el.classList.add('hover'));
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (target.period > 1) {
+                          document
+                            .querySelectorAll(`.modal-habit .target-${i}.cell-period.hover`)
+                            .forEach((el) => el.classList.remove('hover'));
+                        }
+                      }}
                     >
                       <p>
                         {i + 1}. <span style={{ fontWeight: 'bold' }}>Start date:</span>{' '}

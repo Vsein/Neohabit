@@ -218,6 +218,20 @@
   }
 }
 
+$max: 100;
+
+.modal-habit:has(> .modal-details-habit-targets-wrapper) {
+  contain: paint;
+  @for $i from 0 through $max {
+    &:has(> .modal-details-habit-targets-wrapper > .target-#{$i}:hover) {
+      .target-#{$i},
+      .target-#{$i}.fractured > * {
+        --cell-border-color: var(--hover-cell-border-color);
+      }
+    }
+  }
+}
+
 .modal-details-project-wrapper {
   display: grid;
   gap: 10px;
