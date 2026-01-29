@@ -163,6 +163,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             {width >= 850 && habitID && (
               <HabitModalWrapper
                 habit={habit}
+                currentTab={currentTab}
                 overridenElimination={values.more_is_bad}
                 overridenNumeric={values.is_numeric}
                 overridenMonochromatic={values.is_monochromatic}

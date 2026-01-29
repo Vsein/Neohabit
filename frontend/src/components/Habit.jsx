@@ -101,6 +101,7 @@ function HabitDefaultWrapper({
 function HabitModalWrapper({
   habit,
   onboardingSlideTag = '',
+  currentTab = undefined,
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
@@ -166,6 +167,7 @@ function HabitModalWrapper({
           isFuturePeriod={isFuturePeriod}
         />
         <HabitControls
+          currentTab={currentTab}
           habit={habit}
           header={true}
           modal={!onboardingSlideTag}

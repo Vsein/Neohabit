@@ -27,6 +27,7 @@ function HabitControls({
   projectID = '',
   modal = false,
   habitPage = false,
+  currentTab = undefined,
 }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [createHabitDataPoint] = useCreateHabitDataPointMutation();
@@ -94,7 +95,7 @@ function HabitControls({
         <Icon path={mdiCheckboxMultipleMarked} />
       </button>
       <button
-        className="overview-habit-button"
+        className={`overview-habit-button ${currentTab === 'targets' ? 'active' : ''}`}
         onClick={(e) => openCellAddDropdown(e, true)}
         title="Add a new target"
         type="button"
