@@ -28,6 +28,7 @@ function HabitControls({
   modal = false,
   habitPage = false,
   currentTab = undefined,
+  overridenColor = undefined,
 }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [createHabitDataPoint] = useCreateHabitDataPointMutation();
@@ -59,10 +60,10 @@ function HabitControls({
       cellAddDropdown.style.top = `${window.pageYOffset + rect.y + 26}px`;
       cellAddDropdown.style.left = `${rect.x - (isTarget ? 165 : 113) + (width < 400 ? 25 : 0)}px`;
     } else {
-      cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
-      cellAddDropdown.style.left = `${rect.x + window.scrollX + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
+      cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 41 - (isTarget ? 30 : 0)}px`;
+      cellAddDropdown.style.left = `${rect.x + window.scrollX + rect.width / 2 - 415 - (isTarget ? 20 : 0)}px`;
     }
-    cellAddDropdown.style.setProperty('--border-color', habit.color);
+    cellAddDropdown.style.setProperty('--border-color', overridenColor ?? habit.color);
   };
 
   return mobile ? (

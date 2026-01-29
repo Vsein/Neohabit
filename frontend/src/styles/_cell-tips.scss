@@ -97,7 +97,6 @@
 .cell-add-dropdown {
   position: absolute;
   text-align: center;
-  font-size: 12px;
   background-color: var(--main-background-color);
   color: var(--text-color);
   z-index: 4;
@@ -106,13 +105,25 @@
   white-space: nowrap;
   width: min-content;
   height: 57px;
+  width: 400px;
+  height: 100px;
+  gap: 15px;
   border: 1px solid var(--border-color);
   box-shadow: 0 0 4px 2px var(--border-color);
   padding: 3px;
 
   &.target {
-    height: 85px;
-    padding: 5px;
+    width: 420px;
+    height: 160px;
+    padding: 20px;
+  }
+
+  @media (max-width: 435px) {
+    width: calc(100vw - 20px);
+
+    &.target {
+      height: 160px;
+    }
   }
 
   &.hidden {

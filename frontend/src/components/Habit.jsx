@@ -172,6 +172,7 @@ function HabitModalWrapper({
           header={true}
           modal={!onboardingSlideTag}
           habitPage={habitPage}
+          overridenColor={overridenColor}
         />
       </div>
       <Habit
