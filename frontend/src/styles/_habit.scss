@@ -61,7 +61,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: color-mix(in srgb, var(--border-color) 60%, var(--support-color) 40%);
+    background-color: color-mix(in srgb, var(--border-color) 80%, var(--support-color) 20%);
     color: var(--main-background-color);
     margin-right: -10px;
   }

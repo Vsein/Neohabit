@@ -16,7 +16,7 @@ import { useCreateHabitDataPointMutation } from '../state/services/habitData';
 import { changeHabitTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
-import { getNumericTextColor } from '../hooks/usePaletteGenerator';
+import { getNumericTextColor, getColorShade } from '../hooks/usePaletteGenerator';
 
 import Heatmap from './Heatmap';
 
@@ -28,7 +28,7 @@ function HabitControls({
   modal = false,
   habitPage = false,
   currentTab = undefined,
-  overridenColor = undefined,
+  borderColor = undefined,
 }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [createHabitDataPoint] = useCreateHabitDataPointMutation();
@@ -63,7 +63,7 @@ function HabitControls({
       cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 41 - (isTarget ? 30 : 0)}px`;
       cellAddDropdown.style.left = `${rect.x + window.scrollX + rect.width / 2 - 415 - (isTarget ? 20 : 0)}px`;
     }
-    cellAddDropdown.style.setProperty('--border-color', overridenColor ?? habit.color);
+    cellAddDropdown.style.setProperty('--border-color', borderColor);
   };
 
   return mobile ? (
@@ -185,7 +185,12 @@ function HabitOverview({
         vertical={vertical}
         is2D={false}
       />
-      <HabitControls habit={habit} mobile={mobile} projectID={projectID} />
+      <HabitControls
+        habit={habit}
+        mobile={mobile}
+        projectID={projectID}
+        borderColor={getColorShade(habit.color)}
+      />
     </div>
   );
 }

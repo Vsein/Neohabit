@@ -84,7 +84,13 @@ function HabitDefaultWrapper({
         } singular habit-mode`}
       >
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
-        <HabitControls habit={habit} header={true} modal={modal} habitPage={habitPage} />
+        <HabitControls
+          habit={habit}
+          header={true}
+          modal={modal}
+          habitPage={habitPage}
+          borderColor={colorShade}
+        />
       </div>
       <Habit
         habit={habit}
@@ -172,7 +178,7 @@ function HabitModalWrapper({
           header={true}
           modal={!onboardingSlideTag}
           habitPage={habitPage}
-          overridenColor={overridenColor}
+          borderColor={colorShade}
         />
       </div>
       <Habit

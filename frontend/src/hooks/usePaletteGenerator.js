@@ -87,6 +87,14 @@ function getEliminationColor(color) {
   return mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4);
 }
 
+function getColorShade(color) {
+  const preferDark = document.documentElement.classList.contains('dark');
+
+  return !preferDark
+    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.8)
+    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(color), 0.6);
+}
+
 function generateShades(color) {
   const preferDark = document.documentElement.classList.contains('dark');
 
@@ -112,4 +120,4 @@ export default function usePaletteGenerator(color) {
   return palette;
 }
 
-export { getNumericTextColor, getEliminationColor, generateShades };
+export { getNumericTextColor, getEliminationColor, getColorShade, generateShades };
