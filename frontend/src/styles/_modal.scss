@@ -174,6 +174,15 @@
   }
 }
 
+.modal-habit {
+  align-items: center;
+  grid-template-rows: min-content min-content min-content 360px 40px;
+
+  &:has(> .modal-details-habit-targets-wrapper) {
+    grid-template-rows: min-content min-content min-content 410px;
+  }
+}
+
 .modal-details-habit-wrapper {
   display: grid;
   gap: 10px;
@@ -186,8 +195,8 @@
 }
 
 .modal-details-habit-targets-wrapper {
+  align-self: start;
   display: grid;
-  height: 394px;
   gap: 10px;
   grid-template-columns: 1fr;
   grid-auto-rows: 40px;
@@ -299,6 +308,7 @@ $max: 100;
 
   & > textarea {
     @include scrollbar.scrollbar;
+    height: 300px;
   }
 
   & > textarea:focus ~ .form-field-length {
