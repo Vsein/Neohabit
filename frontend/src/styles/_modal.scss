@@ -203,11 +203,18 @@
 
   & .modal-details-block {
     height: 100%;
-    justify-content: start;
     padding-inline: 15px;
     border: 1px solid transparent;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 50px 200px 100px 80px 100px;
 
-    &:hover:not(.inactive) {
+    &.header {
+      background: none;
+      font-weight: bold;
+    }
+
+    &:hover:not(.inactive):not(.header) {
       background-color: color-mix(in srgb, var(--main-background-color) 60%, transparent);
       border: 1px solid var(--cell-border-color);
     }
