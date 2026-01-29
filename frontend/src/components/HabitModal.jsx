@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
+import { isSameDay } from 'date-fns';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import Field from './FieldWrapper';
@@ -251,8 +252,11 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             {currentTab === 'targets' ? (
               <div className="modal-details-habit-targets-wrapper">
                 {habit.targets.length ? (
-                  habit.targets.map((target, i) => (
-                    <div key={i} className="modal-details-block centering">
+                  habit.targets.map((target, i, ts) => (
+                    <div
+                      key={i}
+                      className={`modal-details-block centering ${i < ts.length - 1 && isSameDay(ts[i + 1].date_start, target.date_start) ? 'inactive' : ''}`}
+                    >
                       <p>
                         {i + 1}. <span style={{ fontWeight: 'bold' }}>Start date:</span>{' '}
                         {formatDate(new Date(target.date_start))}.{' '}
