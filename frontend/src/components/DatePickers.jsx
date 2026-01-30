@@ -143,7 +143,7 @@ function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
   return (
     <div className="dates-period-footer" onClick={onClick}>
       <button
-        className="overview-period-button"
+        className="overview-period-button centering"
         onClick={setToPast}
         title="Set today as the last day"
         type="button"
@@ -151,7 +151,7 @@ function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
         <Icon path={mdiCalendarEnd} className="icon small centering" />
       </button>
       <button
-        className="overview-period-button"
+        className="overview-period-button centering"
         onClick={reset}
         title="Reset date period [r]"
         type="button"
@@ -159,7 +159,7 @@ function DatePeriodControls({ setToPast, reset, setToFuture, onClick }) {
         <Icon path={mdiCalendarRefresh} className="icon small centering" />
       </button>
       <button
-        className="overview-period-button"
+        className="overview-period-button centering"
         onClick={setToFuture}
         title="Set today as the first day"
         type="button"
