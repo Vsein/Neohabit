@@ -74,21 +74,22 @@ export default function Heatmap({
   const firstDummyBucket =
     daysToHabitStart > 0
       ? {
-          dateStart,
+          dateStart: is2D ? startOfWeek(dateStart) : dateStart,
           dateEnd: subMilliseconds(minValidDate(startOfDay(habitStartDate), endOfDay(dateEnd)), 1),
           value: 0,
           dummy: true,
         }
       : [];
 
-  const firstVerticalDummyBucket = is2D
-    ? {
-        dateStart: startOfWeek(dateStart),
-        dateEnd: subMilliseconds(dateStart, 1),
-        value: 0,
-        dummy: true,
-      }
-    : [];
+  const firstVerticalDummyBucket =
+    is2D && firstDummyBucket.length === 0
+      ? {
+          dateStart: startOfWeek(dateStart),
+          dateEnd: subMilliseconds(dateStart, 1),
+          value: 0,
+          dummy: true,
+        }
+      : [];
 
   const lastBucket = !lastTarget
     ? {
