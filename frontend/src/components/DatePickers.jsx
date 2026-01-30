@@ -58,7 +58,9 @@ function DatePeriodPicker({
         aria-label="Previous Month"
         className={'react-datepicker__navigation react-datepicker__navigation--previous'}
         onClick={decreaseMonth}
-        style={{ visibility: customHeaderCount === 1 ? 'visible' : 'hidden' }}
+        style={{
+          visibility: (monthsShown === 3 ? customHeaderCount === 1 : true) ? 'visible' : 'hidden',
+        }}
       >
         <span
           className={
@@ -79,7 +81,7 @@ function DatePeriodPicker({
         className={'react-datepicker__navigation react-datepicker__navigation--next'}
         onClick={increaseMonth}
         style={{
-          visibility: customHeaderCount === monthsShown - 2 ? 'visible' : 'hidden',
+          visibility: (monthsShown === 3 ? customHeaderCount === 1 : true) ? 'visible' : 'hidden',
         }}
       >
         <span
