@@ -56,7 +56,7 @@ function ModalButtons({ disabled, isNew, type, unnamed }) {
       >
         Cancel
       </button>
-      <button className="button-default stretch border" type="submit" disabled={disabled}>
+      <button className="button-default stretch border" type="submit" disabled={disabled && !isNew}>
         {isNew ? `Add ${unnamed ? 'unnamed ' : ''}${type}` : 'Save'}
       </button>
     </div>
@@ -70,14 +70,14 @@ function ColorPicker() {
         <div className="form-task-name" style={{ color: input.value }}>
           <HexColorPicker
             color={input.value}
-            onChange={(coloro) => {
-              input.onChange(coloro);
+            onChange={(color) => {
+              input.onChange(color);
             }}
           />
           <HexColorInput
             color={input.value}
-            onChange={(coloro) => {
-              input.onChange(coloro);
+            onChange={(color) => {
+              input.onChange(color);
             }}
             prefixed
           />

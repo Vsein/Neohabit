@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form } from 'react-final-form';
-import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { HabitTag } from './UI';
@@ -10,10 +9,8 @@ import {
   useAddSkillMutation,
   useEditSkillMutation,
 } from '../state/services/skilltree';
-import { close } from '../state/features/overlay/overlaySlice';
 
 export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, closeOverlay }) {
-  const dispatch = useDispatch();
   const skilltrees = useGetSkilltreesQuery();
   const [addSkill] = useAddSkillMutation();
   const [editSkill] = useEditSkillMutation();
@@ -31,10 +28,10 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
         parent_skill_id: skillparentID,
         status: 'idle',
       });
+      closeOverlay();
     } else {
       await editSkill({ skillID, values: { ...values, skilltree_id: skilltreeID } });
     }
-    dispatch(close());
   };
 
   return (
@@ -71,7 +68,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
             <DescriptionField rows="9" />
           </div>
           <ModalButtons
-            disabled={submitting}
+            disabled={submitting || pristine}
             unnamed={!values?.name}
             isNew={!skillID}
             type="skill"

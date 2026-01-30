@@ -14,33 +14,23 @@
 }
 
 .habit {
-  &-button {
-    width: 26px;
-    height: 26px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   &-form {
     display: flex;
     align-items: center;
-    width: min-content;
     gap: 8px;
 
     &.target {
-      width: 320px;
       flex-wrap: wrap;
       gap: 3px;
 
       & > span {
-        white-space: pre;
+        // white-space: pre;
       }
     }
 
     & > div,
     & > button {
-      border: 1px solid var(--important-border-color);
+      display: inline-block;
       border-radius: 6px;
       padding: 0px;
 
@@ -49,16 +39,31 @@
       }
     }
 
+    & > div {
+      margin-inline: 5px;
+      border: 1px solid var(--important-border-color);
+    }
+
     &-input {
-      height: 24px;
-      padding: 3px;
-      font-size: 12px;
-      line-height: 12px;
+      height: 30px;
+      padding: 4px;
+      font-size: 0.9rem;
     }
 
     &-counter {
-      width: 50px;
+      width: 120px;
     }
+  }
+
+  &-button {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: color-mix(in srgb, var(--border-color) 80%, var(--support-color) 20%);
+    color: var(--main-background-color);
+    margin-right: -10px;
   }
 }
 

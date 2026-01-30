@@ -7,14 +7,13 @@ import { DatePeriodPicker } from './DatePickers';
 import Heatmap from './Heatmap';
 import { HeatmapMonthsWeekly, HeatmapWeekdays } from './HeatmapDateAxes';
 import { HabitControls } from './HabitComponents';
-import { generateShades } from '../hooks/usePaletteGenerator';
+import { generateShades, getNumericTextColor } from '../hooks/usePaletteGenerator';
 
 export default function Habit({
   habit,
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
-  overridenColor = undefined,
   dateStart,
   dateEnd,
   vertical = true,
@@ -37,7 +36,6 @@ export default function Habit({
           overridenElimination={overridenElimination}
           overridenNumeric={overridenNumeric}
           overridenMonochromatic={overridenMonochromatic}
-          overridenColor={overridenColor}
         />
       </div>
     </div>
@@ -75,6 +73,8 @@ function HabitDefaultWrapper({
         '--calm-signature-color': `${colorShade}55`,
         '--datepicker-text-color': textColor,
         '--datepicker-calm-text-color': calmTextColor,
+        '--habit-color': habit.color,
+        '--numeric-text-color': getNumericTextColor(habit.color),
         margin: 'auto',
       }}
     >
@@ -84,7 +84,13 @@ function HabitDefaultWrapper({
         } singular habit-mode`}
       >
         <h3 style={{ color: colorShade, textAlign: 'center' }}>{habit?.name}</h3>
-        <HabitControls habit={habit} header={true} modal={modal} habitPage={habitPage} />
+        <HabitControls
+          habit={habit}
+          header={true}
+          modal={modal}
+          habitPage={habitPage}
+          borderColor={colorShade}
+        />
       </div>
       <Habit
         habit={habit}
@@ -101,6 +107,7 @@ function HabitDefaultWrapper({
 function HabitModalWrapper({
   habit,
   onboardingSlideTag = '',
+  currentTab = undefined,
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
@@ -123,9 +130,9 @@ function HabitModalWrapper({
 
   const diffWeeks = differenceInWeeks(endOfWeek(dateEnd), startOfWeek(dateStart)) + 1;
 
-  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(
-    overridenColor ?? habit.color,
-  );
+  const habitColor = overridenColor ?? habit.color;
+
+  const { colorShade, calmColorShade, textColor, calmTextColor } = generateShades(habitColor);
 
   return (
     <div
@@ -143,6 +150,8 @@ function HabitModalWrapper({
         '--calm-signature-color': `${colorShade}55`,
         '--datepicker-text-color': textColor,
         '--datepicker-calm-text-color': calmTextColor,
+        '--habit-color': habitColor,
+        '--numeric-text-color': getNumericTextColor(habitColor),
         margin: 'auto',
       }}
     >
@@ -164,10 +173,12 @@ function HabitModalWrapper({
           isFuturePeriod={isFuturePeriod}
         />
         <HabitControls
+          currentTab={currentTab}
           habit={habit}
           header={true}
           modal={!onboardingSlideTag}
           habitPage={habitPage}
+          borderColor={colorShade}
         />
       </div>
       <Habit
@@ -176,7 +187,6 @@ function HabitModalWrapper({
         overridenElimination={overridenElimination}
         overridenNumeric={overridenNumeric}
         overridenMonochromatic={overridenMonochromatic}
-        overridenColor={overridenColor}
         dateStart={dateStart}
         dateEnd={dateEnd}
         mobile={mobile}

@@ -17,19 +17,7 @@ import {
 import { useGetSettingsQuery, useUpdateSettingsMutation } from '../state/services/settings';
 import { changeCellActions } from '../state/features/cellTip/cellTipSlice';
 import adjustTooltip from '../utils/adjustTooltip';
-
-function formatDate(date) {
-  return date.toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    // The below are needed only for dev stage, I'm thinking of hiding
-    // the time and whatnot if the period starts exactly at 0:00.
-    // And it's also kinda sucky to use US locale. With all those AMs
-    // ans PMs it gets pretty ambiguous quickly.
-    weekday: 'short',
-  });
-}
+import { formatDate } from '../utils/dates';
 
 function formatPeriod(isPeriod, dateStart, dateEnd = undefined) {
   const formattedDateStart = formatDate(dateStart);

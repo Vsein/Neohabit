@@ -1,9 +1,7 @@
 import React from 'react';
 import { Form } from 'react-final-form';
-import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import Field from './FieldWrapper';
 import { HabitTag } from './UI';
 import { NameField, DescriptionField, ModalButtons } from './ModalComponents';
 import {
@@ -12,10 +10,8 @@ import {
   useCreateTaskMutation,
 } from '../state/services/todolist';
 import { useGetHabitsQuery } from '../state/services/habit';
-import { close } from '../state/features/overlay/overlaySlice';
 
 export default function TaskModal({ taskID, habitID, closeOverlay }) {
-  const dispatch = useDispatch();
   const habits = useGetHabitsQuery();
   const tasks = useGetTasksQuery();
   const [updateTask] = useUpdateTaskMutation();
@@ -30,8 +26,8 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
       await updateTask({ taskID, values });
     } else {
       await createTask(values);
+      closeOverlay();
     }
-    dispatch(close());
   };
 
   const habit = habits.data.find((h) => h.id === habitID) ?? {
@@ -71,7 +67,12 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
           <div className="modal-details-block">
             <DescriptionField rows="9" />
           </div>
-          <ModalButtons disabled={submitting} unnamed={!values?.name} isNew={!taskID} type="task" />
+          <ModalButtons
+            disabled={submitting || pristine}
+            unnamed={!values?.name}
+            isNew={!taskID}
+            type="task"
+          />
         </form>
       )}
     />

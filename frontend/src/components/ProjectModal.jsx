@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
-import { useDispatch } from 'react-redux';
 import { Icon } from '@mdi/react';
 import { mdiClose, mdiPlus } from '@mdi/js';
 import { HabitTag, HabitTagToDelete } from './UI';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
 import { useCreateProjectMutation, useUpdateProjectMutation } from '../state/services/project';
 import { useGetHabitsOutsideProjectsQuery } from '../state/services/habit';
-import { close } from '../state/features/overlay/overlaySlice';
 import useMenuToggler from '../hooks/useMenuToggler';
 import useLoaded from '../hooks/useLoaded';
 
 export default function ProjectModal({ projectID, project, isActive, closeOverlay }) {
   const [loaded] = useLoaded();
   const [menuOpened, { toggleMenu }] = useMenuToggler();
-  const dispatch = useDispatch();
   const habits = useGetHabitsOutsideProjectsQuery();
   const [createProject] = useCreateProjectMutation();
   const [updateProject] = useUpdateProjectMutation();
@@ -35,6 +32,7 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
     const habitIDs = projectHabitList.map((habit) => habit.id);
     if (!projectID) {
       await createProject({ ...values, habit_ids: habitIDs, habits: projectHabitList });
+      closeOverlay();
     } else {
       await updateProject({
         projectID,
@@ -42,7 +40,6 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
       });
     }
     setProjectHabitList([]);
-    dispatch(close());
   };
 
   return (
@@ -167,7 +164,11 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
               </div>
             </div>
             <ModalButtons
-              disabled={submitting}
+              disabled={
+                submitting ||
+                (pristine &&
+                  JSON.stringify(project?.habits ?? []) === JSON.stringify(projectHabitList))
+              }
               unnamed={!values?.name}
               isNew={!projectID}
               type="project"

@@ -463,6 +463,34 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
 
+  /habit_target/{habit_target_id}:
+    delete:
+      summary: Delete habit target
+      operationId: deleteHabitTarget
+      tags: [HabitTargets]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: habit_target_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/UUID'
+      responses:
+        '204':
+          description: Successfully deleted the habit target
+        '400':
+          description: HabitTargetID not provided
+        '401':
+          description: Unauthorized
+        '404':
+          description: Habit Target not found
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
   /projects:
     get:
       summary: List projects
@@ -1254,7 +1282,7 @@ components:
         - date_start
         - value
         - period
-        - is_archive
+        - is_archiving
       properties:
         id:
           $ref: '#/components/schemas/UUID'

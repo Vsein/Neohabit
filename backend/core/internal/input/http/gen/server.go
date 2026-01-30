@@ -37,6 +37,9 @@ type ServerInterface interface {
 	// Create a habit target
 	// (POST /habit/{habit_id}/target)
 	CreateHabitTarget(w http.ResponseWriter, r *http.Request, habitID UUID)
+	// Delete habit target
+	// (DELETE /habit_target/{habit_target_id})
+	DeleteHabitTarget(w http.ResponseWriter, r *http.Request, habitTargetID UUID)
 	// List habits
 	// (GET /habits)
 	ListHabits(w http.ResponseWriter, r *http.Request)
@@ -163,6 +166,12 @@ func (_ Unimplemented) ReduceHabitDataPointsBetweenDatesByAmount(w http.Response
 // Create a habit target
 // (POST /habit/{habit_id}/target)
 func (_ Unimplemented) CreateHabitTarget(w http.ResponseWriter, r *http.Request, habitID UUID) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// Delete habit target
+// (DELETE /habit_target/{habit_target_id})
+func (_ Unimplemented) DeleteHabitTarget(w http.ResponseWriter, r *http.Request, habitTargetID UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -534,6 +543,37 @@ func (siw *ServerInterfaceWrapper) CreateHabitTarget(w http.ResponseWriter, r *h
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.CreateHabitTarget(w, r, habitID)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// DeleteHabitTarget operation middleware
+func (siw *ServerInterfaceWrapper) DeleteHabitTarget(w http.ResponseWriter, r *http.Request) {
+
+	var err error
+
+	// ------------- Path parameter "habit_target_id" -------------
+	var habitTargetID UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "habit_target_id", chi.URLParam(r, "habit_target_id"), &habitTargetID, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "habit_target_id", Err: err})
+		return
+	}
+
+	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, BearerAuthScopes, []string{})
+
+	r = r.WithContext(ctx)
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.DeleteHabitTarget(w, r, habitTargetID)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -1294,6 +1334,9 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		r.Post(options.BaseURL+"/habit/{habit_id}/target", wrapper.CreateHabitTarget)
 	})
 	r.Group(func(r chi.Router) {
+		r.Delete(options.BaseURL+"/habit_target/{habit_target_id}", wrapper.DeleteHabitTarget)
+	})
+	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/habits", wrapper.ListHabits)
 	})
 	r.Group(func(r chi.Router) {
@@ -1712,6 +1755,55 @@ func (response CreateHabitTarget409JSONResponse) VisitCreateHabitTargetResponse(
 type CreateHabitTarget500JSONResponse ErrorResponse
 
 func (response CreateHabitTarget500JSONResponse) VisitCreateHabitTargetResponse(w http.ResponseWriter) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(500)
+
+	return json.NewEncoder(w).Encode(response)
+}
+
+type DeleteHabitTargetRequestObject struct {
+	HabitTargetID UUID `json:"habit_target_id"`
+}
+
+type DeleteHabitTargetResponseObject interface {
+	VisitDeleteHabitTargetResponse(w http.ResponseWriter) error
+}
+
+type DeleteHabitTarget204Response struct {
+}
+
+func (response DeleteHabitTarget204Response) VisitDeleteHabitTargetResponse(w http.ResponseWriter) error {
+	w.WriteHeader(204)
+	return nil
+}
+
+type DeleteHabitTarget400Response struct {
+}
+
+func (response DeleteHabitTarget400Response) VisitDeleteHabitTargetResponse(w http.ResponseWriter) error {
+	w.WriteHeader(400)
+	return nil
+}
+
+type DeleteHabitTarget401Response struct {
+}
+
+func (response DeleteHabitTarget401Response) VisitDeleteHabitTargetResponse(w http.ResponseWriter) error {
+	w.WriteHeader(401)
+	return nil
+}
+
+type DeleteHabitTarget404Response struct {
+}
+
+func (response DeleteHabitTarget404Response) VisitDeleteHabitTargetResponse(w http.ResponseWriter) error {
+	w.WriteHeader(404)
+	return nil
+}
+
+type DeleteHabitTarget500JSONResponse ErrorResponse
+
+func (response DeleteHabitTarget500JSONResponse) VisitDeleteHabitTargetResponse(w http.ResponseWriter) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(500)
 
@@ -2907,6 +2999,9 @@ type StrictServerInterface interface {
 	// Create a habit target
 	// (POST /habit/{habit_id}/target)
 	CreateHabitTarget(ctx context.Context, request CreateHabitTargetRequestObject) (CreateHabitTargetResponseObject, error)
+	// Delete habit target
+	// (DELETE /habit_target/{habit_target_id})
+	DeleteHabitTarget(ctx context.Context, request DeleteHabitTargetRequestObject) (DeleteHabitTargetResponseObject, error)
 	// List habits
 	// (GET /habits)
 	ListHabits(ctx context.Context, request ListHabitsRequestObject) (ListHabitsResponseObject, error)
@@ -3234,6 +3329,32 @@ func (sh *strictHandler) CreateHabitTarget(w http.ResponseWriter, r *http.Reques
 		sh.options.ResponseErrorHandlerFunc(w, r, err)
 	} else if validResponse, ok := response.(CreateHabitTargetResponseObject); ok {
 		if err := validResponse.VisitCreateHabitTargetResponse(w); err != nil {
+			sh.options.ResponseErrorHandlerFunc(w, r, err)
+		}
+	} else if response != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
+	}
+}
+
+// DeleteHabitTarget operation middleware
+func (sh *strictHandler) DeleteHabitTarget(w http.ResponseWriter, r *http.Request, habitTargetID UUID) {
+	var request DeleteHabitTargetRequestObject
+
+	request.HabitTargetID = habitTargetID
+
+	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
+		return sh.ssi.DeleteHabitTarget(ctx, request.(DeleteHabitTargetRequestObject))
+	}
+	for _, middleware := range sh.middlewares {
+		handler = middleware(handler, "DeleteHabitTarget")
+	}
+
+	response, err := handler(r.Context(), w, r, request)
+
+	if err != nil {
+		sh.options.ResponseErrorHandlerFunc(w, r, err)
+	} else if validResponse, ok := response.(DeleteHabitTargetResponseObject); ok {
+		if err := validResponse.VisitDeleteHabitTargetResponse(w); err != nil {
 			sh.options.ResponseErrorHandlerFunc(w, r, err)
 		}
 	} else if response != nil {

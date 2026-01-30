@@ -52,7 +52,7 @@ type HabitTarget struct {
 	PeriodUnit      PeriodUnit
 	IsASequence     bool
 	Sequence        []int
-	IsArchiving     bool
+	IsArchiving     bool `json:"is_archiving"`
 	IsNumeric       bool
 	IsMonochromatic bool
 	MoreIsBad       bool

@@ -58,18 +58,41 @@ function generatePalette(base, goal) {
   return palette;
 }
 
+function isShadeOfRedRgb(r, g, b, strict = false) {
+  if (r < 100) return false;
+
+  const redDominance = r > g * 1.3 && r > b * 1.3;
+
+  if (strict) {
+    return redDominance && g < r * 0.6 && b < r * 0.7;
+  }
+
+  return redDominance;
+}
+
 function getNumericTextColor(color = '#23BCDB') {
-  if (contrast(hexToRgb(color), hexToRgb('#efefef')) > 1.95) {
+  const rgbColor = hexToRgb(color);
+  if (
+    contrast(rgbColor, hexToRgb('#efefef')) > 1.95 &&
+    !isShadeOfRedRgb(rgbColor.r, rgbColor.g, rgbColor.b)
+  ) {
     return '#efefef';
   }
-  return contrast(hexToRgb(color), hexToRgb('#efefef')) >
-    contrast(hexToRgb(color), hexToRgb('#000000'))
+  return contrast(rgbColor, hexToRgb('#efefef')) > contrast(rgbColor, hexToRgb('#000000'))
     ? '#efefef'
     : '#000000';
 }
 
 function getEliminationColor(color) {
   return mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.4);
+}
+
+function getColorShade(color) {
+  const preferDark = document.documentElement.classList.contains('dark');
+
+  return !preferDark
+    ? mixColors({ r: 0, g: 0, b: 0 }, hexToRgb(color), 0.8)
+    : mixColors({ r: 255, g: 255, b: 255 }, hexToRgb(color), 0.6);
 }
 
 function generateShades(color) {
@@ -97,4 +120,4 @@ export default function usePaletteGenerator(color) {
   return palette;
 }
 
-export { getNumericTextColor, getEliminationColor, generateShades };
+export { getNumericTextColor, getEliminationColor, getColorShade, generateShades };

@@ -109,6 +109,10 @@
       grid-area: description;
     }
 
+    &.name-area {
+      grid-area: name;
+    }
+
     &.mode-area {
       grid-area: mode;
       display: flex;
@@ -137,14 +141,128 @@
   }
 }
 
+.habit-navigation {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  height: 35px;
+  width: 100%;
+
+  & .filters {
+    justify-content: space-around;
+    justify-items: center;
+    width: 100%;
+    border-radius: 10px;
+    gap: 5px;
+
+    & li {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background-color: var(--button-bg-color);
+      color: var(--support-color);
+
+      &:hover:not(.active) {
+        background-color: color-mix(in srgb, var(--button-bg-color) 60%, transparent);
+      }
+    }
+
+    & li.active {
+      color: var(--active-text-color);
+      background-color: color-mix(in srgb, var(--signature-color) 60%, transparent);
+    }
+  }
+}
+
+.modal-habit {
+  align-items: center;
+  grid-template-rows: min-content min-content min-content 360px 40px;
+
+  &:has(> .modal-details-habit-targets-wrapper) {
+    grid-template-rows: min-content min-content min-content 410px;
+  }
+}
+
 .modal-details-habit-wrapper {
   display: grid;
   gap: 10px;
   grid-template-columns: 3fr 1fr;
   grid-template-rows: min-content min-content;
   grid-template-areas:
+    'name mode'
     'description mode'
     'description color';
+}
+
+.modal-details-habit-targets-wrapper {
+  align-self: start;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 40px;
+  overflow-y: scroll;
+
+  @media (max-width: 700px) {
+    height: 435px;
+  }
+
+  @media (max-width: 420px) {
+    height: 393px;
+  }
+
+  & .modal-details-block {
+    height: 100%;
+    padding-left: 15px;
+    padding-right: 25px;
+    border: 1px solid transparent;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 50px 200px 100px 80px 100px 1fr;
+
+    @media (max-width: 700px) {
+      font-size: 0.9rem;
+      grid-template-columns: 30px 150px 60px 60px 60px 1fr;
+    }
+
+    @media (max-width: 460px) {
+      font-size: 0.8rem;
+      grid-template-columns: 30px 130px 50px 50px 0px 1fr;
+    }
+
+    & button {
+      border-radius: 5px;
+      color: var(--text-color);
+    }
+
+    &.header {
+      background: none;
+      font-weight: bold;
+    }
+
+    &:hover:not(.inactive):not(.header) {
+      background-color: color-mix(in srgb, var(--main-background-color) 60%, transparent);
+      border: 1px solid var(--cell-border-color);
+    }
+
+    &.inactive {
+      background-color: color-mix(in srgb, var(--main-background-color) 45%, transparent);
+      color: color-mix(in srgb, var(--text-color) 50%, transparent);
+    }
+  }
+}
+
+$max: 100;
+
+.modal-habit:has(> .modal-details-habit-targets-wrapper) {
+  contain: paint;
+  @for $i from 0 through $max {
+    &:has(> .modal-details-habit-targets-wrapper > .target-#{$i}:hover) {
+      .target-#{$i},
+      .target-#{$i}.fractured > * {
+        --cell-border-color: var(--hover-cell-border-color);
+      }
+    }
+  }
 }
 
 .modal-details-project-wrapper {
@@ -190,6 +308,7 @@
 
   & > textarea {
     @include scrollbar.scrollbar;
+    height: 300px;
   }
 
   & > textarea:focus ~ .form-field-length {

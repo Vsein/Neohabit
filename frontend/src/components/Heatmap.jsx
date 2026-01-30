@@ -11,7 +11,6 @@ import {
   addMilliseconds,
 } from 'date-fns';
 import { CellPeriod, CellDummy } from './HeatmapCells';
-import { getNumericTextColor } from '../hooks/usePaletteGenerator';
 import { areAscending, minValidDate, maxValidDate } from '../utils/dates';
 
 function getWindowDateStart(dateStart, firstTarget) {
@@ -46,12 +45,10 @@ export default function Heatmap({
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
-  overridenColor = undefined,
 }) {
   const elimination = overridenElimination ?? habit?.more_is_bad;
   const numeric = overridenNumeric ?? habit?.is_numeric;
   const monochromatic = overridenMonochromatic ?? habit?.is_monochromatic;
-  const habitColor = overridenColor ?? habit?.color;
 
   const data = habit?.data ?? [];
   const targets = habit?.targets ?? [];
@@ -101,15 +98,14 @@ export default function Heatmap({
       }
     : [];
 
-  const bucketBeforeTargetBucket =
-    differenceInDays(targets.length && targets[0]?.date_start, habitStartDate) > 0 &&
-    differenceInDays(dateEnd, targets.length && targets[0]?.date_start) > 0
-      ? {
-          dateStart: startOfDay(habitStartDate),
-          dateEnd: subMilliseconds(startOfDay(new Date(targets[0]?.date_start)), 1),
-          value: 0,
-        }
-      : [];
+  const firstTargetDateStart = startOfDay(targets.length && targets[0]?.date_start);
+  const bucketBeforeTargetBucket = areAscending(dateStart, firstTargetDateStart, dateEnd)
+    ? {
+        dateStart: max([startOfDay(habitStartDate), dateStart]),
+        dateEnd: subMilliseconds(firstTargetDateStart, 1),
+        value: 0,
+      }
+    : [];
 
   const targetBuckets = targets.slice(Math.max(fti, 0), lti + 1).flatMap((t, i, ts) => {
     const bucketsDateStart = maxValidDate(
@@ -174,6 +170,7 @@ export default function Heatmap({
           key={i}
           dummy={!!targets[b.targetIndex]?.isArchiving}
           habitID={habit.id}
+          targetIndex={b.targetIndex}
           targetStart={b.dateStart}
           targetEnd={b.dateEnd}
           dateStart={startOfDay(max([b.dateStart, dateStart]))}
@@ -265,11 +262,7 @@ export default function Heatmap({
   return (
     <div
       className={`overview-habit-cells ${is2D ? 'weekly' : ''}`}
-      style={{
-        '--numeric-text-color': getNumericTextColor(habitColor),
-        '--max-value': maxValue,
-        '--habit-color': habitColor,
-      }}
+      style={{ '--max-value': maxValue }}
     >
       {Cells}
     </div>

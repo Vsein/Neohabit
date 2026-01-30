@@ -91,7 +91,7 @@ type HabitTarget struct {
 	DateEnd     *Date `json:"date_end,omitempty"`
 	DateStart   Date  `json:"date_start"`
 	ID          *UUID `json:"id,omitempty"`
-	IsArchiving *bool `json:"is_archiving,omitempty"`
+	IsArchiving bool  `json:"is_archiving"`
 
 	// Period How many days you have to complete the activity
 	Period int `json:"period"`

@@ -251,7 +251,11 @@
   width: 17px;
   cursor: pointer;
 
+  &.active:not(:hover) {
+    color: var(--signature-color);
+  }
+
   &:hover {
-    color: var(--color);
+    color: var(--habit-color);
   }
 }

@@ -16,6 +16,7 @@ import { useCreateHabitDataPointMutation } from '../state/services/habitData';
 import { changeHabitTo } from '../state/features/cellAdd/cellAddSlice';
 import { changeTo } from '../state/features/overlay/overlaySlice';
 import { useUpdateStopwatchMutation } from '../state/services/stopwatch';
+import { getNumericTextColor, getColorShade } from '../hooks/usePaletteGenerator';
 
 import Heatmap from './Heatmap';
 
@@ -26,6 +27,8 @@ function HabitControls({
   projectID = '',
   modal = false,
   habitPage = false,
+  currentTab = undefined,
+  borderColor = undefined,
 }) {
   const [updateStopwatch] = useUpdateStopwatchMutation();
   const [createHabitDataPoint] = useCreateHabitDataPointMutation();
@@ -57,14 +60,14 @@ function HabitControls({
       cellAddDropdown.style.top = `${window.pageYOffset + rect.y + 26}px`;
       cellAddDropdown.style.left = `${rect.x - (isTarget ? 165 : 113) + (width < 400 ? 25 : 0)}px`;
     } else {
-      cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 21 - (isTarget ? 10 : 0)}px`;
-      cellAddDropdown.style.left = `${rect.x + window.scrollX + rect.width / 2 - 245 - (isTarget ? 100 : 0)}px`;
+      cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 41 - (isTarget ? 30 : 0)}px`;
+      cellAddDropdown.style.left = `${rect.x + window.scrollX + rect.width / 2 - 415 - (isTarget ? 20 : 0)}px`;
     }
-    cellAddDropdown.style.setProperty('--border-color', habit.color);
+    cellAddDropdown.style.setProperty('--border-color', borderColor);
   };
 
   return mobile ? (
-    <div className={`habit-controls ${header ? 'header' : ''}`} style={{ '--color': habit.color }}>
+    <div className={`habit-controls ${header ? 'header' : ''}`}>
       <button
         className="overview-habit-button"
         onClick={addCell}
@@ -75,10 +78,7 @@ function HabitControls({
       </button>
     </div>
   ) : (
-    <div
-      className={`habit-controls right ${header ? 'header' : ''}`}
-      style={{ '--color': habit.color }}
-    >
+    <div className={`habit-controls right ${header ? 'header' : ''}`}>
       <button
         className="overview-habit-button"
         onClick={addCell}
@@ -96,7 +96,7 @@ function HabitControls({
         <Icon path={mdiCheckboxMultipleMarked} />
       </button>
       <button
-        className="overview-habit-button"
+        className={`overview-habit-button ${currentTab === 'targets' ? 'active' : ''}`}
         onClick={(e) => openCellAddDropdown(e, true)}
         title="Add a new target"
         type="button"
@@ -166,6 +166,10 @@ function HabitOverview({
       onDragStart={drag}
       id={habit?.id}
       data-id={`${projectID}_${habit?.id}`}
+      style={{
+        '--habit-color': habit.color,
+        '--numeric-text-color': getNumericTextColor(habit.color),
+      }}
     >
       <NavLink
         className="overview-habit-name"
@@ -181,7 +185,12 @@ function HabitOverview({
         vertical={vertical}
         is2D={false}
       />
-      <HabitControls habit={habit} mobile={mobile} projectID={projectID} />
+      <HabitControls
+        habit={habit}
+        mobile={mobile}
+        projectID={projectID}
+        borderColor={getColorShade(habit.color)}
+      />
     </div>
   );
 }
