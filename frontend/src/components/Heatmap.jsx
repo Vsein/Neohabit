@@ -93,7 +93,7 @@ export default function Heatmap({
 
   const lastBucket = !lastTarget
     ? {
-        dateStart: startOfDay(habitStartDate),
+        dateStart: maxValidDate(dateStart, startOfDay(habitStartDate)),
         dateEnd: minValidDate(dateEnd, windowDateEnd),
         value: 0,
       }
