@@ -21,7 +21,10 @@ services:
 
   backend:
     restart: unless-stopped
-    build: ./backend
+    image: ghcr.io/vsein/neohabit-back:${TAG:-test}
+    # uncomment for building manually
+    # build: ./backend
+    # pull_policy: build
     depends_on:
       postgres:
         condition: service_healthy
@@ -42,7 +45,10 @@ services:
 
   frontend:
     restart: unless-stopped
-    build: ./frontend
+    image: ghcr.io/vsein/neohabit-front:${TAG:-test}
+    # uncomment for building manually
+    # build: ./frontend
+    # pull_policy: build
     container_name: frontend
     environment:
       API_URL: ${API_URL:-http://127.0.0.1:9000/}
