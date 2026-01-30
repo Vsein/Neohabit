@@ -1,5 +1,5 @@
 // config that isn't processed by the bundler
-// for the simple `npm start` testing
+// NOTE: for `npm start` testing, not docker
 window.APP_CONFIG = {
   API_URL: 'http://localhost:9000/',
   DISABLE_SIGNUP: false,
