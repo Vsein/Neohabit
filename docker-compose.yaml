@@ -45,7 +45,7 @@ services:
     build: ./frontend
     container_name: frontend
     environment:
-      API_URL: ${API_URL:-http://localhost:9000/}
+      API_URL: ${API_URL:-http://127.0.0.1:9000/}
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
