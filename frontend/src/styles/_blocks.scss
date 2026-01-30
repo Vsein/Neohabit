@@ -212,7 +212,7 @@
 }
 
 .overview-centering.slide_final {
-  & .overview-habit-button {
+  & .overview-habit-button:not(:nth-child(6n + 5)) {
     pointer-events: none;
     opacity: 0.3;
   }
