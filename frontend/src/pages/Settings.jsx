@@ -33,11 +33,11 @@ export default function Settings() {
         <Link className="settings-type" to="#general">
           General
         </Link>
-        <Link className="settings-type" to="#heatmaps">
-          Heatmaps
+        <Link className="settings-type" to="#heatmaps1d">
+          Heatmaps 1D
         </Link>
-        <Link className="settings-type" to="#habits">
-          Habits
+        <Link className="settings-type" to="#heatmaps2d">
+          Heatmaps 2D
         </Link>
         <Link className="settings-type" to="#stopwatch">
           Stopwatch
@@ -95,7 +95,27 @@ export default function Settings() {
                 ]}
               />
               <SettingsButtonOption
-                name="Hide hints on cells"
+                name="Live color preview in modals"
+                cssName="live_color_preview"
+                curState={settings.data.modals_live_color_preview}
+                update={(state) => updateSettings({ values: { modals_live_color_preview: state } })}
+                choices={[
+                  { name: 'On', state: true },
+                  { name: 'Off', state: false },
+                ]}
+              />
+              <SettingsButtonOption
+                name="Hide onboarding"
+                cssName="hide_onboarding"
+                curState={settings.data.hide_onboarding}
+                update={(state) => updateSettings({ values: { hide_onboarding: state } })}
+                choices={[
+                  { name: 'On', state: true },
+                  { name: 'Off', state: false },
+                ]}
+              />
+              <SettingsButtonOption
+                name='Hide "Click me" hints when hovering cells'
                 cssName="cell_hints"
                 curState={settings.data.hide_cell_hint}
                 update={(state) => updateSettings({ values: { hide_cell_hint: state } })}
@@ -108,9 +128,11 @@ export default function Settings() {
           }
         />
         <SettingsSection
-          name="heatmaps"
+          name="heatmaps 1D"
           elements={
             <>
+              {/* NOTE: Pretty cool, but requires too much maintenance and doesn't work currently */}
+              {/**/}
               {/* <SettingsNumberOption */}
               {/*   name="Heatmap height" */}
               {/*   curState={settings.data.cell_height_multiplier} */}
@@ -118,6 +140,24 @@ export default function Settings() {
               {/*   min="1" */}
               {/*   max="4" */}
               {/* /> */}
+              <SettingsButtonOption
+                name="Display the current day at the..."
+                cssName="first-day"
+                curState={settings.data.overview_current_day ?? 'middle'}
+                update={(state) => updateSettings({ values: { overview_current_day: state } })}
+                choices={[
+                  { name: 'Start', state: 'start' },
+                  { name: 'Middle', state: 'middle' },
+                  { name: 'End', state: 'end' },
+                ]}
+              />
+              <SettingsNumberOption
+                name="Offset relative to period start/end"
+                curState={settings.data?.overview_offset ?? 0}
+                update={(state) => updateSettings({ values: { overview_offset: +state } })}
+                min="-365"
+                max="365"
+              />
               <SettingsButtonOption
                 name="Behavior when whole period doesn't fit"
                 curState={settings.data.allow_horizontal_scrolling ?? true}
@@ -159,33 +199,15 @@ export default function Settings() {
                   max="365"
                 />
               )}
-              <SettingsNumberOption
-                name="Offset from the period start/period end"
-                curState={settings.data?.overview_offset ?? 0}
-                update={(state) => updateSettings({ values: { overview_offset: +state } })}
-                min="-365"
-                max="365"
-              />
-              <SettingsButtonOption
-                name="Use current day as period's..."
-                cssName="first-day"
-                curState={settings.data.overview_current_day ?? 'middle'}
-                update={(state) => updateSettings({ values: { overview_current_day: state } })}
-                choices={[
-                  { name: 'End', state: 'end' },
-                  { name: 'Middle', state: 'middle' },
-                  { name: 'Start', state: 'start' },
-                ]}
-              />
             </>
           }
         />
         <SettingsSection
-          name="habits"
+          name="heatmaps 2D"
           elements={
             <>
               <SettingsButtonOption
-                name="Use a different period start for heatmaps"
+                name="Use a different period start for 2D"
                 curState={settings.data.habit_heatmaps_override ?? false}
                 update={(state) => updateSettings({ values: { habit_heatmaps_override: state } })}
                 choices={[
@@ -194,7 +216,7 @@ export default function Settings() {
                 ]}
               />
               <SettingsButtonOption
-                name="Use current day as period's..."
+                name="Display the current day at the..."
                 cssName="first-day"
                 disabled={!settings.data.habit_heatmaps_override}
                 curState={settings.data.habit_heatmaps_current_day ?? 'middle'}
@@ -202,9 +224,9 @@ export default function Settings() {
                   updateSettings({ values: { habit_heatmaps_current_day: state } })
                 }
                 choices={[
-                  { name: 'End', state: 'end' },
-                  { name: 'Middle', state: 'middle' },
                   { name: 'Start', state: 'start' },
+                  { name: 'Middle', state: 'middle' },
+                  { name: 'End', state: 'end' },
                 ]}
               />
             </>
@@ -229,6 +251,8 @@ export default function Settings() {
             </>
           }
         />
+        {/* NOTE: The option below doesn't work, it was just an experiment */}
+        {/**/}
         {/* <SettingsSection */}
         {/*   name="overview" */}
         {/*   elements={ */}
