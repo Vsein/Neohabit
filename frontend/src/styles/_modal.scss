@@ -178,7 +178,11 @@
   align-items: center;
   grid-template-rows: min-content min-content min-content 360px 40px;
 
-  &:has(> .modal-details-habit-targets-wrapper) {
+  &.new {
+    grid-template-rows: min-content min-content min-content;
+  }
+
+  &:has(> .modal-details-habit-targets-wrapper):not(.new) {
     grid-template-rows: min-content min-content min-content 410px;
   }
 }

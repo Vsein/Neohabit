@@ -88,7 +88,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             onSubmit={async (e) => {
               await handleSubmit(e);
             }}
-            className="modal modal-active modal-habit"
+            className={`modal modal-active modal-habit ${!habitID ? 'new' : 'hasid'}`}
             onClick={(e) => {
               const cellAddDropdown = document.querySelector('.cell-add-dropdown');
               cellAddDropdown.classList.add('hidden');
