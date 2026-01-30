@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Icon } from '@mdi/react';
 import { getYear } from 'date-fns';
 import DatePicker from 'react-datepicker';
@@ -50,12 +50,55 @@ function DatePeriodPicker({
     endRef.current.setOpen(false);
   };
 
+  const monthsShown = useMemo(() => (mobile ? 1 : 3), [mobile]);
+
+  const renderHeader = ({ monthDate, customHeaderCount, decreaseMonth, increaseMonth }) => (
+    <div>
+      <button
+        aria-label="Previous Month"
+        className={'react-datepicker__navigation react-datepicker__navigation--previous'}
+        onClick={decreaseMonth}
+        style={{ visibility: customHeaderCount === 1 ? 'visible' : 'hidden' }}
+      >
+        <span
+          className={
+            'react-datepicker__navigation-icon react-datepicker__navigation-icon--previous'
+          }
+        >
+          {'<'}
+        </span>
+      </button>
+      <span className="react-datepicker__current-month">
+        {monthDate.toLocaleString('en-US', {
+          month: 'long',
+          year: 'numeric',
+        })}
+      </span>
+      <button
+        aria-label="Next Month"
+        className={'react-datepicker__navigation react-datepicker__navigation--next'}
+        onClick={increaseMonth}
+        style={{
+          visibility: customHeaderCount === monthsShown - 2 ? 'visible' : 'hidden',
+        }}
+      >
+        <span
+          className={'react-datepicker__navigation-icon react-datepicker__navigation-icon--next'}
+        >
+          {'>'}
+        </span>
+      </button>
+    </div>
+  );
+
   return (
     <div className="dates-container">
       <PreviousPeriodButton onClick={subPeriod} isFuturePeriod={isFuturePeriod} />
       <div className="dates-period">
         <DatePicker
           ref={startRef}
+          renderCustomHeader={renderHeader}
+          monthsShown={monthsShown}
           showIcon
           wrapperClassName="dates-period-picker"
           popperClassName="popper"
@@ -87,6 +130,8 @@ function DatePeriodPicker({
         <span style={{ marginLeft: '0px', marginRight: '10px' }}>-</span>
         <DatePicker
           ref={endRef}
+          renderCustomHeader={renderHeader}
+          monthsShown={monthsShown}
           showIcon
           wrapperClassName="dates-period-picker"
           popperClassName="popper"

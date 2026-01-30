@@ -145,8 +145,9 @@
   padding-top: 5px;
   border-top: 1px solid var(--border-color);
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
+  gap: 20px;
 }
 
 @keyframes glow {
