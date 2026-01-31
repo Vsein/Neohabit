@@ -223,7 +223,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                       <label>More is bad</label>
                     </div>
                   </div>
-                  <div className="modal-details-block color-area centering">
+                  <div className="modal-details-block color-area centering habit-color-area">
                     <div className="form-task-description" title="Dynamically show color changes">
                       <input
                         type="checkbox"

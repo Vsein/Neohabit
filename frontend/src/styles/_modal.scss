@@ -121,11 +121,18 @@
     }
 
     &.color-area {
+      height: min-content;
       grid-area: color;
       display: flex;
       flex-direction: column;
       align-items: start;
       gap: 5px;
+
+      &:not(.habit-color-area) {
+        .react-colorful {
+          height: 280px !important;
+        }
+      }
     }
   }
 
@@ -196,6 +203,10 @@
     'name mode'
     'description mode'
     'description color';
+
+  & .description-area textarea {
+    height: 300px;
+  }
 }
 
 .modal-details-habit-targets-wrapper {
