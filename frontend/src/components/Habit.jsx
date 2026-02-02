@@ -136,7 +136,7 @@ function HabitModalWrapper({
 
   return (
     <div
-      className={`overview-centering slide_${onboardingSlideTag}`}
+      className={`overview-centering ${onboardingSlideTag ? `slide_${onboardingSlideTag}` : ''} `}
       style={{
         '--habits': 7,
         '--length': diffWeeks - 14.5,
