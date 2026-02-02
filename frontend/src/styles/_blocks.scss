@@ -164,6 +164,13 @@
   }
 }
 
+.overview-centering:not(.slide_date-pickers)[class^='slide_'],
+.overview-centering:not(.slide_date-pickers)[class*=' slide_'] {
+  .dates-container {
+    --signature-color: #9b9b9b;
+  }
+}
+
 .overview-centering.slide_date-indicators {
   .dates-container > button > .icon {
     border-radius: 50%;
