@@ -36,7 +36,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
 
   const project = projects.data.find((p) => p.id === projectID) ?? {
     name: 'Default',
-    color: '#23BCDB',
+    color: '#1D60C1',
     description: '',
     habits: [],
   };

@@ -18,17 +18,8 @@ import StopwatchModal from './StopwatchModal';
 export default function Overlay() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    type,
-    isActive,
-    taskID,
-    habitID,
-    projectID,
-    project,
-    skilltreeID,
-    skillID,
-    skillparentID,
-  } = useSelector((state) => state.overlay);
+  const { type, isActive, taskID, habitID, projectID, skilltreeID, skillID, skillparentID } =
+    useSelector((state) => state.overlay);
 
   const [deleteProject] = useDeleteProjectMutation();
   const [deleteHabit] = useDeleteHabitMutation();
@@ -58,12 +49,7 @@ export default function Overlay() {
         <TaskModal taskID={taskID} habitID={habitID} closeOverlay={closeOverlay} />
       )}
       {type === 'project' && (
-        <ProjectModal
-          isActive={isActive}
-          projectID={projectID}
-          project={project}
-          closeOverlay={closeOverlay}
-        />
+        <ProjectModal isActive={isActive} projectID={projectID} closeOverlay={closeOverlay} />
       )}
       {type === 'skilltree' && (
         <SkilltreeModal skilltreeID={skilltreeID} closeOverlay={closeOverlay} />

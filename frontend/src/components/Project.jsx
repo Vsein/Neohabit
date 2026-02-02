@@ -285,14 +285,14 @@ function ProjectControls({ project, projectID, mobile, addPeriod, isPastPeriod }
         <>
           <button
             className="overview-open-settings active"
-            onClick={() => dispatch(changeTo({ projectID, project, type: 'project' }))}
+            onClick={() => dispatch(changeTo({ projectID, type: 'project' }))}
             title="Edit the project"
           >
             <Icon path={mdiPencil} className="icon small centering" />
           </button>
           <button
             className="overview-open-settings active"
-            onClick={() => dispatch(changeTo({ projectID, project, type: 'deleteProject' }))}
+            onClick={() => dispatch(changeTo({ projectID, type: 'deleteProject' }))}
             title="Delete the project"
           >
             <Icon path={mdiDelete} className="icon small centering" />

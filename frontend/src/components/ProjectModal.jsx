@@ -5,29 +5,50 @@ import { Icon } from '@mdi/react';
 import { mdiClose, mdiPlus } from '@mdi/js';
 import { HabitTag, HabitTagToDelete } from './UI';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
-import { useCreateProjectMutation, useUpdateProjectMutation } from '../state/services/project';
+import {
+  useGetProjectsQuery,
+  useCreateProjectMutation,
+  useUpdateProjectMutation,
+} from '../state/services/project';
 import { useGetHabitsOutsideProjectsQuery } from '../state/services/habit';
 import useMenuToggler from '../hooks/useMenuToggler';
 import useLoaded from '../hooks/useLoaded';
 
-export default function ProjectModal({ projectID, project, isActive, closeOverlay }) {
+export default function ProjectModal({ projectID, isActive, closeOverlay }) {
   const [loaded] = useLoaded();
   const [menuOpened, { toggleMenu }] = useMenuToggler();
+  const projects = useGetProjectsQuery();
   const habits = useGetHabitsOutsideProjectsQuery();
   const [createProject] = useCreateProjectMutation();
   const [updateProject] = useUpdateProjectMutation();
 
-  const [projectHabitList, setProjectHabitList] = useState(project?.habits ?? []);
+  const [projectHabitList, setProjectHabitList] = useState([]);
   const [diffHabitList, setDiffHabitList] = useState([]);
   const [unassignedHabitList, setUnassignedHabitList] = useState([]);
 
   useEffect(() => {
+    if (!projects.isLoading) {
+      const project = projects.data.find((p) => p.id === projectID) ?? {
+        name: '',
+        color: '#1D60C1',
+        description: '',
+        habits: [],
+      };
+      setProjectHabitList(project.habits);
+    }
     if (!habits.isLoading) {
       setUnassignedHabitList(habits.data);
     }
   }, [projectID, isActive]);
 
-  if (habits.isLoading) return <></>;
+  if (habits.isLoading || projects.isLoading) return <></>;
+
+  const project = projects.data.find((p) => p.id === projectID) ?? {
+    name: '',
+    color: '#1D60C1',
+    description: '',
+    habits: [],
+  };
 
   const onSubmit = async (values) => {
     const habitIDs = projectHabitList.map((habit) => habit.id);
@@ -42,6 +63,8 @@ export default function ProjectModal({ projectID, project, isActive, closeOverla
     }
     setDiffHabitList([]);
   };
+
+  if (!projectID && !project) return <div>Missing project!</div>;
 
   return (
     loaded && (
