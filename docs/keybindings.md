@@ -3,11 +3,11 @@
 ## Global
 | Key                    | Action                                                |
 |------------------------|-------------------------------------------------------|
-| `1`                    | Projects page                                         |
-| `2`                    | Skills page                                           |
-| `3`                    | To-do-list page                                       |
-| `4`                    | Blocks page                                           |
-| `5`                    | Settings page                                         |
+| `shift+1`              | Projects page                                         |
+| `shift+2`              | Skills page                                           |
+| `shift+3`              | To-do-list page                                       |
+| `shift+4`              | Blocks page                                           |
+| `shift+5`              | Settings page                                         |
 | `0`                    | Toggle sidebar                                        |
 | `i`                    | Toggle the menu                                       |
 | `T`                    | Switch theme                                          |
