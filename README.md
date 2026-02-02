@@ -314,9 +314,9 @@ open-sourced.
 <br>
 <br>
 It's possible for something not to run as I intended, and if it wastes your
-time, I'm sorry. If you figured out how to deploy Neohabit in, say k8s, or your
-preferred deployment tool, feel free to propose an installation guide -- a pull
-request or just a discord message is fine.
+time, I'm sorry. If you figured out how to deploy Neohabit in, say k8s or
+Portanier, or your preferred deployment tool, feel free to propose an
+installation guide -- a pull request or just a discord message is fine.
 
 <hr>
 </details>
