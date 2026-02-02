@@ -74,6 +74,7 @@ func Run(cfg *config.Config) error {
 	logger.Info("starting HTTP server")
 	handler.NewServer(
 		cfg.Address,
+		cfg.FrontendURL,
 		userCase,
 		habitCase,
 		habitDataCase,
