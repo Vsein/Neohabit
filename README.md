@@ -233,6 +233,11 @@ If you encounter any issues, you can check the logs by running:
 docker compose logs
 ```
 
+Also, alternatively to simple `docker compose up -d`, you can force to rebuild everything:
+```
+docker compose up --build --force-recreate
+```
+
 <hr>
 </details>
 
