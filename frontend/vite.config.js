@@ -33,7 +33,7 @@ export default defineConfig({
         theme_color: '#00c4cd',
         start_url: './projects',
         dir: 'ltr',
-        scope: 'DOMAIN_NAME',
+        scope: 'https://neohabit.org',
         lang: 'en',
         orientation: 'any',
         display: 'standalone',
@@ -53,8 +53,8 @@ export default defineConfig({
           client_mode: ['navigate-existing', 'auto'],
         },
         handle_links: 'preferred',
-        scope_extensions: [{ origin: 'https://*.DOMAIN_NAME' }],
-        web_apps: [{ web_app_identity: 'https://DOMAIN_NAME/' }],
+        scope_extensions: [{ origin: 'https://*.neohabit.org' }],
+        web_apps: [{ web_app_identity: 'https://neohabit.org/' }],
         icons: [
           {
             src: 'favicon.ico',

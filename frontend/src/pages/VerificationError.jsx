@@ -44,7 +44,7 @@ export default function VerificationError() {
       </div>
       <p className="back-ref" style={{ width: 'min(100%, 800px)' }}>
         We sincerely thank you for registering in Neohabit! Before you can proceed, follow the link
-        that has been sent to your email by noreply@DOMAIN_NAME
+        that has been sent to your email by noreply@neohabit.org
       </p>
       <p className="back-ref" style={{ width: 'min(100%, 800px)' }}>
         If you can&apos;t find the email, check your spam folder.
