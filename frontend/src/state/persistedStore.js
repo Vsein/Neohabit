@@ -19,6 +19,12 @@ import cellAddReducer from './features/cellAdd/cellAddSlice';
 import cellTipReducer from './features/cellTip/cellTipSlice';
 import isPWA from '../utils/pwa';
 
+// NOTE: This file is a work in progress, possibly to add offline support when
+// using as a mobile app with a web-hosted server
+// I'm not sure if RTK Query would even be able to tackle offline properly,
+// so stores will possibly need to be rewritten in Zustand for proper syncing
+// once the device is online again
+
 const combinedReducer = combineReducers({
   [api.reducerPath]: api.reducer,
   [authApi.reducerPath]: authApi.reducer,
