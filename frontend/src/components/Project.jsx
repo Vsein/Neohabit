@@ -167,7 +167,7 @@ export default function Project({
     <div
       className={`overview-centering ${mobile ? 'mobile' : ''}`}
       style={{
-        '--habits': Habits.length,
+        '--habits': Habits?.length ?? 0,
         '--length': differenceInDays(globalDateEnd, globalDateStart) + 1,
         '--vertical': vertical * 1,
         // '--multiplier': settings.data.cell_height_multiplier,
@@ -241,7 +241,7 @@ export default function Project({
             </>
           )}
           <div className="overview-habits">
-            {Habits.length === 0 && (
+            {Habits && Habits.length === 0 && (
               <h5
                 className="overview-no-habits overview-habit"
                 onDrop={dropHabitInProject}
