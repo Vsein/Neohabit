@@ -151,7 +151,7 @@ const mockProjectsData = {
       color: '#23AFCF',
     },
     {
-      name: 'Landry bedsheets',
+      name: 'Laundry bedsheets',
       data: [1, 0],
       cell_length: [13, 3],
       target: [1, 1],
