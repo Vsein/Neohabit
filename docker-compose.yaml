@@ -21,7 +21,7 @@ services:
 
   backend:
     restart: unless-stopped
-    image: ghcr.io/vsein/neohabit-back:${TAG:-test}
+    image: ghcr.io/vsein/neohabit-back:${TAG:-latest}
     # uncomment for building manually
     # build: ./backend
     # pull_policy: build
@@ -46,7 +46,7 @@ services:
 
   frontend:
     restart: unless-stopped
-    image: ghcr.io/vsein/neohabit-front:${TAG:-test}
+    image: ghcr.io/vsein/neohabit-front:${TAG:-latest}
     # uncomment for building manually
     # build: ./frontend
     # pull_policy: build
