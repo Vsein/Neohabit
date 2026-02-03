@@ -1,10 +1,35 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useUpdateSettingsMutation } from '../state/services/settings';
-import { useGetHabitsOutsideProjectsQuery } from '../state/services/habit';
+import { useGetHabitsQuery } from '../state/services/habit';
 import { HabitModalWrapper } from './Habit';
 
 const Slides = [
+  ...(window.APP_CONFIG.DEMO
+    ? [
+        {
+          content: (
+            <>
+              <h3>This is a demo!</h3>
+              <p>
+                Changes will reset after you reload this page, and this banner will appear again.
+                <br />
+                <br />
+                Click &quot;Next&quot; if you&apos;re not familiar with Neohabit&apos;s interface,
+                or simply press &quot;Skip all&quot;. If you have no idea what this project is,
+                check the{' '}
+                <NavLink className="inline-link" to="/" target="_blank">
+                  landing
+                </NavLink>
+                .
+              </p>
+            </>
+          ),
+          tag: 'demo',
+        },
+      ]
+    : []),
   {
     content: (
       <>
@@ -85,7 +110,7 @@ const Slides = [
 
 export default function Onboarding() {
   const [updateSettings] = useUpdateSettingsMutation();
-  const habits = useGetHabitsOutsideProjectsQuery();
+  const habits = useGetHabitsQuery();
   const [slide, setSlide] = useState(1);
   const slidesInTotal = Slides.length;
   const skip = () => {

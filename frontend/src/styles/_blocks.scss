@@ -171,6 +171,13 @@
   }
 }
 
+.overview-centering.slide_demo {
+  & .overview-habit-button {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
 .overview-centering.slide_date-indicators {
   .dates-container > button > .icon {
     border-radius: 50%;
