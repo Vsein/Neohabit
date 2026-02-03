@@ -22,6 +22,10 @@
   }
 }
 
+.react-datepicker__navigation-icon::before {
+  border-color: var(--text-color);
+}
+
 .react-datepicker__calendar-icon {
   top: -1px;
 }
@@ -64,9 +68,36 @@
   box-shadow: 0 0 3px 1px silver;
   border-radius: 10px;
 
-  &__header,
-  &__month-container {
-    border-radius: 10px 10px 0px 0px !important;
+  & > &__month-container {
+    border-radius: 0px;
+
+    & .react-datepicker__header {
+      border-radius: 0px;
+    }
+
+    &:first-of-type {
+      border-radius: 10px 0px 0px 0px;
+
+      & .react-datepicker__header {
+        border-radius: 10px 0px 0px 0px;
+      }
+    }
+
+    &:not(:has(~ .react-datepicker__month-container)) {
+      border-radius: 0px 10px 0px 0px;
+
+      & .react-datepicker__header {
+        border-radius: 0px 10px 0px 0px;
+      }
+    }
+
+    @media (max-width: 850px) {
+      border-radius: 10px 10px 0px 0px !important;
+
+      & .react-datepicker__header {
+        border-radius: 10px 10px 0px 0px !important;
+      }
+    }
   }
 }
 

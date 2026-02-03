@@ -21,7 +21,10 @@ services:
 
   backend:
     restart: unless-stopped
-    build: ./backend
+    image: ghcr.io/vsein/neohabit-back:${TAG:-latest}
+    # uncomment for building manually
+    # build: ./backend
+    # pull_policy: build
     depends_on:
       postgres:
         condition: service_healthy
@@ -31,26 +34,31 @@ services:
       PG_MAX_OPEN_CONNS: ${PG_MAX_OPEN_CONNS:-10}
       PG_MAX_LIFETIME: ${PG_MAX_LIFETIME:-1h}
       PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-1h}
-      # ADDRESS: 0.0.0.0:9000
-      ADDRESS: ":9000"
       LOG_LEVEL: ${LOG_LEVEL:-info}
       JWT_SECRET: ${JWT_SECRET:-please_DONT_leave_blank}
+      FRONTEND_URL: http://${FRONTEND_HOST:-127.0.0.1}:${FRONTEND_PORT:-8080}
+      ADDRESS: ":${BACKEND_PORT:-9000}"
+      BACKEND_PORT: ${BACKEND_PORT:-9000}
     ports:
-      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:${BACKEND_PORT:-9000}:${BACKEND_PORT:-9000}"
     networks:
       - app-network
 
   frontend:
     restart: unless-stopped
-    build: ./frontend
+    image: ghcr.io/vsein/neohabit-front:${TAG:-latest}
+    # uncomment for building manually
+    # build: ./frontend
+    # pull_policy: build
     container_name: frontend
     environment:
-      API_URL: ${API_URL:-http://localhost:9000/}
+      API_URL: http://127.0.0.1:${BACKEND_PORT:-9000}/
+      BACKEND_PORT: ${BACKEND_PORT:-9000}
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
     ports:
-      - "127.0.0.1:8080:80"
+      - "${FRONTEND_HOST:-127.0.0.1}:${FRONTEND_PORT:-8080}:80"
     depends_on:
       - backend
     networks:

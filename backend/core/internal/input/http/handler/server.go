@@ -32,6 +32,7 @@ var _ gen.StrictServerInterface = (*server)(nil)
 // server implements the HTTP handlers for the API
 type server struct {
 	address      string
+	frontendURL  string
 	users        *cases.UserCase
 	habits       *cases.HabitCase
 	habitData    *cases.HabitDataCase
@@ -50,6 +51,7 @@ type server struct {
 // NewServer creates a new HTTP server instance
 func NewServer(
 	address string,
+	frontendURL string,
 	users *cases.UserCase,
 	habits *cases.HabitCase,
 	habitData *cases.HabitDataCase,
@@ -66,6 +68,7 @@ func NewServer(
 ) *server {
 	return &server{
 		address:      address,
+		frontendURL:  frontendURL,
 		users:        users,
 		habits:       habits,
 		habitData:    habitData,
@@ -98,7 +101,9 @@ func (s *server) Start() {
 	// Create router with middleware
 	router := chi.NewRouter()
 
-	router.Use(CORS())
+	s.logger.Info("allow cors origin for", zap.String("frontendURL", s.frontendURL))
+	router.Use(CORS(s.frontendURL))
+
 	router.Use(middleware.NewAuthMiddleware(s.auth, s.logger))
 
 	// Add logging middleware if in debug mode
@@ -1183,13 +1188,10 @@ func responseErrorHandler(w http.ResponseWriter, r *http.Request, err error) {
 	_ = json.NewEncoder(w).Encode(response)
 }
 
-func CORS() func(http.Handler) http.Handler {
+func CORS(frontendURL string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// TODO allow-origin ENV == 'dev' ? 'http://127.0.0.1:8080' : ''
-			// may need to put the entire path as a variable as well,
-			// since not everyone has 8080 port available, even for dev environments
-			w.Header().Add("Access-Control-Allow-Origin", "http://127.0.0.1:8080")
+			w.Header().Add("Access-Control-Allow-Origin", frontendURL)
 			w.Header().Add("Access-Control-Allow-Credentials", "true")
 			w.Header().Add("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
 			w.Header().Add("Access-Control-Allow-Methods", "POST, GET, PUT, PATCH, DELETE, OPTIONS")

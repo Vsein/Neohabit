@@ -121,11 +121,18 @@
     }
 
     &.color-area {
+      height: min-content;
       grid-area: color;
       display: flex;
       flex-direction: column;
       align-items: start;
       gap: 5px;
+
+      &:not(.habit-color-area) {
+        .react-colorful {
+          height: 280px !important;
+        }
+      }
     }
   }
 
@@ -178,7 +185,11 @@
   align-items: center;
   grid-template-rows: min-content min-content min-content 360px 40px;
 
-  &:has(> .modal-details-habit-targets-wrapper) {
+  &.new {
+    grid-template-rows: min-content min-content min-content;
+  }
+
+  &:has(> .modal-details-habit-targets-wrapper):not(.new) {
     grid-template-rows: min-content min-content min-content 410px;
   }
 }
@@ -192,6 +203,10 @@
     'name mode'
     'description mode'
     'description color';
+
+  & .description-area textarea {
+    height: 300px;
+  }
 }
 
 .modal-details-habit-targets-wrapper {

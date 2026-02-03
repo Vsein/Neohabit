@@ -156,10 +156,47 @@ Excellent for planning and tracking progressions:
 
 ## Installation
 
-Currently, there are two methods available:
+Currently, there are three methods available:
 
 <details>
-<summary><strong>Docker compose (recommended)</strong></summary>
+<summary><strong>Docker compose with pre-built images (recommended)</strong></summary>
+<br>
+
+First, make a directory for docker-compose's configs, then copy
+`docker-compose.yaml` and `.env` from this repo:
+
+```bash
+wget -O docker-compose.yaml https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/docker-compose.yaml
+```
+```bash
+wget -O .env https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/.env.example
+```
+
+Then, edit as desired:
+
+- `.env` to change the db/backend settings, and in-app settings like login behavior
+- `docker-compose.yaml` to configure the ports, volumes, and other docker stuff
+
+When ready, run:
+
+```bash
+docker compose up -d
+```
+
+In ~15 seconds, head to `http://127.0.0.1:8080` (default) and check if
+everything's up and running.
+
+If you encounter any issues, you can check the logs by running:
+
+```bash
+docker compose logs
+```
+
+<hr>
+</details>
+
+<details>
+<summary><strong>Docker compose and building images from source (web-hosting friendly)</strong></summary>
 <br>
 
 Clone this repo and change to the cloned directory:
@@ -177,7 +214,8 @@ cp .env.example .env
 After that, edit the following files as desired:
 
 - `.env` to change the db/backend settings, and in-app settings like login behavior
-- `docker-compose.yaml` to configure the ports, volumes and other containery things
+- `docker-compose.yaml` to configure the ports, volumes, **and uncomment lines for
+  building manually**
 - `frontend/nginx.conf` to adjust the servername in case you will be web-hosting
 
 When ready, run:
@@ -193,6 +231,11 @@ If you encounter any issues, you can check the logs by running:
 
 ```bash
 docker compose logs
+```
+
+Also, alternatively to simple `docker compose up -d`, you can force to rebuild everything:
+```
+docker compose up --build --force-recreate
 ```
 
 <hr>
@@ -271,9 +314,9 @@ open-sourced.
 <br>
 <br>
 It's possible for something not to run as I intended, and if it wastes your
-time, I'm sorry. If you figured out how to deploy Neohabit in, say k8s, or your
-preferred deployment tool, feel free to propose an installation guide -- a pull
-request or just a discord message is fine.
+time, I'm sorry. If you figured out how to deploy Neohabit in, say k8s or
+Portanier, or your preferred deployment tool, feel free to propose an
+installation guide -- a pull request or just a discord message is fine.
 
 <hr>
 </details>

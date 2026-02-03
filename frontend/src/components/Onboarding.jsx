@@ -74,8 +74,8 @@ const Slides = [
       <>
         <h3>Good luck!</h3>
         <p>
-          The last three buttons allow you to open the stopwatch, edit the habit, and delete it. For
-          the sake of brevity, I won&apos;t force you to click on them :D
+          The last three buttons allow you to open the stopwatch, edit the habit, and delete it. Of
+          the three, editing the habit is the most interesting, so let&apos;s try that next!
         </p>
       </>
     ),

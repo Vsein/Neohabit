@@ -34,13 +34,13 @@
 .settings-type {
   height: min-content;
   padding: 0px 20px;
-  width: min-content;
+  width: 100%;
 
-  @media (max-width: 700px) {
+  @media (max-width: 850px) {
     padding: 10px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 440px) {
     padding: 5px;
   }
 }

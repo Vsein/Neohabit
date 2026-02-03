@@ -7,9 +7,10 @@ import (
 )
 
 type Config struct {
-	PGConfig  PGConfig         `yaml:"pg"`
-	LogConfig config.LogConfig `yaml:"log"`
-	Address   string           `yaml:"address"`
+	PGConfig    PGConfig         `yaml:"pg"`
+	LogConfig   config.LogConfig `yaml:"log"`
+	Address     string           `yaml:"address"`
+	FrontendURL string           `yaml:"frontend_url"`
 }
 
 // PostgreSQL configuration

@@ -154,10 +154,11 @@ export default function Landing() {
             </p>
             <hr />
             <p style={{ marginTop: '20px' }}>
-              <b>The principle is the great flexibility:</b> The ability to set habits which happen
-              X times in Y days. You can change the X and Y in the middle of the habit. It's not
-              rigid like calendars, this way you won't feel burned out when you don't do something
-              with exactly 3 days gaps, for example. Just in 3 day periods, at any time you want.
+              <b>What makes this approach so great is its flexibility:</b> The ability to set habits
+              which happen X times in Y days - and you can tweak X and Y anytime, even mid-streak.
+              No rigid every-Tuesday-Friday stress, no strict calendars. Just get it done roughly
+              once every 3 days, whenever it actually works for you, and adjust habit frequency
+              whenever you want to actually stay consistent, not punish yourself for missing a day.
             </p>
           </div>
         </section>

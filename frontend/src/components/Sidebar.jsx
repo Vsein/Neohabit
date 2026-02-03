@@ -103,7 +103,7 @@ export default function Sidebar({ hidden }) {
 function NavigationSection({ path, to, title, status, raw, num }) {
   const navigate = useNavigate();
 
-  useHotkeys(num, () => navigate(to));
+  useHotkeys(`Shift+${num}`, () => navigate(to));
 
   return (
     <li>

@@ -36,7 +36,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
 
   const project = projects.data.find((p) => p.id === projectID) ?? {
     name: 'Default',
-    color: '#23BCDB',
+    color: '#1D60C1',
     description: '',
     habits: [],
   };
@@ -88,7 +88,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             onSubmit={async (e) => {
               await handleSubmit(e);
             }}
-            className="modal modal-active modal-habit"
+            className={`modal modal-active modal-habit ${!habitID ? 'new' : 'hasid'}`}
             onClick={(e) => {
               const cellAddDropdown = document.querySelector('.cell-add-dropdown');
               cellAddDropdown.classList.add('hidden');
@@ -223,7 +223,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                       <label>More is bad</label>
                     </div>
                   </div>
-                  <div className="modal-details-block color-area centering">
+                  <div className="modal-details-block color-area centering habit-color-area">
                     <div className="form-task-description" title="Dynamically show color changes">
                       <input
                         type="checkbox"

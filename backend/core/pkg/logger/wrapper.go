@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"fmt"
+
 	"github.com/pressly/goose/v3"
 	"go.uber.org/zap"
 )
@@ -16,9 +18,11 @@ func NewWrapper(logger *zap.Logger) *Wrapper {
 }
 
 func (w *Wrapper) Fatalf(format string, v ...interface{}) {
-	w.logger.Fatal(format, zap.Any("args", v))
+	msg := fmt.Sprintf(format, v...)
+	w.logger.Fatal(msg)
 }
 
 func (w *Wrapper) Printf(format string, v ...interface{}) {
-	w.logger.Info(format, zap.Any("args", v))
+	msg := fmt.Sprintf(format, v...)
+	w.logger.Info(msg)
 }

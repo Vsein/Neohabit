@@ -145,8 +145,9 @@
   padding-top: 5px;
   border-top: 1px solid var(--border-color);
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
+  gap: 20px;
 }
 
 @keyframes glow {
@@ -160,6 +161,13 @@
   }
   100% {
     background-color: var(--calm-signature-color);
+  }
+}
+
+.overview-centering:not(.slide_date-pickers)[class^='slide_'],
+.overview-centering:not(.slide_date-pickers)[class*=' slide_'] {
+  .dates-container {
+    --signature-color: #9b9b9b;
   }
 }
 
@@ -211,7 +219,7 @@
 }
 
 .overview-centering.slide_final {
-  & .overview-habit-button {
+  & .overview-habit-button:not(:nth-child(6n + 5)) {
     pointer-events: none;
     opacity: 0.3;
   }
