@@ -5,4 +5,5 @@ window.APP_CONFIG = {
   DISABLE_SIGNUP: false,
   STRICT_USER_FIELDS: false,
   REQUIRE_EMAIL: false,
+  DEMO: false,
 };
