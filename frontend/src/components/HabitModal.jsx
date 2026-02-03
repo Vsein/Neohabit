@@ -162,7 +162,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                 </ul>
               </nav>
             )}
-            {width >= 850 && habitID && (
+            {habitID && (
               <HabitModalWrapper
                 habit={habit}
                 currentTab={currentTab}

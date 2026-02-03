@@ -192,6 +192,10 @@
   &:has(> .modal-details-habit-targets-wrapper):not(.new) {
     grid-template-rows: min-content min-content min-content 410px;
   }
+
+  @media (max-width: 700px) {
+    grid-template-rows: min-content min-content min-content 410px;
+  }
 }
 
 .modal-details-habit-wrapper {
