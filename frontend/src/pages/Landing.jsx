@@ -21,7 +21,7 @@ import useMenuToggler from '../hooks/useMenuToggler';
 import { CellPeriod } from '../components/HeatmapCells';
 import { MenuSection, GithubLink } from '../components/MainMenu';
 import { ProfilePicture } from '../components/UI';
-import mockProjectsData from '../assets/mockProjectsData';
+import landingMockProjects from '../mocks/landingMockProjects';
 import Reddit from '../logos/reddit.svg';
 
 const progression = [
@@ -602,7 +602,7 @@ function FeaturesSection() {
 function MockProjectSection({ name }) {
   return (
     <div className="landing-habits">
-      {mockProjectsData[name].map((habit, index) => (
+      {landingMockProjects[name].map((habit, index) => (
         <div
           key={index}
           className="landing-habit"
