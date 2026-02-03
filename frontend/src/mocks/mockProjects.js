@@ -9,6 +9,8 @@ const mockProjects = [
       {
         name: '日本語 immersion (1.5h)',
         color: '#00aaff',
+        description:
+          'P.S. each filled square correlates with 1.5 hours of immersion, so in the heatmap above the daily goal is 4 x 1.5 = 6 hours of immersion in native content',
         data: [
           { value: 3, date: 3 },
           { value: 4, date: 4 },
@@ -611,7 +613,7 @@ for (let i = 0; i < mockProjects.length; i++) {
       id: `${i}-${j}`,
       created_at: date,
       updated_at: date,
-      description: '',
+      [project.description ? 'description' : '']: '',
       user_id: 'mock',
     });
     for (let k = 0; k < habit.targets.length; k++) {
