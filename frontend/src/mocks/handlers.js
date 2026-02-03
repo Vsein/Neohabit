@@ -61,6 +61,35 @@ export const demoHandlers = [
     }),
   ),
 
+  http.get('/mock_api/tasks', () =>
+    HttpResponse.json([
+      {
+        created_at: currentDate,
+        id: 'task',
+        updated_at: currentDate,
+        description: '',
+        name: "I'm planning to add a quick view here, for all the habits that weren't completed for the day",
+        user_id: 'mock',
+      },
+      {
+        created_at: currentDate,
+        id: 'task',
+        updated_at: currentDate,
+        description: '',
+        name: 'And to make it possible to link tasks to habits, projects or skilltrees',
+        user_id: 'mock',
+      },
+      {
+        created_at: currentDate,
+        id: 'task',
+        updated_at: currentDate,
+        description: '',
+        name: "Not sure when I'll get around to it though",
+        user_id: 'mock',
+      },
+    ]),
+  ),
+
   http.get('/mock_api/projects', () => HttpResponse.json(mockProjects)),
 
   http.get('/mock_api/habits', () =>
