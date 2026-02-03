@@ -34,6 +34,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
+    "msw": "^2.12.7",
     "prettier": "3.6.2",
     "sass": "^1.94.2",
     "vite": "^7.2.4",
