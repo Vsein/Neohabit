@@ -69,9 +69,15 @@ export default function Landing() {
                 <Icon className="icon big circle" path={mdiGithub} />
               </Link>
             </li>
-            <li>
-              <NavLink to="/login">Log in</NavLink>
-            </li>
+            {window.APP_CONFIG.DEMO ? (
+              <li>
+                <NavLink to="/projects">See demo</NavLink>
+              </li>
+            ) : (
+              <li>
+                <NavLink to="/login">Log in</NavLink>
+              </li>
+            )}
           </ul>
           <DropdownMenu />
         </div>
@@ -450,7 +456,11 @@ function DropdownMenu() {
         <ThemeToggleMenu />
         <GithubLink />
         <hr />
-        <MenuSection path={mdiLoginVariant} title="Login" to="/login" />
+        {window.APP_CONFIG.DEMO ? (
+          <MenuSection path={mdiLoginVariant} title="See demo" to="/login" />
+        ) : (
+          <MenuSection path={mdiLoginVariant} title="Login" to="/login" />
+        )}
       </ul>
     </nav>
   );
@@ -668,6 +678,14 @@ function SelfhostedSection() {
               <Icon className="icon medium" path={mdiGithub} />
             </button>
           </Link>
+          {window.APP_CONFIG.DEMO && (
+            <NavLink to="/projects" target="_blank" style={{ width: '100%' }}>
+              <button className="landing-lastcall-social-links button-default stretch big centering muted">
+                Or check out the demo
+                <Icon className="icon medium" path={mdiLoginVariant} />
+              </button>
+            </NavLink>
+          )}
         </div>
       </div>
     </section>
