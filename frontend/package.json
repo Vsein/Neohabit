@@ -56,5 +56,10 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.6",
     "redux-persist": "^6.0.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
