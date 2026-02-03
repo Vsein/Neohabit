@@ -7,7 +7,8 @@
 </h1>
 <p align="center">
   <a href="#installation">Install</a> •
-  <a href="#features">Features preview</a> •
+  <a href="#features">Features</a> •
+  <a href="https://neohabit.org/projects">Demo</a> •
   <a href="https://discord.gg/uQ4XdE6raR">Discord</a> •
   <a href="#donations">Donations</a>
 </p>
@@ -25,13 +26,13 @@
 
 ## Features
 
-You can see the features overview with examples on the
-[landing](https://vsein.github.io/neohabit). The list below repeats its contents:
-
 - Habits that happen any amount of times in any amount of days
 - Intutive design for habits that happen more than once a day
 - Ability to set targets, and change them on the go
 - Tracking numeric values (up to 2 billion) and setting numeric targets
+
+You can see the features explained with examples on the
+[landing](https://neohabit.org). And you can also check out the [demo version](https://neohabit.org/projects).
 
 ### Custom heatmaps, with all the above features
 
