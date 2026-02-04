@@ -56,7 +56,7 @@ function Filter({ filter }) {
   return (
     <NavLink
       className={({ isActive }) => (isActive ? 'filter active' : 'filter')}
-      to={`${linkify(filter.name)}`}
+      to={`/todo/${linkify(filter.name)}`}
     >
       <Icon path={filter.image} height="20px" width="20px" />
       <p>{filter.name}</p>
