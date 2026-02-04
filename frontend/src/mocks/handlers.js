@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { compareAsc } from 'date-fns';
 import mockProjects from './mockProjects';
+import { handstandSkilltree } from './mockSkilltrees';
 import newId from '../utils/newId';
 
 const currentDate = new Date();
@@ -89,6 +90,8 @@ export const demoHandlers = [
       },
     ]),
   ),
+
+  http.get('/mock_api/skilltrees', () => HttpResponse.json([handstandSkilltree])),
 
   http.get('/mock_api/projects', () => HttpResponse.json(mockProjects)),
 
