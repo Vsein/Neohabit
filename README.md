@@ -8,7 +8,7 @@
 <p align="center">
   <a href="#installation">Install</a> •
   <a href="#features">Features</a> •
-  <a href="https://neohabit.org/projects">Demo</a> •
+  <a href="https://neohabit.org/">Demo</a> •
   <a href="https://discord.gg/uQ4XdE6raR">Discord</a> •
   <a href="#donations">Donations</a>
 </p>
@@ -32,7 +32,7 @@
 - Tracking numeric values (up to 2 billion) and setting numeric targets
 
 You can see the features explained with examples on the
-[landing](https://neohabit.org). And you can also check out the [demo version](https://neohabit.org/projects).
+[landing](https://neohabit.org), the demo version is also available there.
 
 ### Custom heatmaps, with all the above features
 
