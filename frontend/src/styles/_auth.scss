@@ -53,6 +53,14 @@
   }
 }
 
+.inline-link {
+  display: inline;
+  width: min-content;
+  color: var(--signature-color);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
 .auth-intro {
   max-width: 75ch;
   padding-inline: 2em;

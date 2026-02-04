@@ -15,6 +15,7 @@
   "rules": {
     "react/prop-types": "off",
     "no-underscore-dangle": "off",
+    "import/prefer-default-export": 0,
     "import/no-named-as-default": 0,
     "import/no-named-as-default-member": 0
   },

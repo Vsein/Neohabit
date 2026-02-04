@@ -57,6 +57,7 @@ services:
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
+      DEMO: false
     ports:
       - "${FRONTEND_HOST:-127.0.0.1}:${FRONTEND_PORT:-8080}:80"
     depends_on:

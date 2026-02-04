@@ -4,13 +4,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const hasJWT = () => {
   const token = localStorage.getItem('token');
   // return token || isPWA();
-  return token;
+  return window.APP_CONFIG.DEMO || token;
 };
 
 const authApi = createApi({
   reducerPath: 'auth',
   baseQuery: fetchBaseQuery({
-    baseUrl: window.APP_CONFIG.API_URL,
+    baseUrl: window.APP_CONFIG.DEMO ? '/mock_api' : window.APP_CONFIG.API_URL,
   }),
   endpoints: (builder) => ({
     login: builder.mutation({
