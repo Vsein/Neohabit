@@ -247,6 +247,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                   unnamed={!values?.name}
                   isNew={!habitID}
                   type="habit"
+                  form={form}
                 />
               </>
             ) : (
