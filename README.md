@@ -217,7 +217,7 @@ After that, edit the following files as desired:
 - `.env` to change the db/backend settings, and in-app settings like login behavior
 - `docker-compose.yaml` to configure the ports, volumes, **and uncomment lines for
   building manually**
-- `frontend/nginx.conf` to adjust the servername in case you will be web-hosting
+- `frontend/nginx.conf.template` to adjust the servername in case you will be web-hosting
 
 When ready, run:
 
