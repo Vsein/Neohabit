@@ -54,6 +54,10 @@ jobs:
           npm ci
           npm run build
 
+      - name: Copy index.html to 404.html
+        working-directory: ./frontend
+        run: cp dist/index.html dist/404.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
