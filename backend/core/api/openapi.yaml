@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  version: 0.0.0
+  version: 1.0.0
   title: Neohabit API
   description: |
     REST API for Neohabit's backend, rewritten in go

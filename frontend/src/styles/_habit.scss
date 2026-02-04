@@ -48,10 +48,20 @@
       height: 30px;
       padding: 4px;
       font-size: 0.9rem;
+
+      @media (max-width: 435px) {
+        font-size: 0.7rem;
+        padding: 3px;
+        height: 25px;
+      }
     }
 
     &-counter {
       width: 120px;
+
+      @media (max-width: 435px) {
+        width: 70px;
+      }
     }
   }
 

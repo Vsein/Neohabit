@@ -39,7 +39,7 @@ function DescriptionField({ rows }) {
   );
 }
 
-function ModalButtons({ disabled, isNew, type, unnamed }) {
+function ModalButtons({ disabled, isNew, type, unnamed, form }) {
   const dispatch = useDispatch();
   const closeOverlay = (e) => {
     e.stopPropagation();
@@ -56,7 +56,23 @@ function ModalButtons({ disabled, isNew, type, unnamed }) {
       >
         Cancel
       </button>
-      <button className="button-default stretch border" type="submit" disabled={disabled && !isNew}>
+      {!isNew ? (
+        <button className="button-default active stretch border" type="submit" disabled={disabled}>
+          Apply
+        </button>
+      ) : (
+        <></>
+      )}
+      <button
+        className="button-default stretch border"
+        disabled={disabled && !isNew}
+        onClick={async (e) => {
+          const error = await form.submit();
+          if (!error) {
+            closeOverlay(e);
+          }
+        }}
+      >
         {isNew ? `Add ${unnamed ? 'unnamed ' : ''}${type}` : 'Save'}
       </button>
     </div>

@@ -196,6 +196,10 @@
   @media (max-width: 700px) {
     grid-template-rows: min-content min-content min-content 410px;
   }
+
+  @media (max-height: 750px) {
+    grid-template-rows: min-content min-content min-content 220px;
+  }
 }
 
 .modal-details-habit-wrapper {
@@ -208,8 +212,27 @@
     'description mode'
     'description color';
 
+  @media (max-height: 750px) {
+    grid-template-columns: 4fr 1fr 1fr;
+    grid-template-areas:
+      'name name name'
+      'description mode color';
+
+    & .mode-area {
+      justify-content: start;
+    }
+
+    & .react-colorful {
+      height: 80px !important;
+    }
+  }
+
   & .description-area textarea {
     height: 300px;
+
+    @media (max-height: 750px) {
+      height: 150px;
+    }
   }
 }
 

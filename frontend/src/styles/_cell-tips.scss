@@ -119,10 +119,12 @@
   }
 
   @media (max-width: 435px) {
-    width: calc(100vw - 20px);
+    font-size: 13px;
+    width: calc(100vw - 30px);
 
     &.target {
-      height: 160px;
+      height: 180px;
+      width: calc(100vw);
     }
   }
 
