@@ -8,7 +8,6 @@ import Field from './FieldWrapper';
 import { HabitTag } from './UI';
 import { HabitModalWrapper } from './Habit';
 import { NameField, DescriptionField, ModalButtons, ColorPicker } from './ModalComponents';
-import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useGetProjectsQuery } from '../state/services/project';
 import {
   useGetHabitsQuery,
@@ -29,8 +28,6 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
   const [updateSettings] = useUpdateSettingsMutation();
   const [deleteHabitTarget] = useDeleteHabitTargetMutation();
   const [currentTab, setCurrentTab] = useState('general');
-
-  const { width } = useWindowDimensions();
 
   if (habits.isLoading || projects.isLoading) return <></>;
 
