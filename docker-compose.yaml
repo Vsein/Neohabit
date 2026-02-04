@@ -12,7 +12,11 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     volumes:
-      - postgres:/var/lib/postgresql
+      # NOTE: Saves data locally by default
+      # Uncomment the lines at the very bottom if you change the volume to
+      # `postgres:/var/lib/postgresql` or similar, note however that
+      # `docker compose down -v` will erase all data in that case
+      - ./data/postgres:/var/lib/postgresql
     ports:
       # Exposes port 5433 just in case postgres is already running outside docker
       - "127.0.0.1:5433:5432"
@@ -69,5 +73,6 @@ networks:
   app-network:
     driver: bridge
 
-volumes:
-  postgres:
+# uncomment if you want to store postgres data in a volume instead
+# volumes:
+#   postgres:
