@@ -338,10 +338,10 @@ For example:
 - There's the tasklist section that I want to integrate with habits, so you can
   see which habits are due today (currently the tasks are dangling in their own
   section, and weren't my development focus)
-- The skilltrees are implemented, but I'm aware of a couple of bugs there, and
-  right now there's no way to start habits directly based on the skills listed
-  in the skilltree. I may even take skilltrees as the base for importing new
-  habits, I guess it'll be more clear in the future.
+- The skilltrees are implemented, but right now there's no way to start habits
+  directly based on the skills listed in the skilltree. I may even take
+  skilltrees as the base for importing new habits, I guess it'll be more clear
+  in the future.
 - "The blocks" page is dangling as a section in the side menu, but I think it'll
   just be a link to a website with all the archived skilltrees/habits.
 - Contribution guides and community support/groups
