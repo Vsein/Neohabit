@@ -27,7 +27,8 @@
 }
 
 .react-datepicker__calendar-icon {
-  top: -1px;
+  position: absolute;
+  left: 0px;
 }
 
 .react-datepicker__input-container {

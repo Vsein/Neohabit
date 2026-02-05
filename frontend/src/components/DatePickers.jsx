@@ -117,7 +117,7 @@ function DatePeriodPicker({
           icon={
             <Icon
               path={mdiCalendarBlank}
-              className="icon centering"
+              className="icon"
               style={{ width: '18px', height: '18px' }}
             />
           }
@@ -150,7 +150,7 @@ function DatePeriodPicker({
           icon={
             <Icon
               path={mdiCalendarBlank}
-              className="icon centering"
+              className="icon"
               style={{ width: '18px', height: '18px' }}
             />
           }
