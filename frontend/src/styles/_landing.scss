@@ -137,11 +137,11 @@ $cell-weekdays-width: 33px;
   overflow: hidden;
 
   @media (max-width: 550px) {
-    height: calc(100vh - 60px);
+    height: calc(100dvh - 60px);
   }
 
   @media (max-width: 700px) {
-    margin-block: 30px;
+    margin-block: 0px;
   }
 
   &-text {
@@ -164,6 +164,10 @@ $cell-weekdays-width: 33px;
       left: 0;
       right: 0;
       padding: 20px;
+    }
+
+    @media (max-width: 500px) {
+      margin-inline: 10px;
     }
   }
 }
@@ -449,6 +453,10 @@ $cell-weekdays-width: 33px;
       left: 0;
       padding: 20px;
       box-shadow: 0 0 8px 8px var(--landing-border-color);
+    }
+
+    @media (max-width: 500px) {
+      margin-inline: 10px;
     }
   }
 
