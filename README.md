@@ -163,6 +163,9 @@ Currently, there are three methods available:
 <summary><strong>Docker compose with pre-built images (recommended)</strong></summary>
 <br>
 
+> [!NOTE]
+> If you want to expose Neohabit's deployment on the web, head to the second method
+
 First, make a directory for docker-compose's configs, then copy
 `docker-compose.yaml` and `.env` from this repo:
 
