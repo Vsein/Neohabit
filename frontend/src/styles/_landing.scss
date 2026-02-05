@@ -137,11 +137,11 @@ $cell-weekdays-width: 33px;
   overflow: hidden;
 
   @media (max-width: 550px) {
-    height: calc(100vh - 60px);
+    height: calc(100dvh - 60px);
   }
 
   @media (max-width: 700px) {
-    margin-block: 30px;
+    margin-block: 0px;
   }
 
   &-text {
@@ -164,6 +164,12 @@ $cell-weekdays-width: 33px;
       left: 0;
       right: 0;
       padding: 20px;
+    }
+
+    @media (max-width: 500px) {
+      margin-inline: 15px;
+      padding-inline: 10px;
+      padding-block: 30px;
     }
   }
 }
@@ -195,8 +201,8 @@ $cell-weekdays-width: 33px;
   }
 
   @media (max-width: 320px) {
-    --cell-height: 8px;
-    --cell-width: 8px;
+    --cell-height: 10px;
+    --cell-width: 10px;
   }
 }
 
@@ -380,6 +386,10 @@ $cell-weekdays-width: 33px;
     grid-template-rows: min-content auto;
   }
 
+  @media (max-width: 480px) {
+    padding: 3px;
+  }
+
   &-title {
     text-align: center;
   }
@@ -449,6 +459,13 @@ $cell-weekdays-width: 33px;
       left: 0;
       padding: 20px;
       box-shadow: 0 0 8px 8px var(--landing-border-color);
+    }
+
+    @media (max-width: 500px) {
+      margin-inline: 15px;
+      padding-inline: 15px;
+      padding-top: 30px;
+      padding-bottom: 20px;
     }
   }
 
@@ -520,6 +537,18 @@ $cell-weekdays-width: 33px;
   row-gap: 2px;
   padding-top: 5px;
 
+  @media (max-width: 480px) {
+    width: min(100vw - 10px, 396px);
+    overflow-x: scroll;
+    flex: 1 0 300px;
+    padding-bottom: 5px;
+  }
+
+  @media (max-width: 430px) {
+    width: min(100vw - 10px, 366px);
+    padding-bottom: 10px;
+  }
+
   .landing-habit {
     display: grid;
     grid-template-columns: 200px calc(var(--length) * 19px);
@@ -531,7 +560,21 @@ $cell-weekdays-width: 33px;
 
     @media (max-width: 480px) {
       grid-template-columns: 140px calc(var(--length) * 16px);
-      font-size: 13px;
+
+      & .cell-numeric {
+        --font-size-minus: 0px !important;
+        margin-top: 3px !important;
+      }
+    }
+
+    @media (max-width: 430px) {
+      grid-template-columns: 110px calc(var(--length) * 16px);
+    }
+
+    @media (max-width: 390px) {
+      & .cell-numeric {
+        --font-size-minus: -1px !important;
+      }
     }
 
     &-name {
@@ -554,6 +597,10 @@ $cell-weekdays-width: 33px;
       @media (max-width: 850px) {
         font-size: 13px;
         padding-left: 2px;
+      }
+
+      @media (max-width: 430px) {
+        font-size: 10px;
       }
     }
 

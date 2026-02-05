@@ -71,7 +71,9 @@ export default function Landing() {
             </li>
             {window.APP_CONFIG.DEMO ? (
               <li>
-                <NavLink to="/projects">See demo</NavLink>
+                <NavLink to="/projects" target="_blank">
+                  See demo
+                </NavLink>
               </li>
             ) : (
               <li>
