@@ -288,6 +288,10 @@ input[type='checkbox']:checked.checkbox {
     font-size: 100%;
     padding: 3px 32px;
     border-radius: 10px;
+
+    @media (max-width: 480px) {
+      padding: 3px 10px;
+    }
   }
 
   &.chameleon {

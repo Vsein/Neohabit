@@ -167,7 +167,9 @@ $cell-weekdays-width: 33px;
     }
 
     @media (max-width: 500px) {
-      margin-inline: 10px;
+      margin-inline: 15px;
+      padding-inline: 10px;
+      padding-block: 30px;
     }
   }
 }
@@ -460,7 +462,10 @@ $cell-weekdays-width: 33px;
     }
 
     @media (max-width: 500px) {
-      margin-inline: 10px;
+      margin-inline: 15px;
+      padding-inline: 15px;
+      padding-top: 30px;
+      padding-bottom: 20px;
     }
   }
 
