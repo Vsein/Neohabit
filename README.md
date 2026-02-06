@@ -41,12 +41,7 @@ You can see the features explained with examples on the
 #### Monochromatic (github/anki-style)
 
 <p float="left">
-  <a href="frontend/src/assets/heatmap-monochromatic-default-srgb-dark.png" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-srgb-dark.png" />
-      <img src="frontend/src/assets/heatmap-monochromatic-default-srgb-light.png" width="49%"/>
-    </picture>
-  </a>
+  <a href="frontend/src/assets/heatmap-monochromatic-default-srgb-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-srgb-dark.png" /><img src="frontend/src/assets/heatmap-monochromatic-default-srgb-light.png" width="49%"/></picture></a>
   &nbsp;
   <a href="frontend/src/assets/heatmap-monochromatic-custom-srgb-dark.png" target="_blank">
     <picture>
@@ -59,12 +54,7 @@ You can see the features explained with examples on the
 #### Numeric
 
 <p float="left">
-  <a href="frontend/src/assets/heatmap-numeric-default-blue-dark.png" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-blue-dark.png" />
-      <img src="frontend/src/assets/heatmap-numeric-default-blue-light.png" width="49%"/>
-    </picture>
-  </a>
+  <a href="frontend/src/assets/heatmap-numeric-default-blue-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-blue-dark.png" /><img src="frontend/src/assets/heatmap-numeric-default-blue-light.png" width="49%"/></picture></a>
   &nbsp;
   <a href="frontend/src/assets/heatmap-numeric-custom-deep-blue-dark.png" target="_blank">
     <picture>
@@ -80,12 +70,7 @@ Designed specifically to track habits that have to happen many times per period
 (available up to 16, then defaults to numeric):
 
 <p float="left">
-  <a href="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" />
-      <img src="frontend/src/assets/heatmap-fractured-default-bluer-light.png" width="49%"/>
-    </picture>
-  </a>
+  <a href="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" /><img src="frontend/src/assets/heatmap-fractured-default-bluer-light.png" width="49%"/></picture></a>
   &nbsp;
   <a href="frontend/src/assets/heatmap-fractured-custom-dodger-blue-dark.png" target="_blank">
     <picture>
@@ -98,12 +83,7 @@ Designed specifically to track habits that have to happen many times per period
 #### Or track habits that happen once in a blue moon:
 
 <p float="left">
-  <a href="frontend/src/assets/heatmap-numeric-monthly-dark.png" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" />
-      <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" width="49%"/>
-    </picture>
-  </a>
+  <a href="frontend/src/assets/heatmap-numeric-monthly-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" /><img src="frontend/src/assets/heatmap-numeric-monthly-light.png" width="49%"/></picture></a>
   &nbsp;
   <a href="frontend/src/assets/heatmap-45-days-dark.png" target="_blank">
     <picture>
@@ -117,12 +97,7 @@ Designed specifically to track habits that have to happen many times per period
 
 All displayed in a 1-dimensional mode, which is more suitable for day-to-day tracking:
 <p float="left">
-  <a href="frontend/src/assets/project-languages-dark.png" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-languages-dark.png" />
-      <img src="frontend/src/assets/project-languages-light.png" width="49%"/>
-    </picture>
-  </a>
+  <a href="frontend/src/assets/project-languages-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-languages-dark.png" /><img src="frontend/src/assets/project-languages-light.png" width="49%"/></picture></a>
   &nbsp;
   <a href="frontend/src/assets/project-fitness-dark.png" target="_blank">
     <picture>
@@ -132,12 +107,7 @@ All displayed in a 1-dimensional mode, which is more suitable for day-to-day tra
   </a>
 </p>
 <p float="left">
-  <a href="frontend/src/assets/project-worklife-dark.png" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-worklife-dark.png" />
-      <img src="frontend/src/assets/project-worklife-light.png" width="49%"/>
-    </picture>
-  </a>
+  <a href="frontend/src/assets/project-worklife-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-worklife-dark.png" /><img src="frontend/src/assets/project-worklife-light.png" width="49%"/></picture></a>
   &nbsp;
   <a href="frontend/src/assets/project-social-dark.png" target="_blank">
     <picture>
@@ -147,12 +117,7 @@ All displayed in a 1-dimensional mode, which is more suitable for day-to-day tra
   </a>
 </p>
 <p float="left">
-  <a href="frontend/src/assets/project-cleaning-dark.png" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-cleaning-dark.png" />
-      <img src="frontend/src/assets/project-cleaning-light.png" width="49%"/>
-    </picture>
-  </a>
+  <a href="frontend/src/assets/project-cleaning-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-cleaning-dark.png" /><img src="frontend/src/assets/project-cleaning-light.png" width="49%"/></picture></a>
   &nbsp;
   <a href="frontend/src/assets/project-meds-dark.png" target="_blank">
     <picture>
