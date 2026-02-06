@@ -71,9 +71,7 @@ export default function Landing() {
             </li>
             {window.APP_CONFIG.DEMO ? (
               <li>
-                <NavLink to="/projects" target="_blank">
-                  See demo
-                </NavLink>
+                <NavLink to="/projects">See demo</NavLink>
               </li>
             ) : (
               <li>
@@ -680,7 +678,7 @@ function SelfhostedSection() {
             </button>
           </Link>
           {window.APP_CONFIG.DEMO && (
-            <NavLink to="/projects" target="_blank" style={{ width: '100%' }}>
+            <NavLink to="/projects" style={{ width: '100%' }}>
               <button className="landing-lastcall-social-links button-default stretch big centering muted">
                 Or check out the demo
                 <Icon className="icon medium" path={mdiLoginVariant} />
