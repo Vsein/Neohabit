@@ -69,10 +69,22 @@
   &-onboarding {
     display: flex;
     flex-direction: column;
-  }
 
-  &-onboarding.modal-mobile {
-    text-align: center;
+    @media (max-width: 850px) {
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      display: grid;
+      padding-inline: 15px;
+      grid-template-rows: min-content 50px 200px min-content min-content;
+      justify-items: center;
+      gap: 20px;
+
+      & p {
+        text-align: left;
+      }
+    }
   }
 
   &-header {
@@ -337,7 +349,7 @@ $max: 100;
   grid-template-areas: 'description color';
 
   @media (max-width: 700px) {
-  grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
     grid-template-areas:
       'color'
       'description';
