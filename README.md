@@ -157,14 +157,14 @@ Excellent for planning and tracking progressions:
 
 ## Installation
 
+> [!NOTE]
+> If you want to expose Neohabit's deployment on the web, use the second method
+
 Currently, there are three methods available:
 
 <details>
 <summary><strong>Docker compose with pre-built images (recommended)</strong></summary>
 <br>
-
-> [!NOTE]
-> If you want to expose Neohabit's deployment on the web, head to the second method
 
 First, make a directory for docker-compose's configs, then copy
 `docker-compose.yaml` and `.env` from this repo:
@@ -203,7 +203,7 @@ you're running `docker compose` from
 </details>
 
 <details>
-<summary><strong>Docker compose and building images from source (web-hosting friendly)</strong></summary>
+<summary><strong>Docker compose and building images from source</strong></summary>
 <br>
 
 Clone this repo and change to the cloned directory:
