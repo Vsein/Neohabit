@@ -38,8 +38,17 @@
   padding: 1em;
   align-items: center;
 
+  @media (max-width: 700px) {
+    height: 100dvh;
+    width: 100vw;
+    grid-auto-rows: min-content;
+
+    & .react-colorful {
+      width: calc(100vw - 3em) !important;
+    }
+  }
+
   @media (max-width: 550px) {
-    width: calc(100% - 16px);
     padding: 0.4em;
 
     & .button-default {
@@ -131,6 +140,10 @@
       &:not(.habit-color-area) {
         .react-colorful {
           height: 280px !important;
+
+          @media (max-width: 700px) {
+            height: 150px !important;
+          }
         }
       }
     }
@@ -194,7 +207,7 @@
   }
 
   @media (max-width: 700px) {
-    grid-template-rows: min-content min-content min-content 410px;
+    grid-template-rows: min-content min-content min-content;
   }
 
   @media (max-height: 750px) {
@@ -211,6 +224,15 @@
     'name mode'
     'description mode'
     'description color';
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'name'
+      'color'
+      'mode'
+      'description';
+  }
 
   @media (max-height: 750px) {
     grid-template-columns: 4fr 1fr 1fr;
@@ -313,6 +335,13 @@ $max: 100;
   grid-template-columns: 3fr 1fr;
   grid-template-rows: min-content;
   grid-template-areas: 'description color';
+
+  @media (max-width: 700px) {
+  grid-template-columns: 1fr;
+    grid-template-areas:
+      'color'
+      'description';
+  }
 }
 
 .form-field-length {
