@@ -141,7 +141,8 @@ $cell-weekdays-width: 33px;
   }
 
   @media (max-width: 700px) {
-    margin-block: 0px;
+    margin-top: 15px;
+    margin-bottom: 30px;
   }
 
   &-text {
