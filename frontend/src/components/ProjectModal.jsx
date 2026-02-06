@@ -23,7 +23,6 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
   const [updateProject] = useUpdateProjectMutation();
 
   const [projectHabitList, setProjectHabitList] = useState([]);
-  const [diffHabitList, setDiffHabitList] = useState([]);
   const [unassignedHabitList, setUnassignedHabitList] = useState([]);
 
   useEffect(() => {
@@ -61,7 +60,6 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
         values: { ...values, habit_ids: habitIDs, habits: projectHabitList },
       });
     }
-    setDiffHabitList([]);
   };
 
   if (!projectID && !project) return <div>Missing project!</div>;
@@ -139,7 +137,6 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                       key={i}
                       onClick={() => {
                         setProjectHabitList([...projectHabitList, habit]);
-                        setDiffHabitList([...diffHabitList, habit]);
                         setUnassignedHabitList(
                           unassignedHabitList.filter((h) => h.id !== habit.id),
                         );
@@ -172,7 +169,6 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
                       onClick={() => {
                         setUnassignedHabitList([...unassignedHabitList, habit]);
                         setProjectHabitList(projectHabitList.filter((h) => h.id !== habit.id));
-                        setDiffHabitList(diffHabitList.filter((h) => h.id !== habit.id));
                       }}
                     >
                       <HabitTagToDelete habit={habit} />
@@ -190,7 +186,11 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               </div>
             </div>
             <ModalButtons
-              disabled={submitting || (pristine && diffHabitList.length === 0)}
+              disabled={
+                submitting ||
+                (pristine &&
+                  JSON.stringify(project?.habits ?? []) === JSON.stringify(projectHabitList))
+              }
               unnamed={!values?.name}
               isNew={!projectID}
               type="project"
