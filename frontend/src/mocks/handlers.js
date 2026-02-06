@@ -127,5 +127,5 @@ export const demoHandlers = [
     }),
   ),
 
-  http.all('*', () => new HttpResponse(null, { status: 204 })),
+  http.all('/mock_api/*', () => new HttpResponse(null, { status: 204 })),
 ];
