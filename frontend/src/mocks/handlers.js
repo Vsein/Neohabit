@@ -66,7 +66,7 @@ export const demoHandlers = [
     HttpResponse.json([
       {
         created_at: currentDate,
-        id: 'task',
+        id: 'task-1',
         updated_at: currentDate,
         description: '',
         name: "I'm planning to add a quick view here, for all the habits that weren't completed for the day",
@@ -74,7 +74,7 @@ export const demoHandlers = [
       },
       {
         created_at: currentDate,
-        id: 'task',
+        id: 'task-2',
         updated_at: currentDate,
         description: '',
         name: 'And to make it possible to link tasks to habits, projects or skilltrees',
@@ -82,7 +82,7 @@ export const demoHandlers = [
       },
       {
         created_at: currentDate,
-        id: 'task',
+        id: 'task-3',
         updated_at: currentDate,
         description: '',
         name: "Not sure when I'll get around to it though",
@@ -116,6 +116,7 @@ export const demoHandlers = [
 
   http.post('/mock_api/habit', () => HttpResponse.json(newId())),
   http.post('/mock_api/habit/:habitID/target', () => HttpResponse.json(newId())),
+  http.post('/mock_api/habit/:habitID/data_point', () => HttpResponse.json(newId())),
   http.post('/mock_api/project', () => HttpResponse.json(newId())),
   http.post('/mock_api/task', () => HttpResponse.json(newId())),
   http.post('/mock_api/skill', () => HttpResponse.json(newId())),
@@ -126,5 +127,5 @@ export const demoHandlers = [
     }),
   ),
 
-  http.all('*', () => {}),
+  http.all('*', () => new HttpResponse(null, { status: 204 })),
 ];

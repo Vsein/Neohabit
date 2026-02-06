@@ -14,11 +14,6 @@ async function prepare() {
   if (window.APP_CONFIG.DEMO) {
     await worker.start({
       serviceWorker: { url: '/mockServiceWorker.js' },
-      onUnhandledRequest(request, print) {
-        // always respond to a request, so that production demo doesn't fail with 405
-        console.log(request);
-        return;
-      },
     });
   }
 }
