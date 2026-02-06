@@ -221,21 +221,23 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     </div>
                   </div>
                   <div className="modal-details-block color-area centering habit-color-area">
-                    <div className="form-task-description" title="Dynamically show color changes">
-                      <input
-                        type="checkbox"
-                        className="checkbox muted"
-                        checked={settings.data.modals_live_color_preview}
-                        onChange={() =>
-                          updateSettings({
-                            values: {
-                              modals_live_color_preview: !settings.data.modals_live_color_preview,
-                            },
-                          })
-                        }
-                      />
-                      <label>Live color preview</label>
-                    </div>
+                    {habitID && (
+                      <div className="form-task-description" title="Dynamically show color changes">
+                        <input
+                          type="checkbox"
+                          className="checkbox muted"
+                          checked={settings.data.modals_live_color_preview}
+                          onChange={() =>
+                            updateSettings({
+                              values: {
+                                modals_live_color_preview: !settings.data.modals_live_color_preview,
+                              },
+                            })
+                          }
+                        />
+                        <label>Live color preview</label>
+                      </div>
+                    )}
                     <ColorPicker />
                   </div>
                 </div>
