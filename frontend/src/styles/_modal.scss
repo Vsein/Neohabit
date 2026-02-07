@@ -400,6 +400,10 @@ $max: 100;
   & > textarea {
     @include scrollbar.scrollbar;
     height: 300px;
+
+    @media (max-width: 700px) {
+      height: 270px;
+    }
   }
 
   & > textarea:focus ~ .form-field-length {
