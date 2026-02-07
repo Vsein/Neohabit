@@ -37,9 +37,12 @@ $cell-margin: 2px;
   border: 1px solid var(--cell-border-color);
   border-radius: 1px;
   box-shadow: 0px 0px 0px 1px var(--cell-shadow-color);
-  height: calc(var(--height) * var(--multiplier) * (var(--cell-height) + 4px) - 4px);
-  width: calc(var(--width) * (var(--cell-width) + 4px) - 4px);
-  margin: $cell-margin;
+  height: calc(
+    var(--height) * var(--multiplier) * (var(--cell-height) + 2 * var(--cell-margin)) - 2 *
+      var(--cell-margin)
+  );
+  width: calc(var(--width) * (var(--cell-width) + 2 * var(--cell-margin)) - 2 * var(--cell-margin));
+  margin: var(--cell-margin);
   background-color: var(--cell-background-color);
 
   &:hover .cell-numeric.target {
@@ -93,8 +96,12 @@ $cell-margin: 2px;
     // --shf: 4.9406564584124654e-324;
     --gap-decrement-column: 0;
     --gap-decrement-row: 0;
-    --column-gap: calc(var(--cell-height) * (2 - var(--gap-decrement-column)) / 15);
-    --row-gap: calc(var(--cell-height) * (2 - var(--gap-decrement-row)) / 15);
+    --column-gap: calc(
+      var(--cell-height) * (var(--cell-fraction-gap) - var(--gap-decrement-column)) / 15
+    );
+    --row-gap: calc(
+      var(--cell-height) * (var(--cell-fraction-gap) - var(--gap-decrement-row)) / 15
+    );
     background-color: var(--main-background-color);
     display: flex;
     flex-wrap: wrap;
@@ -203,15 +210,15 @@ $cell-margin: 2px;
 .cell-fraction {
   height: calc(
     (
-        var(--total-height) * (var(--cell-height) + 4px) - 4px - var(--row-gap) *
-          (var(--height-fractions) - 1)
+        var(--total-height) * (var(--cell-height) + 2 * var(--cell-margin)) - 2 *
+          var(--cell-margin) - var(--row-gap) * (var(--height-fractions) - 1)
       ) /
       var(--height-fractions)
   );
   width: calc(
     (
-        var(--total-width) * (var(--cell-width) + 4px) - 4px - var(--column-gap) *
-          (var(--width-fractions) - 1)
+        var(--total-width) * (var(--cell-width) + 2 * var(--cell-margin)) - 2 *
+          var(--cell-margin) - var(--column-gap) * (var(--width-fractions) - 1)
       ) /
       var(--width-fractions)
   );
