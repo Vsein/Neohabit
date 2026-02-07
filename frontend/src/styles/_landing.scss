@@ -4,6 +4,7 @@ $cell-margin: 2px;
 $cell-weekdays-width: 33px;
 
 #content-landing {
+  --cell-margin: 2px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -212,7 +213,7 @@ $cell-weekdays-width: 33px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  height: calc((#{$cell-height} + #{$cell-margin} * 2) * 14);
+  height: calc((#{$cell-height} + var(--cell-margin) * 2) * 14);
   height: 105vh;
   width: 100vw;
 
@@ -220,7 +221,7 @@ $cell-weekdays-width: 33px;
     height: $cell-height;
     width: $cell-width;
     // border: 1px solid rgba(0, 0, 0, 0.1);
-    margin: $cell-margin;
+    margin: var(--cell-margin);
     border-radius: 1px;
     background-color: rgba(0, 0, 0, 0.05);
     position: relative;
@@ -535,7 +536,7 @@ $cell-weekdays-width: 33px;
 .landing-habits {
   --is-big: 0;
   display: grid;
-  grid-template-rows: 17px;
+  grid-auto-rows: auto;
   row-gap: 2px;
   padding-top: 5px;
 
@@ -551,17 +552,46 @@ $cell-weekdays-width: 33px;
     padding-bottom: 10px;
   }
 
+  --cell-height: 15px;
+  --cell-width: 15px;
+
+  @media (max-width: 550px) {
+    --cell-height: 14px;
+    --cell-width: 14px;
+    --cell-fraction-gap: 1;
+  }
+
+  @media (max-width: 480px) {
+    --cell-height: 12px;
+    --cell-width: 12px;
+    --cell-fraction-gap: 1;
+  }
+
+  @media (max-width: 400px) {
+    --cell-height: 11px;
+    --cell-width: 11px;
+    --cell-fraction-gap: 1;
+  }
+
+  @media (max-width: 359px) {
+    --cell-height: 11px;
+    --cell-width: 11px;
+    --cell-margin: 1px;
+    --cell-fraction-gap: 1;
+  }
+
   .landing-habit {
+    --heatmap-width: calc(var(--length) * (var(--cell-width) + 2 * var(--cell-margin)));
     display: grid;
-    grid-template-columns: 200px calc(var(--length) * 19px);
+    grid-template-columns: 200px var(--heatmap-width);
     font-size: 15px;
 
     @media (max-width: 550px) {
-      grid-template-columns: 160px calc(var(--length) * 17px);
+      grid-template-columns: 160px var(--heatmap-width);
     }
 
     @media (max-width: 480px) {
-      grid-template-columns: 140px calc(var(--length) * 16px);
+      grid-template-columns: 140px var(--heatmap-width);
 
       & .cell-numeric {
         --font-size-minus: 0px !important;
@@ -570,18 +600,22 @@ $cell-weekdays-width: 33px;
     }
 
     @media (max-width: 430px) {
-      grid-template-columns: 110px calc(var(--length) * 16px);
+      grid-template-columns: 110px var(--heatmap-width);
     }
 
-    @media (max-width: 390px) {
+    @media (max-width: 400px) {
       & .cell-numeric {
         --font-size-minus: -1px !important;
       }
     }
 
+    @media (max-width: 380px) {
+      grid-template-columns: 110px var(--heatmap-width);
+    }
+
     &-name {
-      line-height: 15px;
-      height: 17px;
+      line-height: var(--cell-height);
+      height: calc(var(--cell-height) + var(--cell-margin));
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -607,20 +641,8 @@ $cell-weekdays-width: 33px;
     }
 
     &-cells {
-      --cell-height: 15px;
-      --cell-width: 15px;
       height: var(--cell-height);
       display: flex;
-
-      @media (max-width: 550px) {
-        --cell-height: 13px;
-        --cell-width: 13px;
-      }
-
-      @media (max-width: 480px) {
-        --cell-height: 12px;
-        --cell-width: 12px;
-      }
     }
   }
 }

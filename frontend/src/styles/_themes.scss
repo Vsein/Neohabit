@@ -50,6 +50,8 @@
   --cell-tooltip-text-color: white;
   --cell-tooltip-counter-color: #6a6a6a;
   --cell-tooltip-counter-focus-color: #565656;
+  --cell-margin: 2px;
+  --cell-fraction-gap: 2;
   --multiplier: 1;
 }
 
@@ -128,5 +130,7 @@
   --cell-tooltip-counter-color: #777;
   --cell-tooltip-counter-focus-color: #3c3c3c;
   --negate-margin-block: 0px;
+  --cell-margin: 2px;
+  --cell-fraction-gap: 2;
   --multiplier: 1;
 }
