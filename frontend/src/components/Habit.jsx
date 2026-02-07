@@ -118,8 +118,8 @@ function HabitModalWrapper({
   const vertical = true;
 
   const { width } = useWindowDimensions();
-  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true);
-  const datePeriodLength = Math.min(35, adaptiveDatePeriodLength - (onboardingSlideTag ? 2 : 0));
+  const { adaptiveDatePeriodLength, mobile } = getAdaptivePeriodLength(width, true, true);
+  const datePeriodLength = Math.min(35, adaptiveDatePeriodLength - (onboardingSlideTag ? 1 : 0));
   const [
     dateEnd,
     setDateEnd,

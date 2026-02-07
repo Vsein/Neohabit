@@ -133,6 +133,7 @@
   @media (max-width: 450px) {
     flex-wrap: wrap;
     height: min-content;
+    line-height: 23px;
 
     &-picker {
       width: 115px;

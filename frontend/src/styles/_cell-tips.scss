@@ -123,8 +123,9 @@
     width: calc(100vw - 30px);
 
     &.target {
-      height: 180px;
-      width: calc(100vw);
+      height: auto;
+      width: calc(100vw - 30px);
+      padding-block: 10px;
     }
   }
 

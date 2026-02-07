@@ -56,9 +56,12 @@ function HabitControls({
     const cell = e.target;
     const rect = cell.getBoundingClientRect();
     const { innerWidth: width } = window;
-    if (width <= 850) {
+    if (width <= 450) {
       cellAddDropdown.style.top = `${window.pageYOffset + rect.y + 26}px`;
-      cellAddDropdown.style.left = `${rect.x - (isTarget ? 165 : 113) + (width < 400 ? 25 : 0)}px`;
+      cellAddDropdown.style.left = `10px`;
+    } else if (width <= 850) {
+      cellAddDropdown.style.top = `${window.pageYOffset + rect.y + 26}px`;
+      cellAddDropdown.style.left = `${rect.x - (isTarget ? 165 : 113)}px`;
     } else {
       cellAddDropdown.style.top = `${window.pageYOffset + rect.y - 41 - (isTarget ? 30 : 0)}px`;
       cellAddDropdown.style.left = `${rect.x + window.scrollX + rect.width / 2 - 415 - (isTarget ? 20 : 0)}px`;

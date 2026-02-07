@@ -21,12 +21,16 @@ import useWindowDimensions from './useWindowDimensions';
 import { getUTCOffsettedDate } from '../utils/dates';
 import useValidatedDatePeriodParams from './useValidatedDatePeriodParams';
 
-function getAdaptivePeriodLength(width, habit = false) {
+function getAdaptivePeriodLength(width, habit = false, modal = false) {
   let minus = 0;
   if (width < 550) {
-    // minus += 10;
+    minus += 10 * modal;
   } else if (width < 1000) {
-    minus += 30 + 85; // padding + sidebar
+    if (modal) {
+      minus += 30; // only padding
+    } else {
+      minus += 30 + 85; // padding + sidebar
+    }
   } else {
     minus += 40 + 85; // padding + sidebar
   }

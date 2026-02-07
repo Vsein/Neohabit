@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import useWindowDimensions from '../hooks/useWindowDimensions';
 import { useUpdateSettingsMutation } from '../state/services/settings';
 import { useGetHabitsQuery } from '../state/services/habit';
 import { HabitModalWrapper } from './Habit';
@@ -117,14 +116,11 @@ export default function Onboarding() {
     updateSettings({ values: { hide_onboarding: true } });
   };
 
-  const { width } = useWindowDimensions();
-  const mobile = width < 850;
-
   if (habits.isLoading) return <></>;
 
   return (
     <div className="overlay overlay-active centering">
-      <div className={`modal modal-active modal-onboarding ${mobile ? 'modal-mobile' : ''}`}>
+      <div className="modal modal-active modal-onboarding">
         <div className="modal-header" style={{ gridTemplateColumns: 'min-content' }}>
           <div className="tag">Introduction</div>
         </div>
