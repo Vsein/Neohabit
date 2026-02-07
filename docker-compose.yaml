@@ -64,8 +64,10 @@ services:
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
       DEMO: false
     ports:
-      # - "127.0.0.1:${FRONTEND_PORT:-8080}:80"   # only localhost
-      - "${FRONTEND_PORT:-80}:80"               # everywhere
+      # when localhosting, exposing only 127.0.0.1 is more secure
+      # Unless you need LAN access, don't change it
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"   # local
+      # - "${FRONTEND_PORT:-80}:80"               # prod
     depends_on:
       - backend
     networks:
