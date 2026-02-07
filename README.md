@@ -17,10 +17,12 @@
 <br>
 
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-overview-dark.png" />
-    <img src="frontend/src/assets/neohabit-readme-overview-light.png" />
-  </picture>
+  <a href="frontend/src/assets/neohabit-readme-overview-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/neohabit-readme-overview-dark.png" />
+      <img src="frontend/src/assets/neohabit-readme-overview-light.png" />
+    </picture>
+  </a>
   <sup align="center">zoomed out overview for 6 months </sup>
 </div>
 
@@ -39,29 +41,27 @@ You can see the features explained with examples on the
 #### Monochromatic (github/anki-style)
 
 <p float="left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-srgb-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-default-srgb-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/heatmap-monochromatic-default-srgb-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-default-srgb-dark.png" /><img src="frontend/src/assets/heatmap-monochromatic-default-srgb-light.png" width="49%"/></picture></a>
   &nbsp;
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-srgb-dark.png" />
-    <img src="frontend/src/assets/heatmap-monochromatic-custom-srgb-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/heatmap-monochromatic-custom-srgb-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-monochromatic-custom-srgb-dark.png" />
+      <img src="frontend/src/assets/heatmap-monochromatic-custom-srgb-light.png" width="49%"/>
+    </picture>
+  </a>
 </p>
 
 #### Numeric
 
 <p float="left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-blue-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-default-blue-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/heatmap-numeric-default-blue-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-default-blue-dark.png" /><img src="frontend/src/assets/heatmap-numeric-default-blue-light.png" width="49%"/></picture></a>
   &nbsp;
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-deep-blue-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-custom-deep-blue-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/heatmap-numeric-custom-deep-blue-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-custom-deep-blue-dark.png" />
+      <img src="frontend/src/assets/heatmap-numeric-custom-deep-blue-light.png" width="49%"/>
+    </picture>
+  </a>
 </p>
 
 #### Fractured
@@ -70,66 +70,61 @@ Designed specifically to track habits that have to happen many times per period
 (available up to 16, then defaults to numeric):
 
 <p float="left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" />
-    <img src="frontend/src/assets/heatmap-fractured-default-bluer-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-default-bluer-dark.png" /><img src="frontend/src/assets/heatmap-fractured-default-bluer-light.png" width="49%"/></picture></a>
   &nbsp;
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dodger-blue-dark.png" />
-    <img src="frontend/src/assets/heatmap-fractured-custom-dodger-blue-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/heatmap-fractured-custom-dodger-blue-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-fractured-custom-dodger-blue-dark.png" />
+      <img src="frontend/src/assets/heatmap-fractured-custom-dodger-blue-light.png" width="49%"/>
+    </picture>
+  </a>
 </p>
 
 #### Or track habits that happen once in a blue moon:
 
 <p float="left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" />
-    <img src="frontend/src/assets/heatmap-numeric-monthly-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/heatmap-numeric-monthly-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-numeric-monthly-dark.png" /><img src="frontend/src/assets/heatmap-numeric-monthly-light.png" width="49%"/></picture></a>
   &nbsp;
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-45-days-dark.png" />
-    <img src="frontend/src/assets/heatmap-45-days-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/heatmap-45-days-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/heatmap-45-days-dark.png" />
+      <img src="frontend/src/assets/heatmap-45-days-light.png" width="49%"/>
+    </picture>
+  </a>
 </p>
 
 ### Combine habits into projects
 
 All displayed in a 1-dimensional mode, which is more suitable for day-to-day tracking:
 <p float="left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-languages-dark.png" />
-    <img src="frontend/src/assets/project-languages-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/project-languages-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-languages-dark.png" /><img src="frontend/src/assets/project-languages-light.png" width="49%"/></picture></a>
   &nbsp;
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-fitness-dark.png" />
-    <img src="frontend/src/assets/project-fitness-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/project-fitness-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-fitness-dark.png" />
+      <img src="frontend/src/assets/project-fitness-light.png" width="49%"/>
+    </picture>
+  </a>
 </p>
 <p float="left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-worklife-dark.png" />
-    <img src="frontend/src/assets/project-worklife-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/project-worklife-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-worklife-dark.png" /><img src="frontend/src/assets/project-worklife-light.png" width="49%"/></picture></a>
   &nbsp;
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-social-dark.png" />
-    <img src="frontend/src/assets/project-social-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/project-social-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-social-dark.png" />
+      <img src="frontend/src/assets/project-social-light.png" width="49%"/>
+    </picture>
+  </a>
 </p>
 <p float="left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-cleaning-dark.png" />
-    <img src="frontend/src/assets/project-cleaning-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/project-cleaning-dark.png" target="_blank"><picture><source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-cleaning-dark.png" /><img src="frontend/src/assets/project-cleaning-light.png" width="49%"/></picture></a>
   &nbsp;
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-meds-dark.png" />
-    <img src="frontend/src/assets/project-meds-light.png" width="49%"/>
-  </picture>
+  <a href="frontend/src/assets/project-meds-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/project-meds-dark.png" />
+      <img src="frontend/src/assets/project-meds-light.png" width="49%"/>
+    </picture>
+  </a>
 </p>
 
 ### Skilltrees
@@ -137,10 +132,12 @@ All displayed in a 1-dimensional mode, which is more suitable for day-to-day tra
 Excellent for planning and tracking progressions:
 
 <div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/skilltree-cyan-dark.png" />
-    <img src="frontend/src/assets/skilltree-cyan-light.png" />
-  </picture>
+  <a href="frontend/src/assets/skilltree-cyan-dark.png" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/src/assets/skilltree-cyan-dark.png" />
+      <img src="frontend/src/assets/skilltree-cyan-light.png" />
+    </picture>
+  </a>
 </div>
 
 ### Other things you might find useful
