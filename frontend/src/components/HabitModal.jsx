@@ -183,7 +183,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                     <DescriptionField rows="12" />
                   </div>
                   <div className="modal-details-block mode-area">
-                    <div
+                    <label
                       className="form-task-description"
                       title="Similar to github/anki style heatmaps"
                     >
@@ -193,9 +193,9 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                         type="checkbox"
                         className="checkbox"
                       />
-                      <label>Monochromatic</label>
-                    </div>
-                    <div
+                      Monochromatic
+                    </label>
+                    <label
                       className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
                       title="Shows numbers inside of cells, or default to this if target > 16"
                     >
@@ -205,9 +205,9 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                         type="checkbox"
                         className="checkbox"
                       />
-                      <label>Show as numbers</label>
-                    </div>
-                    <div
+                      Show as numbers
+                    </label>
+                    <label
                       className={`form-task-description ${values.is_monochromatic ? 'overriden' : ''}`}
                       title="Darkens the cells if they exceed the target"
                     >
@@ -217,12 +217,15 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                         type="checkbox"
                         className="checkbox"
                       />
-                      <label>More is bad</label>
-                    </div>
+                      More is bad
+                    </label>
                   </div>
                   <div className="modal-details-block color-area centering habit-color-area">
                     {habitID && (
-                      <div className="form-task-description" title="Dynamically show color changes">
+                      <label
+                        className="form-task-description"
+                        title="Dynamically show color changes"
+                      >
                         <input
                           type="checkbox"
                           className="checkbox muted"
@@ -235,8 +238,8 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
                             })
                           }
                         />
-                        <label>Live color preview</label>
-                      </div>
+                        Live color preview
+                      </label>
                     )}
                     <ColorPicker />
                   </div>
