@@ -40,11 +40,11 @@ services:
       PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-1h}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       JWT_SECRET: ${JWT_SECRET:-please_DONT_leave_blank}
-      FRONTEND_URL: http://${FRONTEND_HOST:-127.0.0.1}:${FRONTEND_PORT:-8080}
+      FRONTEND_URL: ${FRONTEND_URL:-http://127.0.0.1:8080}
       ADDRESS: ":${BACKEND_PORT:-9000}"
       BACKEND_PORT: ${BACKEND_PORT:-9000}
     ports:
-      - "127.0.0.1:${BACKEND_PORT:-9000}:${BACKEND_PORT:-9000}"
+      - :${BACKEND_PORT}
     networks:
       - app-network
 
@@ -56,14 +56,16 @@ services:
     # pull_policy: build
     container_name: frontend
     environment:
-      API_URL: http://127.0.0.1:${BACKEND_PORT:-9000}/
+      API_URL: ${API_URL:-api}
+      BACKEND_HOST: ${BACKEND_HOST:-backend}
       BACKEND_PORT: ${BACKEND_PORT:-9000}
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
       DEMO: false
     ports:
-      - "${FRONTEND_HOST:-127.0.0.1}:${FRONTEND_PORT:-8080}:80"
+      # - "127.0.0.1:${FRONTEND_PORT:-8080}:80"   # only localhost
+      - "${FRONTEND_PORT:-80}:80"               # everywhere
     depends_on:
       - backend
     networks:
