@@ -562,22 +562,22 @@ $cell-weekdays-width: 33px;
   }
 
   @media (max-width: 480px) {
-    --cell-height: 14px;
-    --cell-width: 14px;
-    --cell-margin: 1px;
+    --cell-height: 12px;
+    --cell-width: 12px;
+    --cell-margin: 2px;
     --cell-fraction-gap: 1;
   }
 
   @media (max-width: 400px) {
-    --cell-height: 13px;
-    --cell-width: 13px;
-    --cell-margin: 1px;
+    --cell-height: 11px;
+    --cell-width: 11px;
+    --cell-margin: 2px;
     --cell-fraction-gap: 1;
   }
 
   @media (max-width: 359px) {
-    --cell-height: 12px;
-    --cell-width: 12px;
+    --cell-height: 11px;
+    --cell-width: 11px;
     --cell-margin: 1px;
     --cell-fraction-gap: 1;
   }
@@ -605,7 +605,7 @@ $cell-weekdays-width: 33px;
       grid-template-columns: 110px var(--heatmap-width);
     }
 
-    @media (max-width: 390px) {
+    @media (max-width: 400px) {
       & .cell-numeric {
         --font-size-minus: -1px !important;
       }
