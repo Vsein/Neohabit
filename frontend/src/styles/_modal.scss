@@ -222,7 +222,7 @@
     grid-template-rows: min-content min-content min-content;
   }
 
-  @media (max-height: 750px) {
+  @media (max-height: 750px) and (min-width: 1000px) {
     grid-template-rows: min-content min-content min-content 220px;
   }
 }
@@ -238,20 +238,28 @@
     'description color';
 
   @media (max-width: 700px) {
+    grid-template-rows: none;
+    grid-auto-rows: auto;
     grid-template-columns: 1fr;
     grid-template-areas:
       'name'
       'color'
       'mode'
       'description';
+
+    & .react-colorful {
+      height: 80px !important;
+    }
   }
 
-  @media (max-height: 750px) {
+  @media (max-height: 750px) and (min-width: 1000px) {
     grid-template-columns: 4fr 1fr 1fr;
     grid-template-areas:
       'name name name'
       'description mode color';
+  }
 
+  @media (max-height: 750px) and (min-width: 1000px) {
     & .mode-area {
       justify-content: start;
     }
