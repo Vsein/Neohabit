@@ -85,6 +85,15 @@
         text-align: left;
       }
     }
+
+    @media (max-width: 600px) {
+      grid-template-rows: 50px 200px min-content min-content;
+      padding-top: 15px;
+
+      & .modal-header {
+        display: none;
+      }
+    }
   }
 
   &-header {
