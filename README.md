@@ -9,7 +9,7 @@
   <a href="#installation">Install</a> •
   <a href="#features">Features</a> •
   <a href="https://neohabit.org/projects">Demo</a> •
-  <a href="https://discord.gg/uQ4XdE6raR">Discord</a> •
+  <a href="https://github.com/Vsein/Neohabit/discussions">Discuss</a> •
   <a href="#donations">Donations</a>
 </p>
 
@@ -320,7 +320,8 @@ open-sourced.
 It's possible for something not to run as I intended, and if it wastes your
 time, I'm sorry. If you figured out how to deploy Neohabit in, say k8s or
 Portanier, or your preferred deployment tool, feel free to propose an
-installation guide -- a pull request or just a discord message is fine.
+installation guide -- a pull request or just a new discussion on
+https://github.com/Vsein/Neohabit/discussions is fine.
 
 <hr>
 </details>
