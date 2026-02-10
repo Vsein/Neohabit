@@ -325,6 +325,8 @@ installation guide -- a pull request or just a discord message is fine.
 <hr>
 </details>
 
+## [Upgrading](UPGRADING.md)
+
 ## Ultimate vision
 
 My ultimate vision for Neohabit is to have a public, community-driven archive of
