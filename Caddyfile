@@ -1,8 +1,13 @@
 # :443, :8080, yourdomain.com, etc.
 :80 {
-	# tls your@email.com   # automatic Let's Encrypt
-	# redir https://{host}{uri} 301 # redirect HTTP → HTTPS once you have domain/TLS
+	# tls your@email.com   # automatic Let's Encrypt for web-hosting
+	# redir https://{host}{uri} 301 # (optional) redirect HTTP → HTTPS once you have domain/TLS
 
+	# For HTTPS access through LAN
+	# tls internal {
+	# 	on_demand
+	# }
+	# reverse_proxy frontend:80
 
 	# Make sure that the runtime config is never cached
 	handle /runtime-config.js {
