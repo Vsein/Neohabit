@@ -1,40 +1,25 @@
 :80 {     # or :8080, yourdomain.com, etc.
     # tls your@email.com   # automatic Let's Encrypt
-    # Optional: redirect HTTP → HTTPS once you have domain/TLS
-    # redir https://{host}{uri} 301
+    # redir https://{host}{uri} 301 # redirect HTTP → HTTPS once you have domain/TLS
 
-    # Special handling for /runtime-config.js - no caching
     handle /runtime-config.js {
         root * /srv
         file_server
-
         header Cache-Control "no-store, no-cache, must-revalidate"
         header Pragma "no-cache"
-
-        # force fresh fetch even on reload
-        header -ETag                          # remove ETag if present (prevents 304 Not Modified)
-    }
-
-
-    # Static assets
-    handle /assets/* {
-        file_server
-    }
-
-    handle /registerSW.js {
-        file_server
-    }
-
-    handle_path / {
-        root * /srv
-        encode gzip zstd
-        try_files {path} /index.html
-        file_server
+        header -ETag
     }
 
     handle_path /api/* {
         uri strip_prefix /api
+        encode gzip zstd
         reverse_proxy backend:9000
+    }
+
+    handle {
+        root * /srv
+        try_files {path} /index.html
+        file_server
     }
 
     encode gzip zstd

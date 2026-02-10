@@ -41,20 +41,6 @@ services:
     networks:
       - neohabit-network
 
-  # TODO: Maybe insert runtime-config.js like this trying to bake
-  # it in inside frontend's image with entrypoints?
-  # For some reason can't even download alpine...
-  # frontend-config-init:
-  #   image: alpine:3.21
-  #   command: >
-  #     sh -c "apk add --no-cache gettext &&
-  #            envsubst < /srv/runtime-config.template.js > /srv/runtime-config.js &&
-  #            rm /srv/runtime-config.template.js"
-  #   volumes:
-  #     - frontend-dist:/srv
-  #   environment:
-  #     - API_URL=/api
-
   frontend:
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-front:${TAG:-latest}
