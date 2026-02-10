@@ -2,6 +2,7 @@
     # tls your@email.com   # automatic Let's Encrypt
     # redir https://{host}{uri} 301 # redirect HTTP → HTTPS once you have domain/TLS
 
+    # Make sure that the runtime config is never cached
     handle /runtime-config.js {
         root * /srv
         file_server
