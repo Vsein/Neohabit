@@ -65,8 +65,8 @@ services:
     image: caddy:2-alpine
     restart: unless-stopped
     ports:
-      - "${FRONTEND_PORT}:80"  # for simple localhost/LAN
-      # - "${FRONTEND_PORT}:443" # for LAN + HTTPS
+      - "${FRONTEND_PORT}:80"     # ← for localhost
+      # - "${FRONTEND_PORT}:443"    # ← for LAN + HTTPS
       # - "80:80"
       # - "443:443"
       # - "443:443/udp"

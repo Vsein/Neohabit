@@ -17,9 +17,9 @@ I removed the nginx out of the frontend image, thus decreasing its size from
 
 ### Recommended actions:
 
-Either backup your previous configs, fully copy a new `docker-compose.yaml` and
-`.env.example` and make the changes you want, or simply refer to them. The
-approximate steps are listed below.
+Either backup your previous configs, fully copy a new `docker-compose.yaml`,
+`.env.example` and `Caddyfile` and make the changes you want, or simply refer to
+them. The approximate steps are listed below.
 
 Here's the recommended steps if you used the previous `docker-compose.yaml`:
 
@@ -38,22 +38,26 @@ Here's the recommended steps if you used the previous `docker-compose.yaml`:
   - frontend.environment.API_URL
   - frontend.environment.BACKEND_PORT
 3. Change the backend.environment.FRONTEND_URL in `docker-compose.yaml` to:
-```
+```yaml
+  backend:
+    environment:
       FRONTEND_URL: ${FRONTEND_URL:-http://127.0.0.1:${FRONTEND_PORT:-8080}}
+      # or whichever URL you prefer, just remove the FRONTEND_HOST reference if you
+      # haven't already.
 ```
-   or whichever you prefer, just remove the FRONTEND_HOST reference if you
-   haven't already.
 4. Add a new volume in the frontend container:
-  ```volumes:
+  ```yaml
+  volumes:
        - frontend-dist:/srv
   ```
 5. Add a Caddy reverse proxy container below the frontend container:
-```
+```yaml
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
     ports:
       - "${FRONTEND_PORT}:80"     # ← for localhost
+      # - "${FRONTEND_PORT}:443"    # ← for LAN + HTTPS
       # - "80:80"
       # - "443:443"
       # - "443:443/udp"
@@ -62,4 +66,8 @@ Here's the recommended steps if you used the previous `docker-compose.yaml`:
       - frontend-dist:/srv
       - caddy_data:/data
       - caddy_config:/config
+    depends_on:
+      - frontend
+    networks:
+      - neohabit-network     # ← change if you named it differently
 ```
