@@ -60,6 +60,7 @@ services:
     networks:
       - neohabit-network
 
+  # Or set up your preferred reverse proxy instead of caddy
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped

@@ -11,12 +11,14 @@
         header -ETag
     }
 
+    # point /api to backend:9000
     handle_path /api/* {
         uri strip_prefix /api
         encode gzip zstd
         reverse_proxy backend:9000
     }
 
+    # SPA catch-all
     handle {
         root * /srv
         try_files {path} /index.html
