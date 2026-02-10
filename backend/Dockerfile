@@ -20,6 +20,6 @@ WORKDIR /app
 COPY --from=builder /app/core-binary /app/core-binary
 COPY --from=builder /app/core/config/config.yaml /app/config.yaml
 
-EXPOSE ${BACKEND_PORT}
+EXPOSE 9000
 
 CMD ["./core-binary", "-config", "/app/config.yaml"]

@@ -12,21 +12,16 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     volumes:
-      # NOTE: Saves data locally by default
-      # Uncomment the lines at the very bottom if you change the volume to
-      # `postgres:/var/lib/postgresql` or similar, note however that
-      # `docker compose down -v` will erase all data in that case
-      - ./data/postgres:/var/lib/postgresql
-    ports:
-      # Exposes port 5433 just in case postgres is already running outside docker
-      - "127.0.0.1:5433:5432"
+      - postgres:/var/lib/postgresql        # in a volume
+      # - ./data/postgres:/var/lib/postgresql # saves locally
+      # NOTE: /var/lib/postgresql is recommended starting with postgres v18, it's not a mistake
     networks:
       - app-network
 
   backend:
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-back:${TAG:-latest}
-    # uncomment for building manually
+    # Uncomment for building manually
     # build: ./backend
     # pull_policy: build
     depends_on:
@@ -40,18 +35,15 @@ services:
       PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-1h}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       JWT_SECRET: ${JWT_SECRET:-please_DONT_leave_blank}
-      FRONTEND_URL: ${FRONTEND_URL:-http://127.0.0.1:8080}
+      FRONTEND_URL: ${FRONTEND_URL:-http://127.0.0.1:${FRONTEND_PORT:-8080}}
       ADDRESS: ":${BACKEND_PORT:-9000}"
-      BACKEND_PORT: ${BACKEND_PORT:-9000}
-    ports:
-      - :${BACKEND_PORT}
     networks:
       - app-network
 
   frontend:
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-front:${TAG:-latest}
-    # uncomment for building manually
+    # Uncomment for building manually
     # build: ./frontend
     # pull_policy: build
     container_name: frontend
@@ -61,10 +53,12 @@ services:
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
       DEMO: false
     ports:
-      # when localhosting, exposing only 127.0.0.1 is more secure
-      # Unless you need LAN access, don't change it
-      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"   # local
-      # - "${FRONTEND_PORT:-80}:80"               # prod
+      # Local development – only localhost (secure)
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"
+
+      # Uncomment only when deploying to a real server / VPS
+      # - "${FRONTEND_PUBLIC_PORT:-80}:80"
+      # - "443:443"   # if you add certs later
     depends_on:
       - backend
     networks:
@@ -74,6 +68,5 @@ networks:
   app-network:
     driver: bridge
 
-# uncomment if you want to store postgres data in a volume instead
-# volumes:
-#   postgres:
+volumes:
+  postgres:
