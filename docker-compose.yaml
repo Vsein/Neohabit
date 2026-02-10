@@ -69,8 +69,8 @@ services:
       DEMO: false
     depends_on:
       - backend
-    # volumes:
-    #   - frontend-dist:/srv
+    volumes:
+      - frontend-dist:/srv
     networks:
       - neohabit-network
 
@@ -84,6 +84,7 @@ services:
       # - "443:443/udp"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - frontend-dist:/srv
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
@@ -97,6 +98,6 @@ networks:
 
 volumes:
   postgres_data:
-  # frontend-dist:
+  frontend-dist:
   caddy_data:
   caddy_config:

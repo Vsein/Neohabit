@@ -15,6 +15,16 @@
         header -ETag                          # remove ETag if present (prevents 304 Not Modified)
     }
 
+
+    # Static assets
+    handle /assets/* {
+        file_server
+    }
+
+    handle /registerSW.js {
+        file_server
+    }
+
     handle_path / {
         root * /srv
         encode gzip zstd

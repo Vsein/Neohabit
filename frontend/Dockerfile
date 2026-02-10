@@ -6,15 +6,14 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Final image - just static files
-FROM alpine # ideally scratch
-RUN apk add --no-cache gettext
+# Final image - just static files with injected runtime-config
+FROM busybox:latest
 
 WORKDIR /srv
 COPY --from=build /app/dist /srv/
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
+COPY public/runtime-config.template.js ./runtime-config.js
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["sleep", "infinity"]
