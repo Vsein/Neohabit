@@ -7,16 +7,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 5s
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-neohabit}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     volumes:
-      - postgres:/var/lib/postgresql        # in a volume
-      # - ./data/postgres:/var/lib/postgresql # saves locally
+      - postgres_data:/var/lib/postgresql        # in a volume
+      # - ./data/postgres:/var/lib/postgresql      # saves locally
       # NOTE: /var/lib/postgresql is recommended starting with postgres v18, it's not a mistake
     networks:
-      - app-network
+      - neohabit-network
 
   backend:
     restart: unless-stopped
@@ -27,18 +28,18 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    container_name: backend
+    container_name: neohabit-backend
     environment:
       PG_DSN: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-neohabit}?sslmode=disable
-      PG_MAX_OPEN_CONNS: ${PG_MAX_OPEN_CONNS:-10}
-      PG_MAX_LIFETIME: ${PG_MAX_LIFETIME:-1h}
-      PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-1h}
+      PG_MAX_OPEN_CONNS: ${PG_MAX_OPEN_CONNS:-20}
+      PG_MAX_LIFETIME: ${PG_MAX_LIFETIME:-30m}
+      PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-10m}
       LOG_LEVEL: ${LOG_LEVEL:-info}
-      JWT_SECRET: ${JWT_SECRET:-please_DONT_leave_blank}
+      JWT_SECRET: ${JWT_SECRET?err}
       FRONTEND_URL: ${FRONTEND_URL:-http://127.0.0.1:${FRONTEND_PORT:-8080}}
       ADDRESS: ":${BACKEND_PORT:-9000}"
     networks:
-      - app-network
+      - neohabit-network
 
   frontend:
     restart: unless-stopped
@@ -46,7 +47,7 @@ services:
     # Uncomment for building manually
     # build: ./frontend
     # pull_policy: build
-    container_name: frontend
+    container_name: neohabit-frontend
     environment:
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
@@ -62,11 +63,11 @@ services:
     depends_on:
       - backend
     networks:
-      - app-network
+      - neohabit-network
 
 networks:
-  app-network:
+  neohabit-network:
     driver: bridge
 
 volumes:
-  postgres:
+  postgres_data:

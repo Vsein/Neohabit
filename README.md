@@ -299,7 +299,7 @@ createdb neohabit_database
 And modify the env vars before finally running:
 
 ```bash
-JWT_SECRET="SuperSecretWOWBaz0nga5" \
+JWT_SECRET="SuperSecretInformation" \
 PG_DSN="postgres://user:password@localhost:5432/neohabit_database?sslmode=disable" \
 go run core/cmd/main.go -config core/config/config.yaml
 ```
