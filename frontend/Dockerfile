@@ -6,14 +6,15 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Production Stage
-FROM nginx:stable-alpine AS production
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+# Final image - just static files
+FROM alpine # ideally scratch
+RUN apk add --no-cache gettext
+
+WORKDIR /srv
+COPY --from=build /app/dist /srv/
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-EXPOSE 80
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sleep", "infinity"]

@@ -41,6 +41,20 @@ services:
     networks:
       - neohabit-network
 
+  # TODO: Maybe insert runtime-config.js like this trying to bake
+  # it in inside frontend's image with entrypoints?
+  # For some reason can't even download alpine...
+  # frontend-config-init:
+  #   image: alpine:3.21
+  #   command: >
+  #     sh -c "apk add --no-cache gettext &&
+  #            envsubst < /srv/runtime-config.template.js > /srv/runtime-config.js &&
+  #            rm /srv/runtime-config.template.js"
+  #   volumes:
+  #     - frontend-dist:/srv
+  #   environment:
+  #     - API_URL=/api
+
   frontend:
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-front:${TAG:-latest}
@@ -53,15 +67,27 @@ services:
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
       DEMO: false
-    ports:
-      # Local development – only localhost (secure)
-      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"
-
-      # Uncomment only when deploying to a real server / VPS
-      # - "${FRONTEND_PUBLIC_PORT:-80}:80"
-      # - "443:443"   # if you add certs later
     depends_on:
       - backend
+    # volumes:
+    #   - frontend-dist:/srv
+    networks:
+      - neohabit-network
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT}:80"
+      # - "80:80"
+      # - "443:443"
+      # - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
     networks:
       - neohabit-network
 
@@ -71,3 +97,6 @@ networks:
 
 volumes:
   postgres_data:
+  # frontend-dist:
+  caddy_data:
+  caddy_config:
