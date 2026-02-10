@@ -13,7 +13,6 @@ WORKDIR /srv
 COPY --from=build /app/dist /srv/
 
 COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
-COPY public/runtime-config.template.js ./runtime-config.js
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["sleep", "infinity"]
