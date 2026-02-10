@@ -56,9 +56,6 @@ services:
     # pull_policy: build
     container_name: frontend
     environment:
-      API_URL: ${API_URL:-api}
-      BACKEND_HOST: ${BACKEND_HOST:-backend}
-      BACKEND_PORT: ${BACKEND_PORT:-9000}
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
