@@ -4,7 +4,7 @@
 
 I made all sorts of mistakes by leaving ports exposed in docker-compose, and
 when some people tried closing them, they run into issues because I baked in
-nginx.conf into the frontend and provided vars that had no deal being
+`nginx.conf` into the frontend and provided vars that had no deal being
 customizable, thus increasing the confusion.
 
 I made a huge overhaul, hardcoded internal ports, as they should've been
@@ -17,26 +17,26 @@ I removed the nginx out of the frontend image, thus decreasing its size from
 
 ### Recommended actions:
 
-Either backup your previous configs, fully copy a new `docker-compose.yaml`,
-`.env.example` and `Caddyfile` and make the changes you want, or simply refer to
-them. The approximate steps are listed below.
+Backup your previous configs, fully copy a new `docker-compose.yaml`,
+`.env.example` and `Caddyfile` and make the changes you want. The list below
+may be used as a reference as to what has changed/what was deprecated.
 
 Here's the recommended steps if you used the previous `docker-compose.yaml`:
 
 0. If already using pre-built images - skip this step, otherwise:
-  - If you were building images manually for web-hosting (as I wrote), then
+    - If you were building images manually for web-hosting (as I wrote), then
     there's no longer any need for that. If you still prefer to be building
     things yourself, remove any changes made in the
-    `/frontend/nginx.conf.template` and `git pull` the rest of the changes.
+    `/frontend/nginx.conf.template` and `git pull`.
 1. Remove unused vars from `.env`:
-  - FRONTEND_HOST
+    - FRONTEND_HOST
 2. Remove unused fields/environment vars from `docker-compose.yaml`:
-  - postgres.ports
-  - backend.ports
-  - frontend.ports
-  - backend.environment.BACKEND_PORT
-  - frontend.environment.API_URL
-  - frontend.environment.BACKEND_PORT
+    - postgres.ports
+    - backend.ports
+    - frontend.ports
+    - backend.environment.BACKEND_PORT
+    - frontend.environment.API_URL
+    - frontend.environment.BACKEND_PORT
 3. Change the backend.environment.FRONTEND_URL in `docker-compose.yaml` to:
 ```yaml
   backend:
@@ -47,7 +47,7 @@ Here's the recommended steps if you used the previous `docker-compose.yaml`:
 ```
 4. Add a new volume in the frontend container:
   ```yaml
-  volumes:
+     volumes:
        - frontend-dist:/srv
   ```
 5. Add a Caddy reverse proxy container below the frontend container:
