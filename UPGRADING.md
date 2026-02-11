@@ -21,9 +21,16 @@ to 6.7MB. While it isn't the smallest it could be, it's already a 10x reduction.
 ### Recommended actions:
 
 **Option 1 (simpler):** Backup your previous configs, then copy the new
-`docker-compose.yaml`, `.env.example` and `Caddyfile`, and reapply any custom
-changes you need. The list below can be used as a reference for what has changed
-or been deprecated.
+`docker-compose.yaml`, `.env.example` and `Caddyfile`:
+
+```bash
+wget -O docker-compose.yaml https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/docker-compose.yaml &&
+wget -O .env https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/.env.example &&
+wget -O Caddyfile https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/Caddyfile
+```
+
+Then reapply any custom changes you need. The list below can be used as a
+reference for what has changed or been deprecated.
 
 **Option 2:** If you prefer to adjust your existing `v1.0.0` configuration:
 

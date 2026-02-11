@@ -161,7 +161,7 @@ Currently, there are three methods available:
 <br>
 
 First, make a directory for docker-compose's configs, then copy
-`docker-compose.yaml` and `.env` from this repo:
+`docker-compose.yaml`, `.env` and `Caddyfile` from this repo:
 
 ```bash
 wget -O docker-compose.yaml https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/docker-compose.yaml &&
