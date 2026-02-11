@@ -154,9 +154,6 @@ Excellent for planning and tracking progressions:
 
 ## Installation
 
-> [!NOTE]
-> If you want to expose Neohabit's deployment on the web, use the second method
-
 Currently, there are three methods available:
 
 <details>
@@ -202,6 +199,9 @@ you're running `docker compose` from
 <details>
 <summary><strong>Docker compose and building images from source</strong></summary>
 <br>
+
+>If you've chosen this step because I previously recommended to use it for
+>web-hosting, that's no longer the case and you can use the first method instead
 
 Clone this repo and change to the cloned directory:
 

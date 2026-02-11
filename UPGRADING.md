@@ -1,30 +1,29 @@
-# Guides to update to a newer version
+# Guides for upgrading to a newer version
 
 ## v1.0.0 → v1.1.0: deployment adjustments
 
-I made all sorts of mistakes by leaving ports exposed in docker-compose, and
-when some people tried closing them, they run into issues because I baked in
-`nginx.conf` into the frontend and provided vars that had no deal being
-customizable, thus increasing the confusion.
+In the previous version, I made several mistakes by leaving ports exposed in
+`docker-compose`. When some users tried closing them, they ran into issues
+because I had baked `nginx.conf` into the frontend image and exposed variables
+that had no deal being customizable, which understandbly caused confusion.
 
-I made a huge overhaul, hardcoded internal ports, as they should've been
-container-internal from the start, and removed needlessly exposed ports
-entirely.
+This release introduces a major overhaul: internal ports are now hardcoded
+(where they should have been container-internal from the start), and all
+needlessly exposed ports have been removed.
 
-I removed the nginx out of the frontend image, thus decreasing its size from
-~64MB to 6.7MB. Which isn't the smallest it could be, but that's already a
-10-time decrease.
+I also removed nginx out of the frontend image, decreasing its size from ~64MB
+to 6.7MB. While it isn't the smallest it could be, it's already a 10x reduction.
 
 ### Recommended actions:
 
-**Option 1:** Backup your previous configs, fully copy a new `docker-compose.yaml`,
-`.env.example` and `Caddyfile` and make the changes you need. The list below
-may be used as a reference as to what has changed/what was deprecated.
+**Option 1:** Backup your previous configs, then copy the new
+`docker-compose.yaml`, `.env.example` and `Caddyfile`, and reapply any custom
+changes you need. The list below can be used as a reference for what has changed
+or been deprecated.
 
-**Option 2:** Here are the recommended steps if you want to adjust your existing
-configs from `v1.0.0` instead:
+**Option 2:** If you prefer to adjust your existing `v1.0.0` configuration:
 
-0. If already using pre-built images - skip this step, otherwise:
+0. If already using pre-built images - skip this step. Otherwise:
     - If you were building images manually for web-hosting (as was previously instructed), then
     there's no longer any need for that and you no longer need to `git clone` the
     entire repo. If you still prefer to be building things yourself, remove
