@@ -9,7 +9,7 @@
   <a href="#installation">Install</a> •
   <a href="#features">Features</a> •
   <a href="https://neohabit.org/projects">Demo</a> •
-  <a href="https://discord.gg/uQ4XdE6raR">Discord</a> •
+  <a href="https://github.com/Vsein/Neohabit/discussions">Discuss</a> •
   <a href="#donations">Donations</a>
 </p>
 

@@ -196,9 +196,9 @@ const AuthRoutes = (params) => {
             <Link to="https://www.reddit.com/user/VseinSama/" target="_blank">
               me on reddit
             </Link>{' '}
-            or{' '}
-            <Link to="https://discord.gg/uQ4XdE6raR" target="_blank">
-              discord
+            or use{' '}
+            <Link to="https://github.com/Vsein/Neohabit/discussions" target="_blank">
+              github discussions
             </Link>{' '}
             if you want to suggest anything.
           </p>
