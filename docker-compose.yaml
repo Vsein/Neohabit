@@ -8,6 +8,7 @@ services:
       timeout: 5s
       retries: 5
       start_period: 5s
+      start_interval: 2s     # optional – newer compose (2.24+)
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-neohabit}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
