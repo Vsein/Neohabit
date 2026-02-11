@@ -1,5 +1,9 @@
 # Guides for upgrading to a newer version
 
+To upgrade images to a newer version:
+- Use `docker compose pull` to fetch the latest pre-built images.
+- For manual rebuilding, run `git pull` followed by `docker compose up --build --force-recreate`
+
 ## v1.0.0 → v1.1.0: deployment adjustments
 
 In the previous version, I made several mistakes by leaving ports exposed in
