@@ -7,7 +7,7 @@ on:
     inputs:
       version:
         description: "Version tag (e.g. 1.2.3)"
-        required: false
+        required: true
 
 jobs:
   build-and-push-multiarch:
