@@ -36,7 +36,6 @@ services:
       LOG_LEVEL: ${LOG_LEVEL:-info}
       JWT_SECRET: ${JWT_SECRET?Missing JWT_SECRET}
       FRONTEND_URL: ${FRONTEND_URL:-http://127.0.0.1:${FRONTEND_PORT:-8080}}
-      ADDRESS: ":${BACKEND_PORT:-9000}"
     networks:
       - neohabit-network
 
@@ -50,7 +49,7 @@ services:
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
-      DEMO: false
+      DEMO: ${DEMO:-false}
     depends_on:
       - backend
     volumes:

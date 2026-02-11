@@ -5,5 +5,5 @@ pg:
   max_idle_time: ${PG_MAX_IDLE_TIME:-1h}
 log:
   level: ${LOG_LEVEL:-info}   # debug, info, warn, error, fatal, panic
-address: ${ADDRESS:-localhost:9000}
+address: ${ADDRESS:-:9000}
 frontend_url: ${FRONTEND_URL:-http://127.0.0.1:8080}

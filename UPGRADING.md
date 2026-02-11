@@ -16,7 +16,7 @@ to 6.7MB. While it isn't the smallest it could be, it's already a 10x reduction.
 
 ### Recommended actions:
 
-**Option 1:** Backup your previous configs, then copy the new
+**Option 1 (simpler):** Backup your previous configs, then copy the new
 `docker-compose.yaml`, `.env.example` and `Caddyfile`, and reapply any custom
 changes you need. The list below can be used as a reference for what has changed
 or been deprecated.
@@ -30,8 +30,10 @@ or been deprecated.
     `/frontend/nginx.conf.template` (or `git pull`) as it's no longer used.
 1. Remove unused vars from `.env`:
     - FRONTEND_HOST
+    - BACKEND_PORT
 2. Remove unused fields/environment vars from `docker-compose.yaml`:
     - postgres.ports
+    - backend.environment.ADDRESS
     - backend.environment.BACKEND_PORT
     - backend.ports
     - frontend.environment.API_URL
@@ -72,7 +74,7 @@ or been deprecated.
     networks:
       - neohabit-network     # ← change if you named it differently
 ```
-6. Adjust previously copied `Caddyfile` as desired (or use a different reverse proxy):
+6. Adjust previously copied `Caddyfile` as desired (or use a different reverse proxy, see [snippets](https://github.com/Vsein/Neohabit/tree/main/docs/snippets) for sample configs):
     - `:80` for LAN or localhost
     - `:443` for LAN+HTTPS (also uncomment the `tls internal` and frontend's
       reverse proxy)
