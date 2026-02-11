@@ -60,12 +60,11 @@ jobs:
 
       - name: Build and push Docker images
         id: push
-        uses: docker/build-pull-action@v6
+        uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
           push: true
-          pull: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
