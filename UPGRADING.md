@@ -3,13 +3,13 @@
 ## v1.0.0 → v1.1.0: deployment adjustments
 
 In the previous version, I made several mistakes by leaving ports exposed in
-`docker-compose`. When some users tried closing them, they ran into issues
+`docker-compose`. When some people tried closing them, they ran into issues
 because I had baked `nginx.conf` into the frontend image and exposed variables
 that had no deal being customizable, which understandbly caused confusion.
 
-This release introduces a major overhaul: internal ports are now hardcoded
-(where they should have been container-internal from the start), and all
-needlessly exposed ports have been removed.
+I made a slight overhaul: internal ports are now hardcoded (where they should
+have been container-internal from the start), and all needlessly exposed ports
+have been removed.
 
 I also removed nginx out of the frontend image, decreasing its size from ~64MB
 to 6.7MB. While it isn't the smallest it could be, it's already a 10x reduction.

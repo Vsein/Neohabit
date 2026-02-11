@@ -11,7 +11,7 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-neohabit}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?Missing POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql        # in a volume
       # - ./data/postgres:/var/lib/postgresql      # saves locally
@@ -30,12 +30,12 @@ services:
         condition: service_healthy
     container_name: neohabit-backend
     environment:
-      PG_DSN: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-neohabit}?sslmode=disable
+      PG_DSN: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD?Missing POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-neohabit}?sslmode=disable
       PG_MAX_OPEN_CONNS: ${PG_MAX_OPEN_CONNS:-20}
       PG_MAX_LIFETIME: ${PG_MAX_LIFETIME:-30m}
       PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-10m}
       LOG_LEVEL: ${LOG_LEVEL:-info}
-      JWT_SECRET: ${JWT_SECRET?err}
+      JWT_SECRET: ${JWT_SECRET?Missing JWT_SECRET}
       FRONTEND_URL: ${FRONTEND_URL:-http://127.0.0.1:${FRONTEND_PORT:-8080}}
       ADDRESS: ":${BACKEND_PORT:-9000}"
     networks:
@@ -65,8 +65,8 @@ services:
     image: caddy:2-alpine
     restart: unless-stopped
     ports:
-      - "${FRONTEND_PORT}:80"     # ← for localhost
-      # - "${FRONTEND_PORT}:443"    # ← for LAN + HTTPS
+      - "${FRONTEND_PORT:-8080}:80"     # ← for localhost
+      # - "${FRONTEND_PORT:-8080}:443"    # ← for LAN + HTTPS
       # - "80:80"
       # - "443:443"
       # - "443:443/udp"
