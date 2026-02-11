@@ -164,16 +164,20 @@ First, make a directory for docker-compose's configs, then copy
 `docker-compose.yaml` and `.env` from this repo:
 
 ```bash
-wget -O docker-compose.yaml https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/docker-compose.yaml
-```
-```bash
-wget -O .env https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/.env.example
+wget -O docker-compose.yaml https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/docker-compose.yaml &&
+wget -O .env https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/.env.example &&
+wget -O Caddyfile https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/Caddyfile
 ```
 
 Then, edit as desired:
 
 - `.env` to change the db/backend settings, and in-app settings like login behavior
-- `docker-compose.yaml` to configure the ports, volumes, and other docker stuff
+- `docker-compose.yaml` to configure the reverse proxy ports, volumes, and other docker stuff
+- `Caddyfile` to adjust the host:
+    - `:80` for LAN or localhost
+    - `:443` for LAN+HTTPS (also uncomment the `tls internal` and frontend's
+      reverse proxy)
+    - `example.com` for web-hosting
 
 When ready, run:
 
@@ -201,7 +205,8 @@ you're running `docker compose` from
 <br>
 
 >If you've chosen this step because I previously recommended to use it for
->web-hosting, that's no longer the case and you can use the first method instead
+>web-hosting in v1.0.0, that's no longer the case and you can use the first
+>method instead
 
 Clone this repo and change to the cloned directory:
 
@@ -218,9 +223,13 @@ cp .env.example .env
 After that, edit the following files as desired:
 
 - `.env` to change the db/backend settings, and in-app settings like login behavior
-- `docker-compose.yaml` to configure the ports, volumes, **and uncomment lines for
-  building manually**
-- `frontend/nginx.conf.template` to adjust the servername in case you will be web-hosting
+- `docker-compose.yaml` to configure the reverse proxy ports, volumes, **and to
+  uncomment lines for building manually**
+- `Caddyfile` to adjust the host:
+    - `:80` for LAN or localhost
+    - `:443` for LAN+HTTPS (also uncomment the `tls internal` and frontend's
+      reverse proxy)
+    - `example.com` for web-hosting
 
 When ready, run:
 

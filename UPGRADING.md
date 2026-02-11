@@ -56,11 +56,12 @@ or been deprecated.
     image: caddy:2-alpine
     restart: unless-stopped
     ports:
-      - "${FRONTEND_PORT}:80"     # ← for localhost
-      # - "${FRONTEND_PORT}:443"    # ← for LAN + HTTPS
-      # - "80:80"
-      # - "443:443"
-      # - "443:443/udp"
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"     # ← for localhost-only
+      # - "${FRONTEND_PORT:-8080}:80"               # ← for LAN
+      # - "${FRONTEND_PORT:-8080}:443"              # ← for LAN + HTTPS
+      # - "80:80"                                   #   │
+      # - "443:443"                                 # ◄─┤ for web-hosting
+      # - "443:443/udp"                             #   │
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - frontend-dist:/srv
@@ -71,4 +72,8 @@ or been deprecated.
     networks:
       - neohabit-network     # ← change if you named it differently
 ```
-6. Adjust previously copied `Caddyfile` as desired (or use a different reverse proxy)
+6. Adjust previously copied `Caddyfile` as desired (or use a different reverse proxy):
+    - `:80` for LAN or localhost
+    - `:443` for LAN+HTTPS (also uncomment the `tls internal` and frontend's
+      reverse proxy)
+    - `example.com` for web-hosting

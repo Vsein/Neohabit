@@ -1,4 +1,4 @@
-# :443 (for HTTPS), :8080, yourdomain.com, etc.
+# :443 (for HTTPS), :8080, neohabit.yourdomain.com, etc.
 :80 {
 	# tls your@email.com   # automatic Let's Encrypt for web-hosting
 

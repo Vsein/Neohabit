@@ -1,7 +1,8 @@
 services:
   postgres:
-    image: postgres:18-alpine
+    container_name: neohabit-postgres
     restart: unless-stopped
+    image: postgres:18-alpine
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-neohabit}"]
       interval: 10s
@@ -20,6 +21,7 @@ services:
       - neohabit-network
 
   backend:
+    container_name: neohabit-backend
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-back:${TAG:-latest}
     # Uncomment for building manually
@@ -28,7 +30,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    container_name: neohabit-backend
     environment:
       PG_DSN: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD?Missing POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-neohabit}?sslmode=disable
       PG_MAX_OPEN_CONNS: ${PG_MAX_OPEN_CONNS:-20}
@@ -42,12 +43,12 @@ services:
       - neohabit-network
 
   frontend:
+    container_name: neohabit-frontend
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-front:${TAG:-latest}
     # Uncomment for building manually
     # build: ./frontend
     # pull_policy: build
-    container_name: neohabit-frontend
     environment:
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
@@ -60,16 +61,18 @@ services:
     networks:
       - neohabit-network
 
-  # Or set up your preferred reverse proxy instead of caddy
+  # Or set up your preferred reverse proxy instead of Caddy
   caddy:
-    image: caddy:2-alpine
+    container_name: neohabit-caddy
     restart: unless-stopped
+    image: caddy:2-alpine
     ports:
-      - "${FRONTEND_PORT:-8080}:80"     # ← for localhost
-      # - "${FRONTEND_PORT:-8080}:443"    # ← for LAN + HTTPS
-      # - "80:80"
-      # - "443:443"
-      # - "443:443/udp"
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"     # ← for localhost-only
+      # - "${FRONTEND_PORT:-8080}:80"               # ← for LAN
+      # - "${FRONTEND_PORT:-8080}:443"              # ← for LAN + HTTPS
+      # - "80:80"                                   #   │
+      # - "443:443"                                 # ◄─┤ for web-hosting
+      # - "443:443/udp"                             #   │
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - frontend-dist:/srv
