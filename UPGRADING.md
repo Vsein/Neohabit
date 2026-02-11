@@ -58,12 +58,18 @@ reference for what has changed or been deprecated.
       # or whichever URL you prefer, just remove the FRONTEND_HOST reference if you
       # haven't already.
 ```
-4. Add a new volume in the frontend container:
+4. Add FRONTEND_URL in `.env`:
+  ```yaml
+# URL from which you'll be accessing Neohabit from (required for CORS)
+FRONTEND_URL=http://127.0.0.1:8080                  # ← or http://localhost:8080
+# FRONTEND_URL=https://neohabit.example.com           # ← for production
+  ```
+5. Add a new volume in the frontend container:
   ```yaml
      volumes:
        - frontend-dist:/srv
   ```
-5. Add a Caddy reverse proxy container below the frontend container:
+6. Add a Caddy reverse proxy container below the frontend container:
 ```yaml
   caddy:
     image: caddy:2-alpine
@@ -85,7 +91,7 @@ reference for what has changed or been deprecated.
     networks:
       - neohabit-network     # ← change if you named it differently
 ```
-6. Adjust previously copied `Caddyfile` as desired (or use a different reverse proxy, see [snippets](https://github.com/Vsein/Neohabit/tree/main/docs/snippets) for sample configs):
+7. Adjust previously copied `Caddyfile` as desired (or use a different reverse proxy, see [snippets](https://github.com/Vsein/Neohabit/tree/main/docs/snippets) for sample configs):
     - `:80` for LAN or localhost
     - `:443` for LAN+HTTPS (also uncomment the `tls internal` and frontend's
       reverse proxy)
