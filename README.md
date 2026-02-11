@@ -194,9 +194,6 @@ If you encounter any issues, you can check the logs by running:
 docker compose logs
 ```
 
-By default, database is saved in the `data/postgres` folder of the directory
-you're running `docker compose` from
-
 <hr>
 </details>
 

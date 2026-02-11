@@ -1,6 +1,5 @@
 services:
   postgres:
-    container_name: neohabit-postgres
     restart: unless-stopped
     image: postgres:18-alpine
     healthcheck:
@@ -21,7 +20,6 @@ services:
       - neohabit-network
 
   backend:
-    container_name: neohabit-backend
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-back:${TAG:-latest}
     # Uncomment for building manually
@@ -43,7 +41,6 @@ services:
       - neohabit-network
 
   frontend:
-    container_name: neohabit-frontend
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-front:${TAG:-latest}
     # Uncomment for building manually
@@ -63,7 +60,6 @@ services:
 
   # Or set up your preferred reverse proxy instead of Caddy
   caddy:
-    container_name: neohabit-caddy
     restart: unless-stopped
     image: caddy:2-alpine
     ports:
