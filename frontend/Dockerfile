@@ -6,14 +6,13 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Production Stage
-FROM nginx:stable-alpine AS production
-COPY nginx.conf.template /etc/nginx/conf.d/default.conf.template
-COPY --from=build /app/dist /usr/share/nginx/html
+# Final image - just static files with injected runtime-config
+FROM busybox:latest
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+WORKDIR /srv
+COPY --from=build /app/dist /srv/
 
-EXPOSE 80
+COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sleep", "infinity"]

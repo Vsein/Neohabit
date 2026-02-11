@@ -154,9 +154,6 @@ Excellent for planning and tracking progressions:
 
 ## Installation
 
-> [!NOTE]
-> If you want to expose Neohabit's deployment on the web, use the second method
-
 Currently, there are three methods available:
 
 <details>
@@ -167,16 +164,20 @@ First, make a directory for docker-compose's configs, then copy
 `docker-compose.yaml` and `.env` from this repo:
 
 ```bash
-wget -O docker-compose.yaml https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/docker-compose.yaml
-```
-```bash
-wget -O .env https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/.env.example
+wget -O docker-compose.yaml https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/docker-compose.yaml &&
+wget -O .env https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/.env.example &&
+wget -O Caddyfile https://raw.githubusercontent.com/Vsein/Neohabit/refs/heads/main/Caddyfile
 ```
 
 Then, edit as desired:
 
 - `.env` to change the db/backend settings, and in-app settings like login behavior
-- `docker-compose.yaml` to configure the ports, volumes, and other docker stuff
+- `docker-compose.yaml` to configure the reverse proxy ports, volumes, and other docker stuff
+- `Caddyfile` to adjust the host:
+    - `:80` for LAN or localhost
+    - `:443` for LAN+HTTPS (also uncomment the `tls internal` and frontend's
+      reverse proxy)
+    - `example.com` for web-hosting
 
 When ready, run:
 
@@ -193,15 +194,16 @@ If you encounter any issues, you can check the logs by running:
 docker compose logs
 ```
 
-By default, database is saved in the `data/postgres` folder of the directory
-you're running `docker compose` from
-
 <hr>
 </details>
 
 <details>
 <summary><strong>Docker compose and building images from source</strong></summary>
 <br>
+
+>If you've chosen this step because I previously recommended to use it for
+>web-hosting in v1.0.0, that's no longer the case and you can use the first
+>method instead
 
 Clone this repo and change to the cloned directory:
 
@@ -218,9 +220,13 @@ cp .env.example .env
 After that, edit the following files as desired:
 
 - `.env` to change the db/backend settings, and in-app settings like login behavior
-- `docker-compose.yaml` to configure the ports, volumes, **and uncomment lines for
-  building manually**
-- `frontend/nginx.conf.template` to adjust the servername in case you will be web-hosting
+- `docker-compose.yaml` to configure the reverse proxy ports, volumes, **and to
+  uncomment lines for building manually**
+- `Caddyfile` to adjust the host:
+    - `:80` for LAN or localhost
+    - `:443` for LAN+HTTPS (also uncomment the `tls internal` and frontend's
+      reverse proxy)
+    - `example.com` for web-hosting
 
 When ready, run:
 
@@ -299,7 +305,7 @@ createdb neohabit_database
 And modify the env vars before finally running:
 
 ```bash
-JWT_SECRET="SuperSecretWOWBaz0nga5" \
+JWT_SECRET="SuperSecretInformation" \
 PG_DSN="postgres://user:password@localhost:5432/neohabit_database?sslmode=disable" \
 go run core/cmd/main.go -config core/config/config.yaml
 ```
@@ -308,23 +314,13 @@ go run core/cmd/main.go -config core/config/config.yaml
 </details>
 <br>
 
-<details>
-<summary><strong>Note</strong></summary>
-<br>
-Given the nature of deploying projects, there's a hundred other ways of
-installing I haven't covered. Despite Neohabit being somewhat mature in terms of
-features, it's still a young self-hosted tool that I've only recently
-open-sourced.
-<br>
-<br>
-It's possible for something not to run as I intended, and if it wastes your
-time, I'm sorry. If you figured out how to deploy Neohabit in, say k8s or
-Portanier, or your preferred deployment tool, feel free to propose an
-installation guide -- a pull request or just a new discussion on
-https://github.com/Vsein/Neohabit/discussions is fine.
+By default, reverse proxies are set up with Caddy. If you prefer a different web
+server, here's a sample [`nginx.conf`](https://github.com/Vsein/Neohabit/blob/main/docs/snippets/nginx.conf)
+that was used previously. If you've set up the reverse proxy through Traefik,
+HAProxy or anything else - feel free to propose a sample snippet, so that it can
+be copy-pasted by others in the future for ease of use.
 
-<hr>
-</details>
+## [Upgrading](UPGRADING.md)
 
 ## Ultimate vision
 

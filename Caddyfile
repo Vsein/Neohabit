@@ -1,0 +1,35 @@
+# :80 | :443 (for HTTPS) | :8080 | neohabit.yourdomain.com ... etc.
+:80 {
+	# tls your@email.com   # automatic Let's Encrypt for web-hosting
+
+	# For HTTPS access through LAN
+	# tls internal {
+	# 	on_demand
+	# }
+	# reverse_proxy frontend:80
+
+	# Make sure that the runtime config is never cached
+	handle /runtime-config.js {
+		root * /srv
+		file_server
+		header Cache-Control "no-store, no-cache, must-revalidate"
+		header Pragma "no-cache"
+		header -ETag
+	}
+
+	# point /api to backend:9000
+	handle_path /api/* {
+		uri strip_prefix /api
+		encode gzip zstd
+		reverse_proxy backend:9000
+	}
+
+	# SPA catch-all
+	handle {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+	}
+
+	encode gzip zstd
+}

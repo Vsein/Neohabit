@@ -1,78 +1,90 @@
 services:
   postgres:
-    image: postgres:18-alpine
     restart: unless-stopped
+    image: postgres:18-alpine
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-neohabit}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 5s
+      start_interval: 2s     # optional – newer compose (2.24+)
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-neohabit}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?Missing POSTGRES_PASSWORD}
     volumes:
-      # NOTE: Saves data locally by default
-      # Uncomment the lines at the very bottom if you change the volume to
-      # `postgres:/var/lib/postgresql` or similar, note however that
-      # `docker compose down -v` will erase all data in that case
-      - ./data/postgres:/var/lib/postgresql
-    ports:
-      # Exposes port 5433 just in case postgres is already running outside docker
-      - "127.0.0.1:5433:5432"
+      - postgres_data:/var/lib/postgresql        # in a volume
+      # - ./data/postgres:/var/lib/postgresql      # saves locally
+      # NOTE: /var/lib/postgresql is recommended starting with postgres v18, it's not a mistake
     networks:
-      - app-network
+      - neohabit-network
 
   backend:
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-back:${TAG:-latest}
-    # uncomment for building manually
+    # Uncomment for building manually
     # build: ./backend
     # pull_policy: build
     depends_on:
       postgres:
         condition: service_healthy
-    container_name: backend
     environment:
-      PG_DSN: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-neohabit}?sslmode=disable
-      PG_MAX_OPEN_CONNS: ${PG_MAX_OPEN_CONNS:-10}
-      PG_MAX_LIFETIME: ${PG_MAX_LIFETIME:-1h}
-      PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-1h}
+      PG_DSN: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD?Missing POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-neohabit}?sslmode=disable
+      PG_MAX_OPEN_CONNS: ${PG_MAX_OPEN_CONNS:-20}
+      PG_MAX_LIFETIME: ${PG_MAX_LIFETIME:-30m}
+      PG_MAX_IDLE_TIME: ${PG_MAX_IDLE_TIME:-10m}
       LOG_LEVEL: ${LOG_LEVEL:-info}
-      JWT_SECRET: ${JWT_SECRET:-please_DONT_leave_blank}
-      FRONTEND_URL: http://${FRONTEND_HOST:-127.0.0.1}:${FRONTEND_PORT:-8080}
-      ADDRESS: ":${BACKEND_PORT:-9000}"
-      BACKEND_PORT: ${BACKEND_PORT:-9000}
-    ports:
-      - "127.0.0.1:${BACKEND_PORT:-9000}:${BACKEND_PORT:-9000}"
+      JWT_SECRET: ${JWT_SECRET?Missing JWT_SECRET}
+      FRONTEND_URL: ${FRONTEND_URL:-http://127.0.0.1:${FRONTEND_PORT:-8080}}
     networks:
-      - app-network
+      - neohabit-network
 
   frontend:
     restart: unless-stopped
     image: ghcr.io/vsein/neohabit-front:${TAG:-latest}
-    # uncomment for building manually
+    # Uncomment for building manually
     # build: ./frontend
     # pull_policy: build
-    container_name: frontend
     environment:
-      API_URL: http://127.0.0.1:${BACKEND_PORT:-9000}/
-      BACKEND_PORT: ${BACKEND_PORT:-9000}
       DISABLE_SIGNUP: ${DISABLE_SIGNUP:-false}
       STRICT_USER_FIELDS: ${STRICT_USER_FIELDS:-false}
       REQUIRE_EMAIL: ${REQUIRE_EMAIL:-false}
-      DEMO: false
-    ports:
-      - "${FRONTEND_HOST:-127.0.0.1}:${FRONTEND_PORT:-8080}:80"
+      DEMO: ${DEMO:-false}
     depends_on:
       - backend
+    volumes:
+      - frontend-dist:/srv
     networks:
-      - app-network
+      - neohabit-network
+
+  # Or set up your preferred reverse proxy instead of Caddy
+  caddy:
+    restart: unless-stopped
+    image: caddy:2-alpine
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-8080}:80"     # ← for localhost-only
+      # - "${FRONTEND_PORT:-8080}:80"               # ← for LAN
+      # - "${FRONTEND_PORT:-8080}:443"              # ← for LAN + HTTPS
+      # - "80:80"                                   #   │
+      # - "443:443"                                 # ◄─┤ for web-hosting
+      # - "443:443/udp"                             #   │
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - frontend-dist:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+    networks:
+      - neohabit-network
 
 networks:
-  app-network:
+  neohabit-network:
     driver: bridge
 
-# uncomment if you want to store postgres data in a volume instead
-# volumes:
-#   postgres:
+volumes:
+  postgres_data:
+  frontend-dist:
+  caddy_data:
+  caddy_config:
