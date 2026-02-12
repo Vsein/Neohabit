@@ -10,7 +10,7 @@ RUN npm run build
 FROM busybox:latest
 
 WORKDIR /srv
-COPY --from=build /app/dist /srv/
+COPY --from=build /app/dist /app-dist
 
 COPY --chmod=755 docker-entrypoint.sh /docker-entrypoint.sh
 
