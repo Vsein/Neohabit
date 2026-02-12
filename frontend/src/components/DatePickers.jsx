@@ -41,6 +41,7 @@ function DatePeriodPicker({
   mobile = false,
   isPastPeriod,
   isFuturePeriod,
+  modal = false,
 }) {
   const startRef = useRef();
   const endRef = useRef();
@@ -50,7 +51,7 @@ function DatePeriodPicker({
     endRef.current.setOpen(false);
   };
 
-  const monthsShown = useMemo(() => (mobile ? 1 : 3), [mobile]);
+  const monthsShown = useMemo(() => (mobile ? 1 : 3 - modal), [mobile, modal]);
 
   const renderHeader = ({ monthDate, customHeaderCount, decreaseMonth, increaseMonth }) => (
     <div>
