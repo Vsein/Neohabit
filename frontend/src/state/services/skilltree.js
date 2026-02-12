@@ -46,8 +46,7 @@ export const skilltreeApi = api.injectEndpoints({
           skilltreeApi.util.updateQueryData('getSkilltrees', undefined, (draft) => {
             const skilltree = draft.find((s) => s.id === skilltreeID);
             if (skilltree) {
-              skilltree.name = values.name;
-              skilltree.color = values.color;
+              Object.assign(skilltree, values);
             }
           }),
         );
