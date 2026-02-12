@@ -72,6 +72,7 @@ export default function TaskModal({ taskID, habitID, closeOverlay }) {
             unnamed={!values?.name}
             isNew={!taskID}
             type="task"
+            form={form}
           />
         </form>
       )}

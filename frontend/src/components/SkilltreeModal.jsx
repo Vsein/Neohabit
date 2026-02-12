@@ -76,6 +76,7 @@ export default function SkilltreeModal({ skilltreeID, closeOverlay }) {
             unnamed={!values?.name}
             isNew={!skilltreeID}
             type="skilltree"
+            form={form}
           />
         </form>
       )}

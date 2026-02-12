@@ -194,6 +194,7 @@ export default function ProjectModal({ projectID, isActive, closeOverlay }) {
               unnamed={!values?.name}
               isNew={!projectID}
               type="project"
+              form={form}
             />
           </form>
         )}
