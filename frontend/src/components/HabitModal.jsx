@@ -89,9 +89,7 @@ export default function HabitModal({ habitID, projectID, closeOverlay }) {
             onClick={(e) => {
               const cellAddDropdown = document.querySelector('.cell-add-dropdown');
               cellAddDropdown.classList.add('hidden');
-              e.stopPropagation();
             }}
-            onMouseDown={(e) => e.stopPropagation()}
           >
             <div className="modal-header">
               <div className="tag-wrapper">
