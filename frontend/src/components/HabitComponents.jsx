@@ -187,6 +187,7 @@ function HabitOverview({
         dateEnd={dateEnd}
         vertical={vertical}
         is2D={false}
+        mobile={mobile}
       />
       <HabitControls
         habit={habit}

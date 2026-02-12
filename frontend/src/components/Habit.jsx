@@ -17,6 +17,7 @@ export default function Habit({
   dateStart,
   dateEnd,
   vertical = true,
+  mobile = false,
 }) {
   return (
     <div className={`habit-heatmap-container ${vertical ? 'vertical' : ''}`}>
@@ -36,6 +37,7 @@ export default function Habit({
           overridenElimination={overridenElimination}
           overridenNumeric={overridenNumeric}
           overridenMonochromatic={overridenMonochromatic}
+          mobile={mobile}
         />
       </div>
     </div>

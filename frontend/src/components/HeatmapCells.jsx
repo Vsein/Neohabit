@@ -9,7 +9,7 @@ import {
   addMilliseconds,
   getTime,
 } from 'date-fns';
-import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
+import { hideTip, changeCellOffset, fixateCellTip, unfixateAndHideCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
 
 function Cell({
@@ -23,6 +23,7 @@ function Cell({
   elimination,
   monochromatic,
   dummy = false,
+  mobile = false,
 }) {
   const applyEliminationColor = numeric && elimination && value > targetValue;
   const dispatch = useDispatch();
@@ -40,10 +41,20 @@ function Cell({
       ${applyEliminationColor ? 'elimination' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}
       `}
       style={style}
-      onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
-      onMouseLeave={(e) => tipContent && hideTip()}
+      onMouseEnter={(e) => !mobile && tipContent && changeCellOffset(e, tipContent, value)}
+      onMouseLeave={(e) => !mobile && tipContent && hideTip()}
       onClick={(e) => {
         if (!tipContent) return;
+        if (mobile) {
+          const cellTip = document.querySelector('.cell-tip');
+          if (
+            cellTip.classList.contains('fixated') &&
+            cellTip.id === `${tipContent.habitID}-${tipContent.dateStart.getTime()}`
+          ) {
+            unfixateAndHideCellTip();
+            return;
+          }
+        }
         dispatch(
           changeCellPeriodTo({
             ...tipContent,
@@ -71,6 +82,7 @@ function CellFractured({
   vertical = true,
   elimination,
   dummy = false,
+  mobile = false,
 }) {
   const dispatch = useDispatch();
   const fractions = Math.max(value, targetValue);
@@ -79,10 +91,20 @@ function CellFractured({
     <div
       className={`cell fractured f${fractions} ${dummy ? 'dummy' : ''} ${length > 1 ? 'long' : ''} ${vertical ? 'vertical' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}`}
       style={{ '--length': length }}
-      onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
-      onMouseLeave={(e) => tipContent && hideTip()}
+      onMouseEnter={(e) => !mobile && tipContent && changeCellOffset(e, tipContent, value)}
+      onMouseLeave={(e) => !mobile && tipContent && hideTip()}
       onClick={(e) => {
         if (!tipContent) return;
+        if (mobile) {
+          const cellTip = document.querySelector('.cell-tip');
+          if (
+            cellTip.classList.contains('fixated') &&
+            cellTip.id === `${tipContent.habitID}-${tipContent.dateStart.getTime()}`
+          ) {
+            unfixateAndHideCellTip();
+            return;
+          }
+        }
         dispatch(
           changeCellPeriodTo({
             ...tipContent,
@@ -120,6 +142,7 @@ function CellPeriod({
   monochromatic = false,
   numeric = false,
   is2D = false,
+  mobile = false,
 }) {
   const dispatch = useDispatch();
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
@@ -149,6 +172,7 @@ function CellPeriod({
         elimination={elimination}
         monochromatic={monochromatic}
         dummy={dummy}
+        mobile={mobile}
       />
     ) : (
       <CellFractured
@@ -160,6 +184,7 @@ function CellPeriod({
         vertical={vertical}
         elimination={elimination}
         dummy={dummy}
+        mobile={mobile}
       />
     );
   }
@@ -203,9 +228,19 @@ function CellPeriod({
       ${applyEliminationColor ? 'elimination' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}
     `}
         style={style}
-        onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
-        onMouseLeave={hideTip}
+        onMouseEnter={(e) => !mobile && changeCellOffset(e, tipContent, value)}
+        onMouseLeave={(e) => !mobile && hideTip()}
         onClick={(e) => {
+          if (mobile) {
+            const cellTip = document.querySelector('.cell-tip');
+            if (
+              cellTip.classList.contains('fixated') &&
+              cellTip.id === `${tipContent.habitID}-${tipContent.dateStart.getTime()}`
+            ) {
+              unfixateAndHideCellTip();
+              return;
+            }
+          }
           dispatch(
             changeCellPeriodTo({
               ...tipContent,
