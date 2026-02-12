@@ -27,7 +27,6 @@ export default function Overlay() {
   const [deleteSelf] = useDeleteSelfMutation();
 
   const closeOverlay = (e) => {
-    if (!e.target.classList.contains('overlay')) return;
     if (e) e.stopPropagation();
     const cellAddDropdown = document.querySelector('.cell-add-dropdown');
     cellAddDropdown.classList.add('hidden');
@@ -41,7 +40,10 @@ export default function Overlay() {
   return (
     <div
       className={isActive ? 'overlay overlay-active centering' : 'overlay'}
-      onMouseDown={closeOverlay}
+      onMouseDown={(e) => {
+        if (!e.target.classList.contains('overlay')) return;
+        closeOverlay(e);
+      }}
     >
       {type === 'habit' && (
         <HabitModal habitID={habitID} projectID={projectID} closeOverlay={closeOverlay} />
