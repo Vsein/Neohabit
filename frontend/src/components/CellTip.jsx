@@ -101,6 +101,7 @@ export default function CellTip() {
 
   return (
     <div
+      id={`${habitID}-${dateStart}`}
       className={`cell-tip hidden ${hintHidden ? 'hint-hidden' : ''}`}
       onMouseLeave={unfixateAndHideCellTip}
       onClick={(e) => e.stopPropagation()}
@@ -215,4 +216,11 @@ export default function CellTip() {
   );
 }
 
-export { hideTip, formatDate, formatPeriod, changeCellOffset, fixateCellTip };
+export {
+  hideTip,
+  formatDate,
+  formatPeriod,
+  changeCellOffset,
+  fixateCellTip,
+  unfixateAndHideCellTip,
+};

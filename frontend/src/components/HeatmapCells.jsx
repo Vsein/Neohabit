@@ -9,11 +9,12 @@ import {
   addMilliseconds,
   getTime,
 } from 'date-fns';
-import { hideTip, changeCellOffset, fixateCellTip } from './CellTip';
+import { hideTip, changeCellOffset, fixateCellTip, unfixateAndHideCellTip } from './CellTip';
 import { changeCellPeriodTo } from '../state/features/cellTip/cellTipSlice';
 
 function Cell({
   tipContent = undefined,
+  clickOnCellTip,
   value,
   length,
   vertical = true,
@@ -23,9 +24,9 @@ function Cell({
   elimination,
   monochromatic,
   dummy = false,
+  mobile = false,
 }) {
   const applyEliminationColor = numeric && elimination && value > targetValue;
-  const dispatch = useDispatch();
   const style = {
     [value && monochromatic ? '--value' : '']: value,
     [vertical ? '--width' : '--height']: 1,
@@ -40,20 +41,9 @@ function Cell({
       ${applyEliminationColor ? 'elimination' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}
       `}
       style={style}
-      onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
-      onMouseLeave={(e) => tipContent && hideTip()}
-      onClick={(e) => {
-        if (!tipContent) return;
-        dispatch(
-          changeCellPeriodTo({
-            ...tipContent,
-            dateStart: getTime(tipContent.dateStart),
-            dateEnd: getTime(tipContent.dateEnd),
-          }),
-        );
-        fixateCellTip(e);
-        changeCellOffset(e, tipContent, value, true);
-      }}
+      onMouseEnter={(e) => !mobile && tipContent && changeCellOffset(e, tipContent, value)}
+      onMouseLeave={(e) => !mobile && tipContent && hideTip()}
+      onClick={clickOnCellTip}
     >
       {numeric && (
         <CellNumericText width={vertical ? 1 : length} value={value} targetValue={targetValue} />
@@ -64,6 +54,7 @@ function Cell({
 
 function CellFractured({
   tipContent = undefined,
+  clickOnCellTip,
   value,
   targetIndex = null,
   targetValue,
@@ -71,28 +62,17 @@ function CellFractured({
   vertical = true,
   elimination,
   dummy = false,
+  mobile = false,
 }) {
-  const dispatch = useDispatch();
   const fractions = Math.max(value, targetValue);
 
   return (
     <div
       className={`cell fractured f${fractions} ${dummy ? 'dummy' : ''} ${length > 1 ? 'long' : ''} ${vertical ? 'vertical' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}`}
       style={{ '--length': length }}
-      onMouseEnter={(e) => tipContent && changeCellOffset(e, tipContent, value)}
-      onMouseLeave={(e) => tipContent && hideTip()}
-      onClick={(e) => {
-        if (!tipContent) return;
-        dispatch(
-          changeCellPeriodTo({
-            ...tipContent,
-            dateStart: getTime(tipContent.dateStart),
-            dateEnd: getTime(tipContent.dateEnd),
-          }),
-        );
-        fixateCellTip(e);
-        changeCellOffset(e, tipContent, value, true);
-      }}
+      onMouseEnter={(e) => !mobile && tipContent && changeCellOffset(e, tipContent, value)}
+      onMouseLeave={(e) => !mobile && tipContent && hideTip()}
+      onClick={clickOnCellTip}
     >
       {[...Array(+fractions)].map((_, index) => (
         <div
@@ -120,12 +100,14 @@ function CellPeriod({
   monochromatic = false,
   numeric = false,
   is2D = false,
+  mobile = false,
 }) {
   const dispatch = useDispatch();
   const diffDays = differenceInHours(addMilliseconds(dateEnd, 1), dateStart) / basePeriod;
   if (diffDays < 1) {
     return <></>;
   }
+
   const tipContent = habitID
     ? {
         habitID,
@@ -135,11 +117,36 @@ function CellPeriod({
         actions: value,
       }
     : undefined;
+
+  const clickOnCellTip = (e) => {
+    if (!tipContent) return;
+    if (mobile) {
+      const cellTip = document.querySelector('.cell-tip');
+      if (
+        cellTip.classList.contains('fixated') &&
+        cellTip.id === `${tipContent.habitID}-${tipContent.dateStart.getTime()}`
+      ) {
+        unfixateAndHideCellTip();
+        return;
+      }
+    }
+    dispatch(
+      changeCellPeriodTo({
+        ...tipContent,
+        dateStart: getTime(tipContent.dateStart),
+        dateEnd: getTime(tipContent.dateEnd),
+      }),
+    );
+    fixateCellTip(e);
+    changeCellOffset(e, tipContent, value, true);
+  };
+
   const showNumberInCell = !monochromatic && (numeric || value > 16 || targetValue > 16);
   if (isSameWeek(dateStart, dateEnd) || !is2D || !vertical) {
     return showNumberInCell || monochromatic ? (
       <Cell
         tipContent={tipContent}
+        clickOnCellTip={clickOnCellTip}
         value={value}
         length={diffDays}
         vertical={vertical}
@@ -149,10 +156,12 @@ function CellPeriod({
         elimination={elimination}
         monochromatic={monochromatic}
         dummy={dummy}
+        mobile={mobile}
       />
     ) : (
       <CellFractured
         tipContent={tipContent}
+        clickOnCellTip={clickOnCellTip}
         value={value}
         targetValue={targetValue}
         targetIndex={targetIndex}
@@ -160,6 +169,7 @@ function CellPeriod({
         vertical={vertical}
         elimination={elimination}
         dummy={dummy}
+        mobile={mobile}
       />
     );
   }
@@ -203,19 +213,9 @@ function CellPeriod({
       ${applyEliminationColor ? 'elimination' : ''} ${typeof targetIndex === 'number' ? `target-${targetIndex}` : ''}
     `}
         style={style}
-        onMouseEnter={(e) => changeCellOffset(e, tipContent, value)}
-        onMouseLeave={hideTip}
-        onClick={(e) => {
-          dispatch(
-            changeCellPeriodTo({
-              ...tipContent,
-              dateStart: getTime(tipContent.dateStart),
-              dateEnd: getTime(tipContent.dateEnd),
-            }),
-          );
-          fixateCellTip(e);
-          changeCellOffset(e, tipContent, value, true);
-        }}
+        onMouseEnter={(e) => !mobile && tipContent && changeCellOffset(e, tipContent, value)}
+        onMouseLeave={(e) => !mobile && tipContent && hideTip()}
+        onClick={clickOnCellTip}
       >
         {showNumberInCellPeriod && !!width && (
           <CellNumericText wide width={width} value={value} targetValue={targetValue} />

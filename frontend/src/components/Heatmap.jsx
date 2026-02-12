@@ -45,6 +45,7 @@ export default function Heatmap({
   overridenElimination = undefined,
   overridenNumeric = undefined,
   overridenMonochromatic = undefined,
+  mobile = false,
 }) {
   const elimination = overridenElimination ?? habit?.more_is_bad;
   const numeric = overridenNumeric ?? habit?.is_numeric;
@@ -184,6 +185,7 @@ export default function Heatmap({
           numeric={numeric}
           monochromatic={monochromatic}
           is2D={is2D}
+          mobile={mobile}
         />
       );
     }
@@ -254,6 +256,7 @@ export default function Heatmap({
             numeric={numeric}
             monochromatic={monochromatic}
             is2D={is2D}
+            mobile={mobile}
           />
         ))}
       </React.Fragment>
