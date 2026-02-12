@@ -171,6 +171,7 @@ function HabitModalWrapper({
           mobile={mobile}
           isPastPeriod={isPastPeriod}
           isFuturePeriod={isFuturePeriod}
+          modal
         />
         <HabitControls
           currentTab={currentTab}

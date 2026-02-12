@@ -289,6 +289,7 @@
   grid-template-columns: 1fr;
   grid-auto-rows: 40px;
   overflow-y: scroll;
+  height: 420px;
 
   @media (max-width: 700px) {
     height: 435px;
