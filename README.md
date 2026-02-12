@@ -145,8 +145,8 @@ Excellent for planning and tracking progressions:
 - [Keybindings](/docs/keybindings.md) for common actions
 - Two themes available: light and dark
 - Desktop-focused
-- A working mobile interface (browser-only, no app)
-- Possible to create multiple accounts
+- Polished mobile interface (browser-only, no app)
+- Multiple accounts support
 - Drag and drop projects or habits to rearrange their order
 - Tooltips with the selected period's information (available when you hover on cells)
 - Habit and project names are clickable and lead to their individual pages (all links
