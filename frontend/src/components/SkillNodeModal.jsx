@@ -72,6 +72,7 @@ export default function SkillNodeModal({ skilltreeID, skillID, skillparentID, cl
             unnamed={!values?.name}
             isNew={!skillID}
             type="skill"
+            form={form}
           />
         </form>
       )}
